@@ -1,0 +1,101 @@
+# Production-стек для VPS. HTTPS/проксирование делает ваш Nginx Proxy Manager
+# (внешняя docker-сеть proxy-network), поэтому здесь портов наружу почти нет —
+# NPM ходит к контейнерам web/server по именам внутри общей сети.
+#
+# Запуск:  docker compose -f docker-compose.prod.yml --env-file .env up -d --build
+# Переменные — в .env рядом (см. .env.prod.example).
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: videoner-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: downloader
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d downloader"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  telegram-bot-api:
+    image: aiogram/telegram-bot-api:latest
+    container_name: videoner-botapi
+    restart: unless-stopped
+    environment:
+      TELEGRAM_API_ID: ${TELEGRAM_API_ID}
+      TELEGRAM_API_HASH: ${TELEGRAM_API_HASH}
+      TELEGRAM_LOCAL: "1"
+    volumes:
+      - botapi_data:/var/lib/telegram-bot-api
+    networks: [internal]
+
+  server:
+    build: ./server
+    container_name: videoner-server
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/downloader?schema=public
+      NODE_ENV: production
+      PORT: "3001"
+      # CORS: браузер напрямую слушает SSE-прогресс с этого домена
+      ALLOWED_ORIGINS: ${PUBLIC_DOMAIN}
+      # Фиксированный API-ключ, чтобы совпадал с web и bot (seed создаёт его идемпотентно)
+      SEED_API_KEY: ${API_KEY}
+      SEED_ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@localhost}
+    volumes:
+      - downloads:/app/dist/downloads
+      # cookies.txt для Instagram/Facebook. Пустой файл-заглушка игнорируется
+      # (сервер проверяет непустоту), заполненный — подхватывается автоматически.
+      - ./server/cookies.txt:/app/cookies.txt:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [internal, proxy]
+
+  bot:
+    build: ./bot
+    container_name: videoner-bot
+    restart: unless-stopped
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}
+      API_URL: http://server:3001
+      API_KEY: ${API_KEY}
+      # Локальный Bot API сервер — лимит файлов 2 ГБ
+      BOT_API_ROOT: http://telegram-bot-api:8081
+    depends_on: [server, telegram-bot-api]
+    networks: [internal]
+
+  web:
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_APP_URL: https://${PUBLIC_DOMAIN}
+        NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
+    container_name: videoner-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_URL: https://${PUBLIC_DOMAIN}
+      NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
+      # Серверный прокси Next.js ходит к API по внутренней сети, не через публичный домен
+      API_INTERNAL_URL: http://server:3001
+      API_KEY: ${API_KEY}
+    depends_on: [server]
+    networks: [internal, proxy]
+
+networks:
+  internal:
+  proxy:
+    external: true
+    name: ${NPM_NETWORK:-proxy-network}
+
+volumes:
+  pgdata:
+  botapi_data:
+  downloads:

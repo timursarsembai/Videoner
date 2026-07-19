@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api
+Disallow: /api/*
+Disallow: /_next
+Disallow: /_next/*
+
+# Host
+Host: http://localhost:3000
+
+# Sitemaps
+Sitemap: http://localhost:3000/sitemap.xml

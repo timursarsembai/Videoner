@@ -1,0 +1,39 @@
+# ==== Секреты — НИКОГДА не коммитим ====
+.env
+.env.*
+!.env.example
+!.env.prod.example
+*.local
+server/cookies.txt
+server/info.json
+
+# ==== Зависимости и сборка ====
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# ==== Скачанные медиа ====
+downloads/
+**/downloads/
+
+# ==== Бинарники yt-dlp / ffmpeg (качаются автоматически, слишком большие для git) ====
+server/bin/*
+!server/bin/yt-dlp.conf
+
+# ==== Логи ====
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==== ОС / редакторы ====
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

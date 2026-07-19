@@ -1,0 +1,70 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ApiKey {
+  id          String     @id @default(uuid())
+  key         String     @unique
+  name        String // Descriptive name for the API key
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  isBlocked   Boolean    @default(false)
+  blockReason String?
+  ipWhitelist String[] // Array of allowed IP addresses
+  rateLimit   Int        @default(100) // Requests per minute
+  maxDuration Int        @default(1800) // Maximum media duration in seconds (default 30 minutes)
+  downloads   Download[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([key])
+  @@index([userId])
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  apiKeys   ApiKey[]
+  isAdmin   Boolean  @default(false)
+  isBlocked Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Download {
+  id          String         @id @default(uuid())
+  originalUrl String
+  status      DownloadStatus @default(PENDING)
+  filename    String
+  downloadUrl String?
+  downloader  Downloaders    @default(YOUTUBE)
+  apiKey      ApiKey?        @relation(fields: [apiKeyId], references: [id])
+  apiKeyId    String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+enum DownloadStatus {
+  PENDING
+  DOWNLOADING
+  CONVERTING
+  COMPLETED
+  FAILED
+  EXPIRED
+}
+
+enum Downloaders {
+  YOUTUBE
+  FACEBOOK
+  INSTAGRAM
+  TIKTOK
+  TWITTER
+}

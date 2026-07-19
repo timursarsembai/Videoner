@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vdl-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: downloader
+    ports:
+      - "5434:5432"
+    volumes:
+      - vdl_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d downloader"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Локальный Telegram Bot API сервер — поднимает лимит отправки файлов ботом до 2 ГБ.
+  # Требует TELEGRAM_API_ID и TELEGRAM_API_HASH из https://my.telegram.org (API development tools).
+  # Заполните их в файле .env рядом с этим docker-compose.yml, затем: docker compose up -d telegram-bot-api
+  telegram-bot-api:
+    image: aiogram/telegram-bot-api:latest
+    container_name: vdl-telegram-bot-api
+    restart: unless-stopped
+    environment:
+      TELEGRAM_API_ID: ${TELEGRAM_API_ID:-}
+      TELEGRAM_API_HASH: ${TELEGRAM_API_HASH:-}
+      TELEGRAM_LOCAL: "1"
+    ports:
+      - "8081:8081"
+    volumes:
+      - vdl_botapi_data:/var/lib/telegram-bot-api
+
+volumes:
+  vdl_pgdata:
+  vdl_botapi_data:

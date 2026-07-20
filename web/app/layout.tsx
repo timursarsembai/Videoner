@@ -6,6 +6,7 @@ import { Space_Grotesk } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
+import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/layout/GoogleTagManager";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("antialiased", spaceGrotesk.variable)}>
+        <GoogleTagManagerNoScript />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -68,6 +70,7 @@ export default function RootLayout({
           </LanguageProvider>
         </ThemeProvider>
         <GoogleAnalytics />
+        <GoogleTagManager />
       </body>
     </html>
   );

@@ -59,6 +59,8 @@ services:
       # Алерт в Telegram админу, когда YouTube требует обновить cookies
       BOT_TOKEN: ${BOT_TOKEN}
       ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
+      # Статический ISP-прокси (IPRoyal) для YouTube — обходит блокировку по IP дата-центра VPS
+      YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
     volumes:
       - downloads:/app/dist/downloads
       # cookies.txt для Instagram/Facebook/YouTube. Пустой файл-заглушка игнорируется

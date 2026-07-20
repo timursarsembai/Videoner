@@ -49,10 +49,18 @@ export class YtdlpService implements OnModuleInit {
   private ffmpegPath: string;
   private readonly binariesDir: string;
   private readonly cookiesFilePath: string;
+  // Статический ISP-прокси (IPRoyal) — только для YouTube: датацентр-IP VPS
+  // заблокирован антибот-защитой YouTube, остальные площадки прокси не требуют.
+  private readonly youtubeProxyUrl?: string;
 
   constructor() {
     this.binariesDir = path.join(process.cwd(), 'bin');
     this.cookiesFilePath = path.resolve(process.cwd(), 'cookies.txt');
+    this.youtubeProxyUrl = process.env.YOUTUBE_PROXY_URL || undefined;
+  }
+
+  private isYoutubeUrl(url: string): boolean {
+    return /(^|\.)youtube\.com|youtu\.be/i.test(url);
   }
 
   async onModuleInit() {
@@ -275,6 +283,9 @@ export class YtdlpService implements OnModuleInit {
       if (this.hasCookies()) {
         argsWithQuotes.push('--cookies', this.cookiesFilePath);
       }
+      if (this.youtubeProxyUrl && args.some((a) => this.isYoutubeUrl(a))) {
+        argsWithQuotes.push('--proxy', this.youtubeProxyUrl);
+      }
       console.log(argsWithQuotes);
       const command = `"${this.ytdlpPath}" ${argsWithQuotes.join(' ')}`;
       return await execAsync(command);
@@ -377,6 +388,10 @@ export class YtdlpService implements OnModuleInit {
 
     if (this.hasCookies()) {
       processArgs.push('--cookies', this.cookiesFilePath);
+    }
+
+    if (this.youtubeProxyUrl && platform === 'youtube') {
+      processArgs.push('--proxy', this.youtubeProxyUrl);
     }
 
     const childProcess = spawn(this.ytdlpPath, processArgs);

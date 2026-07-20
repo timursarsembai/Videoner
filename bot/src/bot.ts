@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { Bot, InlineKeyboard, InputFile } from "grammy";
+import { detectLang, messages, type Lang } from "./i18n.js";
 
 const BOT_TOKEN = process.env.BOT_TOKEN ?? "";
 const API_URL = process.env.API_URL ?? "http://localhost:3001";
@@ -62,8 +63,9 @@ function fmtDuration(sec?: number): string {
 // Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
 // Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
 // только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.
-function friendlyError(raw: string): string {
+function friendlyError(raw: string, lang: Lang): string {
   const msg = (raw || "").toLowerCase();
+  const m = messages[lang];
 
   if (
     msg.includes("certain audiences") ||
@@ -75,39 +77,32 @@ function friendlyError(raw: string): string {
     msg.includes("requires authentication") ||
     msg.includes("private")
   ) {
-    return (
-      "Это видео закрыто для гостей — платформа показывает его только залогиненным " +
-      "пользователям (приватный аккаунт, возрастное или «чувствительное» ограничение).\n\n" +
-      "Владельцу бота нужно настроить cookies.txt на сервере, чтобы он заходил под " +
-      "авторизованной сессией (см. README проекта, раздел «Cookies для Instagram/Facebook»)."
-    );
+    return m.errorLoginRequired;
   }
 
   if (msg.includes("unsupported platform") || msg.includes("invalid url")) {
-    return "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook или Twitter/X.";
+    return m.errorUnsupportedPlatform;
   }
 
   if (msg.includes("requested format is not available")) {
-    return "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.";
+    return m.errorFormatUnavailable;
   }
 
   return raw;
 }
 
-bot.command("start", (ctx) =>
-  ctx.reply(
-    "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook или Twitter/X — я помогу его скачать.",
-  ),
-);
+bot.command("start", (ctx) => ctx.reply(messages[detectLang(ctx.from?.language_code)].start));
 
 bot.on("message:text", async (ctx) => {
+  const lang = detectLang(ctx.from?.language_code);
+  const m = messages[lang];
   const url = ctx.message.text.trim();
   if (!/^https?:\/\//i.test(url)) {
-    await ctx.reply("Это не похоже на ссылку. Пришли ссылку на видео.");
+    await ctx.reply(m.notLink);
     return;
   }
 
-  const msg = await ctx.reply("🔍 Получаю информацию о видео...");
+  const msg = await ctx.reply(m.fetchingInfo);
   try {
     const info = await api<{
       title: string;
@@ -122,17 +117,14 @@ bot.on("message:text", async (ctx) => {
       const label = isPaidQuality("v", q) ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
       kb.text(label, `v|${q}`).row();
     }
-    kb.text("🎵 Только аудио (mp3)", "a|128Kbps");
+    kb.text(m.audioOnlyButton, "a|128Kbps");
 
     const dur = fmtDuration(info.duration);
-    await ctx.api.editMessageText(
-      ctx.chat.id,
-      msg.message_id,
-      `«${info.title}»${dur ? `\n⏱ ${dur}` : ""}\n\nВыбери качество:`,
-      { reply_markup: kb },
-    );
+    await ctx.api.editMessageText(ctx.chat.id, msg.message_id, m.chooseQuality(info.title, dur), {
+      reply_markup: kb,
+    });
   } catch (e: any) {
-    await ctx.api.editMessageText(ctx.chat.id, msg.message_id, `❌ Не получилось: ${friendlyError(e.message)}`);
+    await ctx.api.editMessageText(ctx.chat.id, msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
   }
 });
 
@@ -142,6 +134,7 @@ async function performDownload(
   quality: string,
   extension: string,
   url: string,
+  lang: Lang,
   send: {
     reply: (text: string) => Promise<{ message_id: number }>;
     editMessageText: (messageId: number, text: string) => Promise<unknown>;
@@ -150,7 +143,8 @@ async function performDownload(
     deleteMessage: (messageId: number) => Promise<unknown>;
   },
 ) {
-  const msg = await send.reply("⏬ Скачиваю, это может занять пару минут...");
+  const m = messages[lang];
+  const msg = await send.reply(m.downloading);
 
   try {
     const started = await api<{ downloadId: string; fileName: string }>(
@@ -165,7 +159,7 @@ async function performDownload(
       if (status && (status.status === "COMPLETED" || status.status === "FAILED")) break;
     }
     if (!status || status.status !== "COMPLETED") {
-      throw new Error(status?.status === "FAILED" ? "загрузка завершилась ошибкой" : "тайм-аут загрузки");
+      throw new Error(status?.status === "FAILED" ? m.downloadFailed : m.downloadTimeout);
     }
 
     const fileName = encodeURIComponent(started.fileName);
@@ -175,14 +169,11 @@ async function performDownload(
     // Без локального Bot API сервера облачный лимит — 50 МБ на файл от бота
     if (!BOT_API_ROOT && meta.size > CLOUD_SIZE_LIMIT) {
       const mb = (meta.size / 1024 / 1024).toFixed(1);
-      await send.editMessageText(
-        msg.message_id,
-        `Файл получился большим (${mb} МБ) — Telegram не даст боту его отправить.\nСкачай по ссылке: ${fileUrl}`,
-      );
+      await send.editMessageText(msg.message_id, m.fileTooBig(mb, fileUrl));
       return;
     }
 
-    await send.editMessageText(msg.message_id, "📤 Отправляю файл...");
+    await send.editMessageText(msg.message_id, m.sendingFile);
     const file = new InputFile(new URL(fileUrl));
     if (kind === "v") {
       await send.replyWithVideo(file);
@@ -191,15 +182,17 @@ async function performDownload(
     }
     await send.deleteMessage(msg.message_id);
   } catch (e: any) {
-    await send.editMessageText(msg.message_id, `❌ Не получилось: ${friendlyError(e.message)}`);
+    await send.editMessageText(msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
   }
 }
 
 bot.on("callback_query:data", async (ctx) => {
+  const lang = detectLang(ctx.from?.language_code);
+  const m = messages[lang];
   const chatId = ctx.chat?.id;
   const session = chatId ? sessions.get(chatId) : undefined;
   if (!chatId || !session) {
-    await ctx.answerCallbackQuery({ text: "Сессия устарела — пришли ссылку ещё раз" });
+    await ctx.answerCallbackQuery({ text: m.sessionExpired });
     return;
   }
 
@@ -211,11 +204,11 @@ bot.on("callback_query:data", async (ctx) => {
     const id = crypto.randomUUID();
     pendingPayments.set(id, { chatId, url: session.url, kind, quality, extension });
     await ctx.replyWithInvoice(
-      `HD-качество ${quality}`,
-      `Скачивание видео в качестве ${quality} за ${STARS_PRICE} ⭐`,
+      m.invoiceTitle(quality),
+      m.invoiceDescription(quality, STARS_PRICE),
       id,
       "XTR",
-      [{ label: `Видео ${quality}`, amount: STARS_PRICE }],
+      [{ label: m.invoiceLabel(quality), amount: STARS_PRICE }],
     );
     return;
   }
@@ -227,19 +220,21 @@ bot.on("callback_query:data", async (ctx) => {
     replyWithAudio: (file: InputFile) => ctx.replyWithAudio(file),
     deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
   };
-  await performDownload(chatId, kind, quality, extension, session.url, send);
+  await performDownload(chatId, kind, quality, extension, session.url, lang, send);
 });
 
 bot.on("pre_checkout_query", async (ctx) => {
+  const lang = detectLang(ctx.from?.language_code);
   const pending = pendingPayments.get(ctx.preCheckoutQuery.invoice_payload);
   if (!pending) {
-    await ctx.answerPreCheckoutQuery(false, "Заказ устарел — пришли ссылку ещё раз");
+    await ctx.answerPreCheckoutQuery(false, messages[lang].orderExpired);
     return;
   }
   await ctx.answerPreCheckoutQuery(true);
 });
 
 bot.on("message:successful_payment", async (ctx) => {
+  const lang = detectLang(ctx.from?.language_code);
   const payload = ctx.message.successful_payment.invoice_payload;
   const pending = pendingPayments.get(payload);
   pendingPayments.delete(payload);
@@ -253,8 +248,8 @@ bot.on("message:successful_payment", async (ctx) => {
     replyWithAudio: (file: InputFile) => ctx.replyWithAudio(file),
     deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
   };
-  await ctx.reply("✅ Оплата получена, начинаю скачивание.");
-  await performDownload(chatId, kind, quality, extension, url, send);
+  await ctx.reply(messages[lang].paymentReceived);
+  await performDownload(chatId, kind, quality, extension, url, lang, send);
 });
 
 bot.catch((err) => console.error("Bot error:", err.error));

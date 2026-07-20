@@ -9,6 +9,10 @@ const API_KEY = process.env.API_KEY ?? "";
 const BOT_API_ROOT = process.env.BOT_API_ROOT || undefined;
 const CLOUD_SIZE_LIMIT = 48 * 1024 * 1024;
 
+// HD (720p и выше) отдаём за Telegram Stars, качество до 480p включительно — бесплатно.
+const PAID_QUALITY_MIN_HEIGHT = 720;
+const STARS_PRICE = 15;
+
 if (!BOT_TOKEN) {
   console.error("BOT_TOKEN не задан. Получите токен у @BotFather и впишите в bot/.env");
   process.exit(1);
@@ -23,6 +27,17 @@ const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT 
 // Последняя присланная ссылка на чат — callback_data в Telegram ограничена 64 байтами,
 // поэтому URL храним здесь, а в кнопке передаём только тип и качество.
 const sessions = new Map<number, { url: string }>();
+
+// Ожидающие оплаты HD-скачивания — invoice_payload тоже ограничен, поэтому
+// сами данные (ссылка/качество) держим здесь, а в payload кладём только id.
+type PendingDownload = { chatId: number; url: string; kind: "v" | "a"; quality: string; extension: string };
+const pendingPayments = new Map<string, PendingDownload>();
+
+function isPaidQuality(kind: string, quality: string): boolean {
+  if (kind !== "v") return false;
+  const height = parseInt(quality, 10);
+  return Number.isFinite(height) && height >= PAID_QUALITY_MIN_HEIGHT;
+}
 
 async function api<T = any>(path: string, body?: unknown): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
@@ -104,7 +119,8 @@ bot.on("message:text", async (ctx) => {
 
     const kb = new InlineKeyboard();
     for (const q of (info.qualities.video ?? []).slice(0, 6)) {
-      kb.text(`🎬 ${q}`, `v|${q}`).row();
+      const label = isPaidQuality("v", q) ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
+      kb.text(label, `v|${q}`).row();
     }
     kb.text("🎵 Только аудио (mp3)", "a|128Kbps");
 
@@ -120,24 +136,26 @@ bot.on("message:text", async (ctx) => {
   }
 });
 
-bot.on("callback_query:data", async (ctx) => {
-  const chatId = ctx.chat?.id;
-  const session = chatId ? sessions.get(chatId) : undefined;
-  if (!chatId || !session) {
-    await ctx.answerCallbackQuery({ text: "Сессия устарела — пришли ссылку ещё раз" });
-    return;
-  }
-
-  const [kind, quality] = ctx.callbackQuery.data.split("|");
-  await ctx.answerCallbackQuery();
-  const msg = await ctx.reply("⏬ Скачиваю, это может занять пару минут...");
+async function performDownload(
+  chatId: number,
+  kind: "v" | "a",
+  quality: string,
+  extension: string,
+  url: string,
+  send: {
+    reply: (text: string) => Promise<{ message_id: number }>;
+    editMessageText: (messageId: number, text: string) => Promise<unknown>;
+    replyWithVideo: (file: InputFile) => Promise<unknown>;
+    replyWithAudio: (file: InputFile) => Promise<unknown>;
+    deleteMessage: (messageId: number) => Promise<unknown>;
+  },
+) {
+  const msg = await send.reply("⏬ Скачиваю, это может занять пару минут...");
 
   try {
     const started = await api<{ downloadId: string; fileName: string }>(
       kind === "v" ? "/download/video" : "/download/audio",
-      kind === "v"
-        ? { url: session.url, quality, extension: "mp4" }
-        : { url: session.url, quality, extension: "mp3" },
+      { url, quality, extension },
     );
 
     let status: { status: string; downloadUrl?: string } | undefined;
@@ -157,25 +175,86 @@ bot.on("callback_query:data", async (ctx) => {
     // Без локального Bot API сервера облачный лимит — 50 МБ на файл от бота
     if (!BOT_API_ROOT && meta.size > CLOUD_SIZE_LIMIT) {
       const mb = (meta.size / 1024 / 1024).toFixed(1);
-      await ctx.api.editMessageText(
-        chatId,
+      await send.editMessageText(
         msg.message_id,
         `Файл получился большим (${mb} МБ) — Telegram не даст боту его отправить.\nСкачай по ссылке: ${fileUrl}`,
       );
       return;
     }
 
-    await ctx.api.editMessageText(chatId, msg.message_id, "📤 Отправляю файл...");
+    await send.editMessageText(msg.message_id, "📤 Отправляю файл...");
     const file = new InputFile(new URL(fileUrl));
     if (kind === "v") {
-      await ctx.replyWithVideo(file, { supports_streaming: true });
+      await send.replyWithVideo(file);
     } else {
-      await ctx.replyWithAudio(file);
+      await send.replyWithAudio(file);
     }
-    await ctx.api.deleteMessage(chatId, msg.message_id);
+    await send.deleteMessage(msg.message_id);
   } catch (e: any) {
-    await ctx.api.editMessageText(chatId, msg.message_id, `❌ Не получилось: ${friendlyError(e.message)}`);
+    await send.editMessageText(msg.message_id, `❌ Не получилось: ${friendlyError(e.message)}`);
   }
+}
+
+bot.on("callback_query:data", async (ctx) => {
+  const chatId = ctx.chat?.id;
+  const session = chatId ? sessions.get(chatId) : undefined;
+  if (!chatId || !session) {
+    await ctx.answerCallbackQuery({ text: "Сессия устарела — пришли ссылку ещё раз" });
+    return;
+  }
+
+  const [kind, quality] = ctx.callbackQuery.data.split("|") as ["v" | "a", string];
+  const extension = kind === "v" ? "mp4" : "mp3";
+  await ctx.answerCallbackQuery();
+
+  if (isPaidQuality(kind, quality)) {
+    const id = crypto.randomUUID();
+    pendingPayments.set(id, { chatId, url: session.url, kind, quality, extension });
+    await ctx.replyWithInvoice(
+      `HD-качество ${quality}`,
+      `Скачивание видео в качестве ${quality} за ${STARS_PRICE} ⭐`,
+      id,
+      "XTR",
+      [{ label: `Видео ${quality}`, amount: STARS_PRICE }],
+    );
+    return;
+  }
+
+  const send = {
+    reply: (text: string) => ctx.reply(text),
+    editMessageText: (messageId: number, text: string) => ctx.api.editMessageText(chatId, messageId, text),
+    replyWithVideo: (file: InputFile) => ctx.replyWithVideo(file, { supports_streaming: true }),
+    replyWithAudio: (file: InputFile) => ctx.replyWithAudio(file),
+    deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
+  };
+  await performDownload(chatId, kind, quality, extension, session.url, send);
+});
+
+bot.on("pre_checkout_query", async (ctx) => {
+  const pending = pendingPayments.get(ctx.preCheckoutQuery.invoice_payload);
+  if (!pending) {
+    await ctx.answerPreCheckoutQuery(false, "Заказ устарел — пришли ссылку ещё раз");
+    return;
+  }
+  await ctx.answerPreCheckoutQuery(true);
+});
+
+bot.on("message:successful_payment", async (ctx) => {
+  const payload = ctx.message.successful_payment.invoice_payload;
+  const pending = pendingPayments.get(payload);
+  pendingPayments.delete(payload);
+  if (!pending) return;
+
+  const { chatId, url, kind, quality, extension } = pending;
+  const send = {
+    reply: (text: string) => ctx.reply(text),
+    editMessageText: (messageId: number, text: string) => ctx.api.editMessageText(chatId, messageId, text),
+    replyWithVideo: (file: InputFile) => ctx.replyWithVideo(file, { supports_streaming: true }),
+    replyWithAudio: (file: InputFile) => ctx.replyWithAudio(file),
+    deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
+  };
+  await ctx.reply("✅ Оплата получена, начинаю скачивание.");
+  await performDownload(chatId, kind, quality, extension, url, send);
 });
 
 bot.catch((err) => console.error("Bot error:", err.error));

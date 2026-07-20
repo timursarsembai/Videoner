@@ -11,7 +11,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { LogoIcon } from "../ui/icons";
 import { LanguageToggle } from "../ui/language-toggle";
 import { ModeToggle } from "../ui/theme-toggle";
 import type { TranslationKey } from "@/lib/i18n/context";
@@ -244,7 +243,13 @@ export function Navbar() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <LogoIcon size={30} />
+              <Image
+                src="/images/videoner-website-logo.svg"
+                alt="Videoner"
+                width={30}
+                height={30}
+                className="h-[30px] w-[30px] dark:invert"
+              />
               <span className="text-xl font-semibold">Videoner</span>
             </Link>
           </div>

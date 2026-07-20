@@ -43,7 +43,7 @@ export const downloaders: Downloader[] = [
     value: "twitter",
     href: "/twitter",
     description: "Download Twitter videos",
-    logo: "/images/logos/twitter.svg",
+    logo: "/images/logos/x_logo.svg",
     isComingSoon: false,
     isUrlValid: isTwitterUrl,
   },

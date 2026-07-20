@@ -1,7 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/lib/i18n/context";
-import { LogoIcon } from "../ui/icons";
+import Image from "next/image";
 import { Send } from "lucide-react";
 
 const TELEGRAM_BOT = "VideonerBot";
@@ -15,7 +15,13 @@ export function Footer() {
     <footer className="border-t border-border/40 bg-background/60">
       <div className="container flex flex-col items-center gap-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
         <div className="flex items-center gap-2">
-          <LogoIcon size={24} />
+          <Image
+            src="/images/videoner-website-logo.svg"
+            alt="Videoner"
+            width={24}
+            height={24}
+            className="h-6 w-6 dark:invert"
+          />
           <span className="text-sm text-foreground/60">
             © {year} Videoner. {t("footer.rights")}
           </span>

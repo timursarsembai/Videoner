@@ -1,8 +1,10 @@
 "use client";
 
 import { navConfig } from "@/config/nav";
+import { useLanguage } from "@/lib/i18n/context";
 import { cn } from "@/lib/utils";
 import { NavItem } from "@/types/nav";
+import { Platform } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -10,15 +12,28 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { LogoIcon } from "../ui/icons";
+import { LanguageToggle } from "../ui/language-toggle";
 import { ModeToggle } from "../ui/theme-toggle";
+import type { TranslationKey } from "@/lib/i18n/context";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   const handleDropdownClick = (name: string) => {
     setActiveDropdown(activeDropdown === name ? null : name);
   };
+
+  // Метки главного меню переводим по href (идентичность в state/ключах — по name).
+  const navLabel = (item: NavItem) =>
+    item.href === "/" ? t("nav.home") : t("nav.downloaders");
+
+  // Названия загрузчиков — имена собственные (оставляем), описания переводим по платформе.
+  const subLabel = (subItem: NavItem) =>
+    "value" in subItem
+      ? t(`platforms.${(subItem as { value: Platform }).value}.description` as TranslationKey)
+      : subItem.description;
 
   const NavLink = ({ item }: { item: NavItem }) => {
     if (item.subMenu?.length) {
@@ -29,7 +44,7 @@ export function Navbar() {
             className="flex items-center gap-1.5 text-sm font-medium text-foreground/60 transition-colors hover:text-foreground/90"
           >
             {item.icon && <item.icon className="h-4 w-4" />}
-            {item.name}
+            {navLabel(item)}
             <ChevronDown
               className={cn(
                 "h-4 w-4 transition-transform",
@@ -75,13 +90,13 @@ export function Navbar() {
                         </span>
                         {"isComingSoon" in subItem && subItem.isComingSoon && (
                           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                            Coming Soon
+                            {t("nav.comingSoon")}
                           </span>
                         )}
                       </div>
                       {subItem.description && (
                         <span className="line-clamp-2 text-sm text-foreground/60">
-                          {subItem.description}
+                          {subLabel(subItem)}
                         </span>
                       )}
                     </div>
@@ -105,7 +120,7 @@ export function Navbar() {
         )}
       >
         {item.icon && <item.icon className="h-4 w-4" />}
-        {item.name}
+        {navLabel(item)}
       </Link>
     );
   };
@@ -120,7 +135,7 @@ export function Navbar() {
           >
             <div className="flex items-center gap-2">
               {item.icon && <item.icon className="h-6 w-6" />}
-              {item.name}
+              {navLabel(item)}
             </div>
             <ChevronDown
               className={cn(
@@ -186,13 +201,13 @@ export function Navbar() {
                           {"isComingSoon" in subItem &&
                             subItem.isComingSoon && (
                               <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                                Coming Soon
+                                {t("nav.comingSoon")}
                               </span>
                             )}
                         </div>
                         {subItem.description && (
                           <span className="text-sm text-foreground/60">
-                            {subItem.description}
+                            {subLabel(subItem)}
                           </span>
                         )}
                       </div>
@@ -213,7 +228,7 @@ export function Navbar() {
         onClick={() => setIsOpen(false)}
       >
         {item.icon && <item.icon className="h-6 w-6" />}
-        {item.name}
+        {navLabel(item)}
       </Link>
     );
   };
@@ -230,7 +245,7 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
               <LogoIcon size={30} />
-              <span className="text-xl font-semibold">Vidyoza</span>
+              <span className="text-xl font-semibold">Videoner</span>
             </Link>
           </div>
 
@@ -242,6 +257,7 @@ export function Navbar() {
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
+            <LanguageToggle />
             <ModeToggle />
             {/* <Button variant="ghost">Login</Button>
             <Button className=" bg-primary px-6">Sign Up</Button> */}
@@ -308,7 +324,13 @@ export function Navbar() {
                 <div className="flex flex-col gap-3 pt-6">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-foreground/60">
-                      Switch theme
+                      {t("nav.language")}
+                    </span>
+                    <LanguageToggle />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-foreground/60">
+                      {t("nav.switchTheme")}
                     </span>
                     <ModeToggle />
                   </div>

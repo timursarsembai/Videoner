@@ -5,6 +5,7 @@ import { GridPattern } from "@/components/ui/grid-pattern";
 import { HeroInput } from "@/components/ui/hero-input";
 import { downloaders } from "@/config/downloaders";
 import { api } from "@/lib/api";
+import { useLanguage } from "@/lib/i18n/context";
 import { cn, extractErrorMessage } from "@/lib/utils";
 import { detectPlatform, isValidUrl } from "@/lib/validations/url";
 import { Platform } from "@/types";
@@ -17,20 +18,26 @@ import { toast } from "react-hot-toast";
 import { VideoInfoSection } from "./VideoInfo";
 
 interface PageProps {
-  news: string;
-  title: string[];
-  description: string;
-  placeholder: string;
   platform: Platform;
 }
 
-const Page = ({ platform, news, title, description, placeholder }: PageProps) => {
+const Page = ({ platform }: PageProps) => {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null);
   const videoSectionRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { t } = useLanguage();
+
+  // Тексты страницы платформы берём из словаря по её ключу.
+  const news = t(`platforms.${platform}.news`);
+  const title = [
+    t(`platforms.${platform}.titleLine1`),
+    t(`platforms.${platform}.titleLine2`),
+  ];
+  const description = t(`platforms.${platform}.pageDescription`);
+  const placeholder = t(`platforms.${platform}.placeholder`);
 
   // Handle URL from query parameters
   useEffect(() => {
@@ -49,12 +56,12 @@ const Page = ({ platform, news, title, description, placeholder }: PageProps) =>
   const fetchVideoInfo = async (videoUrl: string, platform: Platform) => {
     const url = videoUrl.trim();
     if (!url) {
-      toast.error("Please enter a URL");
+      toast.error(t("toast.enterUrl"));
       return;
     }
 
     if (!isValidUrl(url)) {
-      toast.error("Please enter a valid URL");
+      toast.error(t("toast.enterValidUrl"));
       return;
     }
 
@@ -63,12 +70,14 @@ const Page = ({ platform, news, title, description, placeholder }: PageProps) =>
     );
 
     if (!downloader) {
-      toast.error("This URL is not supported");
+      toast.error(t("toast.urlNotSupported"));
       return;
     }
 
     if (!downloader.isUrlValid(url)) {
-      toast.error(`Please enter a valid ${downloader.value} URL`);
+      toast.error(
+        t("toast.enterValidPlatformUrl", { platform: downloader.value })
+      );
       return;
     }
 
@@ -132,7 +141,9 @@ const Page = ({ platform, news, title, description, placeholder }: PageProps) =>
                 className="flex items-center gap-2 rounded-full border border-foreground/10 bg-background/50 px-4 py-2 backdrop-blur"
               >
                 <div className="rounded-full bg-primary px-2 py-0.5">
-                  <span className="text-xs font-medium text-white">New</span>
+                  <span className="text-xs font-medium text-white">
+                    {t("home.new")}
+                  </span>
                 </div>
                 <p className="text-sm font-medium">{news} →</p>
               </motion.div>
@@ -207,7 +218,7 @@ const Page = ({ platform, news, title, description, placeholder }: PageProps) =>
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <>
-                        Download
+                        {t("home.download")}
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </>
                     )}

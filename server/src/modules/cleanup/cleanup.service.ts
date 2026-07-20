@@ -19,7 +19,7 @@ export class CleanupService {
     this.downloadPath = join(__dirname, '..', '..', '..', 'downloads');
   }
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_30_MINUTES)
   async cleanupOldFiles() {
     this.logger.log('Starting cleanup of old downloaded files...');
 
@@ -32,7 +32,7 @@ export class CleanupService {
         try {
           const stats = await stat(filePath);
           const fileAge = Date.now() - stats.mtime.getTime();
-          const isOlder = fileAge > 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+          const isOlder = fileAge > 1 * 60 * 60 * 1000; // 1 hour in milliseconds
 
           if (isOlder) {
             await unlink(filePath);

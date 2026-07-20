@@ -10,10 +10,14 @@ import { getPlatform } from 'src/validate/url';
 import { VideoInfoResponse } from 'src/types/youtube';
 import { FacebookVideoQuality } from 'src/types/facebook';
 import { getVideoFormats } from 'src/lib/helper';
+import { AlertService } from '../alert/alert.service';
 
 @Injectable()
 export class InfoService {
-  constructor(private ytdlp: YtdlpService) {}
+  constructor(
+    private ytdlp: YtdlpService,
+    private alert: AlertService,
+  ) {}
 
   async getVideoInfo(url: string): Promise<VideoInfoResponse> {
     const platform = getPlatform(url);
@@ -99,7 +103,20 @@ export class InfoService {
     }
 
     if (errorMessage.includes('ERROR:')) {
-      errorMessage = errorMessage.split(':').pop()?.trim() || errorMessage;
+      // Берём всё после первого "ERROR:" (а не split(':').pop(), который рубил
+      // сообщение по последнему двоеточию — например по "https:" в ссылке).
+      let msg = errorMessage
+        .slice(errorMessage.indexOf('ERROR:') + 'ERROR:'.length)
+        .trim();
+      // Отрезаем хвост со служебными ссылками yt-dlp ("See https://…", "Also see …"),
+      // сохраняя суть (в т.ч. "Sign in to confirm…", по которой бот распознаёт нужность cookies).
+      msg = msg.split(/\s*(?:See|Also see)\s+https?:\/\//i)[0].trim();
+      errorMessage = msg || errorMessage;
+    }
+
+    if (/sign in to confirm/i.test(errorMessage)) {
+      // Не ждём отправки — не задерживаем ответ пользователю алертом в Telegram.
+      void this.alert.notifyYoutubeAuthRequired(errorMessage);
     }
 
     return errorMessage;

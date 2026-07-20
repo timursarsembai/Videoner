@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { HeroInput } from "@/components/ui/hero-input";
 import { downloaders } from "@/config/downloaders";
+import { useLanguage } from "@/lib/i18n/context";
 import { cn } from "@/lib/utils";
 import { detectPlatform, isValidUrl } from "@/lib/validations/url";
 import { motion } from "framer-motion";
@@ -16,23 +17,24 @@ export function Hero() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleDownload = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!url.trim()) {
-      toast.error("Please enter a URL");
+      toast.error(t("toast.enterUrl"));
       return;
     }
 
       if (!isValidUrl(url)) {
-        toast.error("Please enter a valid URL");
+        toast.error(t("toast.enterValidUrl"));
         return;
       }
 
     const platform = detectPlatform(url);
     if (!platform) {
-      toast.error("This platform is not supported");
+      toast.error(t("toast.platformNotSupported"));
       return;
     }
 
@@ -41,7 +43,7 @@ export function Hero() {
     const downloader = downloaders.find((downloader) => downloader.value === platform);
 
     if (!downloader) {
-      toast.error("This platform is not supported");
+      toast.error(t("toast.platformNotSupported"));
       return;
     }
 
@@ -50,9 +52,10 @@ export function Hero() {
       router.push(`${downloader.href}?${urlParams.toString()}`);
     } else {
       toast.error(
-        `Coming soon! ${
-          downloader.name.charAt(0).toUpperCase() + downloader.name.slice(1)
-        } is not supported yet`
+        t("toast.comingSoon", {
+          name:
+            downloader.name.charAt(0).toUpperCase() + downloader.name.slice(1),
+        })
       );
       setLoading(false);
     }
@@ -94,9 +97,13 @@ export function Hero() {
                 className="flex items-center gap-2 rounded-full border border-foreground/10 bg-background/50 px-4 py-2 backdrop-blur"
               >
                 <div className="rounded-full bg-primary px-2 py-0.5">
-                  <span className="text-xs font-medium text-white">New</span>
+                  <span className="text-xs font-medium text-white">
+                    {t("home.new")}
+                  </span>
                 </div>
-                <p className="text-sm font-medium">Many new features →</p>
+                <p className="text-sm font-medium">
+                  {t("home.manyFeatures")} →
+                </p>
               </motion.div>
             </div>
 
@@ -115,11 +122,11 @@ export function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                  Download Videos
+                  {t("home.titleLine1")}
                   <br />
                   <span className="relative mt-2 inline-block">
                     <span className="relative z-10 bg-gradient-to-r from-primary via-primary-light to-primary bg-clip-text text-transparent">
-                      Fast & Easy
+                      {t("home.titleLine2")}
                     </span>
                     <motion.div
                       className="absolute -bottom-2 left-0 right-0 h-3 w-full bg-primary/20"
@@ -136,12 +143,10 @@ export function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  Your universal video downloader for YouTube, Instagram,
-                  TikTok, and more. Choose any quality, from HD to
-                  mobile-friendly.
+                  {t("home.subtitle")}
                   <span className="hidden sm:inline">
                     {" "}
-                    No limits, no hassle, just downloads.
+                    {t("home.subtitleExtra")}
                   </span>
                 </motion.p>
               </motion.div>
@@ -159,7 +164,7 @@ export function Hero() {
                   <div className="flex-1">
                     <HeroInput
                       type="url"
-                      placeholder="Paste video URL from any platform..."
+                      placeholder={t("home.placeholder")}
                       value={url}
                       onValueChange={(value) => setUrl(value)}
                       icon={<Download className="h-6 w-6" />}
@@ -175,7 +180,7 @@ export function Hero() {
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <>
-                        Download
+                        {t("home.download")}
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </>
                     )}

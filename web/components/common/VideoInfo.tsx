@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { api } from "@/lib/api";
+import { useLanguage } from "@/lib/i18n/context";
 import { downloadFile, extractErrorMessage, formatDuration } from "@/lib/utils";
 import { VideoInfo } from "@/types/youtube";
 import { motion } from "framer-motion";
@@ -43,6 +44,7 @@ interface DownloadState {
 }
 
 export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
+  const { t } = useLanguage();
   const [selectedQuality, setSelectedQuality] = useState<string | null>(null);
   const [lastDownloadedQuality, setLastDownloadedQuality] = useState<
     string | null
@@ -84,12 +86,12 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
             isConverting: false,
             isDownloading: true,
           }));
-          toast.success("Download completed!");
+          toast.success(t("toast.downloadCompleted"));
           // Start the file download automatically
           if (downloadUrl) {
             downloadFile(downloadUrl);
           } else {
-            toast.error("Download URL not received");
+            toast.error(t("toast.downloadUrlNotReceived"));
           }
         },
         onError: (error) => {
@@ -121,7 +123,7 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
 
   const handleDownload = async () => {
     if (!selectedQuality) {
-      toast.error("Please select a quality");
+      toast.error(t("toast.selectQuality"));
       return;
     }
 
@@ -144,7 +146,7 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
       }));
       setLastDownloadedQuality(selectedQuality);
 
-      toast.success("Download started!");
+      toast.success(t("toast.downloadStarted"));
     } catch (error: unknown) {
       console.log(error);
       const errorMessage = extractErrorMessage(error);
@@ -213,7 +215,9 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <Info className="h-4 w-4" />
-                      <span className="text-sm font-medium">Description</span>
+                      <span className="text-sm font-medium">
+                        {t("video.description")}
+                      </span>
                     </div>
                     <p className="text-sm leading-relaxed text-muted-foreground line-clamp-4">
                       {videoInfo.description}
@@ -286,7 +290,9 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                                 : "text-muted-foreground"
                             }`}
                           >
-                            {tab}
+                            {tab === "video"
+                              ? t("video.videoTab")
+                              : t("video.audioTab")}
                           </span>
                         </div>
                       </Button>
@@ -303,7 +309,7 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                         onValueChange={setSelectedExtension}
                       >
                         <SelectTrigger className="h-12 w-[120px] border-none bg-muted/50 px-6 text-base font-medium hover:bg-muted/80">
-                          <SelectValue placeholder="Format" />
+                          <SelectValue placeholder={t("video.format")} />
                         </SelectTrigger>
                         <SelectContent>
                           {videoInfo.extensions.audio.map((extension) => (
@@ -327,7 +333,7 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                     animate={{ opacity: 1, scale: 1 }}
                     className="rounded-full bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-primary/20 whitespace-nowrap"
                   >
-                    Selected: {selectedQuality}
+                    {t("video.selected", { quality: selectedQuality })}
                   </motion.div>
                 )}
               </div>
@@ -384,12 +390,12 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                         {downloadState.isConverting ? (
                           <>
                             <Loader2 className="h-3 w-3 animate-spin" />
-                            Converting
+                            {t("video.converting")}
                           </>
                         ) : (
                           <>
                             <Download className="h-3 w-3" />
-                            Downloading
+                            {t("video.downloading")}
                           </>
                         )}
                       </span>
@@ -424,7 +430,7 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                         onClick={handleDownloadAgain}
                       >
                         <Download className="h-4 w-4" />
-                        Download Again
+                        {t("video.downloadAgain")}
                       </Button>
                     )}
 
@@ -436,7 +442,7 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                       size="lg"
                     >
                       <Download className="h-4 w-4" />
-                      Start Download
+                      {t("video.startDownload")}
                     </Button>
                   )}
 
@@ -444,8 +450,8 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                     <Button disabled className="flex-1 gap-2" size="lg">
                       <Loader2 className="h-4 w-4 animate-spin" />
                       {downloadState.isConverting
-                        ? "Converting..."
-                        : "Downloading..."}
+                        ? t("video.convertingBtn")
+                        : t("video.downloadingBtn")}
                     </Button>
                   )}
                 </div>

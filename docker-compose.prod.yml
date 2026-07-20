@@ -35,6 +35,14 @@ services:
       - botapi_data:/var/lib/telegram-bot-api
     networks: [internal]
 
+  # Генератор PO-токенов для YouTube (обход антибот-проверки на IP дата-центров).
+  # Версия образа должна совпадать с BGUTIL_VERSION в server/Dockerfile.
+  bgutil-provider:
+    image: brainicism/bgutil-ytdlp-pot-provider:1.3.1
+    container_name: videoner-bgutil
+    restart: unless-stopped
+    networks: [internal]
+
   server:
     build: ./server
     container_name: videoner-server
@@ -48,6 +56,9 @@ services:
       # Фиксированный API-ключ, чтобы совпадал с web и bot (seed создаёт его идемпотентно)
       SEED_API_KEY: ${API_KEY}
       SEED_ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@localhost}
+      # Алерт в Telegram админу, когда YouTube требует обновить cookies
+      BOT_TOKEN: ${BOT_TOKEN}
+      ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
     volumes:
       - downloads:/app/dist/downloads
       # cookies.txt для Instagram/Facebook. Пустой файл-заглушка игнорируется
@@ -56,6 +67,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      bgutil-provider:
+        condition: service_started
     networks: [internal, proxy]
 
   bot:

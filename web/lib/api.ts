@@ -1,7 +1,6 @@
 import { ApiError, DownloadResponse } from "@/types/api";
 import { VideoInfo } from "@/types/youtube";
 import axios, { AxiosInstance, AxiosError } from "axios";
-import { detectPlatform } from "./validations/url";
 
 interface ProgressCallbacks {
   onProgress: (progress: ProgressData) => void;

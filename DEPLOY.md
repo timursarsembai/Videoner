@@ -130,5 +130,5 @@ docker compose -f docker-compose.prod.yml build --no-cache server
 docker compose -f docker-compose.prod.yml up -d server
 ```
 
-- Скачанные файлы лежат в томе `downloads` и автоматически чистятся через 12 часов.
+- Скачанные файлы лежат в томе `downloads` и автоматически чистятся через 1 час.
 - База — в томе `pgdata`, сессии Bot API — в `botapi_data`; переживают перезапуски.

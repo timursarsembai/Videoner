@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { LanguageProvider } from "@/lib/i18n/context";
 import { cn } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
@@ -12,26 +13,26 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Vidyoza - Universal Video Downloader",
+  title: "Videoner - Universal Video Downloader",
   description:
-    "Vidyoza is the ultimate video downloader for YouTube, Facebook, Instagram, TikTok, Twitter, and more. Save videos and audio in high-quality formats effortlessly.",
+    "Videoner is the ultimate video downloader for YouTube, Facebook, Instagram, TikTok, Twitter, and more. Save videos and audio in high-quality formats effortlessly.",
   keywords:
     "video downloader, YouTube downloader, Facebook video downloader, TikTok video downloader, Instagram video downloader, Twitter video saver, universal video downloader, download videos online, HD video downloader, multi-format downloader",
   robots: "index, follow",
   openGraph: {
-    title: "Vidyoza - Universal Video Downloader",
+    title: "Videoner - Universal Video Downloader",
     description:
-      "Download videos and audio from all popular platforms, including YouTube, Facebook, Instagram, TikTok, and Twitter. Vidyoza supports multiple formats and resolutions.",
+      "Download videos and audio from all popular platforms, including YouTube, Facebook, Instagram, TikTok, and Twitter. Videoner supports multiple formats and resolutions.",
     url: "https://www.vidyoza.com",
-    siteName: "Vidyoza",
+    siteName: "Videoner",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vidyoza - Universal Video Downloader",
+    title: "Videoner - Universal Video Downloader",
     description:
-      "Save videos and audio from YouTube, Facebook, Instagram, TikTok, Twitter, and more with Vidyoza. Fast, easy, and versatile.",
+      "Save videos and audio from YouTube, Facebook, Instagram, TikTok, Twitter, and more with Videoner. Fast, easy, and versatile.",
   },
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
@@ -61,8 +62,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster position="bottom-right" />
+          <LanguageProvider>
+            {children}
+            <Toaster position="bottom-right" />
+          </LanguageProvider>
         </ThemeProvider>
         <GoogleAnalytics />
       </body>

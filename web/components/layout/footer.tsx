@@ -16,11 +16,11 @@ export function Footer() {
       <div className="container flex flex-col items-center gap-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
         <div className="flex items-center gap-2">
           <Image
-            src="/images/videoner-website-logo.svg"
+            src="/images/videoner-website-logo.webp"
             alt="Videoner"
             width={24}
             height={24}
-            className="h-6 w-6 dark:invert"
+            className="h-6 w-6"
           />
           <span className="text-sm text-foreground/60">
             © {year} Videoner. {t("footer.rights")}

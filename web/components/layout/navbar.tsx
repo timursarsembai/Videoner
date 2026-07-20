@@ -244,11 +244,11 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/images/videoner-website-logo.svg"
+                src="/images/videoner-website-logo.webp"
                 alt="Videoner"
                 width={30}
                 height={30}
-                className="h-[30px] w-[30px] dark:invert"
+                className="h-[30px] w-[30px]"
               />
               <span className="text-xl font-semibold">Videoner</span>
             </Link>

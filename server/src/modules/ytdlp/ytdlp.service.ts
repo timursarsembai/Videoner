@@ -375,7 +375,7 @@ export class YtdlpService implements OnModuleInit {
       PROGRESS_STRING,
     ];
 
-    if (fsSync.existsSync(this.cookiesFilePath)) {
+    if (this.hasCookies()) {
       processArgs.push('--cookies', this.cookiesFilePath);
     }
 

@@ -61,9 +61,12 @@ services:
       ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
     volumes:
       - downloads:/app/dist/downloads
-      # cookies.txt для Instagram/Facebook. Пустой файл-заглушка игнорируется
+      # cookies.txt для Instagram/Facebook/YouTube. Пустой файл-заглушка игнорируется
       # (сервер проверяет непустоту), заполненный — подхватывается автоматически.
-      - ./server/cookies.txt:/app/cookies.txt:ro
+      # Обязательно НЕ read-only: yt-dlp дозаписывает в этот файл обновлённые
+      # (ротированные) сессионные токены при каждом запуске — на :ro падает
+      # с "OSError: Read-only file system" и роняет весь запрос.
+      - ./server/cookies.txt:/app/cookies.txt
     depends_on:
       postgres:
         condition: service_healthy

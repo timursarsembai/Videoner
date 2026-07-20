@@ -1,13 +1,61 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsUrl } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 import {
   VideoQuality,
   AudioQuality,
   VideoFormat,
   AudioFormat,
 } from '../../../types';
+import { DownloadSource } from '@prisma/client';
 
-export class DownloadVideoDto {
+// Опциональные поля контекста запроса (телеграм-бот/оплата Stars) — сейчас
+// без runtime-валидации, т.к. глобальный ValidationPipe в проекте не включён,
+// но типизация нужна для DownloadService и аналитики.
+class RequestMetaDto {
+  @ApiProperty({ description: 'Telegram user id', required: false })
+  @IsOptional()
+  @IsNumber()
+  telegramId?: number;
+
+  @ApiProperty({ description: 'Telegram username', required: false })
+  @IsOptional()
+  @IsString()
+  telegramUsername?: string;
+
+  @ApiProperty({ description: 'Telegram client language code', required: false })
+  @IsOptional()
+  @IsString()
+  telegramLanguageCode?: string;
+
+  @ApiProperty({
+    description: 'Where the request came from',
+    enum: DownloadSource,
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(DownloadSource)
+  source?: DownloadSource;
+
+  @ApiProperty({ description: 'Paid via Telegram Stars', required: false })
+  @IsOptional()
+  @IsBoolean()
+  isPaid?: boolean;
+
+  @ApiProperty({ description: 'Amount of Telegram Stars paid', required: false })
+  @IsOptional()
+  @IsInt()
+  starsAmount?: number;
+}
+
+export class DownloadVideoDto extends RequestMetaDto {
   @ApiProperty({
     description: 'YouTube video URL',
     example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
@@ -34,7 +82,7 @@ export class DownloadVideoDto {
   extension?: VideoFormat;
 }
 
-export class DownloadAudioDto {
+export class DownloadAudioDto extends RequestMetaDto {
   @ApiProperty({
     description: 'YouTube video URL',
     example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',

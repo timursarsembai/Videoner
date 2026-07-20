@@ -40,16 +40,43 @@ model User {
 }
 
 model Download {
-  id          String         @id @default(uuid())
-  originalUrl String
-  status      DownloadStatus @default(PENDING)
-  filename    String
-  downloadUrl String?
-  downloader  Downloaders    @default(YOUTUBE)
-  apiKey      ApiKey?        @relation(fields: [apiKeyId], references: [id])
-  apiKeyId    String?
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id            String         @id @default(uuid())
+  originalUrl   String
+  status        DownloadStatus @default(PENDING)
+  filename      String
+  downloadUrl   String?
+  downloader    Downloaders    @default(YOUTUBE)
+  apiKey        ApiKey?        @relation(fields: [apiKeyId], references: [id])
+  apiKeyId      String?
+  botUser       BotUser?       @relation(fields: [botUserId], references: [id])
+  botUserId     String?
+  source        DownloadSource @default(API)
+  videoTitle    String?
+  videoDuration Int?
+  fileSize      BigInt?
+  isPaid        Boolean        @default(false)
+  starsAmount   Int?
+  errorCategory ErrorCategory?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([botUserId])
+  @@index([status])
+  @@index([downloader])
+  @@index([createdAt])
+}
+
+model BotUser {
+  id           String     @id @default(uuid())
+  telegramId   BigInt     @unique
+  username     String?
+  firstName    String?
+  languageCode String?
+  downloads    Download[]
+  firstSeenAt  DateTime   @default(now())
+  lastSeenAt   DateTime   @default(now())
+
+  @@index([telegramId])
 }
 
 enum DownloadStatus {
@@ -67,4 +94,19 @@ enum Downloaders {
   INSTAGRAM
   TIKTOK
   TWITTER
+}
+
+enum DownloadSource {
+  BOT
+  WEB
+  API
+}
+
+enum ErrorCategory {
+  LOGIN_REQUIRED
+  UNSUPPORTED_PLATFORM
+  FORMAT_UNAVAILABLE
+  YOUTUBE_AUTH_REQUIRED
+  TIMEOUT
+  OTHER
 }

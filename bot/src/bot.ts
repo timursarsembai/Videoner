@@ -108,7 +108,12 @@ bot.on("message:text", async (ctx) => {
       title: string;
       duration?: number;
       qualities: { video: string[]; audio: string[] };
-    }>("/info", { url });
+    }>("/info", {
+      url,
+      telegramId: ctx.from?.id,
+      telegramUsername: ctx.from?.username,
+      telegramLanguageCode: ctx.from?.language_code,
+    });
 
     sessions.set(ctx.chat.id, { url });
 
@@ -128,6 +133,14 @@ bot.on("message:text", async (ctx) => {
   }
 });
 
+type DownloadMeta = {
+  telegramId?: number;
+  telegramUsername?: string;
+  telegramLanguageCode?: string;
+  isPaid: boolean;
+  starsAmount?: number;
+};
+
 async function performDownload(
   chatId: number,
   kind: "v" | "a",
@@ -142,6 +155,7 @@ async function performDownload(
     replyWithAudio: (file: InputFile) => Promise<unknown>;
     deleteMessage: (messageId: number) => Promise<unknown>;
   },
+  dlMeta: DownloadMeta,
 ) {
   const m = messages[lang];
   const msg = await send.reply(m.downloading);
@@ -149,7 +163,7 @@ async function performDownload(
   try {
     const started = await api<{ downloadId: string; fileName: string }>(
       kind === "v" ? "/download/video" : "/download/audio",
-      { url, quality, extension },
+      { url, quality, extension, source: "BOT", ...dlMeta },
     );
 
     let status: { status: string; downloadUrl?: string } | undefined;
@@ -220,7 +234,12 @@ bot.on("callback_query:data", async (ctx) => {
     replyWithAudio: (file: InputFile) => ctx.replyWithAudio(file),
     deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
   };
-  await performDownload(chatId, kind, quality, extension, session.url, lang, send);
+  await performDownload(chatId, kind, quality, extension, session.url, lang, send, {
+    telegramId: ctx.from?.id,
+    telegramUsername: ctx.from?.username,
+    telegramLanguageCode: ctx.from?.language_code,
+    isPaid: false,
+  });
 });
 
 bot.on("pre_checkout_query", async (ctx) => {
@@ -249,7 +268,13 @@ bot.on("message:successful_payment", async (ctx) => {
     deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
   };
   await ctx.reply(messages[lang].paymentReceived);
-  await performDownload(chatId, kind, quality, extension, url, lang, send);
+  await performDownload(chatId, kind, quality, extension, url, lang, send, {
+    telegramId: ctx.from?.id,
+    telegramUsername: ctx.from?.username,
+    telegramLanguageCode: ctx.from?.language_code,
+    isPaid: true,
+    starsAmount: ctx.message.successful_payment.total_amount,
+  });
 });
 
 bot.catch((err) => console.error("Bot error:", err.error));

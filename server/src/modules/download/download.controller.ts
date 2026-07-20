@@ -202,6 +202,7 @@ export class DownloadController {
       downloadDto.quality,
       downloadDto.extension,
       req,
+      downloadDto,
     );
   }
 
@@ -233,6 +234,7 @@ export class DownloadController {
       downloadDto.quality,
       downloadDto.extension,
       req,
+      downloadDto,
     );
   }
 }

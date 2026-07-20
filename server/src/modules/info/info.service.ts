@@ -11,18 +11,30 @@ import { VideoInfoResponse } from 'src/types/youtube';
 import { FacebookVideoQuality } from 'src/types/facebook';
 import { getVideoFormats } from 'src/lib/helper';
 import { AlertService } from '../alert/alert.service';
+import { BotUserService } from '../analytics/bot-user.service';
+import { GetVideoInfoDto } from './dto/get-video-info.dto';
 
 @Injectable()
 export class InfoService {
   constructor(
     private ytdlp: YtdlpService,
     private alert: AlertService,
+    private botUser: BotUserService,
   ) {}
 
-  async getVideoInfo(url: string): Promise<VideoInfoResponse> {
+  async getVideoInfo(dto: GetVideoInfoDto): Promise<VideoInfoResponse> {
+    const { url, telegramId, telegramUsername, telegramLanguageCode } = dto;
     const platform = getPlatform(url);
     if (!platform) {
       throw new BadRequestException('Unsupported platform or invalid URL');
+    }
+
+    if (telegramId) {
+      void this.botUser.upsertBotUser({
+        telegramId,
+        username: telegramUsername,
+        languageCode: telegramLanguageCode,
+      });
     }
 
     try {

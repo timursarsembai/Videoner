@@ -1,6 +1,5 @@
 import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import {
-  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiSecurity,
@@ -8,6 +7,7 @@ import {
 } from '@nestjs/swagger';
 import { InfoService } from './info.service';
 import { ValidUrlGuard } from '../auth/platform.guard';
+import { GetVideoInfoDto } from './dto/get-video-info.dto';
 
 @ApiTags('Video Info')
 @Controller('info')
@@ -19,17 +19,6 @@ export class InfoController {
   @Post()
   @ApiOperation({
     summary: 'Get video information from any supported platform',
-  })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        url: {
-          type: 'string',
-          example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        },
-      },
-    },
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -43,7 +32,7 @@ export class InfoController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Invalid or missing API key',
   })
-  async getVideoInfo(@Body('url') url: string) {
-    return this.infoService.getVideoInfo(url);
+  async getVideoInfo(@Body() dto: GetVideoInfoDto) {
+    return this.infoService.getVideoInfo(dto);
   }
 }

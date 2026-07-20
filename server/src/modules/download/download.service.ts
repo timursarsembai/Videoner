@@ -9,7 +9,12 @@ import { createReadStream, statSync } from 'fs';
 import { PrismaService } from '../prisma/prisma.service';
 import { Response } from 'express';
 import { VideoDownload } from '../../classes/VideoDownload';
-import { DownloadStatus, Downloaders } from '@prisma/client';
+import {
+  DownloadStatus,
+  Downloaders,
+  DownloadSource,
+  ErrorCategory,
+} from '@prisma/client';
 import {
   DownloadFormatOptions,
   DownloadQualityOptions,
@@ -17,6 +22,17 @@ import {
 } from 'src/types';
 import { YtdlpService } from '../ytdlp/ytdlp.service';
 import { getFileName } from 'src/lib/utils';
+import { BotUserService } from '../analytics/bot-user.service';
+import { categorizeError } from 'src/lib/error-category';
+
+export interface DownloadRequestMeta {
+  telegramId?: number;
+  telegramUsername?: string;
+  telegramLanguageCode?: string;
+  source?: DownloadSource;
+  isPaid?: boolean;
+  starsAmount?: number;
+}
 
 @Injectable()
 export class DownloadService {
@@ -25,6 +41,7 @@ export class DownloadService {
   constructor(
     private prisma: PrismaService,
     private ytdlp: YtdlpService,
+    private botUser: BotUserService,
   ) {
     this.downloadPath = join(__dirname, '..', '..', '..', 'downloads');
     // Ensure downloads directory exists
@@ -112,6 +129,13 @@ export class DownloadService {
     originalUrl: string;
     downloader: Downloaders;
     filename: string;
+    apiKeyId?: string;
+    botUserId?: string;
+    source?: DownloadSource;
+    videoTitle?: string;
+    videoDuration?: number;
+    isPaid?: boolean;
+    starsAmount?: number;
   }) {
     return this.prisma.download.create({
       data: {
@@ -119,18 +143,48 @@ export class DownloadService {
         status: DownloadStatus.PENDING,
         downloader: data.downloader,
         filename: data.filename,
+        apiKeyId: data.apiKeyId,
+        botUserId: data.botUserId,
+        source: data.source ?? DownloadSource.API,
+        videoTitle: data.videoTitle,
+        videoDuration: data.videoDuration,
+        isPaid: data.isPaid ?? false,
+        starsAmount: data.starsAmount,
       },
     });
   }
 
   async updateDownloadStatus(
     id: string,
-    data: { status: DownloadStatus; downloadUrl?: string | null },
+    data: {
+      status: DownloadStatus;
+      downloadUrl?: string | null;
+      fileSize?: bigint;
+      errorCategory?: ErrorCategory;
+    },
   ) {
     return this.prisma.download.update({
       where: { id },
       data,
     });
+  }
+
+  // Гвард ValidUrlGuard кладёт платформу строкой в нижнем регистре
+  // ('youtube'|'facebook'|...), а в Prisma она хранится как enum в верхнем.
+  private resolveDownloader(platform: string): Downloaders {
+    return Downloaders[platform.toUpperCase() as keyof typeof Downloaders];
+  }
+
+  private async resolveBotUserId(
+    meta?: DownloadRequestMeta,
+  ): Promise<string | undefined> {
+    if (!meta?.telegramId) return undefined;
+    const botUser = await this.botUser.upsertBotUser({
+      telegramId: meta.telegramId,
+      username: meta.telegramUsername,
+      languageCode: meta.telegramLanguageCode,
+    });
+    return botUser.id;
   }
 
   async getDownloadStatus(downloadId: string) {
@@ -208,6 +262,7 @@ export class DownloadService {
     quality: DownloadQualityOptions['mergevideo'],
     extension?: DownloadFormatOptions['mergevideo'],
     req: Request = null,
+    meta: DownloadRequestMeta = {},
   ) {
     try {
       // Check duration limit before proceeding
@@ -220,11 +275,20 @@ export class DownloadService {
       const tempFileName = getFileName(info.title, quality, initialExtension);
       const finalFileName = getFileName(info.title, quality, extension);
 
+      const botUserId = await this.resolveBotUserId(meta);
+
       // Create download record in database
       const download = await this.createDownload({
         originalUrl: url,
-        downloader: Downloaders.YOUTUBE,
+        downloader: this.resolveDownloader((req as any).platform),
         filename: finalFileName,
+        apiKeyId: (req as any).apiKey?.id,
+        botUserId,
+        source: meta.source,
+        videoTitle: info.title,
+        videoDuration: info.duration,
+        isPaid: meta.isPaid,
+        starsAmount: meta.starsAmount,
       });
 
       // Create progress subject
@@ -264,6 +328,7 @@ export class DownloadService {
                 await this.updateDownloadStatus(download.id, {
                   status: DownloadStatus.FAILED,
                   downloadUrl: null,
+                  errorCategory: categorizeError(progress.message),
                 });
                 progressSubject.error(progress);
               } else {
@@ -279,6 +344,7 @@ export class DownloadService {
               await this.updateDownloadStatus(download.id, {
                 status: DownloadStatus.FAILED,
                 downloadUrl: null,
+                errorCategory: categorizeError(err?.message ?? String(err)),
               });
               progressSubject.error(err);
             },
@@ -319,6 +385,9 @@ export class DownloadService {
                       await this.updateDownloadStatus(download.id, {
                         status: DownloadStatus.FAILED,
                         downloadUrl: null,
+                        errorCategory: categorizeError(
+                          err?.message ?? String(err),
+                        ),
                       });
                       progressSubject.error(err);
                     },
@@ -329,6 +398,7 @@ export class DownloadService {
                       await this.updateDownloadStatus(download.id, {
                         status: DownloadStatus.COMPLETED,
                         downloadUrl: `/downloads/${finalFileName}`,
+                        fileSize: BigInt(statSync(outputPath).size),
                       });
                       progressSubject.complete();
                     },
@@ -338,6 +408,9 @@ export class DownloadService {
                   await this.updateDownloadStatus(download.id, {
                     status: DownloadStatus.FAILED,
                     downloadUrl: null,
+                    errorCategory: categorizeError(
+                      error?.message ?? String(error),
+                    ),
                   });
                   progressSubject.error(error);
                 }
@@ -345,6 +418,9 @@ export class DownloadService {
                 await this.updateDownloadStatus(download.id, {
                   status: DownloadStatus.COMPLETED,
                   downloadUrl: `/downloads/${tempFileName}`,
+                  fileSize: BigInt(
+                    statSync(join(downloadDir, tempFileName)).size,
+                  ),
                 });
                 progressSubject.complete();
               }
@@ -356,6 +432,7 @@ export class DownloadService {
           await this.updateDownloadStatus(download.id, {
             status: DownloadStatus.FAILED,
             downloadUrl: null,
+            errorCategory: categorizeError(error?.message ?? String(error)),
           });
           progressSubject.error(error);
         });
@@ -381,6 +458,7 @@ export class DownloadService {
     quality: DownloadQualityOptions['audioonly'],
     extension?: DownloadFormatOptions['audioonly'],
     req: Request = null,
+    meta: DownloadRequestMeta = {},
   ) {
     try {
       // Check duration limit before proceeding
@@ -389,11 +467,20 @@ export class DownloadService {
       const downloadDir = this.ensureDownloadDirectory();
       const fileName = getFileName(info.title, quality, extension);
 
+      const botUserId = await this.resolveBotUserId(meta);
+
       // Create download record in database
       const download = await this.createDownload({
         originalUrl: url,
-        downloader: Downloaders.YOUTUBE,
+        downloader: this.resolveDownloader((req as any).platform),
         filename: fileName,
+        apiKeyId: (req as any).apiKey?.id,
+        botUserId,
+        source: meta.source,
+        videoTitle: info.title,
+        videoDuration: info.duration,
+        isPaid: meta.isPaid,
+        starsAmount: meta.starsAmount,
       });
 
       // Create progress subject
@@ -432,6 +519,7 @@ export class DownloadService {
             await this.updateDownloadStatus(download.id, {
               status: DownloadStatus.FAILED,
               downloadUrl: null,
+              errorCategory: categorizeError(progress.message),
             });
             progressSubject.error(progress);
           } else {
@@ -444,6 +532,7 @@ export class DownloadService {
           await this.updateDownloadStatus(download.id, {
             status: DownloadStatus.FAILED,
             downloadUrl: null,
+            errorCategory: categorizeError(err?.message ?? String(err)),
           });
           progressSubject.error(err);
         },
@@ -452,6 +541,7 @@ export class DownloadService {
           await this.updateDownloadStatus(download.id, {
             status: DownloadStatus.COMPLETED,
             downloadUrl: `/downloads/${fileName}`,
+            fileSize: BigInt(statSync(join(downloadDir, fileName)).size),
           });
           progressSubject.complete();
         },

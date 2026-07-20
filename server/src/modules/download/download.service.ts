@@ -58,6 +58,9 @@ export class DownloadService {
 
     const stat = statSync(filePath);
     const fileSize = stat.size;
+    // RFC 5987: filename* даёт браузеру корректное не-ASCII имя (кириллица,
+    // эмодзи в заголовках видео), filename — запасной вариант для старых клиентов.
+    const contentDisposition = `attachment; filename="download"; filename*=UTF-8''${encodeURIComponent(filename)}`;
 
     if (range) {
       const parts = range.replace(/bytes=/, '').split('-');
@@ -71,6 +74,7 @@ export class DownloadService {
         'Accept-Ranges': 'bytes',
         'Content-Length': chunkSize,
         'Content-Type': 'application/octet-stream',
+        'Content-Disposition': contentDisposition,
       };
 
       return { stream, headers };
@@ -81,6 +85,7 @@ export class DownloadService {
       'Content-Length': fileSize,
       'Content-Type': 'application/octet-stream',
       'Accept-Ranges': 'bytes',
+      'Content-Disposition': contentDisposition,
     };
 
     return { stream, headers };

@@ -25,7 +25,17 @@ export const downloadFile = (downloadUrl: string) => {
 
     const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/download/${fileName}`;
 
-    window.open(fullUrl);
+    // Клик по скрытой <a download> запускает нативную загрузку без открытия
+    // вкладки — в отличие от window.open(), это не триггерит блокировщик
+    // всплывающих окон (тем более что вызов идёт асинхронно, уже после
+    // завершения прогресса, а не прямо внутри обработчика клика).
+    const link = document.createElement("a");
+    link.href = fullUrl;
+    link.download = fileName;
+    link.rel = "noopener";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   } catch (error) {
     console.error("Download error:", error);
     toast.error("Failed to start download");

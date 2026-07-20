@@ -24,6 +24,42 @@ import { OutputTypeSchema } from '../../validate/schema';
 
 const execAsync = promisify(exec);
 
+// Ограничивает число одновременных запросов к YouTube и добавляет случайную
+// паузу перед каждым — при наплыве пользователей все запросы идут через один
+// и тот же аккаунт/IP, и если бить YouTube пачкой параллельных запросов без
+// пауз, это выглядит как бот-трафик и ускоряет блокировку сильнее, чем при
+// естественном, растянутом по времени использовании.
+class Semaphore {
+  private available: number;
+  private readonly queue: Array<() => void> = [];
+
+  constructor(limit: number) {
+    this.available = limit;
+  }
+
+  acquire(): Promise<() => void> {
+    if (this.available > 0) {
+      this.available--;
+      return Promise.resolve(() => this.release());
+    }
+    return new Promise((resolve) => {
+      this.queue.push(() => {
+        this.available--;
+        resolve(() => this.release());
+      });
+    });
+  }
+
+  private release() {
+    this.available++;
+    this.queue.shift()?.();
+  }
+}
+
+const YOUTUBE_MAX_CONCURRENT = 2;
+const YOUTUBE_DELAY_MIN_MS = 500;
+const YOUTUBE_DELAY_MAX_MS = 2000;
+
 const BINARY_URLS = {
   ytdlpWin64:
     'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe',
@@ -52,6 +88,7 @@ export class YtdlpService implements OnModuleInit {
   // Статический ISP-прокси (IPRoyal) — только для YouTube: датацентр-IP VPS
   // заблокирован антибот-защитой YouTube, остальные площадки прокси не требуют.
   private readonly youtubeProxyUrl?: string;
+  private readonly youtubeSemaphore = new Semaphore(YOUTUBE_MAX_CONCURRENT);
 
   constructor() {
     this.binariesDir = path.join(process.cwd(), 'bin');
@@ -61,6 +98,13 @@ export class YtdlpService implements OnModuleInit {
 
   private isYoutubeUrl(url: string): boolean {
     return /(^|\.)youtube\.com|youtu\.be/i.test(url);
+  }
+
+  private async youtubeThrottleDelay(): Promise<void> {
+    const ms =
+      YOUTUBE_DELAY_MIN_MS +
+      Math.random() * (YOUTUBE_DELAY_MAX_MS - YOUTUBE_DELAY_MIN_MS);
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   async onModuleInit() {
@@ -278,12 +322,17 @@ export class YtdlpService implements OnModuleInit {
   }
 
   async ytdlp(args: string[]): Promise<{ stdout: string; stderr: string }> {
+    const isYoutube = args.some((a) => this.isYoutubeUrl(a));
+    const releaseSlot = isYoutube ? await this.youtubeSemaphore.acquire() : null;
     try {
+      if (isYoutube) {
+        await this.youtubeThrottleDelay();
+      }
       const argsWithQuotes = this.addQuotesToCommand(args);
       if (this.hasCookies()) {
         argsWithQuotes.push('--cookies', this.cookiesFilePath);
       }
-      if (this.youtubeProxyUrl && args.some((a) => this.isYoutubeUrl(a))) {
+      if (this.youtubeProxyUrl && isYoutube) {
         argsWithQuotes.push('--proxy', this.youtubeProxyUrl);
       }
       console.log(argsWithQuotes);
@@ -291,6 +340,8 @@ export class YtdlpService implements OnModuleInit {
       return await execAsync(command);
     } catch (error) {
       throw new Error(`Failed to run yt-dlp command: ${error.message}`);
+    } finally {
+      releaseSlot?.();
     }
   }
 
@@ -390,7 +441,14 @@ export class YtdlpService implements OnModuleInit {
       processArgs.push('--cookies', this.cookiesFilePath);
     }
 
-    if (this.youtubeProxyUrl && platform === 'youtube') {
+    const isYoutube = platform === 'youtube';
+    let releaseYoutubeSlot: (() => void) | null = null;
+    if (isYoutube) {
+      releaseYoutubeSlot = await this.youtubeSemaphore.acquire();
+      await this.youtubeThrottleDelay();
+    }
+
+    if (this.youtubeProxyUrl && isYoutube) {
       processArgs.push('--proxy', this.youtubeProxyUrl);
     }
 
@@ -445,6 +503,7 @@ export class YtdlpService implements OnModuleInit {
     });
 
     childProcess.on('exit', (code) => {
+      releaseYoutubeSlot?.();
       if (code !== 0 && !hasError) {
         subject.error(
           new Error(errorMessage || `Process exited with code ${code}`),

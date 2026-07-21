@@ -20,6 +20,9 @@ interface Messages {
   invoiceTitle: (quality: string) => string;
   invoiceDescription: (quality: string, price: number) => string;
   invoiceLabel: (quality: string) => string;
+  invoiceTitleQuotaExceeded: string;
+  invoiceDescriptionQuotaExceeded: (price: number) => string;
+  invoiceLabelQuotaExceeded: string;
   paymentReceived: string;
   orderExpired: string;
   errorLoginRequired: string;
@@ -44,6 +47,10 @@ const ru: Messages = {
   invoiceTitle: (quality) => `HD-качество ${quality}`,
   invoiceDescription: (quality, price) => `Скачивание видео в качестве ${quality} за ${price} ⭐`,
   invoiceLabel: (quality) => `Видео ${quality}`,
+  invoiceTitleQuotaExceeded: "Дневной лимит исчерпан",
+  invoiceDescriptionQuotaExceeded: (price) =>
+    `Бесплатные скачивания на сегодня закончились — это скачивание за ${price} ⭐`,
+  invoiceLabelQuotaExceeded: "Скачивание сверх лимита",
   paymentReceived: "✅ Оплата получена, начинаю скачивание.",
   orderExpired: "Заказ устарел — пришли ссылку ещё раз",
   errorLoginRequired:
@@ -73,6 +80,10 @@ const en: Messages = {
   invoiceTitle: (quality) => `HD quality ${quality}`,
   invoiceDescription: (quality, price) => `Download the video in ${quality} for ${price} ⭐`,
   invoiceLabel: (quality) => `Video ${quality}`,
+  invoiceTitleQuotaExceeded: "Daily limit reached",
+  invoiceDescriptionQuotaExceeded: (price) =>
+    `You're out of free downloads for today — this one costs ${price} ⭐`,
+  invoiceLabelQuotaExceeded: "Download over the limit",
   paymentReceived: "✅ Payment received, starting download.",
   orderExpired: "Order expired — send the link again",
   errorLoginRequired:

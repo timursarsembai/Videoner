@@ -38,6 +38,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   ),
+  other: {
+    "yandex-verification": "mbweqd4nlv8bo5xq",
+  },
 };
 
 export const viewport: Viewport = {

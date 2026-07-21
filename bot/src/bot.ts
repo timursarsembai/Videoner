@@ -9,6 +9,10 @@ const API_KEY = process.env.API_KEY ?? "";
 // Если не задан — используется облачный api.telegram.org с лимитом 50 МБ.
 const BOT_API_ROOT = process.env.BOT_API_ROOT || undefined;
 const CLOUD_SIZE_LIMIT = 48 * 1024 * 1024;
+// Кому разрешены /grant и /revoke — свой Telegram ID узнать можно у @userinfobot.
+const ADMIN_TELEGRAM_ID = process.env.ADMIN_TELEGRAM_ID
+  ? Number(process.env.ADMIN_TELEGRAM_ID)
+  : undefined;
 
 // HD (720p и выше) отдаём за Telegram Stars, качество до 480p включительно — бесплатно.
 const PAID_QUALITY_MIN_HEIGHT = 720;
@@ -38,6 +42,20 @@ function isPaidQuality(kind: string, quality: string): boolean {
   if (kind !== "v") return false;
   const height = parseInt(quality, 10);
   return Number.isFinite(height) && height >= PAID_QUALITY_MIN_HEIGHT;
+}
+
+// 10 бесплатных скачиваний в сутки на пользователя (см. DAILY_FREE_DOWNLOAD_LIMIT на сервере) —
+// сверх лимита действует та же оплата Stars, что и для HD. Падает открыто (не блокирует
+// скачивание, remaining = Infinity), если сервер недоступен, чтобы сбой проверки лимита не
+// клал бота. unlimited (выдаётся через /grant) снимает и лимит, и оплату HD целиком.
+async function getQuotaInfo(telegramId?: number): Promise<{ remaining: number; unlimited: boolean }> {
+  if (!telegramId) return { remaining: Infinity, unlimited: false };
+  try {
+    return await api<{ remaining: number; unlimited: boolean }>(`/download/quota?telegramId=${telegramId}`);
+  } catch (e) {
+    console.error("Quota check failed:", e);
+    return { remaining: Infinity, unlimited: false };
+  }
 }
 
 async function api<T = any>(path: string, body?: unknown): Promise<T> {
@@ -93,6 +111,35 @@ function friendlyError(raw: string, lang: Lang): string {
 
 bot.command("start", (ctx) => ctx.reply(messages[detectLang(ctx.from?.language_code)].start));
 
+async function setUnlimitedFromCommand(ctx: any, isUnlimited: boolean) {
+  if (!ADMIN_TELEGRAM_ID || ctx.from?.id !== ADMIN_TELEGRAM_ID) return;
+
+  const arg = (ctx.match as string)?.trim();
+  if (!arg) {
+    await ctx.reply("Использование: /grant @username или /grant 123456789 (Telegram ID)");
+    return;
+  }
+
+  const telegramId = /^\d+$/.test(arg) ? Number(arg) : undefined;
+  const username = telegramId ? undefined : arg.replace(/^@/, "");
+
+  try {
+    const result = await api<{ telegramId: string; username: string | null }>(
+      "/analytics/bot-users/grant",
+      { telegramId, username, isUnlimited },
+    );
+    const label = result.username ? `@${result.username}` : result.telegramId;
+    await ctx.reply(isUnlimited ? `Безлимитный доступ выдан: ${label}` : `Безлимитный доступ отозван: ${label}`);
+  } catch (e: any) {
+    await ctx.reply(`Ошибка: ${e.message}`);
+  }
+}
+
+// Доступны только ADMIN_TELEGRAM_ID. Пользователь должен хотя бы раз написать боту
+// (иначе для него ещё нет записи BotUser, к которой можно привязать флаг).
+bot.command("grant", (ctx) => setUnlimitedFromCommand(ctx, true));
+bot.command("revoke", (ctx) => setUnlimitedFromCommand(ctx, false));
+
 bot.on("message:text", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
   const m = messages[lang];
@@ -117,9 +164,10 @@ bot.on("message:text", async (ctx) => {
 
     sessions.set(ctx.chat.id, { url });
 
+    const quota = await getQuotaInfo(ctx.from?.id);
     const kb = new InlineKeyboard();
     for (const q of (info.qualities.video ?? []).slice(0, 6)) {
-      const label = isPaidQuality("v", q) ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
+      const label = isPaidQuality("v", q) && !quota.unlimited ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
       kb.text(label, `v|${q}`).row();
     }
     kb.text(m.audioOnlyButton, "a|128Kbps");
@@ -214,16 +262,17 @@ bot.on("callback_query:data", async (ctx) => {
   const extension = kind === "v" ? "mp4" : "mp3";
   await ctx.answerCallbackQuery();
 
-  if (isPaidQuality(kind, quality)) {
+  const quota = await getQuotaInfo(ctx.from?.id);
+  const isHdQuality = isPaidQuality(kind, quality);
+  const requiresPayment = !quota.unlimited && (isHdQuality || quota.remaining <= 0);
+
+  if (requiresPayment) {
     const id = crypto.randomUUID();
     pendingPayments.set(id, { chatId, url: session.url, kind, quality, extension });
-    await ctx.replyWithInvoice(
-      m.invoiceTitle(quality),
-      m.invoiceDescription(quality, STARS_PRICE),
-      id,
-      "XTR",
-      [{ label: m.invoiceLabel(quality), amount: STARS_PRICE }],
-    );
+    const [title, description, label] = isHdQuality
+      ? [m.invoiceTitle(quality), m.invoiceDescription(quality, STARS_PRICE), m.invoiceLabel(quality)]
+      : [m.invoiceTitleQuotaExceeded, m.invoiceDescriptionQuotaExceeded(STARS_PRICE), m.invoiceLabelQuotaExceeded];
+    await ctx.replyWithInvoice(title, description, id, "XTR", [{ label, amount: STARS_PRICE }]);
     return;
   }
 

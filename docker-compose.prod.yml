@@ -86,6 +86,8 @@ services:
       API_KEY: ${API_KEY}
       # Локальный Bot API сервер — лимит файлов 2 ГБ
       BOT_API_ROOT: http://telegram-bot-api:8081
+      # Кому доступны /grant и /revoke (свой Telegram ID — у @userinfobot)
+      ADMIN_TELEGRAM_ID: ${ADMIN_TELEGRAM_ID}
     depends_on: [server, telegram-bot-api]
     networks: [internal]
 

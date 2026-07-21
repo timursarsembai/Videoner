@@ -24,6 +24,7 @@ import { YtdlpService } from '../ytdlp/ytdlp.service';
 import { getFileName } from 'src/lib/utils';
 import { BotUserService } from '../analytics/bot-user.service';
 import { categorizeError } from 'src/lib/error-category';
+import { DAILY_FREE_DOWNLOAD_LIMIT } from 'src/lib/config';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -185,6 +186,21 @@ export class DownloadService {
       languageCode: meta.telegramLanguageCode,
     });
     return botUser.id;
+  }
+
+  async getQuota(telegramId: number) {
+    const [unlimited, freeUsed] = await Promise.all([
+      this.botUser.isUnlimited(telegramId),
+      this.botUser.countFreeDownloadsToday(telegramId),
+    ]);
+    return {
+      unlimited,
+      freeUsed,
+      freeLimit: DAILY_FREE_DOWNLOAD_LIMIT,
+      remaining: unlimited
+        ? DAILY_FREE_DOWNLOAD_LIMIT
+        : Math.max(0, DAILY_FREE_DOWNLOAD_LIMIT - freeUsed),
+    };
   }
 
   async getDownloadStatus(downloadId: string) {

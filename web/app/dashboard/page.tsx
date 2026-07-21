@@ -32,6 +32,18 @@ const PLATFORM_COLORS: Record<string, string> = {
   TWITTER: "#0ea5e9",
 };
 
+const SOURCE_COLORS: Record<string, string> = {
+  BOT: "#0ea5e9",
+  WEB: "#22c55e",
+  API: "#9ca3af",
+};
+
+const SOURCE_LABELS: Record<string, string> = {
+  BOT: "Бот",
+  WEB: "Сайт",
+  API: "API",
+};
+
 const ERROR_COLORS: Record<string, string> = {
   LOGIN_REQUIRED: "#f59e0b",
   UNSUPPORTED_PLATFORM: "#6b7280",
@@ -172,7 +184,7 @@ export default function AnalyticsPage() {
 
   if (!snapshot) return null;
 
-  const { overview, platforms, activity, topUsers, errors } = snapshot;
+  const { overview, platforms, sources, activity, topUsers, errors } = snapshot;
   const timeseries = mergeTimeseries(snapshot);
 
   return (
@@ -273,6 +285,30 @@ export default function AnalyticsPage() {
                   ))}
                 </Pie>
                 <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+            <h2 className="mb-4 text-sm font-medium text-foreground/70">
+              Бот vs сайт
+            </h2>
+            <ResponsiveContainer width="100%" height={280}>
+              <PieChart>
+                <Pie
+                  data={sources}
+                  dataKey="count"
+                  nameKey="source"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  label={(entry) => `${SOURCE_LABELS[entry.source] ?? entry.source}: ${entry.count}`}
+                >
+                  {sources.map((s) => (
+                    <Cell key={s.source} fill={SOURCE_COLORS[s.source] ?? "#9ca3af"} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value, _name, props) => [value, SOURCE_LABELS[props.payload.source] ?? props.payload.source]} />
               </PieChart>
             </ResponsiveContainer>
           </div>

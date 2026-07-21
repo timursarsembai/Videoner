@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  Query,
   Res,
   Headers,
   HttpStatus,
@@ -37,6 +38,14 @@ import { ValidUrlGuard } from '../auth/platform.guard';
 @Controller('download')
 export class DownloadController {
   constructor(private readonly downloadService: DownloadService) {}
+
+  @Get('quota')
+  @ApiOperation({
+    summary: 'Get remaining free downloads for a Telegram user today',
+  })
+  async getQuota(@Query('telegramId') telegramId: string) {
+    return this.downloadService.getQuota(Number(telegramId));
+  }
 
   @Public()
   @Get(':filename')

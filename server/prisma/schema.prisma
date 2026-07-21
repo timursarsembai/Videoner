@@ -72,6 +72,7 @@ model BotUser {
   username     String?
   firstName    String?
   languageCode String?
+  isUnlimited  Boolean    @default(false)
   downloads    Download[]
   firstSeenAt  DateTime   @default(now())
   lastSeenAt   DateTime   @default(now())

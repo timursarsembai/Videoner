@@ -67,6 +67,7 @@ class ApiClient {
           url,
           quality,
           extension,
+          source: "WEB",
         }
       );
       return response.data;
@@ -87,6 +88,7 @@ class ApiClient {
           url,
           quality,
           extension,
+          source: "WEB",
         }
       );
       return response.data;

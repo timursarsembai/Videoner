@@ -21,6 +21,11 @@ export interface PlatformDatum {
   count: number;
 }
 
+export interface SourceDatum {
+  source: string;
+  count: number;
+}
+
 export interface TimeseriesPoint {
   day: string;
   count: number;
@@ -57,6 +62,7 @@ export interface ErrorDatum {
 export interface AnalyticsSnapshot {
   overview: OverviewData;
   platforms: PlatformDatum[];
+  sources: SourceDatum[];
   timeseries: TimeseriesData;
   activity: ActivityData;
   topUsers: TopUser[];
@@ -81,15 +87,16 @@ async function get<T>(path: string, apiKey: string): Promise<T> {
 export async function fetchAnalyticsSnapshot(
   apiKey: string
 ): Promise<AnalyticsSnapshot> {
-  const [overview, platforms, timeseries, activity, topUsers, errors] =
+  const [overview, platforms, sources, timeseries, activity, topUsers, errors] =
     await Promise.all([
       get<OverviewData>("/overview", apiKey),
       get<PlatformDatum[]>("/platforms", apiKey),
+      get<SourceDatum[]>("/sources", apiKey),
       get<TimeseriesData>("/timeseries?days=30", apiKey),
       get<ActivityData>("/users/activity", apiKey),
       get<TopUser[]>("/users/top?limit=20", apiKey),
       get<ErrorDatum[]>("/errors", apiKey),
     ]);
 
-  return { overview, platforms, timeseries, activity, topUsers, errors };
+  return { overview, platforms, sources, timeseries, activity, topUsers, errors };
 }

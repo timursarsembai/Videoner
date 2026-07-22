@@ -52,7 +52,7 @@ export function Navbar() {
             />
           </button>
           <div className="absolute left-0 top-full hidden w-[380px] pt-2 group-hover:block">
-            <div className="rounded-lg border bg-background p-3 shadow-lg backdrop-blur-sm">
+            <div className="max-h-[75vh] overflow-y-auto rounded-lg border bg-background p-3 shadow-lg backdrop-blur-sm">
               <div className="grid gap-2">
                 {item.subMenu.map((subItem) => (
                   <Link

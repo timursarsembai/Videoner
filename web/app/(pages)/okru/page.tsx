@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download OK.ru Videos",
     description:
       "Download OK.ru (Odnoklassniki) videos in high quality formats. Fast, free, and easy to use.",
-    url: "https://www.vidyoza.com/okru",
+    url: "https://videoner.download/okru",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download OK.ru (Odnoklassniki) videos in high quality formats. Fast, free, and easy to use.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/okru",
+    canonical: "https://videoner.download/okru",
   },
 };
 

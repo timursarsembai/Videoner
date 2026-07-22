@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download Twitter Videos",
     description:
       "Download Twitter videos and clips in high quality formats. Fast, free, and easy to use. Support for tweets, spaces, and fleets.",
-    url: "https://www.vidyoza.com/twitter",
+    url: "https://videoner.download/twitter",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download Twitter videos and clips in high quality formats. Fast, free, and easy to use. Support for tweets, spaces, and fleets.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/twitter",
+    canonical: "https://videoner.download/twitter",
   },
 };
 

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download Rutube Videos",
     description:
       "Download Rutube videos in high quality formats. Fast, free, and easy to use.",
-    url: "https://www.vidyoza.com/rutube",
+    url: "https://videoner.download/rutube",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download Rutube videos in high quality formats. Fast, free, and easy to use.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/rutube",
+    canonical: "https://videoner.download/rutube",
   },
 };
 

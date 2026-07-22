@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download Facebook Videos",
     description:
       "Download Facebook videos in high quality formats. Fast, free, and easy to use. Support for 8K, 4K, HD quality and MP3 audio.",
-    url: "https://www.vidyoza.com/facebook",
+    url: "https://videoner.download/facebook",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download Facebook videos in high quality formats. Fast, free, and easy to use. Support for 8K, 4K, HD quality and MP3 audio.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/facebook",
+    canonical: "https://videoner.download/facebook",
   },
 };
 

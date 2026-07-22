@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download Youtube Videos & Shorts",
     description:
       "Download YouTube videos, Shorts, and audio in high quality formats. Fast, free, and easy to use. Support for 8K, 4K, HD quality and MP3 audio.",
-    url: "https://www.vidyoza.com/youtube",
+    url: "https://videoner.download/youtube",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download YouTube videos, Shorts, and audio in high quality formats. Fast, free, and easy to use. Support for 8K, 4K, HD quality and MP3 audio.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/youtube",
+    canonical: "https://videoner.download/youtube",
   },
 };
 

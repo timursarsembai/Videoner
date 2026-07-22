@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download TikTok Videos",
     description:
       "Download TikTok videos without watermark in high quality formats. Fast, free, and easy to use. Support for all TikTok content types.",
-    url: "https://www.vidyoza.com/tiktok",
+    url: "https://videoner.download/tiktok",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download TikTok videos without watermark in high quality formats. Fast, free, and easy to use. Support for all TikTok content types.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/tiktok",
+    canonical: "https://videoner.download/tiktok",
   },
 };
 

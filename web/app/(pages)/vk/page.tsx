@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download VK Videos & Clips",
     description:
       "Download VK videos and clips in high quality formats. Fast, free, and easy to use.",
-    url: "https://www.vidyoza.com/vk",
+    url: "https://videoner.download/vk",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download VK videos and clips in high quality formats. Fast, free, and easy to use.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/vk",
+    canonical: "https://videoner.download/vk",
   },
 };
 

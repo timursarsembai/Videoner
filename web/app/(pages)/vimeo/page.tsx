@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download Vimeo Videos",
     description:
       "Download Vimeo videos in high quality formats. Fast, free, and easy to use.",
-    url: "https://www.vidyoza.com/vimeo",
+    url: "https://videoner.download/vimeo",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download Vimeo videos in high quality formats. Fast, free, and easy to use.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/vimeo",
+    canonical: "https://videoner.download/vimeo",
   },
 };
 

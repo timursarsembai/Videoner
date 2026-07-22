@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Videoner - Universal Video Downloader",
     description:
       "Download videos and audio from all popular platforms, including YouTube, Facebook, Instagram, TikTok, and Twitter. Videoner supports multiple formats and resolutions.",
-    url: "https://www.vidyoza.com",
+    url: "https://videoner.download",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",

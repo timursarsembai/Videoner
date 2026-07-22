@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Videoner - Download Instagram Videos & Reels",
     description:
       "Download Instagram videos, reels, and stories in high quality formats. Fast, free, and easy to use. Support for posts, stories, and IGTV.",
-    url: "https://www.vidyoza.com/instagram",
+    url: "https://videoner.download/instagram",
     siteName: "Videoner",
     locale: "en_US",
     type: "website",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
       "Download Instagram videos, reels, and stories in high quality formats. Fast, free, and easy to use. Support for posts, stories, and IGTV.",
   },
   alternates: {
-    canonical: "https://www.vidyoza.com/instagram",
+    canonical: "https://videoner.download/instagram",
   },
 };
 

@@ -41,23 +41,29 @@ export function UserMenu() {
   };
 
   useEffect(() => {
-    // Telegram возвращает пользователя редиректом на return_to с подписанными
-    // полями в query-параметрах (см. TelegramLoginWidget.tsx) — если они есть,
-    // это только что завершённый вход, а не обычный заход на страницу.
-    const params = new URLSearchParams(window.location.search);
-    const hash = params.get("hash");
-    const id = params.get("id");
-    if (hash && id) {
-      window.history.replaceState(null, "", window.location.pathname);
-      handleAuth({
-        id: Number(id),
-        first_name: params.get("first_name") ?? "",
-        last_name: params.get("last_name") ?? undefined,
-        username: params.get("username") ?? undefined,
-        photo_url: params.get("photo_url") ?? undefined,
-        auth_date: Number(params.get("auth_date")),
-        hash,
-      });
+    // Telegram возвращает результат на return_to не query-параметрами, а
+    // фрагментом URL: #tgAuthResult=<base64(JSON)> — сам объект (id, hash, ...)
+    // при успехе, либо буквально base64("false") при отмене/повторном запросе
+    // (см. TelegramLoginWidget.tsx).
+    const rawHash = window.location.hash;
+    if (rawHash.startsWith("#tgAuthResult=")) {
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
+      const encoded = rawHash.slice("#tgAuthResult=".length);
+      try {
+        const padded = encoded + "=".repeat((4 - (encoded.length % 4)) % 4);
+        const decoded = JSON.parse(atob(padded));
+        if (decoded && typeof decoded === "object" && decoded.hash) {
+          handleAuth(decoded as TelegramAuthUser);
+          return;
+        }
+      } catch (error) {
+        console.error("Failed to parse Telegram auth result:", error);
+      }
+      setUser(null);
       return;
     }
 

@@ -44,6 +44,14 @@ const en = {
     howToTitle: "How to Download {platform} Videos",
     faqTitle: "Frequently Asked Questions",
   },
+  auth: {
+    loginButton: "Log in with Telegram",
+    subscribedUntil: "Subscribed until {date}",
+    subscribed: "Subscription active",
+    notSubscribed: "No active subscription",
+    subscribeButton: "Subscribe via Telegram",
+    logout: "Log out",
+  },
   home: {
     new: "New",
     manyFeatures: "Many new features",
@@ -330,6 +338,14 @@ const es: Translations = {
     howToTitle: "Cómo descargar videos de {platform}",
     faqTitle: "Preguntas frecuentes",
   },
+  auth: {
+    loginButton: "Iniciar sesión con Telegram",
+    subscribedUntil: "Suscripción activa hasta {date}",
+    subscribed: "Suscripción activa",
+    notSubscribed: "Sin suscripción activa",
+    subscribeButton: "Suscribirse vía Telegram",
+    logout: "Cerrar sesión",
+  },
   home: {
     new: "Nuevo",
     manyFeatures: "Muchas funciones nuevas",
@@ -613,6 +629,14 @@ const ru: Translations = {
   content: {
     howToTitle: "Как скачать видео с {platform}",
     faqTitle: "Часто задаваемые вопросы",
+  },
+  auth: {
+    loginButton: "Войти через Telegram",
+    subscribedUntil: "Подписка активна до {date}",
+    subscribed: "Подписка активна",
+    notSubscribed: "Нет активной подписки",
+    subscribeButton: "Оформить подписку в Telegram",
+    logout: "Выйти",
   },
   home: {
     new: "Новое",

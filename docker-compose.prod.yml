@@ -98,6 +98,7 @@ services:
         NEXT_PUBLIC_APP_URL: https://${PUBLIC_DOMAIN}
         NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
         NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+        NEXT_PUBLIC_TELEGRAM_BOT_USERNAME: ${NEXT_PUBLIC_TELEGRAM_BOT_USERNAME}
     container_name: videoner-web
     restart: unless-stopped
     environment:
@@ -110,6 +111,8 @@ services:
       # Cloudflare Turnstile: секрет нужен только серверному прокси (route.ts),
       # проверяющему токен через siteverify до похода в NestJS API.
       TURNSTILE_SECRET: ${TURNSTILE_SECRET}
+      # Подпись сессионных JWT для входа через Telegram Login Widget
+      SESSION_SECRET: ${SESSION_SECRET}
     depends_on: [server]
     networks: [internal, proxy]
 

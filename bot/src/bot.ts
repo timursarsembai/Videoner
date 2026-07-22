@@ -175,7 +175,21 @@ function friendlyError(raw: string, lang: Lang): string {
   return raw;
 }
 
-bot.command("start", (ctx) => ctx.reply(messages[detectLang(ctx.from?.language_code)].start));
+// Диплинк с сайта (t.me/Bot?start=subscribe, кнопка в UserMenu на videoner.download)
+// сразу открывает подписку — без этого пользователь бы попал на обычный /start
+// и должен был бы ещё сам вспомнить/найти команду /subscribe.
+bot.command("start", async (ctx) => {
+  const lang = detectLang(ctx.from?.language_code);
+  const m = messages[lang];
+
+  if (ctx.match === "subscribe") {
+    const kb = addSubscriptionButtons(new InlineKeyboard(), m);
+    await ctx.reply(m.subscriptionPitch, { reply_markup: kb });
+    return;
+  }
+
+  await ctx.reply(m.start);
+});
 
 async function setUnlimitedFromCommand(ctx: any, isUnlimited: boolean) {
   if (!ADMIN_TELEGRAM_ID || ctx.from?.id !== ADMIN_TELEGRAM_ID) return;

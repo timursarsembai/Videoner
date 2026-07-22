@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { LanguageToggle } from "../ui/language-toggle";
 import { ModeToggle } from "../ui/theme-toggle";
+import { UserMenu } from "./UserMenu";
 import type { TranslationKey } from "@/lib/i18n/context";
 
 export function Navbar() {
@@ -263,10 +264,9 @@ export function Navbar() {
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
+            <UserMenu />
             <LanguageToggle />
             <ModeToggle />
-            {/* <Button variant="ghost">Login</Button>
-            <Button className=" bg-primary px-6">Sign Up</Button> */}
           </div>
 
           {/* Mobile Menu Button */}
@@ -328,6 +328,9 @@ export function Navbar() {
                 </div>
 
                 <div className="flex flex-col gap-3 pt-6">
+                  <div className="flex justify-center">
+                    <UserMenu />
+                  </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-foreground/60">
                       {t("nav.language")}
@@ -340,12 +343,6 @@ export function Navbar() {
                     </span>
                     <ModeToggle />
                   </div>
-                  {/* <Button variant="ghost" className="w-full justify-center">
-                    Login
-                  </Button>
-                  <Button className="w-full justify-center bg-primary">
-                    Sign Up
-                  </Button> */}
                 </div>
               </div>
             </motion.div>

@@ -5,7 +5,17 @@ import { DownloadStatus, SubscriptionKind } from '@prisma/client';
 export interface UpsertBotUserInput {
   telegramId: number;
   username?: string;
+  firstName?: string;
   languageCode?: string;
+}
+
+export interface SubscriptionStatus {
+  telegramId: string;
+  username: string | null;
+  firstName: string | null;
+  isUnlimited: boolean;
+  subscriptionUntil: Date | null;
+  subscriptionKind: SubscriptionKind | null;
 }
 
 @Injectable()
@@ -19,14 +29,37 @@ export class BotUserService {
       create: {
         telegramId,
         username: data.username,
+        firstName: data.firstName,
         languageCode: data.languageCode,
       },
       update: {
         username: data.username,
+        firstName: data.firstName,
         languageCode: data.languageCode,
         lastSeenAt: new Date(),
       },
     });
+  }
+
+  // Полный снимок статуса подписки — для входа на сайт через Telegram Login
+  // Widget (см. bot-user.controller.ts): в отличие от isUnlimited() ниже, тут
+  // нужны сырые даты для отображения ("активна до ..."), а не просто boolean.
+  async getSubscriptionStatus(telegramId: number): Promise<SubscriptionStatus | null> {
+    const botUser = await this.prisma.botUser.findUnique({
+      where: { telegramId: BigInt(telegramId) },
+    });
+    if (!botUser) return null;
+
+    return {
+      telegramId: botUser.telegramId.toString(),
+      username: botUser.username,
+      firstName: botUser.firstName,
+      isUnlimited:
+        botUser.isUnlimited ||
+        (botUser.subscriptionUntil != null && botUser.subscriptionUntil > new Date()),
+      subscriptionUntil: botUser.subscriptionUntil,
+      subscriptionKind: botUser.subscriptionKind,
+    };
   }
 
   // true и для ручного гранта (isUnlimited, без срока — см. /grant), и для

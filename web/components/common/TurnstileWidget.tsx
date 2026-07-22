@@ -17,11 +17,13 @@ declare global {
         }
       ) => string;
       reset: (widgetId?: string) => void;
+      remove: (widgetId?: string) => void;
     };
   }
 }
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js";
 
 interface TurnstileWidgetProps {
   onVerify: (token: string | null) => void;
@@ -33,31 +35,49 @@ interface TurnstileWidgetProps {
 // интеграции на стороне Cloudflare), значения токена это не меняет.
 export function TurnstileWidget({ onVerify }: TurnstileWidgetProps) {
   const containerId = useId().replace(/:/g, "");
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  // next/script вызывает onLoad ОДИН РАЗ на весь сайт (дедуп по src) — при
+  // клиентской навигации Next.js на другую страницу тег скрипта уже в DOM,
+  // и onLoad для нового смонтированного виджета больше никогда не сработает
+  // (баг, из-за которого виджет пропадал после первого показа). Вместо этого
+  // проверяем window.turnstile напрямую и, если скрипт ещё не готов, ждём поллингом.
+  useEffect(() => {
+    if (window.turnstile) {
+      setReady(true);
+      return;
+    }
+    const interval = setInterval(() => {
+      if (window.turnstile) {
+        setReady(true);
+        clearInterval(interval);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
-    if (!scriptLoaded || !SITE_KEY || !window.turnstile) return;
+    if (!ready || !SITE_KEY || !window.turnstile) return;
 
-    window.turnstile.render(`#${containerId}`, {
+    const widgetId = window.turnstile.render(`#${containerId}`, {
       sitekey: SITE_KEY,
       action: "turnstile-spin-v2",
       callback: (token) => onVerify(token),
       "expired-callback": () => onVerify(null),
       "error-callback": () => onVerify(null),
     });
+
+    return () => {
+      window.turnstile?.remove(widgetId);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scriptLoaded, containerId]);
+  }, [ready, containerId]);
 
   if (!SITE_KEY) return null;
 
   return (
     <>
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer
-        onLoad={() => setScriptLoaded(true)}
-      />
+      <Script src={SCRIPT_SRC} strategy="afterInteractive" />
       <div id={containerId} className="cf-turnstile" data-action="turnstile-spin-v2" />
     </>
   );

@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { join } from 'path';
+import { join, basename, resolve } from 'path';
 import * as fs from 'fs';
 import { createReadStream, statSync } from 'fs';
 import { PrismaService } from '../prisma/prisma.service';
@@ -64,11 +64,29 @@ export class DownloadService {
     return info;
   }
 
+  // filename приходит от клиента (публичный, без API-ключа) роутом — нельзя
+  // доверять ему напрямую: `../../../etc/passwd` и т.п. дают чтение произвольных
+  // файлов через path.join. basename() отбрасывает любые directory-компоненты,
+  // resolve()-проверка — второй рубеж на случай экзотичных обходов basename.
+  private resolveDownloadPath(filename: string): string {
+    const safeName = basename(filename);
+    const filePath = resolve(this.downloadPath, safeName);
+
+    if (
+      filePath !== this.downloadPath &&
+      !filePath.startsWith(this.downloadPath + '/')
+    ) {
+      throw new BadRequestException('Invalid filename');
+    }
+
+    return filePath;
+  }
+
   async getFile(
     filename: string,
     range?: string,
   ): Promise<{ stream: fs.ReadStream; headers: any }> {
-    const filePath = join(this.downloadPath, filename);
+    const filePath = this.resolveDownloadPath(filename);
 
     if (!fs.existsSync(filePath)) {
       throw new NotFoundException('File not found');
@@ -110,7 +128,7 @@ export class DownloadService {
   }
 
   async getFileMetadata(filename: string) {
-    const filePath = join(this.downloadPath, filename);
+    const filePath = this.resolveDownloadPath(filename);
 
     if (!fs.existsSync(filePath)) {
       throw new NotFoundException('File not found');

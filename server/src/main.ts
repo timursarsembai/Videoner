@@ -42,11 +42,15 @@ async function bootstrap() {
             .map((o) => o.trim())
             .filter(Boolean) || [];
 
-        // Always allow the main domain
-        allowedOrigins.push('vidyoza.com', 'www.vidyoza.com');
-
+        // endsWith() без проверки границы поддомена пропускал бы, например,
+        // "evilvideoner.download" как "заканчивающийся на" videoner.download —
+        // сверяем точное совпадение хоста или настоящий поддомен (через точку).
         if (
-          allowedOrigins.some((domain) => originUrl.hostname.endsWith(domain))
+          allowedOrigins.some(
+            (domain) =>
+              originUrl.hostname === domain ||
+              originUrl.hostname.endsWith(`.${domain}`),
+          )
         ) {
           callback(null, true);
         } else {

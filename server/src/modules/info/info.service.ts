@@ -14,6 +14,17 @@ import { AlertService } from '../alert/alert.service';
 import { BotUserService } from '../analytics/bot-user.service';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
 
+// Платформы, где cookies нужны только для приватного/залогиненного контента —
+// публичное видео и так скачивается анонимно, поэтому при признаках "нужен
+// логин" (протухшие cookies) имеет смысл фолбэк без cookies. YouTube сюда
+// не входит: там "Sign in to confirm you're not a bot" — это анти-бот защита
+// по IP дата-центра, а не про приватность конкретного видео, без cookies
+// с этого сервера не работает вообще ничего.
+const COOKIE_FALLBACK_PLATFORMS = ['instagram', 'facebook', 'vimeo'];
+
+const AUTH_REQUIRED_PATTERN =
+  /(login required|only works when logged-in|rate-limit reached|HTTP Error 401|Unauthorized)/i;
+
 @Injectable()
 export class InfoService {
   constructor(
@@ -38,7 +49,7 @@ export class InfoService {
     }
 
     try {
-      const info = await this.ytdlp.getYtdlpVideoInfo(url);
+      const info = await this.fetchInfoWithCookieFallback(url, platform);
       fs.writeFileSync('info.json', JSON.stringify(info, null, 2));
 
       const { allFormats, allExtensions } = this.getPlatformFormats(
@@ -68,6 +79,26 @@ export class InfoService {
     } catch (error) {
       const errorMessage = this.handleError(error, platform);
       throw new BadRequestException(errorMessage);
+    }
+  }
+
+  private async fetchInfoWithCookieFallback(url: string, platform: string) {
+    try {
+      return await this.ytdlp.getYtdlpVideoInfo(url);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (
+        !COOKIE_FALLBACK_PLATFORMS.includes(platform) ||
+        !AUTH_REQUIRED_PATTERN.test(message)
+      ) {
+        throw error;
+      }
+
+      // Cookies выглядят протухшими — уведомляем админа независимо от того,
+      // сработает ли фолбэк (публичный контент может скачаться и анонимно,
+      // но cookies всё равно пора переэкспортировать для приватного).
+      void this.alert.notifyCookiesExpired(platform, message);
+      return this.ytdlp.getYtdlpVideoInfo(url, { skipCookies: true });
     }
   }
 

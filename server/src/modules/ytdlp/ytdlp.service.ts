@@ -321,7 +321,10 @@ export class YtdlpService implements OnModuleInit {
     return outputStr ? outputStr : '%(title)s %(height)sp .%(ext)s';
   }
 
-  async ytdlp(args: string[]): Promise<{ stdout: string; stderr: string }> {
+  async ytdlp(
+    args: string[],
+    options?: { skipCookies?: boolean },
+  ): Promise<{ stdout: string; stderr: string }> {
     const isYoutube = args.some((a) => this.isYoutubeUrl(a));
     const releaseSlot = isYoutube ? await this.youtubeSemaphore.acquire() : null;
     try {
@@ -329,7 +332,7 @@ export class YtdlpService implements OnModuleInit {
         await this.youtubeThrottleDelay();
       }
       const argsWithQuotes = this.addQuotesToCommand(args);
-      if (this.hasCookies()) {
+      if (!options?.skipCookies && this.hasCookies()) {
         argsWithQuotes.push('--cookies', this.cookiesFilePath);
       }
       if (this.youtubeProxyUrl && isYoutube) {
@@ -377,9 +380,12 @@ export class YtdlpService implements OnModuleInit {
     }
   }
 
-  async getYtdlpVideoInfo(url: string): Promise<YtdlpVideoInfo> {
+  async getYtdlpVideoInfo(
+    url: string,
+    options?: { skipCookies?: boolean },
+  ): Promise<YtdlpVideoInfo> {
     const command = ['--dump-json', '--no-download', url];
-    return this.ytdlp(command).then((result) => {
+    return this.ytdlp(command, options).then((result) => {
       return JSON.parse(result.stdout);
     });
   }

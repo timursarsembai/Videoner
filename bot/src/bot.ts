@@ -206,13 +206,17 @@ async function setUnlimitedFromCommand(ctx: any, isUnlimited: boolean) {
 bot.command("grant", (ctx) => setUnlimitedFromCommand(ctx, true));
 bot.command("revoke", (ctx) => setUnlimitedFromCommand(ctx, false));
 
+// Общие кнопки тарифов — переиспользуются и в /subscribe, и как допродажа
+// прямо в результате /info (см. bot.on("message:text", ...) ниже), чтобы не
+// заставлять пользователя отдельно вспоминать команду /subscribe.
+function addSubscriptionButtons(kb: InlineKeyboard, m: (typeof messages)["ru"]): InlineKeyboard {
+  return kb.text(m.subscribeMonthlyButton, "sub|month").row().text(m.subscribeYearlyButton, "sub|year");
+}
+
 bot.command("subscribe", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
   const m = messages[lang];
-  const kb = new InlineKeyboard()
-    .text(m.subscribeMonthlyButton, "sub|month")
-    .row()
-    .text(m.subscribeYearlyButton, "sub|year");
+  const kb = addSubscriptionButtons(new InlineKeyboard(), m);
   await ctx.reply(m.subscribeIntro, { reply_markup: kb });
 });
 
@@ -292,10 +296,19 @@ bot.on("message:text", async (ctx) => {
       const label = isPaidQuality("v", q, videoQualities) && !quota.unlimited ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
       kb.text(label, `v|${q}`).row();
     }
-    kb.text(m.audioOnlyButton, "a|128Kbps");
+    kb.text(m.audioOnlyButton, "a|128Kbps").row();
 
+    // Допродажа подписки прямо в результате — не только по отдельной команде
+    // /subscribe. Не показываем тем, у кого и так безлимит (в т.ч. админу —
+    // getQuotaInfo() возвращает unlimited: true для него в коде, без похода в БД).
     const dur = fmtDuration(info.duration);
-    await ctx.api.editMessageText(ctx.chat.id, msg.message_id, m.chooseQuality(info.title, dur), {
+    let resultText = m.chooseQuality(info.title, dur);
+    if (!quota.unlimited) {
+      resultText += `\n\n${m.upsellText}`;
+      addSubscriptionButtons(kb, m);
+    }
+
+    await ctx.api.editMessageText(ctx.chat.id, msg.message_id, resultText, {
       reply_markup: kb,
     });
   } catch (e: any) {

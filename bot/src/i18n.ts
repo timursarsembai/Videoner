@@ -43,6 +43,7 @@ interface Messages {
   payButton: string;
   subscriptionActivated: (untilDate: string, isMonthly: boolean) => string;
   subscriptionActivationFailed: string;
+  upsellText: string;
 }
 
 const ru: Messages = {
@@ -100,6 +101,7 @@ const ru: Messages = {
       : "Она не продлится автоматически — за пару дней до конца я напомню оформить новую через /subscribe."),
   subscriptionActivationFailed:
     "✅ Оплата прошла, но не получилось сохранить статус подписки на сервере. Напиши админу — он включит вручную.",
+  upsellText: "🌟 Без лимитов и доплаты за HD:",
 };
 
 const en: Messages = {
@@ -157,6 +159,7 @@ const en: Messages = {
       : "It won't auto-renew — I'll remind you a few days before it ends to grab a new one via /subscribe."),
   subscriptionActivationFailed:
     "✅ Payment went through, but saving your subscription status failed. Message the admin — they'll enable it manually.",
+  upsellText: "🌟 No limits, no HD charge:",
 };
 
 export const messages: Record<Lang, Messages> = { ru, en };

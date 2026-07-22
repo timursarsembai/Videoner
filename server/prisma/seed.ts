@@ -27,7 +27,7 @@ async function main() {
           name: 'primary',
           userId: user.id,
           rateLimit: 1000,
-          maxDuration: 7200,
+          maxDuration: 14400, // 240 минут (4 часа)
         },
       });
       console.log('Admin user:', user.email);
@@ -50,7 +50,7 @@ async function main() {
         name: 'local-admin',
         userId: user.id,
         rateLimit: 1000,
-        maxDuration: 7200,
+        maxDuration: 14400, // 240 минут (4 часа)
       },
     });
   }

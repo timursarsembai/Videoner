@@ -187,6 +187,101 @@ export const isTwitterUrl = (url: string) => {
   }
 };
 
+export const isVimeoUrl = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    const hostname = urlObj.hostname.toLowerCase();
+
+    // Handle all Vimeo domains
+    const validDomains = ["vimeo.com", "www.vimeo.com", "player.vimeo.com"];
+
+    if (!validDomains.includes(hostname)) {
+      return false;
+    }
+
+    const path = urlObj.pathname.toLowerCase();
+
+    // player.vimeo.com/video/123456789
+    if (hostname === "player.vimeo.com") {
+      return /^\/video\/\d+/.test(path);
+    }
+
+    // vimeo.com/123456789, vimeo.com/channels/x/123456789,
+    // vimeo.com/groups/x/videos/123456789
+    return /\/\d+(\/|$)/.test(path);
+  } catch {
+    return false;
+  }
+};
+
+export const isVkUrl = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    const hostname = urlObj.hostname.toLowerCase();
+
+    const validDomains = [
+      "vk.com",
+      "www.vk.com",
+      "m.vk.com",
+      "vk.ru",
+      "www.vk.ru",
+      "vkvideo.ru",
+      "www.vkvideo.ru",
+    ];
+
+    if (!validDomains.includes(hostname)) {
+      return false;
+    }
+
+    const path = urlObj.pathname.toLowerCase();
+
+    // vk.com/video-12345_67890, vk.com/clip12345_67890
+    return /^\/(video|clip)-?\d+_\d+/.test(path);
+  } catch {
+    return false;
+  }
+};
+
+export const isRutubeUrl = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    const hostname = urlObj.hostname.toLowerCase();
+
+    const validDomains = ["rutube.ru", "www.rutube.ru"];
+
+    if (!validDomains.includes(hostname)) {
+      return false;
+    }
+
+    const path = urlObj.pathname.toLowerCase();
+
+    // rutube.ru/video/<hash>/, rutube.ru/play/embed/<hash>, rutube.ru/shorts/<hash>/
+    return /^\/(video|play\/embed|shorts)\/[\w-]+/.test(path);
+  } catch {
+    return false;
+  }
+};
+
+export const isOkRuUrl = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    const hostname = urlObj.hostname.toLowerCase();
+
+    const validDomains = ["ok.ru", "www.ok.ru", "m.ok.ru"];
+
+    if (!validDomains.includes(hostname)) {
+      return false;
+    }
+
+    const path = urlObj.pathname.toLowerCase();
+
+    // ok.ru/video/1234567890, ok.ru/videoembed/1234567890
+    return /^\/video(embed)?\/\d+/.test(path);
+  } catch {
+    return false;
+  }
+};
+
 export const detectPlatform = (url: string): Platform | null => {
   if (!isValidUrl(url)) return null;
 

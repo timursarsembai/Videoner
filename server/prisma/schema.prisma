@@ -95,6 +95,10 @@ enum Downloaders {
   INSTAGRAM
   TIKTOK
   TWITTER
+  VIMEO
+  VK
+  RUTUBE
+  OKRU
 }
 
 enum DownloadSource {

@@ -1,4 +1,14 @@
-import { isFacebookUrl, isInstagramUrl, isTikTokUrl, isTwitterUrl, isYoutubeUrl } from "@/lib/validations/url";
+import {
+  isFacebookUrl,
+  isInstagramUrl,
+  isOkRuUrl,
+  isRutubeUrl,
+  isTikTokUrl,
+  isTwitterUrl,
+  isVimeoUrl,
+  isVkUrl,
+  isYoutubeUrl,
+} from "@/lib/validations/url";
 import { Downloader } from "@/types/nav";
 
 export const downloaders: Downloader[] = [
@@ -46,6 +56,42 @@ export const downloaders: Downloader[] = [
     logo: "/images/logos/x_logo.svg",
     isComingSoon: false,
     isUrlValid: isTwitterUrl,
+  },
+  {
+    name: "Vimeo",
+    value: "vimeo",
+    href: "/vimeo",
+    description: "Download videos from Vimeo in high quality",
+    logo: "/images/logos/vimeo.svg",
+    isComingSoon: false,
+    isUrlValid: isVimeoUrl,
+  },
+  {
+    name: "VK",
+    value: "vk",
+    href: "/vk",
+    description: "Download videos and clips from VK",
+    logo: "/images/logos/vk.svg",
+    isComingSoon: false,
+    isUrlValid: isVkUrl,
+  },
+  {
+    name: "Rutube",
+    value: "rutube",
+    href: "/rutube",
+    description: "Download videos from Rutube",
+    logo: "/images/logos/rutube.svg",
+    isComingSoon: false,
+    isUrlValid: isRutubeUrl,
+  },
+  {
+    name: "OK.ru",
+    value: "okru",
+    href: "/okru",
+    description: "Download videos from OK.ru (Odnoklassniki)",
+    logo: "/images/logos/OK.svg",
+    isComingSoon: false,
+    isUrlValid: isOkRuUrl,
   },
 ];
 

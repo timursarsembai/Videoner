@@ -31,7 +31,7 @@ interface Messages {
 }
 
 const ru: Messages = {
-  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook или Twitter/X — я помогу его скачать.",
+  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube или OK.ru — я помогу его скачать.",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
   fetchingInfo: "🔍 Получаю информацию о видео...",
   audioOnlyButton: "🎵 Только аудио (mp3)",
@@ -59,12 +59,12 @@ const ru: Messages = {
     "Владельцу бота нужно настроить cookies.txt на сервере, чтобы он заходил под " +
     "авторизованной сессией (см. README проекта, раздел «Cookies для Instagram/Facebook»).",
   errorUnsupportedPlatform:
-    "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook или Twitter/X.",
+    "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube или OK.ru.",
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
 };
 
 const en: Messages = {
-  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, or Twitter/X — I'll help you download it.",
+  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, or OK.ru — I'll help you download it.",
   notLink: "That doesn't look like a link. Send me a video link.",
   fetchingInfo: "🔍 Fetching video info...",
   audioOnlyButton: "🎵 Audio only (mp3)",
@@ -92,7 +92,7 @@ const en: Messages = {
     "The bot owner needs to set up cookies.txt on the server so it can browse with an " +
     "authenticated session (see the project README, \"Cookies for Instagram/Facebook\" section).",
   errorUnsupportedPlatform:
-    "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, or Twitter/X.",
+    "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, or OK.ru.",
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
 };
 

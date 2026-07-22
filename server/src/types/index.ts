@@ -139,4 +139,8 @@ export type Platform =
   | 'instagram'
   | 'tiktok'
   | 'youtube'
-  | 'twitter';
+  | 'twitter'
+  | 'vimeo'
+  | 'vk'
+  | 'rutube'
+  | 'okru';

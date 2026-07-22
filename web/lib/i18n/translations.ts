@@ -120,6 +120,42 @@ const en = {
         "Download Twitter videos in high quality. Fast, free, and easy to use.",
       placeholder: "Paste Twitter URL here...",
     },
+    vimeo: {
+      description: "Download videos from Vimeo in high quality",
+      news: "Now with Vimeo support",
+      titleLine1: "Download Vimeo",
+      titleLine2: "Videos",
+      pageDescription:
+        "Download Vimeo videos in high quality. Fast, free, and easy to use.",
+      placeholder: "Paste Vimeo URL here...",
+    },
+    vk: {
+      description: "Download videos and clips from VK",
+      news: "Now with VK support",
+      titleLine1: "Download VK",
+      titleLine2: "Videos & Clips",
+      pageDescription:
+        "Download VK videos and clips in high quality. Fast, free, and easy to use.",
+      placeholder: "Paste VK URL here...",
+    },
+    rutube: {
+      description: "Download videos from Rutube",
+      news: "Now with Rutube support",
+      titleLine1: "Download Rutube",
+      titleLine2: "Videos",
+      pageDescription:
+        "Download Rutube videos in high quality. Fast, free, and easy to use.",
+      placeholder: "Paste Rutube URL here...",
+    },
+    okru: {
+      description: "Download videos from OK.ru (Odnoklassniki)",
+      news: "Now with OK.ru support",
+      titleLine1: "Download OK.ru",
+      titleLine2: "Videos",
+      pageDescription:
+        "Download OK.ru (Odnoklassniki) videos in high quality. Fast, free, and easy to use.",
+      placeholder: "Paste OK.ru URL here...",
+    },
   } satisfies Record<Platform, PlatformStrings>,
 };
 
@@ -225,6 +261,42 @@ const es: Translations = {
         "Descarga videos de Twitter en alta calidad. Rápido, gratis y fácil de usar.",
       placeholder: "Pega la URL de Twitter aquí...",
     },
+    vimeo: {
+      description: "Descarga videos de Vimeo en alta calidad",
+      news: "Ahora con soporte para Vimeo",
+      titleLine1: "Descarga Vimeo",
+      titleLine2: "Videos",
+      pageDescription:
+        "Descarga videos de Vimeo en alta calidad. Rápido, gratis y fácil de usar.",
+      placeholder: "Pega la URL de Vimeo aquí...",
+    },
+    vk: {
+      description: "Descarga videos y clips de VK",
+      news: "Ahora con soporte para VK",
+      titleLine1: "Descarga VK",
+      titleLine2: "Videos y Clips",
+      pageDescription:
+        "Descarga videos y clips de VK en alta calidad. Rápido, gratis y fácil de usar.",
+      placeholder: "Pega la URL de VK aquí...",
+    },
+    rutube: {
+      description: "Descarga videos de Rutube",
+      news: "Ahora con soporte para Rutube",
+      titleLine1: "Descarga Rutube",
+      titleLine2: "Videos",
+      pageDescription:
+        "Descarga videos de Rutube en alta calidad. Rápido, gratis y fácil de usar.",
+      placeholder: "Pega la URL de Rutube aquí...",
+    },
+    okru: {
+      description: "Descarga videos de OK.ru (Odnoklassniki)",
+      news: "Ahora con soporte para OK.ru",
+      titleLine1: "Descarga OK.ru",
+      titleLine2: "Videos",
+      pageDescription:
+        "Descarga videos de OK.ru (Odnoklassniki) en alta calidad. Rápido, gratis y fácil de usar.",
+      placeholder: "Pega la URL de OK.ru aquí...",
+    },
   },
 };
 
@@ -327,6 +399,42 @@ const ru: Translations = {
       pageDescription:
         "Скачивайте видео из Twitter в высоком качестве. Быстро, бесплатно и просто.",
       placeholder: "Вставьте ссылку Twitter сюда...",
+    },
+    vimeo: {
+      description: "Скачивайте видео с Vimeo в высоком качестве",
+      news: "Теперь с поддержкой Vimeo",
+      titleLine1: "Скачать с Vimeo",
+      titleLine2: "Видео",
+      pageDescription:
+        "Скачивайте видео с Vimeo в высоком качестве. Быстро, бесплатно и просто.",
+      placeholder: "Вставьте ссылку Vimeo сюда...",
+    },
+    vk: {
+      description: "Скачивайте видео и клипы из VK",
+      news: "Теперь с поддержкой VK",
+      titleLine1: "Скачать с VK",
+      titleLine2: "Видео и клипы",
+      pageDescription:
+        "Скачивайте видео и клипы из VK в высоком качестве. Быстро, бесплатно и просто.",
+      placeholder: "Вставьте ссылку VK сюда...",
+    },
+    rutube: {
+      description: "Скачивайте видео с Rutube",
+      news: "Теперь с поддержкой Rutube",
+      titleLine1: "Скачать с Rutube",
+      titleLine2: "Видео",
+      pageDescription:
+        "Скачивайте видео с Rutube в высоком качестве. Быстро, бесплатно и просто.",
+      placeholder: "Вставьте ссылку Rutube сюда...",
+    },
+    okru: {
+      description: "Скачивайте видео из OK.ru (Одноклассники)",
+      news: "Теперь с поддержкой OK.ru",
+      titleLine1: "Скачать с OK.ru",
+      titleLine2: "Видео",
+      pageDescription:
+        "Скачивайте видео из OK.ru (Одноклассники) в высоком качестве. Быстро, бесплатно и просто.",
+      placeholder: "Вставьте ссылку OK.ru сюда...",
     },
   },
 };

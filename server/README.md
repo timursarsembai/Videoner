@@ -1,6 +1,6 @@
 # Video Downloader API
 
-A powerful and secure API service built with NestJS for downloading videos from various social media platforms including YouTube, Facebook, Instagram, TikTok, and Twitter.
+A powerful and secure API service built with NestJS for downloading videos from various social media platforms including YouTube, Facebook, Instagram, TikTok, Twitter, Vimeo, VK, Rutube, and OK.ru.
 
 ## Features
 

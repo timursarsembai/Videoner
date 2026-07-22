@@ -1,6 +1,6 @@
 # Video Downloader — веб + Telegram-бот
 
-Скачивание видео с YouTube, TikTok, Instagram, Facebook, Twitter/X.
+Скачивание видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru.
 Основано на [social-media-video-downloader-api](https://github.com/fabwaseem/social-media-video-downloader-api) (NestJS + yt-dlp).
 
 ## Состав

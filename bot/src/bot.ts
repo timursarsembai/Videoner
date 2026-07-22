@@ -15,6 +15,7 @@ const ADMIN_TELEGRAM_ID = process.env.ADMIN_TELEGRAM_ID
   : undefined;
 
 // HD (720p и выше) отдаём за Telegram Stars, качество до 480p включительно — бесплатно.
+// Исключение: если у видео нет вариантов ниже 720p вообще, 720p тоже бесплатен (см. isPaidQuality).
 const PAID_QUALITY_MIN_HEIGHT = 720;
 const STARS_PRICE = 15;
 
@@ -30,18 +31,32 @@ if (!API_KEY) {
 const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT } } : undefined);
 
 // Последняя присланная ссылка на чат — callback_data в Telegram ограничена 64 байтами,
-// поэтому URL храним здесь, а в кнопке передаём только тип и качество.
-const sessions = new Map<number, { url: string }>();
+// поэтому URL храним здесь, а в кнопке передаём только тип и качество. videoQualities
+// нужен, чтобы в callback-обработчике знать, есть ли у видео варианты ниже 720p.
+const sessions = new Map<number, { url: string; videoQualities: string[] }>();
 
 // Ожидающие оплаты HD-скачивания — invoice_payload тоже ограничен, поэтому
 // сами данные (ссылка/качество) держим здесь, а в payload кладём только id.
 type PendingDownload = { chatId: number; url: string; kind: "v" | "a"; quality: string; extension: string };
 const pendingPayments = new Map<string, PendingDownload>();
 
-function isPaidQuality(kind: string, quality: string): boolean {
+// Если у видео вообще нет вариантов ниже 720p (площадка отдаёт 720p как минимум),
+// 720p — единственный разумный выбор пользователя, поэтому отдаём его бесплатно.
+// Если варианты ниже 720p есть, 720p остаётся платным, как и раньше.
+function isPaidQuality(kind: string, quality: string, availableQualities: string[] = []): boolean {
   if (kind !== "v") return false;
   const height = parseInt(quality, 10);
-  return Number.isFinite(height) && height >= PAID_QUALITY_MIN_HEIGHT;
+  if (!Number.isFinite(height) || height < PAID_QUALITY_MIN_HEIGHT) return false;
+
+  if (height === PAID_QUALITY_MIN_HEIGHT) {
+    const heights = availableQualities
+      .map((q) => parseInt(q, 10))
+      .filter((h) => Number.isFinite(h));
+    const minHeight = heights.length ? Math.min(...heights) : height;
+    if (minHeight >= PAID_QUALITY_MIN_HEIGHT) return false;
+  }
+
+  return true;
 }
 
 // 10 бесплатных скачиваний в сутки на пользователя (см. DAILY_FREE_DOWNLOAD_LIMIT на сервере) —
@@ -162,12 +177,13 @@ bot.on("message:text", async (ctx) => {
       telegramLanguageCode: ctx.from?.language_code,
     });
 
-    sessions.set(ctx.chat.id, { url });
+    const videoQualities = info.qualities.video ?? [];
+    sessions.set(ctx.chat.id, { url, videoQualities });
 
     const quota = await getQuotaInfo(ctx.from?.id);
     const kb = new InlineKeyboard();
-    for (const q of (info.qualities.video ?? []).slice(0, 6)) {
-      const label = isPaidQuality("v", q) && !quota.unlimited ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
+    for (const q of videoQualities.slice(0, 6)) {
+      const label = isPaidQuality("v", q, videoQualities) && !quota.unlimited ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
       kb.text(label, `v|${q}`).row();
     }
     kb.text(m.audioOnlyButton, "a|128Kbps");
@@ -263,7 +279,7 @@ bot.on("callback_query:data", async (ctx) => {
   await ctx.answerCallbackQuery();
 
   const quota = await getQuotaInfo(ctx.from?.id);
-  const isHdQuality = isPaidQuality(kind, quality);
+  const isHdQuality = isPaidQuality(kind, quality, session.videoQualities);
   const requiresPayment = !quota.unlimited && (isHdQuality || quota.remaining <= 0);
 
   if (requiresPayment) {

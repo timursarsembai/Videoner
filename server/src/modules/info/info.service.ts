@@ -20,7 +20,16 @@ import { GetVideoInfoDto } from './dto/get-video-info.dto';
 // не входит: там "Sign in to confirm you're not a bot" — это анти-бот защита
 // по IP дата-центра, а не про приватность конкретного видео, без cookies
 // с этого сервера не работает вообще ничего.
-const COOKIE_FALLBACK_PLATFORMS = ['instagram', 'facebook', 'vimeo'];
+const COOKIE_FALLBACK_PLATFORMS = [
+  'instagram',
+  'facebook',
+  'vimeo',
+  'tiktok',
+  'twitter',
+  'vk',
+  'rutube',
+  'okru',
+];
 
 const AUTH_REQUIRED_PATTERN =
   /(login required|only works when logged-in|rate-limit reached|HTTP Error 401|Unauthorized)/i;

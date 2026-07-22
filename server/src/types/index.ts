@@ -143,4 +143,5 @@ export type Platform =
   | 'vimeo'
   | 'vk'
   | 'rutube'
-  | 'okru';
+  | 'okru'
+  | 'pinterest';

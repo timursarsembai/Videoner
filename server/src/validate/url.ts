@@ -283,6 +283,30 @@ export const isOkRuUrl = (url: string) => {
   }
 };
 
+export const isPinterestUrl = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    const hostname = urlObj.hostname.toLowerCase();
+
+    // pin.it — короткие ссылки, ведут на конкретный пин без /pin/<id> в пути
+    if (hostname === 'pin.it') {
+      return urlObj.pathname.length > 1;
+    }
+
+    // pinterest.com и локализованные домены (pinterest.co.uk, pinterest.de, ...)
+    if (!/^(www\.)?pinterest\.[a-z.]{2,}$/.test(hostname)) {
+      return false;
+    }
+
+    const path = urlObj.pathname.toLowerCase();
+
+    // pinterest.com/pin/1234567890/
+    return /^\/pin\/\d+/.test(path);
+  } catch {
+    return false;
+  }
+};
+
 export const getPlatform = (url: string) => {
   if (isYoutubeUrl(url)) return 'youtube';
   if (isFacebookUrl(url)) return 'facebook';
@@ -293,5 +317,6 @@ export const getPlatform = (url: string) => {
   if (isVkUrl(url)) return 'vk';
   if (isRutubeUrl(url)) return 'rutube';
   if (isOkRuUrl(url)) return 'okru';
+  if (isPinterestUrl(url)) return 'pinterest';
   return null;
 };

@@ -99,6 +99,7 @@ enum Downloaders {
   VK
   RUTUBE
   OKRU
+  PINTEREST
 }
 
 enum DownloadSource {

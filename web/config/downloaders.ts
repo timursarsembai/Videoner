@@ -2,6 +2,7 @@ import {
   isFacebookUrl,
   isInstagramUrl,
   isOkRuUrl,
+  isPinterestUrl,
   isRutubeUrl,
   isTikTokUrl,
   isTwitterUrl,
@@ -92,6 +93,15 @@ export const downloaders: Downloader[] = [
     logo: "/images/logos/OK.svg",
     isComingSoon: false,
     isUrlValid: isOkRuUrl,
+  },
+  {
+    name: "Pinterest",
+    value: "pinterest",
+    href: "/pinterest",
+    description: "Download videos and pins from Pinterest",
+    logo: "/images/logos/pinterest.svg",
+    isComingSoon: false,
+    isUrlValid: isPinterestUrl,
   },
 ];
 

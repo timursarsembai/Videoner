@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DownloadStatus } from '@prisma/client';
+import { DownloadStatus, SubscriptionKind } from '@prisma/client';
 
 export interface UpsertBotUserInput {
   telegramId: number;
@@ -29,12 +29,59 @@ export class BotUserService {
     });
   }
 
+  // true и для ручного гранта (isUnlimited, без срока — см. /grant), и для
+  // действующей купленной подписки (subscriptionUntil в будущем).
   async isUnlimited(telegramId: number): Promise<boolean> {
     const botUser = await this.prisma.botUser.findUnique({
       where: { telegramId: BigInt(telegramId) },
-      select: { isUnlimited: true },
+      select: { isUnlimited: true, subscriptionUntil: true },
     });
-    return botUser?.isUnlimited ?? false;
+    if (!botUser) return false;
+    return (
+      botUser.isUnlimited ||
+      (botUser.subscriptionUntil != null && botUser.subscriptionUntil > new Date())
+    );
+  }
+
+  // Вызывается после успешной оплаты Stars (месячная — при каждом
+  // автопродлении тоже, сервер просто продлевает дату; годовая — один раз).
+  // Апсертим, а не только update: пользователь уже писал боту к этому моменту
+  // (иначе не смог бы дойти до оплаты), но на всякий случай не полагаемся на это.
+  async setSubscriptionUntil(
+    telegramId: number,
+    until: Date,
+    kind: SubscriptionKind,
+    meta?: { username?: string; languageCode?: string },
+  ) {
+    const bigId = BigInt(telegramId);
+    return this.prisma.botUser.upsert({
+      where: { telegramId: bigId },
+      create: {
+        telegramId: bigId,
+        username: meta?.username,
+        languageCode: meta?.languageCode,
+        subscriptionUntil: until,
+        subscriptionKind: kind,
+      },
+      update: {
+        subscriptionUntil: until,
+        subscriptionKind: kind,
+        username: meta?.username,
+        languageCode: meta?.languageCode,
+      },
+    });
+  }
+
+  // Для ежедневного напоминания о продлении годовой подписки — только YEARLY,
+  // т.к. MONTHLY продлевается автоматически (Telegram сам спишет звёзды),
+  // напоминание про неё было бы вводящим в заблуждение.
+  async findYearlySubscriptionsExpiringBetween(from: Date, to: Date) {
+    return this.prisma.botUser.findMany({
+      where: {
+        subscriptionKind: SubscriptionKind.YEARLY,
+        subscriptionUntil: { gte: from, lt: to },
+      },
+    });
   }
 
   // Пользователь должен хотя бы раз написать боту (BotUser создаётся через

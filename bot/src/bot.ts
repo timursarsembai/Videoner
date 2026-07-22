@@ -19,6 +19,17 @@ const ADMIN_TELEGRAM_ID = process.env.ADMIN_TELEGRAM_ID
 const PAID_QUALITY_MIN_HEIGHT = 720;
 const STARS_PRICE = 15;
 
+// Цены подписок подобраны от цены разового HD-скачивания (15⭐ ≈ $0.30 по курсу
+// ~$0.02/⭐ при покупке звёзд в приложении): месяц ≈ $3, год ≈ $30 (экономия
+// ~$6 к 12 месячным). Telegram Stars поддерживает автопродление подписки ТОЛЬКО
+// с фиксированным периодом 30 дней — годовой автопродляемой подписки в принципе
+// не существует, поэтому годовая реализована как разовая покупка на 365 дней
+// (см. память security-audit — секция про подписки).
+const SUBSCRIPTION_MONTHLY_STARS = 150;
+const SUBSCRIPTION_YEARLY_STARS = 1500;
+const SUBSCRIPTION_MONTH_SECONDS = 2592000; // фиксированное значение, требуется Telegram API
+const SUBSCRIPTION_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+
 if (!BOT_TOKEN) {
   console.error("BOT_TOKEN не задан. Получите токен у @BotFather и впишите в bot/.env");
   process.exit(1);
@@ -96,6 +107,11 @@ function isPaidQuality(kind: string, quality: string, availableQualities: string
 // клал бота. unlimited (выдаётся через /grant) снимает и лимит, и оплату HD целиком.
 async function getQuotaInfo(telegramId?: number): Promise<{ remaining: number; unlimited: boolean }> {
   if (!telegramId) return { remaining: Infinity, unlimited: false };
+  // Админ не должен зависеть от состояния БД (isUnlimited можно случайно
+  // сбросить /revoke, БД может быть недоступна и т.п.) — байпас чисто в коде бота.
+  if (ADMIN_TELEGRAM_ID && telegramId === ADMIN_TELEGRAM_ID) {
+    return { remaining: Infinity, unlimited: true };
+  }
   try {
     return await api<{ remaining: number; unlimited: boolean }>(`/download/quota?telegramId=${telegramId}`);
   } catch (e) {
@@ -190,6 +206,56 @@ async function setUnlimitedFromCommand(ctx: any, isUnlimited: boolean) {
 bot.command("grant", (ctx) => setUnlimitedFromCommand(ctx, true));
 bot.command("revoke", (ctx) => setUnlimitedFromCommand(ctx, false));
 
+bot.command("subscribe", async (ctx) => {
+  const lang = detectLang(ctx.from?.language_code);
+  const m = messages[lang];
+  const kb = new InlineKeyboard()
+    .text(m.subscribeMonthlyButton, "sub|month")
+    .row()
+    .text(m.subscribeYearlyButton, "sub|year");
+  await ctx.reply(m.subscribeIntro, { reply_markup: kb });
+});
+
+// Регистрируем ДО общего bot.on("callback_query:data", ...) ниже — grammY идёт
+// по обработчикам по порядку и останавливается на первом совпадении, поэтому
+// "sub|month"/"sub|year" сюда попадают, а не в generic-обработчик v|/a|-кнопок.
+bot.callbackQuery("sub|month", async (ctx) => {
+  await ctx.answerCallbackQuery();
+  const lang = detectLang(ctx.from?.language_code);
+  const m = messages[lang];
+  const telegramId = ctx.from.id;
+
+  // subscription_period есть только у createInvoiceLink (не у sendInvoice) —
+  // поэтому для настоящей автопродляемой подписки шлём ссылку, а не invoice-карточку.
+  const link = await ctx.api.createInvoiceLink(
+    m.subMonthlyInvoiceTitle,
+    m.subMonthlyInvoiceDescription,
+    `sub_month_${telegramId}`,
+    "",
+    "XTR",
+    [{ label: m.subMonthlyInvoiceLabel, amount: SUBSCRIPTION_MONTHLY_STARS }],
+    { subscription_period: SUBSCRIPTION_MONTH_SECONDS },
+  );
+  const kb = new InlineKeyboard().url(m.payButton, link);
+  await ctx.reply(m.subMonthlyPrompt, { reply_markup: kb });
+});
+
+bot.callbackQuery("sub|year", async (ctx) => {
+  await ctx.answerCallbackQuery();
+  const lang = detectLang(ctx.from?.language_code);
+  const m = messages[lang];
+  const telegramId = ctx.from.id;
+
+  // Годовая — обычный разовый invoice (без subscription_period, см. константы выше).
+  await ctx.replyWithInvoice(
+    m.subYearlyInvoiceTitle,
+    m.subYearlyInvoiceDescription,
+    `sub_year_${telegramId}`,
+    "XTR",
+    [{ label: m.subYearlyInvoiceLabel, amount: SUBSCRIPTION_YEARLY_STARS }],
+  );
+});
+
 bot.on("message:text", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
   const m = messages[lang];
@@ -199,7 +265,7 @@ bot.on("message:text", async (ctx) => {
     return;
   }
 
-  if (ctx.from && !checkUserRateLimit(ctx.from.id)) {
+  if (ctx.from && ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
     await ctx.reply(m.errorRateLimited);
     return;
   }
@@ -347,9 +413,22 @@ bot.on("callback_query:data", async (ctx) => {
   });
 });
 
+// Подписочные payload детерминированы (sub_month_<telegramId> / sub_year_<telegramId>),
+// а не случайный id из pendingPayments — включая ПОВТОРНЫЕ автосписания месячной
+// подписки, для которых Telegram переиспользует тот же payload и снова шлёт
+// pre_checkout_query/successful_payment без нового вызова createInvoiceLink.
+function isSubscriptionPayload(payload: string): boolean {
+  return payload.startsWith("sub_month_") || payload.startsWith("sub_year_");
+}
+
 bot.on("pre_checkout_query", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
-  const pending = pendingPayments.get(ctx.preCheckoutQuery.invoice_payload);
+  const payload = ctx.preCheckoutQuery.invoice_payload;
+  if (isSubscriptionPayload(payload)) {
+    await ctx.answerPreCheckoutQuery(true);
+    return;
+  }
+  const pending = pendingPayments.get(payload);
   if (!pending) {
     await ctx.answerPreCheckoutQuery(false, messages[lang].orderExpired);
     return;
@@ -359,7 +438,33 @@ bot.on("pre_checkout_query", async (ctx) => {
 
 bot.on("message:successful_payment", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
-  const payload = ctx.message.successful_payment.invoice_payload;
+  const m = messages[lang];
+  const payment = ctx.message.successful_payment;
+  const payload = payment.invoice_payload;
+
+  if (isSubscriptionPayload(payload)) {
+    const isMonthly = payload.startsWith("sub_month_");
+    const until = isMonthly
+      ? new Date((payment.subscription_expiration_date ?? Math.floor(Date.now() / 1000) + SUBSCRIPTION_MONTH_SECONDS) * 1000)
+      : new Date(Date.now() + SUBSCRIPTION_YEAR_MS);
+
+    try {
+      await api("/bot-users/subscription", {
+        telegramId: ctx.from.id,
+        telegramUsername: ctx.from.username,
+        telegramLanguageCode: ctx.from.language_code,
+        kind: isMonthly ? "MONTHLY" : "YEARLY",
+        until: until.toISOString(),
+      });
+      const dateStr = until.toLocaleDateString(lang === "ru" ? "ru-RU" : "en-US");
+      await ctx.reply(m.subscriptionActivated(dateStr, isMonthly));
+    } catch (e: any) {
+      console.error("Failed to persist subscription:", e);
+      await ctx.reply(m.subscriptionActivationFailed);
+    }
+    return;
+  }
+
   const pending = pendingPayments.get(payload);
   pendingPayments.delete(payload);
   if (!pending) return;

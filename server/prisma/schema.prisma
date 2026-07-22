@@ -67,17 +67,26 @@ model Download {
 }
 
 model BotUser {
-  id           String     @id @default(uuid())
-  telegramId   BigInt     @unique
-  username     String?
-  firstName    String?
-  languageCode String?
-  isUnlimited  Boolean    @default(false)
-  downloads    Download[]
-  firstSeenAt  DateTime   @default(now())
-  lastSeenAt   DateTime   @default(now())
+  id                String            @id @default(uuid())
+  telegramId        BigInt            @unique
+  username          String?
+  firstName         String?
+  languageCode      String?
+  isUnlimited       Boolean           @default(false)
+  // Безлимитный доступ по купленной подписке (в отличие от isUnlimited,
+  // который выдаётся вручную админом через /grant и не имеет срока).
+  subscriptionUntil DateTime?
+  subscriptionKind  SubscriptionKind?
+  downloads         Download[]
+  firstSeenAt       DateTime          @default(now())
+  lastSeenAt        DateTime          @default(now())
 
   @@index([telegramId])
+}
+
+enum SubscriptionKind {
+  MONTHLY
+  YEARLY
 }
 
 enum DownloadStatus {

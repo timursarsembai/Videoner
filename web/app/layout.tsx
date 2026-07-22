@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/layout/GoogleTagManager";
+import JsonLd from "@/components/common/JsonLd";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -38,9 +39,27 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   ),
+  alternates: {
+    canonical: "https://videoner.download",
+  },
   other: {
     "yandex-verification": "mbweqd4nlv8bo5xq",
   },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Videoner",
+  url: "https://videoner.download",
+  logo: "https://videoner.download/images/videoner-website-logo.webp",
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Videoner",
+  url: "https://videoner.download",
 };
 
 export const viewport: Viewport = {
@@ -60,6 +79,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("antialiased", spaceGrotesk.variable)}>
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={websiteSchema} />
         <GoogleTagManagerNoScript />
         <ThemeProvider
           attribute="class"

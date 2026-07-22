@@ -198,13 +198,13 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
               animate={{ opacity: 1, x: 0 }}
               className="flex-1 space-y-3"
             >
-              <motion.h1
+              <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-lg font-bold md:text-2xl lg:text-3xl line-clamp-2"
               >
                 {videoInfo.title}
-              </motion.h1>
+              </motion.h2>
 
               {videoInfo.description && (
                 <motion.div

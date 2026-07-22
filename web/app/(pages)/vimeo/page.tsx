@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import Page from "@/components/common/Page";
+import JsonLd from "@/components/common/JsonLd";
 
 export const metadata: Metadata = {
   title: "Videoner - Download Vimeo Videos",
@@ -29,10 +30,49 @@ export const metadata: Metadata = {
   },
 };
 
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Videoner Vimeo Downloader",
+  applicationCategory: "MultimediaApplication",
+  operatingSystem: "Any",
+  url: "https://videoner.download/vimeo",
+  description:
+    "Download Vimeo videos in high quality formats. Fast, free, and easy to use.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://videoner.download",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Vimeo",
+      item: "https://videoner.download/vimeo",
+    },
+  ],
+};
+
 export default function page() {
   return (
-    <Suspense fallback={null}>
-      <Page platform="vimeo" />
-    </Suspense>
+    <>
+      <JsonLd data={softwareApplicationSchema} />
+      <JsonLd data={breadcrumbSchema} />
+      <Suspense fallback={null}>
+        <Page platform="vimeo" />
+      </Suspense>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import Page from "@/components/common/Page";
+import JsonLd from "@/components/common/JsonLd";
 
 export const metadata: Metadata = {
   title: "Videoner - Download OK.ru Videos",
@@ -29,10 +30,49 @@ export const metadata: Metadata = {
   },
 };
 
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Videoner OK.ru Downloader",
+  applicationCategory: "MultimediaApplication",
+  operatingSystem: "Any",
+  url: "https://videoner.download/okru",
+  description:
+    "Download OK.ru (Odnoklassniki) videos in high quality formats. Fast, free, and easy to use.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://videoner.download",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "OK.ru",
+      item: "https://videoner.download/okru",
+    },
+  ],
+};
+
 export default function page() {
   return (
-    <Suspense fallback={null}>
-      <Page platform="okru" />
-    </Suspense>
+    <>
+      <JsonLd data={softwareApplicationSchema} />
+      <JsonLd data={breadcrumbSchema} />
+      <Suspense fallback={null}>
+        <Page platform="okru" />
+      </Suspense>
+    </>
   );
 }

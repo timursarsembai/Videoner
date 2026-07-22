@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import Page from "@/components/common/Page";
+import JsonLd from "@/components/common/JsonLd";
 
 export const metadata: Metadata = {
   title: "Videoner - Download Facebook Videos",
@@ -29,10 +30,49 @@ export const metadata: Metadata = {
   },
 };
 
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Videoner Facebook Downloader",
+  applicationCategory: "MultimediaApplication",
+  operatingSystem: "Any",
+  url: "https://videoner.download/facebook",
+  description:
+    "Download Facebook videos in high quality formats. Fast, free, and easy to use. Support for 8K, 4K, HD quality and MP3 audio.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://videoner.download",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Facebook",
+      item: "https://videoner.download/facebook",
+    },
+  ],
+};
+
 export default function page() {
   return (
-    <Suspense fallback={null}>
-      <Page platform="facebook" />
-    </Suspense>
+    <>
+      <JsonLd data={softwareApplicationSchema} />
+      <JsonLd data={breadcrumbSchema} />
+      <Suspense fallback={null}>
+        <Page platform="facebook" />
+      </Suspense>
+    </>
   );
 }

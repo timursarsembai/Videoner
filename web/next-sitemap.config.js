@@ -7,11 +7,11 @@ module.exports = {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api", "/api/*", "/_next", "/_next/*"],
+        disallow: ["/api", "/api/*", "/_next", "/_next/*", "/dashboard", "/dashboard/*"],
       },
     ],
   },
-  exclude: ["/api/*", "/_next/*", "/404", "/500"],
+  exclude: ["/api/*", "/_next/*", "/404", "/500", "/dashboard", "/dashboard/*"],
   generateIndexSitemap: false,
   changefreq: "daily",
   priority: 0.7,

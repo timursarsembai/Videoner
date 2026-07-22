@@ -35,6 +35,37 @@ const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT 
 // нужен, чтобы в callback-обработчике знать, есть ли у видео варианты ниже 720p.
 const sessions = new Map<number, { url: string; videoQualities: string[] }>();
 
+// Бот проксирует /info одним shared API-ключом на всех Telegram-пользователей —
+// без этого один пользователь, засыпающий ссылками, мог бы выесть общий лимит
+// у сервера (запрос HD/платного скачивания и так гасится квотой/оплатой, а вот
+// /info дергается на КАЖДУЮ присланную ссылку без такой защиты).
+const USER_RATE_LIMIT = 20; // ссылок в минуту на одного пользователя
+const userRequests = new Map<number, { count: number; resetAt: number }>();
+
+function checkUserRateLimit(telegramId: number): boolean {
+  const now = Date.now();
+  const entry = userRequests.get(telegramId);
+
+  if (!entry || entry.resetAt < now) {
+    userRequests.set(telegramId, { count: 1, resetAt: now + 60_000 });
+    return true;
+  }
+
+  if (entry.count >= USER_RATE_LIMIT) {
+    return false;
+  }
+
+  entry.count++;
+  return true;
+}
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, entry] of userRequests.entries()) {
+    if (entry.resetAt < now) userRequests.delete(id);
+  }
+}, 60_000);
+
 // Ожидающие оплаты HD-скачивания — invoice_payload тоже ограничен, поэтому
 // сами данные (ссылка/качество) держим здесь, а в payload кладём только id.
 type PendingDownload = { chatId: number; url: string; kind: "v" | "a"; quality: string; extension: string };
@@ -165,6 +196,11 @@ bot.on("message:text", async (ctx) => {
   const url = ctx.message.text.trim();
   if (!/^https?:\/\//i.test(url)) {
     await ctx.reply(m.notLink);
+    return;
+  }
+
+  if (ctx.from && !checkUserRateLimit(ctx.from.id)) {
+    await ctx.reply(m.errorRateLimited);
     return;
   }
 

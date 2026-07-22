@@ -1,10 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { Request } from 'express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // За нами ровно один прокси-хоп — Nginx Proxy Manager (proxy-network в
+  // docker-compose.prod.yml). Без этого req.ip всегда резолвился во внутренний
+  // docker-IP nginx, а не в реальный IP клиента — ломало ipWhitelist у ApiKey
+  // и делало бы бессмысленным per-IP rate-limit ниже.
+  app.set('trust proxy', 1);
 
   // Configure CORS with API key support
   app.enableCors({

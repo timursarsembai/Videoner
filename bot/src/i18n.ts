@@ -29,6 +29,7 @@ interface Messages {
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
   errorNoVideoContent: string;
+  errorRateLimited: string;
 }
 
 const ru: Messages = {
@@ -63,6 +64,7 @@ const ru: Messages = {
     "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru или Pinterest.",
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
   errorNoVideoContent: "По этой ссылке нет видео для скачивания — похоже, пост содержит только фото.",
+  errorRateLimited: "Слишком много ссылок подряд — подожди немного и пришли снова.",
 };
 
 const en: Messages = {
@@ -97,6 +99,7 @@ const en: Messages = {
     "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, or Pinterest.",
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
   errorNoVideoContent: "This link doesn't have a video to download — the post appears to be photo-only.",
+  errorRateLimited: "Too many links in a row — wait a bit and send it again.",
 };
 
 export const messages: Record<Lang, Messages> = { ru, en };

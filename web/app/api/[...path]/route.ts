@@ -7,6 +7,44 @@ const API_URL = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL!
 const API_KEY = process.env.API_KEY!;
 const ALLOWED_ORIGIN = process.env.NEXT_PUBLIC_APP_URL!;
 
+// На бэкенде (server) все запросы отсюда видны с ОДНОГО internal docker-IP
+// этого web-контейнера — per-IP лимит там не различает реальных посетителей
+// сайта между собой. Здесь, на входе в /api/*, x-forwarded-for ещё содержит
+// настоящий IP браузера (его проставляет ваш nginx на этом хопе) — поэтому
+// троттлим по нему именно тут, до похода в NestJS API.
+const VISITOR_RATE_LIMIT = Number(process.env.VISITOR_RATE_LIMIT) || 30; // запросов/мин
+const visitorRequests = new Map<string, { count: number; resetAt: number }>();
+
+function getClientIp(request: NextRequest): string {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0].trim();
+  return request.headers.get("x-real-ip") || "unknown";
+}
+
+function checkVisitorRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = visitorRequests.get(ip);
+
+  if (!entry || entry.resetAt < now) {
+    visitorRequests.set(ip, { count: 1, resetAt: now + 60_000 });
+    return true;
+  }
+
+  if (entry.count >= VISITOR_RATE_LIMIT) {
+    return false;
+  }
+
+  entry.count++;
+  return true;
+}
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of visitorRequests.entries()) {
+    if (entry.resetAt < now) visitorRequests.delete(ip);
+  }
+}, 60_000);
+
 // Middleware to verify the request is coming from our frontend
 function isValidRequest(request: NextRequest): boolean {
   const origin = request.headers.get("origin");
@@ -86,6 +124,13 @@ async function handleRequest(request: NextRequest, path: string[]) {
     return NextResponse.json(
       { error: "API key not configured" },
       { status: 500 }
+    );
+  }
+
+  if (!checkVisitorRateLimit(getClientIp(request))) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded, try again later" },
+      { status: 429 }
     );
   }
 

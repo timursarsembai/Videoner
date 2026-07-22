@@ -47,5 +47,14 @@ RUN pnpm run build
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+# Рантайм — не от root. Базовый образ node:*-bookworm-slim уже содержит
+# юзера `node` (uid/gid 1000), который совпадает с хостовым aksak (тоже 1000) —
+# поэтому смонтированный cookies.txt (владелец aksak) читается/пишется без
+# доп. chown. Именованный volume downloads/ перевладён на 1000:1000 отдельно
+# при переходе на этот Dockerfile (см. память security-audit). /app остаётся
+# root:root (chown -R по node_modules добавлял ~6 мин к сборке) — yt-dlp/ffmpeg
+# запускаются с явным cwd=/tmp (см. ytdlp.service.ts), там писать можно без chown.
+USER node
+
 EXPOSE 3001
 ENTRYPOINT ["docker-entrypoint.sh"]

@@ -42,6 +42,27 @@ export class ApiKeyGuard implements CanActivate {
         request,
       );
 
+      // Доп. лимит по IP поверх общего per-key лимита: у web/bot один shared
+      // ключ на всех посетителей, поэтому одного per-key лимита недостаточно —
+      // требует `trust proxy` в main.ts, иначе req.ip всегда будет IP nginx.
+      const ipRateLimitResult = this.rateLimitService.checkIpRateLimit(
+        request.ip,
+        Number(process.env.IP_RATE_LIMIT) || undefined,
+      );
+      if (!ipRateLimitResult.isAllowed) {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.TOO_MANY_REQUESTS,
+            error: 'Too Many Requests',
+            message: 'Rate limit exceeded for this IP',
+            limit: ipRateLimitResult.limit,
+            remaining: ipRateLimitResult.remaining,
+            resetAt: ipRateLimitResult.resetAt,
+          },
+          HttpStatus.TOO_MANY_REQUESTS,
+        );
+      }
+
       // Check rate limit
       const rateLimitResult = await this.rateLimitService.checkRateLimit(
         validApiKey.id,

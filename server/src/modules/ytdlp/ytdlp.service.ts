@@ -331,21 +331,50 @@ export class YtdlpService implements OnModuleInit {
       if (isYoutube) {
         await this.youtubeThrottleDelay();
       }
-      const argsWithQuotes = this.addQuotesToCommand(args);
+      const finalArgs = [...args];
       if (!options?.skipCookies && this.hasCookies()) {
-        argsWithQuotes.push('--cookies', this.cookiesFilePath);
+        finalArgs.push('--cookies', this.cookiesFilePath);
       }
       if (this.youtubeProxyUrl && isYoutube) {
-        argsWithQuotes.push('--proxy', this.youtubeProxyUrl);
+        finalArgs.push('--proxy', this.youtubeProxyUrl);
       }
-      console.log(argsWithQuotes);
-      const command = `"${this.ytdlpPath}" ${argsWithQuotes.join(' ')}`;
-      return await execAsync(command);
+      console.log(finalArgs);
+      return await this.runProcess(this.ytdlpPath, finalArgs);
     } catch (error) {
       throw new Error(`Failed to run yt-dlp command: ${error.message}`);
     } finally {
       releaseSlot?.();
     }
+  }
+
+  // Запускает бинарник напрямую (execve, без /bin/sh) — args идут отдельными
+  // элементами массива, поэтому пользовательский ввод (например url в /info)
+  // не может вырваться из кавычек и инжектировать shell-команды, как это было
+  // возможно при сборке команды строкой через exec()/execAsync (см. память
+  // security-audit — было реальным RCE через "; touch ...; " в поле url).
+  private runProcess(
+    bin: string,
+    args: string[],
+  ): Promise<{ stdout: string; stderr: string }> {
+    return new Promise((resolve, reject) => {
+      // cwd=/tmp: yt-dlp иногда пишет служебные файлы (info.json и т.п.)
+      // относительно cwd, а не в -o-путь. Контейнер работает не от root,
+      // /app ему не принадлежит, /tmp — единственная writable-директория
+      // без дополнительного chown (world-writable, sticky bit).
+      const child = spawn(bin, args, { cwd: os.tmpdir() });
+      let stdout = '';
+      let stderr = '';
+      child.stdout.on('data', (d) => (stdout += d));
+      child.stderr.on('data', (d) => (stderr += d));
+      child.on('error', reject);
+      child.on('close', (code) => {
+        if (code === 0) {
+          resolve({ stdout, stderr });
+        } else {
+          reject(new Error(stderr || stdout || `exit code ${code}`));
+        }
+      });
+    });
   }
 
   getYtdlpPath(): string {
@@ -361,10 +390,6 @@ export class YtdlpService implements OnModuleInit {
       ytdlpPath: this.ytdlpPath,
       ffmpegPath: this.ffmpegPath,
     };
-  }
-
-  private addQuotesToCommand(args: string[]): string[] {
-    return args.map((arg) => (arg.startsWith('-') ? arg : `"${arg}"`));
   }
 
   // Считаем cookies заданными только если файл существует и непустой —
@@ -458,7 +483,11 @@ export class YtdlpService implements OnModuleInit {
       processArgs.push('--proxy', this.youtubeProxyUrl);
     }
 
-    const childProcess = spawn(this.ytdlpPath, processArgs);
+    // cwd=/tmp — см. комментарий в runProcess() выше: контейнер не от root,
+    // /app не writable, а yt-dlp может писать служебные файлы относительно cwd.
+    const childProcess = spawn(this.ytdlpPath, processArgs, {
+      cwd: os.tmpdir(),
+    });
 
     let hasError = false;
     let errorMessage = '';
@@ -550,10 +579,13 @@ export class YtdlpService implements OnModuleInit {
         return subject.asObservable();
       }
 
-      // Get input format info
-      const { stdout } = await execAsync(
-        `"${this.ffmpegPath}" -i "${inputPath}" 2>&1`,
-      ).catch((err) => ({ stdout: err.message }));
+      // Get input format info (ffmpeg -i без выходного файла всегда "падает"
+      // с ненулевым кодом — сама информация о формате идёт в stderr, это
+      // ожидаемо и ловится в .catch, а не в успешном ветке промиса).
+      const { stdout } = await this.runProcess(this.ffmpegPath, [
+        '-i',
+        inputPath,
+      ]).catch((err) => ({ stdout: err.message }));
       const isAV1 = stdout.includes('av1') || stdout.includes('aom');
 
       // Base ffmpeg arguments
@@ -661,7 +693,7 @@ export class YtdlpService implements OnModuleInit {
       // Add progress monitoring and output
       ffmpegArgs.push('-progress', 'pipe:1', '-nostats', outputPath);
 
-      const process = spawn(this.ffmpegPath, ffmpegArgs);
+      const process = spawn(this.ffmpegPath, ffmpegArgs, { cwd: os.tmpdir() });
 
       let duration: number | null = null;
       let hasError = false;

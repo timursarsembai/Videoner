@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import * as fs from 'fs';
 import {
   audioExtensionLabel,
   audioQualityLabel,
@@ -59,7 +58,6 @@ export class InfoService {
 
     try {
       const info = await this.fetchInfoWithCookieFallback(url, platform);
-      fs.writeFileSync('info.json', JSON.stringify(info, null, 2));
 
       const { allFormats, allExtensions } = this.getPlatformFormats(
         info,

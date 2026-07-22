@@ -2,6 +2,7 @@
 
 import { navConfig } from "@/config/nav";
 import { useLanguage } from "@/lib/i18n/context";
+import { localizedHref } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
 import { NavItem } from "@/types/nav";
 import { Platform } from "@/types";
@@ -18,7 +19,7 @@ import type { TranslationKey } from "@/lib/i18n/context";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const handleDropdownClick = (name: string) => {
     setActiveDropdown(activeDropdown === name ? null : name);
@@ -57,7 +58,7 @@ export function Navbar() {
                 {item.subMenu.map((subItem) => (
                   <Link
                     key={subItem.href}
-                    href={subItem.href}
+                    href={localizedHref(language, subItem.href)}
                     className={cn(
                       "grid grid-cols-[32px_1fr] items-center gap-4 rounded-md p-3 text-sm transition-colors",
                       "isComingSoon" in subItem && subItem.isComingSoon
@@ -110,7 +111,7 @@ export function Navbar() {
 
     return (
       <Link
-        href={item.href}
+        href={localizedHref(language, item.href)}
         className={cn(
           "flex items-center gap-1.5 text-sm font-medium transition-colors",
           item.href === "/"
@@ -168,7 +169,7 @@ export function Navbar() {
                     }}
                   >
                     <Link
-                      href={subItem.href}
+                      href={localizedHref(language, subItem.href)}
                       className={cn(
                         "flex items-start gap-4",
                         "isComingSoon" in subItem && subItem.isComingSoon
@@ -222,7 +223,7 @@ export function Navbar() {
 
     return (
       <Link
-        href={item.href}
+        href={localizedHref(language, item.href)}
         className="flex items-center gap-2 py-2 text-xl font-medium"
         onClick={() => setIsOpen(false)}
       >
@@ -242,7 +243,7 @@ export function Navbar() {
       >
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href={localizedHref(language, "/")} className="flex items-center gap-2">
               <Image
                 src="/images/videoner-website-logo.webp"
                 alt="Videoner"

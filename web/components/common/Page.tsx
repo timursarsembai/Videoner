@@ -6,6 +6,7 @@ import { HeroInput } from "@/components/ui/hero-input";
 import { downloaders } from "@/config/downloaders";
 import { api } from "@/lib/api";
 import { useLanguage } from "@/lib/i18n/context";
+import { localizedHref } from "@/lib/i18n/routing";
 import { cn, extractErrorMessage } from "@/lib/utils";
 import { detectPlatform, isValidUrl } from "@/lib/validations/url";
 import { Platform } from "@/types";
@@ -32,6 +33,7 @@ interface UrlFromQueryParamsProps {
 const UrlFromQueryParams = ({ onFound }: UrlFromQueryParamsProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { language } = useLanguage();
 
   useEffect(() => {
     const urlFromParams = searchParams?.get("url");
@@ -42,7 +44,7 @@ const UrlFromQueryParams = ({ onFound }: UrlFromQueryParamsProps) => {
 
     onFound(urlFromParams, platform);
     // remove url from query params
-    router.replace(`/${platform}`, { scroll: false });
+    router.replace(localizedHref(language, `/${platform}`), { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, router]);
 

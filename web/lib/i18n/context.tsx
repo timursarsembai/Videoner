@@ -57,16 +57,25 @@ function interpolate(template: string, params?: Params): string {
   );
 }
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // На сервере и при первом рендере — английский (избегаем расхождения гидрации),
-  // затем в эффекте подтягиваем сохранённый выбор из localStorage.
-  const [language, setLanguageState] = useState<Language>("en");
+export function LanguageProvider({
+  children,
+  initialLanguage = "en",
+}: {
+  children: React.ReactNode;
+  initialLanguage?: Language;
+}) {
+  // Начальный язык задаёт сегмент URL ([locale]/layout.tsx) — так SSR сразу
+  // рендерит правильный текст. localStorage используется только как память
+  // выбора для последующих визитов на / (дефолтную, немаркированную локаль).
+  const [language, setLanguageState] = useState<Language>(initialLanguage);
 
   useEffect(() => {
+    if (initialLanguage !== "en") return;
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored && (LANGUAGES as readonly string[]).includes(stored)) {
       setLanguageState(stored as Language);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

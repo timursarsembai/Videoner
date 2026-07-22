@@ -10,11 +10,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/lib/i18n/context";
+import { localizedHref, stripLocalePrefix } from "@/lib/i18n/routing";
 import { LANGUAGES, LANGUAGE_LABELS } from "@/lib/i18n/translations";
 import { cn } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
 
 export function LanguageToggle() {
   const { language, setLanguage, t } = useLanguage();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const switchLanguage = (lang: (typeof LANGUAGES)[number]) => {
+    setLanguage(lang);
+    router.push(localizedHref(lang, stripLocalePrefix(pathname)));
+  };
 
   return (
     <DropdownMenu>
@@ -33,7 +42,7 @@ export function LanguageToggle() {
         {LANGUAGES.map((lang) => (
           <DropdownMenuItem
             key={lang}
-            onClick={() => setLanguage(lang)}
+            onClick={() => switchLanguage(lang)}
             className="gap-2"
           >
             <Check

@@ -1,5 +1,4 @@
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { LanguageProvider } from "@/lib/i18n/context";
 import { cn } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk } from "next/font/google";
@@ -88,10 +87,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LanguageProvider>
-            {children}
-            <Toaster position="bottom-right" />
-          </LanguageProvider>
+          {children}
+          <Toaster position="bottom-right" />
         </ThemeProvider>
         <GoogleAnalytics />
         <GoogleTagManager />

@@ -60,6 +60,14 @@ const YOUTUBE_MAX_CONCURRENT = 2;
 const YOUTUBE_DELAY_MIN_MS = 500;
 const YOUTUBE_DELAY_MAX_MS = 2000;
 
+// Общий лимит одновременных СКАЧИВАНИЙ по ВСЕМ платформам сразу — защищает
+// диск/CPU/сеть VPS от перегрузки при наплыве пользователей (проще и
+// достаточно вместо полноценной очереди с видимой позицией — см. память
+// bot-monetization). Отдельно от youtubeSemaphore выше: тот решает другую
+// задачу (не выглядеть ботом для самого YouTube), а не общую нагрузку сервера.
+const GLOBAL_MAX_CONCURRENT_DOWNLOADS =
+  Number(process.env.MAX_CONCURRENT_DOWNLOADS) || 6;
+
 const BINARY_URLS = {
   ytdlpWin64:
     'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe',
@@ -89,6 +97,9 @@ export class YtdlpService implements OnModuleInit {
   // заблокирован антибот-защитой YouTube, остальные площадки прокси не требуют.
   private readonly youtubeProxyUrl?: string;
   private readonly youtubeSemaphore = new Semaphore(YOUTUBE_MAX_CONCURRENT);
+  private readonly globalDownloadSemaphore = new Semaphore(
+    GLOBAL_MAX_CONCURRENT_DOWNLOADS,
+  );
 
   constructor() {
     this.binariesDir = path.join(process.cwd(), 'bin');
@@ -472,6 +483,10 @@ export class YtdlpService implements OnModuleInit {
       processArgs.push('--cookies', this.cookiesFilePath);
     }
 
+    // Общий слот — до YouTube-специфичного: если сервер и так забит другими
+    // площадками, лишний смысл сначала ждать YouTube-слот, а потом ещё общий.
+    const releaseGlobalSlot = await this.globalDownloadSemaphore.acquire();
+
     const isYoutube = platform === 'youtube';
     let releaseYoutubeSlot: (() => void) | null = null;
     if (isYoutube) {
@@ -537,8 +552,22 @@ export class YtdlpService implements OnModuleInit {
       subject.error(err);
     });
 
+    // Если spawn() не смог даже запустить процесс (бинарник недоступен и
+    // т.п.), 'exit' не произойдёт вообще — без этого обработчика оба слота
+    // (и youtube-, и общий) зависли бы навсегда. Было упущено до этой правки
+    // и для youtubeSemaphore тоже — чиним заодно, раз уже трогаем этот путь.
+    childProcess.on('error', (err) => {
+      releaseYoutubeSlot?.();
+      releaseGlobalSlot();
+      if (!hasError) {
+        hasError = true;
+        subject.error(err);
+      }
+    });
+
     childProcess.on('exit', (code) => {
       releaseYoutubeSlot?.();
+      releaseGlobalSlot();
       if (code !== 0 && !hasError) {
         subject.error(
           new Error(errorMessage || `Process exited with code ${code}`),

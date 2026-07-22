@@ -98,7 +98,7 @@ export const downloaders: Downloader[] = [
     name: "Pinterest",
     value: "pinterest",
     href: "/pinterest",
-    description: "Download videos and pins from Pinterest",
+    description: "Download videos from Pinterest pins",
     logo: "/images/logos/pinterest.svg",
     isComingSoon: false,
     isUrlValid: isPinterestUrl,

@@ -280,12 +280,12 @@ const en = {
       ],
     },
     pinterest: {
-      description: "Download videos and images from Pinterest pins",
+      description: "Download videos from Pinterest pins",
       news: "Now with Pinterest support",
       titleLine1: "Download Pinterest",
       titleLine2: "Videos & Pins",
       pageDescription:
-        "Download Pinterest videos and pin images in high quality. Fast, free, and easy to use.",
+        "Download videos from Pinterest pins in high quality. Fast, free, and easy to use. Note: only video pins can be downloaded — photo-only pins aren't supported.",
       placeholder: "Paste Pinterest URL here...",
       howTo: [
         "Open the pin on Pinterest and tap Share → Copy Link (or copy the URL from your browser).",
@@ -296,6 +296,7 @@ const en = {
       faq: [
         { q: "Is downloading Pinterest videos with Videoner free?", a: "Yes, downloading through the website is completely free, no account required." },
         { q: "What quality can I download?", a: "Videoner offers every quality Pinterest provides for that pin's video, plus MP3 audio extraction." },
+        { q: "Can I download photos or images from Pinterest?", a: "No — only video pins can be downloaded. If a pin is photo-only, there's no video file to extract." },
         { q: "Can I download private or board-restricted pins?", a: "Only publicly accessible pins are supported; private boards and login-restricted content can't be downloaded." },
         { q: "Is it legal to download videos from Pinterest?", a: "Download only pins you have the right to save — your own content or anything the creator allows. Respect Pinterest's Terms of Service and copyright law." },
         { q: "How long is my downloaded file available?", a: "Converted files stay on the server for about an hour, so save them to your device right after downloading." },
@@ -564,12 +565,12 @@ const es: Translations = {
       ],
     },
     pinterest: {
-      description: "Descarga videos e imágenes de los pines de Pinterest",
+      description: "Descarga videos de los pines de Pinterest",
       news: "Ahora con soporte para Pinterest",
       titleLine1: "Descarga Pinterest",
       titleLine2: "Videos y Pines",
       pageDescription:
-        "Descarga videos e imágenes de pines de Pinterest en alta calidad. Rápido, gratis y fácil de usar.",
+        "Descarga videos de pines de Pinterest en alta calidad. Rápido, gratis y fácil de usar. Nota: solo se pueden descargar pines de video — los pines que son solo foto no son compatibles.",
       placeholder: "Pega la URL de Pinterest aquí...",
       howTo: [
         "Abre el pin en Pinterest y toca «Compartir» → «Copiar enlace» (o copia la URL desde el navegador).",
@@ -580,6 +581,7 @@ const es: Translations = {
       faq: [
         { q: "¿Es gratis descargar videos de Pinterest con Videoner?", a: "Sí, descargar desde el sitio web es completamente gratuito, no se necesita cuenta." },
         { q: "¿Qué calidad de video puedo descargar?", a: "Videoner ofrece todas las calidades disponibles para el video de ese pin, además de extracción de audio en MP3." },
+        { q: "¿Puedo descargar fotos o imágenes de Pinterest?", a: "No — solo se pueden descargar pines de video. Si un pin es solo foto, no hay ningún archivo de video que extraer." },
         { q: "¿Puedo descargar pines privados o de tableros restringidos?", a: "Solo se admiten pines públicamente accesibles; los tableros privados y el contenido que requiere inicio de sesión no se pueden descargar." },
         { q: "¿Es legal descargar videos de Pinterest?", a: "Descarga solo pines que tengas derecho a guardar — tu propio contenido o lo que el creador permita. Respeta los Términos de Servicio de Pinterest y los derechos de autor." },
         { q: "¿Cuánto tiempo está disponible mi archivo descargado?", a: "El archivo permanece en el servidor cerca de una hora, así que guárdalo en tu dispositivo justo después de la descarga." },
@@ -846,12 +848,12 @@ const ru: Translations = {
       ],
     },
     pinterest: {
-      description: "Скачивайте видео и картинки с пинов Pinterest",
+      description: "Скачивайте видео с пинов Pinterest",
       news: "Теперь с поддержкой Pinterest",
       titleLine1: "Скачать с Pinterest",
       titleLine2: "Видео и пины",
       pageDescription:
-        "Скачивайте видео и изображения из пинов Pinterest в высоком качестве. Быстро, бесплатно и просто.",
+        "Скачивайте видео из пинов Pinterest в высоком качестве. Быстро, бесплатно и просто. Обратите внимание: скачать можно только видео-пины — пины с одной картинкой не поддерживаются.",
       placeholder: "Вставьте ссылку Pinterest сюда...",
       howTo: [
         "Откройте пин в Pinterest и нажмите «Поделиться» → «Скопировать ссылку» (или скопируйте URL из браузера).",
@@ -862,6 +864,7 @@ const ru: Translations = {
       faq: [
         { q: "Бесплатно ли скачивать видео с Pinterest через Videoner?", a: "Да, скачивание через сайт полностью бесплатно, аккаунт не нужен." },
         { q: "В каком качестве можно скачать видео?", a: "Videoner предлагает все качества, доступные для видео в этом пине, плюс извлечение аудио в MP3." },
+        { q: "Можно ли скачать фото или картинки с Pinterest?", a: "Нет — скачать можно только видео-пины. Если пин содержит только фото, видео-файла для скачивания просто нет." },
         { q: "Можно ли скачать приватные пины или пины с закрытых досок?", a: "Поддерживаются только публично доступные пины; приватные доски и контент, требующий входа в аккаунт, скачать нельзя." },
         { q: "Законно ли скачивать видео с Pinterest?", a: "Скачивайте только то, на что у вас есть право — свой контент или то, что разрешил автор. Соблюдайте условия использования Pinterest и авторские права." },
         { q: "Как долго хранится скачанный файл?", a: "Готовый файл хранится на сервере около часа, поэтому сохраните его на устройство сразу после скачивания." },

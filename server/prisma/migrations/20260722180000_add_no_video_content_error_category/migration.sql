@@ -1,0 +1,1 @@
+ALTER TYPE "ErrorCategory" ADD VALUE 'NO_VIDEO_CONTENT';

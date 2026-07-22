@@ -171,6 +171,13 @@ export class InfoService {
       void this.alert.notifyYoutubeAuthRequired(errorMessage);
     }
 
+    if (/no video formats? found/i.test(errorMessage)) {
+      // yt-dlp отдаёт тут техническое сообщение с просьбой завести issue на GitHub —
+      // на деле это почти всегда пост без видео (например, пин с одними фото).
+      errorMessage =
+        "This link doesn't contain a downloadable video — the post appears to be photo-only content.";
+    }
+
     return errorMessage;
   }
 }

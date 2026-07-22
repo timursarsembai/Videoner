@@ -30,6 +30,10 @@ export function categorizeError(raw: string): ErrorCategory {
     return ErrorCategory.FORMAT_UNAVAILABLE;
   }
 
+  if (msg.includes('no video formats found')) {
+    return ErrorCategory.NO_VIDEO_CONTENT;
+  }
+
   if (msg.includes('timed out') || msg.includes('timeout')) {
     return ErrorCategory.TIMEOUT;
   }

@@ -121,6 +121,10 @@ function friendlyError(raw: string, lang: Lang): string {
     return m.errorFormatUnavailable;
   }
 
+  if (msg.includes("no video formats found") || msg.includes("doesn't contain a downloadable video")) {
+    return m.errorNoVideoContent;
+  }
+
   return raw;
 }
 

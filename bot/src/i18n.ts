@@ -28,6 +28,7 @@ interface Messages {
   errorLoginRequired: string;
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
+  errorNoVideoContent: string;
 }
 
 const ru: Messages = {
@@ -61,6 +62,7 @@ const ru: Messages = {
   errorUnsupportedPlatform:
     "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru или Pinterest.",
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
+  errorNoVideoContent: "По этой ссылке нет видео для скачивания — похоже, пост содержит только фото.",
 };
 
 const en: Messages = {
@@ -94,6 +96,7 @@ const en: Messages = {
   errorUnsupportedPlatform:
     "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, or Pinterest.",
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
+  errorNoVideoContent: "This link doesn't have a video to download — the post appears to be photo-only.",
 };
 
 export const messages: Record<Lang, Messages> = { ru, en };

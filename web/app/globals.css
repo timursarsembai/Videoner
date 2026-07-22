@@ -69,6 +69,26 @@
   --primary-light: 45 175 255;
 }
 
+.vimeo {
+  --primary: 30 184 235;
+  --primary-light: 74 201 240;
+}
+
+.vk {
+  --primary: 0 119 255;
+  --primary-light: 51 153 255;
+}
+
+.rutube {
+  --primary: 237 20 59;
+  --primary-light: 240 60 95;
+}
+
+.okru {
+  --primary: 247 147 30;
+  --primary-light: 249 168 70;
+}
+
 @layer base {
   * {
     @apply border-border;

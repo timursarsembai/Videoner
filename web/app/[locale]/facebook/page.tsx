@@ -100,10 +100,24 @@ export default async function PlatformPage({
     ],
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: translations[lang].platforms.facebook.faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    })),
+  };
+
   return (
     <>
       <JsonLd data={softwareApplicationSchema} />
       <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={faqSchema} />
       <Suspense fallback={null}>
         <Page platform="facebook" />
       </Suspense>

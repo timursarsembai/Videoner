@@ -16,6 +16,7 @@ import { ArrowRight, Download, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { PlatformContent } from "./PlatformContent";
 import { VideoInfoSection } from "./VideoInfo";
 
 interface PageProps {
@@ -128,7 +129,7 @@ const Page = ({ platform }: PageProps) => {
   };
 
   return (
-    <div className="relative">
+    <div className={cn("relative", platform)}>
       <Suspense fallback={null}>
         <UrlFromQueryParams onFound={handleUrlFromParams} />
       </Suspense>
@@ -267,6 +268,8 @@ const Page = ({ platform }: PageProps) => {
           <VideoInfoSection videoInfo={videoInfo} url={url} />
         </motion.div>
       )}
+
+      <PlatformContent platform={platform} />
     </div>
   );
 };

@@ -71,7 +71,7 @@ export const downloaders: Downloader[] = [
     value: "vk",
     href: "/vk",
     description: "Download videos and clips from VK",
-    logo: "/images/logos/vk.svg",
+    logo: "/images/logos/vk_video.svg",
     isComingSoon: false,
     isUrlValid: isVkUrl,
   },

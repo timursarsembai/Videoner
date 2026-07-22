@@ -43,11 +43,12 @@ class ApiClient {
     );
   }
 
-  async getVideoInfo(url: string): Promise<VideoInfo> {
+  async getVideoInfo(url: string, turnstileToken: string): Promise<VideoInfo> {
     try {
       // const platform = detectPlatform(url)!;
       const response = await this.client.post<VideoInfo>(`/info`, {
         url,
+        turnstileToken,
       });
       return response.data;
     } catch (error) {

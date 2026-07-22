@@ -217,7 +217,7 @@ bot.command("subscribe", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
   const m = messages[lang];
   const kb = addSubscriptionButtons(new InlineKeyboard(), m);
-  await ctx.reply(m.subscribeIntro, { reply_markup: kb });
+  await ctx.reply(m.subscriptionPitch, { reply_markup: kb });
 });
 
 // Регистрируем ДО общего bot.on("callback_query:data", ...) ниже — grammY идёт
@@ -296,21 +296,21 @@ bot.on("message:text", async (ctx) => {
       const label = isPaidQuality("v", q, videoQualities) && !quota.unlimited ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
       kb.text(label, `v|${q}`).row();
     }
-    kb.text(m.audioOnlyButton, "a|128Kbps").row();
+    kb.text(m.audioOnlyButton, "a|128Kbps");
 
-    // Допродажа подписки прямо в результате — не только по отдельной команде
-    // /subscribe. Не показываем тем, у кого и так безлимит (в т.ч. админу —
-    // getQuotaInfo() возвращает unlimited: true для него в коде, без похода в БД).
     const dur = fmtDuration(info.duration);
-    let resultText = m.chooseQuality(info.title, dur);
-    if (!quota.unlimited) {
-      resultText += `\n\n${m.upsellText}`;
-      addSubscriptionButtons(kb, m);
-    }
-
-    await ctx.api.editMessageText(ctx.chat.id, msg.message_id, resultText, {
+    await ctx.api.editMessageText(ctx.chat.id, msg.message_id, m.chooseQuality(info.title, dur), {
       reply_markup: kb,
     });
+
+    // Допродажа подписки — ОТДЕЛЬНЫМ сообщением следом, а не в той же клавиатуре
+    // выбора качества, чтобы не смешивать разные по смыслу действия и дать место
+    // под подробное описание. Не показываем тем, у кого и так безлимит (в т.ч.
+    // админу — getQuotaInfo() возвращает unlimited: true для него в коде без похода в БД).
+    if (!quota.unlimited) {
+      const subKb = addSubscriptionButtons(new InlineKeyboard(), m);
+      await ctx.reply(m.subscriptionPitch, { reply_markup: subKb });
+    }
   } catch (e: any) {
     await ctx.api.editMessageText(ctx.chat.id, msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
   }

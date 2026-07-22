@@ -17,6 +17,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { PlatformContent } from "./PlatformContent";
+import { TurnstileWidget } from "./TurnstileWidget";
 import { VideoInfoSection } from "./VideoInfo";
 
 interface PageProps {
@@ -56,6 +57,7 @@ const Page = ({ platform }: PageProps) => {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const videoSectionRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
 
@@ -96,10 +98,15 @@ const Page = ({ platform }: PageProps) => {
       return;
     }
 
+    if (!turnstileToken) {
+      toast.error(t("toast.captchaNotReady"));
+      return;
+    }
+
     setLoading(true);
     try {
       setVideoInfo(null);
-      const info = await api.getVideoInfo(url);
+      const info = await api.getVideoInfo(url, turnstileToken);
       setVideoInfo(info);
       // Smooth scroll to video section after a short delay
       setTimeout(() => {
@@ -113,15 +120,26 @@ const Page = ({ platform }: PageProps) => {
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, [t, turnstileToken]);
+
+  // Переход с главной (?url=...) вызывает автозапуск ДО того, как Turnstile-виджет
+  // успевает загрузиться и выдать токен (скрипт грузится асинхронно) — откладываем
+  // до готовности токена, а не просто требуем повторной ручной отправки формы.
+  const [pendingAutoFetch, setPendingAutoFetch] = useState<{ url: string; platform: Platform } | null>(null);
 
   const handleUrlFromParams = useCallback(
     (urlFromParams: string, detectedPlatform: Platform) => {
       setUrl(urlFromParams);
-      fetchVideoInfo(urlFromParams, detectedPlatform);
+      setPendingAutoFetch({ url: urlFromParams, platform: detectedPlatform });
     },
-    [fetchVideoInfo]
+    []
   );
+
+  useEffect(() => {
+    if (!pendingAutoFetch || !turnstileToken) return;
+    fetchVideoInfo(pendingAutoFetch.url, pendingAutoFetch.platform);
+    setPendingAutoFetch(null);
+  }, [pendingAutoFetch, turnstileToken, fetchVideoInfo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -250,6 +268,9 @@ const Page = ({ platform }: PageProps) => {
                       </>
                     )}
                   </Button>
+                </div>
+                <div className="mt-4 flex justify-center">
+                  <TurnstileWidget onVerify={setTurnstileToken} />
                 </div>
               </motion.form>
             </div>

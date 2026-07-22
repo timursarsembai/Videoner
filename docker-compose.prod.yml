@@ -97,6 +97,7 @@ services:
       args:
         NEXT_PUBLIC_APP_URL: https://${PUBLIC_DOMAIN}
         NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
+        NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
     container_name: videoner-web
     restart: unless-stopped
     environment:
@@ -106,6 +107,9 @@ services:
       # Серверный прокси Next.js ходит к API по внутренней сети, не через публичный домен
       API_INTERNAL_URL: http://server:3001
       API_KEY: ${API_KEY}
+      # Cloudflare Turnstile: секрет нужен только серверному прокси (route.ts),
+      # проверяющему токен через siteverify до похода в NestJS API.
+      TURNSTILE_SECRET: ${TURNSTILE_SECRET}
     depends_on: [server]
     networks: [internal, proxy]
 

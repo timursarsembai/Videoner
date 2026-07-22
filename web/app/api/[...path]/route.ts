@@ -45,6 +45,38 @@ setInterval(() => {
   }
 }, 60_000);
 
+// Cloudflare Turnstile: проверяем токен ТОЛЬКО на /info — это единственная
+// форма на сайте (см. TurnstileWidget в Page.tsx), и самая ресурсоёмкая точка
+// входа (дёргает yt-dlp). Бот сюда не заходит вообще — он бьёт напрямую в
+// NestJS (API_URL в bot/src/bot.ts), минуя этот прокси, так что проверка не
+// может сломать бота даже случайно.
+const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET;
+
+async function verifyTurnstile(token: unknown, remoteIp: string): Promise<boolean> {
+  if (!TURNSTILE_SECRET) {
+    console.error("TURNSTILE_SECRET not configured — failing closed on /info");
+    return false;
+  }
+  if (typeof token !== "string" || !token) return false;
+
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        secret: TURNSTILE_SECRET,
+        response: token,
+        remoteip: remoteIp,
+      }),
+    });
+    const result = await res.json();
+    return result.success === true;
+  } catch (error) {
+    console.error("Turnstile siteverify request failed:", error);
+    return false;
+  }
+}
+
 // Middleware to verify the request is coming from our frontend
 function isValidRequest(request: NextRequest): boolean {
   const origin = request.headers.get("origin");
@@ -137,6 +169,14 @@ async function handleRequest(request: NextRequest, path: string[]) {
   try {
     const targetUrl = `${API_URL}/${path.join("/")}`;
     const body = request.body ? await request.json() : undefined;
+
+    if (path.length === 1 && path[0] === "info" && request.method === "POST") {
+      const ok = await verifyTurnstile(body?.turnstileToken, getClientIp(request));
+      if (!ok) {
+        return NextResponse.json({ error: "Captcha verification failed" }, { status: 403 });
+      }
+      delete body.turnstileToken;
+    }
 
     const response = await axios({
       method: request.method,

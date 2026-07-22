@@ -12,6 +12,8 @@ import {
 } from "@/lib/validations/url";
 import { Downloader } from "@/types/nav";
 
+// Порядок — по мировой популярности платформы (не по алфавиту и не по дате
+// добавления), чтобы в меню "Downloaders" сверху были самые востребованные.
 export const downloaders: Downloader[] = [
   {
     name: "YouTube",
@@ -23,13 +25,13 @@ export const downloaders: Downloader[] = [
     isUrlValid: isYoutubeUrl,
   },
   {
-    name: "Facebook",
-    value: "facebook",
-    href: "/facebook",
-    description: "Save videos from Facebook posts and reels",
-    logo: "/images/logos/facebook.svg",
+    name: "TikTok",
+    value: "tiktok",
+    href: "/tiktok",
+    description: "Download TikTok videos without watermark",
+    logo: "/images/logos/tiktok.svg",
     isComingSoon: false,
-    isUrlValid: isFacebookUrl,
+    isUrlValid: isTikTokUrl,
   },
   {
     name: "Instagram",
@@ -41,13 +43,13 @@ export const downloaders: Downloader[] = [
     isUrlValid: isInstagramUrl,
   },
   {
-    name: "TikTok",
-    value: "tiktok",
-    href: "/tiktok",
-    description: "Download TikTok videos without watermark",
-    logo: "/images/logos/tiktok.svg",
+    name: "Facebook",
+    value: "facebook",
+    href: "/facebook",
+    description: "Save videos from Facebook posts and reels",
+    logo: "/images/logos/facebook.svg",
     isComingSoon: false,
-    isUrlValid: isTikTokUrl,
+    isUrlValid: isFacebookUrl,
   },
   {
     name: "Twitter",
@@ -59,13 +61,13 @@ export const downloaders: Downloader[] = [
     isUrlValid: isTwitterUrl,
   },
   {
-    name: "Vimeo",
-    value: "vimeo",
-    href: "/vimeo",
-    description: "Download videos from Vimeo in high quality",
-    logo: "/images/logos/vimeo.svg",
+    name: "Pinterest",
+    value: "pinterest",
+    href: "/pinterest",
+    description: "Download videos from Pinterest pins",
+    logo: "/images/logos/pinterest.svg",
     isComingSoon: false,
-    isUrlValid: isVimeoUrl,
+    isUrlValid: isPinterestUrl,
   },
   {
     name: "VK",
@@ -75,6 +77,15 @@ export const downloaders: Downloader[] = [
     logo: "/images/logos/vk_video.svg",
     isComingSoon: false,
     isUrlValid: isVkUrl,
+  },
+  {
+    name: "Vimeo",
+    value: "vimeo",
+    href: "/vimeo",
+    description: "Download videos from Vimeo in high quality",
+    logo: "/images/logos/vimeo.svg",
+    isComingSoon: false,
+    isUrlValid: isVimeoUrl,
   },
   {
     name: "Rutube",
@@ -93,15 +104,6 @@ export const downloaders: Downloader[] = [
     logo: "/images/logos/OK.svg",
     isComingSoon: false,
     isUrlValid: isOkRuUrl,
-  },
-  {
-    name: "Pinterest",
-    value: "pinterest",
-    href: "/pinterest",
-    description: "Download videos from Pinterest pins",
-    logo: "/images/logos/pinterest.svg",
-    isComingSoon: false,
-    isUrlValid: isPinterestUrl,
   },
 ];
 

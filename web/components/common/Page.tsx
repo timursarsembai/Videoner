@@ -13,7 +13,7 @@ import { VideoInfo } from "@/types/youtube";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { VideoInfoSection } from "./VideoInfo";
 
@@ -21,13 +21,39 @@ interface PageProps {
   platform: Platform;
 }
 
+interface UrlFromQueryParamsProps {
+  onFound: (url: string, platform: Platform) => void;
+}
+
+// useSearchParams требует Suspense-границу; на статической генерации Next.js
+// рендерит fallback этой границы. Изолируем хук сюда, в невидимый компонент,
+// чтобы под fallback=null не попадала вся остальная (индексируемая) разметка
+// страницы — иначе краулеры без JS видят пустой <main>.
+const UrlFromQueryParams = ({ onFound }: UrlFromQueryParamsProps) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const urlFromParams = searchParams?.get("url");
+    if (!urlFromParams) return;
+
+    const platform = detectPlatform(urlFromParams);
+    if (!platform) return;
+
+    onFound(urlFromParams, platform);
+    // remove url from query params
+    router.replace(`/${platform}`, { scroll: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, router]);
+
+  return null;
+};
+
 const Page = ({ platform }: PageProps) => {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null);
   const videoSectionRef = useRef<HTMLDivElement>(null);
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const { t } = useLanguage();
 
   // Тексты страницы платформы берём из словаря по её ключу.
@@ -39,21 +65,7 @@ const Page = ({ platform }: PageProps) => {
   const description = t(`platforms.${platform}.pageDescription`);
   const placeholder = t(`platforms.${platform}.placeholder`);
 
-  // Handle URL from query parameters
-  useEffect(() => {
-    const urlFromParams = searchParams?.get("url");
-    if (!urlFromParams) return;
-
-    const platform = detectPlatform(urlFromParams);
-    if (!platform) return;
-
-    setUrl(urlFromParams);
-    fetchVideoInfo(urlFromParams, platform);
-    // remove url from query params
-    router.replace(`/${platform}`, { scroll: false });
-  }, [searchParams, router]);
-
-  const fetchVideoInfo = async (videoUrl: string, platform: Platform) => {
+  const fetchVideoInfo = useCallback(async (videoUrl: string, platform: Platform) => {
     const url = videoUrl.trim();
     if (!url) {
       toast.error(t("toast.enterUrl"));
@@ -98,15 +110,27 @@ const Page = ({ platform }: PageProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
+
+  const handleUrlFromParams = useCallback(
+    (urlFromParams: string, detectedPlatform: Platform) => {
+      setUrl(urlFromParams);
+      fetchVideoInfo(urlFromParams, detectedPlatform);
+    },
+    [fetchVideoInfo]
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetchVideoInfo(url, platform!);
+    await fetchVideoInfo(url, platform);
   };
 
   return (
     <div className="relative">
+      <Suspense fallback={null}>
+        <UrlFromQueryParams onFound={handleUrlFromParams} />
+      </Suspense>
+
       {/* Hero Section */}
       <div className="relative overflow-hidden ">
         <GridPattern

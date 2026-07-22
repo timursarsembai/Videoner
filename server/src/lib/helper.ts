@@ -90,11 +90,16 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
 
     // Цепочка фолбэков: у YouTube видео и аудио лежат отдельными потоками (bv*+ba),
     // а у TikTok/Instagram/Twitter ролик — один муксованный файл (b) без отдельной
-    // аудиодорожки; без фолбэка на "b" yt-dlp падает с "Requested format is not available"
+    // аудиодорожки; без фолбэка на "b" yt-dlp падает с "Requested format is not available".
+    // У Rutube на каждое качество два CDN-зеркала: format_id с суффиксом "-0"
+    // (cdn-video-1.rtbcdn.ru) отдаёт файл нормально, "-1" (river-1.rutube.ru)
+    // стабильно падает с 403 Forbidden — поэтому "-0" пробуем первым; для
+    // остальных площадок такого суффикса не бывает, и эта ветка просто не
+    // матчится, откатываясь на прежнюю цепочку без изменений.
     if (height) {
       formatArr = [
         '-f',
-        `bv*[height<=${height}][ext=mp4]+ba/bv*[height<=${height}]+ba/b[height<=${height}][ext=mp4]/b[height<=${height}]/b`,
+        `b[height<=${height}][format_id$=-0]/bv*[height<=${height}][ext=mp4]+ba/bv*[height<=${height}]+ba/b[height<=${height}][ext=mp4]/b[height<=${height}]/b`,
         '--merge-output-format',
         'mp4',
       ];

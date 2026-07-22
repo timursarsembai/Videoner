@@ -22,13 +22,6 @@ export function UserMenu() {
   // undefined — статус ещё не загружен (не мигаем логин-виджетом до ответа /me)
   const [user, setUser] = useState<SubscriptionStatus | null | undefined>(undefined);
 
-  useEffect(() => {
-    fetch("/api/auth/me")
-      .then((res) => res.json())
-      .then((data) => setUser(data.user ?? null))
-      .catch(() => setUser(null));
-  }, []);
-
   const handleAuth = async (authUser: TelegramAuthUser) => {
     try {
       const res = await fetch("/api/auth/telegram", {
@@ -38,11 +31,42 @@ export function UserMenu() {
       });
       if (res.ok) {
         setUser(await res.json());
+      } else {
+        setUser(null);
       }
     } catch (error) {
       console.error("Telegram login failed:", error);
+      setUser(null);
     }
   };
+
+  useEffect(() => {
+    // Telegram возвращает пользователя редиректом на return_to с подписанными
+    // полями в query-параметрах (см. TelegramLoginWidget.tsx) — если они есть,
+    // это только что завершённый вход, а не обычный заход на страницу.
+    const params = new URLSearchParams(window.location.search);
+    const hash = params.get("hash");
+    const id = params.get("id");
+    if (hash && id) {
+      window.history.replaceState(null, "", window.location.pathname);
+      handleAuth({
+        id: Number(id),
+        first_name: params.get("first_name") ?? "",
+        last_name: params.get("last_name") ?? undefined,
+        username: params.get("username") ?? undefined,
+        photo_url: params.get("photo_url") ?? undefined,
+        auth_date: Number(params.get("auth_date")),
+        hash,
+      });
+      return;
+    }
+
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => setUser(data.user ?? null))
+      .catch(() => setUser(null));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -52,7 +76,7 @@ export function UserMenu() {
   if (user === undefined) return null;
 
   if (!user) {
-    return <TelegramLoginWidget onAuth={handleAuth} />;
+    return <TelegramLoginWidget label={t("auth.loginButton")} />;
   }
 
   const dateStr = user.subscriptionUntil

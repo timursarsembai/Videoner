@@ -99,6 +99,7 @@ services:
         NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
         NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
         NEXT_PUBLIC_TELEGRAM_BOT_USERNAME: ${NEXT_PUBLIC_TELEGRAM_BOT_USERNAME}
+        NEXT_PUBLIC_TELEGRAM_BOT_ID: ${NEXT_PUBLIC_TELEGRAM_BOT_ID}
     container_name: videoner-web
     restart: unless-stopped
     environment:

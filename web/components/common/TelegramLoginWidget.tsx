@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Button } from "../ui/button";
+
+const BOT_ID = process.env.NEXT_PUBLIC_TELEGRAM_BOT_ID;
 
 export interface TelegramAuthUser {
   id: number;
@@ -12,53 +14,34 @@ export interface TelegramAuthUser {
   hash: string;
 }
 
-declare global {
-  interface Window {
-    onTelegramAuth?: (user: TelegramAuthUser) => void;
-  }
-}
-
-const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
-
 interface TelegramLoginWidgetProps {
-  onAuth: (user: TelegramAuthUser) => void;
+  label: string;
 }
 
-// В отличие от Turnstile (у него есть window.turnstile.render() для явного
-// вызова из React), у Telegram Login Widget нет отдельного JS render-API —
-// он сканирует DOM на <script data-telegram-login> в момент СВОЕГО исполнения
-// и заменяет его на iframe-кнопку. next/script дедуплицирует по src и не
-// выполнится повторно при повторном монтировании (см. баг Turnstile этой же
-// сессии) — здесь вместо этого вручную создаём новый <script> при каждом
-// монтировании компонента, так что виджет гарантированно пересканирует
-// именно этот контейнер.
-export function TelegramLoginWidget({ onAuth }: TelegramLoginWidgetProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+// Официальный JS-виджет (iframe от telegram.org/js/telegram-widget.js)
+// на части мобильных браузеров не рендерится вообще — трекинг-защита
+// блокирует скрипт как соц. виджет (Facebook Like-style трекер), и
+// проверить/починить это без живого браузера нельзя. Поэтому вместо
+// стороннего скрипта используем официальный redirect-флоу Telegram Login:
+// обычная ссылка на oauth.telegram.org — Telegram сам вернёт подписанные
+// поля пользователя через query-параметры на return_to (см. UserMenu.tsx).
+export function TelegramLoginWidget({ label }: TelegramLoginWidgetProps) {
+  if (!BOT_ID) return null;
 
-  useEffect(() => {
-    if (!BOT_USERNAME || !containerRef.current) return;
+  const handleClick = () => {
+    const origin = window.location.origin;
+    const returnTo = `${origin}${window.location.pathname}`;
+    const url =
+      `https://oauth.telegram.org/auth?bot_id=${BOT_ID}` +
+      `&origin=${encodeURIComponent(origin)}` +
+      `&request_access=write` +
+      `&return_to=${encodeURIComponent(returnTo)}`;
+    window.location.href = url;
+  };
 
-    window.onTelegramAuth = onAuth;
-
-    const script = document.createElement("script");
-    script.src = "https://telegram.org/js/telegram-widget.js?22";
-    script.async = true;
-    script.setAttribute("data-telegram-login", BOT_USERNAME);
-    script.setAttribute("data-size", "medium");
-    script.setAttribute("data-onauth", "onTelegramAuth(user)");
-    script.setAttribute("data-request-access", "write");
-
-    const container = containerRef.current;
-    container.innerHTML = "";
-    container.appendChild(script);
-
-    return () => {
-      container.innerHTML = "";
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!BOT_USERNAME) return null;
-
-  return <div ref={containerRef} />;
+  return (
+    <Button size="sm" onClick={handleClick}>
+      {label}
+    </Button>
+  );
 }

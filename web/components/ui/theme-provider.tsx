@@ -11,8 +11,12 @@ export function ThemeProvider({
 }: React.ComponentProps<typeof NextThemesProvider>) {
   const pathname = usePathname();
   React.useEffect(() => {
+    // Точное совпадение СЕГМЕНТА пути, а не pathname.includes(...) — substring-
+    // матч ложно сработал бы на любой будущий маршрут/слаг, случайно содержащий
+    // имя платформы как часть строки (например "vk" внутри слага без границ).
+    const segments = pathname.split("/").filter(Boolean);
     const downloader = downloaders.find((downloader) =>
-      pathname.includes(downloader.value)
+      segments.includes(downloader.value)
     );
     downloaders.forEach((downloader) => {
       document.body.classList.remove(downloader.value);

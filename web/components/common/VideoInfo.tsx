@@ -12,7 +12,7 @@ import { api } from "@/lib/api";
 import { useLanguage } from "@/lib/i18n/context";
 import { downloadFile, extractErrorMessage, formatDuration } from "@/lib/utils";
 import { isPaidVideoQuality } from "@/lib/subscription";
-import { SubscriptionStatus } from "@/lib/auth/types";
+import { useAuth } from "@/lib/auth/context";
 import { VideoInfo } from "@/types/youtube";
 import { motion } from "framer-motion";
 import {
@@ -46,7 +46,6 @@ interface DownloadState {
   downloadUrl?: string;
   error?: string;
   isConverting: boolean;
-  isDownloading: boolean;
 }
 
 export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
@@ -61,10 +60,10 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
     status: "idle",
     progress: 0,
     isConverting: false,
-    isDownloading: false,
   });
-  // undefined — статус ещё не загружен, null — не вошёл
-  const [user, setUser] = useState<SubscriptionStatus | null | undefined>(undefined);
+  // Статус — из общего AuthProvider (один запрос /api/auth/me на страницу,
+  // а не отдельный на каждый компонент — см. lib/auth/context.tsx).
+  const { user } = useAuth();
   const [quota, setQuota] = useState<{ unlimited: boolean; remaining: number } | null>(
     null
   );
@@ -72,13 +71,6 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
   // Скачивание на сайте требует входа через Telegram — тот же дневной лимит и
   // HD-гейт, что и в боте (см. память telegram-site-auth.md). Финальное решение
   // всё равно на сервере (enforceWebLimits), это только для UI.
-  useEffect(() => {
-    fetch("/api/auth/me")
-      .then((res) => res.json())
-      .then((data) => setUser(data.user ?? null))
-      .catch(() => setUser(null));
-  }, []);
-
   useEffect(() => {
     if (!user || user.isUnlimited) {
       setQuota(null);
@@ -116,7 +108,6 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
             status: "complete",
             downloadUrl,
             isConverting: false,
-            isDownloading: true,
           }));
           toast.success(t("toast.downloadCompleted"));
           // Start the file download automatically
@@ -134,7 +125,6 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
               status: "error",
               error,
               isConverting: false,
-              isDownloading: false,
             }));
             toast.error(error);
           }
@@ -163,7 +153,6 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
       status: "downloading",
       progress: 0,
       isConverting: false,
-      isDownloading: false,
     });
 
     try {
@@ -188,7 +177,6 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
         progress: 0,
         error: errorMessage,
         isConverting: false,
-        isDownloading: false,
       });
       toast.error(errorMessage);
     }

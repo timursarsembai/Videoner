@@ -4,7 +4,10 @@ import { useLanguage } from "@/lib/i18n/context";
 import Image from "next/image";
 import { Send } from "lucide-react";
 
-const TELEGRAM_BOT = "VideonerBot";
+// Раньше был захардкожен буквально "VideonerBot" — рассинхрон с остальным
+// сайтом (UserMenu.tsx, VideoInfo.tsx), которые читают из env: при смене
+// бота (staging, ребрендинг) футер тихо продолжал бы указывать на старого.
+const TELEGRAM_BOT = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "VideonerBot";
 const DEVELOPER = "sarsembai.dev";
 
 export function Footer() {

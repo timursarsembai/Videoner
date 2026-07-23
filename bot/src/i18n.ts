@@ -14,6 +14,7 @@ interface Messages {
   downloading: string;
   downloadFailed: string;
   downloadTimeout: string;
+  downloadInterrupted: string;
   fileTooBig: (mb: string, url: string) => string;
   sendingFile: string;
   failedPrefix: string;
@@ -50,6 +51,7 @@ const ru: Messages = {
   downloading: "⏬ Скачиваю, это может занять пару минут...",
   downloadFailed: "загрузка завершилась ошибкой",
   downloadTimeout: "тайм-аут загрузки",
+  downloadInterrupted: "⚠️ Бот обновляется и должен перезапуститься — скачивание прервано. Пришли ссылку ещё раз через минуту.",
   fileTooBig: (mb, url) =>
     `Файл получился большим (${mb} МБ) — Telegram не даст боту его отправить.\nСкачай по ссылке: ${url}`,
   sendingFile: "📤 Отправляю файл...",
@@ -106,6 +108,7 @@ const en: Messages = {
   downloading: "⏬ Downloading, this may take a couple of minutes...",
   downloadFailed: "download failed",
   downloadTimeout: "download timed out",
+  downloadInterrupted: "⚠️ The bot is restarting for an update — your download was interrupted. Please send the link again in a minute.",
   fileTooBig: (mb, url) =>
     `The file turned out large (${mb} MB) — Telegram won't let the bot send it.\nDownload it here: ${url}`,
   sendingFile: "📤 Sending file...",

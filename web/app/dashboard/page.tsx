@@ -20,9 +20,10 @@ import {
 } from "recharts";
 import { Button } from "@/components/ui/button";
 import {
-  ANALYTICS_KEY_STORAGE,
   UnauthorizedError,
   fetchAnalyticsSnapshot,
+  loginDashboard,
+  logoutDashboard,
   type AnalyticsSnapshot,
   type ErrorTimeseriesPoint,
 } from "@/lib/analytics-api";
@@ -65,39 +66,45 @@ function formatDay(iso: string): string {
   });
 }
 
+// Ключ мержа — СЫРОЙ ISO-день (не отформатированный "ДД.ММ"), и в конце
+// сортировка по нему же: раньше два независимо отсортированных источника
+// (downloads/newBotUsers) сливались через first-seen порядок вставки в
+// Map — если день был только в одном из массивов, он попадал в конец
+// вместо своего места по дате, ломая линию тренда на графике.
 function mergeTimeseries(snapshot: AnalyticsSnapshot) {
   const map = new Map<string, { day: string; downloads: number; newUsers: number }>();
   for (const point of snapshot.timeseries.downloads) {
-    const key = formatDay(point.day);
-    map.set(key, { day: key, downloads: point.count, newUsers: 0 });
+    map.set(point.day, { day: formatDay(point.day), downloads: point.count, newUsers: 0 });
   }
   for (const point of snapshot.timeseries.newBotUsers) {
-    const key = formatDay(point.day);
-    const existing = map.get(key);
+    const existing = map.get(point.day);
     if (existing) {
       existing.newUsers = point.count;
     } else {
-      map.set(key, { day: key, downloads: 0, newUsers: point.count });
+      map.set(point.day, { day: formatDay(point.day), downloads: 0, newUsers: point.count });
     }
   }
-  return Array.from(map.values());
+  return Array.from(map.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, value]) => value);
 }
 
 function mergeErrorsTimeseries(rows: ErrorTimeseriesPoint[]) {
   const categories = Array.from(new Set(rows.map((r) => r.category))).sort();
   const map = new Map<string, Record<string, string | number>>();
   for (const row of rows) {
-    const key = formatDay(row.day);
-    const existing = map.get(key) ?? { day: key };
+    const existing = map.get(row.day) ?? { day: formatDay(row.day) };
     existing[row.category] = row.count;
-    map.set(key, existing);
+    map.set(row.day, existing);
   }
-  const data = Array.from(map.values()).map((row) => {
-    for (const category of categories) {
-      if (!(category in row)) row[category] = 0;
-    }
-    return row;
-  });
+  const data = Array.from(map.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, row]) => {
+      for (const category of categories) {
+        if (!(category in row)) row[category] = 0;
+      }
+      return row;
+    });
   return { data, categories };
 }
 
@@ -119,12 +126,25 @@ function StatCard({
   );
 }
 
-function ApiKeyForm({ onSubmit, error }: { onSubmit: (key: string) => void; error?: string }) {
+function ApiKeyForm({
+  onSubmit,
+  error,
+}: {
+  onSubmit: (key: string) => Promise<void>;
+  error?: string;
+}) {
   const [value, setValue] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (value.trim()) onSubmit(value.trim());
+    if (!value.trim()) return;
+    setSubmitting(true);
+    try {
+      await onSubmit(value.trim());
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -143,8 +163,8 @@ function ApiKeyForm({ onSubmit, error }: { onSubmit: (key: string) => void; erro
           className="mb-3 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring"
         />
         {error && <p className="mb-3 text-sm text-destructive">{error}</p>}
-        <Button type="submit" className="w-full">
-          Войти
+        <Button type="submit" className="w-full" disabled={submitting}>
+          {submitting ? "Проверяю…" : "Войти"}
         </Button>
       </form>
     </div>
@@ -152,7 +172,9 @@ function ApiKeyForm({ onSubmit, error }: { onSubmit: (key: string) => void; erro
 }
 
 export default function AnalyticsPage() {
-  const [apiKey, setApiKey] = useState<string | null>(null);
+  // undefined — ещё не знаем (первая попытка загрузки не завершилась),
+  // true/false — есть ли действующая httpOnly-сессия дашборда на сервере.
+  const [authenticated, setAuthenticated] = useState<boolean | undefined>(undefined);
   const [snapshot, setSnapshot] = useState<AnalyticsSnapshot | null>(null);
   const [error, setError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
@@ -160,34 +182,44 @@ export default function AnalyticsPage() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem(ANALYTICS_KEY_STORAGE);
-    if (stored) setApiKey(stored);
-  }, []);
-
-  useEffect(() => {
-    if (!apiKey) return;
+    // Ключ больше не хранится в клиентском JS — на каждую загрузку страницы
+    // просто пробуем запрос; httpOnly-cookie (если есть) браузер приложит сам,
+    // а 401 однозначно скажет "сессии нет", без отдельной проверки заранее.
+    if (authenticated === false) return;
     setLoading(true);
     setError(undefined);
-    fetchAnalyticsSnapshot(apiKey, days)
-      .then(setSnapshot)
+    fetchAnalyticsSnapshot(days)
+      .then((data) => {
+        setSnapshot(data);
+        setAuthenticated(true);
+      })
       .catch((e) => {
         if (e instanceof UnauthorizedError) {
-          sessionStorage.removeItem(ANALYTICS_KEY_STORAGE);
-          setApiKey(null);
-          setError("Неверный или отозванный ключ");
+          setAuthenticated(false);
         } else {
           setError(e.message || "Не удалось загрузить данные");
         }
       })
       .finally(() => setLoading(false));
-  }, [apiKey, days, refreshKey]);
+  }, [authenticated, days, refreshKey]);
 
-  const handleKeySubmit = (key: string) => {
-    sessionStorage.setItem(ANALYTICS_KEY_STORAGE, key);
-    setApiKey(key);
+  const handleKeySubmit = async (key: string) => {
+    try {
+      await loginDashboard(key);
+      setError(undefined);
+      setAuthenticated(true);
+    } catch {
+      setError("Неверный или отозванный ключ");
+    }
   };
 
-  if (!apiKey) {
+  const handleLogout = async () => {
+    await logoutDashboard();
+    setSnapshot(null);
+    setAuthenticated(false);
+  };
+
+  if (authenticated === false) {
     return <ApiKeyForm onSubmit={handleKeySubmit} error={error} />;
   }
 
@@ -203,13 +235,7 @@ export default function AnalyticsPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-foreground/60">
         <p>{error}</p>
-        <Button
-          variant="outline"
-          onClick={() => {
-            sessionStorage.removeItem(ANALYTICS_KEY_STORAGE);
-            setApiKey(null);
-          }}
-        >
+        <Button variant="outline" onClick={handleLogout}>
           Ввести ключ заново
         </Button>
       </div>
@@ -253,14 +279,7 @@ export default function AnalyticsPage() {
             >
               {loading ? "Обновляю…" : "Обновить"}
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                sessionStorage.removeItem(ANALYTICS_KEY_STORAGE);
-                setApiKey(null);
-              }}
-            >
+            <Button variant="ghost" size="sm" onClick={handleLogout}>
               Выйти
             </Button>
           </div>

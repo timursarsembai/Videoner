@@ -107,8 +107,8 @@ export class DownloadController {
   @ApiOperation({ summary: 'Get download status' })
   @ApiParam({
     name: 'id',
-    description: 'Download ID',
-    type: 'number',
+    description: 'Download ID (UUID)',
+    type: 'string',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -118,7 +118,10 @@ export class DownloadController {
     status: HttpStatus.NOT_FOUND,
     description: 'Download not found',
   })
-  async getDownloadStatus(@Param('id') id: string) {
+  // ParseUUIDPipe — как у соседнего subscribeToProgress ниже (тот же
+  // Download.id). Без него мусорный id падал в Prisma напрямую и всплывал
+  // менее аккуратной ошибкой, чем чистый 400 на входе.
+  async getDownloadStatus(@Param('id', ParseUUIDPipe) id: string) {
     return this.downloadService.getDownloadStatus(id);
   }
 

@@ -13,17 +13,17 @@ export const downloadFile = (downloadUrl: string) => {
   }
 
   try {
-    // Check if it's a full URL or just a filename
-    const fileName = downloadUrl.includes("http")
-      ? downloadUrl.split("/").pop()
-      : downloadUrl;
+    // Сегодня бэкенд всегда шлёт голое имя файла (см. SSE complete-событие,
+    // VideoDownload.getDownloadUrl на сервере) — но если он когда-нибудь
+    // начнёт отдавать полный URL (CDN/S3-ссылка), раньше этот код всё равно
+    // отбрасывал всё, кроме последнего сегмента пути, и пересобирал его как
+    // same-origin путь на своём бэкенде — рабочая CDN-ссылка превратилась бы
+    // в несуществующий адрес. Теперь полный URL используется как есть.
+    const fullUrl = /^https?:\/\//i.test(downloadUrl)
+      ? downloadUrl
+      : `${process.env.NEXT_PUBLIC_API_URL}/download/${downloadUrl}`;
 
-    if (!fileName) {
-      toast.error("Invalid download URL");
-      return;
-    }
-
-    const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}/download/${fileName}`;
+    const fileName = fullUrl.split("/").pop() || "download";
 
     // Клик по скрытой <a download> запускает нативную загрузку без открытия
     // вкладки — в отличие от window.open(), это не триггерит блокировщик

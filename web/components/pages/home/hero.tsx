@@ -44,12 +44,18 @@ export function Hero() {
 
     if (!downloader) {
       toast.error(t("toast.platformNotSupported"));
+      setLoading(false);
       return;
     }
 
     if (!downloader.isComingSoon) {
       const urlParams = new URLSearchParams({ url });
       router.push(`${downloader.href}?${urlParams.toString()}`);
+      // Сбрасываем и здесь, а не только в comingSoon-ветке ниже — если
+      // навигация по какой-то причине тихо не произойдёт (например, из
+      // bfcache вернутся на эту же страницу), кнопка не должна остаться
+      // в вечном состоянии загрузки.
+      setLoading(false);
     } else {
       toast.error(
         t("toast.comingSoon", {

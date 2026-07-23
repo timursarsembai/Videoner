@@ -54,8 +54,6 @@ export type ExtensionType =
   | keyof typeof videoExtensionLabel
   | keyof typeof audioExtensionLabel;
 
-export const platforms = ['youtube', 'facebook', 'instagram', 'tiktok'];
-
 // Бесплатных скачиваний в боте на пользователя за скользящие 24ч; сверх — платно за Stars.
 export const DAILY_FREE_DOWNLOAD_LIMIT = 10;
 

@@ -44,10 +44,32 @@ if (!API_KEY) {
 
 const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT } } : undefined);
 
-// Последняя присланная ссылка на чат — callback_data в Telegram ограничена 64 байтами,
-// поэтому URL храним здесь, а в кнопке передаём только тип и качество. videoQualities
+// Ссылка на видео — callback_data в Telegram ограничена 64 байтами, поэтому
+// URL храним здесь, а в кнопке передаём только тип и качество. videoQualities
 // нужен, чтобы в callback-обработчике знать, есть ли у видео варианты ниже 720p.
-const sessions = new Map<number, { url: string; videoQualities: string[] }>();
+// Ключ — chatId+messageId сообщения с клавиатурой, а НЕ просто chatId: раньше
+// ключом был один chatId на весь чат, и вторая присланная ссылка (в том же
+// чате, до клика по первой) молча перезаписывала запись — клик по кнопкам
+// ПЕРВОГО сообщения скачивал видео ИЗ ВТОРОГО. В группах это ещё и означало,
+// что клик одного участника по чужой ссылке мог расходовать не то, что он
+// видел на экране. Привязка к конкретному message_id делает каждую клавиатуру
+// независимой от остальных сообщений в том же чате.
+function sessionKey(chatId: number, messageId: number): string {
+  return `${chatId}:${messageId}`;
+}
+const sessions = new Map<string, { url: string; videoQualities: string[]; createdAt: number }>();
+
+// Без TTL sessions рос бы пропорционально числу всех когда-либо присланных
+// ссылок за всё время жизни процесса (в отличие от userRequests рядом, у
+// которого чистка уже была). Час — с запасом больше, чем реально нужно кликнуть
+// по клавиатуре выбора качества после присланной ссылки.
+const SESSION_TTL_MS = 60 * 60 * 1000;
+setInterval(() => {
+  const cutoff = Date.now() - SESSION_TTL_MS;
+  for (const [key, entry] of sessions.entries()) {
+    if (entry.createdAt < cutoff) sessions.delete(key);
+  }
+}, 60_000);
 
 // Бот проксирует /info одним shared API-ключом на всех Telegram-пользователей —
 // без этого один пользователь, засыпающий ссылками, мог бы выесть общий лимит
@@ -118,13 +140,40 @@ async function getQuotaInfo(telegramId?: number): Promise<{ remaining: number; u
   }
 }
 
+// Без таймаута зависший (не 5xx, а именно hang — например под нагрузкой)
+// запрос к серверу мог висеть неограниченно, ломая расчётный 20-минутный
+// потолок ожидания в performDownload (400 итераций × 3с) — пользователь
+// весь это время видел "⏬ Скачиваю..." без единого сообщения об ошибке.
+const API_TIMEOUT_MS = 30_000;
+
 async function api<T = any>(path: string, body?: unknown): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
-    method: body ? "POST" : "GET",
-    headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  const data = (await res.json()) as any;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+  let res: Response;
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      method: body ? "POST" : "GET",
+      headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+      body: body ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
+    });
+  } catch (e: any) {
+    if (e?.name === "AbortError") {
+      throw new Error("Request to server timed out");
+    }
+    throw e;
+  } finally {
+    clearTimeout(timeout);
+  }
+  // Сервер/прокси иногда отдаёт не-JSON тело (HTML со страницей 502/504) —
+  // без этого res.json() бросал бы SyntaxError, которая долетала бы до
+  // пользователя как есть ("Unexpected token < in JSON..."), минуя friendlyError().
+  let data: any;
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error(`API error ${res.status}`);
+  }
   if (!res.ok) {
     throw new Error(Array.isArray(data?.message) ? data.message.join("; ") : data?.message || `API error ${res.status}`);
   }
@@ -300,7 +349,7 @@ bot.on("message:text", async (ctx) => {
     });
 
     const videoQualities = info.qualities.video ?? [];
-    sessions.set(ctx.chat.id, { url, videoQualities });
+    sessions.set(sessionKey(ctx.chat.id, msg.message_id), { url, videoQualities, createdAt: Date.now() });
 
     const quota = await getQuotaInfo(ctx.from?.id);
     const kb = new InlineKeyboard();
@@ -334,6 +383,15 @@ type DownloadMeta = {
   telegramLanguageCode?: string;
 };
 
+// Раньше рестарт/редеплой бота (docker-compose rm -sf bot, шлёт SIGTERM) молча
+// убивал любой активный performDownload — пользователь навсегда оставался
+// смотреть на "⏬ Скачиваю..." без единого сообщения. Полноценное восстановление
+// скачивания после рестарта потребовало бы хранить chatId/messageId на сервере
+// и переживать пересоздание контейнера — непропорционально для этой находки.
+// Вместо этого — трекинг активных загрузок в памяти + явное уведомление при
+// штатной остановке (см. shutdownGracefully ниже), а не полная тишина.
+const activeDownloads = new Map<string, { chatId: number; messageId: number; lang: Lang }>();
+
 async function performDownload(
   chatId: number,
   kind: "v" | "a",
@@ -352,6 +410,8 @@ async function performDownload(
 ) {
   const m = messages[lang];
   const msg = await send.reply(m.downloading);
+  const trackingKey = sessionKey(chatId, msg.message_id);
+  activeDownloads.set(trackingKey, { chatId, messageId: msg.message_id, lang });
 
   try {
     const started = await api<{ downloadId: string; fileName: string }>(
@@ -390,6 +450,8 @@ async function performDownload(
     await send.deleteMessage(msg.message_id);
   } catch (e: any) {
     await send.editMessageText(msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
+  } finally {
+    activeDownloads.delete(trackingKey);
   }
 }
 
@@ -397,13 +459,22 @@ bot.on("callback_query:data", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
   const m = messages[lang];
   const chatId = ctx.chat?.id;
-  const session = chatId ? sessions.get(chatId) : undefined;
-  if (!chatId || !session) {
+  const messageId = ctx.callbackQuery.message?.message_id;
+  const session = chatId && messageId ? sessions.get(sessionKey(chatId, messageId)) : undefined;
+  if (!chatId || !messageId || !session) {
     await ctx.answerCallbackQuery({ text: m.sessionExpired });
     return;
   }
 
-  const [kind, quality] = ctx.callbackQuery.data.split("|") as ["v" | "a", string];
+  // Раньше это был просто type cast без runtime-проверки — если бы в чате
+  // остались inline-кнопки от предыдущей версии бота с другим форматом
+  // callback_data (переживший живую сессию редеплой), всё, что не "v",
+  // молча трактовалось бы как "a" (аудио) с бессмысленным quality.
+  const [kind, quality] = ctx.callbackQuery.data.split("|");
+  if ((kind !== "v" && kind !== "a") || !quality) {
+    await ctx.answerCallbackQuery({ text: m.sessionExpired });
+    return;
+  }
   const extension = kind === "v" ? "mp4" : "mp3";
   await ctx.answerCallbackQuery();
 
@@ -467,9 +538,36 @@ bot.on("message:successful_payment", async (ctx) => {
   if (!isSubscriptionPayload(payload)) return;
 
   const isMonthly = payload.startsWith("sub_month_");
-  const until = isMonthly
-    ? new Date((payment.subscription_expiration_date ?? Math.floor(Date.now() / 1000) + SUBSCRIPTION_MONTH_SECONDS) * 1000)
-    : new Date(Date.now() + SUBSCRIPTION_YEAR_MS);
+  let until: Date;
+  if (isMonthly) {
+    // Месячную дату истечения ведёт сам Telegram (subscription_expiration_date) —
+    // при автопродлении он уже корректно двигает её на новый период.
+    until = new Date(
+      (payment.subscription_expiration_date ?? Math.floor(Date.now() / 1000) + SUBSCRIPTION_MONTH_SECONDS) * 1000,
+    );
+  } else {
+    // Годовая — разовая покупка (см. константы выше), сервер её просто
+    // перезаписывает при каждом вызове /bot-users/subscription. Без этого
+    // повторная покупка ДО истечения текущей подписки могла бы УКОРОТИТЬ
+    // реальный остаток (until = сейчас + год, а не текущий остаток + год).
+    // Аддитивное продление: прибавляем год к максимуму из "сейчас" и уже
+    // действующего subscriptionUntil, а не считаем заново от текущего момента.
+    let base = Date.now();
+    try {
+      const current = await api<{ subscriptionUntil: string | null }>(
+        `/bot-users/${ctx.from.id}/subscription`,
+      );
+      if (current.subscriptionUntil) {
+        const currentUntilMs = new Date(current.subscriptionUntil).getTime();
+        if (currentUntilMs > base) base = currentUntilMs;
+      }
+    } catch (e) {
+      // Оплата уже прошла — ни в коем случае не блокируем активацию из-за
+      // сбоя этого дополнительного запроса, просто считаем от "сейчас".
+      console.error("Failed to fetch current subscription before renewal, defaulting to now:", e);
+    }
+    until = new Date(base + SUBSCRIPTION_YEAR_MS);
+  }
 
   try {
     await api("/bot-users/subscription", {
@@ -488,6 +586,25 @@ bot.on("message:successful_payment", async (ctx) => {
 });
 
 bot.catch((err) => console.error("Bot error:", err.error));
+
+// docker-compose rm -sf (и обычный docker stop) шлют SIGTERM перед тем, как
+// убить процесс — это и есть штатный путь остановки при каждом деплое бота.
+// Успеваем явно предупредить всех, у кого сейчас в процессе скачивание,
+// вместо того чтобы бросать их с зависшим "⏬ Скачиваю..." навсегда.
+async function shutdownGracefully(signal: string) {
+  console.log(`Получен ${signal} — уведомляю ${activeDownloads.size} активных скачиваний перед остановкой...`);
+  await Promise.allSettled(
+    Array.from(activeDownloads.values()).map(({ chatId, messageId, lang }) =>
+      bot.api
+        .editMessageText(chatId, messageId, messages[lang].downloadInterrupted)
+        .catch((e) => console.error(`Failed to notify chat ${chatId} about shutdown:`, e)),
+    ),
+  );
+  await bot.stop();
+  process.exit(0);
+}
+process.on("SIGTERM", () => void shutdownGracefully("SIGTERM"));
+process.on("SIGINT", () => void shutdownGracefully("SIGINT"));
 
 bot.start({
   onStart: (me) => console.log(`Бот @${me.username} запущен${BOT_API_ROOT ? ` (локальный Bot API: ${BOT_API_ROOT})` : " (облачный Bot API, лимит 50 МБ)"}`),

@@ -46,6 +46,31 @@ export interface DownloadRequestMeta {
 export class DownloadService {
   private readonly downloadPath: string;
 
+  // TOCTOU-защита для enforceWebLimits: без неё несколько параллельных вкладок
+  // одного пользователя читают ОДИН И ТОТ ЖЕ freeUsed (запись Download ещё не
+  // создана ни для одного из запросов), все проходят проверку лимита и создают
+  // записи одновременно — дневной лимит можно пробить числом параллельных
+  // вкладок. Единственный процесс Node на инстанс — простой promise-based
+  // мьютекс по telegramId достаточен, распределённая блокировка не нужна.
+  private webLimitLocks = new Map<number, Promise<unknown>>();
+
+  private async withWebLimitLock<T>(telegramId: number, fn: () => Promise<T>): Promise<T> {
+    const prior = this.webLimitLocks.get(telegramId) ?? Promise.resolve();
+    const chained = prior.then(fn, fn);
+    // marker — тот же объект промиса и в Map, и в сравнении ниже: если за
+    // время выполнения fn() никто не встал в очередь следом за нами, запись
+    // в Map всё ещё указывает ровно на marker, и её можно безопасно убрать.
+    const marker = chained.catch(() => undefined);
+    this.webLimitLocks.set(telegramId, marker);
+    try {
+      return await chained;
+    } finally {
+      if (this.webLimitLocks.get(telegramId) === marker) {
+        this.webLimitLocks.delete(telegramId);
+      }
+    }
+  }
+
   constructor(
     private prisma: PrismaService,
     private ytdlp: YtdlpService,
@@ -261,8 +286,20 @@ export class DownloadService {
 
   // Гвард ValidUrlGuard кладёт платформу строкой в нижнем регистре
   // ('youtube'|'facebook'|...), а в Prisma она хранится как enum в верхнем.
+  // Раньше при несовпадении platform молча возвращал undefined — Prisma
+  // трактует undefined как "поле не передано" и применяет
+  // @default(YOUTUBE) из схемы, тихо искажая аналитику по платформам
+  // без единой ошибки. Теперь падает явно — если это когда-нибудь
+  // произойдёт (новая платформа в getPlatform() без соответствующего
+  // значения в enum Downloaders), проблема будет видна сразу, а не через
+  // недели в перекошенной статистике.
   private resolveDownloader(platform: string): Downloaders {
-    return Downloaders[platform.toUpperCase() as keyof typeof Downloaders];
+    const key = platform?.toUpperCase() as keyof typeof Downloaders;
+    const downloader = Downloaders[key];
+    if (!downloader) {
+      throw new BadRequestException(`Unsupported platform: ${platform}`);
+    }
+    return downloader;
   }
 
   private async resolveBotUserId(
@@ -372,7 +409,6 @@ export class DownloadService {
     try {
       // Check duration limit before proceeding
       const info = await this.checkDurationLimit(url, req);
-      await this.enforceWebLimits(meta, quality, info, (req as any).platform, true);
 
       const downloadDir = this.ensureDownloadDirectory();
 
@@ -381,21 +417,29 @@ export class DownloadService {
       const tempFileName = getFileName(info.title, quality, initialExtension);
       const finalFileName = getFileName(info.title, quality, extension);
 
-      const botUserId = await this.resolveBotUserId(meta);
-
-      // Create download record in database
-      const download = await this.createDownload({
-        originalUrl: url,
-        downloader: this.resolveDownloader((req as any).platform),
-        filename: finalFileName,
-        apiKeyId: (req as any).apiKey?.id,
-        botUserId,
-        source: meta.source,
-        videoTitle: info.title,
-        videoDuration: info.duration,
-        isPaid: meta.isPaid,
-        starsAmount: meta.starsAmount,
-      });
+      // Проверка дневного лимита и создание записи Download должны быть
+      // атомарны относительно ДРУГИХ запросов того же telegramId — иначе
+      // несколько параллельных вкладок читают один и тот же freeUsed (ни
+      // одна запись ещё не создана) и все проходят проверку разом (TOCTOU).
+      const createDownloadRecord = async () => {
+        await this.enforceWebLimits(meta, quality, info, (req as any).platform, true);
+        const botUserId = await this.resolveBotUserId(meta);
+        return this.createDownload({
+          originalUrl: url,
+          downloader: this.resolveDownloader((req as any).platform),
+          filename: finalFileName,
+          apiKeyId: (req as any).apiKey?.id,
+          botUserId,
+          source: meta.source,
+          videoTitle: info.title,
+          videoDuration: info.duration,
+          isPaid: meta.isPaid,
+          starsAmount: meta.starsAmount,
+        });
+      };
+      const download = meta.telegramId
+        ? await this.withWebLimitLock(meta.telegramId, createDownloadRecord)
+        : await createDownloadRecord();
 
       // Create progress subject
       const progressSubject = this.createProgressSubject(
@@ -603,26 +647,30 @@ export class DownloadService {
     try {
       // Check duration limit before proceeding
       const info = await this.checkDurationLimit(url, req);
-      await this.enforceWebLimits(meta, undefined, info, (req as any).platform, false);
 
       const downloadDir = this.ensureDownloadDirectory();
       const fileName = getFileName(info.title, quality, extension);
 
-      const botUserId = await this.resolveBotUserId(meta);
-
-      // Create download record in database
-      const download = await this.createDownload({
-        originalUrl: url,
-        downloader: this.resolveDownloader((req as any).platform),
-        filename: fileName,
-        apiKeyId: (req as any).apiKey?.id,
-        botUserId,
-        source: meta.source,
-        videoTitle: info.title,
-        videoDuration: info.duration,
-        isPaid: meta.isPaid,
-        starsAmount: meta.starsAmount,
-      });
+      // См. downloadVideo() — та же TOCTOU-защита дневного лимита.
+      const createDownloadRecord = async () => {
+        await this.enforceWebLimits(meta, undefined, info, (req as any).platform, false);
+        const botUserId = await this.resolveBotUserId(meta);
+        return this.createDownload({
+          originalUrl: url,
+          downloader: this.resolveDownloader((req as any).platform),
+          filename: fileName,
+          apiKeyId: (req as any).apiKey?.id,
+          botUserId,
+          source: meta.source,
+          videoTitle: info.title,
+          videoDuration: info.duration,
+          isPaid: meta.isPaid,
+          starsAmount: meta.starsAmount,
+        });
+      };
+      const download = meta.telegramId
+        ? await this.withWebLimitLock(meta.telegramId, createDownloadRecord)
+        : await createDownloadRecord();
 
       // Create progress subject
       const progressSubject = this.createProgressSubject(

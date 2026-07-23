@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useLanguage } from "@/lib/i18n/context";
-import { SubscriptionStatus } from "@/lib/auth/types";
+import { useAuth } from "@/lib/auth/context";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -25,29 +24,18 @@ interface UserMenuProps {
 
 export function UserMenu({ compact = false }: UserMenuProps) {
   const { t, language } = useLanguage();
-  // undefined — статус ещё не загружен (не мигаем логин-виджетом до ответа /me)
-  const [user, setUser] = useState<SubscriptionStatus | null | undefined>(undefined);
-
-  // Обработка Telegram-редиректа (#tgAuthResult=...) живёт в Navbar — она
-  // должна выполниться РОВНО ОДИН РАЗ (POST на /api/auth/telegram), а UserMenu
-  // монтируется дважды одновременно (десктоп + мобильная шапка, оба всегда
-  // в DOM, просто один скрыт через CSS) — если бы каждый экземпляр сам себе
-  // парсил хэш, была бы гонка за то, кто первым его обнулит. После успешного
-  // входа Navbar делает location.replace() — так что здесь просто читаем
-  // текущую сессию, ничего не обрабатываем.
-  useEffect(() => {
-    fetch("/api/auth/me")
-      .then((res) => res.json())
-      .then((data) => setUser(data.user ?? null))
-      .catch(() => setUser(null));
-  }, []);
+  // Статус приходит из общего AuthProvider (один запрос /api/auth/me на всю
+  // страницу, а не по одному на каждый смонтированный потребитель — см.
+  // lib/auth/context.tsx). Обработка Telegram-редиректа (#tgAuthResult=...)
+  // по-прежнему живёт в Navbar (должна выполниться РОВНО ОДИН РАЗ), здесь
+  // просто читаем текущую сессию.
+  const { user, refresh } = useAuth();
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    // Полная перезагрузка, а не просто setUser(null) — на странице может быть
-    // ещё несколько независимых потребителей /api/auth/me (см. VideoInfo.tsx),
-    // у каждого свой локальный стейт без общего контекста.
-    window.location.reload();
+    // refresh(), а не полная перезагрузка страницы — общий контекст сам
+    // обновит состояние у всех потребителей (обе UserMenu, VideoInfo и т.д.).
+    refresh();
   };
 
   if (user === undefined) return null;

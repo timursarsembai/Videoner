@@ -49,11 +49,13 @@ export class InfoService {
     }
 
     if (telegramId) {
-      void this.botUser.upsertBotUser({
-        telegramId,
-        username: telegramUsername,
-        languageCode: telegramLanguageCode,
-      });
+      // Fire-and-forget: не блокируем ответ /info на апсерт BotUser. Без
+      // .catch() отклонённый промис ловил бы только глобальный
+      // unhandledRejection-хендлер в main.ts (страховка, не диагностика) —
+      // здесь же сразу видно, что именно и для какого telegramId не удалось.
+      this.botUser
+        .upsertBotUser({ telegramId, username: telegramUsername, languageCode: telegramLanguageCode })
+        .catch((e) => console.error(`Failed to upsert BotUser ${telegramId}:`, e));
     }
 
     try {

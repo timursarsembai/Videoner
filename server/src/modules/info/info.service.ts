@@ -30,9 +30,6 @@ const COOKIE_FALLBACK_PLATFORMS = [
   'okru',
 ];
 
-const AUTH_REQUIRED_PATTERN =
-  /(login required|only works when logged-in|rate-limit reached|HTTP Error 401|Unauthorized)/i;
-
 @Injectable()
 export class InfoService {
   constructor(
@@ -92,22 +89,31 @@ export class InfoService {
   }
 
   private async fetchInfoWithCookieFallback(url: string, platform: string) {
+    if (!COOKIE_FALLBACK_PLATFORMS.includes(platform)) {
+      return this.ytdlp.getYtdlpVideoInfo(url);
+    }
+
     try {
       return await this.ytdlp.getYtdlpVideoInfo(url);
     } catch (error) {
+      // Раньше фолбэк срабатывал только на паттерн "нужен логин" в тексте
+      // ошибки — но протухшая/залогиненная Facebook-сессия в cookies.txt
+      // может сломать парсинг extractor'а совсем другим, непредсказуемым
+      // сообщением ("Cannot parse data"), а не только явным auth-текстом.
+      // Поэтому теперь просто пробуем без cookies при ЛЮБОЙ ошибке для этих
+      // платформ — если сработало, значит дело было в cookies (и стоит
+      // уведомить админа), если нет — показываем исходную ошибку, она
+      // информативнее, чем ошибка повторной попытки.
       const message = error instanceof Error ? error.message : String(error);
-      if (
-        !COOKIE_FALLBACK_PLATFORMS.includes(platform) ||
-        !AUTH_REQUIRED_PATTERN.test(message)
-      ) {
+      try {
+        const result = await this.ytdlp.getYtdlpVideoInfo(url, {
+          skipCookies: true,
+        });
+        void this.alert.notifyCookiesExpired(platform, message);
+        return result;
+      } catch {
         throw error;
       }
-
-      // Cookies выглядят протухшими — уведомляем админа независимо от того,
-      // сработает ли фолбэк (публичный контент может скачаться и анонимно,
-      // но cookies всё равно пора переэкспортировать для приватного).
-      void this.alert.notifyCookiesExpired(platform, message);
-      return this.ytdlp.getYtdlpVideoInfo(url, { skipCookies: true });
     }
   }
 

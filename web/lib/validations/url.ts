@@ -74,13 +74,17 @@ export const isFacebookUrl = (url: string) => {
     }
 
     // Handle different URL patterns
+    // /share/... — общий шаринг-редиректор Facebook (/share/v/ для видео,
+    // /share/r/ для reels, /share/p/ для постов); реальный тип контента
+    // виден только после редиректа, поэтому здесь принимаем весь префикс
+    // и оставляем финальную проверку "это вообще видео?" на yt-dlp.
     const validPaths = [
       "/watch",
       "/videos",
       "/reel",
       "/story",
       "/groups",
-      "/share/v",
+      "/share/",
     ];
     const path = urlObj.pathname.toLowerCase();
 

@@ -73,13 +73,15 @@ export const isFacebookUrl = (url: string) => {
     }
 
     // Handle different URL patterns
+    // /share/... — общий шаринг-редиректор Facebook (video/reel/post),
+    // конкретный тип виден только после редиректа — см. web/lib/validations/url.ts.
     const validPaths = [
       '/watch',
       '/videos',
       '/reel',
       '/story',
       '/groups',
-      '/share/v',
+      '/share/',
     ];
     const path = urlObj.pathname.toLowerCase();
 

@@ -52,6 +52,8 @@ const en = {
     notSubscribed: "No active subscription",
     subscribeButton: "Subscribe via Telegram",
     logout: "Log out",
+    switchAccountHint: "Not your account?",
+    switchAccountLink: "Log out of Telegram Web",
   },
   home: {
     new: "New",
@@ -370,6 +372,8 @@ const es: Translations = {
     notSubscribed: "Sin suscripción activa",
     subscribeButton: "Suscribirse vía Telegram",
     logout: "Cerrar sesión",
+    switchAccountHint: "¿No es tu cuenta?",
+    switchAccountLink: "Cerrar sesión en Telegram Web",
   },
   home: {
     new: "Nuevo",
@@ -686,6 +690,8 @@ const ru: Translations = {
     notSubscribed: "Нет активной подписки",
     subscribeButton: "Оформить подписку в Telegram",
     logout: "Выйти",
+    switchAccountHint: "Не тот аккаунт?",
+    switchAccountLink: "Выйти из Telegram Web",
   },
   home: {
     new: "Новое",

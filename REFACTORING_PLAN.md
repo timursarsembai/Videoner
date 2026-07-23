@@ -145,11 +145,15 @@ build-скрипт).
 переиспользующие прод-Postgres под отдельной БД (`downloader_staging`).
 Живьём проверено: `docker-compose -p videoner-staging` поднял `server` с
 чистой БД, все 16 миграций применились с нуля, Nest стартовал, бинарники
-загрузились один раз — контур рабочий. **Остались два ручных шага перед
-использованием** (не автоматизируются, подробно описаны в шапке самого
-`docker-compose.staging.yml`): (1) DNS A-запись `staging.videoner.download`
-→ тот же IP; (2) новый Proxy Host в Nginx Proxy Manager, маршрутизация как
-у прод-хоста, только на `*-staging` контейнеры.
+загрузились один раз — контур рабочий. Оба ручных шага (DNS A-запись
+`staging.videoner.download` → тот же IP; Proxy Host в Nginx Proxy Manager
+с Custom Locations `/download`+`/analytics` → `*-server-staging:3001`,
+остальное → `*-web-staging:3000`, SSL от Let's Encrypt) выполнены
+пользователем 2026-07-23 и подтверждены сквозной проверкой: `/`, `/ru` →
+200; `/analytics`, `/download/quota` → корректно доходят до
+`videoner-server-staging` (заголовки `x-powered-by: Express`, коды
+идентичны прод-эталону). Staging полностью рабочий и доступен по
+`https://staging.videoner.download`.
 
 **6. [СДЕЛАНО 2026-07-23, коммит `4f942e1`] Разбить god-функцию/god-объекты**
 - `download.service.ts`: `downloadVideo()`/`downloadAudio()` были ~200/~135

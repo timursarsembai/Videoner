@@ -24,8 +24,14 @@ interface PageProps {
   platform: Platform;
 }
 
+interface RestoredSelection {
+  quality?: string;
+  tab?: "video" | "audio";
+  ext?: string;
+}
+
 interface UrlFromQueryParamsProps {
-  onFound: (url: string, platform: Platform) => void;
+  onFound: (url: string, platform: Platform, selection: RestoredSelection) => void;
 }
 
 // useSearchParams требует Suspense-границу; на статической генерации Next.js
@@ -44,7 +50,12 @@ const UrlFromQueryParams = ({ onFound }: UrlFromQueryParamsProps) => {
     const platform = detectPlatform(urlFromParams);
     if (!platform) return;
 
-    onFound(urlFromParams, platform);
+    const tabParam = searchParams?.get("tab");
+    onFound(urlFromParams, platform, {
+      quality: searchParams?.get("quality") ?? undefined,
+      tab: tabParam === "video" || tabParam === "audio" ? tabParam : undefined,
+      ext: searchParams?.get("ext") ?? undefined,
+    });
     // remove url from query params
     router.replace(localizedHref(language, `/${platform}`), { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,11 +137,13 @@ const Page = ({ platform }: PageProps) => {
   // успевает загрузиться и выдать токен (скрипт грузится асинхронно) — откладываем
   // до готовности токена, а не просто требуем повторной ручной отправки формы.
   const [pendingAutoFetch, setPendingAutoFetch] = useState<{ url: string; platform: Platform } | null>(null);
+  const [restoredSelection, setRestoredSelection] = useState<RestoredSelection | null>(null);
 
   const handleUrlFromParams = useCallback(
-    (urlFromParams: string, detectedPlatform: Platform) => {
+    (urlFromParams: string, detectedPlatform: Platform, selection: RestoredSelection) => {
       setUrl(urlFromParams);
       setPendingAutoFetch({ url: urlFromParams, platform: detectedPlatform });
+      setRestoredSelection(selection);
     },
     []
   );
@@ -140,6 +153,14 @@ const Page = ({ platform }: PageProps) => {
     fetchVideoInfo(pendingAutoFetch.url, pendingAutoFetch.platform);
     setPendingAutoFetch(null);
   }, [pendingAutoFetch, turnstileToken, fetchVideoInfo]);
+
+  // restoredSelection нужен только для самого первого монтирования
+  // VideoInfoSection после auto-fetch (initialQuality и т.п. — это просто
+  // сид для useState там, читается один раз) — чистим его следующим
+  // рендером, чтобы он не переиспользовался при следующем ручном поиске.
+  useEffect(() => {
+    if (videoInfo && restoredSelection) setRestoredSelection(null);
+  }, [videoInfo, restoredSelection]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -286,7 +307,13 @@ const Page = ({ platform }: PageProps) => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <VideoInfoSection videoInfo={videoInfo} url={url} />
+          <VideoInfoSection
+            videoInfo={videoInfo}
+            url={url}
+            initialQuality={restoredSelection?.quality}
+            initialTab={restoredSelection?.tab}
+            initialExtension={restoredSelection?.ext}
+          />
         </motion.div>
       )}
 

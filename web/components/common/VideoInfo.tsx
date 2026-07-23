@@ -35,6 +35,11 @@ const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
 interface VideoInfoSectionProps {
   videoInfo: VideoInfo;
   url: string;
+  // Восстановление выбора после редиректа на Telegram-логин и обратно —
+  // см. TelegramLoginWidget.tsx (preserveParams) и Page.tsx (UrlFromQueryParams).
+  initialQuality?: string;
+  initialTab?: FormatType;
+  initialExtension?: string;
 }
 
 type FormatType = "video" | "audio";
@@ -48,14 +53,32 @@ interface DownloadState {
   isConverting: boolean;
 }
 
-export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
+export const VideoInfoSection = ({
+  videoInfo,
+  url,
+  initialQuality,
+  initialTab,
+  initialExtension,
+}: VideoInfoSectionProps) => {
   const { t } = useLanguage();
-  const [selectedQuality, setSelectedQuality] = useState<string | null>(null);
+  const restoredTab: FormatType =
+    initialTab && videoInfo.qualities[initialTab]?.length ? initialTab : "video";
+  const [selectedQuality, setSelectedQuality] = useState<string | null>(() =>
+    initialQuality && videoInfo.qualities[restoredTab]?.includes(initialQuality)
+      ? initialQuality
+      : null
+  );
   const [lastDownloadedQuality, setLastDownloadedQuality] = useState<
     string | null
   >(null);
-  const [activeTab, setActiveTab] = useState<FormatType>("video");
-  const [selectedExtension, setSelectedExtension] = useState<string>("mp4");
+  const [activeTab, setActiveTab] = useState<FormatType>(restoredTab);
+  const [selectedExtension, setSelectedExtension] = useState<string>(() =>
+    initialExtension && videoInfo.extensions[restoredTab]?.includes(initialExtension)
+      ? initialExtension
+      : restoredTab === "video"
+        ? "mp4"
+        : videoInfo.extensions.audio[0]
+  );
   const [downloadState, setDownloadState] = useState<DownloadState>({
     status: "idle",
     progress: 0,
@@ -478,7 +501,15 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                         <p className="text-sm text-muted-foreground">
                           {t("video.loginRequiredHint")}
                         </p>
-                        <TelegramLoginWidget label={t("auth.loginButton")} />
+                        <TelegramLoginWidget
+                          label={t("auth.loginButton")}
+                          preserveParams={{
+                            url,
+                            tab: activeTab,
+                            ext: selectedExtension,
+                            ...(selectedQuality ? { quality: selectedQuality } : {}),
+                          }}
+                        />
                       </div>
                     )}
 

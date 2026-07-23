@@ -30,7 +30,17 @@
 # перепутав dev/prod project name.
 
 services:
-  server:
+  # ВАЖНО: service-ключ (не container_name!) НЕ должен совпадать с именем
+  # сервиса в docker-compose.prod.yml ("server"/"web") — Docker Compose
+  # автоматически регистрирует ИМЯ СЕРВИСА как сетевой алиас на КАЖДОЙ сети,
+  # к которой он подключён. Т.к. этот сервис сидит на общей с прод-стеком
+  # сети "internal"/videoner_internal (нужно для доступа к postgres) и на
+  # "proxy"/proxy-network, одинаковое имя "server" здесь и в проде создавало
+  # ДВА контейнера с одним DNS-именем "server" на этих сетях — Docker DNS
+  # отдавал оба IP по round-robin, и часть прод-запросов от videoner-web к
+  # http://server:3001 случайно улетала на staging-бэкенд. Обнаружено и
+  # исправлено 2026-07-23 — см. память telegram-site-auth.md/platform-download-issues.md.
+  server-staging:
     build: ./server
     container_name: videoner-server-staging
     restart: unless-stopped
@@ -49,7 +59,7 @@ services:
       - ./server/cookies.txt:/app/cookies.txt
     networks: [internal, staging_internal, proxy]
 
-  web:
+  web-staging:
     build:
       context: ./web
       args:
@@ -64,11 +74,11 @@ services:
       NODE_ENV: production
       NEXT_PUBLIC_APP_URL: https://${PUBLIC_DOMAIN}
       NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
-      API_INTERNAL_URL: http://server:3001
+      API_INTERNAL_URL: http://server-staging:3001
       API_KEY: ${API_KEY}
       TURNSTILE_SECRET: ${TURNSTILE_SECRET}
       SESSION_SECRET: ${SESSION_SECRET}
-    depends_on: [server]
+    depends_on: [server-staging]
     networks: [staging_internal, proxy]
 
 networks:

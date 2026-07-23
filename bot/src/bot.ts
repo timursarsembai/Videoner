@@ -14,20 +14,19 @@ const ADMIN_TELEGRAM_ID = process.env.ADMIN_TELEGRAM_ID
   ? Number(process.env.ADMIN_TELEGRAM_ID)
   : undefined;
 
-// HD (720p и выше) — только по подписке, разовой продажи за Stars больше нет
-// (было решение продукта: слишком легко обходило смысл подписки). Качество
-// до 480p включительно — бесплатно в рамках дневного лимита. Исключение:
+// HD (720p и выше) — только по подписке. Качество до 480p включительно —
+// бесплатно в рамках дневного лимита, сверх лимита — тоже только подпиской
+// (разовых оплат Stars за конкретное скачивание в боте больше нет вообще —
+// продуктовое решение, слишком легко обходило смысл подписки). Исключение:
 // если у видео нет вариантов ниже 720p вообще, 720p тоже бесплатен (см. isPaidQuality).
 const PAID_QUALITY_MIN_HEIGHT = 720;
-// STARS_PRICE используется только для разового скачивания сверх дневного
-// лимита (не-HD) — см. requiresPayment в callback_query-хендлере.
-const STARS_PRICE = 15;
 
-// Цены подписок подобраны от цены разового HD-скачивания (15⭐ ≈ $0.30 по курсу
-// ~$0.02/⭐ при покупке звёзд в приложении): месяц ≈ $3, год ≈ $30 (экономия
-// ~$6 к 12 месячным). Telegram Stars поддерживает автопродление подписки ТОЛЬКО
-// с фиксированным периодом 30 дней — годовой автопродляемой подписки в принципе
-// не существует, поэтому годовая реализована как разовая покупка на 365 дней
+// Цены подписок изначально подбирались от цены прежнего разового HD-скачивания
+// (15⭐ ≈ $0.30 по курсу ~$0.02/⭐ при покупке звёзд в приложении, тот разовый
+// вариант убран) — месяц ≈ $3, год ≈ $30 (экономия ~$6 к 12 месячным). Telegram
+// Stars поддерживает автопродление подписки ТОЛЬКО с фиксированным периодом
+// 30 дней — годовой автопродляемой подписки в принципе не существует, поэтому
+// годовая реализована как разовая покупка на 365 дней
 // (см. память security-audit — секция про подписки).
 const SUBSCRIPTION_MONTHLY_STARS = 150;
 const SUBSCRIPTION_YEARLY_STARS = 1500;
@@ -81,11 +80,6 @@ setInterval(() => {
   }
 }, 60_000);
 
-// Ожидающие оплаты HD-скачивания — invoice_payload тоже ограничен, поэтому
-// сами данные (ссылка/качество) держим здесь, а в payload кладём только id.
-type PendingDownload = { chatId: number; url: string; kind: "v" | "a"; quality: string; extension: string };
-const pendingPayments = new Map<string, PendingDownload>();
-
 // Если у видео вообще нет вариантов ниже 720p (площадка отдаёт 720p как минимум),
 // 720p — единственный разумный выбор пользователя, поэтому отдаём его бесплатно.
 // Если варианты ниже 720p есть, 720p остаётся платным, как и раньше.
@@ -106,8 +100,8 @@ function isPaidQuality(kind: string, quality: string, availableQualities: string
 }
 
 // 10 бесплатных скачиваний в сутки на пользователя (см. DAILY_FREE_DOWNLOAD_LIMIT на сервере) —
-// сверх лимита можно разово доплатить Stars (HD такой опции больше не имеет, см. STARS_PRICE
-// выше). Падает открыто (не блокирует скачивание, remaining = Infinity), если сервер недоступен,
+// сверх лимита только подписка (никаких разовых Stars-оплат в боте больше нет вообще).
+// Падает открыто (не блокирует скачивание, remaining = Infinity), если сервер недоступен,
 // чтобы сбой проверки лимита не клал бота. unlimited (выдаётся через /grant) снимает лимит и HD-гейт целиком.
 async function getQuotaInfo(telegramId?: number): Promise<{ remaining: number; unlimited: boolean }> {
   if (!telegramId) return { remaining: Infinity, unlimited: false };
@@ -338,8 +332,6 @@ type DownloadMeta = {
   telegramId?: number;
   telegramUsername?: string;
   telegramLanguageCode?: string;
-  isPaid: boolean;
-  starsAmount?: number;
 };
 
 async function performDownload(
@@ -418,26 +410,17 @@ bot.on("callback_query:data", async (ctx) => {
   const quota = await getQuotaInfo(ctx.from?.id);
   const isHdQuality = isPaidQuality(kind, quality, session.videoQualities);
 
-  // HD больше не продаётся разово за Stars — только по подписке (см. плату
-  // ниже, оставшуюся исключительно для случая исчерпанного дневного лимита).
+  // Ни HD, ни скачивание сверх дневного лимита больше нельзя купить разово —
+  // единственный способ снять оба ограничения — подписка.
   if (!quota.unlimited && isHdQuality) {
     const subKb = addSubscriptionButtons(new InlineKeyboard(), m);
     await ctx.reply(m.hdRequiresSubscription(quality), { reply_markup: subKb });
     return;
   }
 
-  const requiresPayment = !quota.unlimited && quota.remaining <= 0;
-
-  if (requiresPayment) {
-    const id = crypto.randomUUID();
-    pendingPayments.set(id, { chatId, url: session.url, kind, quality, extension });
-    await ctx.replyWithInvoice(
-      m.invoiceTitleQuotaExceeded,
-      m.invoiceDescriptionQuotaExceeded(STARS_PRICE),
-      id,
-      "XTR",
-      [{ label: m.invoiceLabelQuotaExceeded, amount: STARS_PRICE }]
-    );
+  if (!quota.unlimited && quota.remaining <= 0) {
+    const subKb = addSubscriptionButtons(new InlineKeyboard(), m);
+    await ctx.reply(m.dailyLimitReached, { reply_markup: subKb });
     return;
   }
 
@@ -452,14 +435,15 @@ bot.on("callback_query:data", async (ctx) => {
     telegramId: ctx.from?.id,
     telegramUsername: ctx.from?.username,
     telegramLanguageCode: ctx.from?.language_code,
-    isPaid: false,
   });
 });
 
 // Подписочные payload детерминированы (sub_month_<telegramId> / sub_year_<telegramId>),
-// а не случайный id из pendingPayments — включая ПОВТОРНЫЕ автосписания месячной
-// подписки, для которых Telegram переиспользует тот же payload и снова шлёт
-// pre_checkout_query/successful_payment без нового вызова createInvoiceLink.
+// Единственный вид оплаты, который теперь существует в боте (никаких разовых
+// покупок конкретных скачиваний) — sub_month_<telegramId> / sub_year_<telegramId>,
+// детерминированный payload (не случайный id) — включая ПОВТОРНЫЕ автосписания
+// месячной подписки, для которых Telegram переиспользует тот же payload и снова
+// шлёт pre_checkout_query/successful_payment без нового вызова createInvoiceLink.
 function isSubscriptionPayload(payload: string): boolean {
   return payload.startsWith("sub_month_") || payload.startsWith("sub_year_");
 }
@@ -471,12 +455,7 @@ bot.on("pre_checkout_query", async (ctx) => {
     await ctx.answerPreCheckoutQuery(true);
     return;
   }
-  const pending = pendingPayments.get(payload);
-  if (!pending) {
-    await ctx.answerPreCheckoutQuery(false, messages[lang].orderExpired);
-    return;
-  }
-  await ctx.answerPreCheckoutQuery(true);
+  await ctx.answerPreCheckoutQuery(false, messages[lang].orderExpired);
 });
 
 bot.on("message:successful_payment", async (ctx) => {
@@ -485,49 +464,27 @@ bot.on("message:successful_payment", async (ctx) => {
   const payment = ctx.message.successful_payment;
   const payload = payment.invoice_payload;
 
-  if (isSubscriptionPayload(payload)) {
-    const isMonthly = payload.startsWith("sub_month_");
-    const until = isMonthly
-      ? new Date((payment.subscription_expiration_date ?? Math.floor(Date.now() / 1000) + SUBSCRIPTION_MONTH_SECONDS) * 1000)
-      : new Date(Date.now() + SUBSCRIPTION_YEAR_MS);
+  if (!isSubscriptionPayload(payload)) return;
 
-    try {
-      await api("/bot-users/subscription", {
-        telegramId: ctx.from.id,
-        telegramUsername: ctx.from.username,
-        telegramLanguageCode: ctx.from.language_code,
-        kind: isMonthly ? "MONTHLY" : "YEARLY",
-        until: until.toISOString(),
-      });
-      const dateStr = until.toLocaleDateString(lang === "ru" ? "ru-RU" : "en-US");
-      await ctx.reply(m.subscriptionActivated(dateStr, isMonthly));
-    } catch (e: any) {
-      console.error("Failed to persist subscription:", e);
-      await ctx.reply(m.subscriptionActivationFailed);
-    }
-    return;
+  const isMonthly = payload.startsWith("sub_month_");
+  const until = isMonthly
+    ? new Date((payment.subscription_expiration_date ?? Math.floor(Date.now() / 1000) + SUBSCRIPTION_MONTH_SECONDS) * 1000)
+    : new Date(Date.now() + SUBSCRIPTION_YEAR_MS);
+
+  try {
+    await api("/bot-users/subscription", {
+      telegramId: ctx.from.id,
+      telegramUsername: ctx.from.username,
+      telegramLanguageCode: ctx.from.language_code,
+      kind: isMonthly ? "MONTHLY" : "YEARLY",
+      until: until.toISOString(),
+    });
+    const dateStr = until.toLocaleDateString(lang === "ru" ? "ru-RU" : "en-US");
+    await ctx.reply(m.subscriptionActivated(dateStr, isMonthly));
+  } catch (e: any) {
+    console.error("Failed to persist subscription:", e);
+    await ctx.reply(m.subscriptionActivationFailed);
   }
-
-  const pending = pendingPayments.get(payload);
-  pendingPayments.delete(payload);
-  if (!pending) return;
-
-  const { chatId, url, kind, quality, extension } = pending;
-  const send = {
-    reply: (text: string) => ctx.reply(text),
-    editMessageText: (messageId: number, text: string) => ctx.api.editMessageText(chatId, messageId, text),
-    replyWithVideo: (file: InputFile) => ctx.replyWithVideo(file, { supports_streaming: true }),
-    replyWithAudio: (file: InputFile) => ctx.replyWithAudio(file),
-    deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
-  };
-  await ctx.reply(messages[lang].paymentReceived);
-  await performDownload(chatId, kind, quality, extension, url, lang, send, {
-    telegramId: ctx.from?.id,
-    telegramUsername: ctx.from?.username,
-    telegramLanguageCode: ctx.from?.language_code,
-    isPaid: true,
-    starsAmount: ctx.message.successful_payment.total_amount,
-  });
 });
 
 bot.catch((err) => console.error("Bot error:", err.error));

@@ -18,10 +18,7 @@ interface Messages {
   sendingFile: string;
   failedPrefix: string;
   hdRequiresSubscription: (quality: string) => string;
-  invoiceTitleQuotaExceeded: string;
-  invoiceDescriptionQuotaExceeded: (price: number) => string;
-  invoiceLabelQuotaExceeded: string;
-  paymentReceived: string;
+  dailyLimitReached: string;
   orderExpired: string;
   errorLoginRequired: string;
   errorUnsupportedPlatform: string;
@@ -59,11 +56,7 @@ const ru: Messages = {
   failedPrefix: "❌ Не получилось: ",
   hdRequiresSubscription: (quality) =>
     `🔒 Качество ${quality} доступно только с подпиской — без неё HD скачать нельзя.`,
-  invoiceTitleQuotaExceeded: "Дневной лимит исчерпан",
-  invoiceDescriptionQuotaExceeded: (price) =>
-    `Бесплатные скачивания на сегодня закончились — это скачивание за ${price} ⭐`,
-  invoiceLabelQuotaExceeded: "Скачивание сверх лимита",
-  paymentReceived: "✅ Оплата получена, начинаю скачивание.",
+  dailyLimitReached: "📅 Дневной лимит бесплатных скачиваний исчерпан — оформи подписку, чтобы качать без ограничений.",
   orderExpired: "Заказ устарел — пришли ссылку ещё раз",
   errorLoginRequired:
     "Это видео закрыто для гостей — платформа показывает его только залогиненным " +
@@ -118,12 +111,8 @@ const en: Messages = {
   sendingFile: "📤 Sending file...",
   failedPrefix: "❌ Failed: ",
   hdRequiresSubscription: (quality) =>
-    `🔒 ${quality} quality is available with a subscription only — no one-time purchase for HD anymore.`,
-  invoiceTitleQuotaExceeded: "Daily limit reached",
-  invoiceDescriptionQuotaExceeded: (price) =>
-    `You're out of free downloads for today — this one costs ${price} ⭐`,
-  invoiceLabelQuotaExceeded: "Download over the limit",
-  paymentReceived: "✅ Payment received, starting download.",
+    `🔒 ${quality} quality is available with a subscription only.`,
+  dailyLimitReached: "📅 You've hit today's free download limit — subscribe to download without limits.",
   orderExpired: "Order expired — send the link again",
   errorLoginRequired:
     "This video is closed to guests — the platform only shows it to logged-in " +

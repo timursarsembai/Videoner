@@ -59,6 +59,25 @@ export interface ErrorDatum {
   count: number;
 }
 
+export interface ErrorTimeseriesPoint {
+  day: string;
+  category: string;
+  count: number;
+}
+
+export interface SubscriptionsData {
+  activeMonthly: number;
+  activeYearly: number;
+  activeTotal: number;
+  manualUnlimited: number;
+  expiring7d: number;
+  expiring30d: number;
+  mrrStars: number;
+  conversionRate: number | null;
+  totalBotUsers: number;
+  webLoginUsers: number;
+}
+
 export interface AnalyticsSnapshot {
   overview: OverviewData;
   platforms: PlatformDatum[];
@@ -67,6 +86,8 @@ export interface AnalyticsSnapshot {
   activity: ActivityData;
   topUsers: TopUser[];
   errors: ErrorDatum[];
+  errorsTimeseries: ErrorTimeseriesPoint[];
+  subscriptions: SubscriptionsData;
 }
 
 async function get<T>(path: string, apiKey: string): Promise<T> {
@@ -85,18 +106,40 @@ async function get<T>(path: string, apiKey: string): Promise<T> {
 }
 
 export async function fetchAnalyticsSnapshot(
-  apiKey: string
+  apiKey: string,
+  days: number = 30
 ): Promise<AnalyticsSnapshot> {
-  const [overview, platforms, sources, timeseries, activity, topUsers, errors] =
-    await Promise.all([
-      get<OverviewData>("/overview", apiKey),
-      get<PlatformDatum[]>("/platforms", apiKey),
-      get<SourceDatum[]>("/sources", apiKey),
-      get<TimeseriesData>("/timeseries?days=30", apiKey),
-      get<ActivityData>("/users/activity", apiKey),
-      get<TopUser[]>("/users/top?limit=20", apiKey),
-      get<ErrorDatum[]>("/errors", apiKey),
-    ]);
+  const [
+    overview,
+    platforms,
+    sources,
+    timeseries,
+    activity,
+    topUsers,
+    errors,
+    errorsTimeseries,
+    subscriptions,
+  ] = await Promise.all([
+    get<OverviewData>("/overview", apiKey),
+    get<PlatformDatum[]>("/platforms", apiKey),
+    get<SourceDatum[]>("/sources", apiKey),
+    get<TimeseriesData>(`/timeseries?days=${days}`, apiKey),
+    get<ActivityData>("/users/activity", apiKey),
+    get<TopUser[]>("/users/top?limit=20", apiKey),
+    get<ErrorDatum[]>("/errors", apiKey),
+    get<ErrorTimeseriesPoint[]>(`/errors/timeseries?days=${days}`, apiKey),
+    get<SubscriptionsData>("/subscriptions", apiKey),
+  ]);
 
-  return { overview, platforms, sources, timeseries, activity, topUsers, errors };
+  return {
+    overview,
+    platforms,
+    sources,
+    timeseries,
+    activity,
+    topUsers,
+    errors,
+    errorsTimeseries,
+    subscriptions,
+  };
 }

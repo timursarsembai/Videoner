@@ -84,6 +84,7 @@ export class BotUserController {
       telegramId: dto.id,
       username: dto.username,
       firstName: dto.first_name,
+      markWebLogin: true,
     });
 
     return this.botUserService.getSubscriptionStatus(dto.id);

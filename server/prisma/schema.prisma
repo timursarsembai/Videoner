@@ -77,6 +77,11 @@ model BotUser {
   // который выдаётся вручную админом через /grant и не имеет срока).
   subscriptionUntil DateTime?
   subscriptionKind  SubscriptionKind?
+  // Ставится при входе через Telegram Login Widget на сайте (см.
+  // bot-user.controller.ts telegramLogin) — отдельно от firstSeenAt/lastSeenAt,
+  // которые обновляются и от активности в боте. Нужно для аналитики: сколько
+  // пользователей вообще заходили на сайт, а не только пользовались ботом.
+  lastWebLoginAt    DateTime?
   downloads         Download[]
   firstSeenAt       DateTime          @default(now())
   lastSeenAt        DateTime          @default(now())

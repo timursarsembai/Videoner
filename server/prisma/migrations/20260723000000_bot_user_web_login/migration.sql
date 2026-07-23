@@ -1,0 +1,2 @@
+ALTER TABLE "BotUser"
+  ADD COLUMN "lastWebLoginAt" TIMESTAMP(3);

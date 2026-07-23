@@ -55,6 +55,19 @@ export class AnalyticsController {
     return this.analyticsService.errors();
   }
 
+  @Get('errors/timeseries')
+  errorsTimeseries(@Query('days') days?: string) {
+    const parsed = parseInt(days ?? '30', 10);
+    return this.analyticsService.errorsTimeseries(
+      Number.isFinite(parsed) && parsed > 0 ? parsed : 30,
+    );
+  }
+
+  @Get('subscriptions')
+  subscriptions() {
+    return this.analyticsService.subscriptions();
+  }
+
   @Post('bot-users/grant')
   async grantUnlimited(@Body() dto: GrantUnlimitedDto) {
     const result = await this.botUserService.setUnlimited(

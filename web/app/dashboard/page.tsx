@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import {
+  Area,
+  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -22,7 +24,10 @@ import {
   UnauthorizedError,
   fetchAnalyticsSnapshot,
   type AnalyticsSnapshot,
+  type ErrorTimeseriesPoint,
 } from "@/lib/analytics-api";
+
+const PERIOD_OPTIONS = [7, 30, 90] as const;
 
 const PLATFORM_COLORS: Record<string, string> = {
   YOUTUBE: "#ef4444",
@@ -78,6 +83,24 @@ function mergeTimeseries(snapshot: AnalyticsSnapshot) {
   return Array.from(map.values());
 }
 
+function mergeErrorsTimeseries(rows: ErrorTimeseriesPoint[]) {
+  const categories = Array.from(new Set(rows.map((r) => r.category))).sort();
+  const map = new Map<string, Record<string, string | number>>();
+  for (const row of rows) {
+    const key = formatDay(row.day);
+    const existing = map.get(key) ?? { day: key };
+    existing[row.category] = row.count;
+    map.set(key, existing);
+  }
+  const data = Array.from(map.values()).map((row) => {
+    for (const category of categories) {
+      if (!(category in row)) row[category] = 0;
+    }
+    return row;
+  });
+  return { data, categories };
+}
+
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="rounded-lg border border-border/60 bg-background/60 p-4">
@@ -124,6 +147,8 @@ export default function AnalyticsPage() {
   const [snapshot, setSnapshot] = useState<AnalyticsSnapshot | null>(null);
   const [error, setError] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
+  const [days, setDays] = useState<number>(30);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     const stored = sessionStorage.getItem(ANALYTICS_KEY_STORAGE);
@@ -134,7 +159,7 @@ export default function AnalyticsPage() {
     if (!apiKey) return;
     setLoading(true);
     setError(undefined);
-    fetchAnalyticsSnapshot(apiKey)
+    fetchAnalyticsSnapshot(apiKey, days)
       .then(setSnapshot)
       .catch((e) => {
         if (e instanceof UnauthorizedError) {
@@ -146,7 +171,7 @@ export default function AnalyticsPage() {
         }
       })
       .finally(() => setLoading(false));
-  }, [apiKey]);
+  }, [apiKey, days, refreshKey]);
 
   const handleKeySubmit = (key: string) => {
     sessionStorage.setItem(ANALYTICS_KEY_STORAGE, key);
@@ -184,24 +209,52 @@ export default function AnalyticsPage() {
 
   if (!snapshot) return null;
 
-  const { overview, platforms, sources, activity, topUsers, errors } = snapshot;
+  const { overview, platforms, sources, activity, topUsers, errors, subscriptions } = snapshot;
   const timeseries = mergeTimeseries(snapshot);
+  const { data: errorsTimeseriesData, categories: errorCategories } = mergeErrorsTimeseries(
+    snapshot.errorsTimeseries
+  );
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-8">
       <div className="mx-auto max-w-6xl space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-xl font-semibold">Videoner Analytics</h1>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              sessionStorage.removeItem(ANALYTICS_KEY_STORAGE);
-              setApiKey(null);
-            }}
-          >
-            Выйти
-          </Button>
+          <div className="flex items-center gap-2">
+            <div className="flex overflow-hidden rounded-md border border-border/60">
+              {PERIOD_OPTIONS.map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setDays(d)}
+                  className={`px-3 py-1.5 text-sm ${
+                    days === d
+                      ? "bg-foreground text-background"
+                      : "bg-transparent text-foreground/70 hover:bg-foreground/5"
+                  }`}
+                >
+                  {d} дн.
+                </button>
+              ))}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={loading}
+              onClick={() => setRefreshKey((k) => k + 1)}
+            >
+              {loading ? "Обновляю…" : "Обновить"}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                sessionStorage.removeItem(ANALYTICS_KEY_STORAGE);
+                setApiKey(null);
+              }}
+            >
+              Выйти
+            </Button>
+          </div>
         </div>
 
         <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -216,8 +269,32 @@ export default function AnalyticsPage() {
                 : "—"
             }
           />
-          <StatCard label="Выручка, ⭐" value={overview.totalStarsRevenue} />
+          <StatCard label="Разовые платежи (архив), ⭐" value={overview.totalStarsRevenue} />
           <StatCard label="Пользователей бота" value={overview.totalBotUsers} />
+        </section>
+
+        <section>
+          <h2 className="mb-3 text-sm font-medium text-foreground/70">
+            Подписки — единственный источник дохода
+          </h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+            <StatCard label="Активных всего" value={subscriptions.activeTotal} />
+            <StatCard label="Месячных" value={subscriptions.activeMonthly} />
+            <StatCard label="Годовых" value={subscriptions.activeYearly} />
+            <StatCard label="MRR, ⭐/мес (оценка)" value={subscriptions.mrrStars} />
+            <StatCard label="Истекает за 7 дн." value={subscriptions.expiring7d} />
+            <StatCard label="Истекает за 30 дн." value={subscriptions.expiring30d} />
+            <StatCard
+              label="Конверсия в подписку"
+              value={
+                subscriptions.conversionRate !== null
+                  ? `${(subscriptions.conversionRate * 100).toFixed(1)}%`
+                  : "—"
+              }
+            />
+            <StatCard label="Ручной безлимит (админ)" value={subscriptions.manualUnlimited} />
+            <StatCard label="Входили на сайт через Telegram" value={subscriptions.webLoginUsers} />
+          </div>
         </section>
 
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-4">
@@ -233,7 +310,7 @@ export default function AnalyticsPage() {
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div className="rounded-lg border border-border/60 bg-background/60 p-4">
             <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Скачивания и новые пользователи, 30 дней
+              Скачивания и новые пользователи, {days} дней
             </h2>
             <ResponsiveContainer width="100%" height={280}>
               <LineChart data={timeseries}>
@@ -332,6 +409,33 @@ export default function AnalyticsPage() {
             </ResponsiveContainer>
           </div>
 
+          <div className="rounded-lg border border-border/60 bg-background/60 p-4 lg:col-span-2">
+            <h2 className="mb-4 text-sm font-medium text-foreground/70">
+              Ошибки по дням — динамика по категориям
+            </h2>
+            <ResponsiveContainer width="100%" height={280}>
+              <AreaChart data={errorsTimeseriesData}>
+                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                <XAxis dataKey="day" fontSize={12} />
+                <YAxis fontSize={12} allowDecimals={false} />
+                <Tooltip />
+                <Legend />
+                {errorCategories.map((category) => (
+                  <Area
+                    key={category}
+                    type="monotone"
+                    dataKey={category}
+                    name={category}
+                    stackId="errors"
+                    stroke={ERROR_COLORS[category] ?? "#9ca3af"}
+                    fill={ERROR_COLORS[category] ?? "#9ca3af"}
+                    fillOpacity={0.5}
+                  />
+                ))}
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
           <div className="rounded-lg border border-border/60 bg-background/60 p-4">
             <h2 className="mb-4 text-sm font-medium text-foreground/70">
               Топ пользователей
@@ -349,7 +453,18 @@ export default function AnalyticsPage() {
                   {topUsers.map((u) => (
                     <tr key={u.id} className="border-t border-border/40">
                       <td className="py-2">
-                        {u.username ? `@${u.username}` : u.telegramId}
+                        {u.username ? (
+                          <a
+                            href={`https://t.me/${u.username}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:underline"
+                          >
+                            @{u.username}
+                          </a>
+                        ) : (
+                          u.telegramId
+                        )}
                       </td>
                       <td className="py-2 text-foreground/60">
                         {u.languageCode ?? "—"}

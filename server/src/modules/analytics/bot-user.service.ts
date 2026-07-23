@@ -7,6 +7,10 @@ export interface UpsertBotUserInput {
   username?: string;
   firstName?: string;
   languageCode?: string;
+  // true только из telegramLogin (вход на сайте) — отдельно от обычного
+  // upsert'а в боте, который вызывается на каждое сообщение и не должен
+  // считаться "заходом на сайт".
+  markWebLogin?: boolean;
 }
 
 export interface SubscriptionStatus {
@@ -24,6 +28,7 @@ export class BotUserService {
 
   async upsertBotUser(data: UpsertBotUserInput) {
     const telegramId = BigInt(data.telegramId);
+    const webLogin = data.markWebLogin ? { lastWebLoginAt: new Date() } : {};
     return this.prisma.botUser.upsert({
       where: { telegramId },
       create: {
@@ -31,12 +36,14 @@ export class BotUserService {
         username: data.username,
         firstName: data.firstName,
         languageCode: data.languageCode,
+        ...webLogin,
       },
       update: {
         username: data.username,
         firstName: data.firstName,
         languageCode: data.languageCode,
         lastSeenAt: new Date(),
+        ...webLogin,
       },
     });
   }

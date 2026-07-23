@@ -17,7 +17,13 @@ import { TelegramLoginWidget } from "../common/TelegramLoginWidget";
 const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
 const LOCALE_MAP: Record<string, string> = { ru: "ru-RU", es: "es-ES", en: "en-US" };
 
-export function UserMenu() {
+interface UserMenuProps {
+  // Иконка без текста — для тесной мобильной шапки. На десктопе, где место
+  // есть, показываем полноценную кнопку "Войти"/"Sign In" рядом с иконкой.
+  compact?: boolean;
+}
+
+export function UserMenu({ compact = false }: UserMenuProps) {
   const { t, language } = useLanguage();
   // undefined — статус ещё не загружен (не мигаем логин-виджетом до ответа /me)
   const [user, setUser] = useState<SubscriptionStatus | null | undefined>(undefined);
@@ -47,7 +53,11 @@ export function UserMenu() {
   if (user === undefined) return null;
 
   if (!user) {
-    return <TelegramLoginWidget label={t("auth.loginButton")} compact />;
+    return compact ? (
+      <TelegramLoginWidget label={t("auth.loginButton")} compact />
+    ) : (
+      <TelegramLoginWidget label={t("auth.signIn")} />
+    );
   }
 
   const dateStr = user.subscriptionUntil

@@ -304,7 +304,7 @@ export function Navbar() {
           {/* Mobile: компактная иконка входа/аккаунта — раньше была спрятана в
               выпадающем меню и была слишком мелкой, теперь всегда в шапке. */}
           <div className="flex items-center gap-1 md:hidden">
-            <UserMenu />
+            <UserMenu compact />
             <Button
               variant="ghost"
               size="icon"

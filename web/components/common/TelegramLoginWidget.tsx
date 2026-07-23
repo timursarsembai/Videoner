@@ -58,7 +58,8 @@ export function TelegramLoginWidget({ label, compact }: TelegramLoginWidgetProps
   }
 
   return (
-    <Button size="sm" onClick={handleClick}>
+    <Button size="sm" onClick={handleClick} className="gap-1.5">
+      <Send className="h-4 w-4" />
       {label}
     </Button>
   );

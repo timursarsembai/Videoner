@@ -99,7 +99,8 @@ const ru: Messages = {
     "🌟 Что даёт подписка Videoner:\n\n" +
     "• Без дневного лимита — сейчас бесплатно доступно 10 скачиваний в сутки, с подпиской без ограничений\n" +
     "• HD-качество (720p и выше) бесплатно — обычно это 15⭐ за скачивание\n" +
-    "• Работает сразу на всех платформах — YouTube, TikTok, Instagram, и остальные\n\n" +
+    "• Работает сразу на всех платформах — YouTube, TikTok, Instagram, и остальные\n" +
+    "• Тот же безлимит действует и на сайте videoner.download — один аккаунт Telegram на бота и сайт\n\n" +
     "📅 Месяц — 150⭐ (~$3), автопродление каждые 30 дней\n" +
     "🎉 Год — 1500⭐ (~$30), разовая оплата на 365 дней, экономия ~$6 к месячной\n\n" +
     "Выбери вариант:",
@@ -159,7 +160,8 @@ const en: Messages = {
     "🌟 What a Videoner subscription gets you:\n\n" +
     "• No daily limit — free plan caps at 10 downloads/day, subscribers get unlimited\n" +
     "• Free HD (720p and up) — normally 15⭐ per download\n" +
-    "• Works across every supported platform — YouTube, TikTok, Instagram, and the rest\n\n" +
+    "• Works across every supported platform — YouTube, TikTok, Instagram, and the rest\n" +
+    "• Same unlimited access on videoner.download too — one Telegram account for both\n\n" +
     "📅 Monthly — 150⭐ (~$3), auto-renews every 30 days\n" +
     "🎉 Yearly — 1500⭐ (~$30), one-time payment for 365 days, saves ~$6 vs monthly\n\n" +
     "Pick one:",

@@ -125,6 +125,25 @@ for service in "$@"; do
       fi
       echo "    ✓ Nest стартовал"
       ;;
+    bot)
+      # Раньше bot деплоился вручную ad hoc командами (docker buildx build
+      # без docker-compose, отдельный tag/rm/up руками) весь день 2026-07-23 —
+      # тот же безопасный путь (build+rm+up+проверка логов), что у server/web,
+      # должен быть один на все три сервиса.
+      started=0
+      for _ in $(seq 1 15); do
+        if docker logs "$container" --tail 30 2>&1 | grep -q "Бот @.* запущен"; then
+          started=1
+          break
+        fi
+        sleep 1
+      done
+      if [ "$started" -eq 0 ]; then
+        echo "    ✗ Не нашёл 'Бот @... запущен' в логах за 15с — проверь docker logs $container" >&2
+        exit 1
+      fi
+      echo "    ✓ Бот запущен"
+      ;;
     *)
       echo "    (нет специфичной проверки для $service)"
       ;;

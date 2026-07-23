@@ -8,6 +8,28 @@ import { DownloadStatus, SubscriptionKind } from '@prisma/client';
 const MONTHLY_PRICE_STARS = 150;
 const YEARLY_PRICE_STARS = 1500;
 
+// NULL и явное значение enum (например 'OTHER') должны схлопываться в одну
+// группу при агрегации по nullable-полю — иначе они приходят как два разных
+// ряда с одинаковой отображаемой меткой, и один молча перезаписывает другой
+// при дальнейшем схлопывании по ключу (см. историю найденного и дважды
+// исправленного бага: errorsTimeseries() ниже решает это COALESCE прямо в
+// SQL, но Prisma `groupBy()` COALESCE не умеет — там нужен JS-мердж).
+// Общий хелпер, чтобы при появлении следующего похожего группирования не
+// пришлось третий раз находить этот же класс бага заново.
+function mergeNullableGroups<T>(
+  rows: T[],
+  getCategory: (row: T) => string | null,
+  getCount: (row: T) => number,
+  fallback = 'OTHER',
+): { category: string; count: number }[] {
+  const merged = new Map<string, number>();
+  for (const row of rows) {
+    const category = getCategory(row) ?? fallback;
+    merged.set(category, (merged.get(category) ?? 0) + getCount(row));
+  }
+  return Array.from(merged.entries()).map(([category, count]) => ({ category, count }));
+}
+
 @Injectable()
 export class AnalyticsService {
   constructor(private prisma: PrismaService) {}
@@ -138,16 +160,11 @@ export class AnalyticsService {
       where: { status: DownloadStatus.FAILED },
       _count: { _all: true },
     });
-    // Prisma groupBy не умеет COALESCE — NULL (никогда не классифицировали)
-    // и явное значение enum 'OTHER' приходят как два разных ряда, оба с
-    // отображаемой меткой "OTHER". Схлопываем здесь, а не только в SQL
-    // errorsTimeseries (тот же баг, что там уже был исправлен).
-    const merged = new Map<string, number>();
-    for (const row of rows) {
-      const category = row.errorCategory ?? 'OTHER';
-      merged.set(category, (merged.get(category) ?? 0) + row._count._all);
-    }
-    return Array.from(merged.entries()).map(([category, count]) => ({ category, count }));
+    return mergeNullableGroups(
+      rows,
+      (row) => row.errorCategory,
+      (row) => row._count._all,
+    );
   }
 
   async errorsTimeseries(days: number) {

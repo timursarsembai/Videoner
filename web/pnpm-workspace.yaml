@@ -1,2 +1,5 @@
 allowBuilds:
   sharp: true
+  # esbuild — транзитивная зависимость tsx (см. devDependencies), которую
+  # добавили для parity-теста isPaidVideoQuality (lib/subscription.test.ts).
+  esbuild: true

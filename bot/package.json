@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/bot.ts",
-    "start": "tsx src/bot.ts"
+    "start": "tsx src/bot.ts",
+    "test": "tsx --test src/*.test.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

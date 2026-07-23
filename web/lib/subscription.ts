@@ -1,7 +1,9 @@
-// Зеркалит isPaidQuality() из bot/src/bot.ts и isPaidVideoQuality() в
-// server/src/modules/download/download.service.ts — держать все три места в
-// синхроне при изменении правила. Чисто для UI (лочит кнопки заранее) —
-// окончательное решение всё равно принимает сервер (enforceWebLimits).
+// Зеркалит isPaidQuality() из bot/src/paid-quality.ts и isPaidVideoQuality()
+// из server/src/modules/download/paid-quality.ts — держать все три места в
+// синхроне при изменении правила (см. parity-тесты: subscription.test.ts
+// здесь и одноимённые кейсы в paid-quality.test.ts/paid-quality.spec.ts в
+// bot/server). Чисто для UI (лочит кнопки заранее) — окончательное решение
+// всё равно принимает сервер (enforceWebLimits).
 export const PAID_QUALITY_MIN_HEIGHT = 720;
 
 export function isPaidVideoQuality(

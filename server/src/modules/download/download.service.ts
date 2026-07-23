@@ -20,18 +20,19 @@ import {
 import {
   DownloadFormatOptions,
   DownloadQualityOptions,
+  ProgressType,
   VideoFormat,
 } from 'src/types';
+import { Observable, Subject } from 'rxjs';
 import { FacebookVideoQuality } from 'src/types/facebook';
-import { YtdlpService } from '../ytdlp/ytdlp.service';
+import { YtdlpProcessService } from '../ytdlp/ytdlp-process.service';
+import { YtdlpFormatService } from '../ytdlp/ytdlp-format.service';
 import { getFileName } from 'src/lib/utils';
 import { getVideoFormats } from 'src/lib/helper';
 import { BotUserService } from '../analytics/bot-user.service';
 import { categorizeError } from 'src/lib/error-category';
-import {
-  DAILY_FREE_DOWNLOAD_LIMIT,
-  PAID_QUALITY_MIN_HEIGHT,
-} from 'src/lib/config';
+import { DAILY_FREE_DOWNLOAD_LIMIT } from 'src/lib/config';
+import { isPaidVideoQuality } from './paid-quality';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -73,7 +74,8 @@ export class DownloadService {
 
   constructor(
     private prisma: PrismaService,
-    private ytdlp: YtdlpService,
+    private ytdlp: YtdlpProcessService,
+    private ytdlpFormat: YtdlpFormatService,
     private botUser: BotUserService,
   ) {
     this.downloadPath = join(__dirname, '..', '..', '..', 'downloads');
@@ -85,7 +87,7 @@ export class DownloadService {
 
   private async checkDurationLimit(url: string, req: Request) {
     const apiKey = (req as any).apiKey;
-    const info = await this.ytdlp.getYtdlpVideoInfo(url);
+    const info = await this.ytdlpFormat.getYtdlpVideoInfo(url);
 
     if (info.duration > apiKey.maxDuration) {
       throw new BadRequestException(
@@ -105,24 +107,6 @@ export class DownloadService {
       return [FacebookVideoQuality.hd, FacebookVideoQuality.sd];
     }
     return getVideoFormats(info);
-  }
-
-  // Зеркалит isPaidQuality() из bot/src/bot.ts — держать оба места в синхроне
-  // при изменении правила. НЕ числовые качества (Facebook 'hd'/'sd') всегда
-  // бесплатны (parseInt даёт NaN), как и в боте.
-  private isPaidVideoQuality(quality: string, availableQualities: string[]): boolean {
-    const height = parseInt(quality, 10);
-    if (!Number.isFinite(height) || height < PAID_QUALITY_MIN_HEIGHT) return false;
-
-    if (height === PAID_QUALITY_MIN_HEIGHT) {
-      const heights = availableQualities
-        .map((q) => parseInt(q, 10))
-        .filter((h) => Number.isFinite(h));
-      const minHeight = heights.length ? Math.min(...heights) : height;
-      if (minHeight >= PAID_QUALITY_MIN_HEIGHT) return false;
-    }
-
-    return true;
   }
 
   // Те же ограничения для неподписанных, что и в боте (дневной лимит бесплатных
@@ -149,7 +133,7 @@ export class DownloadService {
 
     if (isVideo && quality) {
       const availableQualities = this.getAvailableVideoQualities(info, platform);
-      if (this.isPaidVideoQuality(quality, availableQualities)) {
+      if (isPaidVideoQuality(quality, availableQualities)) {
         throw new ForbiddenException('This quality requires an active subscription');
       }
     }
@@ -399,6 +383,132 @@ export class DownloadService {
     return this.downloadPath;
   }
 
+  // Общий обработчик отказа: раньше был продублирован (с мелкими различиями
+  // в тексте лога) в 5+ местах внутри downloadVideo()/downloadAudio() — в
+  // каждом RxJS error-хендлере, в catch вокруг convertVideo(), и в catch
+  // после финального fs.unlinkSync/statSync (см. критический фикс 2026-07-23:
+  // именно рассинхрон одной из этих копий с try/catch и был причиной
+  // необработанного reject, ронявшего весь процесс). Один источник истины —
+  // один способ сломать все места сразу заметно, а не тихо в одном из пяти.
+  private async markDownloadFailed(
+    downloadId: string,
+    error: unknown,
+    progressSubject: Subject<ProgressType | Error>,
+  ) {
+    console.error('Download failed:', error);
+    const message = (error as any)?.message ?? String(error);
+    await this.updateDownloadStatus(downloadId, {
+      status: DownloadStatus.FAILED,
+      downloadUrl: null,
+      errorCategory: categorizeError(message),
+    }).catch((e) => console.error('Failed to mark download as FAILED:', e));
+    progressSubject.error(error);
+  }
+
+  // Общий "успешный финал" — статус COMPLETED + размер файла + завершение
+  // SSE-подписки. Бросает при ошибке (например ENOENT, если CleanupService
+  // успел удалить файл) — вызывающий код обязан обернуть в try/catch и
+  // передать ошибку в markDownloadFailed, сам этот метод такую логику не
+  // содержит, чтобы вызывающий мог сначала сделать что-то ещё (например,
+  // удалить промежуточный файл конвертации) в рамках того же try.
+  private async completeDownload(
+    downloadId: string,
+    downloadUrl: string,
+    filePath: string,
+    progressSubject: Subject<ProgressType | Error>,
+  ) {
+    await this.updateDownloadStatus(downloadId, {
+      status: DownloadStatus.COMPLETED,
+      downloadUrl,
+      fileSize: BigInt(statSync(filePath).size),
+    });
+    progressSubject.complete();
+  }
+
+  // Общая подписка на прогресс скачивания (первый этап — до конвертации,
+  // если она вообще нужна) — этот кусок был у downloadVideo() и
+  // downloadAudio() идентичным, различался только тем, что происходит на
+  // complete. onComplete решает, что делать дальше (конвертировать или сразу
+  // финализировать), сам метод отвечает только за next/error.
+  private subscribeToDownloadProgress(
+    progress$: Observable<ProgressType | Error>,
+    downloadId: string,
+    progressSubject: Subject<ProgressType | Error>,
+    onComplete: () => void | Promise<void>,
+  ) {
+    progress$.subscribe({
+      next: async (progress) => {
+        if (progress instanceof Error) {
+          await this.markDownloadFailed(downloadId, progress, progressSubject);
+        } else {
+          progressSubject.next(progress);
+        }
+      },
+      error: async (err) => {
+        await this.markDownloadFailed(downloadId, err, progressSubject);
+      },
+      complete: () => {
+        void onComplete();
+      },
+    });
+  }
+
+  // Конвертация после основного скачивания — раньше жила третьим уровнем
+  // вложенности прямо внутри downloadVideo(). Отдельный приватный метод, как
+  // и предполагалось в плане рефакторинга (downloadVideo() ~200 строк с 3
+  // уровнями вложенных callback-подписок).
+  private async handleConversion(
+    downloadId: string,
+    downloadDir: string,
+    tempFileName: string,
+    finalFileName: string,
+    extension: 'mp4' | 'mkv' | 'webm' | 'flv' | 'ogg',
+    progressSubject: Subject<ProgressType | Error>,
+  ) {
+    console.log('Converting video to', extension);
+    const inputPath = join(downloadDir, tempFileName);
+    const outputPath = join(downloadDir, finalFileName);
+
+    await this.updateDownloadStatus(downloadId, {
+      status: DownloadStatus.CONVERTING,
+    });
+
+    try {
+      const convertProgress$ = await this.ytdlp.convertVideo(inputPath, extension, outputPath);
+
+      convertProgress$.subscribe({
+        next: (progress) => {
+          if (!(progress instanceof Error)) {
+            console.log('Conversion progress:', progress.percentage_str);
+            progressSubject.next({ ...progress, status: 'converting' } as ProgressType);
+          }
+        },
+        error: async (err) => {
+          await this.markDownloadFailed(downloadId, err, progressSubject);
+        },
+        complete: async () => {
+          console.log('Conversion complete');
+          try {
+            // Реальный триггер: CleanupService мог удалить inputPath как
+            // "старый файл" по mtime, пока конвертация ещё шла — fs.unlinkSync
+            // бросает ENOENT (см. критический фикс 2026-07-23).
+            fs.unlinkSync(inputPath);
+            await this.completeDownload(
+              downloadId,
+              `/downloads/${finalFileName}`,
+              outputPath,
+              progressSubject,
+            );
+          } catch (error) {
+            await this.markDownloadFailed(downloadId, error, progressSubject);
+          }
+        },
+      });
+    } catch (error) {
+      await this.markDownloadFailed(downloadId, error, progressSubject);
+    }
+  }
+
   async downloadVideo(
     url: string,
     quality: DownloadQualityOptions['mergevideo'],
@@ -471,151 +581,32 @@ export class DownloadService {
           },
         })
         .then((progress$) => {
-          progress$.subscribe({
-            next: async (progress) => {
-              if (progress instanceof Error) {
-                console.error('Error:', progress);
-                await this.updateDownloadStatus(download.id, {
-                  status: DownloadStatus.FAILED,
-                  downloadUrl: null,
-                  errorCategory: categorizeError(progress.message),
-                });
-                progressSubject.error(progress);
-              } else {
-                console.log(
-                  'Progress percentage string:',
-                  progress.percentage_str,
+          this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
+            console.log('Download complete');
+            if (extension && extension !== 'mp4') {
+              await this.handleConversion(
+                download.id,
+                downloadDir,
+                tempFileName,
+                finalFileName,
+                extension,
+                progressSubject,
+              );
+            } else {
+              try {
+                await this.completeDownload(
+                  download.id,
+                  `/downloads/${tempFileName}`,
+                  join(downloadDir, tempFileName),
+                  progressSubject,
                 );
-                progressSubject.next(progress);
+              } catch (error) {
+                await this.markDownloadFailed(download.id, error, progressSubject);
               }
-            },
-            error: async (err) => {
-              console.error('Error:', err);
-              await this.updateDownloadStatus(download.id, {
-                status: DownloadStatus.FAILED,
-                downloadUrl: null,
-                errorCategory: categorizeError(err?.message ?? String(err)),
-              });
-              progressSubject.error(err);
-            },
-            complete: async () => {
-              console.log('Download complete');
-
-              if (extension && extension !== 'mp4') {
-                console.log('Converting video to', extension);
-                const inputPath = join(downloadDir, tempFileName);
-                const outputPath = join(downloadDir, finalFileName);
-
-                await this.updateDownloadStatus(download.id, {
-                  status: DownloadStatus.CONVERTING,
-                });
-
-                try {
-                  const convertProgress$ = await this.ytdlp.convertVideo(
-                    inputPath,
-                    extension,
-                    outputPath,
-                  );
-
-                  convertProgress$.subscribe({
-                    next: (progress) => {
-                      if (!(progress instanceof Error)) {
-                        console.log(
-                          'Conversion progress:',
-                          progress.percentage_str,
-                        );
-                        progressSubject.next({
-                          ...progress,
-                          status: 'converting',
-                        });
-                      }
-                    },
-                    error: async (err) => {
-                      console.error('Conversion error:', err);
-                      await this.updateDownloadStatus(download.id, {
-                        status: DownloadStatus.FAILED,
-                        downloadUrl: null,
-                        errorCategory: categorizeError(
-                          err?.message ?? String(err),
-                        ),
-                      });
-                      progressSubject.error(err);
-                    },
-                    complete: async () => {
-                      console.log('Conversion complete');
-                      try {
-                        fs.unlinkSync(inputPath);
-                        await this.updateDownloadStatus(download.id, {
-                          status: DownloadStatus.COMPLETED,
-                          downloadUrl: `/downloads/${finalFileName}`,
-                          fileSize: BigInt(statSync(outputPath).size),
-                        });
-                        progressSubject.complete();
-                      } catch (error) {
-                        // Реальный триггер: CleanupService мог удалить inputPath
-                        // как "старый файл" по mtime, пока конвертация ещё шла —
-                        // fs.unlinkSync/statSync бросают ENOENT. Без этого catch
-                        // необработанный reject падал в глобальный обработчик
-                        // (main.ts) и роняя только логирование — запись в БД
-                        // навсегда оставалась в CONVERTING, а SSE-подписчик
-                        // никогда не получал ни complete, ни error.
-                        console.error('Failed to finalize converted download:', error);
-                        await this.updateDownloadStatus(download.id, {
-                          status: DownloadStatus.FAILED,
-                          downloadUrl: null,
-                          errorCategory: categorizeError(error?.message ?? String(error)),
-                        }).catch((e) =>
-                          console.error('Failed to mark download as FAILED after finalize error:', e),
-                        );
-                        progressSubject.error(error);
-                      }
-                    },
-                  });
-                } catch (error) {
-                  console.error('Conversion error:', error);
-                  await this.updateDownloadStatus(download.id, {
-                    status: DownloadStatus.FAILED,
-                    downloadUrl: null,
-                    errorCategory: categorizeError(
-                      error?.message ?? String(error),
-                    ),
-                  });
-                  progressSubject.error(error);
-                }
-              } else {
-                try {
-                  await this.updateDownloadStatus(download.id, {
-                    status: DownloadStatus.COMPLETED,
-                    downloadUrl: `/downloads/${tempFileName}`,
-                    fileSize: BigInt(
-                      statSync(join(downloadDir, tempFileName)).size,
-                    ),
-                  });
-                  progressSubject.complete();
-                } catch (error) {
-                  console.error('Failed to finalize download:', error);
-                  await this.updateDownloadStatus(download.id, {
-                    status: DownloadStatus.FAILED,
-                    downloadUrl: null,
-                    errorCategory: categorizeError(error?.message ?? String(error)),
-                  }).catch((e) =>
-                    console.error('Failed to mark download as FAILED after finalize error:', e),
-                  );
-                  progressSubject.error(error);
-                }
-              }
-            },
+            }
           });
         })
-        .catch(async (error) => {
-          console.error('Failed to start download:', error);
-          await this.updateDownloadStatus(download.id, {
-            status: DownloadStatus.FAILED,
-            downloadUrl: null,
-            errorCategory: categorizeError(error?.message ?? String(error)),
-          });
-          progressSubject.error(error);
-        });
+        .catch((error) => this.markDownloadFailed(download.id, error, progressSubject));
 
       return {
         message: 'Download started',
@@ -701,51 +692,18 @@ export class DownloadService {
         },
       });
 
-      progress$.subscribe({
-        next: async (progress) => {
-          if (progress instanceof Error) {
-            console.error('Error:', progress);
-            await this.updateDownloadStatus(download.id, {
-              status: DownloadStatus.FAILED,
-              downloadUrl: null,
-              errorCategory: categorizeError(progress.message),
-            });
-            progressSubject.error(progress);
-          } else {
-            console.log('Progress percentage string:', progress.percentage_str);
-            progressSubject.next(progress);
-          }
-        },
-        error: async (err) => {
-          console.error('Error:', err);
-          await this.updateDownloadStatus(download.id, {
-            status: DownloadStatus.FAILED,
-            downloadUrl: null,
-            errorCategory: categorizeError(err?.message ?? String(err)),
-          });
-          progressSubject.error(err);
-        },
-        complete: async () => {
-          console.log('Download complete');
-          try {
-            await this.updateDownloadStatus(download.id, {
-              status: DownloadStatus.COMPLETED,
-              downloadUrl: `/downloads/${fileName}`,
-              fileSize: BigInt(statSync(join(downloadDir, fileName)).size),
-            });
-            progressSubject.complete();
-          } catch (error) {
-            console.error('Failed to finalize audio download:', error);
-            await this.updateDownloadStatus(download.id, {
-              status: DownloadStatus.FAILED,
-              downloadUrl: null,
-              errorCategory: categorizeError(error?.message ?? String(error)),
-            }).catch((e) =>
-              console.error('Failed to mark download as FAILED after finalize error:', e),
-            );
-            progressSubject.error(error);
-          }
-        },
+      this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
+        console.log('Download complete');
+        try {
+          await this.completeDownload(
+            download.id,
+            `/downloads/${fileName}`,
+            join(downloadDir, fileName),
+            progressSubject,
+          );
+        } catch (error) {
+          await this.markDownloadFailed(download.id, error, progressSubject);
+        }
       });
 
       return {

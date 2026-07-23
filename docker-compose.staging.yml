@@ -1,0 +1,90 @@
+# Staging-контур — для проверки браузерозависимых изменений (Turnstile,
+# Telegram OAuth и т.п.) ПЕРЕД прод-деплоем, а не вживую на реальных
+# пользователях (см. REFACTORING_PLAN.md, пункт 5 — именно отсутствие этого
+# контура объясняло, почему такие баги ловились только руками пользователя).
+#
+# Осознанно НЕ включает bot — тестировать браузерозависимые изменения он не
+# помогает, а отдельный Telegram-бот для стейджинга потребовал бы второго
+# токена от @BotFather (ручной шаг, не обязателен для пользы этого контура).
+#
+# Переиспользует postgres/bgutil-provider прод-стека (другая БД внутри того
+# же Postgres — не второй контейнер, экономит ресурсы VPS), но собственные
+# server/web контейнеры на отдельной internal-сети.
+#
+# ДВА РУЧНЫХ ШАГА перед первым использованием (не автоматизируются отсюда):
+#   1. DNS: A-запись staging.videoner.download -> тот же IP, что и основной домен.
+#   2. Nginx Proxy Manager: новый Proxy Host для staging.videoner.download,
+#      маршрутизация — как у прод-хоста (см. его настройки в NPM UI), только
+#      на контейнеры videoner-server-staging/videoner-web-staging вместо
+#      videoner-server/videoner-web.
+#
+# Запуск (после того, как оба шага выше сделаны):
+#   docker exec 139827afc274_videoner-postgres psql -U postgres -c \
+#     "CREATE DATABASE downloader_staging;"   # один раз, если ещё не создана
+#   docker-compose -p videoner-staging -f docker-compose.staging.yml --env-file .env.staging up -d --build
+#
+# ВАЖНО: -p videoner-staging обязателен. Без явного project name compose v1
+# берёт имя папки ("videoner") — то же самое, что и у прод-стека
+# (docker-compose.prod.yml запускается из этой же директории) — см. память
+# deploy-gotchas: ровно так уже один раз случайно останавливали прод-БД,
+# перепутав dev/prod project name.
+
+services:
+  server:
+    build: ./server
+    container_name: videoner-server-staging
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/downloader_staging?schema=public
+      NODE_ENV: production
+      PORT: "3001"
+      ALLOWED_ORIGINS: ${PUBLIC_DOMAIN}
+      SEED_API_KEY: ${API_KEY}
+      SEED_ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@localhost}
+      BOT_TOKEN: ${BOT_TOKEN}
+      ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
+      YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
+    volumes:
+      - downloads_staging:/app/dist/downloads
+      - ./server/cookies.txt:/app/cookies.txt
+    networks: [internal, staging_internal, proxy]
+
+  web:
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_APP_URL: https://${PUBLIC_DOMAIN}
+        NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
+        NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+        NEXT_PUBLIC_TELEGRAM_BOT_USERNAME: ${NEXT_PUBLIC_TELEGRAM_BOT_USERNAME}
+        NEXT_PUBLIC_TELEGRAM_BOT_ID: ${NEXT_PUBLIC_TELEGRAM_BOT_ID}
+    container_name: videoner-web-staging
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_URL: https://${PUBLIC_DOMAIN}
+      NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
+      API_INTERNAL_URL: http://server:3001
+      API_KEY: ${API_KEY}
+      TURNSTILE_SECRET: ${TURNSTILE_SECRET}
+      SESSION_SECRET: ${SESSION_SECRET}
+    depends_on: [server]
+    networks: [staging_internal, proxy]
+
+networks:
+  # ОТДЕЛЬНАЯ сеть от прод-internal (docker-compose.prod.yml) — server/web
+  # стейджинга не должны быть напрямую видны прод-сервисам и наоборот.
+  staging_internal:
+  # Общая с прод-стеком сеть — там уже сидит postgres/bgutil-provider,
+  # к которым server-staging должен достучаться (см. networks: [internal, ...]
+  # у server выше). Имя должно совпадать с default-сетью docker-compose.prod.yml
+  # ("videoner_internal" — имя проекта "videoner" + сервис "internal").
+  internal:
+    external: true
+    name: videoner_internal
+  proxy:
+    external: true
+    name: ${NPM_NETWORK:-proxy-network}
+
+volumes:
+  downloads_staging:

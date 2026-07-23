@@ -4,7 +4,7 @@ import {
   audioQualityLabel,
   videoExtensionLabel,
 } from 'src/lib/config';
-import { YtdlpService } from '../ytdlp/ytdlp.service';
+import { YtdlpFormatService } from '../ytdlp/ytdlp-format.service';
 import { getPlatform } from 'src/validate/url';
 import { VideoInfoResponse } from 'src/types/youtube';
 import { FacebookVideoQuality } from 'src/types/facebook';
@@ -36,7 +36,7 @@ const AUTH_REQUIRED_PATTERN =
 @Injectable()
 export class InfoService {
   constructor(
-    private ytdlp: YtdlpService,
+    private ytdlp: YtdlpFormatService,
     private alert: AlertService,
     private botUser: BotUserService,
   ) {}

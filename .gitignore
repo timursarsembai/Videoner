@@ -3,6 +3,7 @@
 .env.*
 !.env.example
 !.env.prod.example
+!.env.staging.example
 *.local
 server/cookies.txt
 server/info.json

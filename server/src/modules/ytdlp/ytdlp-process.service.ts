@@ -18,7 +18,6 @@ import {
   Platform,
   ProgressType,
 } from '../../types';
-import { PlaylistVideoInfo, YtdlpVideoInfo } from '../../types/youtube';
 import { DownloadOptionsValidate, parseAndValidateUrl } from '../../validate';
 import { OutputTypeSchema } from '../../validate/schema';
 
@@ -87,8 +86,25 @@ const BINARY_URLS = {
     'https://github.com/iqbal-rashed/ytdlp-nodejs/releases/download/ffmpeg-release/ffmpeg-macos.zip',
 };
 
+// Раньше это был один класс YtdlpService (815 строк, 4-5 разных зон
+// ответственности: конкурентность/spawn процессов/загрузка и установка
+// бинарников/парсинг форматов). Здесь остаётся всё, что связано с ЗАПУСКОМ
+// процессов — семафоры, throttling, spawn, установка/пути бинарников,
+// конвертация. Метаданные (info/playlist) — в соседнем YtdlpFormatService,
+// который использует этот сервис через DI (см. ytdlp-format.service.ts).
+//
+// ВАЖНО: этот сервис должен быть ОДНИМ на всё приложение — семафоры внутри
+// имеют смысл только как глобальный лимит. До разделения на два сервиса
+// DownloadModule и InfoModule каждый объявляли `YtdlpService` в своих
+// СОБСТВЕННЫХ providers (а не импортировали YtdlpModule) — из-за этого Nest
+// создавал ТРИ независимых инстанса (плюс ещё один в самом YtdlpModule,
+// никем не используемый), и youtubeSemaphore/globalDownloadSemaphore
+// работали независимо в DownloadModule и InfoModule, а не как единый лимит
+// на всё приложение; setupBinaries() в onModuleInit() к тому же выполнялся
+// трижды при каждом старте. Исправлено 2026-07-23 вместе с этим разделением
+// — см. ytdlp.module.ts и импорты в download.module.ts/info.module.ts.
 @Injectable()
-export class YtdlpService implements OnModuleInit {
+export class YtdlpProcessService implements OnModuleInit {
   private ytdlpPath: string;
   private ffmpegPath: string;
   private readonly binariesDir: string;
@@ -332,6 +348,8 @@ export class YtdlpService implements OnModuleInit {
     return outputStr ? outputStr : '%(title)s %(height)sp .%(ext)s';
   }
 
+  // Публичный — YtdlpFormatService зовёт его через DI для получения
+  // метаданных (--dump-json), сам процесс/семафоры/куки остаются здесь.
   async ytdlp(
     args: string[],
     options?: { skipCookies?: boolean },
@@ -414,34 +432,6 @@ export class YtdlpService implements OnModuleInit {
     } catch {
       return false;
     }
-  }
-
-  async getYtdlpVideoInfo(
-    url: string,
-    options?: { skipCookies?: boolean },
-  ): Promise<YtdlpVideoInfo> {
-    const command = ['--dump-json', '--no-download', url];
-    return this.ytdlp(command, options).then((result) => {
-      return JSON.parse(result.stdout);
-    });
-  }
-
-  async getYoutubePlaylistInfo(url: string): Promise<PlaylistVideoInfo[]> {
-    const command = [
-      '--dump-json',
-      '--no-download',
-      '--flat-playlist',
-      '--playlist-reverse',
-      url,
-    ];
-    return this.ytdlp(command).then((result) => {
-      // Split output into lines and filter empty lines
-      const jsonLines = result.stdout.split('\n').filter((line) => line.trim());
-      // parse all json lines
-      const json = jsonLines.map((line) => JSON.parse(line));
-
-      return json;
-    });
   }
 
   async download<T extends DownloadKeyWord>(

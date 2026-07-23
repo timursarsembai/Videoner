@@ -499,14 +499,32 @@ export class DownloadService {
                     },
                     complete: async () => {
                       console.log('Conversion complete');
-                      fs.unlinkSync(inputPath);
-
-                      await this.updateDownloadStatus(download.id, {
-                        status: DownloadStatus.COMPLETED,
-                        downloadUrl: `/downloads/${finalFileName}`,
-                        fileSize: BigInt(statSync(outputPath).size),
-                      });
-                      progressSubject.complete();
+                      try {
+                        fs.unlinkSync(inputPath);
+                        await this.updateDownloadStatus(download.id, {
+                          status: DownloadStatus.COMPLETED,
+                          downloadUrl: `/downloads/${finalFileName}`,
+                          fileSize: BigInt(statSync(outputPath).size),
+                        });
+                        progressSubject.complete();
+                      } catch (error) {
+                        // Реальный триггер: CleanupService мог удалить inputPath
+                        // как "старый файл" по mtime, пока конвертация ещё шла —
+                        // fs.unlinkSync/statSync бросают ENOENT. Без этого catch
+                        // необработанный reject падал в глобальный обработчик
+                        // (main.ts) и роняя только логирование — запись в БД
+                        // навсегда оставалась в CONVERTING, а SSE-подписчик
+                        // никогда не получал ни complete, ни error.
+                        console.error('Failed to finalize converted download:', error);
+                        await this.updateDownloadStatus(download.id, {
+                          status: DownloadStatus.FAILED,
+                          downloadUrl: null,
+                          errorCategory: categorizeError(error?.message ?? String(error)),
+                        }).catch((e) =>
+                          console.error('Failed to mark download as FAILED after finalize error:', e),
+                        );
+                        progressSubject.error(error);
+                      }
                     },
                   });
                 } catch (error) {
@@ -521,14 +539,26 @@ export class DownloadService {
                   progressSubject.error(error);
                 }
               } else {
-                await this.updateDownloadStatus(download.id, {
-                  status: DownloadStatus.COMPLETED,
-                  downloadUrl: `/downloads/${tempFileName}`,
-                  fileSize: BigInt(
-                    statSync(join(downloadDir, tempFileName)).size,
-                  ),
-                });
-                progressSubject.complete();
+                try {
+                  await this.updateDownloadStatus(download.id, {
+                    status: DownloadStatus.COMPLETED,
+                    downloadUrl: `/downloads/${tempFileName}`,
+                    fileSize: BigInt(
+                      statSync(join(downloadDir, tempFileName)).size,
+                    ),
+                  });
+                  progressSubject.complete();
+                } catch (error) {
+                  console.error('Failed to finalize download:', error);
+                  await this.updateDownloadStatus(download.id, {
+                    status: DownloadStatus.FAILED,
+                    downloadUrl: null,
+                    errorCategory: categorizeError(error?.message ?? String(error)),
+                  }).catch((e) =>
+                    console.error('Failed to mark download as FAILED after finalize error:', e),
+                  );
+                  progressSubject.error(error);
+                }
               }
             },
           });
@@ -649,12 +679,24 @@ export class DownloadService {
         },
         complete: async () => {
           console.log('Download complete');
-          await this.updateDownloadStatus(download.id, {
-            status: DownloadStatus.COMPLETED,
-            downloadUrl: `/downloads/${fileName}`,
-            fileSize: BigInt(statSync(join(downloadDir, fileName)).size),
-          });
-          progressSubject.complete();
+          try {
+            await this.updateDownloadStatus(download.id, {
+              status: DownloadStatus.COMPLETED,
+              downloadUrl: `/downloads/${fileName}`,
+              fileSize: BigInt(statSync(join(downloadDir, fileName)).size),
+            });
+            progressSubject.complete();
+          } catch (error) {
+            console.error('Failed to finalize audio download:', error);
+            await this.updateDownloadStatus(download.id, {
+              status: DownloadStatus.FAILED,
+              downloadUrl: null,
+              errorCategory: categorizeError(error?.message ?? String(error)),
+            }).catch((e) =>
+              console.error('Failed to mark download as FAILED after finalize error:', e),
+            );
+            progressSubject.error(error);
+          }
         },
       });
 

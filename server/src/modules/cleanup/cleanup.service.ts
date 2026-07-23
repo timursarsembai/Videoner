@@ -24,6 +24,27 @@ export class CleanupService {
     this.logger.log('Starting cleanup of old downloaded files...');
 
     try {
+      // Раньше файлы удалялись по одному mtime, без сверки со статусом в БД.
+      // Промежуточный файл конвертации (tempFileName) хранится на диске под
+      // ИНЫМ именем, чем то, что записано в Download.filename (там всегда
+      // finalFileName) — сопоставить конкретный файл на диске с конкретной
+      // записью тут нельзя надёжно. Поэтому вместо точечной проверки просто
+      // не трогаем ВООБЩЕ НИЧЕГО, пока идёт хоть одно активное скачивание —
+      // при лимите длительности видео 4ч и cron каждые 30 мин это дёшево:
+      // максимум один цикл очистки чуть отложится, зато конвертация больше
+      // не может потерять свой входной файл посреди работы ffmpeg (см.
+      // код-ревью 2026-07-23 — именно так необработанный ENOENT ронял
+      // весь процесс до фикса в download.service.ts).
+      const activeDownloads = await this.prisma.download.count({
+        where: { status: { in: [DownloadStatus.DOWNLOADING, DownloadStatus.CONVERTING] } },
+      });
+      if (activeDownloads > 0) {
+        this.logger.log(
+          `Skipping cleanup — ${activeDownloads} download(s) still in progress.`,
+        );
+        return;
+      }
+
       const files = await readdir(this.downloadPath);
       let deletedCount = 0;
 

@@ -46,6 +46,41 @@ setInterval(() => {
   }
 }, 60_000);
 
+// Allow-list форвардящихся путей. КРИТИЧНО: этот прокси прикладывает к каждому
+// запросу общий API_KEY, который принадлежит admin-пользователю (см. seed.ts) —
+// им защищены /users/*, /api-keys/*, /analytics/*, и /bot-users/subscription
+// (последний вообще не под @AdminOnly, доверяет любому валидному ключу по
+// design — предполагался только для бота). Без allow-list браузер с этой же
+// страницы мог одним fetch() выдать себе бесплатную подписку, слить email всех
+// пользователей и сырые API-ключи, или удалить админский аккаунт. Найдено и
+// закрыто 2026-07-23 (код-ревью). Добавляя новый путь сюда — сначала убедись,
+// что соответствующий эндпоинт на сервере НЕ admin-only и не мутирует чужие
+// данные без собственной проверки владельца.
+const ALLOWED_PROXY_PATHS: { method: string; path: string }[] = [
+  { method: "POST", path: "info" },
+  { method: "POST", path: "download/video" },
+  { method: "POST", path: "download/audio" },
+  { method: "GET", path: "download/quota" },
+];
+
+// UUID v4, как генерирует Prisma @default(uuid()) для Download.id.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function isAllowedPath(method: string, path: string[]): boolean {
+  const joined = path.join("/");
+  if (ALLOWED_PROXY_PATHS.some((p) => p.method === method && p.path === joined)) {
+    return true;
+  }
+  // GET /download/:id/status — единственный путь с динамическим сегментом.
+  return (
+    method === "GET" &&
+    path.length === 3 &&
+    path[0] === "download" &&
+    UUID_RE.test(path[1]) &&
+    path[2] === "status"
+  );
+}
+
 // Cloudflare Turnstile: проверяем токен ТОЛЬКО на /info — это единственная
 // форма на сайте (см. TurnstileWidget в Page.tsx), и самая ресурсоёмкая точка
 // входа (дёргает yt-dlp). Бот сюда не заходит вообще — он бьёт напрямую в
@@ -153,6 +188,10 @@ export async function DELETE(
 
 
 async function handleRequest(request: NextRequest, path: string[]) {
+  if (!isAllowedPath(request.method, path)) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   if (!API_KEY) {
     return NextResponse.json(
       { error: "API key not configured" },
@@ -168,7 +207,13 @@ async function handleRequest(request: NextRequest, path: string[]) {
   }
 
   try {
-    const targetUrl = `${API_URL}/${path.join("/")}`;
+    // ВАЖНО: search-параметры (?telegramId=... и т.п.) сюда добавляются НИЖЕ,
+    // явно и только там, где это безопасно (см. блок про download/quota) —
+    // request.nextUrl.search НЕ пробрасывается вслепую. Раньше он не
+    // пробрасывался вообще никак, из-за чего GET /download/quota всегда уходил
+    // на бэкенд без telegramId (BigInt(NaN) → 500) — эта же правка заодно
+    // чинит и эту поломку.
+    let targetUrl = `${API_URL}/${path.join("/")}`;
     let body = request.body ? await request.json() : undefined;
 
     if (path.length === 1 && path[0] === "info" && request.method === "POST") {
@@ -197,6 +242,21 @@ async function handleRequest(request: NextRequest, path: string[]) {
         );
       }
       body = { ...(body ?? {}), telegramId };
+    }
+
+    // Аналогично — GET /download/quota должен отдавать квоту ТОЛЬКО текущей
+    // сессии, а не любого telegramId, который пришлёт браузер (IDOR, см.
+    // код-ревью 2026-07-23). Анонимным (без входа) — 401, у бота на сайте
+    // скачивание в принципе требует логина (см. enforceWebLimits на сервере).
+    if (path.length === 2 && path[0] === "download" && path[1] === "quota" && request.method === "GET") {
+      const telegramId = await getSessionTelegramId();
+      if (!telegramId) {
+        return NextResponse.json(
+          { message: "Login required to check quota", error: "Unauthorized" },
+          { status: 401 }
+        );
+      }
+      targetUrl += `?telegramId=${encodeURIComponent(String(telegramId))}`;
     }
 
     const response = await axios({

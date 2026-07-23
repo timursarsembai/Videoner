@@ -4,6 +4,21 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Request } from 'express';
 
+// Без этого необработанный reject где угодно в приложении (например,
+// fs.unlinkSync внутри async-колбэка RxJS-подписки в download.service.ts,
+// который ничем не оборачивается) по умолчанию убивает весь процесс Node —
+// падают ВСЕ активные скачивания всех пользователей разом, не только то,
+// где произошла ошибка. Найдено и закрыто 2026-07-23 (код-ревью): это
+// страховочная сетка, а не замена локальной обработки ошибок — там, где
+// источник известен (download.service.ts), ошибки дополнительно ловятся
+// на месте, чтобы корректно проставить статус FAILED в БД.
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled promise rejection (process kept alive):', reason);
+});
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught exception (process kept alive):', error);
+});
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 

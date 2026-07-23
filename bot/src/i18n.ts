@@ -17,9 +17,7 @@ interface Messages {
   fileTooBig: (mb: string, url: string) => string;
   sendingFile: string;
   failedPrefix: string;
-  invoiceTitle: (quality: string) => string;
-  invoiceDescription: (quality: string, price: number) => string;
-  invoiceLabel: (quality: string) => string;
+  hdRequiresSubscription: (quality: string) => string;
   invoiceTitleQuotaExceeded: string;
   invoiceDescriptionQuotaExceeded: (price: number) => string;
   invoiceLabelQuotaExceeded: string;
@@ -59,9 +57,8 @@ const ru: Messages = {
     `Файл получился большим (${mb} МБ) — Telegram не даст боту его отправить.\nСкачай по ссылке: ${url}`,
   sendingFile: "📤 Отправляю файл...",
   failedPrefix: "❌ Не получилось: ",
-  invoiceTitle: (quality) => `HD-качество ${quality}`,
-  invoiceDescription: (quality, price) => `Скачивание видео в качестве ${quality} за ${price} ⭐`,
-  invoiceLabel: (quality) => `Видео ${quality}`,
+  hdRequiresSubscription: (quality) =>
+    `🔒 Качество ${quality} доступно только с подпиской — без неё HD скачать нельзя.`,
   invoiceTitleQuotaExceeded: "Дневной лимит исчерпан",
   invoiceDescriptionQuotaExceeded: (price) =>
     `Бесплатные скачивания на сегодня закончились — это скачивание за ${price} ⭐`,
@@ -98,7 +95,7 @@ const ru: Messages = {
   subscriptionPitch:
     "🌟 Что даёт подписка Videoner:\n\n" +
     "• Без дневного лимита — сейчас бесплатно доступно 10 скачиваний в сутки, с подпиской без ограничений\n" +
-    "• HD-качество (720p и выше) бесплатно — обычно это 15⭐ за скачивание\n" +
+    "• HD-качество (720p и выше) — доступно только с подпиской\n" +
     "• Работает сразу на всех платформах — YouTube, TikTok, Instagram, и остальные\n" +
     "• Тот же безлимит действует и на сайте videoner.download — один аккаунт Telegram на бота и сайт\n\n" +
     "📅 Месяц — 150⭐ (~$3), автопродление каждые 30 дней\n" +
@@ -120,9 +117,8 @@ const en: Messages = {
     `The file turned out large (${mb} MB) — Telegram won't let the bot send it.\nDownload it here: ${url}`,
   sendingFile: "📤 Sending file...",
   failedPrefix: "❌ Failed: ",
-  invoiceTitle: (quality) => `HD quality ${quality}`,
-  invoiceDescription: (quality, price) => `Download the video in ${quality} for ${price} ⭐`,
-  invoiceLabel: (quality) => `Video ${quality}`,
+  hdRequiresSubscription: (quality) =>
+    `🔒 ${quality} quality is available with a subscription only — no one-time purchase for HD anymore.`,
   invoiceTitleQuotaExceeded: "Daily limit reached",
   invoiceDescriptionQuotaExceeded: (price) =>
     `You're out of free downloads for today — this one costs ${price} ⭐`,
@@ -159,7 +155,7 @@ const en: Messages = {
   subscriptionPitch:
     "🌟 What a Videoner subscription gets you:\n\n" +
     "• No daily limit — free plan caps at 10 downloads/day, subscribers get unlimited\n" +
-    "• Free HD (720p and up) — normally 15⭐ per download\n" +
+    "• HD quality (720p and up) — subscription-only\n" +
     "• Works across every supported platform — YouTube, TikTok, Instagram, and the rest\n" +
     "• Same unlimited access on videoner.download too — one Telegram account for both\n\n" +
     "📅 Monthly — 150⭐ (~$3), auto-renews every 30 days\n" +

@@ -14,9 +14,13 @@ const ADMIN_TELEGRAM_ID = process.env.ADMIN_TELEGRAM_ID
   ? Number(process.env.ADMIN_TELEGRAM_ID)
   : undefined;
 
-// HD (720p и выше) отдаём за Telegram Stars, качество до 480p включительно — бесплатно.
-// Исключение: если у видео нет вариантов ниже 720p вообще, 720p тоже бесплатен (см. isPaidQuality).
+// HD (720p и выше) — только по подписке, разовой продажи за Stars больше нет
+// (было решение продукта: слишком легко обходило смысл подписки). Качество
+// до 480p включительно — бесплатно в рамках дневного лимита. Исключение:
+// если у видео нет вариантов ниже 720p вообще, 720p тоже бесплатен (см. isPaidQuality).
 const PAID_QUALITY_MIN_HEIGHT = 720;
+// STARS_PRICE используется только для разового скачивания сверх дневного
+// лимита (не-HD) — см. requiresPayment в callback_query-хендлере.
 const STARS_PRICE = 15;
 
 // Цены подписок подобраны от цены разового HD-скачивания (15⭐ ≈ $0.30 по курсу
@@ -102,9 +106,9 @@ function isPaidQuality(kind: string, quality: string, availableQualities: string
 }
 
 // 10 бесплатных скачиваний в сутки на пользователя (см. DAILY_FREE_DOWNLOAD_LIMIT на сервере) —
-// сверх лимита действует та же оплата Stars, что и для HD. Падает открыто (не блокирует
-// скачивание, remaining = Infinity), если сервер недоступен, чтобы сбой проверки лимита не
-// клал бота. unlimited (выдаётся через /grant) снимает и лимит, и оплату HD целиком.
+// сверх лимита можно разово доплатить Stars (HD такой опции больше не имеет, см. STARS_PRICE
+// выше). Падает открыто (не блокирует скачивание, remaining = Infinity), если сервер недоступен,
+// чтобы сбой проверки лимита не клал бота. unlimited (выдаётся через /grant) снимает лимит и HD-гейт целиком.
 async function getQuotaInfo(telegramId?: number): Promise<{ remaining: number; unlimited: boolean }> {
   if (!telegramId) return { remaining: Infinity, unlimited: false };
   // Админ не должен зависеть от состояния БД (isUnlimited можно случайно
@@ -307,7 +311,7 @@ bot.on("message:text", async (ctx) => {
     const quota = await getQuotaInfo(ctx.from?.id);
     const kb = new InlineKeyboard();
     for (const q of videoQualities.slice(0, 6)) {
-      const label = isPaidQuality("v", q, videoQualities) && !quota.unlimited ? `🎬 ${q} ⭐${STARS_PRICE}` : `🎬 ${q}`;
+      const label = isPaidQuality("v", q, videoQualities) && !quota.unlimited ? `🎬 ${q} 🔒` : `🎬 ${q}`;
       kb.text(label, `v|${q}`).row();
     }
     kb.text(m.audioOnlyButton, "a|128Kbps");
@@ -413,15 +417,27 @@ bot.on("callback_query:data", async (ctx) => {
 
   const quota = await getQuotaInfo(ctx.from?.id);
   const isHdQuality = isPaidQuality(kind, quality, session.videoQualities);
-  const requiresPayment = !quota.unlimited && (isHdQuality || quota.remaining <= 0);
+
+  // HD больше не продаётся разово за Stars — только по подписке (см. плату
+  // ниже, оставшуюся исключительно для случая исчерпанного дневного лимита).
+  if (!quota.unlimited && isHdQuality) {
+    const subKb = addSubscriptionButtons(new InlineKeyboard(), m);
+    await ctx.reply(m.hdRequiresSubscription(quality), { reply_markup: subKb });
+    return;
+  }
+
+  const requiresPayment = !quota.unlimited && quota.remaining <= 0;
 
   if (requiresPayment) {
     const id = crypto.randomUUID();
     pendingPayments.set(id, { chatId, url: session.url, kind, quality, extension });
-    const [title, description, label] = isHdQuality
-      ? [m.invoiceTitle(quality), m.invoiceDescription(quality, STARS_PRICE), m.invoiceLabel(quality)]
-      : [m.invoiceTitleQuotaExceeded, m.invoiceDescriptionQuotaExceeded(STARS_PRICE), m.invoiceLabelQuotaExceeded];
-    await ctx.replyWithInvoice(title, description, id, "XTR", [{ label, amount: STARS_PRICE }]);
+    await ctx.replyWithInvoice(
+      m.invoiceTitleQuotaExceeded,
+      m.invoiceDescriptionQuotaExceeded(STARS_PRICE),
+      id,
+      "XTR",
+      [{ label: m.invoiceLabelQuotaExceeded, amount: STARS_PRICE }]
+    );
     return;
   }
 

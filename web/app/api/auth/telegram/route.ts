@@ -5,6 +5,7 @@ import {
   SESSION_COOKIE_NAME,
   SESSION_MAX_AGE_SECONDS,
 } from "@/lib/auth/session";
+import { isSameOriginRequest } from "@/lib/auth/request-origin";
 
 const API_URL = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL!;
 const API_KEY = process.env.API_KEY!;
@@ -14,6 +15,16 @@ const API_KEY = process.env.API_KEY!;
 // (бот-токен есть только у server-контейнера — веб его не хранит и не видит).
 // При успехе ставит httpOnly session-cookie на этот домен.
 export async function POST(request: NextRequest) {
+  // Без этой проверки — login CSRF: атакующий может залогинить браузер жертвы
+  // в СВОЙ аккаунт, переиграв свой же ранее полученный валидный подписанный
+  // Telegram-payload через cross-site POST (SameSite=Lax на самой cookie от
+  // этого не защищает — она про то, шлётся ли УЖЕ существующая cookie на
+  // сторонних запросах, а не про то, принимает ли сервер чужой Set-Cookie).
+  // Найдено и закрыто 2026-07-23 (код-ревью).
+  if (!isSameOriginRequest(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+  }
+
   if (!API_KEY) {
     return NextResponse.json({ error: "API key not configured" }, { status: 500 });
   }

@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { getSessionTelegramId } from "@/lib/auth/session";
+import { isSameOriginRequest } from "@/lib/auth/request-origin";
 
 // Внутренний адрес бэкенда для серверного прокси (в Docker — http://server:3001).
 // Если не задан, падаем на публичный NEXT_PUBLIC_API_URL (как в локальной разработке).
 const API_URL = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL!;
 const API_KEY = process.env.API_KEY!;
-const ALLOWED_ORIGIN = process.env.NEXT_PUBLIC_APP_URL!;
 
 // На бэкенде (server) все запросы отсюда видны с ОДНОГО internal docker-IP
 // этого web-контейнера — per-IP лимит там не различает реальных посетителей
@@ -113,34 +113,13 @@ async function verifyTurnstile(token: unknown, remoteIp: string): Promise<boolea
   }
 }
 
-// Middleware to verify the request is coming from our frontend
-function isValidRequest(request: NextRequest): boolean {
-  const origin = request.headers.get("origin");
-  const referer = request.headers.get("referer");
-
-  // In development, allow requests without origin (like from Postman)
-  if (process.env.NODE_ENV === "development") {
-    return true;
-  }
-
-  // Verify the request is coming from our frontend
-  if (
-    (!origin || origin !== ALLOWED_ORIGIN) &&
-    (!referer || !referer.startsWith(ALLOWED_ORIGIN))
-  ) {
-    return false;
-  }
-
-  return true;
-}
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const { path } = await params;
 
-  if (!isValidRequest(request)) {
+  if (!isSameOriginRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
@@ -153,7 +132,7 @@ export async function POST(
 ) {
   const { path } = await params;
 
-  if (!isValidRequest(request)) {
+  if (!isSameOriginRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
@@ -166,7 +145,7 @@ export async function PUT(
 ) {
   const { path } = await params;
 
-  if (!isValidRequest(request)) {
+  if (!isSameOriginRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
@@ -179,7 +158,7 @@ export async function DELETE(
 ) {
   const { path } = await params;
 
-  if (!isValidRequest(request)) {
+  if (!isSameOriginRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 

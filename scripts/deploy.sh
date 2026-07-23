@@ -68,28 +68,59 @@ for service in "$@"; do
       # Смоук-проверка ровно того класса ошибок, из-за которого написан этот
       # скрипт: если build-arg потерялся, эти строки не найдутся ни в одном
       # чанке, и мы узнаём об этом сразу, а не от пользователя через час.
+      # Список переменных генерируется из самого кода, а не хардкодится (было
+      # только 2 конкретных ключа) — любая НОВАЯ NEXT_PUBLIC_* переменная,
+      # которую кто-то заведёт в будущем, защищена автоматически, без правки
+      # этого скрипта.
       sleep 3
-      site_key="${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-$(grep -m1 '^NEXT_PUBLIC_TURNSTILE_SITE_KEY=' .env | cut -d= -f2)}"
-      bot_id="${NEXT_PUBLIC_TELEGRAM_BOT_ID:-$(grep -m1 '^NEXT_PUBLIC_TELEGRAM_BOT_ID=' .env | cut -d= -f2)}"
+      used_vars=$(grep -ohr 'NEXT_PUBLIC_[A-Z0-9_]\+' web --include=*.tsx --include=*.ts --exclude-dir=node_modules --exclude-dir=.next 2>/dev/null | sort -u)
       missing=0
-      if ! docker exec "$container" sh -c "grep -rl -- '$site_key' .next/static/chunks/*.js" >/dev/null 2>&1; then
-        echo "    ✗ NEXT_PUBLIC_TURNSTILE_SITE_KEY не найден в собранном бандле — Turnstile будет молча отключён"
-        missing=1
-      fi
-      if ! docker exec "$container" sh -c "grep -rl -- '$bot_id' .next/static/chunks/*.js" >/dev/null 2>&1; then
-        echo "    ✗ NEXT_PUBLIC_TELEGRAM_BOT_ID не найден в собранном бандле — кнопка входа будет молча отключена"
-        missing=1
-      fi
+      checked=0
+      for var in $used_vars; do
+        # (1) переменная вообще должна быть проброшена как build-arg —
+        # иначе она НИКОГДА не попадёт в бандл, вне зависимости от .env.
+        if ! grep -q "${var}:" docker-compose.prod.yml; then
+          echo "    ✗ ${var} используется в коде web/, но не передаётся как build-arg (docker-compose.prod.yml -> web.build.args)"
+          missing=1
+          continue
+        fi
+        # (2) само значение — из окружения текущего шелла (уже могло быть
+        # экспортировано вызывающим) либо из .env. Для переменных вроде
+        # NEXT_PUBLIC_APP_URL, которые в compose собираются интерполяцией
+        # (${PUBLIC_DOMAIN}), а не лежат в .env под тем же именем, значение
+        # тут не найдётся — молча пропускаем именно бандл-проверку для них
+        # (сама by-arg проверка выше их уже покрывает), а не падаем вслепую.
+        value="${!var:-$(grep -m1 "^${var}=" .env 2>/dev/null | cut -d= -f2)}"
+        if [ -z "$value" ]; then
+          continue
+        fi
+        checked=$((checked + 1))
+        if ! docker exec "$container" sh -c "grep -rl -- '$value' .next/static/chunks/*.js" >/dev/null 2>&1; then
+          echo "    ✗ ${var} не найден в собранном бандле — соответствующая фича будет молча отключена"
+          missing=1
+        fi
+      done
       if [ "$missing" -eq 1 ]; then
         echo "    Собранный образ не содержит нужные build-args. См. docker-compose.prod.yml -> web.build.args и .env." >&2
         exit 1
       fi
-      echo "    ✓ NEXT_PUBLIC_* значения присутствуют в бандле"
+      echo "    ✓ NEXT_PUBLIC_* в порядке (проверено значений в бандле: ${checked})"
       ;;
     server)
-      sleep 5
-      if ! docker logs "$container" --tail 30 2>&1 | grep -q "Nest application successfully started"; then
-        echo "    ✗ Не нашёл 'Nest application successfully started' в логах — проверь docker logs $container" >&2
+      # Retry вместо фиксированного sleep 5 — старт (миграции + seed + сам
+      # Nest bootstrap) не всегда укладывается в 5с, и скрипт трижды за одну
+      # сессию репортил ложный ✗ по контейнеру, который на самом деле через
+      # секунду-другую стартовал нормально.
+      started=0
+      for _ in $(seq 1 15); do
+        if docker logs "$container" --tail 30 2>&1 | grep -q "Nest application successfully started"; then
+          started=1
+          break
+        fi
+        sleep 1
+      done
+      if [ "$started" -eq 0 ]; then
+        echo "    ✗ Не нашёл 'Nest application successfully started' в логах за 15с — проверь docker logs $container" >&2
         exit 1
       fi
       echo "    ✓ Nest стартовал"

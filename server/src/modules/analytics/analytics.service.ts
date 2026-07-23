@@ -138,10 +138,16 @@ export class AnalyticsService {
       where: { status: DownloadStatus.FAILED },
       _count: { _all: true },
     });
-    return rows.map((row) => ({
-      category: row.errorCategory ?? 'OTHER',
-      count: row._count._all,
-    }));
+    // Prisma groupBy не умеет COALESCE — NULL (никогда не классифицировали)
+    // и явное значение enum 'OTHER' приходят как два разных ряда, оба с
+    // отображаемой меткой "OTHER". Схлопываем здесь, а не только в SQL
+    // errorsTimeseries (тот же баг, что там уже был исправлен).
+    const merged = new Map<string, number>();
+    for (const row of rows) {
+      const category = row.errorCategory ?? 'OTHER';
+      merged.set(category, (merged.get(category) ?? 0) + row._count._all);
+    }
+    return Array.from(merged.entries()).map(([category, count]) => ({ category, count }));
   }
 
   async errorsTimeseries(days: number) {

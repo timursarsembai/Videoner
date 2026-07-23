@@ -101,11 +101,20 @@ function mergeErrorsTimeseries(rows: ErrorTimeseriesPoint[]) {
   return { data, categories };
 }
 
-function StatCard({ label, value }: { label: string; value: string | number }) {
+function StatCard({
+  label,
+  value,
+  hint,
+}: {
+  label: string;
+  value: string | number;
+  hint?: string;
+}) {
   return (
     <div className="rounded-lg border border-border/60 bg-background/60 p-4">
       <div className="text-sm text-foreground/60">{label}</div>
       <div className="mt-1 text-2xl font-semibold">{value}</div>
+      {hint && <div className="mt-1 text-xs text-foreground/40">{hint}</div>}
     </div>
   );
 }
@@ -277,11 +286,15 @@ export default function AnalyticsPage() {
           <h2 className="mb-3 text-sm font-medium text-foreground/70">
             Подписки — единственный источник дохода
           </h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-9">
             <StatCard label="Активных всего" value={subscriptions.activeTotal} />
             <StatCard label="Месячных" value={subscriptions.activeMonthly} />
             <StatCard label="Годовых" value={subscriptions.activeYearly} />
-            <StatCard label="MRR, ⭐/мес (оценка)" value={subscriptions.mrrStars} />
+            <StatCard
+              label="MRR, ⭐/мес"
+              value={subscriptions.mrrStars}
+              hint="Прогноз дохода в месяц по активным подпискам (оценка)"
+            />
             <StatCard label="Истекает за 7 дн." value={subscriptions.expiring7d} />
             <StatCard label="Истекает за 30 дн." value={subscriptions.expiring30d} />
             <StatCard
@@ -298,9 +311,9 @@ export default function AnalyticsPage() {
         </section>
 
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-          <StatCard label="DAU" value={activity.dau} />
-          <StatCard label="WAU" value={activity.wau} />
-          <StatCard label="MAU" value={activity.mau} />
+          <StatCard label="DAU" value={activity.dau} hint="Активных пользователей за последние сутки" />
+          <StatCard label="WAU" value={activity.wau} hint="Активных пользователей за последние 7 дней" />
+          <StatCard label="MAU" value={activity.mau} hint="Активных пользователей за последние 30 дней" />
           <StatCard
             label="Новые / вернувшиеся за 30 дн."
             value={`${activity.newUsersLast30Days} / ${activity.returningUsersLast30Days}`}

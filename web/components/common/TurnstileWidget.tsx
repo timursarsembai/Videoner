@@ -78,7 +78,11 @@ export function TurnstileWidget({ onVerify }: TurnstileWidgetProps) {
   return (
     <>
       <Script src={SCRIPT_SRC} strategy="afterInteractive" />
-      <div id={containerId} className="cf-turnstile" data-action="turnstile-spin-v2" />
+      {/* БЕЗ class="cf-turnstile" намеренно: этот класс — триггер implicit-рендера
+          Cloudflare (сканирует DOM сам при загрузке скрипта). Explicit-рендер через
+          window.turnstile.render() ниже конфликтует с ним на одном контейнере —
+          именно так ловится "Invalid type for sitekey, expected string, got object". */}
+      <div id={containerId} />
     </>
   );
 }

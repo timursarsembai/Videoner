@@ -1,5 +1,6 @@
 "use client";
 
+import { Send } from "lucide-react";
 import { Button } from "../ui/button";
 
 const BOT_ID = process.env.NEXT_PUBLIC_TELEGRAM_BOT_ID;
@@ -16,6 +17,8 @@ export interface TelegramAuthUser {
 
 interface TelegramLoginWidgetProps {
   label: string;
+  // Иконка вместо текстовой кнопки — для тесных мест (шапка на мобильном).
+  compact?: boolean;
 }
 
 // Официальный JS-виджет (iframe от telegram.org/js/telegram-widget.js)
@@ -25,7 +28,7 @@ interface TelegramLoginWidgetProps {
 // стороннего скрипта используем официальный redirect-флоу Telegram Login:
 // обычная ссылка на oauth.telegram.org — Telegram сам вернёт подписанные
 // поля пользователя через query-параметры на return_to (см. UserMenu.tsx).
-export function TelegramLoginWidget({ label }: TelegramLoginWidgetProps) {
+export function TelegramLoginWidget({ label, compact }: TelegramLoginWidgetProps) {
   if (!BOT_ID) return null;
 
   const handleClick = () => {
@@ -38,6 +41,21 @@ export function TelegramLoginWidget({ label }: TelegramLoginWidgetProps) {
       `&return_to=${encodeURIComponent(returnTo)}`;
     window.location.href = url;
   };
+
+  if (compact) {
+    return (
+      <Button
+        size="icon"
+        variant="ghost"
+        className="rounded-full"
+        onClick={handleClick}
+        aria-label={label}
+        title={label}
+      >
+        <Send className="h-5 w-5" />
+      </Button>
+    );
+  }
 
   return (
     <Button size="sm" onClick={handleClick}>

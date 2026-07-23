@@ -4,7 +4,15 @@ import { useEffect, useState } from "react";
 import { useLanguage } from "@/lib/i18n/context";
 import { SubscriptionStatus } from "@/lib/auth/types";
 import { Button } from "../ui/button";
-import { TelegramAuthUser, TelegramLoginWidget } from "../common/TelegramLoginWidget";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { TelegramLoginWidget } from "../common/TelegramLoginWidget";
 
 const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
 const LOCALE_MAP: Record<string, string> = { ru: "ru-RU", es: "es-ES", en: "en-US" };
@@ -14,56 +22,18 @@ export function UserMenu() {
   // undefined — статус ещё не загружен (не мигаем логин-виджетом до ответа /me)
   const [user, setUser] = useState<SubscriptionStatus | null | undefined>(undefined);
 
-  const handleAuth = async (authUser: TelegramAuthUser) => {
-    try {
-      const res = await fetch("/api/auth/telegram", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(authUser),
-      });
-      if (res.ok) {
-        setUser(await res.json());
-      } else {
-        setUser(null);
-      }
-    } catch (error) {
-      console.error("Telegram login failed:", error);
-      setUser(null);
-    }
-  };
-
+  // Обработка Telegram-редиректа (#tgAuthResult=...) живёт в Navbar — она
+  // должна выполниться РОВНО ОДИН РАЗ (POST на /api/auth/telegram), а UserMenu
+  // монтируется дважды одновременно (десктоп + мобильная шапка, оба всегда
+  // в DOM, просто один скрыт через CSS) — если бы каждый экземпляр сам себе
+  // парсил хэш, была бы гонка за то, кто первым его обнулит. После успешного
+  // входа Navbar делает location.replace() — так что здесь просто читаем
+  // текущую сессию, ничего не обрабатываем.
   useEffect(() => {
-    // Telegram возвращает результат на return_to не query-параметрами, а
-    // фрагментом URL: #tgAuthResult=<base64(JSON)> — сам объект (id, hash, ...)
-    // при успехе, либо буквально base64("false") при отмене/повторном запросе
-    // (см. TelegramLoginWidget.tsx).
-    const rawHash = window.location.hash;
-    if (rawHash.startsWith("#tgAuthResult=")) {
-      window.history.replaceState(
-        null,
-        "",
-        window.location.pathname + window.location.search
-      );
-      const encoded = rawHash.slice("#tgAuthResult=".length);
-      try {
-        const padded = encoded + "=".repeat((4 - (encoded.length % 4)) % 4);
-        const decoded = JSON.parse(atob(padded));
-        if (decoded && typeof decoded === "object" && decoded.hash) {
-          handleAuth(decoded as TelegramAuthUser);
-          return;
-        }
-      } catch (error) {
-        console.error("Failed to parse Telegram auth result:", error);
-      }
-      setUser(null);
-      return;
-    }
-
     fetch("/api/auth/me")
       .then((res) => res.json())
       .then((data) => setUser(data.user ?? null))
       .catch(() => setUser(null));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogout = async () => {
@@ -77,7 +47,7 @@ export function UserMenu() {
   if (user === undefined) return null;
 
   if (!user) {
-    return <TelegramLoginWidget label={t("auth.loginButton")} />;
+    return <TelegramLoginWidget label={t("auth.loginButton")} compact />;
   }
 
   const dateStr = user.subscriptionUntil
@@ -88,20 +58,50 @@ export function UserMenu() {
       ? t("auth.subscribedUntil", { date: dateStr })
       : t("auth.subscribed")
     : t("auth.notSubscribed");
+  const initial = (user.firstName || user.username || "T").charAt(0).toUpperCase();
 
   return (
-    <div className="flex items-center gap-2 text-sm">
-      <span className="hidden text-foreground/70 sm:inline">
-        {user.firstName || user.username || "Telegram"} · {subscriptionLabel}
-      </span>
-      {!user.isUnlimited && BOT_USERNAME && (
-        <a href={`https://t.me/${BOT_USERNAME}?start=subscribe`} target="_blank" rel="noopener noreferrer">
-          <Button size="sm">{t("auth.subscribeButton")}</Button>
-        </a>
-      )}
-      <Button size="sm" variant="ghost" onClick={handleLogout}>
-        {t("auth.logout")}
-      </Button>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative rounded-full"
+          aria-label={t("auth.loginButton")}
+        >
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-primary">
+            {initial}
+          </span>
+          <span
+            className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2 ring-background ${
+              user.isUnlimited ? "bg-green-500" : "bg-muted-foreground/50"
+            }`}
+          />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-64">
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col gap-0.5">
+            <span className="font-medium">
+              {user.firstName || user.username || "Telegram"}
+            </span>
+            <span className="text-xs text-muted-foreground">{subscriptionLabel}</span>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {!user.isUnlimited && BOT_USERNAME && (
+          <DropdownMenuItem asChild>
+            <a
+              href={`https://t.me/${BOT_USERNAME}?start=subscribe`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("auth.subscribeButton")}
+            </a>
+          </DropdownMenuItem>
+        )}
+        <DropdownMenuItem onClick={handleLogout}>{t("auth.logout")}</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

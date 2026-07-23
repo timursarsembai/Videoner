@@ -11,6 +11,8 @@ import {
 import { api } from "@/lib/api";
 import { useLanguage } from "@/lib/i18n/context";
 import { downloadFile, extractErrorMessage, formatDuration } from "@/lib/utils";
+import { isPaidVideoQuality } from "@/lib/subscription";
+import { SubscriptionStatus } from "@/lib/auth/types";
 import { VideoInfo } from "@/types/youtube";
 import { motion } from "framer-motion";
 import {
@@ -19,12 +21,16 @@ import {
   FileVideo,
   Info,
   Loader2,
+  Lock,
   Music,
   Video,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { TelegramLoginWidget } from "./TelegramLoginWidget";
+
+const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
 
 interface VideoInfoSectionProps {
   videoInfo: VideoInfo;
@@ -57,6 +63,32 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
     isConverting: false,
     isDownloading: false,
   });
+  // undefined — статус ещё не загружен, null — не вошёл
+  const [user, setUser] = useState<SubscriptionStatus | null | undefined>(undefined);
+  const [quota, setQuota] = useState<{ unlimited: boolean; remaining: number } | null>(
+    null
+  );
+
+  // Скачивание на сайте требует входа через Telegram — тот же дневной лимит и
+  // HD-гейт, что и в боте (см. память telegram-site-auth.md). Финальное решение
+  // всё равно на сервере (enforceWebLimits), это только для UI.
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => setUser(data.user ?? null))
+      .catch(() => setUser(null));
+  }, []);
+
+  useEffect(() => {
+    if (!user || user.isUnlimited) {
+      setQuota(null);
+      return;
+    }
+    api
+      .getQuota(user.telegramId)
+      .then((q) => setQuota({ unlimited: q.unlimited, remaining: q.remaining }))
+      .catch(() => setQuota(null));
+  }, [user]);
 
   // Function to trigger file download
 
@@ -180,6 +212,18 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
   const isNewDownload =
     selectedQuality !== lastDownloadedQuality ||
     (downloadState.status === "complete" && !lastDownloadedQuality);
+
+  const isQualityLocked = (quality: string) =>
+    activeTab === "video" &&
+    !!user &&
+    !user.isUnlimited &&
+    isPaidVideoQuality(quality, videoInfo.qualities.video);
+
+  const selectedQualityLocked = selectedQuality
+    ? isQualityLocked(selectedQuality)
+    : false;
+  const quotaExceeded = !!quota && !quota.unlimited && quota.remaining <= 0;
+  const needsSubscription = selectedQualityLocked || quotaExceeded;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background py-8 items-center flex">
@@ -363,7 +407,12 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                         ) : (
                           <Music className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
                         )}
-                        <span className="font-medium">{quality}</span>
+                        <span className="flex items-center gap-1.5 font-medium">
+                          {quality}
+                          {isQualityLocked(quality) && (
+                            <Lock className="h-3.5 w-3.5 text-muted-foreground" />
+                          )}
+                        </span>
                       </div>
                       {selectedQuality === quality && (
                         <motion.div
@@ -434,17 +483,54 @@ export const VideoInfoSection = ({ videoInfo, url }: VideoInfoSectionProps) => {
                       </Button>
                     )}
 
-                  {downloadState.status !== "downloading" && isNewDownload && (
-                    <Button
-                      onClick={handleDownload}
-                      disabled={!selectedQuality}
-                      className="flex-1 gap-2"
-                      size="lg"
-                    >
-                      <Download className="h-4 w-4" />
-                      {t("video.startDownload")}
-                    </Button>
-                  )}
+                  {downloadState.status !== "downloading" &&
+                    isNewDownload &&
+                    user === null && (
+                      <div className="flex flex-1 flex-col items-center gap-2 rounded-lg bg-muted/30 p-4 text-center">
+                        <p className="text-sm text-muted-foreground">
+                          {t("video.loginRequiredHint")}
+                        </p>
+                        <TelegramLoginWidget label={t("auth.loginButton")} />
+                      </div>
+                    )}
+
+                  {downloadState.status !== "downloading" &&
+                    isNewDownload &&
+                    !!user &&
+                    selectedQuality &&
+                    needsSubscription && (
+                      <div className="flex flex-1 flex-col items-center gap-2 rounded-lg bg-muted/30 p-4 text-center">
+                        <p className="text-sm text-muted-foreground">
+                          {quotaExceeded
+                            ? t("video.quotaExceededHint")
+                            : t("video.hdLocked")}
+                        </p>
+                        {BOT_USERNAME && (
+                          <a
+                            href={`https://t.me/${BOT_USERNAME}?start=subscribe`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Button size="lg">{t("auth.subscribeButton")}</Button>
+                          </a>
+                        )}
+                      </div>
+                    )}
+
+                  {downloadState.status !== "downloading" &&
+                    isNewDownload &&
+                    user !== null &&
+                    !(!!user && selectedQuality && needsSubscription) && (
+                      <Button
+                        onClick={handleDownload}
+                        disabled={!selectedQuality || user === undefined}
+                        className="flex-1 gap-2"
+                        size="lg"
+                      >
+                        <Download className="h-4 w-4" />
+                        {t("video.startDownload")}
+                      </Button>
+                    )}
 
                   {downloadState.status === "downloading" && (
                     <Button disabled className="flex-1 gap-2" size="lg">

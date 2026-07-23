@@ -1,7 +1,9 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { join, basename, resolve } from 'path';
 import * as fs from 'fs';
@@ -20,11 +22,16 @@ import {
   DownloadQualityOptions,
   VideoFormat,
 } from 'src/types';
+import { FacebookVideoQuality } from 'src/types/facebook';
 import { YtdlpService } from '../ytdlp/ytdlp.service';
 import { getFileName } from 'src/lib/utils';
+import { getVideoFormats } from 'src/lib/helper';
 import { BotUserService } from '../analytics/bot-user.service';
 import { categorizeError } from 'src/lib/error-category';
-import { DAILY_FREE_DOWNLOAD_LIMIT } from 'src/lib/config';
+import {
+  DAILY_FREE_DOWNLOAD_LIMIT,
+  PAID_QUALITY_MIN_HEIGHT,
+} from 'src/lib/config';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -62,6 +69,70 @@ export class DownloadService {
     }
 
     return info;
+  }
+
+  // Тот же список качеств, что видит пользователь на /info (getPlatformFormats
+  // в info.service.ts) — пересчитываем из уже полученного info, а не доверяем
+  // клиенту, чтобы нельзя было обмануть исключение "720p бесплатен, если ниже
+  // качеств нет вообще" (см. isPaidVideoQuality) поддельным списком.
+  private getAvailableVideoQualities(info: any, platform: string): string[] {
+    if (platform === 'facebook') {
+      return [FacebookVideoQuality.hd, FacebookVideoQuality.sd];
+    }
+    return getVideoFormats(info);
+  }
+
+  // Зеркалит isPaidQuality() из bot/src/bot.ts — держать оба места в синхроне
+  // при изменении правила. НЕ числовые качества (Facebook 'hd'/'sd') всегда
+  // бесплатны (parseInt даёт NaN), как и в боте.
+  private isPaidVideoQuality(quality: string, availableQualities: string[]): boolean {
+    const height = parseInt(quality, 10);
+    if (!Number.isFinite(height) || height < PAID_QUALITY_MIN_HEIGHT) return false;
+
+    if (height === PAID_QUALITY_MIN_HEIGHT) {
+      const heights = availableQualities
+        .map((q) => parseInt(q, 10))
+        .filter((h) => Number.isFinite(h));
+      const minHeight = heights.length ? Math.min(...heights) : height;
+      if (minHeight >= PAID_QUALITY_MIN_HEIGHT) return false;
+    }
+
+    return true;
+  }
+
+  // Те же ограничения для неподписанных, что и в боте (дневной лимит бесплатных
+  // скачиваний + платное HD), но только для запросов с сайта (meta.source ===
+  // WEB) — бот управляет своим гейтом сам (в т.ч. разовой оплатой HD за Stars,
+  // о которой сервер ничего не знает), его трогать нельзя. telegramId для WEB
+  // приходит уже проверенным из сессии (см. web/app/api/[...path]/route.ts),
+  // а не как есть от браузера.
+  private async enforceWebLimits(
+    meta: DownloadRequestMeta,
+    quality: string | undefined,
+    info: any,
+    platform: string,
+    isVideo: boolean,
+  ) {
+    if (meta.source !== DownloadSource.WEB) return;
+
+    if (!meta.telegramId) {
+      throw new UnauthorizedException('Login required to download on the website');
+    }
+
+    const unlimited = await this.botUser.isUnlimited(meta.telegramId);
+    if (unlimited) return;
+
+    if (isVideo && quality) {
+      const availableQualities = this.getAvailableVideoQualities(info, platform);
+      if (this.isPaidVideoQuality(quality, availableQualities)) {
+        throw new ForbiddenException('This quality requires an active subscription');
+      }
+    }
+
+    const freeUsed = await this.botUser.countFreeDownloadsToday(meta.telegramId);
+    if (freeUsed >= DAILY_FREE_DOWNLOAD_LIMIT) {
+      throw new ForbiddenException('Daily free download limit reached');
+    }
   }
 
   // filename приходит от клиента (публичный, без API-ключа) роутом — нельзя
@@ -301,6 +372,7 @@ export class DownloadService {
     try {
       // Check duration limit before proceeding
       const info = await this.checkDurationLimit(url, req);
+      await this.enforceWebLimits(meta, quality, info, (req as any).platform, true);
 
       const downloadDir = this.ensureDownloadDirectory();
 
@@ -478,7 +550,11 @@ export class DownloadService {
           extension && extension !== 'mp4' ? finalFileName : tempFileName,
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (
+        error instanceof BadRequestException ||
+        error instanceof ForbiddenException ||
+        error instanceof UnauthorizedException
+      ) {
         throw error;
       }
       throw new BadRequestException(
@@ -497,6 +573,7 @@ export class DownloadService {
     try {
       // Check duration limit before proceeding
       const info = await this.checkDurationLimit(url, req);
+      await this.enforceWebLimits(meta, undefined, info, (req as any).platform, false);
 
       const downloadDir = this.ensureDownloadDirectory();
       const fileName = getFileName(info.title, quality, extension);
@@ -587,7 +664,11 @@ export class DownloadService {
         fileName: fileName,
       };
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (
+        error instanceof BadRequestException ||
+        error instanceof ForbiddenException ||
+        error instanceof UnauthorizedException
+      ) {
         throw error;
       }
       throw new BadRequestException('Failed to download audio');

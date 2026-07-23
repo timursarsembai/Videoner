@@ -2,17 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/lib/i18n/context";
+import { SubscriptionStatus } from "@/lib/auth/types";
 import { Button } from "../ui/button";
 import { TelegramAuthUser, TelegramLoginWidget } from "../common/TelegramLoginWidget";
-
-interface SubscriptionStatus {
-  telegramId: string;
-  username: string | null;
-  firstName: string | null;
-  isUnlimited: boolean;
-  subscriptionUntil: string | null;
-  subscriptionKind: "MONTHLY" | "YEARLY" | null;
-}
 
 const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
 const LOCALE_MAP: Record<string, string> = { ru: "ru-RU", es: "es-ES", en: "en-US" };
@@ -76,7 +68,10 @@ export function UserMenu() {
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    setUser(null);
+    // Полная перезагрузка, а не просто setUser(null) — на странице может быть
+    // ещё несколько независимых потребителей /api/auth/me (см. VideoInfo.tsx),
+    // у каждого свой локальный стейт без общего контекста.
+    window.location.reload();
   };
 
   if (user === undefined) return null;

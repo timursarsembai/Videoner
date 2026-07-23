@@ -59,4 +59,8 @@ export const platforms = ['youtube', 'facebook', 'instagram', 'tiktok'];
 // Бесплатных скачиваний в боте на пользователя за скользящие 24ч; сверх — платно за Stars.
 export const DAILY_FREE_DOWNLOAD_LIMIT = 10;
 
+// HD (720p и выше) — платное качество в боте (см. bot/src/bot.ts PAID_QUALITY_MIN_HEIGHT).
+// Используется здесь для того же гейта на сайте (см. DownloadService.isPaidVideoQuality).
+export const PAID_QUALITY_MIN_HEIGHT = 720;
+
 

@@ -142,6 +142,22 @@ class ApiClient {
     }
   }
 
+  async getQuota(telegramId: string): Promise<{
+    unlimited: boolean;
+    freeUsed: number;
+    freeLimit: number;
+    remaining: number;
+  }> {
+    try {
+      const response = await this.client.get("/download/quota", {
+        params: { telegramId },
+      });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   private handleError(error: unknown): ApiError {
     if (error && typeof error === "object" && "statusCode" in error) {
       return error as ApiError;

@@ -75,6 +75,9 @@ const en = {
     startDownload: "Start Download",
     convertingBtn: "Converting...",
     downloadingBtn: "Downloading...",
+    hdLocked: "Requires a subscription",
+    loginRequiredHint: "Log in with Telegram to download",
+    quotaExceededHint: "Daily free limit reached — subscribe for unlimited downloads",
   },
   toast: {
     enterUrl: "Please enter a URL",
@@ -369,6 +372,9 @@ const es: Translations = {
     startDownload: "Iniciar descarga",
     convertingBtn: "Convirtiendo...",
     downloadingBtn: "Descargando...",
+    hdLocked: "Requiere suscripción",
+    loginRequiredHint: "Inicia sesión con Telegram para descargar",
+    quotaExceededHint: "Límite diario gratuito alcanzado — suscríbete para descargas ilimitadas",
   },
   toast: {
     enterUrl: "Por favor, introduce una URL",
@@ -661,6 +667,9 @@ const ru: Translations = {
     startDownload: "Начать загрузку",
     convertingBtn: "Конвертация...",
     downloadingBtn: "Загрузка...",
+    hdLocked: "Нужна подписка",
+    loginRequiredHint: "Войдите через Telegram, чтобы скачать",
+    quotaExceededHint: "Дневной бесплатный лимит исчерпан — оформите подписку для безлимитных скачиваний",
   },
   toast: {
     enterUrl: "Пожалуйста, введите ссылку",

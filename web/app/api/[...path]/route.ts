@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { getSessionTelegramId } from "@/lib/auth/session";
 
 // Внутренний адрес бэкенда для серверного прокси (в Docker — http://server:3001).
 // Если не задан, падаем на публичный NEXT_PUBLIC_API_URL (как в локальной разработке).
@@ -168,7 +169,7 @@ async function handleRequest(request: NextRequest, path: string[]) {
 
   try {
     const targetUrl = `${API_URL}/${path.join("/")}`;
-    const body = request.body ? await request.json() : undefined;
+    let body = request.body ? await request.json() : undefined;
 
     if (path.length === 1 && path[0] === "info" && request.method === "POST") {
       const ok = await verifyTurnstile(body?.turnstileToken, getClientIp(request));
@@ -176,6 +177,26 @@ async function handleRequest(request: NextRequest, path: string[]) {
         return NextResponse.json({ error: "Captcha verification failed" }, { status: 403 });
       }
       delete body.turnstileToken;
+    }
+
+    // Скачивание на сайте требует входа через Telegram — тот же дневной лимит
+    // и HD-гейт, что и в боте (см. DownloadService.enforceWebLimits на сервере).
+    // telegramId берём из проверенной сессии (cookie), а не от клиента — иначе
+    // можно было бы просто подставить чужой id и обойти лимит/подписку.
+    if (
+      path.length === 2 &&
+      path[0] === "download" &&
+      (path[1] === "video" || path[1] === "audio") &&
+      request.method === "POST"
+    ) {
+      const telegramId = await getSessionTelegramId();
+      if (!telegramId) {
+        return NextResponse.json(
+          { message: "Login required to download on the website", error: "Unauthorized" },
+          { status: 401 }
+        );
+      }
+      body = { ...(body ?? {}), telegramId };
     }
 
     const response = await axios({

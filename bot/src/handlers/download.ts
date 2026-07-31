@@ -14,6 +14,15 @@ import {
 } from "../helpers.js";
 import { addSubscriptionButtons } from "./subscription.js";
 
+// Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
+// Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
+// размеров — как отправлялось до этой правки.
+type VideoDimensions = {
+  width?: number;
+  height?: number;
+  duration?: number;
+};
+
 // Ссылка на видео — callback_data в Telegram ограничена 64 байтами, поэтому
 // URL храним здесь, а в кнопке передаём только тип и качество. videoQualities
 // нужен, чтобы в callback-обработчике знать, есть ли у видео варианты ниже 720p.
@@ -78,7 +87,7 @@ async function performDownload(
   send: {
     reply: (text: string) => Promise<{ message_id: number }>;
     editMessageText: (messageId: number, text: string) => Promise<unknown>;
-    replyWithVideo: (file: InputFile) => Promise<unknown>;
+    replyWithVideo: (file: InputFile, dims?: VideoDimensions) => Promise<unknown>;
     replyWithAudio: (file: InputFile) => Promise<unknown>;
     deleteMessage: (messageId: number) => Promise<unknown>;
   },
@@ -107,7 +116,9 @@ async function performDownload(
 
     const fileName = encodeURIComponent(started.fileName);
     const fileUrl = `${API_URL}/download/${fileName}`;
-    const meta = await api<{ size: number }>(`/download/${fileName}/metadata`);
+    const meta = await api<{ size: number } & VideoDimensions>(
+      `/download/${fileName}/metadata`,
+    );
 
     // Без локального Bot API сервера облачный лимит — 50 МБ на файл от бота
     if (!BOT_API_ROOT && meta.size > CLOUD_SIZE_LIMIT) {
@@ -119,7 +130,13 @@ async function performDownload(
     await send.editMessageText(msg.message_id, m.sendingFile);
     const file = new InputFile(new URL(fileUrl));
     if (kind === "v") {
-      await send.replyWithVideo(file);
+      // Размеры передаём явно: без них Telegram на iOS показывает вертикальное
+      // видео сплющенным в квадрат (Desktop читает поток сам и рисует верно).
+      await send.replyWithVideo(file, {
+        width: meta.width,
+        height: meta.height,
+        duration: meta.duration,
+      });
     } else {
       await send.replyWithAudio(file);
     }
@@ -231,7 +248,8 @@ export function registerDownloadHandlers(bot: Bot) {
     const send = {
       reply: (text: string) => ctx.reply(text),
       editMessageText: (messageId: number, text: string) => ctx.api.editMessageText(chatId, messageId, text),
-      replyWithVideo: (file: InputFile) => ctx.replyWithVideo(file, { supports_streaming: true }),
+      replyWithVideo: (file: InputFile, dims?: VideoDimensions) =>
+        ctx.replyWithVideo(file, { supports_streaming: true, ...dims }),
       replyWithAudio: (file: InputFile) => ctx.replyWithAudio(file),
       deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
     };

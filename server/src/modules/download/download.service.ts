@@ -6,6 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { join, basename, resolve } from 'path';
+import { execFileSync } from 'child_process';
 import * as fs from 'fs';
 import { createReadStream, statSync } from 'fs';
 import { PrismaService } from '../prisma/prisma.service';
@@ -207,6 +208,46 @@ export class DownloadService {
     return { stream, headers };
   }
 
+  // Размеры и длительность видео нужны боту, чтобы передать их в sendVideo.
+  // Без width/height Telegram-клиент на iOS показывает вертикальное видео
+  // сплющенным в квадрат (Desktop при этом читает поток сам и рисует верно) —
+  // поэтому метаданные лучше отдать явно, чем надеяться на определение
+  // на стороне Telegram. Ошибку ffprobe глотаем: она не повод ронять ответ,
+  // бот просто отправит видео без размеров, как делал раньше.
+  private probeVideoDimensions(filePath: string): {
+    width?: number;
+    height?: number;
+    duration?: number;
+  } {
+    try {
+      const out = execFileSync(
+        'ffprobe',
+        [
+          '-v',
+          'error',
+          '-select_streams',
+          'v:0',
+          '-show_entries',
+          'stream=width,height:format=duration',
+          '-of',
+          'json',
+          filePath,
+        ],
+        { encoding: 'utf-8', timeout: 10_000 },
+      );
+      const parsed = JSON.parse(out);
+      const stream = parsed?.streams?.[0] ?? {};
+      const duration = Number(parsed?.format?.duration);
+      return {
+        width: Number.isFinite(stream.width) ? stream.width : undefined,
+        height: Number.isFinite(stream.height) ? stream.height : undefined,
+        duration: Number.isFinite(duration) ? Math.round(duration) : undefined,
+      };
+    } catch {
+      return {};
+    }
+  }
+
   async getFileMetadata(filename: string) {
     const filePath = this.resolveDownloadPath(filename);
 
@@ -221,6 +262,7 @@ export class DownloadService {
       modified: stat.mtime,
       isFile: stat.isFile(),
       isDirectory: stat.isDirectory(),
+      ...this.probeVideoDimensions(filePath),
     };
   }
 

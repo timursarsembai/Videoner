@@ -10,6 +10,8 @@ server/info.json
 
 # ==== Зависимости и сборка ====
 node_modules/
+# Локальный кэш пакетов pnpm — сотни мегабайт, в репозитории ему не место.
+.pnpm-store/
 dist/
 build/
 .next/

@@ -15,7 +15,7 @@ export class AlertService {
     const text =
       '⚠️ YouTube требует авторизацию (антибот-защита).\n\n' +
       'yt-dlp получил: "Sign in to confirm you\'re not a bot".\n' +
-      'Нужно переэкспортировать server/cookies.txt и перезапустить server.\n\n' +
+      'Нужно переэкспортировать server/cookies/<платформа>.txt (см. README) и перезапустить server.\n\n' +
       `Исходная ошибка: ${rawError.slice(0, 300)}`;
 
     await this.notifyWithCooldown('youtube', text);
@@ -30,7 +30,7 @@ export class AlertService {
       `⚠️ ${platform}: похоже, авторизованные cookies протухли.\n\n` +
       'yt-dlp получил ошибку, похожую на "требуется вход" — сервер попробовал ' +
       'скачать анонимно (может не сработать для приватного контента).\n' +
-      'Нужно переэкспортировать server/cookies.txt и перезапустить server.\n\n' +
+      'Нужно переэкспортировать server/cookies/<платформа>.txt (см. README) и перезапустить server.\n\n' +
       `Исходная ошибка: ${rawError.slice(0, 300)}`;
 
     await this.notifyWithCooldown(platform, text);

@@ -56,7 +56,8 @@ services:
       YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
     volumes:
       - downloads_staging:/app/dist/downloads
-      - ./server/cookies.txt:/app/cookies.txt
+      # Каталог, а не файл — см. подробный комментарий в docker-compose.prod.yml
+      - ./server/cookies:/app/cookies
     networks: [internal, staging_internal, proxy]
 
   web-staging:

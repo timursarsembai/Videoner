@@ -11,6 +11,7 @@ import { Observable, Subject } from 'rxjs';
 import { promisify } from 'util';
 import { parseDownloadOptions, stringToProgress } from '../../lib/helper';
 import { PROGRESS_STRING } from '../../lib/utils';
+import { getPlatform } from '../../validate/url';
 import {
   BinPathType,
   DownloadKeyWord,
@@ -108,6 +109,7 @@ export class YtdlpProcessService implements OnModuleInit {
   private ytdlpPath: string;
   private ffmpegPath: string;
   private readonly binariesDir: string;
+  private readonly cookiesDir: string;
   private readonly cookiesFilePath: string;
   // Статический ISP-прокси (IPRoyal) — только для YouTube: датацентр-IP VPS
   // заблокирован антибот-защитой YouTube, остальные площадки прокси не требуют.
@@ -119,7 +121,23 @@ export class YtdlpProcessService implements OnModuleInit {
 
   constructor() {
     this.binariesDir = path.join(process.cwd(), 'bin');
-    this.cookiesFilePath = path.resolve(process.cwd(), 'cookies.txt');
+    // Файл лежит внутри КАТАЛОГА cookies/, и монтируется в compose именно
+    // каталог, а не сам файл. Раньше монтировался файл (./server/cookies.txt),
+    // и это тихо ломалось: yt-dlp при ротации сессионных токенов не дописывает
+    // cookies.txt, а подменяет его новым файлом — inode меняется, а bind-mount
+    // одиночного файла привязан именно к inode. Связь с хостом рвалась, дальше
+    // контейнер работал с отсоединённой копией: ротированные куки терялись при
+    // каждом рестарте, а правки на хосте до контейнера не доходили.
+    // Каталог монтируется по пути, поэтому подмена файла внутри него безопасна.
+    //
+    // Внутри каталога куки разложены по платформам: cookies/youtube.txt,
+    // cookies/tiktok.txt и т.д., а cookies/cookies.txt — общий запасной вариант
+    // для платформ без своего файла (см. resolveCookiesSource). Раньше всё
+    // лежало одной кучей в cookies.txt, и это было неудобно и опасно:
+    // переэкспорт кук одной площадки затирал куки всех остальных, а выяснить,
+    // чья именно сессия протухла, можно было только разбором файла по доменам.
+    this.cookiesDir = path.resolve(process.cwd(), 'cookies');
+    this.cookiesFilePath = path.join(this.cookiesDir, 'cookies.txt');
     this.youtubeProxyUrl = process.env.YOUTUBE_PROXY_URL || undefined;
   }
 
@@ -356,13 +374,22 @@ export class YtdlpProcessService implements OnModuleInit {
   ): Promise<{ stdout: string; stderr: string }> {
     const isYoutube = args.some((a) => this.isYoutubeUrl(a));
     const releaseSlot = isYoutube ? await this.youtubeSemaphore.acquire() : null;
+    let disposableCookies: string | null = null;
     try {
       if (isYoutube) {
         await this.youtubeThrottleDelay();
       }
       const finalArgs = [...args];
-      if (!options?.skipCookies && this.hasCookies()) {
-        finalArgs.push('--cookies', this.cookiesFilePath);
+      if (!options?.skipCookies) {
+        // Платформу определяем по url-аргументу — он единственный http(s)
+        // элемент массива (остальное это флаги yt-dlp).
+        const urlArg = args.find((a) => /^https?:\/\//i.test(a));
+        disposableCookies = this.makeDisposableCookies(
+          urlArg ? getPlatform(urlArg) : null,
+        );
+        if (disposableCookies) {
+          finalArgs.push('--cookies', disposableCookies);
+        }
       }
       if (this.youtubeProxyUrl && isYoutube) {
         finalArgs.push('--proxy', this.youtubeProxyUrl);
@@ -372,6 +399,7 @@ export class YtdlpProcessService implements OnModuleInit {
     } catch (error) {
       throw new Error(`Failed to run yt-dlp command: ${error.message}`);
     } finally {
+      this.dropDisposableCookies(disposableCookies);
       releaseSlot?.();
     }
   }
@@ -423,14 +451,78 @@ export class YtdlpProcessService implements OnModuleInit {
 
   // Считаем cookies заданными только если файл существует и непустой —
   // так пустышку-заглушку (удобно монтировать в Docker) yt-dlp не получит.
-  private hasCookies(): boolean {
+  private isUsableCookieFile(filePath: string): boolean {
     try {
-      return (
-        fsSync.existsSync(this.cookiesFilePath) &&
-        fsSync.statSync(this.cookiesFilePath).size > 0
-      );
+      return fsSync.existsSync(filePath) && fsSync.statSync(filePath).size > 0;
     } catch {
       return false;
+    }
+  }
+
+  // Куки конкретной площадки приоритетнее общего файла: cookies/youtube.txt
+  // перекрывает cookies/cookies.txt. Так переэкспорт одной площадки не задевает
+  // остальные, а отключить куки площадки можно просто удалив её файл.
+  // Имя платформы приходит из getPlatform() и совпадает со слагом в типе
+  // Platform ('youtube', 'instagram', 'tiktok', ...).
+  private resolveCookiesSource(platform: string | null): string | null {
+    if (platform) {
+      // Страхуемся от подстановки пути: в имя файла попадает только то, что
+      // вернул getPlatform(), но проверка дешёвая, а цена ошибки высокая.
+      const safe = /^[a-z0-9_-]+$/i.test(platform) ? platform : null;
+      if (safe) {
+        const perPlatform = path.join(this.cookiesDir, `${safe}.txt`);
+        if (this.isUsableCookieFile(perPlatform)) {
+          return perPlatform;
+        }
+      }
+    }
+    return this.isUsableCookieFile(this.cookiesFilePath)
+      ? this.cookiesFilePath
+      : null;
+  }
+
+  // yt-dlp с флагом --cookies ВСЕГДА перезаписывает переданный файл своей
+  // версией cookie jar после запроса. Для YouTube это разрушительно: сервер в
+  // ответ присылает Set-Cookie, разлогинивающий первостороннюю сессию (доступ
+  // идёт через ISP-прокси из дата-центра), и yt-dlp послушно сохраняет
+  // результат — SID/HSID/SSID/APISID/SAPISID/LOGIN_INFO/__Secure-1P* исчезают
+  // из файла. Замеряно 31.07.2026: за два запроса 22 куки YouTube превратились
+  // в 12, все авторизационные пропали. То есть экспортированную сессию убивал
+  // не YouTube «со временем», а собственный сервис — с первого же ответа.
+  //
+  // Поэтому эталонные файлы в cookies/ отдаются только на чтение: каждому
+  // запуску подсовывается одноразовая копия во временном каталоге, её yt-dlp и
+  // портит. Настоящая ротация токенов при этом не сохраняется — но сохранять
+  // там, как показали замеры, нечего.
+  private makeDisposableCookies(platform: string | null): string | null {
+    const source = this.resolveCookiesSource(platform);
+    if (!source) {
+      return null;
+    }
+    try {
+      const tmpPath = path.join(
+        os.tmpdir(),
+        `ytdlp-cookies-${process.pid}-${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2, 8)}.txt`,
+      );
+      fsSync.copyFileSync(source, tmpPath);
+      return tmpPath;
+    } catch {
+      // Не смогли сделать копию — работаем анонимно, это лучше, чем отдать
+      // yt-dlp эталонный файл на растерзание.
+      return null;
+    }
+  }
+
+  private dropDisposableCookies(tmpPath: string | null): void {
+    if (!tmpPath) {
+      return;
+    }
+    try {
+      fsSync.unlinkSync(tmpPath);
+    } catch {
+      // Файл в /tmp, потеря не критична — не роняем запрос из-за неё.
     }
   }
 
@@ -469,8 +561,11 @@ export class YtdlpProcessService implements OnModuleInit {
       PROGRESS_STRING,
     ];
 
-    if (this.hasCookies()) {
-      processArgs.push('--cookies', this.cookiesFilePath);
+    // Одноразовая копия, а не эталонный файл — см. makeDisposableCookies().
+    // Удаляется в обработчиках 'error'/'exit' ниже.
+    const disposableCookies = this.makeDisposableCookies(platform);
+    if (disposableCookies) {
+      processArgs.push('--cookies', disposableCookies);
     }
 
     // Общий слот — до YouTube-специфичного: если сервер и так забит другими
@@ -547,6 +642,7 @@ export class YtdlpProcessService implements OnModuleInit {
     // (и youtube-, и общий) зависли бы навсегда. Было упущено до этой правки
     // и для youtubeSemaphore тоже — чиним заодно, раз уже трогаем этот путь.
     childProcess.on('error', (err) => {
+      this.dropDisposableCookies(disposableCookies);
       releaseYoutubeSlot?.();
       releaseGlobalSlot();
       if (!hasError) {
@@ -556,6 +652,7 @@ export class YtdlpProcessService implements OnModuleInit {
     });
 
     childProcess.on('exit', (code) => {
+      this.dropDisposableCookies(disposableCookies);
       releaseYoutubeSlot?.();
       releaseGlobalSlot();
       if (code !== 0 && !hasError) {

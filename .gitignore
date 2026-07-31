@@ -5,7 +5,7 @@
 !.env.prod.example
 !.env.staging.example
 *.local
-server/cookies.txt
+server/cookies/
 server/info.json
 
 # ==== Зависимости и сборка ====

@@ -53,6 +53,11 @@ model Download {
   source        DownloadSource @default(API)
   videoTitle    String?
   videoDuration Int?
+  // Размеры видео нужны боту для sendVideo: без width/height Telegram на iOS
+  // сплющивает вертикальное видео в квадрат. Замеряются один раз ffprobe'ом
+  // при завершении загрузки, чтобы не гонять его на каждый запрос метаданных.
+  videoWidth    Int?
+  videoHeight   Int?
   fileSize      BigInt?
   isPaid        Boolean        @default(false)
   starsAmount   Int?

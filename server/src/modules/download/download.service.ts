@@ -6,7 +6,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { join, basename, resolve } from 'path';
-import { execFileSync } from 'child_process';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
 import * as fs from 'fs';
 import { createReadStream, statSync } from 'fs';
 import { PrismaService } from '../prisma/prisma.service';
@@ -43,6 +44,8 @@ export interface DownloadRequestMeta {
   isPaid?: boolean;
   starsAmount?: number;
 }
+
+const execFileAsync = promisify(execFile);
 
 @Injectable()
 export class DownloadService {
@@ -210,17 +213,22 @@ export class DownloadService {
 
   // Размеры и длительность видео нужны боту, чтобы передать их в sendVideo.
   // Без width/height Telegram-клиент на iOS показывает вертикальное видео
-  // сплющенным в квадрат (Desktop при этом читает поток сам и рисует верно) —
-  // поэтому метаданные лучше отдать явно, чем надеяться на определение
-  // на стороне Telegram. Ошибку ffprobe глотаем: она не повод ронять ответ,
-  // бот просто отправит видео без размеров, как делал раньше.
-  private probeVideoDimensions(filePath: string): {
+  // сплющенным в квадрат (Desktop при этом читает поток сам и рисует верно).
+  //
+  // Вызывается один раз — в completeDownload(), результат ложится в БД. На
+  // запросе метаданных ffprobe уже не гоняется (см. getFileMetadata): это и
+  // быстрее, и не даёт заблокировать event loop, если метаданные вдруг начнут
+  // запрашивать часто или параллельно.
+  //
+  // Ошибку глотаем: она не повод проваливать саму загрузку — бот просто
+  // отправит видео без размеров, как делал до появления этой правки.
+  private async probeVideoDimensions(filePath: string): Promise<{
     width?: number;
     height?: number;
     duration?: number;
-  } {
+  }> {
     try {
-      const out = execFileSync(
+      const { stdout } = await execFileAsync(
         'ffprobe',
         [
           '-v',
@@ -235,7 +243,7 @@ export class DownloadService {
         ],
         { encoding: 'utf-8', timeout: 10_000 },
       );
-      const parsed = JSON.parse(out);
+      const parsed = JSON.parse(stdout);
       const stream = parsed?.streams?.[0] ?? {};
       const duration = Number(parsed?.format?.duration);
       return {
@@ -256,13 +264,30 @@ export class DownloadService {
     }
 
     const stat = statSync(filePath);
+
+    // Размеры берём из БД — их положил туда completeDownload(). Ищем по
+    // downloadUrl, а не по filename: downloadUrl строится из фактического
+    // имени файла на диске и верен всегда, тогда как у записей, созданных до
+    // правки getFileName выше, поле filename могло разойтись с реальным
+    // именем на миллисекунду.
+    //
+    // Записей может не быть у файлов, скачанных до этой правки, и у аудио;
+    // тогда просто не отдаём эти поля — для бота они необязательны.
+    const download = await this.prisma.download.findFirst({
+      where: { downloadUrl: { endsWith: `/${filename}` } },
+      orderBy: { createdAt: 'desc' },
+      select: { videoWidth: true, videoHeight: true, videoDuration: true },
+    });
+
     return {
       size: stat.size,
       created: stat.birthtime,
       modified: stat.mtime,
       isFile: stat.isFile(),
       isDirectory: stat.isDirectory(),
-      ...this.probeVideoDimensions(filePath),
+      ...(download?.videoWidth ? { width: download.videoWidth } : {}),
+      ...(download?.videoHeight ? { height: download.videoHeight } : {}),
+      ...(download?.videoDuration ? { duration: download.videoDuration } : {}),
     };
   }
 
@@ -302,6 +327,9 @@ export class DownloadService {
       downloadUrl?: string | null;
       fileSize?: bigint;
       errorCategory?: ErrorCategory;
+      videoWidth?: number;
+      videoHeight?: number;
+      videoDuration?: number;
     },
   ) {
     return this.prisma.download.update({
@@ -459,10 +487,17 @@ export class DownloadService {
     filePath: string,
     progressSubject: Subject<ProgressType | Error>,
   ) {
+    // Размеры снимаем здесь, один раз на загрузку — дальше их отдаёт
+    // getFileMetadata() из БД. У аудио видеопотока нет, ffprobe вернёт пусто.
+    const dims = await this.probeVideoDimensions(filePath);
+
     await this.updateDownloadStatus(downloadId, {
       status: DownloadStatus.COMPLETED,
       downloadUrl,
       fileSize: BigInt(statSync(filePath).size),
+      ...(dims.width ? { videoWidth: dims.width } : {}),
+      ...(dims.height ? { videoHeight: dims.height } : {}),
+      ...(dims.duration ? { videoDuration: dims.duration } : {}),
     });
     progressSubject.complete();
   }
@@ -567,7 +602,16 @@ export class DownloadService {
       const initialExtension =
         extension && extension !== 'mp4' ? 'mp4' : extension;
       const tempFileName = getFileName(info.title, quality, initialExtension);
-      const finalFileName = getFileName(info.title, quality, extension);
+      // Когда конвертация не нужна (запрошен mp4, он же и скачивается),
+      // временный файл И ЕСТЬ финальный — второе имя генерировать нельзя.
+      // getFileName() берёт текущее время в миллисекундах, и два вызова
+      // подряд иногда попадают в разные миллисекунды: в БД уезжало имя
+      // ...779.mp4, а на диске лежало ...778.mp4. Файл по такому имени не
+      // находился никогда — запись Download.filename была фантомной.
+      const finalFileName =
+        extension && extension !== 'mp4'
+          ? getFileName(info.title, quality, extension)
+          : tempFileName;
 
       // Проверка дневного лимита и создание записи Download должны быть
       // атомарны относительно ДРУГИХ запросов того же telegramId — иначе

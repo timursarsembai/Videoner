@@ -104,6 +104,11 @@ export class NudgeService {
     this.logger.log(`Подсказка отправлена: ${sent} из ${users.length}`);
   }
 
+  // Ссылка-пример: jNQXAC9IVRw — «Me at the zoo», самое первое видео YouTube
+  // (2005, 19 секунд, человек рассказывает про слонов в зоопарке). Выбрана
+  // намеренно и менять её на что попало не нужно: нейтральный сюжет без
+  // музыки и религиозного содержания (требование владельца), и при этом
+  // ролик исторический — он не будет удалён и не сломает пример со временем.
   private textFor(languageCode: string | null): string {
     const isRu = languageCode?.toLowerCase().startsWith('ru') ?? false;
 
@@ -112,7 +117,7 @@ export class NudgeService {
         'Здравствуйте! Вы запускали этого бота, но пока ничего не скачали — ' +
         'возможно, было непонятно, с чего начать.\n\n' +
         'Всё делается в одно действие: пришлите сюда ссылку на видео, ' +
-        'например https://youtube.com/watch?v=dQw4w9WgXcQ — и я верну готовый ' +
+        'например https://youtube.com/watch?v=jNQXAC9IVRw — и я верну готовый ' +
         'файл примерно за полминуты.\n\n' +
         'Работают YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
         'Rutube, OK.ru и Pinterest. Бесплатно — до 10 видео в сутки.\n\n' +
@@ -125,7 +130,7 @@ export class NudgeService {
       "Hi! You started this bot but haven't downloaded anything yet — maybe it " +
       "wasn't clear where to begin.\n\n" +
       'It takes one step: send me a link to a video, for example ' +
-      'https://youtube.com/watch?v=dQw4w9WgXcQ — and I’ll send the file back in ' +
+      'https://youtube.com/watch?v=jNQXAC9IVRw — and I’ll send the file back in ' +
       'about half a minute.\n\n' +
       'Works with YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
       'Rutube, OK.ru and Pinterest. Free — up to 10 videos a day.\n\n' +

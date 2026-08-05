@@ -9,7 +9,7 @@
 # или консоли). Инцидент 2026-07-23: так дважды подряд сломали Turnstile и
 # кнопку входа через Telegram на мобильном.
 #
-# Всегда используем `docker-compose build`, а не голый `docker buildx build` —
+# Всегда используем `docker compose build`, а не голый `docker buildx build` —
 # compose сам читает build.args из docker-compose.prod.yml + .env, и вручную
 # забыть ключ уже нельзя.
 set -euo pipefail
@@ -50,7 +50,16 @@ print(int(val * mult / 1024**3))
 
 maybe_prune_build_cache
 
-COMPOSE="docker-compose -f docker-compose.prod.yml --env-file .env"
+# Compose v2 (плагин `docker compose`), а не v1 (`docker-compose`). Переезд
+# 05.08.2026: v1 1.29.2 несовместим с Docker Engine 29 — тот убрал поле
+# ContainerConfig из docker inspect, и v1 падал с KeyError: 'ContainerConfig'
+# при пересоздании контейнера, требуя перед каждым выкатом руками сносить
+# контейнер (docker rm -f videoner-server). Держать v1 больше незачем.
+#
+# Побочный эффект переезда: v2 именует собранные образы через дефис
+# (videoner-server), а v1 — через подчёркивание (videoner_server). Старые теги
+# сняты, новые собираются автоматически этой же командой.
+COMPOSE="docker compose -f docker-compose.prod.yml --env-file .env"
 
 echo "==> Собираю: $*"
 $COMPOSE build "$@"

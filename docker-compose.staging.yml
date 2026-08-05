@@ -19,11 +19,11 @@
 #      videoner-server/videoner-web.
 #
 # Запуск (после того, как оба шага выше сделаны):
-#   docker exec 139827afc274_videoner-postgres psql -U postgres -c \
+#   docker exec videoner-postgres psql -U postgres -c \
 #     "CREATE DATABASE downloader_staging;"   # один раз, если ещё не создана
-#   docker-compose -p videoner-staging -f docker-compose.staging.yml --env-file .env.staging up -d --build
+#   docker compose -p videoner-staging -f docker-compose.staging.yml --env-file .env.staging up -d --build
 #
-# ВАЖНО: -p videoner-staging обязателен. Без явного project name compose v1
+# ВАЖНО: -p videoner-staging обязателен. Без явного project name compose
 # берёт имя папки ("videoner") — то же самое, что и у прод-стека
 # (docker-compose.prod.yml запускается из этой же директории) — см. память
 # deploy-gotchas: ровно так уже один раз случайно останавливали прод-БД,

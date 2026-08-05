@@ -22,9 +22,11 @@ import { Button } from "@/components/ui/button";
 import {
   UnauthorizedError,
   fetchAnalyticsSnapshot,
+  fetchAttempts,
   loginDashboard,
   logoutDashboard,
   type AnalyticsSnapshot,
+  type AttemptRow,
   type ErrorTimeseriesPoint,
 } from "@/lib/analytics-api";
 
@@ -123,6 +125,183 @@ function StatCard({
       <div className="mt-1 text-2xl font-semibold">{value}</div>
       {hint && <div className="mt-1 text-xs text-foreground/40">{hint}</div>}
     </div>
+  );
+}
+
+const ATTEMPTS_PAGE_SIZE = 50;
+
+const STATUS_LABELS: Record<string, string> = {
+  PENDING: "В очереди",
+  DOWNLOADING: "Качается",
+  CONVERTING: "Конвертация",
+  COMPLETED: "Готово",
+  FAILED: "Ошибка",
+  EXPIRED: "Удалён по сроку",
+};
+
+const STATUS_CLASSES: Record<string, string> = {
+  PENDING: "bg-amber-500/15 text-amber-600",
+  DOWNLOADING: "bg-sky-500/15 text-sky-600",
+  CONVERTING: "bg-sky-500/15 text-sky-600",
+  COMPLETED: "bg-emerald-500/15 text-emerald-600",
+  FAILED: "bg-red-500/15 text-red-600",
+  EXPIRED: "bg-foreground/10 text-foreground/50",
+};
+
+// Время в базе хранится в UTC (сервер живёт в UTC), а смотреть на него нужно в
+// местном. Часовой пояс задан явно, а не берётся из браузера: журнал часто
+// открывают с телефона в поездке, и «19:35» должно означать одно и то же
+// время независимо от того, где сейчас находится смотрящий.
+function formatAttemptTime(iso: string): string {
+  return new Date(iso).toLocaleString("ru-RU", {
+    timeZone: "Asia/Almaty",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+
+function AttemptsLog() {
+  const [page, setPage] = useState<AttemptRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | undefined>();
+
+  useEffect(() => {
+    setLoading(true);
+    setError(undefined);
+    fetchAttempts(ATTEMPTS_PAGE_SIZE, offset)
+      .then((data) => {
+        setPage(data.rows);
+        setTotal(data.total);
+      })
+      .catch((e) => setError(e.message || "Не удалось загрузить журнал"))
+      .finally(() => setLoading(false));
+  }, [offset]);
+
+  const from = total === 0 ? 0 : offset + 1;
+  const to = Math.min(offset + ATTEMPTS_PAGE_SIZE, total);
+
+  return (
+    <section className="mt-6 rounded-lg border border-border/60 bg-background/60 p-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-sm font-medium text-foreground/70">
+          Журнал попыток скачивания
+        </h2>
+        <div className="flex items-center gap-2 text-xs text-foreground/50">
+          <span>
+            {from}–{to} из {total}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={offset === 0 || loading}
+            onClick={() => setOffset(Math.max(0, offset - ATTEMPTS_PAGE_SIZE))}
+          >
+            Назад
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={to >= total || loading}
+            onClick={() => setOffset(offset + ATTEMPTS_PAGE_SIZE)}
+          >
+            Вперёд
+          </Button>
+        </div>
+      </div>
+
+      {error && <p className="text-sm text-destructive">{error}</p>}
+
+      {/* Горизонтальная прокрутка у самой таблицы: на телефоне колонок больше,
+          чем помещается, и без этого страница целиком уезжала бы вбок. */}
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[860px] text-sm">
+          <thead className="text-left text-foreground/60">
+            <tr>
+              <th className="pb-2 font-medium">Время</th>
+              <th className="pb-2 font-medium">Пользователь</th>
+              <th className="pb-2 font-medium">Источник</th>
+              <th className="pb-2 font-medium">Платформа</th>
+              <th className="pb-2 font-medium">Статус</th>
+              <th className="pb-2 font-medium">Что качали</th>
+            </tr>
+          </thead>
+          <tbody>
+            {page.map((row) => (
+              <tr key={row.id} className="border-t border-border/40 align-top">
+                <td className="whitespace-nowrap py-2 tabular-nums text-foreground/80">
+                  {formatAttemptTime(row.createdAt)}
+                </td>
+                <td className="py-2">
+                  {row.user ? (
+                    row.user.username ? (
+                      <a
+                        href={`https://t.me/${row.user.username}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        @{row.user.username}
+                      </a>
+                    ) : (
+                      <span className="text-foreground/70">{row.user.telegramId}</span>
+                    )
+                  ) : (
+                    <span className="text-foreground/40">через сайт/API</span>
+                  )}
+                </td>
+                <td className="py-2 text-foreground/60">
+                  {SOURCE_LABELS[row.source] ?? row.source}
+                </td>
+                <td className="py-2 text-foreground/60">{row.platform}</td>
+                <td className="py-2">
+                  <span
+                    className={`inline-block rounded px-2 py-0.5 text-xs ${
+                      STATUS_CLASSES[row.status] ?? "bg-foreground/10 text-foreground/60"
+                    }`}
+                  >
+                    {STATUS_LABELS[row.status] ?? row.status}
+                  </span>
+                  {row.errorCategory && (
+                    <div className="mt-1 text-xs text-foreground/40">
+                      {row.errorCategory}
+                    </div>
+                  )}
+                </td>
+                <td className="py-2">
+                  {row.title && (
+                    <div className="max-w-[420px] truncate" title={row.title}>
+                      {row.title}
+                    </div>
+                  )}
+                  <a
+                    href={row.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block max-w-[420px] truncate text-xs text-foreground/50 hover:underline"
+                    title={row.url}
+                  >
+                    {row.url}
+                  </a>
+                </td>
+              </tr>
+            ))}
+            {!loading && page.length === 0 && !error && (
+              <tr>
+                <td colSpan={6} className="py-6 text-center text-foreground/40">
+                  Пока ни одной попытки
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 
@@ -509,6 +688,8 @@ export default function AnalyticsPage() {
             </div>
           </div>
         </section>
+
+        <AttemptsLog />
       </div>
     </div>
   );

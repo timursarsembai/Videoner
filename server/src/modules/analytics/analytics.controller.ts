@@ -68,6 +68,21 @@ export class AnalyticsController {
     return this.analyticsService.subscriptions();
   }
 
+  // Потолок в 200 строк — не вкусовщина: без него достаточно руками подставить
+  // limit=100000, чтобы вытащить всю таблицу разом и посадить и сервер, и
+  // браузер. Отрицательные и нечисловые значения схлопываются к дефолту.
+  @Get('attempts')
+  attempts(@Query('limit') limit?: string, @Query('offset') offset?: string) {
+    const parsedLimit = parseInt(limit ?? '50', 10);
+    const parsedOffset = parseInt(offset ?? '0', 10);
+    return this.analyticsService.attempts(
+      Number.isFinite(parsedLimit) && parsedLimit > 0
+        ? Math.min(parsedLimit, 200)
+        : 50,
+      Number.isFinite(parsedOffset) && parsedOffset > 0 ? parsedOffset : 0,
+    );
+  }
+
   @Post('bot-users/grant')
   async grantUnlimited(@Body() dto: GrantUnlimitedDto) {
     const result = await this.botUserService.setUnlimited(

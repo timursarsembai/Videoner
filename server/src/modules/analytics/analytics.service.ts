@@ -233,4 +233,51 @@ export class AnalyticsService {
       webLoginUsers,
     };
   }
+
+  // Журнал попыток скачивания: кто, когда (до секунды), откуда, что именно и
+  // чем закончилось. Отдаёт ВСЕ статусы, а не только ошибки — успешные
+  // попытки нужны в том же списке, иначе по нему нельзя понять, что вообще
+  // происходило в конкретный момент.
+  //
+  // Постранично и с жёстким потолком: таблица растёт бесконечно, и запрос без
+  // лимита однажды вытащил бы её целиком в память браузера.
+  async attempts(limit: number, offset: number) {
+    const [rows, total] = await this.prisma.$transaction([
+      this.prisma.download.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+        skip: offset,
+        include: {
+          botUser: { select: { telegramId: true, username: true } },
+        },
+      }),
+      this.prisma.download.count(),
+    ]);
+
+    return {
+      total,
+      limit,
+      offset,
+      rows: rows.map((row) => ({
+        id: row.id,
+        // ISO с миллисекундами — форматирование в местное время делает
+        // фронтенд, сервер живёт в UTC и не должен решать за него.
+        createdAt: row.createdAt.toISOString(),
+        status: row.status,
+        platform: row.downloader,
+        source: row.source,
+        url: row.originalUrl,
+        title: row.videoTitle,
+        errorCategory: row.errorCategory,
+        // BigInt не сериализуется в JSON — отдаём строкой, как telegramId.
+        fileSize: row.fileSize === null ? null : row.fileSize.toString(),
+        user: row.botUser
+          ? {
+              telegramId: row.botUser.telegramId.toString(),
+              username: row.botUser.username,
+            }
+          : null,
+      })),
+    };
+  }
 }

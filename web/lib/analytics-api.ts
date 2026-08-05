@@ -76,6 +76,29 @@ export interface SubscriptionsData {
   webLoginUsers: number;
 }
 
+// Одна попытка скачивания — строка журнала. Отдаются ВСЕ статусы, включая
+// успешные: список нужен именно как хронология «кто что запрашивал», а не как
+// вторая витрина ошибок (для ошибок есть отдельные графики выше).
+export interface AttemptRow {
+  id: string;
+  createdAt: string;
+  status: string;
+  platform: string;
+  source: string;
+  url: string;
+  title: string | null;
+  errorCategory: string | null;
+  fileSize: string | null;
+  user: { telegramId: string; username: string | null } | null;
+}
+
+export interface AttemptsPage {
+  total: number;
+  limit: number;
+  offset: number;
+  rows: AttemptRow[];
+}
+
 export interface AnalyticsSnapshot {
   overview: OverviewData;
   platforms: PlatformDatum[];
@@ -155,4 +178,15 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     errorsTimeseries,
     subscriptions,
   };
+}
+
+
+// Журнал грузится ОТДЕЛЬНО от снапшота: у него своя постраничная навигация,
+// и тащить его в общий Promise.all значило бы перезапрашивать все графики при
+// каждом перелистывании страницы.
+export async function fetchAttempts(
+  limit: number = 50,
+  offset: number = 0,
+): Promise<AttemptsPage> {
+  return get<AttemptsPage>(`/attempts?limit=${limit}&offset=${offset}`);
 }

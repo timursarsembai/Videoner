@@ -121,7 +121,12 @@ for service in "$@"; do
       # сессию репортил ложный ✗ по контейнеру, который на самом деле через
       # секунду-другую стартовал нормально.
       started=0
-      for _ in $(seq 1 15); do
+      # 45с, а не 15: в 15 укладывается обычный старт, но не тот, где entrypoint
+      # ещё и применяет новую миграцию Prisma. 05.08.2026 ровно так и получился
+      # ложный ✗ — Nest поднялся на 20:21:49, проверка сдалась парой секунд
+      # раньше. Ложное «деплой не прошёл» опаснее лишнего ожидания: на него
+      # реагируют откатом живого, здорового сервиса.
+      for _ in $(seq 1 45); do
         if docker logs "$container" --tail 30 2>&1 | grep -q "Nest application successfully started"; then
           started=1
           break
@@ -129,7 +134,7 @@ for service in "$@"; do
         sleep 1
       done
       if [ "$started" -eq 0 ]; then
-        echo "    ✗ Не нашёл 'Nest application successfully started' в логах за 15с — проверь docker logs $container" >&2
+        echo "    ✗ Не нашёл 'Nest application successfully started' в логах за 45с — проверь docker logs $container" >&2
         exit 1
       fi
       echo "    ✓ Nest стартовал"

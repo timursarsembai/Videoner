@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { InfoModule } from '../info/info.module';
 import { AlertModule } from '../alert/alert.module';
 import { AnalyticsModule } from '../analytics/analytics.module';
+import { NudgeModule } from '../nudge/nudge.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AnalyticsModule } from '../analytics/analytics.module';
     YtdlpModule,
     CleanupModule,
     InfoModule,
+    NudgeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

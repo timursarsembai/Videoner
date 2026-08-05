@@ -61,6 +61,11 @@ services:
       ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
       # Статический ISP-прокси (IPRoyal) для YouTube — обходит блокировку по IP дата-центра VPS
       YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
+      # Одна подсказка человеку, который запустил бота и за 48 часов не прислал
+      # ни одной ссылки (см. server/src/modules/nudge). Включено ТОЛЬКО здесь:
+      # у staging своя БД, но тот же BOT_TOKEN, и без этого флага он писал бы
+      # тем же живым людям второй раз. В docker-compose.staging.yml не добавлять.
+      NUDGE_ENABLED: "true"
     volumes:
       - downloads:/app/dist/downloads
       # Куки для YouTube/Facebook/Vimeo и т.п. лежат в cookies/cookies.txt.

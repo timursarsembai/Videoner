@@ -87,6 +87,10 @@ model BotUser {
   // которые обновляются и от активности в боте. Нужно для аналитики: сколько
   // пользователей вообще заходили на сайт, а не только пользовались ботом.
   lastWebLoginAt    DateTime?
+  // Когда человеку отправили единственную подсказку «как пользоваться» после
+  // 48 часов молчания (см. nudge.service.ts). Непустое значение = больше не
+  // писать никогда, даже если он так и не скачал ничего.
+  nudgeSentAt       DateTime?
   downloads         Download[]
   firstSeenAt       DateTime          @default(now())
   lastSeenAt        DateTime          @default(now())

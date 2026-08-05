@@ -1,6 +1,7 @@
 import {
   DownloadKeyWord,
   DownloadOptions,
+  Platform,
   ProgressType,
   StreamKeyWord,
   StreamOptions,
@@ -58,6 +59,7 @@ const ByQualityAudio = {
 
 export function parseDownloadOptions<T extends DownloadKeyWord>(
   options?: DownloadOptions<T>,
+  platform?: Platform,
 ) {
   if (!options || Object.keys(options).length === 0) {
     return ['-f', 'bv*+ba'];
@@ -96,7 +98,38 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
     // стабильно падает с 403 Forbidden — поэтому "-0" пробуем первым; для
     // остальных площадок такого суффикса не бывает, и эта ветка просто не
     // матчится, откатываясь на прежнюю цепочку без изменений.
-    if (height) {
+    if (height && platform === 'youtube') {
+      // Ярлыки качества в config.ts учитывают ориентацию: и 1920x1080, и
+      // 1080x1920 подписаны как "1080p". А фильтр height<=1080 для вертикального
+      // ролика значит совсем другое — он режет выбор до 608x1080, то есть отдаёт
+      // МЕНЬШЕ, чем обещано в интерфейсе (на "720p" пользователь получал 360x640).
+      // Хуже того, на этих промежуточных разрешениях YouTube публикует только
+      // VP9/AV1 — H.264 там не существует, и такой файл отказывается принимать
+      // WhatsApp, хотя сам он воспроизводится нормально (поймано 05.08.2026).
+      //
+      // Поэтому кап ставим по ОБЕИМ сторонам, считая длинную как 16:9 от
+      // запрошенного качества, а выбор внутри отдаём сортировке: в yt-dlp res —
+      // это МЕНЬШАЯ сторона формата, поэтому ориентация учитывается сама, без
+      // разбора соотношения сторон на нашей стороне. Дальше предпочитаем
+      // H.264+AAC — они есть на всех "настоящих" разрешениях YouTube и
+      // гарантируют совместимость с WhatsApp и старыми плеерами.
+      //
+      // Только для YouTube: на Instagram такой же селектор переключается с
+      // муксованного формата на VP9 1080x1920 — выше разрешением, но так же
+      // нешарибельно, поэтому остальные площадки оставлены как были.
+      // Первым идёт bv (чистая видеодорожка), иначе на горизонтальных роликах
+      // подхватывается муксованный HLS (формат 96) вместо DASH.
+      const long = Math.round((Number(height) * 16) / 9);
+      const cap = `[width<=${long}][height<=${long}]`;
+      formatArr = [
+        '-f',
+        `bv${cap}[ext=mp4]+ba/bv${cap}+ba/bv*${cap}+ba/b${cap}[ext=mp4]/b${cap}/b`,
+        '-S',
+        `res:${height},vcodec:avc1,acodec:aac`,
+        '--merge-output-format',
+        'mp4',
+      ];
+    } else if (height) {
       formatArr = [
         '-f',
         `b[height<=${height}][format_id$=-0]/bv*[height<=${height}][ext=mp4]+ba/bv*[height<=${height}]+ba/b[height<=${height}][ext=mp4]/b[height<=${height}]/b`,

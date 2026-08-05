@@ -544,7 +544,7 @@ export class YtdlpProcessService implements OnModuleInit {
       return subject.asObservable();
     }
 
-    let parseOptions = parseDownloadOptions(options);
+    let parseOptions = parseDownloadOptions(options, platform);
 
     try {
       const output = this.getOutputPath(options?.output);

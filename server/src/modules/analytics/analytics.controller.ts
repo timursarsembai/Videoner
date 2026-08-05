@@ -72,7 +72,12 @@ export class AnalyticsController {
   // limit=100000, чтобы вытащить всю таблицу разом и посадить и сервер, и
   // браузер. Отрицательные и нечисловые значения схлопываются к дефолту.
   @Get('attempts')
-  attempts(@Query('limit') limit?: string, @Query('offset') offset?: string) {
+  attempts(
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string,
+    @Query('platform') platform?: string,
+    @Query('status') status?: string,
+  ) {
     const parsedLimit = parseInt(limit ?? '50', 10);
     const parsedOffset = parseInt(offset ?? '0', 10);
     return this.analyticsService.attempts(
@@ -80,6 +85,8 @@ export class AnalyticsController {
         ? Math.min(parsedLimit, 200)
         : 50,
       Number.isFinite(parsedOffset) && parsedOffset > 0 ? parsedOffset : 0,
+      platform,
+      status,
     );
   }
 

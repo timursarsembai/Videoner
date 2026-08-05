@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DownloadStatus, SubscriptionKind } from '@prisma/client';
+import { DownloadStatus, Downloaders, SubscriptionKind } from '@prisma/client';
 
 // Цены Stars-подписки — держим в синхроне с bot/src/bot.ts
 // (subscribeMonthlyButton/subscribeYearlyButton). Тут только для оценки MRR,
@@ -241,9 +241,30 @@ export class AnalyticsService {
   //
   // Постранично и с жёстким потолком: таблица растёт бесконечно, и запрос без
   // лимита однажды вытащил бы её целиком в память браузера.
-  async attempts(limit: number, offset: number) {
+  async attempts(
+    limit: number,
+    offset: number,
+    platform?: string,
+    status?: string,
+  ) {
+    // Значения фильтров приходят из строки запроса, то есть могут быть любыми.
+    // Сверяем их с enum'ами и молча игнорируем нераспознанное: Prisma на
+    // невалидном значении enum бросает исключение, и опечатка в адресной
+    // строке превращалась бы в 500 вместо пустого фильтра.
+    const where: { downloader?: Downloaders; status?: DownloadStatus } = {};
+    if (platform && platform in Downloaders) {
+      where.downloader = platform as Downloaders;
+    }
+    if (status && status in DownloadStatus) {
+      where.status = status as DownloadStatus;
+    }
+
+    // count идёт с тем же where, что и findMany. Иначе постраничная навигация
+    // врёт: общее число осталось бы от всей таблицы, и кнопка «Вперёд»
+    // листала бы в пустоту за концом отфильтрованной выборки.
     const [rows, total] = await this.prisma.$transaction([
       this.prisma.download.findMany({
+        where,
         orderBy: { createdAt: 'desc' },
         take: limit,
         skip: offset,
@@ -251,7 +272,7 @@ export class AnalyticsService {
           botUser: { select: { telegramId: true, username: true } },
         },
       }),
-      this.prisma.download.count(),
+      this.prisma.download.count({ where }),
     ]);
 
     return {

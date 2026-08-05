@@ -164,24 +164,63 @@ function formatAttemptTime(iso: string): string {
   });
 }
 
+// Порядок как в prisma/schema.prisma (enum Downloaders) — чтобы список в
+// фильтре не расходился с тем, что реально может прийти из базы.
+const PLATFORM_OPTIONS = [
+  "YOUTUBE",
+  "FACEBOOK",
+  "INSTAGRAM",
+  "TIKTOK",
+  "TWITTER",
+  "VIMEO",
+  "VK",
+  "RUTUBE",
+  "OKRU",
+  "PINTEREST",
+] as const;
+
+const STATUS_OPTIONS = [
+  "PENDING",
+  "DOWNLOADING",
+  "CONVERTING",
+  "COMPLETED",
+  "FAILED",
+  "EXPIRED",
+] as const;
+
 function AttemptsLog() {
   const [page, setPage] = useState<AttemptRow[]>([]);
   const [total, setTotal] = useState(0);
   const [offset, setOffset] = useState(0);
+  const [platform, setPlatform] = useState("");
+  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
     setLoading(true);
     setError(undefined);
-    fetchAttempts(ATTEMPTS_PAGE_SIZE, offset)
+    fetchAttempts(ATTEMPTS_PAGE_SIZE, offset, platform, status)
       .then((data) => {
         setPage(data.rows);
         setTotal(data.total);
       })
       .catch((e) => setError(e.message || "Не удалось загрузить журнал"))
       .finally(() => setLoading(false));
-  }, [offset]);
+  }, [offset, platform, status]);
+
+  // Смена фильтра всегда возвращает на первую страницу. Иначе, стоя на
+  // 3-й странице общего списка и выбрав платформу с десятком записей,
+  // попадаешь на пустой экран за концом выборки — выглядит как «фильтр
+  // ничего не нашёл», хотя записи есть.
+  const changePlatform = (value: string) => {
+    setPlatform(value);
+    setOffset(0);
+  };
+  const changeStatus = (value: string) => {
+    setStatus(value);
+    setOffset(0);
+  };
 
   const from = total === 0 ? 0 : offset + 1;
   const to = Math.min(offset + ATTEMPTS_PAGE_SIZE, total);
@@ -192,7 +231,31 @@ function AttemptsLog() {
         <h2 className="text-sm font-medium text-foreground/70">
           Журнал попыток скачивания
         </h2>
-        <div className="flex items-center gap-2 text-xs text-foreground/50">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-foreground/50">
+          <select
+            value={platform}
+            onChange={(e) => changePlatform(e.target.value)}
+            className="h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          >
+            <option value="">Все платформы</option>
+            {PLATFORM_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <select
+            value={status}
+            onChange={(e) => changeStatus(e.target.value)}
+            className="h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          >
+            <option value="">Все статусы</option>
+            {STATUS_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {STATUS_LABELS[option]}
+              </option>
+            ))}
+          </select>
           <span>
             {from}–{to} из {total}
           </span>
@@ -294,7 +357,9 @@ function AttemptsLog() {
             {!loading && page.length === 0 && !error && (
               <tr>
                 <td colSpan={6} className="py-6 text-center text-foreground/40">
-                  Пока ни одной попытки
+                  {platform || status
+                    ? "По выбранному фильтру ничего нет"
+                    : "Пока ни одной попытки"}
                 </td>
               </tr>
             )}

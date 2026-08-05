@@ -187,6 +187,16 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
 export async function fetchAttempts(
   limit: number = 50,
   offset: number = 0,
+  platform?: string,
+  status?: string,
 ): Promise<AttemptsPage> {
-  return get<AttemptsPage>(`/attempts?limit=${limit}&offset=${offset}`);
+  // Пустой фильтр не отправляем вовсе: "platform=" сервер обязан был бы
+  // отличать от отсутствия параметра, а так этот случай просто не возникает.
+  const params = new URLSearchParams({
+    limit: String(limit),
+    offset: String(offset),
+  });
+  if (platform) params.set("platform", platform);
+  if (status) params.set("status", status);
+  return get<AttemptsPage>(`/attempts?${params.toString()}`);
 }

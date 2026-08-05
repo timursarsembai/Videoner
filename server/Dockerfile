@@ -30,6 +30,17 @@ RUN mkdir -p /etc/yt-dlp/plugins \
      https://github.com/Brainicism/bgutil-ytdlp-pot-provider/releases/download/${BGUTIL_VERSION}/bgutil-ytdlp-pot-provider.zip \
   && printf '%s\n' '--extractor-args "youtubepot-bgutilhttp:base_url=http://bgutil-provider:4416"' >> /app/bin/yt-dlp.conf
 
+# Клиенты плеера YouTube. Дефолтная связка (tv/web_safari) с начала 08.2026 на
+# нашей связке "ISP-прокси + куки" получает пустой player response, и yt-dlp
+# отдаёт "The page needs to be reloaded" — падало БОЛЬШИНСТВО роликов, не только
+# отдельные (проверено 05.08.2026 на четырёх видео: три из четырёх не качались).
+# web_embedded добавлен запасным: default остаётся первым, поэтому там, где он
+# работает, поведение не меняется. mweb сюда НЕ годится, хотя метаданные отдаёт:
+# сами потоки при нём отвечают 403 Forbidden — то есть /info чинился бы, а
+# скачивание нет. Аргумент скоупится префиксом youtube: и на другие площадки не
+# влияет; с соседней строкой bgutil не конфликтует — оба применяются (проверено).
+RUN printf '%s\n' '--extractor-args "youtube:player_client=default,web_embedded"' >> /app/bin/yt-dlp.conf
+
 # Зависимости. --ignore-scripts, чтобы на этапе сборки не запускался prepare
 # (он делает prisma migrate deploy, а БД тут ещё недоступна).
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./

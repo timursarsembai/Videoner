@@ -145,6 +145,72 @@ export class YtdlpProcessService implements OnModuleInit {
     return /(^|\.)youtube\.com|youtu\.be/i.test(url);
   }
 
+  // --- Автоматическое включение прокси ------------------------------------
+  //
+  // Прокси — платный статический ISP-адрес, и гонять через него всё подряд
+  // незачем: большинство площадок прекрасно отдаёт видео с IP самого VPS.
+  // Поэтому правило такое: сначала пробуем напрямую, а прокси включаем только
+  // тогда, когда площадка ответила именно блокировкой.
+  //
+  // Отдельная предварительная проверка не нужна — она уже есть в потоке:
+  // перед каждым скачиванием выполняется --dump-json за метаданными, и
+  // блокировка по IP вскрывается именно там (так TikTok и отвечает:
+  // "Your IP address is blocked from accessing this post"). Решение,
+  // принятое на этом шаге, наследует и само скачивание.
+  //
+  // YouTube — исключение: с IP дата-центра он требует антибот-проверку
+  // практически всегда, и пробовать напрямую значит добавлять заведомо
+  // провальную попытку к каждому запросу.
+  private readonly alwaysProxyPlatforms: ReadonlySet<string> = new Set([
+    'youtube',
+  ]);
+
+  // Площадка -> до какого момента ходим через прокси сразу, без пробы напрямую.
+  // Память намеренно с истечением, а не навсегда: блокировки снимают, и через
+  // несколько часов имеет смысл снова проверить прямой путь, иначе прокси
+  // останется включённым по следу давно исчезнувшей проблемы.
+  private readonly proxyUntil = new Map<string, number>();
+  private readonly PROXY_MEMORY_MS = 6 * 60 * 60 * 1000;
+
+  // Признаки того, что нас блокируют ПО АДРЕСУ, а не что видео не существует.
+  // Список намеренно узкий: перезапуск через прокси на удалённом или приватном
+  // ролике — это лишние секунды ожидания и лишний трафик там, где повторная
+  // попытка всё равно ничего не даст.
+  private static readonly BLOCK_PATTERNS: RegExp[] = [
+    /ip address is blocked/i,
+    /blocked from accessing/i,
+    /not available (from|in) your (location|country|region)/i,
+    /geo[-\s]?restrict/i,
+    /sign in to confirm you.?re not a bot/i,
+    /http error 403/i,
+    /403:?\s*forbidden/i,
+    /access denied/i,
+  ];
+
+  private isBlockError(message: string): boolean {
+    return YtdlpProcessService.BLOCK_PATTERNS.some((re) => re.test(message));
+  }
+
+  private needsProxy(platform: string | null): boolean {
+    if (!this.youtubeProxyUrl || !platform) {
+      return false;
+    }
+    if (this.alwaysProxyPlatforms.has(platform)) {
+      return true;
+    }
+    return (this.proxyUntil.get(platform) ?? 0) > Date.now();
+  }
+
+  private rememberProxyNeeded(platform: string | null): void {
+    if (!platform || this.alwaysProxyPlatforms.has(platform)) {
+      return;
+    }
+    this.proxyUntil.set(platform, Date.now() + this.PROXY_MEMORY_MS);
+    console.log(
+      `[proxy] ${platform}: получена блокировка по IP, ближайшие 6 ч ходим через прокси`,
+    );
+  }
+
   private async youtubeThrottleDelay(): Promise<void> {
     const ms =
       YOUTUBE_DELAY_MIN_MS +
@@ -379,23 +445,52 @@ export class YtdlpProcessService implements OnModuleInit {
       if (isYoutube) {
         await this.youtubeThrottleDelay();
       }
+      // Платформу определяем по url-аргументу — он единственный http(s)
+      // элемент массива (остальное это флаги yt-dlp).
+      const urlArg = args.find((a) => /^https?:\/\//i.test(a));
+      const platform = urlArg ? getPlatform(urlArg) : null;
+
       const finalArgs = [...args];
       if (!options?.skipCookies) {
-        // Платформу определяем по url-аргументу — он единственный http(s)
-        // элемент массива (остальное это флаги yt-dlp).
-        const urlArg = args.find((a) => /^https?:\/\//i.test(a));
-        disposableCookies = this.makeDisposableCookies(
-          urlArg ? getPlatform(urlArg) : null,
-        );
+        disposableCookies = this.makeDisposableCookies(platform);
         if (disposableCookies) {
           finalArgs.push('--cookies', disposableCookies);
         }
       }
-      if (this.youtubeProxyUrl && isYoutube) {
-        finalArgs.push('--proxy', this.youtubeProxyUrl);
+
+      const useProxy = this.needsProxy(platform);
+      const attemptArgs = useProxy
+        ? [...finalArgs, '--proxy', this.youtubeProxyUrl as string]
+        : finalArgs;
+      console.log(attemptArgs);
+
+      try {
+        return await this.runProcess(this.ytdlpPath, attemptArgs);
+      } catch (directError: any) {
+        // Вторая попытка — только на блокировке по адресу и только если
+        // прямой путь ещё не пробовали через прокси. На «видео удалено» или
+        // «приватный аккаунт» повтор ничего не изменит, а время съест.
+        const message = directError?.message ?? '';
+        if (
+          useProxy ||
+          !this.youtubeProxyUrl ||
+          !this.isBlockError(message)
+        ) {
+          throw directError;
+        }
+        console.warn(
+          `[proxy] ${platform ?? 'unknown'}: прямой запрос упёрся в блокировку, повторяю через прокси`,
+        );
+        const result = await this.runProcess(this.ytdlpPath, [
+          ...finalArgs,
+          '--proxy',
+          this.youtubeProxyUrl,
+        ]);
+        // Запоминаем только после УСПЕШНОГО повтора: если и через прокси не
+        // вышло, дело не в адресе, и гонять туда следующие запросы незачем.
+        this.rememberProxyNeeded(platform);
+        return result;
       }
-      console.log(finalArgs);
-      return await this.runProcess(this.ytdlpPath, finalArgs);
     } catch (error) {
       throw new Error(`Failed to run yt-dlp command: ${error.message}`);
     } finally {
@@ -579,8 +674,11 @@ export class YtdlpProcessService implements OnModuleInit {
       await this.youtubeThrottleDelay();
     }
 
-    if (this.youtubeProxyUrl && isYoutube) {
-      processArgs.push('--proxy', this.youtubeProxyUrl);
+    // Решение о прокси принято ещё на этапе метаданных (--dump-json идёт
+    // перед каждым скачиванием) — здесь мы просто следуем ему.
+    const usedProxy = this.needsProxy(platform);
+    if (usedProxy) {
+      processArgs.push('--proxy', this.youtubeProxyUrl as string);
     }
 
     // cwd=/tmp — см. комментарий в runProcess() выше: контейнер не от root,
@@ -655,6 +753,14 @@ export class YtdlpProcessService implements OnModuleInit {
       this.dropDisposableCookies(disposableCookies);
       releaseYoutubeSlot?.();
       releaseGlobalSlot();
+      // Блокировка вскрылась не на метаданных, а уже на самой загрузке (CDN
+      // может отдавать 403 там, где страница открылась): здесь не
+      // перезапускаемся — часть файла могла уже уйти в прогресс подписчику, —
+      // но помечаем площадку, чтобы следующая попытка сразу пошла через
+      // прокси и пользователю хватило одного повторного нажатия.
+      if (code !== 0 && !usedProxy && this.isBlockError(errorMessage)) {
+        this.rememberProxyNeeded(platform);
+      }
       if (code !== 0 && !hasError) {
         subject.error(
           new Error(errorMessage || `Process exited with code ${code}`),

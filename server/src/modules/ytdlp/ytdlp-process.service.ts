@@ -191,6 +191,67 @@ export class YtdlpProcessService implements OnModuleInit {
     return YtdlpProcessService.BLOCK_PATTERNS.some((re) => re.test(message));
   }
 
+  // Антибот-заглушки: площадка отдала не страницу видео, а проверку, и
+  // экстрактору не из чего достать данные. От блокировки по IP отличается тем,
+  // что адрес тут ни при чём — тот же запрос через несколько секунд обычно
+  // проходит. Чаще всего это TikTok ("universal data for rehydration"), но
+  // формулировки у него со временем меняются, поэтому список по признаку
+  // «экстрактор не нашёл данные на странице», а не по имени площадки.
+  //
+  // Список намеренно узкий: сюда НЕ входят таймауты и сетевые обрывы. Повторять
+  // скачивание, которое отвалилось на середине большого файла, — это удвоенный
+  // трафик и минуты ожидания, а причина там обычно не разовая.
+  private static readonly TRANSIENT_PATTERNS: RegExp[] = [
+    /unable to extract universal data for rehydration/i,
+    /unable to extract sigi state/i,
+    /unable to extract webpage video data/i,
+    /unable to extract initial state/i,
+    // Rutube периодически отвечает 401 на служебный JSON видео, хотя ролик
+    // публичный и метаданные за секунду до этого прочитались нормально
+    // (пойман 07.08.2026 на публичном мультфильме; повтор проходит).
+    // Шаблон намеренно привязан к download video JSON, а не к «401» вообще:
+    // 401 на других шагах вполне может означать, что вход и правда нужен, и
+    // повторять такое бессмысленно.
+    /unable to download video json.*401/i,
+  ];
+
+  private isTransientError(message: string): boolean {
+    return YtdlpProcessService.TRANSIENT_PATTERNS.some((re) => re.test(message));
+  }
+
+  // Протухшая сессия в cookies/<платформа>.txt. Площадка отвечает отказом
+  // авторизации именно ПОТОМУ, что мы пришли с недействительными куками —
+  // анонимный запрос при этом проходит нормально. Такой откат уже был для
+  // метаданных (info.service), но не для самой загрузки: пользователь видел
+  // название ролика и кнопки качества, а после нажатия получал ошибку
+  // (поймано на Rutube 07.08.2026, куки от 31.07 протухли).
+  //
+  // "Sign in to confirm you're not a bot" сюда НЕ входит намеренно: это
+  // антибот-проверка YouTube по адресу, лечится прокси, а не отказом от кук.
+  private static readonly AUTH_PATTERNS: RegExp[] = [
+    /http error 401/i,
+    /401:?\s*unauthorized/i,
+    /login required/i,
+    /requires authentication/i,
+    /only available for registered users/i,
+  ];
+
+  private isAuthError(message: string): boolean {
+    return YtdlpProcessService.AUTH_PATTERNS.some((re) => re.test(message));
+  }
+
+  // Пауза растёт между попытками: если площадка сейчас показывает всем
+  // антибот-страницу, долбиться в неё каждые полсекунды бессмысленно.
+  private transientRetryDelay(attempt: number): number {
+    return [1500, 4000][attempt] ?? 4000;
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private readonly MAX_TRANSIENT_RETRIES = 2;
+
   private needsProxy(platform: string | null): boolean {
     if (!this.youtubeProxyUrl || !platform) {
       return false;
@@ -209,6 +270,17 @@ export class YtdlpProcessService implements OnModuleInit {
     console.log(
       `[proxy] ${platform}: получена блокировка по IP, ближайшие 6 ч ходим через прокси`,
     );
+  }
+
+  // Прокси не помог — снимаем отметку, иначе площадка осталась бы ходить
+  // длинным путём шесть часов без всякой пользы.
+  private forgetProxyNeeded(platform: string | null): void {
+    if (!platform || this.alwaysProxyPlatforms.has(platform)) {
+      return;
+    }
+    if (this.proxyUntil.delete(platform)) {
+      console.log(`[proxy] ${platform}: прокси не помог, отметку снял`);
+    }
   }
 
   private async youtubeThrottleDelay(): Promise<void> {
@@ -453,43 +525,82 @@ export class YtdlpProcessService implements OnModuleInit {
       const finalArgs = [...args];
       if (!options?.skipCookies) {
         disposableCookies = this.makeDisposableCookies(platform);
-        if (disposableCookies) {
-          finalArgs.push('--cookies', disposableCookies);
-        }
       }
+      let useCookies = disposableCookies !== null;
+      let cookiesDropped = false;
 
-      const useProxy = this.needsProxy(platform);
-      const attemptArgs = useProxy
-        ? [...finalArgs, '--proxy', this.youtubeProxyUrl as string]
-        : finalArgs;
-      console.log(attemptArgs);
+      // Цикл покрывает два РАЗНЫХ сценария повтора, и их важно не смешивать:
+      //   блокировка по адресу -> переключаемся на прокси и пробуем сразу;
+      //   антибот-заглушка     -> тот же путь, но после паузы.
+      // Первый повтор адреса не тратит попытки второго: смена маршрута и
+      // ожидание, пока площадка «отпустит», — разные вещи.
+      let useProxy = this.needsProxy(platform);
+      let switchedToProxy = false;
+      let transientAttempt = 0;
 
-      try {
-        return await this.runProcess(this.ytdlpPath, attemptArgs);
-      } catch (directError: any) {
-        // Вторая попытка — только на блокировке по адресу и только если
-        // прямой путь ещё не пробовали через прокси. На «видео удалено» или
-        // «приватный аккаунт» повтор ничего не изменит, а время съест.
-        const message = directError?.message ?? '';
-        if (
-          useProxy ||
-          !this.youtubeProxyUrl ||
-          !this.isBlockError(message)
-        ) {
-          throw directError;
+      for (;;) {
+        const attemptArgs = [...finalArgs];
+        if (useCookies && disposableCookies) {
+          attemptArgs.push('--cookies', disposableCookies);
         }
-        console.warn(
-          `[proxy] ${platform ?? 'unknown'}: прямой запрос упёрся в блокировку, повторяю через прокси`,
-        );
-        const result = await this.runProcess(this.ytdlpPath, [
-          ...finalArgs,
-          '--proxy',
-          this.youtubeProxyUrl,
-        ]);
-        // Запоминаем только после УСПЕШНОГО повтора: если и через прокси не
-        // вышло, дело не в адресе, и гонять туда следующие запросы незачем.
-        this.rememberProxyNeeded(platform);
-        return result;
+        if (useProxy) {
+          attemptArgs.push('--proxy', this.youtubeProxyUrl as string);
+        }
+        console.log(attemptArgs);
+
+        try {
+          const result = await this.runProcess(this.ytdlpPath, attemptArgs);
+          // Запоминаем только после УСПЕШНОГО повтора через прокси: если и
+          // через него не вышло, дело не в адресе, и гонять туда следующие
+          // запросы незачем.
+          if (switchedToProxy) {
+            this.rememberProxyNeeded(platform);
+          }
+          return result;
+        } catch (attemptError: any) {
+          const message = attemptError?.message ?? '';
+
+          // Блокировка по адресу — уходим на прокси, если ещё не там.
+          if (!useProxy && this.youtubeProxyUrl && this.isBlockError(message)) {
+            console.warn(
+              `[proxy] ${platform ?? 'unknown'}: прямой запрос упёрся в блокировку, повторяю через прокси`,
+            );
+            useProxy = true;
+            switchedToProxy = true;
+            continue;
+          }
+
+          // Протухшие куки — пробуем анонимно тем же маршрутом.
+          if (
+            useCookies &&
+            !cookiesDropped &&
+            disposableCookies &&
+            this.isAuthError(message)
+          ) {
+            console.warn(
+              `[cookies] ${platform ?? 'unknown'}: отказ авторизации, повторяю без кук`,
+            );
+            useCookies = false;
+            cookiesDropped = true;
+            continue;
+          }
+
+          // Антибот-заглушка — тот же маршрут, но с паузой.
+          if (
+            this.isTransientError(message) &&
+            transientAttempt < this.MAX_TRANSIENT_RETRIES
+          ) {
+            const wait = this.transientRetryDelay(transientAttempt);
+            transientAttempt++;
+            console.warn(
+              `[retry] ${platform ?? 'unknown'}: антибот-заглушка, попытка ${transientAttempt + 1} из ${this.MAX_TRANSIENT_RETRIES + 1} через ${wait} мс`,
+            );
+            await this.delay(wait);
+            continue;
+          }
+
+          throw attemptError;
+        }
       }
     } catch (error) {
       throw new Error(`Failed to run yt-dlp command: ${error.message}`);
@@ -657,11 +768,10 @@ export class YtdlpProcessService implements OnModuleInit {
     ];
 
     // Одноразовая копия, а не эталонный файл — см. makeDisposableCookies().
-    // Удаляется в обработчиках 'error'/'exit' ниже.
+    // В аргументы НЕ вшивается: от кук может понадобиться отказаться на
+    // повторной попытке (протухшая сессия), поэтому флаг добавляется в
+    // startAttempt(). Удаляется в finalize() ниже.
     const disposableCookies = this.makeDisposableCookies(platform);
-    if (disposableCookies) {
-      processArgs.push('--cookies', disposableCookies);
-    }
 
     // Общий слот — до YouTube-специфичного: если сервер и так забит другими
     // площадками, лишний смысл сначала ждать YouTube-слот, а потом ещё общий.
@@ -674,101 +784,203 @@ export class YtdlpProcessService implements OnModuleInit {
       await this.youtubeThrottleDelay();
     }
 
-    // Решение о прокси принято ещё на этапе метаданных (--dump-json идёт
-    // перед каждым скачиванием) — здесь мы просто следуем ему.
-    const usedProxy = this.needsProxy(platform);
-    if (usedProxy) {
-      processArgs.push('--proxy', this.youtubeProxyUrl as string);
-    }
-
-    // cwd=/tmp — см. комментарий в runProcess() выше: контейнер не от root,
-    // /app не writable, а yt-dlp может писать служебные файлы относительно cwd.
-    const childProcess = spawn(this.ytdlpPath, processArgs, {
-      cwd: os.tmpdir(),
-    });
-
-    let hasError = false;
-    let errorMessage = '';
-
-    childProcess.stdout.on('data', (data) => {
-      const dataStr = Buffer.from(data).toString();
-      if (dataStr.includes('Requested format is not available.')) {
-        hasError = true;
-        errorMessage = 'Requested format is not available.';
-        subject.error(new Error(errorMessage));
+    // Слоты семафоров и одноразовые куки живут на ВСЕ попытки сразу, поэтому
+    // освобождать их можно только один раз и только когда стало окончательно
+    // ясно, что повторов больше не будет.
+    let finished = false;
+    const finalize = () => {
+      if (finished) {
         return;
       }
-      if (dataStr.includes('has already been downloaded')) {
-        hasError = true;
-        errorMessage = 'File already exists.';
-        subject.error(new Error(errorMessage));
-        return;
-      }
-      const result = stringToProgress(dataStr);
-      if (result) {
-        subject.next(result);
-      }
-    });
-
-    childProcess.stderr.on('data', (data) => {
-      const dataStr = Buffer.from(data).toString();
-      // yt-dlp пишет в stderr и предупреждения — фатальными считаем только строки с ERROR
-      if (dataStr.includes('ERROR')) {
-        hasError = true;
-        errorMessage = dataStr.trim();
-        subject.error(new Error(errorMessage));
-      } else {
-        errorMessage = dataStr.trim();
-        console.warn('yt-dlp stderr:', errorMessage);
-      }
-    });
-
-    childProcess.stdout.on('error', (err) => {
-      hasError = true;
-      errorMessage = err.message;
-      subject.error(err);
-    });
-
-    childProcess.stderr.on('error', (err) => {
-      hasError = true;
-      errorMessage = err.message;
-      subject.error(err);
-    });
-
-    // Если spawn() не смог даже запустить процесс (бинарник недоступен и
-    // т.п.), 'exit' не произойдёт вообще — без этого обработчика оба слота
-    // (и youtube-, и общий) зависли бы навсегда. Было упущено до этой правки
-    // и для youtubeSemaphore тоже — чиним заодно, раз уже трогаем этот путь.
-    childProcess.on('error', (err) => {
+      finished = true;
       this.dropDisposableCookies(disposableCookies);
       releaseYoutubeSlot?.();
       releaseGlobalSlot();
-      if (!hasError) {
+    };
+
+    // Повторяем ТОЛЬКО пока подписчику не ушло ни одного байта прогресса.
+    // После этого перезапуск означал бы, что счётчик у пользователя прыгнул
+    // назад, а трафик потрачен дважды.
+    let progressEmitted = false;
+    let transientAttempt = 0;
+    let proxySwitchTried = false;
+    // Живёт между попытками: пометку ставит одна попытка, а снимать её при
+    // неудаче приходится уже следующей.
+    let proxyMarkedByUs = false;
+    let useCookies = disposableCookies !== null;
+    let cookiesDropped = false;
+
+    const startAttempt = () => {
+      // Решение о прокси перечитываем на каждой попытке: предыдущая могла
+      // наткнуться на блокировку и пометить площадку.
+      const useProxyNow = this.needsProxy(platform);
+      const attemptArgs = [...processArgs];
+      if (useCookies && disposableCookies) {
+        attemptArgs.push('--cookies', disposableCookies);
+      }
+      if (useProxyNow) {
+        attemptArgs.push('--proxy', this.youtubeProxyUrl as string);
+      }
+
+      // cwd=/tmp — см. комментарий в runProcess() выше: контейнер не от root,
+      // /app не writable, а yt-dlp может писать служебные файлы относительно cwd.
+      const childProcess = spawn(this.ytdlpPath, attemptArgs, {
+        cwd: os.tmpdir(),
+      });
+
+      let hasError = false;
+      let errorMessage = '';
+      // null — повторов не будет, ошибка окончательная.
+      let pendingRetry: 'transient' | 'proxy' | 'nocookies' | null = null;
+
+      childProcess.stdout.on('data', (data) => {
+        const dataStr = Buffer.from(data).toString();
+        if (dataStr.includes('Requested format is not available.')) {
+          hasError = true;
+          errorMessage = 'Requested format is not available.';
+          subject.error(new Error(errorMessage));
+          return;
+        }
+        if (dataStr.includes('has already been downloaded')) {
+          hasError = true;
+          errorMessage = 'File already exists.';
+          subject.error(new Error(errorMessage));
+          return;
+        }
+        const result = stringToProgress(dataStr);
+        if (result) {
+          progressEmitted = true;
+          subject.next(result);
+        }
+      });
+
+      childProcess.stderr.on('data', (data) => {
+        const dataStr = Buffer.from(data).toString();
+        // yt-dlp пишет в stderr и предупреждения — фатальными считаем только строки с ERROR
+        if (dataStr.includes('ERROR')) {
+          errorMessage = dataStr.trim();
+
+          // Блокировка по адресу вскрылась уже на загрузке (страница открылась,
+          // а CDN отдал 403): уходим на прокси и пробуем ещё раз. Площадку
+          // пометим только если через прокси действительно получилось — иначе
+          // следующие запросы зря пошли бы в обход.
+          if (
+            !useProxyNow &&
+            !proxySwitchTried &&
+            !progressEmitted &&
+            this.youtubeProxyUrl &&
+            this.isBlockError(errorMessage)
+          ) {
+            proxySwitchTried = true;
+            pendingRetry = 'proxy';
+            return;
+          }
+
+          // Протухшая сессия в куках — повторяем анонимно. Именно этого не
+          // хватало на пути загрузки: метаданные откатывались на анонимный
+          // запрос и показывали кнопки качества, а само скачивание падало.
+          if (
+            useCookies &&
+            !cookiesDropped &&
+            disposableCookies &&
+            !progressEmitted &&
+            this.isAuthError(errorMessage)
+          ) {
+            pendingRetry = 'nocookies';
+            return;
+          }
+
+          // Антибот-заглушка — повторяем тем же маршрутом после паузы.
+          if (
+            !progressEmitted &&
+            this.isTransientError(errorMessage) &&
+            transientAttempt < this.MAX_TRANSIENT_RETRIES
+          ) {
+            pendingRetry = 'transient';
+            return;
+          }
+
+          hasError = true;
+          subject.error(new Error(errorMessage));
+        } else {
+          errorMessage = dataStr.trim();
+          console.warn('yt-dlp stderr:', errorMessage);
+        }
+      });
+
+      childProcess.stdout.on('error', (err) => {
         hasError = true;
+        errorMessage = err.message;
         subject.error(err);
-      }
-    });
+      });
 
-    childProcess.on('exit', (code) => {
-      this.dropDisposableCookies(disposableCookies);
-      releaseYoutubeSlot?.();
-      releaseGlobalSlot();
-      // Блокировка вскрылась не на метаданных, а уже на самой загрузке (CDN
-      // может отдавать 403 там, где страница открылась): здесь не
-      // перезапускаемся — часть файла могла уже уйти в прогресс подписчику, —
-      // но помечаем площадку, чтобы следующая попытка сразу пошла через
-      // прокси и пользователю хватило одного повторного нажатия.
-      if (code !== 0 && !usedProxy && this.isBlockError(errorMessage)) {
-        this.rememberProxyNeeded(platform);
-      }
-      if (code !== 0 && !hasError) {
-        subject.error(
-          new Error(errorMessage || `Process exited with code ${code}`),
-        );
-      } else if (!hasError) {
-        subject.complete();
-      }
-    });
+      childProcess.stderr.on('error', (err) => {
+        hasError = true;
+        errorMessage = err.message;
+        subject.error(err);
+      });
+
+      // Если spawn() не смог даже запустить процесс (бинарник недоступен и
+      // т.п.), 'exit' не произойдёт вообще — без этого обработчика оба слота
+      // (и youtube-, и общий) зависли бы навсегда. Было упущено до этой правки
+      // и для youtubeSemaphore тоже — чиним заодно, раз уже трогаем этот путь.
+      childProcess.on('error', (err) => {
+        finalize();
+        if (!hasError) {
+          hasError = true;
+          subject.error(err);
+        }
+      });
+
+      childProcess.on('exit', (code) => {
+        if (code !== 0 && pendingRetry) {
+          if (pendingRetry === 'proxy') {
+            // Пометка нужна прямо сейчас: следующая попытка читает решение
+            // через needsProxy(). Если она провалится, отметку снимаем ниже.
+            this.rememberProxyNeeded(platform);
+            proxyMarkedByUs = true;
+            console.warn(
+              `[proxy] ${platform}: блокировка на этапе загрузки, повторяю через прокси`,
+            );
+            startAttempt();
+            return;
+          }
+          if (pendingRetry === 'nocookies') {
+            useCookies = false;
+            cookiesDropped = true;
+            console.warn(
+              `[cookies] ${platform}: отказ авторизации на загрузке, повторяю без кук`,
+            );
+            startAttempt();
+            return;
+          }
+          const wait = this.transientRetryDelay(transientAttempt);
+          transientAttempt++;
+          console.warn(
+            `[retry] ${platform}: антибот-заглушка на загрузке, попытка ${transientAttempt + 1} из ${this.MAX_TRANSIENT_RETRIES + 1} через ${wait} мс`,
+          );
+          setTimeout(startAttempt, wait);
+          return;
+        }
+
+        // Через прокси тоже не вышло — значит адрес был ни при чём, снимаем
+        // отметку, чтобы следующие запросы снова шли коротким путём.
+        if (code !== 0 && useProxyNow && proxyMarkedByUs) {
+          this.forgetProxyNeeded(platform);
+        }
+
+        finalize();
+        if (code !== 0 && !hasError) {
+          subject.error(
+            new Error(errorMessage || `Process exited with code ${code}`),
+          );
+        } else if (!hasError) {
+          subject.complete();
+        }
+      });
+    };
+
+    startAttempt();
 
     return subject.asObservable();
   }

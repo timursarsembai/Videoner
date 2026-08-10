@@ -165,7 +165,11 @@ export function Hero() {
                 onSubmit={handleDownload}
                 className="relative w-full max-w-3xl"
               >
-                <div className="absolute -inset-1.5 animate-pulse rounded-2xl bg-gradient-to-r from-primary/20 to-primary-light/20 blur" />
+                {/* Тот же декоративный блок, что и в Page.tsx. Здесь капчи в
+                    форме нет и кликам он пока не мешает, но элемент чисто
+                    декоративный — событий ему ловить не за чем ни при каком
+                    будущем наполнении формы. */}
+                <div className="pointer-events-none absolute -inset-1.5 animate-pulse rounded-2xl bg-gradient-to-r from-primary/20 to-primary-light/20 blur" />
                 <div className="relative flex flex-col gap-4 rounded-2xl bg-background/80 p-2 backdrop-blur sm:flex-row">
                   <div className="flex-1">
                     <HeroInput

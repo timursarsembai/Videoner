@@ -263,7 +263,14 @@ const Page = ({ platform }: PageProps) => {
                 onSubmit={handleSubmit}
                 className="relative w-full max-w-3xl"
               >
-                <div className="absolute -inset-1.5 animate-pulse rounded-2xl bg-gradient-to-r from-primary/20 to-primary-light/20 blur" />
+                {/* Декоративное свечение. pointer-events-none обязателен:
+                    блок absolute внутри формы растянут на ВСЮ форму, включая
+                    капчу под строкой ввода, и как позиционированный элемент
+                    рисуется поверх статических соседей. Без этого он перехватывал
+                    клики по капче — галочка была видна, но не ставилась, и
+                    скачивание с сайта не работало вовсе. Строку ввода спасал
+                    только её собственный relative. */}
+                <div className="pointer-events-none absolute -inset-1.5 animate-pulse rounded-2xl bg-gradient-to-r from-primary/20 to-primary-light/20 blur" />
                 <div className="relative flex flex-col gap-4 rounded-2xl bg-background/80 p-2 backdrop-blur sm:flex-row">
                   <div className="flex-1">
                     <HeroInput
@@ -290,7 +297,9 @@ const Page = ({ platform }: PageProps) => {
                     )}
                   </Button>
                 </div>
-                <div className="mt-4 flex justify-center">
+                {/* relative — чтобы виджет ещё и рисовался поверх свечения,
+                    а не проступал сквозь его полупрозрачную заливку. */}
+                <div className="relative mt-4 flex justify-center">
                   <TurnstileWidget onVerify={setTurnstileToken} />
                 </div>
               </motion.form>

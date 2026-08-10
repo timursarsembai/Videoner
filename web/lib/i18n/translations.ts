@@ -48,8 +48,8 @@ const en = {
     loginButton: "Log in with Telegram",
     signIn: "Sign In",
     logout: "Log out",
-    switchAccountHint: "Not your account?",
-    switchAccountLink: "Log out of Telegram Web",
+    switchAccountHint: "You will be signed in as the account your Telegram is open with.",
+    switchAccountLink: "Use a different account",
   },
   home: {
     new: "New",
@@ -378,8 +378,8 @@ const es: Translations = {
     loginButton: "Iniciar sesión con Telegram",
     signIn: "Iniciar sesión",
     logout: "Cerrar sesión",
-    switchAccountHint: "¿No es tu cuenta?",
-    switchAccountLink: "Cerrar sesión en Telegram Web",
+    switchAccountHint: "Entrarás con la cuenta con la que tienes Telegram abierto.",
+    switchAccountLink: "Usar otra cuenta",
   },
   home: {
     new: "Nuevo",
@@ -706,8 +706,8 @@ const ru: Translations = {
     loginButton: "Войти через Telegram",
     signIn: "Войти",
     logout: "Выйти",
-    switchAccountHint: "Не тот аккаунт?",
-    switchAccountLink: "Выйти из Telegram Web",
+    switchAccountHint: "Войдёте под тем аккаунтом, под которым открыт ваш Telegram.",
+    switchAccountLink: "Войти под другим",
   },
   home: {
     new: "Новое",

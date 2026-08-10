@@ -44,6 +44,15 @@ export const downloaders: Downloader[] = [
     isUrlValid: isInstagramUrl,
   },
   {
+    name: "Threads",
+    value: "threads",
+    href: "/threads",
+    description: "Download videos from Threads posts",
+    logo: "/images/logos/threads.svg",
+    isComingSoon: false,
+    isUrlValid: isThreadsUrl,
+  },
+  {
     name: "Facebook",
     value: "facebook",
     href: "/facebook",
@@ -69,15 +78,6 @@ export const downloaders: Downloader[] = [
     logo: "/images/logos/pinterest.svg",
     isComingSoon: false,
     isUrlValid: isPinterestUrl,
-  },
-  {
-    name: "Threads",
-    value: "threads",
-    href: "/threads",
-    description: "Download videos from Threads posts",
-    logo: "/images/logos/threads.svg",
-    isComingSoon: false,
-    isUrlValid: isThreadsUrl,
   },
   {
     name: "VK",

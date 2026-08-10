@@ -4,6 +4,7 @@ import {
   isOkRuUrl,
   isPinterestUrl,
   isRutubeUrl,
+  isThreadsUrl,
   isTikTokUrl,
   isTwitterUrl,
   isVimeoUrl,
@@ -68,6 +69,15 @@ export const downloaders: Downloader[] = [
     logo: "/images/logos/pinterest.svg",
     isComingSoon: false,
     isUrlValid: isPinterestUrl,
+  },
+  {
+    name: "Threads",
+    value: "threads",
+    href: "/threads",
+    description: "Download videos from Threads posts",
+    logo: "/images/logos/threads.svg",
+    isComingSoon: false,
+    isUrlValid: isThreadsUrl,
   },
   {
     name: "VK",

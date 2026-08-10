@@ -144,4 +144,5 @@ export type Platform =
   | 'vk'
   | 'rutube'
   | 'okru'
-  | 'pinterest';
+  | 'pinterest'
+  | 'threads';

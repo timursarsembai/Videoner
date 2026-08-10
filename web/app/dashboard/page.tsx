@@ -38,6 +38,7 @@ const PLATFORM_COLORS: Record<string, string> = {
   INSTAGRAM: "#ec4899",
   FACEBOOK: "#3b82f6",
   TWITTER: "#0ea5e9",
+  THREADS: "#374151",
 };
 
 const SOURCE_COLORS: Record<string, string> = {
@@ -177,6 +178,7 @@ const PLATFORM_OPTIONS = [
   "RUTUBE",
   "OKRU",
   "PINTEREST",
+  "THREADS",
 ] as const;
 
 const STATUS_OPTIONS = [

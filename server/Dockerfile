@@ -55,6 +55,14 @@ RUN npx prisma generate
 COPY . .
 RUN pnpm run build
 
+# Свой экстрактор Threads: в yt-dlp его нет и не предвидится (заявки с 2023
+# года), а generic получает пустой JS-шелл. Плагином, а не правкой сервиса
+# скачивания — тогда Threads едет по общему конвейеру наравне с остальными
+# площадками, включая прогресс, ретраи и выбор формата.
+# Кладём рядом с bgutil: каталог /etc/yt-dlp/plugins уже в списке поиска
+# (ключ --plugin-dirs в PyInstaller-сборке НЕ работает — проверено).
+COPY ytdlp-plugins/threads /etc/yt-dlp/plugins/threads
+
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 

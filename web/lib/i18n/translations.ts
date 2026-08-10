@@ -337,6 +337,31 @@ const en = {
         { q: "How long is my downloaded file available?", a: "Converted files stay on the server for about an hour, so save them to your device right after downloading." },
       ],
     },
+    threads: {
+      description: "Download videos from Threads posts",
+      news: "Now with Threads support",
+      titleLine1: "Download Threads",
+      titleLine2: "Videos",
+      pageDescription:
+        "Download videos from Threads posts. Fast, free, and no account on Threads required. Threads serves a single video rendition, up to 720p — that is the highest quality the platform makes available.",
+      placeholder: "Paste Threads URL here...",
+      howTo: [
+        "Open the post in Threads and tap the share icon, then Copy Link.",
+        "Paste the link into the box above and press Download.",
+        "Pick the format you want — video or MP3 audio.",
+        "Your file downloads immediately — no account needed.",
+      ],
+      faq: [
+        { q: "Is downloading Threads videos with Videoner free?", a: "Yes — but you need to log in with Telegram first (one click, no password). You get 10 free downloads a day, shared with our Telegram bot." },
+        { q: "Do I need an account to download?", a: "You need to log in with your Telegram account before starting a download — it's one click, no email or password required. Browsing the page doesn't require logging in." },
+        { q: "What quality can I download?", a: "Threads publishes exactly one video rendition per post, capped at 720p on the shorter side — even when the author uploaded 4K. Videoner gives you that file as-is, plus MP3 audio extraction. No downloader can offer more, because higher resolutions are simply not served." },
+        { q: "Both threads.com and threads.net links work?", a: "Yes. Full links like threads.com/@user/post/CODE and short threads.net/t/CODE links are both supported." },
+        { q: "Can I download photos from a Threads post?", a: "No — only videos. If a post contains photos only, there is no video file to extract." },
+        { q: "What about a post with several videos?", a: "The first video in the post is downloaded. Threads carousels can hold several clips, and only the first one is saved." },
+        { q: "Can I download private posts?", a: "No. Only publicly visible posts can be downloaded; anything behind a private account or a login wall is not accessible." },
+        { q: "Is it legal to download videos from Threads?", a: "Download only what you have the right to save — your own content or anything the author allows. Respect the Threads Terms of Use and copyright law." },
+      ],
+    },
   } satisfies Record<Platform, PlatformStrings>,
 };
 
@@ -657,6 +682,31 @@ const es: Translations = {
         { q: "¿Cuánto tiempo está disponible mi archivo descargado?", a: "El archivo permanece en el servidor cerca de una hora, así que guárdalo en tu dispositivo justo después de la descarga." },
       ],
     },
+    threads: {
+      description: "Descarga vídeos de publicaciones de Threads",
+      news: "Ahora con soporte para Threads",
+      titleLine1: "Descargar vídeos",
+      titleLine2: "de Threads",
+      pageDescription:
+        "Descarga vídeos de publicaciones de Threads. Rápido, gratis y sin necesidad de tener cuenta en Threads. Threads ofrece una única versión del vídeo, hasta 720p: es la máxima calidad que la plataforma pone a disposición.",
+      placeholder: "Pega aquí el enlace de Threads...",
+      howTo: [
+        "Abre la publicación en Threads, toca el icono de compartir y elige Copiar enlace.",
+        "Pega el enlace en el campo de arriba y pulsa Descargar.",
+        "Elige el formato que quieras: vídeo o audio MP3.",
+        "El archivo se descarga al instante, sin necesidad de cuenta.",
+      ],
+      faq: [
+        { q: "¿Descargar vídeos de Threads con Videoner es gratis?", a: "Sí, pero primero debes iniciar sesión con Telegram (un clic, sin contraseña). Tienes 10 descargas gratuitas al día, compartidas con nuestro bot de Telegram." },
+        { q: "¿Necesito una cuenta para descargar?", a: "Debes iniciar sesión con tu cuenta de Telegram antes de empezar una descarga: es un solo clic, sin correo ni contraseña. Navegar por la página no requiere iniciar sesión." },
+        { q: "¿Qué calidad puedo descargar?", a: "Threads publica exactamente una versión del vídeo por publicación, limitada a 720p en el lado corto, incluso si el autor subió 4K. Videoner te entrega ese archivo tal cual, además de la extracción de audio MP3. Ningún descargador puede ofrecer más, porque las resoluciones superiores sencillamente no se sirven." },
+        { q: "¿Funcionan los enlaces de threads.com y threads.net?", a: "Sí. Se admiten tanto los enlaces completos threads.com/@usuario/post/CODIGO como los cortos threads.net/t/CODIGO." },
+        { q: "¿Puedo descargar fotos de una publicación de Threads?", a: "No, solo vídeos. Si una publicación contiene únicamente fotos, no hay ningún archivo de vídeo que extraer." },
+        { q: "¿Y una publicación con varios vídeos?", a: "Se descarga el primer vídeo de la publicación. Un carrusel de Threads puede contener varios clips y solo se guarda el primero." },
+        { q: "¿Puedo descargar publicaciones privadas?", a: "No. Solo se pueden descargar las publicaciones visibles públicamente; todo lo que esté tras una cuenta privada o un muro de inicio de sesión no es accesible." },
+        { q: "¿Es legal descargar vídeos de Threads?", a: "Descarga solo aquello que tengas derecho a guardar: tu propio contenido o lo que el autor permita. Respeta las Condiciones de uso de Threads y la ley de derechos de autor." },
+      ],
+    },
   },
 };
 
@@ -973,6 +1023,31 @@ const ru: Translations = {
         { q: "Можно ли скачать приватные пины или пины с закрытых досок?", a: "Поддерживаются только публично доступные пины; приватные доски и контент, требующий входа в аккаунт, скачать нельзя." },
         { q: "Законно ли скачивать видео с Pinterest?", a: "Скачивайте только то, на что у вас есть право — свой контент или то, что разрешил автор. Соблюдайте условия использования Pinterest и авторские права." },
         { q: "Как долго хранится скачанный файл?", a: "Готовый файл хранится на сервере около часа, поэтому сохраните его на устройство сразу после скачивания." },
+      ],
+    },
+    threads: {
+      description: "Скачивайте видео из постов Threads",
+      news: "Теперь с поддержкой Threads",
+      titleLine1: "Скачать видео",
+      titleLine2: "из Threads",
+      pageDescription:
+        "Скачивайте видео из постов Threads. Быстро, бесплатно и без аккаунта в самом Threads. Threads отдаёт одну-единственную версию видео, до 720p — это максимум, который площадка делает доступным.",
+      placeholder: "Вставьте ссылку на Threads...",
+      howTo: [
+        "Откройте пост в Threads, нажмите значок «Поделиться» и выберите «Копировать ссылку».",
+        "Вставьте ссылку в поле выше и нажмите «Скачать».",
+        "Выберите формат — видео или аудио MP3.",
+        "Файл скачается сразу, аккаунт не нужен.",
+      ],
+      faq: [
+        { q: "Скачивание видео из Threads через Videoner бесплатное?", a: "Да, но сначала нужно войти через Telegram — это один клик, без пароля. Доступно 10 бесплатных скачиваний в день, общие с нашим Telegram-ботом." },
+        { q: "Нужен ли аккаунт, чтобы скачать?", a: "Перед началом скачивания нужно войти через Telegram — один клик, без почты и пароля. Просто открыть страницу и посмотреть можно и без входа." },
+        { q: "В каком качестве можно скачать?", a: "Threads публикует ровно одну версию видео на пост, с ограничением 720p по короткой стороне — даже если автор загрузил 4K. Videoner отдаёт этот файл как есть, плюс извлечение звука в MP3. Больше не даст ни один загрузчик: более высокие разрешения площадка просто не отдаёт." },
+        { q: "Работают ли ссылки threads.com и threads.net?", a: "Да. Поддерживаются и полные ссылки вида threads.com/@пользователь/post/КОД, и короткие threads.net/t/КОД." },
+        { q: "Можно ли скачать фотографии из поста Threads?", a: "Нет, только видео. Если в посте одни фотографии, извлекать нечего — видеофайла там нет." },
+        { q: "А если в посте несколько видео?", a: "Скачивается первое видео из поста. В карусели Threads может быть несколько роликов, сохраняется только первый." },
+        { q: "Можно ли скачать закрытые посты?", a: "Нет. Скачать можно только публично доступные посты; всё, что скрыто закрытым аккаунтом или требует входа, недоступно." },
+        { q: "Законно ли скачивать видео из Threads?", a: "Скачивайте только то, что вправе сохранить, — свой контент или то, что разрешает автор. Соблюдайте условия использования Threads и авторское право." },
       ],
     },
   },

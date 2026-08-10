@@ -28,6 +28,10 @@ const COOKIE_FALLBACK_PLATFORMS = [
   'vk',
   'rutube',
   'okru',
+  // Threads работает полностью анонимно, cookies ему не нужны вовсе — но если
+  // в общий cookies.txt когда-нибудь попадут записи для threads.net, повтор
+  // без них должен остаться доступен.
+  'threads',
 ];
 
 @Injectable()

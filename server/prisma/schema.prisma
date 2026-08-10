@@ -123,6 +123,7 @@ enum Downloaders {
   RUTUBE
   OKRU
   PINTEREST
+  THREADS
 }
 
 enum DownloadSource {

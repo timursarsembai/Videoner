@@ -7,9 +7,9 @@
 # помогает, а отдельный Telegram-бот для стейджинга потребовал бы второго
 # токена от @BotFather (ручной шаг, не обязателен для пользы этого контура).
 #
-# Переиспользует postgres/bgutil-provider прод-стека (другая БД внутри того
-# же Postgres — не второй контейнер, экономит ресурсы VPS), но собственные
-# server/web контейнеры на отдельной internal-сети.
+# Переиспользует postgres/bgutil-provider/threads-resolver прод-стека (другая
+# БД внутри того же Postgres — не второй контейнер, экономит ресурсы VPS), но
+# собственные server/web контейнеры на отдельной internal-сети.
 #
 # ДВА РУЧНЫХ ШАГА перед первым использованием (не автоматизируются отсюда):
 #   1. DNS: A-запись staging.videoner.download -> тот же IP, что и основной домен.
@@ -54,6 +54,9 @@ services:
       BOT_TOKEN: ${BOT_TOKEN}
       ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
       YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
+      # Резолвер Threads берём из прод-стека — он в общей сети internal, как и
+      # bgutil-provider. Второй Chromium ради staging поднимать незачем.
+      THREADS_RESOLVER_URL: http://threads-resolver:4417
     volumes:
       - downloads_staging:/app/dist/downloads
       # Каталог, а не файл — см. подробный комментарий в docker-compose.prod.yml

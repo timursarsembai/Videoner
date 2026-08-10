@@ -43,6 +43,30 @@ services:
     restart: unless-stopped
     networks: [internal]
 
+  # Резерв для Threads. Основной путь — плагин yt-dlp, который берёт данные из
+  # SSR по UA поискового робота; он живой, но держится на том, что Meta не
+  # сверяет этот UA с reverse DNS. Начнёт сверять — плагин сам перейдёт сюда,
+  # а этот контейнер откроет пост в настоящем Chromium.
+  # Сюда же уходят короткие ссылки threads.net/t/<code>: их SSR не отдаёт.
+  # Chromium поднимается только по требованию и гаснет через 5 минут простоя,
+  # поэтому в покое контейнер стоит около 60 МБ.
+  threads-resolver:
+    build: ./threads-resolver
+    container_name: videoner-threads-resolver
+    restart: unless-stopped
+    environment:
+      # Прокси тут не опция, а условие работы: настоящему браузеру с IP
+      # дата-центра Threads показывает заглушку «страница не найдена» вместо
+      # поста, а через резидентный IP тот же Chromium открывает пост нормально
+      # (замер 10.08.2026). Переиспользуем тот же ISP-прокси, что и для YouTube;
+      # трафик экономим, отбрасывая картинки, шрифты и видеопотоки — резолверу
+      # нужен только JSON в разметке, сам файл сервер потом качает напрямую.
+      THREADS_PROXY_URL: ${YOUTUBE_PROXY_URL}
+    # Страховка от повисшего браузера: без лимита один зависший Chromium может
+    # выбрать всю свободную память VPS и утянуть за собой postgres и бота.
+    mem_limit: 1g
+    networks: [internal]
+
   server:
     build: ./server
     container_name: videoner-server
@@ -61,6 +85,11 @@ services:
       ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
       # Статический ISP-прокси (IPRoyal) для YouTube — обходит блокировку по IP дата-центра VPS
       YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
+      # Адрес резервного резолвера Threads. У плагина зашит тот же адрес по
+      # умолчанию, но здесь он задан явно: иначе связь плагина с именем сервиса
+      # ниоткуда не видна, и переименование сервиса ломало бы резерв молча.
+      # Переменная доезжает до yt-dlp сама — spawn наследует окружение.
+      THREADS_RESOLVER_URL: http://threads-resolver:4417
       # Одна подсказка человеку, который запустил бота и за 48 часов не прислал
       # ни одной ссылки (см. server/src/modules/nudge). Включено ТОЛЬКО здесь:
       # у staging своя БД, но тот же BOT_TOKEN, и без этого флага он писал бы
@@ -87,6 +116,8 @@ services:
       postgres:
         condition: service_healthy
       bgutil-provider:
+        condition: service_started
+      threads-resolver:
         condition: service_started
     networks: [internal, proxy]
 

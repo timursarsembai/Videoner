@@ -42,7 +42,7 @@ interface Messages {
 }
 
 const ru: Messages = {
-  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru или Pinterest — я помогу его скачать.\n\nКоманда /subscribe — оформить подписку без лимитов и доплат за HD.",
+  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\nКоманда /subscribe — оформить подписку без лимитов и доплат за HD.",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
   fetchingInfo: "🔍 Получаю информацию о видео...",
   audioOnlyButton: "🎵 Только аудио (mp3)",
@@ -66,7 +66,7 @@ const ru: Messages = {
     "Владельцу бота нужно настроить cookies.txt на сервере, чтобы он заходил под " +
     "авторизованной сессией (см. README проекта, раздел «Cookies для Instagram/Facebook»).",
   errorUnsupportedPlatform:
-    "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru или Pinterest.",
+    "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads.",
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
   errorNoVideoContent: "По этой ссылке нет видео для скачивания — похоже, пост содержит только фото.",
   errorRateLimited: "Слишком много ссылок подряд — подожди немного и пришли снова.",
@@ -99,7 +99,7 @@ const ru: Messages = {
 };
 
 const en: Messages = {
-  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, or Pinterest — I'll help you download it.\n\nUse /subscribe to remove the limit and HD charge.",
+  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\nUse /subscribe to remove the limit and HD charge.",
   notLink: "That doesn't look like a link. Send me a video link.",
   fetchingInfo: "🔍 Fetching video info...",
   audioOnlyButton: "🎵 Audio only (mp3)",
@@ -123,7 +123,7 @@ const en: Messages = {
     "The bot owner needs to set up cookies.txt on the server so it can browse with an " +
     "authenticated session (see the project README, \"Cookies for Instagram/Facebook\" section).",
   errorUnsupportedPlatform:
-    "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, or Pinterest.",
+    "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads.",
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
   errorNoVideoContent: "This link doesn't have a video to download — the post appears to be photo-only.",
   errorRateLimited: "Too many links in a row — wait a bit and send it again.",

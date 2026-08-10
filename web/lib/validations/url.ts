@@ -310,6 +310,34 @@ export const isPinterestUrl = (url: string) => {
   }
 };
 
+export const isThreadsUrl = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    const hostname = urlObj.hostname.toLowerCase();
+
+    const validDomains = [
+      "threads.net",
+      "www.threads.net",
+      "threads.com",
+      "www.threads.com",
+    ];
+
+    if (!validDomains.includes(hostname)) {
+      return false;
+    }
+
+    // Путь НЕ приводим к нижнему регистру, в отличие от соседних платформ:
+    // код поста регистрозависим (DbwCL-biqRV), и потерять регистр здесь —
+    // значит отдать дальше ссылку на несуществующий пост.
+    const path = urlObj.pathname;
+
+    // threads.com/@user/post/<code> и короткие threads.net/t/<code>
+    return /^\/(@[^/]+\/post|t)\/[\w-]+/.test(path);
+  } catch {
+    return false;
+  }
+};
+
 export const detectPlatform = (url: string): Platform | null => {
   if (!isValidUrl(url)) return null;
 

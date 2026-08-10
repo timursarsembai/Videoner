@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
 import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/layout/GoogleTagManager";
+import { YandexMetrika, YandexMetrikaNoScript } from "@/components/layout/YandexMetrika";
 import JsonLd from "@/components/common/JsonLd";
 
 const spaceGrotesk = Space_Grotesk({
@@ -81,6 +82,7 @@ export default function RootLayout({
         <JsonLd data={organizationSchema} />
         <JsonLd data={websiteSchema} />
         <GoogleTagManagerNoScript />
+        <YandexMetrikaNoScript />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -92,6 +94,7 @@ export default function RootLayout({
         </ThemeProvider>
         <GoogleAnalytics />
         <GoogleTagManager />
+        <YandexMetrika />
       </body>
     </html>
   );

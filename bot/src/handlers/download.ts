@@ -1,6 +1,5 @@
 import { Bot, InlineKeyboard, InputFile } from "grammy";
 import { detectLang, messages, type Lang } from "../i18n.js";
-import { isPaidQuality } from "../paid-quality.js";
 import {
   api,
   getQuotaInfo,
@@ -12,7 +11,6 @@ import {
   CLOUD_SIZE_LIMIT,
   ADMIN_TELEGRAM_ID,
 } from "../helpers.js";
-import { addSubscriptionButtons } from "./subscription.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -179,11 +177,11 @@ export function registerDownloadHandlers(bot: Bot) {
       const videoQualities = info.qualities.video ?? [];
       sessions.set(sessionKey(ctx.chat.id, msg.message_id), { url, videoQualities, createdAt: Date.now() });
 
-      const quota = await getQuotaInfo(ctx.from?.id);
       const kb = new InlineKeyboard();
       for (const q of videoQualities.slice(0, 6)) {
-        const label = isPaidQuality("v", q, videoQualities) && !quota.unlimited ? `🎬 ${q} 🔒` : `🎬 ${q}`;
-        kb.text(label, `v|${q}`).row();
+        // Замок с HD-качеств снят вместе с платными функциями: все качества
+        // доступны всем без исключения.
+        kb.text(`🎬 ${q}`, `v|${q}`).row();
       }
       kb.text(m.audioOnlyButton, "a|128Kbps");
 
@@ -191,15 +189,6 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.api.editMessageText(ctx.chat.id, msg.message_id, m.chooseQuality(info.title, dur), {
         reply_markup: kb,
       });
-
-      // Допродажа подписки — ОТДЕЛЬНЫМ сообщением следом, а не в той же клавиатуре
-      // выбора качества, чтобы не смешивать разные по смыслу действия и дать место
-      // под подробное описание. Не показываем тем, у кого и так безлимит (в т.ч.
-      // админу — getQuotaInfo() возвращает unlimited: true для него в коде без похода в БД).
-      if (!quota.unlimited) {
-        const subKb = addSubscriptionButtons(new InlineKeyboard(), m);
-        await ctx.reply(m.subscriptionPitch, { reply_markup: subKb });
-      }
     } catch (e: any) {
       await ctx.api.editMessageText(ctx.chat.id, msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
     }
@@ -229,19 +218,12 @@ export function registerDownloadHandlers(bot: Bot) {
     await ctx.answerCallbackQuery();
 
     const quota = await getQuotaInfo(ctx.from?.id);
-    const isHdQuality = isPaidQuality(kind, quality, session.videoQualities);
 
-    // Ни HD, ни скачивание сверх дневного лимита больше нельзя купить разово —
-    // единственный способ снять оба ограничения — подписка.
-    if (!quota.unlimited && isHdQuality) {
-      const subKb = addSubscriptionButtons(new InlineKeyboard(), m);
-      await ctx.reply(m.hdRequiresSubscription(quality), { reply_markup: subKb });
-      return;
-    }
-
+    // Единственное оставшееся ограничение — суточный лимит. Снять его деньгами
+    // нельзя: платных функций нет. unlimited остаётся только как ручной
+    // админский грант через /grant.
     if (!quota.unlimited && quota.remaining <= 0) {
-      const subKb = addSubscriptionButtons(new InlineKeyboard(), m);
-      await ctx.reply(m.dailyLimitReached, { reply_markup: subKb });
+      await ctx.reply(m.dailyLimitReached);
       return;
     }
 

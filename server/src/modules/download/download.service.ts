@@ -26,23 +26,18 @@ import {
   VideoFormat,
 } from 'src/types';
 import { Observable, Subject } from 'rxjs';
-import { FacebookVideoQuality } from 'src/types/facebook';
 import { YtdlpProcessService } from '../ytdlp/ytdlp-process.service';
 import { YtdlpFormatService } from '../ytdlp/ytdlp-format.service';
 import { getFileName } from 'src/lib/utils';
-import { getVideoFormats } from 'src/lib/helper';
 import { BotUserService } from '../analytics/bot-user.service';
 import { categorizeError } from 'src/lib/error-category';
-import { DAILY_FREE_DOWNLOAD_LIMIT } from 'src/lib/config';
-import { isPaidVideoQuality } from './paid-quality';
+import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
   telegramUsername?: string;
   telegramLanguageCode?: string;
   source?: DownloadSource;
-  isPaid?: boolean;
-  starsAmount?: number;
 }
 
 const execFileAsync = promisify(execFile);
@@ -102,49 +97,30 @@ export class DownloadService {
     return info;
   }
 
-  // Тот же список качеств, что видит пользователь на /info (getPlatformFormats
-  // в info.service.ts) — пересчитываем из уже полученного info, а не доверяем
-  // клиенту, чтобы нельзя было обмануть исключение "720p бесплатен, если ниже
-  // качеств нет вообще" (см. isPaidVideoQuality) поддельным списком.
-  private getAvailableVideoQualities(info: any, platform: string): string[] {
-    if (platform === 'facebook') {
-      return [FacebookVideoQuality.hd, FacebookVideoQuality.sd];
-    }
-    return getVideoFormats(info);
-  }
-
-  // Те же ограничения для неподписанных, что и в боте (дневной лимит бесплатных
-  // скачиваний + платное HD), но только для запросов с сайта (meta.source ===
-  // WEB) — бот управляет своим гейтом сам (в т.ч. разовой оплатой HD за Stars,
-  // о которой сервер ничего не знает), его трогать нельзя. telegramId для WEB
-  // приходит уже проверенным из сессии (см. web/app/api/[...path]/route.ts),
-  // а не как есть от браузера.
-  private async enforceWebLimits(
-    meta: DownloadRequestMeta,
-    quality: string | undefined,
-    info: any,
-    platform: string,
-    isVideo: boolean,
-  ) {
+  // Ограничения для запросов с сайта (meta.source === WEB): обязательный вход
+  // через Telegram и суточный лимит. Бот считает свой лимит сам.
+  //
+  // Раньше здесь же стоял гейт платного HD. Он снят вместе со всеми платными
+  // функциями: сервис бесплатный, и качество больше ни от чего не зависит.
+  // С гейтом ушли параметры quality/info/platform/isVideo — они были нужны
+  // только ему, — и метод getAvailableVideoQualities, который их считал.
+  //
+  // telegramId для WEB приходит уже проверенным из сессии (см.
+  // web/app/api/[...path]/route.ts), а не как есть от браузера.
+  private async enforceWebLimits(meta: DownloadRequestMeta) {
     if (meta.source !== DownloadSource.WEB) return;
 
     if (!meta.telegramId) {
       throw new UnauthorizedException('Login required to download on the website');
     }
 
+    // Безлимит выдаётся ТОЛЬКО вручную админом через /grant; купить его нельзя.
     const unlimited = await this.botUser.isUnlimited(meta.telegramId);
     if (unlimited) return;
 
-    if (isVideo && quality) {
-      const availableQualities = this.getAvailableVideoQualities(info, platform);
-      if (isPaidVideoQuality(quality, availableQualities)) {
-        throw new ForbiddenException('This quality requires an active subscription');
-      }
-    }
-
-    const freeUsed = await this.botUser.countFreeDownloadsToday(meta.telegramId);
-    if (freeUsed >= DAILY_FREE_DOWNLOAD_LIMIT) {
-      throw new ForbiddenException('Daily free download limit reached');
+    const usedToday = await this.botUser.countDownloadsToday(meta.telegramId);
+    if (usedToday >= DAILY_DOWNLOAD_LIMIT) {
+      throw new ForbiddenException('Daily download limit reached');
     }
   }
 
@@ -300,8 +276,6 @@ export class DownloadService {
     source?: DownloadSource;
     videoTitle?: string;
     videoDuration?: number;
-    isPaid?: boolean;
-    starsAmount?: number;
   }) {
     return this.prisma.download.create({
       data: {
@@ -314,8 +288,6 @@ export class DownloadService {
         source: data.source ?? DownloadSource.API,
         videoTitle: data.videoTitle,
         videoDuration: data.videoDuration,
-        isPaid: data.isPaid ?? false,
-        starsAmount: data.starsAmount,
       },
     });
   }
@@ -369,17 +341,17 @@ export class DownloadService {
   }
 
   async getQuota(telegramId: number) {
-    const [unlimited, freeUsed] = await Promise.all([
+    const [unlimited, usedToday] = await Promise.all([
       this.botUser.isUnlimited(telegramId),
-      this.botUser.countFreeDownloadsToday(telegramId),
+      this.botUser.countDownloadsToday(telegramId),
     ]);
     return {
       unlimited,
-      freeUsed,
-      freeLimit: DAILY_FREE_DOWNLOAD_LIMIT,
+      used: usedToday,
+      limit: DAILY_DOWNLOAD_LIMIT,
       remaining: unlimited
-        ? DAILY_FREE_DOWNLOAD_LIMIT
-        : Math.max(0, DAILY_FREE_DOWNLOAD_LIMIT - freeUsed),
+        ? DAILY_DOWNLOAD_LIMIT
+        : Math.max(0, DAILY_DOWNLOAD_LIMIT - usedToday),
     };
   }
 
@@ -618,7 +590,7 @@ export class DownloadService {
       // несколько параллельных вкладок читают один и тот же freeUsed (ни
       // одна запись ещё не создана) и все проходят проверку разом (TOCTOU).
       const createDownloadRecord = async () => {
-        await this.enforceWebLimits(meta, quality, info, (req as any).platform, true);
+        await this.enforceWebLimits(meta);
         const botUserId = await this.resolveBotUserId(meta);
         return this.createDownload({
           originalUrl: url,
@@ -629,8 +601,6 @@ export class DownloadService {
           source: meta.source,
           videoTitle: info.title,
           videoDuration: info.duration,
-          isPaid: meta.isPaid,
-          starsAmount: meta.starsAmount,
         });
       };
       const download = meta.telegramId
@@ -730,7 +700,7 @@ export class DownloadService {
 
       // См. downloadVideo() — та же TOCTOU-защита дневного лимита.
       const createDownloadRecord = async () => {
-        await this.enforceWebLimits(meta, undefined, info, (req as any).platform, false);
+        await this.enforceWebLimits(meta);
         const botUserId = await this.resolveBotUserId(meta);
         return this.createDownload({
           originalUrl: url,
@@ -741,8 +711,6 @@ export class DownloadService {
           source: meta.source,
           videoTitle: info.title,
           videoDuration: info.duration,
-          isPaid: meta.isPaid,
-          starsAmount: meta.starsAmount,
         });
       };
       const download = meta.telegramId

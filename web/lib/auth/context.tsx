@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { SubscriptionStatus } from "./types";
+import { UserProfile } from "./types";
 
 interface AuthContextValue {
   // undefined — статус ещё не загружен (не мигать логин-виджетом до ответа /me)
-  user: SubscriptionStatus | null | undefined;
+  user: UserProfile | null | undefined;
   refresh: () => void;
 }
 
@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 // на одну загрузку страницы download-UI. Один провайдер на уровне layout'а —
 // один запрос, все потребители читают общий стейт через useAuth().
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<SubscriptionStatus | null | undefined>(undefined);
+  const [user, setUser] = useState<UserProfile | null | undefined>(undefined);
 
   const refresh = useCallback(() => {
     fetch("/api/auth/me")

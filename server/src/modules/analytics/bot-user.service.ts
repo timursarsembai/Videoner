@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DownloadStatus, SubscriptionKind } from '@prisma/client';
+import { DownloadStatus } from '@prisma/client';
 
 export interface UpsertBotUserInput {
   telegramId: number;
@@ -13,13 +13,14 @@ export interface UpsertBotUserInput {
   markWebLogin?: boolean;
 }
 
-export interface SubscriptionStatus {
+// Профиль, который отдаётся сайту после входа через Telegram Login Widget.
+// Раньше назывался SubscriptionStatus и нёс даты подписки — платных функций
+// больше нет, остался только признак ручного админского безлимита.
+export interface BotUserProfile {
   telegramId: string;
   username: string | null;
   firstName: string | null;
   isUnlimited: boolean;
-  subscriptionUntil: Date | null;
-  subscriptionKind: SubscriptionKind | null;
 }
 
 @Injectable()
@@ -48,10 +49,9 @@ export class BotUserService {
     });
   }
 
-  // Полный снимок статуса подписки — для входа на сайт через Telegram Login
-  // Widget (см. bot-user.controller.ts): в отличие от isUnlimited() ниже, тут
-  // нужны сырые даты для отображения ("активна до ..."), а не просто boolean.
-  async getSubscriptionStatus(telegramId: number): Promise<SubscriptionStatus | null> {
+  // Профиль для входа на сайт через Telegram Login Widget
+  // (см. bot-user.controller.ts).
+  async getProfile(telegramId: number): Promise<BotUserProfile | null> {
     const botUser = await this.prisma.botUser.findUnique({
       where: { telegramId: BigInt(telegramId) },
     });
@@ -61,67 +61,18 @@ export class BotUserService {
       telegramId: botUser.telegramId.toString(),
       username: botUser.username,
       firstName: botUser.firstName,
-      isUnlimited:
-        botUser.isUnlimited ||
-        (botUser.subscriptionUntil != null && botUser.subscriptionUntil > new Date()),
-      subscriptionUntil: botUser.subscriptionUntil,
-      subscriptionKind: botUser.subscriptionKind,
+      isUnlimited: botUser.isUnlimited,
     };
   }
 
-  // true и для ручного гранта (isUnlimited, без срока — см. /grant), и для
-  // действующей купленной подписки (subscriptionUntil в будущем).
+  // Ручной админский грант через /grant, без срока. Купить его нельзя —
+  // платных функций в сервисе нет.
   async isUnlimited(telegramId: number): Promise<boolean> {
     const botUser = await this.prisma.botUser.findUnique({
       where: { telegramId: BigInt(telegramId) },
-      select: { isUnlimited: true, subscriptionUntil: true },
+      select: { isUnlimited: true },
     });
-    if (!botUser) return false;
-    return (
-      botUser.isUnlimited ||
-      (botUser.subscriptionUntil != null && botUser.subscriptionUntil > new Date())
-    );
-  }
-
-  // Вызывается после успешной оплаты Stars (месячная — при каждом
-  // автопродлении тоже, сервер просто продлевает дату; годовая — один раз).
-  // Апсертим, а не только update: пользователь уже писал боту к этому моменту
-  // (иначе не смог бы дойти до оплаты), но на всякий случай не полагаемся на это.
-  async setSubscriptionUntil(
-    telegramId: number,
-    until: Date,
-    kind: SubscriptionKind,
-    meta?: { username?: string; languageCode?: string },
-  ) {
-    const bigId = BigInt(telegramId);
-    return this.prisma.botUser.upsert({
-      where: { telegramId: bigId },
-      create: {
-        telegramId: bigId,
-        username: meta?.username,
-        languageCode: meta?.languageCode,
-        subscriptionUntil: until,
-        subscriptionKind: kind,
-      },
-      update: {
-        subscriptionUntil: until,
-        subscriptionKind: kind,
-        username: meta?.username,
-        languageCode: meta?.languageCode,
-      },
-    });
-  }
-
-  // Для ежедневного напоминания о продлении годовой подписки — только YEARLY,
-  // т.к. MONTHLY продлевается автоматически (Telegram сам спишет звёзды),
-  // напоминание про неё было бы вводящим в заблуждение.
-  async findYearlySubscriptionsExpiringBetween(from: Date, to: Date) {
-    return this.prisma.botUser.findMany({
-      where: {
-        subscriptionKind: SubscriptionKind.YEARLY,
-        subscriptionUntil: { gte: from, lt: to },
-      },
-    });
+    return botUser?.isUnlimited ?? false;
   }
 
   // Пользователь должен хотя бы раз написать боту (BotUser создаётся через
@@ -145,11 +96,11 @@ export class BotUserService {
     });
   }
 
-  // Считаем только успешно завершённые бесплатные скачивания за последние 24ч —
+  // Считаем только успешно завершённые скачивания за последние 24ч —
   // неудачные попытки (битая ссылка и т.п.) не должны съедать лимит пользователя.
   // EXPIRED считаем тоже: CleanupService переводит в него COMPLETED после удаления
   // файла с диска, это не отменяет сам факт скачивания.
-  async countFreeDownloadsToday(telegramId: number): Promise<number> {
+  async countDownloadsToday(telegramId: number): Promise<number> {
     const botUser = await this.prisma.botUser.findUnique({
       where: { telegramId: BigInt(telegramId) },
     });
@@ -159,7 +110,6 @@ export class BotUserService {
     return this.prisma.download.count({
       where: {
         botUserId: botUser.id,
-        isPaid: false,
         status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
         createdAt: { gte: since },
       },

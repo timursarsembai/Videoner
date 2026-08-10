@@ -2,7 +2,11 @@
 
 import { useLanguage } from "@/lib/i18n/context";
 import Image from "next/image";
+import Link from "next/link";
 import { Send } from "lucide-react";
+import { localizedHref } from "@/lib/i18n/routing";
+import { legal } from "@/lib/legal/documents";
+import { LEGAL_SLUGS } from "@/lib/legal/types";
 
 // Раньше был захардкожен буквально "VideonerBot" — рассинхрон с остальным
 // сайтом (UserMenu.tsx, VideoInfo.tsx), которые читают из env: при смене
@@ -11,11 +15,26 @@ const TELEGRAM_BOT = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "VideonerB
 const DEVELOPER = "sarsembai.dev";
 
 export function Footer() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const year = new Date().getFullYear();
+  // Подписи документов лежат рядом с их текстами, а не в общем словаре:
+  // документ и его название правятся вместе, разносить их по двум файлам —
+  // верный способ однажды переименовать одно и забыть другое.
+  const legalLabels = legal[language].ui.labels;
 
   return (
     <footer className="border-t border-border/40 bg-background/60">
+      <div className="container flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-b border-border/30 py-4 text-sm sm:justify-start">
+        {LEGAL_SLUGS.map((slug) => (
+          <Link
+            key={slug}
+            href={localizedHref(language, `/${slug}`)}
+            className="text-foreground/60 underline-offset-4 transition-colors hover:text-primary hover:underline"
+          >
+            {legalLabels[slug]}
+          </Link>
+        ))}
+      </div>
       <div className="container flex flex-col items-center gap-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
         <div className="flex items-center gap-2">
           <Image

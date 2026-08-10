@@ -490,7 +490,7 @@ export default function AnalyticsPage() {
 
   if (!snapshot) return null;
 
-  const { overview, platforms, sources, activity, topUsers, errors, subscriptions } = snapshot;
+  const { overview, platforms, sources, activity, topUsers, errors } = snapshot;
   const timeseries = mergeTimeseries(snapshot);
   const { data: errorsTimeseriesData, categories: errorCategories } = mergeErrorsTimeseries(
     snapshot.errorsTimeseries
@@ -543,36 +543,8 @@ export default function AnalyticsPage() {
                 : "—"
             }
           />
-          <StatCard label="Разовые платежи (архив), ⭐" value={overview.totalStarsRevenue} />
           <StatCard label="Пользователей бота" value={overview.totalBotUsers} />
-        </section>
-
-        <section>
-          <h2 className="mb-3 text-sm font-medium text-foreground/70">
-            Подписки — единственный источник дохода
-          </h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-9">
-            <StatCard label="Активных всего" value={subscriptions.activeTotal} />
-            <StatCard label="Месячных" value={subscriptions.activeMonthly} />
-            <StatCard label="Годовых" value={subscriptions.activeYearly} />
-            <StatCard
-              label="MRR, ⭐/мес"
-              value={subscriptions.mrrStars}
-              hint="Прогноз дохода в месяц по активным подпискам (оценка)"
-            />
-            <StatCard label="Истекает за 7 дн." value={subscriptions.expiring7d} />
-            <StatCard label="Истекает за 30 дн." value={subscriptions.expiring30d} />
-            <StatCard
-              label="Конверсия в подписку"
-              value={
-                subscriptions.conversionRate !== null
-                  ? `${(subscriptions.conversionRate * 100).toFixed(1)}%`
-                  : "—"
-              }
-            />
-            <StatCard label="Ручной безлимит (админ)" value={subscriptions.manualUnlimited} />
-            <StatCard label="Входили на сайт через Telegram" value={subscriptions.webLoginUsers} />
-          </div>
+          <StatCard label="Входили на сайт через Telegram" value={overview.webLoginUsers} />
         </section>
 
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-4">

@@ -59,8 +59,6 @@ model Download {
   videoWidth    Int?
   videoHeight   Int?
   fileSize      BigInt?
-  isPaid        Boolean        @default(false)
-  starsAmount   Int?
   errorCategory ErrorCategory?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -77,11 +75,9 @@ model BotUser {
   username          String?
   firstName         String?
   languageCode      String?
+  // Безлимит выдаётся ТОЛЬКО вручную админом через /grant и срока не имеет.
+  // Купить его нельзя: платных функций в сервисе нет.
   isUnlimited       Boolean           @default(false)
-  // Безлимитный доступ по купленной подписке (в отличие от isUnlimited,
-  // который выдаётся вручную админом через /grant и не имеет срока).
-  subscriptionUntil DateTime?
-  subscriptionKind  SubscriptionKind?
   // Ставится при входе через Telegram Login Widget на сайте (см.
   // bot-user.controller.ts telegramLogin) — отдельно от firstSeenAt/lastSeenAt,
   // которые обновляются и от активности в боте. Нужно для аналитики: сколько
@@ -96,11 +92,6 @@ model BotUser {
   lastSeenAt        DateTime          @default(now())
 
   @@index([telegramId])
-}
-
-enum SubscriptionKind {
-  MONTHLY
-  YEARLY
 }
 
 enum DownloadStatus {

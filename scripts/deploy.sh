@@ -116,7 +116,14 @@ for service in "$@"; do
           continue
         fi
         checked=$((checked + 1))
-        if ! docker exec "$container" sh -c "grep -rl -- '$value' .next/static/chunks/*.js" >/dev/null 2>&1; then
+        # Ищем по всему .next/static РЕКУРСИВНО. Раньше стояла плоская маска
+        # .next/static/chunks/*.js — она не заглядывала в подкаталоги, а Next
+        # раскладывает часть чанков в chunks/app/**. Стоило коду переехать в
+        # такой чанк, и проверка объявляла переменную пропавшей, хотя та была
+        # на месте: два ложных ✗ подряд 10.08.2026. Ложная тревога тут хуже
+        # молчания — на неё быстро перестают смотреть, и настоящий пропуск
+        # build-arg (инцидент с Turnstile 23.07.2026) снова уедет в прод.
+        if ! docker exec "$container" sh -c "grep -rlF -- '$value' .next/static" >/dev/null 2>&1; then
           echo "    ✗ ${var} не найден в собранном бандле — соответствующая фича будет молча отключена"
           missing=1
         fi

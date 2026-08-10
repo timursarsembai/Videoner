@@ -144,8 +144,8 @@ class ApiClient {
 
   async getQuota(telegramId: string): Promise<{
     unlimited: boolean;
-    freeUsed: number;
-    freeLimit: number;
+    used: number;
+    limit: number;
     remaining: number;
   }> {
     try {

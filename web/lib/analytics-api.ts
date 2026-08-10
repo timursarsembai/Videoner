@@ -10,7 +10,7 @@ export interface OverviewData {
   completedDownloads: number;
   failedDownloads: number;
   successRate: number | null;
-  totalStarsRevenue: number;
+  webLoginUsers: number;
   totalBotUsers: number;
 }
 
@@ -63,18 +63,6 @@ export interface ErrorTimeseriesPoint {
   count: number;
 }
 
-export interface SubscriptionsData {
-  activeMonthly: number;
-  activeYearly: number;
-  activeTotal: number;
-  manualUnlimited: number;
-  expiring7d: number;
-  expiring30d: number;
-  mrrStars: number;
-  conversionRate: number | null;
-  totalBotUsers: number;
-  webLoginUsers: number;
-}
 
 // Одна попытка скачивания — строка журнала. Отдаются ВСЕ статусы, включая
 // успешные: список нужен именно как хронология «кто что запрашивал», а не как
@@ -108,7 +96,6 @@ export interface AnalyticsSnapshot {
   topUsers: TopUser[];
   errors: ErrorDatum[];
   errorsTimeseries: ErrorTimeseriesPoint[];
-  subscriptions: SubscriptionsData;
 }
 
 // Ходит на СВОЙ Next.js-прокси (app/api/dashboard/[...path]/route.ts), а не
@@ -154,7 +141,6 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     topUsers,
     errors,
     errorsTimeseries,
-    subscriptions,
   ] = await Promise.all([
     get<OverviewData>("/overview"),
     get<PlatformDatum[]>("/platforms"),
@@ -164,7 +150,6 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     get<TopUser[]>("/users/top?limit=20"),
     get<ErrorDatum[]>("/errors"),
     get<ErrorTimeseriesPoint[]>(`/errors/timeseries?days=${days}`),
-    get<SubscriptionsData>("/subscriptions"),
   ]);
 
   return {
@@ -176,7 +161,6 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     topUsers,
     errors,
     errorsTimeseries,
-    subscriptions,
   };
 }
 

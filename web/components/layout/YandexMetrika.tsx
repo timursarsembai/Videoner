@@ -4,7 +4,18 @@ import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-const COUNTER_ID = 111459879;
+/**
+ * Яндекс.Метрика.
+ *
+ * Идентификатор берётся из переменной окружения, в отличие от соседних
+ * GoogleAnalytics и GoogleTagManager, где он зашит в код. Причина одна: staging
+ * собирается из этого же кода и своим трафиком портил бы статистику боевого
+ * сайта — а вебвизор ещё и записывал бы отладочные сессии. В аргументах сборки
+ * docker-compose.staging.yml переменной нет, поэтому там счётчик просто не
+ * появляется. Проверка на этапе сборки, а не по домену в браузере: тогда и
+ * noscript-пиксель не попадает в разметку staging.
+ */
+const COUNTER_ID = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID) || 0;
 
 declare global {
   interface Window {
@@ -13,12 +24,6 @@ declare global {
 }
 
 /**
- * Яндекс.Метрика.
- *
- * Идентификатор зашит в компонент — так же, как у соседних GoogleAnalytics и
- * GoogleTagManager; заводить ради него переменную окружения значило бы держать
- * три счётчика по двум разным схемам.
- *
  * Сам код счётчика — стандартный сниппет Яндекса без изменений, включая
  * проверку document.scripts: она защищает от повторной вставки, когда React в
  * строгом режиме монтирует компонент дважды.
@@ -32,6 +37,7 @@ export const YandexMetrika = () => {
   // сколько бы страниц человек ни открыл. Первый просмотр отправляет сам init,
   // поэтому стартовый рендер пропускаем, иначе он посчитается дважды.
   useEffect(() => {
+    if (!COUNTER_ID) return;
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
@@ -40,6 +46,8 @@ export const YandexMetrika = () => {
       referer: document.referrer,
     });
   }, [pathname]);
+
+  if (!COUNTER_ID) return null;
 
   return (
     <Script id="yandex-metrika" strategy="afterInteractive">
@@ -57,15 +65,19 @@ export const YandexMetrika = () => {
   );
 };
 
-export const YandexMetrikaNoScript = () => (
-  <noscript>
-    <div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={`https://mc.yandex.ru/watch/${COUNTER_ID}`}
-        style={{ position: "absolute", left: "-9999px" }}
-        alt=""
-      />
-    </div>
-  </noscript>
-);
+export const YandexMetrikaNoScript = () => {
+  if (!COUNTER_ID) return null;
+
+  return (
+    <noscript>
+      <div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`https://mc.yandex.ru/watch/${COUNTER_ID}`}
+          style={{ position: "absolute", left: "-9999px" }}
+          alt=""
+        />
+      </div>
+    </noscript>
+  );
+};

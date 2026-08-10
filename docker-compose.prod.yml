@@ -145,6 +145,11 @@ services:
         NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
         NEXT_PUBLIC_TELEGRAM_BOT_USERNAME: ${NEXT_PUBLIC_TELEGRAM_BOT_USERNAME}
         NEXT_PUBLIC_TELEGRAM_BOT_ID: ${NEXT_PUBLIC_TELEGRAM_BOT_ID}
+        # Счётчик Яндекс.Метрики. Задан ТОЛЬКО здесь и намеренно отсутствует
+        # в docker-compose.staging.yml: staging собирается из того же кода, и
+        # без этого его трафик попадал бы в статистику боевого сайта, а
+        # вебвизор писал бы отладочные сессии. Нет переменной — нет счётчика.
+        NEXT_PUBLIC_YANDEX_METRIKA_ID: ${NEXT_PUBLIC_YANDEX_METRIKA_ID}
     container_name: videoner-web
     restart: unless-stopped
     environment:

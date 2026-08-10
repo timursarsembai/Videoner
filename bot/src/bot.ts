@@ -1,17 +1,18 @@
 import "dotenv/config";
-import { Bot, InlineKeyboard } from "grammy";
+import { Bot } from "grammy";
 import { detectLang, messages } from "./i18n.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
-import { addSubscriptionButtons, registerSubscriptionHandlers } from "./handlers/subscription.js";
 import { registerAdminHandlers } from "./handlers/admin.js";
 import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown } from "./handlers/download.js";
 
-// bot.ts — только создание бота, /start (диплинк на подписку) и подключение
-// хендлеров из handlers/*.ts. Раньше это был один файл на 494 строки со всеми
-// командами/коллбэками на одном уровне — вынесены: handlers/download.ts
-// (message:text + callback_query:data — самая большая и рискованная часть),
-// handlers/subscription.ts (/subscribe, sub|month/sub|year, платежи),
-// handlers/admin.ts (/grant, /revoke), общие утилиты — в helpers.ts.
+// bot.ts — только создание бота, /start и подключение хендлеров из
+// handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
+// коллбэками на одном уровне — вынесены: handlers/download.ts (message:text +
+// callback_query:data — самая большая и рискованная часть), handlers/admin.ts
+// (/grant, /revoke), общие утилиты — в helpers.ts.
+//
+// handlers/subscription.ts удалён вместе со всеми платными функциями: сервис
+// бесплатный, подписок и оплаты через Stars больше нет.
 const BOT_TOKEN = process.env.BOT_TOKEN ?? "";
 
 if (!BOT_TOKEN) {
@@ -25,27 +26,15 @@ if (!API_KEY) {
 
 const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT } } : undefined);
 
-// Диплинк с сайта (t.me/Bot?start=subscribe, кнопка в UserMenu на videoner.download)
-// сразу открывает подписку — без этого пользователь бы попал на обычный /start
-// и должен был бы ещё сам вспомнить/найти команду /subscribe.
 bot.command("start", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
-  const m = messages[lang];
-
-  if (ctx.match === "subscribe") {
-    const kb = addSubscriptionButtons(new InlineKeyboard(), m);
-    await ctx.reply(m.subscriptionPitch, { reply_markup: kb });
-    return;
-  }
-
-  await ctx.reply(m.start);
+  await ctx.reply(messages[lang].start);
 });
 
 registerAdminHandlers(bot);
-registerSubscriptionHandlers(bot);
-// ПОСЛЕДНИМ: содержит generic bot.on("callback_query:data", ...), а
-// подписочные sub|month/sub|year уже зарегистрированы конкретными
-// callbackQuery-обработчиками выше — grammY стопится на первом совпадении.
+// ПОСЛЕДНИМ: содержит generic bot.on("callback_query:data", ...), который
+// перехватил бы любые более конкретные обработчики — grammY останавливается
+// на первом совпадении.
 registerDownloadHandlers(bot);
 
 bot.catch((err) => console.error("Bot error:", err.error));

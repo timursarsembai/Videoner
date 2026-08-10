@@ -16,7 +16,7 @@ import {
 } from '../../../types';
 import { DownloadSource } from '@prisma/client';
 
-// Опциональные поля контекста запроса (телеграм-бот/оплата Stars) — сейчас
+// Опциональные поля контекста запроса (кто и откуда скачивает) — сейчас
 // без runtime-валидации, т.к. глобальный ValidationPipe в проекте не включён,
 // но типизация нужна для DownloadService и аналитики.
 class RequestMetaDto {
@@ -43,16 +43,6 @@ class RequestMetaDto {
   @IsOptional()
   @IsEnum(DownloadSource)
   source?: DownloadSource;
-
-  @ApiProperty({ description: 'Paid via Telegram Stars', required: false })
-  @IsOptional()
-  @IsBoolean()
-  isPaid?: boolean;
-
-  @ApiProperty({ description: 'Amount of Telegram Stars paid', required: false })
-  @IsOptional()
-  @IsInt()
-  starsAmount?: number;
 }
 
 export class DownloadVideoDto extends RequestMetaDto {

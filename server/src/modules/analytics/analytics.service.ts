@@ -1,12 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DownloadStatus, Downloaders, SubscriptionKind } from '@prisma/client';
-
-// Цены Stars-подписки — держим в синхроне с bot/src/bot.ts
-// (subscribeMonthlyButton/subscribeYearlyButton). Тут только для оценки MRR,
-// на сам биллинг не влияет.
-const MONTHLY_PRICE_STARS = 150;
-const YEARLY_PRICE_STARS = 1500;
+import { DownloadStatus, Downloaders } from '@prisma/client';
 
 // NULL и явное значение enum (например 'OTHER') должны схлопываться в одну
 // группу при агрегации по nullable-полю — иначе они приходят как два разных
@@ -35,7 +29,7 @@ export class AnalyticsService {
   constructor(private prisma: PrismaService) {}
 
   async overview() {
-    const [total, completed, failed, revenue, totalBotUsers] =
+    const [total, completed, failed, totalBotUsers, webLoginUsers] =
       await Promise.all([
         this.prisma.download.count(),
         this.prisma.download.count({
@@ -44,11 +38,8 @@ export class AnalyticsService {
         this.prisma.download.count({
           where: { status: DownloadStatus.FAILED },
         }),
-        this.prisma.download.aggregate({
-          _sum: { starsAmount: true },
-          where: { isPaid: true },
-        }),
         this.prisma.botUser.count(),
+        this.prisma.botUser.count({ where: { lastWebLoginAt: { not: null } } }),
       ]);
 
     const finished = completed + failed;
@@ -58,8 +49,11 @@ export class AnalyticsService {
       completedDownloads: completed,
       failedDownloads: failed,
       successRate: finished > 0 ? completed / finished : null,
-      totalStarsRevenue: revenue._sum.starsAmount ?? 0,
       totalBotUsers,
+      // Переехало из удалённой секции subscriptions(): к деньгам метрика
+      // отношения не имела, а знать, сколько людей вообще доходит до сайта,
+      // а не только до бота, по-прежнему полезно.
+      webLoginUsers,
     };
   }
 
@@ -183,64 +177,6 @@ export class AnalyticsService {
     return rows;
   }
 
-  // Разовые Stars-платежи за скачивания больше нельзя купить в боте (см. память
-  // bot-monetization) — единственный источник дохода теперь подписка, которая
-  // не создаёт запись Download, поэтому overview().totalStarsRevenue с этого
-  // момента заморожен и требует этих метрик вместо/вместе с собой.
-  async subscriptions() {
-    const now = new Date();
-    const in7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-    const in30Days = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-
-    const [
-      activeMonthly,
-      activeYearly,
-      manualUnlimited,
-      expiring7d,
-      expiring30d,
-      totalBotUsers,
-      webLoginUsers,
-    ] = await Promise.all([
-      this.prisma.botUser.count({
-        where: { subscriptionKind: SubscriptionKind.MONTHLY, subscriptionUntil: { gt: now } },
-      }),
-      this.prisma.botUser.count({
-        where: { subscriptionKind: SubscriptionKind.YEARLY, subscriptionUntil: { gt: now } },
-      }),
-      this.prisma.botUser.count({ where: { isUnlimited: true } }),
-      this.prisma.botUser.count({
-        where: { subscriptionUntil: { gt: now, lte: in7Days } },
-      }),
-      this.prisma.botUser.count({
-        where: { subscriptionUntil: { gt: now, lte: in30Days } },
-      }),
-      this.prisma.botUser.count(),
-      this.prisma.botUser.count({ where: { lastWebLoginAt: { not: null } } }),
-    ]);
-
-    const activeTotal = activeMonthly + activeYearly;
-
-    return {
-      activeMonthly,
-      activeYearly,
-      activeTotal,
-      manualUnlimited,
-      expiring7d,
-      expiring30d,
-      mrrStars: activeMonthly * MONTHLY_PRICE_STARS + Math.round((activeYearly * YEARLY_PRICE_STARS) / 12),
-      conversionRate: totalBotUsers > 0 ? activeTotal / totalBotUsers : null,
-      totalBotUsers,
-      webLoginUsers,
-    };
-  }
-
-  // Журнал попыток скачивания: кто, когда (до секунды), откуда, что именно и
-  // чем закончилось. Отдаёт ВСЕ статусы, а не только ошибки — успешные
-  // попытки нужны в том же списке, иначе по нему нельзя понять, что вообще
-  // происходило в конкретный момент.
-  //
-  // Постранично и с жёстким потолком: таблица растёт бесконечно, и запрос без
-  // лимита однажды вытащил бы её целиком в память браузера.
   async attempts(
     limit: number,
     offset: number,

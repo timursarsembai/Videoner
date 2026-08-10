@@ -120,7 +120,8 @@ export class NudgeService {
         'например https://youtube.com/watch?v=jNQXAC9IVRw — и я верну готовый ' +
         'файл примерно за полминуты.\n\n' +
         'Работают YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
-        'Rutube, OK.ru и Pinterest. Бесплатно — до 10 видео в сутки.\n\n' +
+        'Rutube, OK.ru, Pinterest и Threads. Полностью бесплатно и в любом ' +
+        'качестве — вплоть до 4K, доплачивать за HD не нужно.\n\n' +
         'Если что-то не сработает, просто напишите об этом в ответ. Это ' +
         'единственное напоминание, больше не побеспокою.'
       );
@@ -133,7 +134,8 @@ export class NudgeService {
       'https://youtube.com/watch?v=jNQXAC9IVRw — and I’ll send the file back in ' +
       'about half a minute.\n\n' +
       'Works with YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
-      'Rutube, OK.ru and Pinterest. Free — up to 10 videos a day.\n\n' +
+      'Rutube, OK.ru, Pinterest and Threads. Completely free and in any ' +
+      'quality, up to 4K — HD costs nothing extra.\n\n' +
       'If something goes wrong, just reply here. This is the only reminder — ' +
       "I won't message you again."
     );

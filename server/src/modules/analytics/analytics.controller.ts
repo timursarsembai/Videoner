@@ -63,11 +63,6 @@ export class AnalyticsController {
     );
   }
 
-  @Get('subscriptions')
-  subscriptions() {
-    return this.analyticsService.subscriptions();
-  }
-
   // Потолок в 200 строк — не вкусовщина: без него достаточно руками подставить
   // limit=100000, чтобы вытащить всю таблицу разом и посадить и сервер, и
   // браузер. Отрицательные и нечисловые значения схлопываются к дефолту.

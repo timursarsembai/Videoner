@@ -11,7 +11,6 @@ import {
 import { api } from "@/lib/api";
 import { useLanguage } from "@/lib/i18n/context";
 import { downloadFile, extractErrorMessage, formatDuration } from "@/lib/utils";
-import { isPaidVideoQuality } from "@/lib/subscription";
 import { useAuth } from "@/lib/auth/context";
 import { VideoInfo } from "@/types/youtube";
 import { motion } from "framer-motion";
@@ -21,7 +20,6 @@ import {
   FileVideo,
   Info,
   Loader2,
-  Lock,
   Music,
   Video,
 } from "lucide-react";
@@ -30,7 +28,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { TelegramLoginWidget } from "./TelegramLoginWidget";
 
-const BOT_USERNAME = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME;
 
 interface VideoInfoSectionProps {
   videoInfo: VideoInfo;
@@ -91,9 +88,9 @@ export const VideoInfoSection = ({
     null
   );
 
-  // Скачивание на сайте требует входа через Telegram — тот же дневной лимит и
-  // HD-гейт, что и в боте (см. память telegram-site-auth.md). Финальное решение
-  // всё равно на сервере (enforceWebLimits), это только для UI.
+  // Скачивание на сайте требует входа через Telegram и подчиняется тому же
+  // суточному лимиту, что и бот. Платного HD больше нет — сервис бесплатный.
+  // Финальное решение всё равно на сервере (enforceWebLimits), это только UI.
   useEffect(() => {
     if (!user || user.isUnlimited) {
       setQuota(null);
@@ -224,17 +221,10 @@ export const VideoInfoSection = ({
     selectedQuality !== lastDownloadedQuality ||
     (downloadState.status === "complete" && !lastDownloadedQuality);
 
-  const isQualityLocked = (quality: string) =>
-    activeTab === "video" &&
-    !!user &&
-    !user.isUnlimited &&
-    isPaidVideoQuality(quality, videoInfo.qualities.video);
-
-  const selectedQualityLocked = selectedQuality
-    ? isQualityLocked(selectedQuality)
-    : false;
-  const quotaExceeded = !!quota && !quota.unlimited && quota.remaining <= 0;
-  const needsSubscription = selectedQualityLocked || quotaExceeded;
+  // Единственная причина, по которой скачивание может быть недоступно, —
+  // исчерпанный суточный лимит. Замок на HD-качествах снят вместе со всеми
+  // платными функциями.
+  const limitReached = !!quota && !quota.unlimited && quota.remaining <= 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background py-8 items-center flex">
@@ -420,9 +410,6 @@ export const VideoInfoSection = ({
                         )}
                         <span className="flex items-center gap-1.5 font-medium">
                           {quality}
-                          {isQualityLocked(quality) && (
-                            <Lock className="h-3.5 w-3.5 text-muted-foreground" />
-                          )}
                         </span>
                       </div>
                       {selectedQuality === quality && (
@@ -517,29 +504,18 @@ export const VideoInfoSection = ({
                     isNewDownload &&
                     !!user &&
                     selectedQuality &&
-                    needsSubscription && (
+                    limitReached && (
                       <div className="flex flex-1 flex-col items-center gap-2 rounded-lg bg-muted/30 p-4 text-center">
                         <p className="text-sm text-muted-foreground">
-                          {quotaExceeded
-                            ? t("video.quotaExceededHint")
-                            : t("video.hdLocked")}
+                          {t("video.quotaExceededHint")}
                         </p>
-                        {BOT_USERNAME && (
-                          <a
-                            href={`https://t.me/${BOT_USERNAME}?start=subscribe`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <Button size="lg">{t("auth.subscribeButton")}</Button>
-                          </a>
-                        )}
                       </div>
                     )}
 
                   {downloadState.status !== "downloading" &&
                     isNewDownload &&
                     user !== null &&
-                    !(!!user && selectedQuality && needsSubscription) && (
+                    !(!!user && selectedQuality && limitReached) && (
                       <Button
                         onClick={handleDownload}
                         disabled={!selectedQuality || user === undefined}

@@ -19,15 +19,12 @@ interface Messages {
   sendingFile: string;
   failedPrefix: string;
   fileCaption: (title: string, sourceUrl: string) => string;
-  shareOffer: string;
-  shareButton: string;
-  shareConfirm: string;
-  shareConfirmYes: string;
-  shareConfirmNo: string;
-  shareDone: string;
-  shareCancelled: string;
-  shareFailed: string;
-  shareExpired: string;
+  subscribeRequired: (channel: string) => string;
+  openChannelButton: string;
+  checkSubscriptionButton: string;
+  subscribeThanks: string;
+  subscribeStillMissing: string;
+  channelNotice: (channel: string) => string;
   channelPost: (title: string, url: string) => string;
   dailyLimitReached: string;
   errorLoginRequired: string;
@@ -60,17 +57,14 @@ const ru: Messages = {
     `Источник: ${sourceUrl}\n` +
     "Права на видео принадлежат его автору.\n" +
     "Скачано бесплатно через @VideonerBot",
-  shareOffer: "Готово! Если это ваше видео или автор не против — можно поделиться ссылкой в нашем канале.",
-  shareButton: "📢 Поделиться в канале",
-  shareConfirm:
-    "В канал уйдёт только ссылка на исходный пост, без вашего имени.\n\n" +
-    "Подтвердите, что вправе ей делиться: это ваше видео либо его автор не возражает против распространения.",
-  shareConfirmYes: "Да, публикую",
-  shareConfirmNo: "Отмена",
-  shareDone: "✅ Ссылка опубликована в канале. Спасибо!",
-  shareCancelled: "Хорошо, ничего не публикуем.",
-  shareFailed: "Не получилось опубликовать. Попробуйте позже.",
-  shareExpired: "Слишком много времени прошло — скачайте видео заново, чтобы поделиться.",
+  subscribeRequired: (channel) =>
+    `Чтобы скачивать, подпишитесь на наш канал ${channel} — это единственное условие, сервис остаётся бесплатным.\n\n` +
+    "Подпишитесь и нажмите «Я подписался».",
+  openChannelButton: "📣 Открыть канал",
+  checkSubscriptionButton: "Я подписался",
+  subscribeThanks: "Спасибо! Теперь пришлите ссылку на видео.",
+  subscribeStillMissing: "Подписка пока не видна. Подпишитесь и нажмите ещё раз.",
+  channelNotice: (channel) => `\n\nСсылка на этот пост появится в канале ${channel} — анонимно, без вашего имени.`,
   channelPost: (title, url) =>
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `${url}\n\n` +
@@ -108,17 +102,14 @@ const en: Messages = {
     `Source: ${sourceUrl}\n` +
     "All rights to the video belong to its author.\n" +
     "Downloaded for free with @VideonerBot",
-  shareOffer: "Done! If this is your video, or its author does not mind, you can share the link in our channel.",
-  shareButton: "📢 Share in the channel",
-  shareConfirm:
-    "Only the link to the original post goes to the channel — your name does not.\n\n" +
-    "Please confirm you are entitled to share it: the video is yours, or its author does not object to it being spread.",
-  shareConfirmYes: "Yes, publish",
-  shareConfirmNo: "Cancel",
-  shareDone: "✅ The link is now in the channel. Thank you!",
-  shareCancelled: "All right, nothing was published.",
-  shareFailed: "Could not publish it. Please try again later.",
-  shareExpired: "Too much time has passed — download the video again to share it.",
+  subscribeRequired: (channel) =>
+    `To download, please subscribe to our channel ${channel} — that is the only condition, the service stays free.\n\n` +
+    "Subscribe and press «I subscribed».",
+  openChannelButton: "📣 Open the channel",
+  checkSubscriptionButton: "I subscribed",
+  subscribeThanks: "Thank you! Now send me a link to a video.",
+  subscribeStillMissing: "I do not see the subscription yet. Subscribe and press again.",
+  channelNotice: (channel) => `\n\nThe link to this post will appear in ${channel} — anonymously, without your name.`,
   channelPost: (title, url) =>
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `${url}\n\n` +

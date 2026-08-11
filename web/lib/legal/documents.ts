@@ -145,6 +145,7 @@ export const legal: LegalByLanguage = {
               "Скачивание доступно только после авторизации через Telegram. Это нужно, чтобы соблюдать ограничение и противодействовать злоупотреблениям.",
               `Одна учётная запись может скачать не более ${DAILY_LIMIT} файлов в сутки. Счётчик общий для сайта и бота.`,
               "Просматривать сайт и список доступных качеств можно без авторизации.",
+              "Для скачивания через Telegram-бот требуется подписка на наш канал. Это единственное условие: сервис остаётся бесплатным, без рекламы и платных функций.",
             ],
           },
           {
@@ -170,8 +171,9 @@ export const legal: LegalByLanguage = {
           {
             heading: "Публикация ссылок в канале",
             body: [
-              "После скачивания бот может предложить опубликовать ссылку на исходный пост в нашем Telegram-канале. Это происходит только по вашему явному действию и после отдельного подтверждения того, что вы вправе этой ссылкой делиться.",
-              "В канал уходит ссылка на общедоступную страницу и название ролика; кто именно поделился, не указывается. Сам видеофайл мы никуда не публикуем. Ничего не публикуется автоматически: без нажатия кнопки ссылка остаётся только у вас.",
+              "Скачивая видео через бот, вы соглашаетесь с тем, что ссылка на исходный пост будет опубликована в нашем Telegram-канале. Предупреждение об этом показывается в боте до выбора качества — то есть до того, как вы примете решение скачивать.",
+              "Публикация анонимна: в канал уходит ссылка на общедоступную страницу и название ролика, а кто её скачал — не указывается. Сам видеофайл не публикуется нигде и никогда: мы распространяем только ссылку, которую площадки и сами предлагают распространять кнопкой «Поделиться» под каждым постом.",
+              "Одна и та же ссылка публикуется не более одного раза. Если вы не хотите, чтобы ссылка попала в канал, не скачивайте это видео через наш сервис."
             ],
           },
           {
@@ -428,6 +430,7 @@ export const legal: LegalByLanguage = {
               "Downloading requires signing in with Telegram. This is what makes the allowance enforceable and abuse harder.",
               `One account may download up to ${DAILY_LIMIT} files per day. The counter is shared between the website and the bot.`,
               "Browsing the site and checking available qualities requires no sign-in.",
+              "Downloading through the Telegram bot requires a subscription to our channel. That is the only condition: the service stays free, with no advertising and no paid features.",
             ],
           },
           {
@@ -453,8 +456,9 @@ export const legal: LegalByLanguage = {
           {
             heading: "Sharing links in the channel",
             body: [
-              "After a download the bot may offer to publish the link to the original post in our Telegram channel. This happens only on your explicit action and after a separate confirmation that you are entitled to share that link.",
-              "What goes to the channel is the link to a publicly accessible page and the title; who shared it is not stated. The video file itself is never published by us. Nothing is published automatically — without pressing the button the link stays with you alone.",
+              "By downloading a video through the bot you agree that the link to the original post will be published in our Telegram channel. A notice about this is shown in the bot before you choose a quality — that is, before you decide to download.",
+              "Publication is anonymous: the channel receives the link to a publicly accessible page and the title, while who downloaded it is not stated. The video file itself is never published anywhere: we pass on only the link, which the platforms themselves invite people to pass on through the Share button under every post.",
+              "The same link is published no more than once. If you would rather a link did not reach the channel, do not download that video through our service."
             ],
           },
           {
@@ -709,6 +713,7 @@ export const legal: LegalByLanguage = {
               "La descarga requiere iniciar sesión con Telegram. Es lo que permite aplicar el límite y dificultar los abusos.",
               `Una cuenta puede descargar hasta ${DAILY_LIMIT} archivos al día. El contador es común para el sitio web y el bot.`,
               "Navegar por el sitio y consultar las calidades disponibles no requiere iniciar sesión.",
+              "Para descargar mediante el bot de Telegram es necesario estar suscrito a nuestro canal. Es la única condición: el servicio sigue siendo gratuito, sin publicidad ni funciones de pago.",
             ],
           },
           {
@@ -734,8 +739,9 @@ export const legal: LegalByLanguage = {
           {
             heading: "Publicación de enlaces en el canal",
             body: [
-              "Tras una descarga, el bot puede ofrecerle publicar el enlace de la publicación original en nuestro canal de Telegram. Esto ocurre únicamente por acción expresa suya y tras una confirmación aparte de que tiene derecho a compartir ese enlace.",
-              "Al canal va el enlace a una página de acceso público y el título; no se indica quién lo compartió. El archivo de vídeo no lo publicamos nunca. Nada se publica automáticamente: sin pulsar el botón, el enlace se queda solo con usted.",
+              "Al descargar un vídeo mediante el bot, usted acepta que el enlace a la publicación original se publique en nuestro canal de Telegram. El aviso correspondiente se muestra en el bot antes de elegir la calidad, es decir, antes de que decida descargar.",
+              "La publicación es anónima: al canal llegan el enlace a una página de acceso público y el título, sin indicar quién lo descargó. El archivo de vídeo no se publica en ningún sitio: difundimos únicamente el enlace, que las propias plataformas invitan a difundir con el botón Compartir de cada publicación.",
+              "Un mismo enlace se publica como máximo una vez. Si prefiere que un enlace no llegue al canal, no descargue ese vídeo a través de nuestro servicio."
             ],
           },
           {

@@ -3,7 +3,7 @@ import { Bot } from "grammy";
 import { detectLang, messages } from "./i18n.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
 import { registerAdminHandlers } from "./handlers/admin.js";
-import { registerShareHandlers } from "./handlers/share.js";
+import { registerMembershipHandlers } from "./handlers/membership.js";
 import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown } from "./handlers/download.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
@@ -34,10 +34,10 @@ bot.command("start", async (ctx) => {
 
 registerAdminHandlers(bot);
 // ДО registerDownloadHandlers: там generic bot.on("callback_query:data", ...),
-// который иначе перехватил бы и share|* — grammY останавливается на первом
+// который иначе перехватил бы и sub|check — grammY останавливается на первом
 // совпадении, а generic-обработчик ждёт сессию скачивания и отвечал бы
 // «сессия устарела».
-registerShareHandlers(bot);
+registerMembershipHandlers(bot);
 // ПОСЛЕДНИМ: содержит generic bot.on("callback_query:data", ...), который
 // перехватил бы любые более конкретные обработчики — grammY останавливается
 // на первом совпадении.

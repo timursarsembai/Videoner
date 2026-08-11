@@ -11,7 +11,8 @@ import {
   CLOUD_SIZE_LIMIT,
   ADMIN_TELEGRAM_ID,
 } from "../helpers.js";
-import { SHARE_CHANNEL, rememberShare, shareOfferKeyboard } from "./share.js";
+import { SHARE_CHANNEL, publishLink } from "./share.js";
+import { blockUnlessSubscribed, isChannelMember, subscribeKeyboard } from "./membership.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -89,7 +90,7 @@ async function performDownload(
     replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) => Promise<unknown>;
     replyWithAudio: (file: InputFile, caption: string) => Promise<unknown>;
     deleteMessage: (messageId: number) => Promise<unknown>;
-    offerShare: (messageId: number, text: string, lang: Lang) => Promise<unknown>;
+    publishToChannel: (url: string, title: string, lang: Lang) => Promise<unknown>;
   },
   dlMeta: DownloadMeta,
   title: string,
@@ -141,15 +142,10 @@ async function performDownload(
     } else {
       await send.replyWithAudio(file, m.fileCaption(title, url));
     }
-    // Служебное сообщение «Скачиваю…» не удаляем, а превращаем в предложение
-    // поделиться — лишнего сообщения в чате не появляется. Канал не настроен —
-    // ведём себя как раньше и просто убираем его.
-    if (SHARE_CHANNEL) {
-      rememberShare(chatId, msg.message_id, url, title);
-      await send.offerShare(msg.message_id, m.shareOffer, lang);
-    } else {
-      await send.deleteMessage(msg.message_id);
-    }
+    await send.deleteMessage(msg.message_id);
+    // Ссылка уходит в канал после того, как файл дошёл до человека: пост о
+    // том, что скачать не удалось, никому не нужен.
+    await send.publishToChannel(url, title, lang);
   } catch (e: any) {
     await send.editMessageText(msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
   } finally {
@@ -171,6 +167,10 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.reply(m.errorRateLimited);
       return;
     }
+
+    // Проверяем здесь, до запроса метаданных: незачем гонять сервер и
+    // показывать выбор качества тому, кто всё равно не сможет скачать.
+    if (await blockUnlessSubscribed(ctx, lang)) return;
 
     const msg = await ctx.reply(m.fetchingInfo);
     try {
@@ -202,7 +202,8 @@ export function registerDownloadHandlers(bot: Bot) {
       kb.text(m.audioOnlyButton, "a|128Kbps");
 
       const dur = fmtDuration(info.duration);
-      await ctx.api.editMessageText(ctx.chat.id, msg.message_id, m.chooseQuality(info.title, dur), {
+      const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";
+      await ctx.api.editMessageText(ctx.chat.id, msg.message_id, m.chooseQuality(info.title, dur) + notice, {
         reply_markup: kb,
       });
     } catch (e: any) {
@@ -233,6 +234,14 @@ export function registerDownloadHandlers(bot: Bot) {
     const extension = kind === "v" ? "mp4" : "mp3";
     await ctx.answerCallbackQuery();
 
+    // Между присылкой ссылки и нажатием кнопки можно успеть отписаться.
+    if (!(await isChannelMember(ctx, ctx.from?.id))) {
+      await ctx.reply(m.subscribeRequired(SHARE_CHANNEL), {
+        reply_markup: subscribeKeyboard(lang),
+      });
+      return;
+    }
+
     const quota = await getQuotaInfo(ctx.from?.id);
 
     // Единственное оставшееся ограничение — суточный лимит. Снять его деньгами
@@ -254,10 +263,7 @@ export function registerDownloadHandlers(bot: Bot) {
       replyWithAudio: (file: InputFile, caption: string) =>
         ctx.replyWithAudio(file, { caption }),
       deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
-      offerShare: (messageId: number, text: string, lang: Lang) =>
-        ctx.api.editMessageText(chatId, messageId, text, {
-          reply_markup: shareOfferKeyboard(lang),
-        }),
+      publishToChannel: (u: string, t: string, l: Lang) => publishLink(ctx.api, u, t, l),
     };
     await performDownload(
       chatId, kind, quality, extension, session.url, lang, send,

@@ -1,104 +1,48 @@
-import { Bot, InlineKeyboard } from "grammy";
-import { detectLang, messages, type Lang } from "../i18n.js";
+import { Api } from "grammy";
+import { messages, type Lang } from "../i18n.js";
 
 /**
- * Публикация ссылки в канал — ТОЛЬКО по явному действию пользователя.
+ * Публикация ссылки в канал.
  *
- * Автопубликация всего скачанного обсуждалась и отклонена: ссылки, которые
- * качают люди, это их история просмотров. При нынешних числах (8 пользователей,
- * 40 ссылок из 41 скачаны ровно одним человеком) публикация ссылки означала бы
- * публикацию того, что смотрел конкретный человек. Здесь публикуется только то,
- * что пользователь выбрал сам, и после отдельного подтверждения прав — без него
- * кнопка была бы обычным шарингом, а с ним это осознанное действие владельца
- * ссылки. Кто поделился, в канале не указывается.
+ * В канал уходит ССЫЛКА на исходный пост в соцсети, а не файл. Это принципиально:
+ * ссылку на публичный пост площадки сами предлагают распространять кнопкой
+ * «Поделиться», и её публикация не является использованием чужого произведения.
+ * Видео мы не перезаливаем никуда и никогда.
  *
- * Канал не задан — кнопка не появляется вовсе, поведение бота прежнее.
+ * Публикуется анонимно: кто скачал — в канале не указывается, поэтому в посте
+ * нет и персональных данных. Условие описано в пользовательском соглашении, а
+ * человек видит предупреждение прямо под кнопками выбора качества — до того,
+ * как нажмёт. Мелким шрифтом это не спрятано.
+ *
+ * Канал не задан — не публикуем ничего, бот работает как раньше.
  */
 
 export const SHARE_CHANNEL = process.env.TELEGRAM_CHANNEL_ID ?? "";
 
-type Pending = { url: string; title: string; createdAt: number };
-
-// Ключ — chatId+messageId сообщения, на котором висит кнопка (это то самое
-// служебное сообщение «Скачиваю…», которое мы не удаляем, а превращаем в
-// предложение поделиться). Привязка к message_id, а не к чату — по той же
-// причине, что и у sessions в download.ts: два скачивания подряд в одном чате
-// не должны перетирать друг друга.
-const pending = new Map<string, Pending>();
-const PENDING_TTL_MS = 60 * 60 * 1000;
+// Одна и та же ссылка не должна попадать в канал дважды: без этого лента
+// быстро превратилась бы в повторы популярного ролика. Память процесса —
+// после перезапуска возможен один дубль, что дешевле похода в базу.
+const published = new Map<string, number>();
+const PUBLISHED_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 setInterval(() => {
-  const cutoff = Date.now() - PENDING_TTL_MS;
-  for (const [key, entry] of pending.entries()) {
-    if (entry.createdAt < cutoff) pending.delete(key);
+  const cutoff = Date.now() - PUBLISHED_TTL_MS;
+  for (const [url, at] of published.entries()) {
+    if (at < cutoff) published.delete(url);
   }
-}, 60_000);
+}, 60 * 60 * 1000);
 
-function key(chatId: number, messageId: number): string {
-  return `${chatId}:${messageId}`;
-}
-
-export function rememberShare(chatId: number, messageId: number, url: string, title: string) {
-  pending.set(key(chatId, messageId), { url, title, createdAt: Date.now() });
-}
-
-export function shareOfferKeyboard(lang: Lang): InlineKeyboard {
-  return new InlineKeyboard().text(messages[lang].shareButton, "share|ask");
-}
-
-export function registerShareHandlers(bot: Bot) {
-  bot.callbackQuery(/^share\|/, async (ctx) => {
-    const lang = detectLang(ctx.from?.language_code);
-    const m = messages[lang];
-    const chatId = ctx.chat?.id;
-    const messageId = ctx.callbackQuery.message?.message_id;
-    const action = ctx.callbackQuery.data.split("|")[1];
-
-    if (!chatId || !messageId) {
-      await ctx.answerCallbackQuery();
-      return;
-    }
-
-    if (action === "no") {
-      await ctx.answerCallbackQuery();
-      pending.delete(key(chatId, messageId));
-      await ctx.api.editMessageText(chatId, messageId, m.shareCancelled).catch(() => {});
-      return;
-    }
-
-    const entry = pending.get(key(chatId, messageId));
-    if (!entry) {
-      await ctx.answerCallbackQuery({ text: m.shareExpired });
-      return;
-    }
-
-    if (action === "ask") {
-      await ctx.answerCallbackQuery();
-      const kb = new InlineKeyboard()
-        .text(m.shareConfirmYes, "share|yes")
-        .text(m.shareConfirmNo, "share|no");
-      await ctx.api
-        .editMessageText(chatId, messageId, m.shareConfirm, { reply_markup: kb })
-        .catch(() => {});
-      return;
-    }
-
-    if (action !== "yes") {
-      await ctx.answerCallbackQuery();
-      return;
-    }
-
-    await ctx.answerCallbackQuery();
-    try {
-      // Кто поделился — в канал не уходит: публикуется ссылка, а не автор
-      // действия. disable_web_page_preview не ставим, превью площадки здесь
-      // и есть основное содержимое поста.
-      await ctx.api.sendMessage(SHARE_CHANNEL, m.channelPost(entry.title, entry.url));
-      pending.delete(key(chatId, messageId));
-      await ctx.api.editMessageText(chatId, messageId, m.shareDone).catch(() => {});
-    } catch (e: any) {
-      console.error("Публикация в канал не удалась:", e?.message ?? e);
-      await ctx.api.editMessageText(chatId, messageId, m.shareFailed).catch(() => {});
-    }
-  });
+export async function publishLink(api: Api, url: string, title: string, lang: Lang) {
+  if (!SHARE_CHANNEL) return;
+  if (published.has(url)) return;
+  published.set(url, Date.now());
+  try {
+    await api.sendMessage(SHARE_CHANNEL, messages[lang].channelPost(title, url));
+  } catch (e: any) {
+    // Публикация — побочная задача: если канал недоступен или бота сняли с
+    // админов, человек всё равно должен получить своё видео. Поэтому ошибка
+    // только в лог, наверх не поднимается.
+    console.error("Публикация в канал не удалась:", e?.message ?? e);
+    published.delete(url);
+  }
 }

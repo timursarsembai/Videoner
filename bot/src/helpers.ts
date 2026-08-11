@@ -128,7 +128,10 @@ export function friendlyError(raw: string, lang: Lang): string {
     msg.includes("log in") ||
     msg.includes("login required") ||
     msg.includes("requires authentication") ||
-    msg.includes("private")
+    msg.includes("private") ||
+    // См. комментарий в server/src/lib/error-category.ts: у Meta закрытая
+    // запись выглядит как ошибка разбора страницы, а не как «нужен вход».
+    msg.includes("cannot parse data")
   ) {
     return m.errorLoginRequired;
   }

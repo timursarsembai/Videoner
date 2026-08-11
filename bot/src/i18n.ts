@@ -71,10 +71,10 @@ const ru: Messages = {
     "Скачать это и любое другое видео бесплатно: @VideonerBot",
   dailyLimitReached: "📅 На сегодня всё: достигнут суточный лимит в 20 скачиваний. Он обновится в течение суток — приходи позже, скачивать снова можно будет бесплатно и в любом качестве.",
   errorLoginRequired:
-    "Это видео закрыто для гостей — платформа показывает его только залогиненным " +
-    "пользователям (приватный аккаунт, возрастное или «чувствительное» ограничение).\n\n" +
-    "Владельцу бота нужно настроить cookies.txt на сервере, чтобы он заходил под " +
-    "авторизованной сессией (см. README проекта, раздел «Cookies для Instagram/Facebook»).",
+    "Эта запись недоступна без входа в аккаунт: площадка отдаёт её только " +
+    "авторизованным. Так бывает с приватными записями, возрастными ограничениями " +
+    "и постами для ограниченного круга.\n\n" +
+    "Публичные записи скачиваются без проблем — попробуйте другую ссылку.",
   errorUnsupportedPlatform:
     "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads.",
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
@@ -116,10 +116,10 @@ const en: Messages = {
     "Download this and any other video for free: @VideonerBot",
   dailyLimitReached: "📅 That is it for today: you have reached the daily limit of 20 downloads. It refreshes within 24 hours — come back later and download again, free and in any quality.",
   errorLoginRequired:
-    "This video is closed to guests — the platform only shows it to logged-in " +
-    "users (private account, age-restricted, or \"sensitive\" content).\n\n" +
-    "The bot owner needs to set up cookies.txt on the server so it can browse with an " +
-    "authenticated session (see the project README, \"Cookies for Instagram/Facebook\" section).",
+    "This post is not available without signing in: the platform serves it only to " +
+    "logged-in users. That happens with private posts, age-restricted content and " +
+    "posts shared with a limited audience.\n\n" +
+    "Public posts download without trouble — try another link.",
   errorUnsupportedPlatform:
     "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads.",
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",

@@ -17,7 +17,13 @@ export function categorizeError(raw: string): ErrorCategory {
     msg.includes('log in') ||
     msg.includes('login required') ||
     msg.includes('requires authentication') ||
-    msg.includes('private')
+    msg.includes('private') ||
+    // Экстракторы Meta (Facebook, Instagram) на закрытой записи не сообщают
+    // «нужен вход», а падают на разборе страницы: вместо поста им приходит
+    // заглушка «This page isn't available right now». Проверено 11.08.2026 —
+    // reel открывается только под аккаунтом, настоящий браузер и через
+    // резидентный прокси видит ту же заглушку.
+    msg.includes('cannot parse data')
   ) {
     return ErrorCategory.LOGIN_REQUIRED;
   }

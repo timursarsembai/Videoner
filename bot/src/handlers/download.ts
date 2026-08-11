@@ -36,7 +36,10 @@ type VideoDimensions = {
 function sessionKey(chatId: number, messageId: number): string {
   return `${chatId}:${messageId}`;
 }
-const sessions = new Map<string, { url: string; title: string; videoQualities: string[]; createdAt: number }>();
+const sessions = new Map<
+  string,
+  { url: string; title: string; thumbnail?: string; videoQualities: string[]; createdAt: number }
+>();
 
 // Без TTL sessions рос бы пропорционально числу всех когда-либо присланных
 // ссылок за всё время жизни процесса (в отличие от userRequests в helpers.ts,
@@ -90,10 +93,16 @@ async function performDownload(
     replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) => Promise<unknown>;
     replyWithAudio: (file: InputFile, caption: string) => Promise<unknown>;
     deleteMessage: (messageId: number) => Promise<unknown>;
-    publishToChannel: (url: string, title: string, lang: Lang) => Promise<unknown>;
+    publishToChannel: (
+      url: string,
+      title: string,
+      thumbnail: string | undefined,
+      lang: Lang,
+    ) => Promise<unknown>;
   },
   dlMeta: DownloadMeta,
   title: string,
+  thumbnail: string | undefined,
 ) {
   const m = messages[lang];
   const msg = await send.reply(m.downloading);
@@ -145,7 +154,7 @@ async function performDownload(
     await send.deleteMessage(msg.message_id);
     // Ссылка уходит в канал после того, как файл дошёл до человека: пост о
     // том, что скачать не удалось, никому не нужен.
-    await send.publishToChannel(url, title, lang);
+    await send.publishToChannel(url, title, thumbnail, lang);
   } catch (e: any) {
     await send.editMessageText(msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
   } finally {
@@ -177,6 +186,7 @@ export function registerDownloadHandlers(bot: Bot) {
       const info = await api<{
         title: string;
         duration?: number;
+        thumbnail?: string;
         qualities: { video: string[]; audio: string[] };
       }>("/info", {
         url,
@@ -189,6 +199,7 @@ export function registerDownloadHandlers(bot: Bot) {
       sessions.set(sessionKey(ctx.chat.id, msg.message_id), {
         url,
         title: info.title ?? '',
+        thumbnail: info.thumbnail,
         videoQualities,
         createdAt: Date.now(),
       });
@@ -263,7 +274,8 @@ export function registerDownloadHandlers(bot: Bot) {
       replyWithAudio: (file: InputFile, caption: string) =>
         ctx.replyWithAudio(file, { caption }),
       deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
-      publishToChannel: (u: string, t: string, l: Lang) => publishLink(ctx.api, u, t, l),
+      publishToChannel: (u: string, t: string, th: string | undefined, l: Lang) =>
+        publishLink(ctx.api, u, t, th, l),
     };
     await performDownload(
       chatId, kind, quality, extension, session.url, lang, send,
@@ -273,6 +285,7 @@ export function registerDownloadHandlers(bot: Bot) {
         telegramLanguageCode: ctx.from?.language_code,
       },
       session.title,
+      session.thumbnail,
     );
   });
 }

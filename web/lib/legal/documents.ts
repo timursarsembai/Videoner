@@ -172,7 +172,7 @@ export const legal: LegalByLanguage = {
             heading: "Публикация ссылок в канале",
             body: [
               "Скачивая видео через бот, вы соглашаетесь с тем, что ссылка на исходный пост будет опубликована в нашем Telegram-канале. Предупреждение об этом показывается в боте до выбора качества — то есть до того, как вы примете решение скачивать.",
-              "Публикация анонимна: в канал уходит ссылка на общедоступную страницу и название ролика, а кто её скачал — не указывается. Сам видеофайл не публикуется нигде и никогда: мы распространяем только ссылку, которую площадки и сами предлагают распространять кнопкой «Поделиться» под каждым постом.",
+              "Публикация анонимна: в канал уходят ссылка на общедоступную страницу, название ролика и его обложка — тот самый кадр, который площадка показывает в превью поста. Кто скачал видео, не указывается. Сам видеофайл не публикуется нигде и никогда: распространяется ссылка, которую площадки и сами предлагают распространять кнопкой «Поделиться» под каждым постом.",
               "Одна и та же ссылка публикуется не более одного раза. Если вы не хотите, чтобы ссылка попала в канал, не скачивайте это видео через наш сервис."
             ],
           },
@@ -457,7 +457,7 @@ export const legal: LegalByLanguage = {
             heading: "Sharing links in the channel",
             body: [
               "By downloading a video through the bot you agree that the link to the original post will be published in our Telegram channel. A notice about this is shown in the bot before you choose a quality — that is, before you decide to download.",
-              "Publication is anonymous: the channel receives the link to a publicly accessible page and the title, while who downloaded it is not stated. The video file itself is never published anywhere: we pass on only the link, which the platforms themselves invite people to pass on through the Share button under every post.",
+              "Publication is anonymous: the channel receives the link to a publicly accessible page, the title and the cover frame — the same still the platform shows in its own post preview. Who downloaded it is not stated. The video file itself is never published anywhere: what is passed on is the link, which the platforms themselves invite people to pass on through the Share button under every post.",
               "The same link is published no more than once. If you would rather a link did not reach the channel, do not download that video through our service."
             ],
           },
@@ -740,7 +740,7 @@ export const legal: LegalByLanguage = {
             heading: "Publicación de enlaces en el canal",
             body: [
               "Al descargar un vídeo mediante el bot, usted acepta que el enlace a la publicación original se publique en nuestro canal de Telegram. El aviso correspondiente se muestra en el bot antes de elegir la calidad, es decir, antes de que decida descargar.",
-              "La publicación es anónima: al canal llegan el enlace a una página de acceso público y el título, sin indicar quién lo descargó. El archivo de vídeo no se publica en ningún sitio: difundimos únicamente el enlace, que las propias plataformas invitan a difundir con el botón Compartir de cada publicación.",
+              "La publicación es anónima: al canal llegan el enlace a una página de acceso público, el título y la imagen de portada, el mismo fotograma que la plataforma muestra en la vista previa de la publicación. No se indica quién lo descargó. El archivo de vídeo no se publica en ningún sitio: se difunde el enlace, que las propias plataformas invitan a difundir con el botón Compartir de cada publicación.",
               "Un mismo enlace se publica como máximo una vez. Si prefiere que un enlace no llegue al canal, no descargue ese vídeo a través de nuestro servicio."
             ],
           },

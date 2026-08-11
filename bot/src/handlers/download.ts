@@ -11,6 +11,7 @@ import {
   CLOUD_SIZE_LIMIT,
   ADMIN_TELEGRAM_ID,
 } from "../helpers.js";
+import { SHARE_CHANNEL, rememberShare, shareOfferKeyboard } from "./share.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -88,6 +89,7 @@ async function performDownload(
     replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) => Promise<unknown>;
     replyWithAudio: (file: InputFile, caption: string) => Promise<unknown>;
     deleteMessage: (messageId: number) => Promise<unknown>;
+    offerShare: (messageId: number, text: string, lang: Lang) => Promise<unknown>;
   },
   dlMeta: DownloadMeta,
   title: string,
@@ -139,7 +141,15 @@ async function performDownload(
     } else {
       await send.replyWithAudio(file, m.fileCaption(title, url));
     }
-    await send.deleteMessage(msg.message_id);
+    // Служебное сообщение «Скачиваю…» не удаляем, а превращаем в предложение
+    // поделиться — лишнего сообщения в чате не появляется. Канал не настроен —
+    // ведём себя как раньше и просто убираем его.
+    if (SHARE_CHANNEL) {
+      rememberShare(chatId, msg.message_id, url, title);
+      await send.offerShare(msg.message_id, m.shareOffer, lang);
+    } else {
+      await send.deleteMessage(msg.message_id);
+    }
   } catch (e: any) {
     await send.editMessageText(msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
   } finally {
@@ -244,6 +254,10 @@ export function registerDownloadHandlers(bot: Bot) {
       replyWithAudio: (file: InputFile, caption: string) =>
         ctx.replyWithAudio(file, { caption }),
       deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
+      offerShare: (messageId: number, text: string, lang: Lang) =>
+        ctx.api.editMessageText(chatId, messageId, text, {
+          reply_markup: shareOfferKeyboard(lang),
+        }),
     };
     await performDownload(
       chatId, kind, quality, extension, session.url, lang, send,

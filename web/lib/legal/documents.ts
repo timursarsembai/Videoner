@@ -168,6 +168,13 @@ export const legal: LegalByLanguage = {
             ],
           },
           {
+            heading: "Публикация ссылок в канале",
+            body: [
+              "После скачивания бот может предложить опубликовать ссылку на исходный пост в нашем Telegram-канале. Это происходит только по вашему явному действию и после отдельного подтверждения того, что вы вправе этой ссылкой делиться.",
+              "В канал уходит ссылка на общедоступную страницу и название ролика; кто именно поделился, не указывается. Сам видеофайл мы никуда не публикуем. Ничего не публикуется автоматически: без нажатия кнопки ссылка остаётся только у вас.",
+            ],
+          },
+          {
             heading: "Ограничение ответственности",
             body: [
               "Сервис предоставляется на условиях «как есть». Мы не гарантируем бесперебойной работы, доступности конкретной площадки или пригодности файла для ваших целей.",
@@ -444,6 +451,13 @@ export const legal: LegalByLanguage = {
             ],
           },
           {
+            heading: "Sharing links in the channel",
+            body: [
+              "After a download the bot may offer to publish the link to the original post in our Telegram channel. This happens only on your explicit action and after a separate confirmation that you are entitled to share that link.",
+              "What goes to the channel is the link to a publicly accessible page and the title; who shared it is not stated. The video file itself is never published by us. Nothing is published automatically — without pressing the button the link stays with you alone.",
+            ],
+          },
+          {
             heading: "Limitation of liability",
             body: [
               "The service is provided as is. We do not guarantee uninterrupted operation, the availability of any particular platform, or that a file will suit your purpose.",
@@ -715,6 +729,13 @@ export const legal: LegalByLanguage = {
               "No utilice el servicio para infringir derechos de autor o conexos, difundir contenido prohibido o vulnerar derechos de terceros.",
               "No intente eludir las limitaciones técnicas del servicio, incluidos el límite diario, la verificación antibots y la autenticación.",
               "No genere carga automatizada: no se admiten peticiones masivas, scripts ni rastreadores.",
+            ],
+          },
+          {
+            heading: "Publicación de enlaces en el canal",
+            body: [
+              "Tras una descarga, el bot puede ofrecerle publicar el enlace de la publicación original en nuestro canal de Telegram. Esto ocurre únicamente por acción expresa suya y tras una confirmación aparte de que tiene derecho a compartir ese enlace.",
+              "Al canal va el enlace a una página de acceso público y el título; no se indica quién lo compartió. El archivo de vídeo no lo publicamos nunca. Nada se publica automáticamente: sin pulsar el botón, el enlace se queda solo con usted.",
             ],
           },
           {

@@ -19,6 +19,16 @@ interface Messages {
   sendingFile: string;
   failedPrefix: string;
   fileCaption: (title: string, sourceUrl: string) => string;
+  shareOffer: string;
+  shareButton: string;
+  shareConfirm: string;
+  shareConfirmYes: string;
+  shareConfirmNo: string;
+  shareDone: string;
+  shareCancelled: string;
+  shareFailed: string;
+  shareExpired: string;
+  channelPost: (title: string, url: string) => string;
   dailyLimitReached: string;
   errorLoginRequired: string;
   errorUnsupportedPlatform: string;
@@ -50,6 +60,21 @@ const ru: Messages = {
     `Источник: ${sourceUrl}\n` +
     "Права на видео принадлежат его автору.\n" +
     "Скачано бесплатно через @VideonerBot",
+  shareOffer: "Готово! Если это ваше видео или автор не против — можно поделиться ссылкой в нашем канале.",
+  shareButton: "📢 Поделиться в канале",
+  shareConfirm:
+    "В канал уйдёт только ссылка на исходный пост, без вашего имени.\n\n" +
+    "Подтвердите, что вправе ей делиться: это ваше видео либо его автор не возражает против распространения.",
+  shareConfirmYes: "Да, публикую",
+  shareConfirmNo: "Отмена",
+  shareDone: "✅ Ссылка опубликована в канале. Спасибо!",
+  shareCancelled: "Хорошо, ничего не публикуем.",
+  shareFailed: "Не получилось опубликовать. Попробуйте позже.",
+  shareExpired: "Слишком много времени прошло — скачайте видео заново, чтобы поделиться.",
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Скачать это и любое другое видео бесплатно: @VideonerBot",
   dailyLimitReached: "📅 На сегодня всё: достигнут суточный лимит в 20 скачиваний. Он обновится в течение суток — приходи позже, скачивать снова можно будет бесплатно и в любом качестве.",
   errorLoginRequired:
     "Это видео закрыто для гостей — платформа показывает его только залогиненным " +
@@ -83,6 +108,21 @@ const en: Messages = {
     `Source: ${sourceUrl}\n` +
     "All rights to the video belong to its author.\n" +
     "Downloaded for free with @VideonerBot",
+  shareOffer: "Done! If this is your video, or its author does not mind, you can share the link in our channel.",
+  shareButton: "📢 Share in the channel",
+  shareConfirm:
+    "Only the link to the original post goes to the channel — your name does not.\n\n" +
+    "Please confirm you are entitled to share it: the video is yours, or its author does not object to it being spread.",
+  shareConfirmYes: "Yes, publish",
+  shareConfirmNo: "Cancel",
+  shareDone: "✅ The link is now in the channel. Thank you!",
+  shareCancelled: "All right, nothing was published.",
+  shareFailed: "Could not publish it. Please try again later.",
+  shareExpired: "Too much time has passed — download the video again to share it.",
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Download this and any other video for free: @VideonerBot",
   dailyLimitReached: "📅 That is it for today: you have reached the daily limit of 20 downloads. It refreshes within 24 hours — come back later and download again, free and in any quality.",
   errorLoginRequired:
     "This video is closed to guests — the platform only shows it to logged-in " +

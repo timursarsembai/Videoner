@@ -2,7 +2,6 @@
 
 import { Send } from "lucide-react";
 import { Button } from "../ui/button";
-import { useLanguage } from "@/lib/i18n/context";
 
 const BOT_ID = process.env.NEXT_PUBLIC_TELEGRAM_BOT_ID;
 
@@ -35,7 +34,6 @@ interface TelegramLoginWidgetProps {
 // обычная ссылка на oauth.telegram.org — Telegram сам вернёт подписанные
 // поля пользователя через query-параметры на return_to (см. UserMenu.tsx).
 export function TelegramLoginWidget({ label, compact, preserveParams }: TelegramLoginWidgetProps) {
-  const { t } = useLanguage();
   if (!BOT_ID) return null;
 
   const handleClick = () => {
@@ -68,33 +66,9 @@ export function TelegramLoginWidget({ label, compact, preserveParams }: Telegram
   }
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <Button size="sm" onClick={handleClick} className="gap-1.5">
-        <Send className="h-4 w-4" />
-        {label}
-      </Button>
-      {/* Telegram не даёт способа форсировать выбор аккаунта через URL —
-          если браузер уже авторизован в Telegram Web, oauth.telegram.org
-          молча подтверждает вход тем же аккаунтом без экрана выбора (см.
-          память telegram-site-auth.md). Единственный рабочий обходной путь —
-          разлогиниться в самом Telegram Web, отсюда и эта подсказка-ссылка.
-
-          Показывается ДО входа и это правильно: узнать, что вошёл не тем
-          аккаунтом, поздно уже после входа. Но текст раньше читался как
-          «Не тот аккаунт? Выйти» — будто сайт считает гостя авторизованным
-          (замечание пользователя 10.08.2026). Теперь подсказка объясняет
-          причину заранее, а ссылка предлагает действие, а не отрицание. */}
-      <span className="text-xs text-muted-foreground">
-        {t("auth.switchAccountHint")}{" "}
-        <a
-          href="https://web.telegram.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:text-foreground"
-        >
-          {t("auth.switchAccountLink")}
-        </a>
-      </span>
-    </div>
+    <Button size="sm" onClick={handleClick} className="gap-1.5">
+      <Send className="h-4 w-4" />
+      {label}
+    </Button>
   );
 }

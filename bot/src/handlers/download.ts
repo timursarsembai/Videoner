@@ -34,7 +34,7 @@ type VideoDimensions = {
 function sessionKey(chatId: number, messageId: number): string {
   return `${chatId}:${messageId}`;
 }
-const sessions = new Map<string, { url: string; videoQualities: string[]; createdAt: number }>();
+const sessions = new Map<string, { url: string; title: string; videoQualities: string[]; createdAt: number }>();
 
 // Без TTL sessions рос бы пропорционально числу всех когда-либо присланных
 // ссылок за всё время жизни процесса (в отличие от userRequests в helpers.ts,
@@ -85,11 +85,12 @@ async function performDownload(
   send: {
     reply: (text: string) => Promise<{ message_id: number }>;
     editMessageText: (messageId: number, text: string) => Promise<unknown>;
-    replyWithVideo: (file: InputFile, dims?: VideoDimensions) => Promise<unknown>;
-    replyWithAudio: (file: InputFile) => Promise<unknown>;
+    replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) => Promise<unknown>;
+    replyWithAudio: (file: InputFile, caption: string) => Promise<unknown>;
     deleteMessage: (messageId: number) => Promise<unknown>;
   },
   dlMeta: DownloadMeta,
+  title: string,
 ) {
   const m = messages[lang];
   const msg = await send.reply(m.downloading);
@@ -130,13 +131,13 @@ async function performDownload(
     if (kind === "v") {
       // Размеры передаём явно: без них Telegram на iOS показывает вертикальное
       // видео сплющенным в квадрат (Desktop читает поток сам и рисует верно).
-      await send.replyWithVideo(file, {
+      await send.replyWithVideo(file, m.fileCaption(title, url), {
         width: meta.width,
         height: meta.height,
         duration: meta.duration,
       });
     } else {
-      await send.replyWithAudio(file);
+      await send.replyWithAudio(file, m.fileCaption(title, url));
     }
     await send.deleteMessage(msg.message_id);
   } catch (e: any) {
@@ -175,7 +176,12 @@ export function registerDownloadHandlers(bot: Bot) {
       });
 
       const videoQualities = info.qualities.video ?? [];
-      sessions.set(sessionKey(ctx.chat.id, msg.message_id), { url, videoQualities, createdAt: Date.now() });
+      sessions.set(sessionKey(ctx.chat.id, msg.message_id), {
+        url,
+        title: info.title ?? '',
+        videoQualities,
+        createdAt: Date.now(),
+      });
 
       const kb = new InlineKeyboard();
       for (const q of videoQualities.slice(0, 6)) {
@@ -230,15 +236,23 @@ export function registerDownloadHandlers(bot: Bot) {
     const send = {
       reply: (text: string) => ctx.reply(text),
       editMessageText: (messageId: number, text: string) => ctx.api.editMessageText(chatId, messageId, text),
-      replyWithVideo: (file: InputFile, dims?: VideoDimensions) =>
-        ctx.replyWithVideo(file, { supports_streaming: true, ...dims }),
-      replyWithAudio: (file: InputFile) => ctx.replyWithAudio(file),
+      // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
+      // ссылка на первоисточник и упоминание бота остаются с видео у любого,
+      // кому его переслали.
+      replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) =>
+        ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims }),
+      replyWithAudio: (file: InputFile, caption: string) =>
+        ctx.replyWithAudio(file, { caption }),
       deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
     };
-    await performDownload(chatId, kind, quality, extension, session.url, lang, send, {
-      telegramId: ctx.from?.id,
-      telegramUsername: ctx.from?.username,
-      telegramLanguageCode: ctx.from?.language_code,
-    });
+    await performDownload(
+      chatId, kind, quality, extension, session.url, lang, send,
+      {
+        telegramId: ctx.from?.id,
+        telegramUsername: ctx.from?.username,
+        telegramLanguageCode: ctx.from?.language_code,
+      },
+      session.title,
+    );
   });
 }

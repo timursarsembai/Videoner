@@ -18,6 +18,7 @@ interface Messages {
   fileTooBig: (mb: string, url: string) => string;
   sendingFile: string;
   failedPrefix: string;
+  fileCaption: (title: string, sourceUrl: string) => string;
   dailyLimitReached: string;
   errorLoginRequired: string;
   errorUnsupportedPlatform: string;
@@ -41,6 +42,14 @@ const ru: Messages = {
     `Файл получился большим (${mb} МБ) — Telegram не даст боту его отправить.\nСкачай по ссылке: ${url}`,
   sendingFile: "📤 Отправляю файл...",
   failedPrefix: "❌ Не получилось: ",
+  // Подпись прикрепляется к самому файлу, поэтому уезжает вместе с ним при
+  // пересылке — ради этого всё и делается. Заголовок подрезаем: у подписи в
+  // Telegram лимит 1024 символа, а название ролика бывает на пол-экрана.
+  fileCaption: (title, sourceUrl) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `Источник: ${sourceUrl}\n` +
+    "Права на видео принадлежат его автору.\n" +
+    "Скачано бесплатно через @VideonerBot",
   dailyLimitReached: "📅 На сегодня всё: достигнут суточный лимит в 20 скачиваний. Он обновится в течение суток — приходи позже, скачивать снова можно будет бесплатно и в любом качестве.",
   errorLoginRequired:
     "Это видео закрыто для гостей — платформа показывает его только залогиненным " +
@@ -69,6 +78,11 @@ const en: Messages = {
     `The file turned out large (${mb} MB) — Telegram won't let the bot send it.\nDownload it here: ${url}`,
   sendingFile: "📤 Sending file...",
   failedPrefix: "❌ Failed: ",
+  fileCaption: (title, sourceUrl) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `Source: ${sourceUrl}\n` +
+    "All rights to the video belong to its author.\n" +
+    "Downloaded for free with @VideonerBot",
   dailyLimitReached: "📅 That is it for today: you have reached the daily limit of 20 downloads. It refreshes within 24 hours — come back later and download again, free and in any quality.",
   errorLoginRequired:
     "This video is closed to guests — the platform only shows it to logged-in " +

@@ -72,6 +72,24 @@ export function UserMenu({ compact = false }: UserMenuProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>{t("auth.logout")}</DropdownMenuItem>
+        {/* Telegram не даёт форсировать выбор аккаунта: при живой сессии
+            Telegram Web oauth.telegram.org молча подтверждает вход именно ею,
+            без экрана выбора. Единственный обходной путь — разлогиниться там.
+            Раньше эта подсказка висела ПОД КНОПКОЙ ВХОДА и показывалась всем
+            гостям подряд: человек ещё не авторизовался, а ему уже сообщали
+            про «не тот аккаунт» (замечание пользователя, дважды). Здесь она
+            на своём месте — имя аккаунта видно прямо над ней, и вопрос «не
+            тот аккаунт?» наконец имеет смысл. */}
+        <DropdownMenuItem asChild>
+          <a
+            href="https://web.telegram.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-muted-foreground"
+          >
+            {t("auth.switchAccountHint")} {t("auth.switchAccountLink")}
+          </a>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

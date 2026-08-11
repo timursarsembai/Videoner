@@ -61,13 +61,24 @@ _SJS_RE = re.compile(r'<script type="application/json"[^>]*\bdata-sjs\b[^>]*>(.*
 _VENCODE_CAP_RE = re.compile(r'\.C\d+\.(\d{3,4})\.')
 _DEFAULT_CAP = 720
 
+# Ссылка «Поделиться» из мобильного приложения — threads.com/share/<код>.
+# Код в ней СВОЙ и с кодом поста не совпадает, а редиректа на канонический
+# адрес нет: страница отвечает 200 сама по себе. Зато в её разметке лежит
+# og:url с настоящим адресом поста, и данные поста там же — второй запрос не
+# нужен. Символ @ в og:url приходит экранированным (&#064;), поэтому в шаблоне
+# допускаем оба вида.
+_OG_URL_RE = re.compile(r'<meta property="og:url" content="([^"]+)"')
+_CANONICAL_RE = re.compile(r'/(?:@|&#0?64;)([^/"?#]+)/post/([A-Za-z0-9_-]+)')
+
 
 class ThreadsIE(InfoExtractor):
     IE_NAME = 'threads'
     IE_DESC = 'Threads (Meta)'
     _VALID_URL = (
         r'https?://(?:www\.)?threads\.(?:net|com)/'
-        r'(?:@(?P<uploader>[^/?#]+)/post|t)/(?P<id>[A-Za-z0-9_-]+)'
+        r'(?:@(?P<uploader>[^/?#]+)/post/(?P<id>[A-Za-z0-9_-]+)'
+        r'|t/(?P<short>[A-Za-z0-9_-]+)'
+        r'|share/(?P<share>[A-Za-z0-9_-]+))'
     )
 
     # ------------------------------------------------------------------ #
@@ -256,16 +267,36 @@ class ThreadsIE(InfoExtractor):
     # Основной путь: SSR по UA робота                                     #
     # ------------------------------------------------------------------ #
 
-    def _extract_via_crawler(self, code, uploader):
-        target = f'https://www.threads.com/@{uploader}/post/{code}'
+    @staticmethod
+    def _code_from_og_url(webpage):
+        """Код поста из og:url.
+
+        Нужен для ссылок «Поделиться» (threads.com/share/<код>): их код —
+        свой собственный, с кодом поста не совпадает, а редиректа на
+        канонический адрес нет. При этом на несуществующий пост og:url
+        вырождается в голый https://www.threads.com/ — шаблон тогда не
+        совпадёт, и код останется неизвестным. Это и нужно: лучше уйти в
+        резерв, чем взять первое попавшееся видео со страницы.
+        """
+        og = _OG_URL_RE.search(webpage)
+        if not og:
+            return None
+        canonical = _CANONICAL_RE.search(og.group(1))
+        return canonical.group(2) if canonical else None
+
+    def _extract_via_crawler(self, target, code):
+        """code=None — адрес не содержит кода поста (ссылка «Поделиться»),
+        тогда берём его из og:url той же страницы."""
         attempts = self._planned_attempts()
         for attempt in range(1, attempts + 1):
             webpage = self._download_webpage(
-                target, code, fatal=False,
+                target, code or 'threads', fatal=False,
                 headers={'User-Agent': _CRAWLER_UA, 'Accept-Language': 'en-US,en;q=0.9'},
                 note=f'Запрашиваю пост (попытка {attempt} из {attempts})',
                 errnote=False)
             if webpage:
+                code = code or self._code_from_og_url(webpage)
+            if webpage and code:
                 node = self._post_node(webpage, code)
                 if node:
                     info = self._info_from_node(node, code, target)
@@ -322,13 +353,24 @@ class ThreadsIE(InfoExtractor):
 
     def _real_extract(self, url):
         match = self._match_valid_url(url)
-        code, uploader = match.group('id'), match.group('uploader')
+        code = match.group('id')
+        uploader = match.group('uploader')
+        share = match.group('share')
 
-        # Короткие ссылки /t/CODE не отдают SSR ни при каком UA — там имени
-        # автора нет, а канонический адрес без него не собрать.
-        if uploader:
-            info = self._extract_via_crawler(code, uploader)
+        target = None
+        if uploader and code:
+            target = f'https://www.threads.com/@{uploader}/post/{code}'
+        elif share:
+            # Страница «Поделиться» сама отдаёт и данные поста, и его
+            # канонический адрес в og:url — отдельный запрос не нужен.
+            target = f'https://www.threads.com/share/{share}/'
+            code = None
+
+        # Короткие ссылки /t/CODE SSR не отдают ни при каком UA — они сразу
+        # уходят в резерв, там их открывает настоящий браузер.
+        if target:
+            info = self._extract_via_crawler(target, code)
             if info:
                 return info
 
-        return self._extract_via_resolver(url, code)
+        return self._extract_via_resolver(url, code or share or match.group('short'))

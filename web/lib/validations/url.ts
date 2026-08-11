@@ -331,8 +331,10 @@ export const isThreadsUrl = (url: string) => {
     // значит отдать дальше ссылку на несуществующий пост.
     const path = urlObj.pathname;
 
-    // threads.com/@user/post/<code> и короткие threads.net/t/<code>
-    return /^\/(@[^/]+\/post|t)\/[\w-]+/.test(path);
+    // threads.com/@user/post/<code>, короткие threads.net/t/<code> и ссылки
+    // «Поделиться» из мобильного приложения threads.com/share/<code> —
+    // у последних код свой, не совпадающий с кодом поста (см. плагин yt-dlp).
+    return /^\/(@[^/]+\/post|t|share)\/[\w-]+/.test(path);
   } catch {
     return false;
   }

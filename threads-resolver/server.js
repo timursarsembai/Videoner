@@ -43,7 +43,11 @@ const ATTEMPTS = Number(process.env.ATTEMPTS || 5);
 const IDLE_SHUTDOWN_MS = Number(process.env.IDLE_SHUTDOWN_MS || 5 * 60 * 1000);
 const PROXY_URL = process.env.THREADS_PROXY_URL || '';
 
-const POST_RE = /^\/(?:@([^/?#]+)\/post|t)\/([A-Za-z0-9_-]+)/;
+// Три формы адреса: канонический пост, короткая ссылка /t/ и ссылка
+// «Поделиться» /share/ из мобильного приложения. У последней код СВОЙ и с
+// кодом поста не совпадает — настоящий берётся из og:url уже на странице.
+const POST_RE = /^\/(?:@([^/?#]+)\/post|t|share)\/([A-Za-z0-9_-]+)/;
+const SHARE_RE = /^\/share\//;
 
 // Обычный браузерный UA: здесь мы и есть браузер, притворяться роботом не нужно
 // (и вредно — роботам Meta отдаёт другую страницу).
@@ -106,6 +110,17 @@ function touchIdle() {
  * взять первое попавшееся видео тем более нельзя.
  */
 function extractInPage(code) {
+  // Ссылка «Поделиться» кода поста не содержит — достаём его из og:url.
+  // Если поста нет, og:url вырождается в голый https://www.threads.com/,
+  // шаблон не совпадёт и мы честно вернём «не найдено», а не первое
+  // попавшееся видео со страницы.
+  if (!code) {
+    const og = document.querySelector('meta[property="og:url"]');
+    const m = og && og.content.match(/\/@([^/?#]+)\/post\/([A-Za-z0-9_-]+)/);
+    if (!m) return { node: null, gone: false };
+    code = m[2];
+  }
+
   const found = [];
   const walk = (obj) => {
     if (found.length) return;
@@ -159,7 +174,8 @@ async function resolve(rawUrl) {
   }
   const match = POST_RE.exec(parsed.pathname);
   if (!match) return { ok: false, error: 'Это не ссылка на пост Threads' };
-  const code = match[2];
+  // null — код поста в адресе не назван, страница подскажет его сама.
+  const code = SHARE_RE.test(parsed.pathname) ? null : match[2];
 
   // Threads и через прокси иногда отдаёт страницу без данных — та же
   // нестабильность, что и у основного пути. Пробуем несколько раз с чистого

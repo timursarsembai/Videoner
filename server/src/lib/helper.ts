@@ -218,7 +218,14 @@ export const getVideoFormats = (info: YtdlpVideoInfo) => {
   // map to qualityLabel
   const formatsWithQualityLabel = uniqueVideoFormats.map((format) => ({
     ...format,
-    qualityLabel: videoQualityLabel[format.resolution] || format.resolution,
+    // Нет точного размера в карте — подписываем по короткой стороне, тем же
+    // правилом, по которому построена сама карта. Иначе пользователь видел
+    // сырое «720x864» вместо «720p» (кадр 5:6 из Threads, 11.08.2026).
+    qualityLabel:
+      videoQualityLabel[format.resolution] ||
+      (format.width && format.height
+        ? `${Math.min(format.width, format.height)}p`
+        : format.resolution),
   }));
 
   // map to qualityLabel and remove 144p

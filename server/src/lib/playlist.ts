@@ -34,6 +34,33 @@ export function entryKind(entry: YtdlpVideoInfo): 'video' | 'photo' {
 // иначе вместо понятного сообщения человек получит пустое скачивание.
 export const PHOTO_PLATFORMS = ['instagram', 'threads'];
 
+// Расширения, по которым файл поста опознаётся как фотография. В норме мы
+// кладём снимки только как .jpg (см. savePhoto), но если перекодировать не
+// удалось, файл остаётся в исходном виде — и должен всё равно считаться
+// фотографией, а не видео.
+const PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'heic'];
+
+export function isPhotoExtension(ext: string): boolean {
+  return PHOTO_EXTENSIONS.includes(ext.toLowerCase());
+}
+
+// Расширение по Content-Type. Нужно только для запасного пути, когда снимок
+// сохраняется как есть; неизвестный тип называем .jpg — так вёл себя код до
+// появления этой ветки.
+export function photoExtension(contentType: string | null): string {
+  const type = (contentType || '').split(';')[0].trim().toLowerCase();
+  return (
+    {
+      'image/jpeg': 'jpg',
+      'image/jpg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+      'image/heic': 'heic',
+      'image/heif': 'heic',
+    }[type] || 'jpg'
+  );
+}
+
 /**
  * Ссылка на полноразмерную фотографию элемента.
  *

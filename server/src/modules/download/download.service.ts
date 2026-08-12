@@ -35,9 +35,11 @@ import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
 import {
   entryKind,
   hasVideoEntries,
+  isPhotoExtension,
   isPlaylist,
   longestDuration,
   PHOTO_PLATFORMS,
+  photoExtension,
   photoTargets,
   playlistEntries,
 } from 'src/lib/playlist';
@@ -554,14 +556,19 @@ export class DownloadService {
     let saved = 0;
 
     for (const target of targets) {
-      const name = `${base}-${String(target.position).padStart(2, '0')}.jpg`;
+      const name = `${base}-${String(target.position).padStart(2, '0')}`;
       try {
         const response = await fetch(target.url);
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }
         const bytes = Buffer.from(await response.arrayBuffer());
-        await fs.promises.writeFile(join(downloadDir, name), bytes);
+        await this.savePhoto(
+          bytes,
+          response.headers.get('content-type'),
+          downloadDir,
+          name,
+        );
         saved += 1;
       } catch (error) {
         console.error(`Не удалось скачать фото ${target.position}:`, error);
@@ -569,6 +576,60 @@ export class DownloadService {
     }
 
     return saved;
+  }
+
+  /**
+   * Сохранение снимка настоящим JPEG.
+   *
+   * CDN Meta отдаёт часть снимков в WebP, не спрашивая Accept, — а имя мы
+   * давали .jpg всегда. Получался файл, внутри которого лежит не то, что
+   * обещано расширением: такой «джипег» отказываются открывать и просмотрщик
+   * Windows, и графические редакторы (поймано 12.08.2026 на смешанной карусели
+   * Threads — ffprobe показал webp в файле с расширением .jpg). Смотрим на сами
+   * байты, а не на имя в ссылке, и при необходимости перекодируем.
+   *
+   * Не вышло перекодировать — сохраняем как есть, но под честным расширением:
+   * целый файл с непривычным именем лучше битого с привычным.
+   */
+  private async savePhoto(
+    bytes: Buffer,
+    contentType: string | null,
+    downloadDir: string,
+    baseName: string,
+  ): Promise<void> {
+    const jpegPath = join(downloadDir, `${baseName}.jpg`);
+
+    // Сигнатура JPEG (SOI). Content-Type тут не помощник: CDN проставляет его
+    // не всегда, а ошибиться нельзя — от вида файла зависит и то, как его
+    // отправит бот.
+    if (bytes.length > 2 && bytes[0] === 0xff && bytes[1] === 0xd8) {
+      await fs.promises.writeFile(jpegPath, bytes);
+      return;
+    }
+
+    // Промежуточный файл нарочно с двумя точками в хвосте: под маску
+    // «база-НОМЕР.расширение» он не подходит и в состав поста не попадёт,
+    // даже если удалить его не удастся.
+    const sourcePath = join(downloadDir, `${baseName}.source.tmp`);
+    await fs.promises.writeFile(sourcePath, bytes);
+    try {
+      await execFileAsync(
+        'ffmpeg',
+        ['-v', 'error', '-y', '-i', sourcePath, '-frames:v', '1', '-q:v', '2', jpegPath],
+        { timeout: 30_000 },
+      );
+    } catch (error) {
+      console.error(`Не удалось перекодировать снимок ${baseName}:`, error);
+      // Оборвавшийся ffmpeg оставляет обрубок, и он попал бы в состав поста
+      // как полноценная фотография — убираем.
+      await fs.promises.unlink(jpegPath).catch(() => {});
+      await fs.promises.writeFile(
+        join(downloadDir, `${baseName}.${photoExtension(contentType)}`),
+        bytes,
+      );
+    } finally {
+      await fs.promises.unlink(sourcePath).catch(() => {});
+    }
   }
 
   // Завершение скачивания карусели. Первый файл дублируется в поля самого
@@ -594,8 +655,9 @@ export class DownloadService {
         position: file.position,
         filename: file.name,
         // Фотография узнаётся по расширению: видео пишет yt-dlp, снимки
-        // кладём мы сами, и всегда как .jpg.
-        kind: file.ext === 'jpg' ? ('PHOTO' as const) : kind,
+        // кладём мы сами — в норме .jpg, а если перекодировать не вышло, то
+        // в исходном виде (см. savePhoto).
+        kind: isPhotoExtension(file.ext) ? ('PHOTO' as const) : kind,
         width: dims.width ?? null,
         height: dims.height ?? null,
         duration: dims.duration ?? null,
@@ -751,8 +813,11 @@ export class DownloadService {
       // Карусель всегда отдаём в mp4. Конвертировать каждый файл отдельным
       // проходом ffmpeg — удвоить время ради выбора контейнера, которого для
       // поста из нескольких роликов на сайте всё равно не предлагают.
+      // Расширение в запросе необязательное: бот и сайт его шлют всегда, а вот
+      // обращение к API без него собирало имя файла с хвостом «.undefined» и
+      // падало на проверке имени. Подставляем mp4, как и веткой ниже.
       const initialExtension =
-        multi || (extension && extension !== 'mp4') ? 'mp4' : extension;
+        multi || (extension && extension !== 'mp4') ? 'mp4' : extension || 'mp4';
       const baseFileName = getFileName(info.title, quality, initialExtension);
       const tempFileName = multi
         ? this.playlistTemplate(baseFileName)

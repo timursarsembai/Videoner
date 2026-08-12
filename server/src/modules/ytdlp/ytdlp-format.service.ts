@@ -14,7 +14,12 @@ export class YtdlpFormatService {
     url: string,
     options?: { skipCookies?: boolean },
   ): Promise<YtdlpVideoInfo> {
-    const command = ['--dump-json', '--no-download', url];
+    // --dump-single-json, а НЕ --dump-json: второй печатает по объекту на
+    // каждый элемент поста, и JSON.parse всего вывода падает на второй строке
+    // («Unexpected non-whitespace character ... line 2 column 1»). Любая
+    // карусель — Instagram, Threads — ломалась именно здесь. Одиночный пост
+    // при этом отдаётся тем же одним объектом, что и раньше.
+    const command = ['--dump-single-json', '--no-download', url];
     return this.process.ytdlp(command, options).then((result) => {
       return JSON.parse(result.stdout);
     });

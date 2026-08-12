@@ -1,5 +1,6 @@
 import { ApiError, DownloadResponse } from "@/types/api";
 import { VideoInfo } from "@/types/youtube";
+import { DownloadItem } from "@/types";
 import axios, { AxiosInstance, AxiosError } from "axios";
 
 interface ProgressCallbacks {
@@ -155,6 +156,20 @@ class ApiClient {
       return response.data;
     } catch (error) {
       throw this.handleError(error);
+    }
+  }
+
+  // Файлы поста. У обычного скачивания список либо пуст, либо содержит одну
+  // запись — тогда сайт ведёт себя как раньше. Несколько записей — карусель.
+  async getDownloadItems(downloadId: string): Promise<DownloadItem[]> {
+    try {
+      const response = await this.client.get(`/download/${downloadId}/status`);
+      return response.data?.items ?? [];
+    } catch {
+      // Список файлов — украшение, а не условие работы: если он не пришёл,
+      // основной файл уже скачан обычным путём, и ронять экран из-за этого
+      // нельзя.
+      return [];
     }
   }
 

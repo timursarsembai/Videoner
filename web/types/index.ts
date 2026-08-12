@@ -4,6 +4,17 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
+export type DownloadItem = {
+  position: number;
+  filename: string;
+  kind: "VIDEO" | "PHOTO" | "AUDIO";
+  width?: number;
+  height?: number;
+  duration?: number;
+  fileSize?: number;
+  downloadUrl: string;
+};
+
 export type Platform =
   | "facebook"
   | "instagram"

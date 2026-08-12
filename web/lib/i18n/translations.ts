@@ -76,6 +76,9 @@ const en = {
     downloadingBtn: "Downloading...",
     loginRequiredHint: "Log in with Telegram to download",
     quotaExceededHint: "Daily limit of 20 downloads reached — come back tomorrow",
+    postFiles: "This post has {count} files",
+    downloadAll: "Download all",
+    downloadOne: "Save",
   },
   toast: {
     enterUrl: "Please enter a URL",
@@ -406,6 +409,9 @@ const es: Translations = {
     downloadingBtn: "Descargando...",
     loginRequiredHint: "Inicia sesión con Telegram para descargar",
     quotaExceededHint: "Has alcanzado el límite diario de 20 descargas: vuelve mañana",
+    postFiles: "Esta publicación tiene {count} archivos",
+    downloadAll: "Descargar todo",
+    downloadOne: "Guardar",
   },
   toast: {
     enterUrl: "Por favor, introduce una URL",
@@ -734,6 +740,9 @@ const ru: Translations = {
     downloadingBtn: "Загрузка...",
     loginRequiredHint: "Войдите через Telegram, чтобы скачать",
     quotaExceededHint: "Дневной лимит в 20 скачиваний исчерпан — возвращайтесь завтра",
+    postFiles: "В этом посте файлов: {count}",
+    downloadAll: "Скачать все",
+    downloadOne: "Сохранить",
   },
   toast: {
     enterUrl: "Пожалуйста, введите ссылку",

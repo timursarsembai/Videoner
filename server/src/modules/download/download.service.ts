@@ -32,6 +32,12 @@ import { getFileName } from 'src/lib/utils';
 import { BotUserService } from '../analytics/bot-user.service';
 import { categorizeError } from 'src/lib/error-category';
 import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
+import {
+  entryKind,
+  isPlaylist,
+  longestDuration,
+  playlistEntries,
+} from 'src/lib/playlist';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -88,9 +94,13 @@ export class DownloadService {
     const apiKey = (req as any).apiKey;
     const info = await this.ytdlpFormat.getYtdlpVideoInfo(url);
 
-    if (info.duration > apiKey.maxDuration) {
+    // У карусели собственной длительности нет. Складывать элементы неверно:
+    // ограничение задумано на один ролик, а не на суммарный вес поста.
+    const duration = info.duration ?? longestDuration(info);
+
+    if (duration > apiKey.maxDuration) {
       throw new BadRequestException(
-        `Video duration (${Math.round(info.duration / 60)} minutes) exceeds the allowed limit (${Math.round(apiKey.maxDuration / 60)} minutes)`,
+        `Video duration (${Math.round(duration / 60)} minutes) exceeds the allowed limit (${Math.round(apiKey.maxDuration / 60)} minutes)`,
       );
     }
 
@@ -296,6 +306,9 @@ export class DownloadService {
     id: string,
     data: {
       status: DownloadStatus;
+      // Имя файла обновляется только у карусели: до скачивания настоящих имён
+      // нет, номер к ним подставляет yt-dlp.
+      filename?: string;
       downloadUrl?: string | null;
       fileSize?: bigint;
       errorCategory?: ErrorCategory;
@@ -365,9 +378,27 @@ export class DownloadService {
         throw new BadRequestException('Download not found');
       }
 
+      const items = await this.prisma.downloadItem.findMany({
+        where: { downloadId },
+        orderBy: { position: 'asc' },
+      });
+
       return {
         status: download.status,
         downloadUrl: download.downloadUrl,
+        // Пустой список — это обычное скачивание одним файлом: он уже описан
+        // полями выше. Старые записи, сделанные до появления таблицы, тоже
+        // попадают сюда, и потребители не должны считать их сломанными.
+        items: items.map((item) => ({
+          position: item.position,
+          filename: item.filename,
+          kind: item.kind,
+          width: item.width,
+          height: item.height,
+          duration: item.duration,
+          fileSize: item.fileSize ? Number(item.fileSize) : undefined,
+          downloadUrl: `/downloads/${item.filename}`,
+        })),
       };
     } catch (error) {
       console.error(error);
@@ -453,6 +484,75 @@ export class DownloadService {
   // передать ошибку в markDownloadFailed, сам этот метод такую логику не
   // содержит, чтобы вызывающий мог сначала сделать что-то ещё (например,
   // удалить промежуточный файл конвертации) в рамках того же try.
+  // Шаблон имени для карусели: yt-dlp подставит порядковый номер вместо
+  // %(playlist_index)02d и запишет столько файлов, сколько элементов в посте.
+  // Без номера все элементы легли бы в ОДНО имя и затёрли друг друга —
+  // пользователь получил бы последний ролик вместо всех.
+  private playlistTemplate(fileName: string): string {
+    const dot = fileName.lastIndexOf('.');
+    const base = dot > 0 ? fileName.slice(0, dot) : fileName;
+    const ext = dot > 0 ? fileName.slice(dot) : '.mp4';
+    return `${base}-%(playlist_index)02d${ext}`;
+  }
+
+  // Файлы, которые реально появились на диске. Имя базы содержит метку
+  // времени (см. getFileName), поэтому префикс уникален и чужие файлы под
+  // выборку не попадут.
+  private collectPlaylistFiles(downloadDir: string, fileName: string): string[] {
+    const dot = fileName.lastIndexOf('.');
+    const base = dot > 0 ? fileName.slice(0, dot) : fileName;
+    return fs
+      .readdirSync(downloadDir)
+      .filter((name) => name.startsWith(`${base}-`))
+      .sort();
+  }
+
+  // Завершение скачивания карусели. Первый файл дублируется в поля самого
+  // Download — на них рассчитан весь прежний код, который про несколько
+  // файлов не знает.
+  private async completePlaylistDownload(
+    downloadId: string,
+    downloadDir: string,
+    fileName: string,
+    progressSubject: Subject<ProgressType | Error>,
+  ) {
+    const files = this.collectPlaylistFiles(downloadDir, fileName);
+    if (!files.length) {
+      throw new Error('Ни один файл поста не скачался');
+    }
+
+    const items = [];
+    for (const [index, name] of files.entries()) {
+      const filePath = join(downloadDir, name);
+      const dims = await this.probeVideoDimensions(filePath);
+      items.push({
+        position: index + 1,
+        filename: name,
+        kind: 'VIDEO' as const,
+        width: dims.width ?? null,
+        height: dims.height ?? null,
+        duration: dims.duration ?? null,
+        fileSize: BigInt(statSync(filePath).size),
+      });
+    }
+
+    await this.prisma.downloadItem.createMany({
+      data: items.map((item) => ({ ...item, downloadId })),
+    });
+
+    const first = items[0];
+    await this.updateDownloadStatus(downloadId, {
+      status: DownloadStatus.COMPLETED,
+      filename: first.filename,
+      downloadUrl: `/downloads/${first.filename}`,
+      fileSize: first.fileSize,
+      ...(first.width ? { videoWidth: first.width } : {}),
+      ...(first.height ? { videoHeight: first.height } : {}),
+      ...(first.duration ? { videoDuration: first.duration } : {}),
+    });
+    progressSubject.complete();
+  }
+
   private async completeDownload(
     downloadId: string,
     downloadUrl: string,
@@ -569,11 +669,21 @@ export class DownloadService {
       // Check duration limit before proceeding
       const info = await this.checkDurationLimit(url, req);
 
+      // Пост из нескольких файлов (карусель) идёт отдельной веткой: имя
+      // получает шаблон с номером, конвертация не делается.
+      const multi = isPlaylist(info);
+
       const downloadDir = this.ensureDownloadDirectory();
 
+      // Карусель всегда отдаём в mp4. Конвертировать каждый файл отдельным
+      // проходом ffmpeg — удвоить время ради выбора контейнера, которого для
+      // поста из нескольких роликов на сайте всё равно не предлагают.
       const initialExtension =
-        extension && extension !== 'mp4' ? 'mp4' : extension;
-      const tempFileName = getFileName(info.title, quality, initialExtension);
+        multi || (extension && extension !== 'mp4') ? 'mp4' : extension;
+      const baseFileName = getFileName(info.title, quality, initialExtension);
+      const tempFileName = multi
+        ? this.playlistTemplate(baseFileName)
+        : baseFileName;
       // Когда конвертация не нужна (запрошен mp4, он же и скачивается),
       // временный файл И ЕСТЬ финальный — второе имя генерировать нельзя.
       // getFileName() берёт текущее время в миллисекундах, и два вызова
@@ -581,9 +691,9 @@ export class DownloadService {
       // ...779.mp4, а на диске лежало ...778.mp4. Файл по такому имени не
       // находился никогда — запись Download.filename была фантомной.
       const finalFileName =
-        extension && extension !== 'mp4'
+        !multi && extension && extension !== 'mp4'
           ? getFileName(info.title, quality, extension)
-          : tempFileName;
+          : baseFileName;
 
       // Проверка дневного лимита и создание записи Download должны быть
       // атомарны относительно ДРУГИХ запросов того же telegramId — иначе
@@ -610,8 +720,10 @@ export class DownloadService {
       // Create progress subject
       const progressSubject = this.createProgressSubject(
         download.id,
-        extension || 'mp4',
-        extension && extension !== 'mp4' ? finalFileName : tempFileName,
+        multi ? 'mp4' : extension || 'mp4',
+        // Не tempFileName: у карусели это шаблон с %(playlist_index)02d, и в
+        // событиях прогресса он выглядел бы как мусор.
+        !multi && extension && extension !== 'mp4' ? finalFileName : baseFileName,
       );
 
       console.log('start download', {
@@ -631,15 +743,27 @@ export class DownloadService {
           filter: 'mergevideo',
           quality: quality,
           format: initialExtension as VideoFormat,
+          playlist: multi,
           output: {
             outDir: downloadDir,
             fileName: tempFileName,
           },
-        })
+        } as any)
         .then((progress$) => {
           this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
             console.log('Download complete');
-            if (extension && extension !== 'mp4') {
+            if (multi) {
+              try {
+                await this.completePlaylistDownload(
+                  download.id,
+                  downloadDir,
+                  baseFileName,
+                  progressSubject,
+                );
+              } catch (error) {
+                await this.markDownloadFailed(download.id, error, progressSubject);
+              }
+            } else if (extension && extension !== 'mp4') {
               await this.handleConversion(
                 download.id,
                 downloadDir,
@@ -667,8 +791,12 @@ export class DownloadService {
       return {
         message: 'Download started',
         downloadId: download.id,
+        // У карусели настоящие имена файлов известны только после скачивания
+        // (номер подставляет yt-dlp) — потребитель берёт их из items в
+        // /download/:id/status. Здесь отдаём базовое имя и число элементов.
         fileName:
-          extension && extension !== 'mp4' ? finalFileName : tempFileName,
+          !multi && extension && extension !== 'mp4' ? finalFileName : baseFileName,
+        itemCount: playlistEntries(info).length,
       };
     } catch (error) {
       if (

@@ -1,4 +1,4 @@
-import { Bot, InlineKeyboard, InputFile } from "grammy";
+import { Bot, InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
 import { detectLang, messages, type Lang } from "../i18n.js";
 import {
   api,
@@ -36,6 +36,9 @@ type VideoDimensions = {
 function sessionKey(chatId: number, messageId: number): string {
   return `${chatId}:${messageId}`;
 }
+// Предел Telegram на один альбом.
+const ALBUM_LIMIT = 10;
+
 const sessions = new Map<
   string,
   { url: string; title: string; thumbnail?: string; videoQualities: string[]; createdAt: number }
@@ -99,6 +102,10 @@ async function performDownload(
       thumbnail: string | undefined,
       lang: Lang,
     ) => Promise<unknown>;
+    replyWithAlbum: (
+      items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
+      caption: string,
+    ) => Promise<unknown>;
   },
   dlMeta: DownloadMeta,
   title: string,
@@ -115,7 +122,20 @@ async function performDownload(
       { url, quality, extension, source: "BOT", ...dlMeta },
     );
 
-    let status: { status: string; downloadUrl?: string } | undefined;
+    // items — файлы поста. Пусто или одна запись — обычное скачивание,
+    // несколько — карусель, её отправляем альбомом.
+    type StatusItem = {
+      position: number;
+      filename: string;
+      kind: string;
+      width?: number;
+      height?: number;
+      duration?: number;
+      fileSize?: number;
+    };
+    let status:
+      | { status: string; downloadUrl?: string; items?: StatusItem[] }
+      | undefined;
     for (let i = 0; i < 400; i++) {
       await new Promise((r) => setTimeout(r, 3000));
       status = await api(`/download/${started.downloadId}/status`);
@@ -125,7 +145,19 @@ async function performDownload(
       throw new Error(status?.status === "FAILED" ? m.downloadFailed : m.downloadTimeout);
     }
 
-    const fileName = encodeURIComponent(started.fileName);
+    const items = status.items ?? [];
+    if (items.length > 1) {
+      await send.editMessageText(msg.message_id, m.sendingAlbum(items.length));
+      await send.replyWithAlbum(items, m.fileCaption(title, url));
+      await send.deleteMessage(msg.message_id);
+      await send.publishToChannel(url, title, thumbnail, lang);
+      return;
+    }
+
+    // У карусели настоящее имя первого файла известно только из items —
+    // started.fileName содержит базовое имя без номера. Для одиночного
+    // скачивания оба совпадают.
+    const fileName = encodeURIComponent(items[0]?.filename ?? started.fileName);
     const fileUrl = `${API_URL}/download/${fileName}`;
     const meta = await api<{ size: number } & VideoDimensions>(
       `/download/${fileName}/metadata`,
@@ -276,6 +308,35 @@ export function registerDownloadHandlers(bot: Bot) {
       deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
       publishToChannel: (u: string, t: string, th: string | undefined, l: Lang) =>
         publishLink(ctx.api, u, t, th, l),
+      replyWithAlbum: async (
+        items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
+        caption: string,
+      ) => {
+        // Telegram принимает не больше 10 элементов в одном альбоме, а в
+        // карусели Instagram их бывает до двадцати — режем на части. Подпись
+        // ставим только на первый элемент первого альбома: на каждом она
+        // повторялась бы под каждым файлом.
+        for (let start = 0; start < items.length; start += ALBUM_LIMIT) {
+          const chunk = items.slice(start, start + ALBUM_LIMIT);
+          const media = chunk.map((item, index) => {
+            const file = new InputFile(
+              new URL(`${API_URL}/download/${encodeURIComponent(item.filename)}`),
+            );
+            const withCaption = start === 0 && index === 0 ? { caption } : {};
+            return item.kind === "PHOTO"
+              ? InputMediaBuilder.photo(file, withCaption)
+              : InputMediaBuilder.video(file, {
+                  ...withCaption,
+                  // Без размеров Telegram на iOS сплющивает вертикальное видео.
+                  width: item.width,
+                  height: item.height,
+                  duration: item.duration,
+                  supports_streaming: true,
+                });
+          });
+          await ctx.replyWithMediaGroup(media);
+        }
+      },
     };
     await performDownload(
       chatId, kind, quality, extension, session.url, lang, send,

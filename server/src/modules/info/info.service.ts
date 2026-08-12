@@ -12,6 +12,12 @@ import { getVideoFormats } from 'src/lib/helper';
 import { AlertService } from '../alert/alert.service';
 import { BotUserService } from '../analytics/bot-user.service';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
+import {
+  describeItems,
+  entryKind,
+  longestDuration,
+  playlistEntries,
+} from 'src/lib/playlist';
 
 // Платформы, где cookies нужны только для приватного/залогиненного контента —
 // публичное видео и так скачивается анонимно, поэтому при признаках "нужен
@@ -67,12 +73,19 @@ export class InfoService {
         platform,
       );
 
+      // У плейлиста собственных thumbnail/duration нет — берём у первого
+      // элемента, иначе карточка поста на сайте окажется пустой.
+      const entries = playlistEntries(info);
+      const first = entries[0] ?? info;
+
       const videoInfo: VideoInfoResponse = {
         id: info.id,
         title: this.getTitle(info, platform),
-        thumbnail: info.thumbnail,
+        itemCount: entries.length,
+        items: describeItems(info),
+        thumbnail: info.thumbnail ?? first.thumbnail,
         description: info.description || '',
-        duration: info.duration,
+        duration: info.duration ?? longestDuration(info),
         viewCount: info.view_count,
         uploader: info.uploader,
         uploaderUrl: info.uploader_url,
@@ -133,8 +146,26 @@ export class InfoService {
       case 'facebook':
         videoFormats = [FacebookVideoQuality.hd, FacebookVideoQuality.sd];
         break;
-      default:
-        videoFormats = getVideoFormats(info);
+      default: {
+        // У карусели форматы лежат у каждого элемента отдельно. Собираем
+        // объединение в порядке первого появления: сортировать нельзя —
+        // для одиночного поста это изменило бы порядок качеств, который
+        // сайт использует как выбор по умолчанию.
+        const videoEntries = playlistEntries(info).filter(
+          (entry) => entryKind(entry) === 'video',
+        );
+        videoFormats = videoEntries.flatMap((entry) => getVideoFormats(entry));
+        // У карусели элементы разного размера, и объединение выходит вперемешку
+        // (720p, 1080p, 360p...). Сортируем по убыванию — но ТОЛЬКО для
+        // карусели: у одиночного поста порядок задаёт yt-dlp, и сайт берёт из
+        // него качество по умолчанию, менять его нельзя.
+        if (videoEntries.length > 1) {
+          videoFormats = [...new Set(videoFormats)].sort(
+            (a, b) => (parseInt(b, 10) || 0) - (parseInt(a, 10) || 0),
+          );
+        }
+        break;
+      }
     }
 
     const allFormats = {

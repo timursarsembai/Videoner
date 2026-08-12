@@ -19,6 +19,17 @@ export interface VideoFormat {
 }
 
 export interface YtdlpVideoInfo {
+  // Карусель (пост из нескольких файлов) приходит от yt-dlp как плейлист:
+  // _type === 'playlist' и массив entries вместо собственных formats.
+  // Ключ --dump-single-json обязателен: обычный --dump-json печатает по
+  // объекту НА КАЖДЫЙ элемент, и JSON.parse всего вывода падает на второй
+  // строке (ровно эта ошибка и всплывала на каруселях Instagram).
+  _type?: string;
+  entries?: YtdlpVideoInfo[];
+  // Размеры самого ролика (не формата) — yt-dlp кладёт их и у элементов
+  // карусели, по ним отличаем вертикальное от горизонтального в списке.
+  width?: number;
+  height?: number;
   id: string;
   title: string;
   formats: VideoFormat[];
@@ -43,9 +54,23 @@ export interface YtdlpVideoInfo {
   original_url: string;
 }
 
+// Элемент карусели в ответе /info. Для обычного поста массив items содержит
+// ровно одну запись — так и сайту, и боту не нужно две разных ветки.
+export type VideoInfoItem = {
+  index: number;
+  id: string;
+  kind: 'video' | 'photo';
+  width?: number;
+  height?: number;
+  duration?: number;
+  thumbnail?: string;
+};
+
 export type VideoInfoResponse = {
   id: string;
   title: string;
+  itemCount: number;
+  items: VideoInfoItem[];
   qualities: {
     video: string[];
     audio: string[];

@@ -17,6 +17,7 @@ interface Messages {
   downloadInterrupted: string;
   fileTooBig: (mb: string, url: string) => string;
   sendingFile: string;
+  sendingAlbum: (count: number) => string;
   failedPrefix: string;
   fileCaption: (title: string, sourceUrl: string) => string;
   subscribeRequired: (channel: string) => string;
@@ -48,6 +49,7 @@ const ru: Messages = {
   fileTooBig: (mb, url) =>
     `Файл получился большим (${mb} МБ) — Telegram не даст боту его отправить.\nСкачай по ссылке: ${url}`,
   sendingFile: "📤 Отправляю файл...",
+  sendingAlbum: (count) => `📤 В посте несколько файлов (${count}) — отправляю альбомом...`,
   failedPrefix: "❌ Не получилось: ",
   // Подпись прикрепляется к самому файлу, поэтому уезжает вместе с ним при
   // пересылке — ради этого всё и делается. Заголовок подрезаем: у подписи в
@@ -96,6 +98,7 @@ const en: Messages = {
   fileTooBig: (mb, url) =>
     `The file turned out large (${mb} MB) — Telegram won't let the bot send it.\nDownload it here: ${url}`,
   sendingFile: "📤 Sending file...",
+  sendingAlbum: (count) => `📤 This post has several files (${count}) — sending them as an album...`,
   failedPrefix: "❌ Failed: ",
   fileCaption: (title, sourceUrl) =>
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +

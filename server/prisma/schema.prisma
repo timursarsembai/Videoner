@@ -60,6 +60,10 @@ model Download {
   videoHeight   Int?
   fileSize      BigInt?
   errorCategory ErrorCategory?
+  // Файлы поста. У обычного скачивания ровно один и он же продублирован в
+  // filename/downloadUrl выше — так старый код, рассчитанный на один файл,
+  // продолжает работать без изменений. У карусели записей несколько.
+  items         DownloadItem[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
@@ -67,6 +71,34 @@ model Download {
   @@index([status])
   @@index([downloader])
   @@index([createdAt])
+}
+
+// Один файл внутри скачивания. Отдельная таблица, а не массив в Download:
+// у каждого файла свои размеры и вес, они нужны боту, чтобы Telegram не
+// сплющивал вертикальные видео в альбоме.
+model DownloadItem {
+  id         String           @id @default(uuid())
+  download   Download         @relation(fields: [downloadId], references: [id], onDelete: Cascade)
+  downloadId String
+  // Порядковый номер в посте, с единицы — совпадает с playlist_index у yt-dlp
+  // и с порядком, в котором элементы показывает сама площадка.
+  position   Int
+  filename   String
+  kind       DownloadItemKind @default(VIDEO)
+  width      Int?
+  height     Int?
+  duration   Int?
+  fileSize   BigInt?
+  createdAt  DateTime         @default(now())
+
+  @@unique([downloadId, position])
+  @@index([downloadId])
+}
+
+enum DownloadItemKind {
+  VIDEO
+  PHOTO
+  AUDIO
 }
 
 model BotUser {

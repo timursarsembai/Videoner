@@ -194,6 +194,12 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
   if ((options as any).embedSubs) {
     formatArr = formatArr.concat('--embed-subs');
   }
+  if ((options as any).playlist) {
+    // Пост из нескольких файлов: сбой на одном элементе не должен уносить
+    // остальные. Без этого фото в смешанной карусели — у него нет ни одного
+    // формата — обрывало бы скачивание всего поста.
+    formatArr = formatArr.concat('--ignore-errors');
+  }
   if ((options as any).embedThumbnail) {
     formatArr = formatArr.concat('--embed-thumbnail');
   }

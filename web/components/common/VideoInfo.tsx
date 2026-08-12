@@ -13,6 +13,7 @@ import { useLanguage } from "@/lib/i18n/context";
 import { downloadFile, extractErrorMessage, formatDuration } from "@/lib/utils";
 import { useAuth } from "@/lib/auth/context";
 import { VideoInfo } from "@/types/youtube";
+import { DownloadItem } from "@/types";
 import { motion } from "framer-motion";
 import {
   Clock,
@@ -76,6 +77,9 @@ export const VideoInfoSection = ({
         ? "mp4"
         : videoInfo.extensions.audio[0]
   );
+  // Файлы поста. Заполняется только для карусели: у обычного скачивания
+  // остаётся пустым, и весь экран ведёт себя ровно как раньше.
+  const [postItems, setPostItems] = useState<DownloadItem[]>([]);
   const [downloadState, setDownloadState] = useState<DownloadState>({
     status: "idle",
     progress: 0,
@@ -130,12 +134,23 @@ export const VideoInfoSection = ({
             isConverting: false,
           }));
           toast.success(t("toast.downloadCompleted"));
-          // Start the file download automatically
-          if (downloadUrl) {
-            downloadFile(downloadUrl);
-          } else {
-            toast.error(t("toast.downloadUrlNotReceived"));
-          }
+
+          // Пост из нескольких файлов не начинаем качать сам: браузер не даст
+          // запустить несколько загрузок подряд без ведома человека, да и
+          // выбрать нужные из карусели он должен сам. Показываем список.
+          const id = downloadState.id?.toString();
+          void (async () => {
+            const items = id ? await api.getDownloadItems(id) : [];
+            if (items.length > 1) {
+              setPostItems(items);
+              return;
+            }
+            if (downloadUrl) {
+              downloadFile(downloadUrl);
+            } else {
+              toast.error(t("toast.downloadUrlNotReceived"));
+            }
+          })();
         },
         onError: (error) => {
           // Only show error if it's not a connection close after completion
@@ -209,6 +224,7 @@ export const VideoInfoSection = ({
   };
 
   const handleActiveTab = (tab: FormatType) => {
+    setPostItems([]);
     setActiveTab(tab);
     setSelectedQuality(null);
     setLastDownloadedQuality(null);
@@ -466,9 +482,62 @@ export const VideoInfoSection = ({
                   </motion.div>
                 )}
 
+                {postItems.length > 1 && (
+                  <div className="mb-4 rounded-lg border border-border/60 bg-muted/20 p-4">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-sm font-medium">
+                        {t("video.postFiles", { count: String(postItems.length) })}
+                      </span>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="gap-2"
+                        onClick={() => {
+                          // Последовательно, с паузой: браузеры глушат
+                          // несколько загрузок, запущенных в один тик.
+                          postItems.forEach((item, index) => {
+                            setTimeout(() => downloadFile(item.downloadUrl), index * 800);
+                          });
+                        }}
+                      >
+                        <Download className="h-4 w-4" />
+                        {t("video.downloadAll")}
+                      </Button>
+                    </div>
+                    <ul className="space-y-2">
+                      {postItems.map((item) => (
+                        <li
+                          key={item.position}
+                          className="flex items-center justify-between gap-3 rounded-md bg-background/60 px-3 py-2 text-sm"
+                        >
+                          <span className="text-foreground/70">
+                            {item.position}.{" "}
+                            {item.width && item.height
+                              ? `${item.width}×${item.height}`
+                              : item.kind}
+                            {item.fileSize
+                              ? ` · ${(item.fileSize / 1024 / 1024).toFixed(1)} MB`
+                              : ""}
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="gap-1.5"
+                            onClick={() => downloadFile(item.downloadUrl)}
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                            {t("video.downloadOne")}
+                          </Button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 <div className="flex gap-3">
                   {downloadState.status === "complete" &&
                     downloadState.downloadUrl &&
+                    postItems.length <= 1 &&
                     !isNewDownload && (
                       <Button
                         variant="outline"

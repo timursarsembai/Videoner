@@ -60,10 +60,13 @@ export class CleanupService {
             deletedCount++;
             this.logger.debug(`Deleted old file: ${file}`);
 
-            // Update database record if exists
+            // Update database record if exists.
+            // У поста из нескольких файлов Download.filename — только первый,
+            // поэтому ищем и по items: удалили любой файл поста — весь пост
+            // больше не выдать целиком, и он считается устаревшим.
             await this.prisma.download.updateMany({
               where: {
-                filename: file,
+                OR: [{ filename: file }, { items: { some: { filename: file } } }],
                 status: {
                   in: [DownloadStatus.COMPLETED, DownloadStatus.FAILED],
                 },

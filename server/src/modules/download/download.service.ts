@@ -624,7 +624,7 @@ export class DownloadService {
       // как полноценная фотография — убираем.
       await fs.promises.unlink(jpegPath).catch(() => {});
       await fs.promises.writeFile(
-        join(downloadDir, `${baseName}.${photoExtension(contentType)}`),
+        join(downloadDir, `${baseName}.${photoExtension(bytes, contentType)}`),
         bytes,
       );
     } finally {
@@ -810,14 +810,19 @@ export class DownloadService {
 
       const downloadDir = this.ensureDownloadDirectory();
 
-      // Карусель всегда отдаём в mp4. Конвертировать каждый файл отдельным
-      // проходом ffmpeg — удвоить время ради выбора контейнера, которого для
-      // поста из нескольких роликов на сайте всё равно не предлагают.
-      // Расширение в запросе необязательное: бот и сайт его шлют всегда, а вот
-      // обращение к API без него собирало имя файла с хвостом «.undefined» и
-      // падало на проверке имени. Подставляем mp4, как и веткой ниже.
-      const initialExtension =
-        multi || (extension && extension !== 'mp4') ? 'mp4' : extension || 'mp4';
+      // Скачиваем всегда в mp4, а другой контейнер, если он запрошен, получается
+      // отдельным проходом ffmpeg уже из готового файла (см. ветку convert ниже).
+      //
+      // Раньше здесь стояло ветвление, которое во всех достижимых случаях всё
+      // равно давало mp4 — кроме одного: запрос без extension (поле в DTO
+      // необязательное, бот и сайт его шлют всегда) оставлял значение пустым, имя
+      // файла собиралось с хвостом «.undefined», и скачивание падало на проверке
+      // имени. Ветвление убрано целиком: оно только маскировало эту дыру.
+      //
+      // Карусель — тем более mp4: конвертировать каждый файл поста отдельным
+      // проходом значит удвоить время ради выбора контейнера, которого для поста
+      // из нескольких роликов на сайте всё равно не предлагают.
+      const initialExtension = 'mp4';
       const baseFileName = getFileName(info.title, quality, initialExtension);
       const tempFileName = multi
         ? this.playlistTemplate(baseFileName)

@@ -274,6 +274,12 @@ class ThreadsIE(InfoExtractor):
 
         video_url = url_or_none(traverse_obj(item, ('video_versions', 0, 'url')))
         if not video_url:
+            # У элемента есть видео, но ссылка на него негодная. Уйти при этом
+            # в ветку фотографии нельзя: обложки у видео тоже есть, и человек
+            # молча получил бы постер вместо ролика — подмену содержимого, а не
+            # ошибку. Лучше пропустить элемент.
+            if item.get('video_versions'):
+                return None
             if not thumbnails:
                 return None
             return {

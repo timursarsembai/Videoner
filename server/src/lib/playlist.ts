@@ -44,10 +44,43 @@ export function isPhotoExtension(ext: string): boolean {
   return PHOTO_EXTENSIONS.includes(ext.toLowerCase());
 }
 
-// Расширение по Content-Type. Нужно только для запасного пути, когда снимок
-// сохраняется как есть; неизвестный тип называем .jpg — так вёл себя код до
-// появления этой ветки.
-export function photoExtension(contentType: string | null): string {
+/**
+ * Расширение снимка — по самим байтам, а Content-Type лишь подсказка на случай
+ * незнакомой сигнатуры.
+ *
+ * Нужно для запасного пути, когда перекодировать в JPEG не удалось и файл
+ * сохраняется как есть. Смотреть тут в первую очередь на заголовок ответа было
+ * бы непоследовательно: раз мы уже знаем, что это не JPEG (сигнатуру проверили
+ * перед перекодировкой), назвать файл .jpg по умолчанию значило бы вернуть ту
+ * самую ошибку, ради которой всё это и делается.
+ */
+export function photoExtension(
+  bytes: Buffer,
+  contentType: string | null,
+): string {
+  const ascii = (from: number, to: number) =>
+    bytes.subarray(from, to).toString('latin1');
+
+  if (bytes.length >= 12 && ascii(0, 4) === 'RIFF' && ascii(8, 12) === 'WEBP') {
+    return 'webp';
+  }
+  if (bytes.length >= 8 && bytes[0] === 0x89 && ascii(1, 4) === 'PNG') {
+    return 'png';
+  }
+  // HEIC — контейнер ISO-BMFF: после размера бокса идёт 'ftyp', следом марка.
+  if (
+    bytes.length >= 12 &&
+    ascii(4, 8) === 'ftyp' &&
+    ['heic', 'heix', 'hevc', 'heim', 'heis', 'mif1', 'msf1'].includes(
+      ascii(8, 12),
+    )
+  ) {
+    return 'heic';
+  }
+  if (bytes.length >= 2 && bytes[0] === 0xff && bytes[1] === 0xd8) {
+    return 'jpg';
+  }
+
   const type = (contentType || '').split(';')[0].trim().toLowerCase();
   return (
     {

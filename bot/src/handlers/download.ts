@@ -240,9 +240,15 @@ export function registerDownloadHandlers(bot: Bot) {
       for (const q of videoQualities.slice(0, 6)) {
         // Замок с HD-качеств снят вместе с платными функциями: все качества
         // доступны всем без исключения.
-        kb.text(`🎬 ${q}`, `v|${q}`).row();
+        // "original" сервер присылает для поста, где нет ни одного видео —
+        // выбирать там нечего, снимки забираются в исходном размере.
+        kb.text(q === "original" ? m.photoButton : `🎬 ${q}`, `v|${q}`).row();
       }
-      kb.text(m.audioOnlyButton, "a|128Kbps");
+      // У поста из одних фотографий звуковой дорожки нет — кнопку не рисуем,
+      // иначе она вела бы в заведомую ошибку.
+      if ((info.qualities.audio ?? []).length) {
+        kb.text(m.audioOnlyButton, "a|128Kbps");
+      }
 
       const dur = fmtDuration(info.duration);
       const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";

@@ -760,6 +760,10 @@ export class YtdlpProcessService implements OnModuleInit {
       return subject.asObservable();
     }
 
+    // Пост из нескольких файлов — по нему решаем, считать ли сбой отдельного
+    // элемента фатальным (см. обработчик stderr ниже).
+    const isPlaylistDownload = Boolean((options as any)?.playlist);
+
     const processArgs = [
       parseUrl,
       ...parseOptions,
@@ -836,6 +840,14 @@ export class YtdlpProcessService implements OnModuleInit {
       childProcess.stdout.on('data', (data) => {
         const dataStr = Buffer.from(data).toString();
         if (dataStr.includes('Requested format is not available.')) {
+          // В посте из нескольких файлов это говорит лишь о том, что под
+          // выбранное качество не подошёл ОДИН элемент — обычно фотография,
+          // у которой форматов нет вовсе. Остальные файлы поста уже качаются,
+          // и ронять всё скачивание из-за одного элемента нельзя: если не
+          // выйдет ни один, это заметит сборка файлов в конце.
+          if (isPlaylistDownload) {
+            return;
+          }
           hasError = true;
           errorMessage = 'Requested format is not available.';
           subject.error(new Error(errorMessage));
@@ -858,6 +870,14 @@ export class YtdlpProcessService implements OnModuleInit {
         const dataStr = Buffer.from(data).toString();
         // yt-dlp пишет в stderr и предупреждения — фатальными считаем только строки с ERROR
         if (dataStr.includes('ERROR')) {
+          // Пост из нескольких файлов: элемент без форматов — это фотография.
+          // yt-dlp ругается на неё и идёт дальше (--ignore-errors), снимок
+          // сервер забирает сам. Ронять из-за этого ВЕСЬ пост нельзя: видео
+          // из него уже скачано. Поймано на смешанных постах Instagram.
+          if (isPlaylistDownload && /no video formats found/i.test(dataStr)) {
+            return;
+          }
+
           errorMessage = dataStr.trim();
 
           // Блокировка по адресу вскрылась уже на загрузке (страница открылась,
@@ -970,6 +990,18 @@ export class YtdlpProcessService implements OnModuleInit {
         }
 
         finalize();
+
+        // Пост из нескольких файлов: yt-dlp завершается ненулевым кодом, если
+        // пропустил хотя бы один элемент (--ignore-errors), а пропускает он
+        // ровно то, что мы забираем сами, — фотографии. Судить об успехе тут
+        // нельзя: об этом скажет сборка файлов в конце, и она же сообщит,
+        // если не скачалось вообще ничего. Иначе пост с видео и фотографией
+        // всегда падал бы, хотя видео уже лежит на диске.
+        if (code !== 0 && !hasError && isPlaylistDownload) {
+          subject.complete();
+          return;
+        }
+
         if (code !== 0 && !hasError) {
           subject.error(
             new Error(errorMessage || `Process exited with code ${code}`),

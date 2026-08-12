@@ -9,6 +9,7 @@ interface Messages {
   notLink: string;
   fetchingInfo: string;
   audioOnlyButton: string;
+  photoButton: string;
   chooseQuality: (title: string, duration: string) => string;
   sessionExpired: string;
   downloading: string;
@@ -40,6 +41,7 @@ const ru: Messages = {
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
   fetchingInfo: "🔍 Получаю информацию о видео...",
   audioOnlyButton: "🎵 Только аудио (mp3)",
+  photoButton: "📷 Скачать фото",
   chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nВыбери качество:`,
   sessionExpired: "Сессия устарела — пришли ссылку ещё раз",
   downloading: "⏬ Скачиваю, это может занять пару минут...",
@@ -89,6 +91,7 @@ const en: Messages = {
   notLink: "That doesn't look like a link. Send me a video link.",
   fetchingInfo: "🔍 Fetching video info...",
   audioOnlyButton: "🎵 Audio only (mp3)",
+  photoButton: "📷 Download photos",
   chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\nChoose quality:`,
   sessionExpired: "Session expired — send the link again",
   downloading: "⏬ Downloading, this may take a couple of minutes...",

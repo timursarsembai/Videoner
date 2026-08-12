@@ -429,7 +429,12 @@ export const VideoInfoSection = ({
                           <Music className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
                         )}
                         <span className="flex items-center gap-1.5 font-medium">
-                          {quality}
+                          {/* "original" сервер присылает для поста, где нет ни
+                              одного видео: выбирать нечего, снимки берутся в
+                              исходном размере. */}
+                          {quality === "original"
+                            ? t("video.photoQuality")
+                            : quality}
                         </span>
                       </div>
                       {selectedQuality === quality && (

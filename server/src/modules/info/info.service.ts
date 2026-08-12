@@ -16,6 +16,7 @@ import {
   describeItems,
   entryKind,
   longestDuration,
+  PHOTO_PLATFORMS,
   playlistEntries,
 } from 'src/lib/playlist';
 
@@ -106,12 +107,14 @@ export class InfoService {
   }
 
   private async fetchInfoWithCookieFallback(url: string, platform: string) {
+    const allowPhotos = PHOTO_PLATFORMS.includes(platform);
+
     if (!COOKIE_FALLBACK_PLATFORMS.includes(platform)) {
-      return this.ytdlp.getYtdlpVideoInfo(url);
+      return this.ytdlp.getYtdlpVideoInfo(url, { allowPhotos });
     }
 
     try {
-      return await this.ytdlp.getYtdlpVideoInfo(url);
+      return await this.ytdlp.getYtdlpVideoInfo(url, { allowPhotos });
     } catch (error) {
       // Раньше фолбэк срабатывал только на паттерн "нужен логин" в тексте
       // ошибки — но протухшая/залогиненная Facebook-сессия в cookies.txt
@@ -125,6 +128,7 @@ export class InfoService {
       try {
         const result = await this.ytdlp.getYtdlpVideoInfo(url, {
           skipCookies: true,
+          allowPhotos,
         });
         void this.alert.notifyCookiesExpired(platform, message);
         return result;
@@ -168,9 +172,17 @@ export class InfoService {
       }
     }
 
+    // Пост без единого видео (только фотографии) не имеет качеств вовсе, и
+    // на сайте с ботом становилось нечего нажать. Отдаём один вариант
+    // «original» — он же метка того, что забирается снимок в исходном
+    // размере. До yt-dlp это значение не доходит: фотографии скачиваются
+    // отдельным путём, минуя выбор формата.
+    const photoOnly =
+      videoFormats.length === 0 && playlistEntries(info).length > 0;
+
     const allFormats = {
-      video: [...new Set(videoFormats)],
-      audio: [...new Set(audioFormats)],
+      video: photoOnly ? ['original'] : [...new Set(videoFormats)],
+      audio: photoOnly ? [] : [...new Set(audioFormats)],
     };
 
     return { allFormats, allExtensions };

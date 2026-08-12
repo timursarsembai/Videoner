@@ -198,7 +198,12 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
     // Пост из нескольких файлов: сбой на одном элементе не должен уносить
     // остальные. Без этого фото в смешанной карусели — у него нет ни одного
     // формата — обрывало бы скачивание всего поста.
-    formatArr = formatArr.concat('--ignore-errors');
+    // --ignore-errors пропускает сбойный элемент, но yt-dlp всё равно пишет
+    // «ERROR: No video formats found» в stderr, и наш обработчик считает это
+    // провалом всего поста — видео скачалось, а скачивание помечено сбойным.
+    // Второй ключ убирает и саму ошибку: элементы без форматов — это
+    // фотографии, мы забираем их отдельно.
+    formatArr = formatArr.concat('--ignore-errors', '--ignore-no-formats-error');
   }
   if ((options as any).embedThumbnail) {
     formatArr = formatArr.concat('--embed-thumbnail');

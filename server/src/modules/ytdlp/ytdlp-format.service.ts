@@ -12,14 +12,23 @@ export class YtdlpFormatService {
 
   async getYtdlpVideoInfo(
     url: string,
-    options?: { skipCookies?: boolean },
+    options?: { skipCookies?: boolean; allowPhotos?: boolean },
   ): Promise<YtdlpVideoInfo> {
     // --dump-single-json, а НЕ --dump-json: второй печатает по объекту на
     // каждый элемент поста, и JSON.parse всего вывода падает на второй строке
     // («Unexpected non-whitespace character ... line 2 column 1»). Любая
     // карусель — Instagram, Threads — ломалась именно здесь. Одиночный пост
     // при этом отдаётся тем же одним объектом, что и раньше.
-    const command = ['--dump-single-json', '--no-download', url];
+    const command = ['--dump-single-json', '--no-download'];
+    // Пост без единого видео (только фотографии) yt-dlp считает ошибкой:
+    // «There is no video in this post». Для площадок, где мы умеем забирать
+    // фото, ошибку глушим — сведения о посте при этом отдаются полностью,
+    // вместе со снимками в thumbnails. Для остальных площадок оставляем как
+    // есть: там это осмысленное сообщение, а не помеха.
+    if (options?.allowPhotos) {
+      command.push('--ignore-no-formats-error');
+    }
+    command.push(url);
     return this.process.ytdlp(command, options).then((result) => {
       return JSON.parse(result.stdout);
     });

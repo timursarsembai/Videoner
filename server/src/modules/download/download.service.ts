@@ -34,8 +34,11 @@ import { categorizeError } from 'src/lib/error-category';
 import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
 import {
   entryKind,
+  hasVideoEntries,
   isPlaylist,
   longestDuration,
+  PHOTO_PLATFORMS,
+  photoTargets,
   playlistEntries,
 } from 'src/lib/playlist';
 
@@ -92,7 +95,9 @@ export class DownloadService {
 
   private async checkDurationLimit(url: string, req: Request) {
     const apiKey = (req as any).apiKey;
-    const info = await this.ytdlpFormat.getYtdlpVideoInfo(url);
+    const info = await this.ytdlpFormat.getYtdlpVideoInfo(url, {
+      allowPhotos: PHOTO_PLATFORMS.includes((req as any).platform),
+    });
 
     // У карусели собственной длительности нет. Складывать элементы неверно:
     // ограничение задумано на один ролик, а не на суммарный вес поста.
@@ -501,16 +506,17 @@ export class DownloadService {
   private collectPlaylistFiles(
     downloadDir: string,
     fileName: string,
-  ): { name: string; position: number }[] {
+  ): { name: string; position: number; ext: string }[] {
     const dot = fileName.lastIndexOf('.');
     const base = dot > 0 ? fileName.slice(0, dot) : fileName;
-    const ext = dot > 0 ? fileName.slice(dot + 1) : 'mp4';
-    // Маска строгая: «база-НОМЕР.расширение» и ничего больше. Простого
-    // startsWith(base + '-') мало — под него попадают и промежуточные файлы
-    // слияния вида «база-01.f137.mp4», которые yt-dlp иногда оставляет, если
-    // элемент не докачался.
+    // Расширение не фиксируем: в одном посте рядом лежат и видео (.mp4), и
+    // фотографии (.jpg). Маска строгая — «база-НОМЕР.расширение» и ничего
+    // больше: простого startsWith(base + '-') мало, под него попадают
+    // промежуточные файлы слияния вида «база-01.f137.mp4», которые yt-dlp
+    // иногда оставляет, если элемент не докачался (в них после номера ещё
+    // одна точка, поэтому под шаблон они не подходят).
     const pattern = new RegExp(
-      `^${base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}-(\\d+)\\.${ext}$`,
+      `^${base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}-(\\d+)\\.([A-Za-z0-9]+)$`,
     );
     return fs
       .readdirSync(downloadDir)
@@ -519,8 +525,50 @@ export class DownloadService {
       // Номер берём из имени, а не из порядка в массиве: если какой-то элемент
       // поста не скачался (--ignore-errors), на диске окажутся, например, 01 и
       // 03 — и позиции должны остаться теми же, что у площадки.
-      .map((entry) => ({ name: entry.name, position: Number(entry.match![1]) }))
+      .map((entry) => ({
+        name: entry.name,
+        position: Number(entry.match![1]),
+        ext: entry.match![2].toLowerCase(),
+      }))
       .sort((a, b) => a.position - b.position);
+  }
+
+  /**
+   * Скачивание фотографий поста.
+   *
+   * Их не умеет yt-dlp: для него это элементы без единого формата, он на них
+   * ругается и идёт дальше. Поэтому берём ссылку на полноразмерный снимок и
+   * сохраняем сами, под тем же номером, что и место в посте — тогда порядок
+   * файлов совпадает с тем, что человек видит на площадке.
+   *
+   * Сбой одного снимка не отменяет остальной пост: пять фотографий из шести
+   * лучше, чем ошибка на весь пост.
+   */
+  private async downloadPhotos(
+    targets: { position: number; url: string }[],
+    downloadDir: string,
+    fileName: string,
+  ): Promise<number> {
+    const dot = fileName.lastIndexOf('.');
+    const base = dot > 0 ? fileName.slice(0, dot) : fileName;
+    let saved = 0;
+
+    for (const target of targets) {
+      const name = `${base}-${String(target.position).padStart(2, '0')}.jpg`;
+      try {
+        const response = await fetch(target.url);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        const bytes = Buffer.from(await response.arrayBuffer());
+        await fs.promises.writeFile(join(downloadDir, name), bytes);
+        saved += 1;
+      } catch (error) {
+        console.error(`Не удалось скачать фото ${target.position}:`, error);
+      }
+    }
+
+    return saved;
   }
 
   // Завершение скачивания карусели. Первый файл дублируется в поля самого
@@ -545,7 +593,9 @@ export class DownloadService {
       items.push({
         position: file.position,
         filename: file.name,
-        kind,
+        // Фотография узнаётся по расширению: видео пишет yt-dlp, снимки
+        // кладём мы сами, и всегда как .jpg.
+        kind: file.ext === 'jpg' ? ('PHOTO' as const) : kind,
         width: dims.width ?? null,
         height: dims.height ?? null,
         duration: dims.duration ?? null,
@@ -690,7 +740,11 @@ export class DownloadService {
 
       // Пост из нескольких файлов (карусель) идёт отдельной веткой: имя
       // получает шаблон с номером, конвертация не делается.
-      const multi = isPlaylist(info);
+      const photos = photoTargets(info);
+      const hasVideo = hasVideoEntries(info);
+      // Нумерованное имя нужно и одиночному фото: снимки мы сохраняем сами,
+      // и делать для них отдельную схему именования — только плодить ветки.
+      const multi = isPlaylist(info) || photos.length > 0;
 
       const downloadDir = this.ensureDownloadDirectory();
 
@@ -756,6 +810,35 @@ export class DownloadService {
         status: DownloadStatus.DOWNLOADING,
       });
 
+      // Пост без единого видео (только фотографии) через yt-dlp не проходит
+      // вовсе: там нет ни одного формата, и он честно скажет «нет видео».
+      // Снимки забираем сами и сразу завершаем скачивание.
+      if (!hasVideo) {
+        void (async () => {
+          try {
+            const saved = await this.downloadPhotos(photos, downloadDir, baseFileName);
+            if (!saved) {
+              throw new Error('Ни одну фотографию поста скачать не удалось');
+            }
+            await this.completePlaylistDownload(
+              download.id,
+              downloadDir,
+              baseFileName,
+              progressSubject,
+            );
+          } catch (error) {
+            await this.markDownloadFailed(download.id, error, progressSubject);
+          }
+        })();
+
+        return {
+          message: 'Download started',
+          downloadId: download.id,
+          fileName: baseFileName,
+          itemCount: playlistEntries(info).length,
+        };
+      }
+
       // Start video download
       this.ytdlp
         .download(url, (req as any).platform, {
@@ -773,6 +856,11 @@ export class DownloadService {
             console.log('Download complete');
             if (multi) {
               try {
+                // Фотографии добираем после видео — они лежат в том же посте
+                // и должны попасть в ту же выдачу, с теми же номерами.
+                if (photos.length) {
+                  await this.downloadPhotos(photos, downloadDir, baseFileName);
+                }
                 await this.completePlaylistDownload(
                   download.id,
                   downloadDir,

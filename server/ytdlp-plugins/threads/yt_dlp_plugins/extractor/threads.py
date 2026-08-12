@@ -20,6 +20,11 @@ GraphQL-запросом уже в браузере. Приватный API /api
 он открывает пост в Chromium и перехватывает тот же GraphQL-ответ. Это резерв
 на случай, если Meta начнёт сверять UA робота с reverse DNS и путь выше умрёт.
 Той же дорогой уходят короткие ссылки /t/CODE: их SSR не отдаёт ни при каком UA.
+
+Пост может нести несколько файлов (carousel_media) и смешивать в них видео с
+фотографиями — такой отдаём плейлистом, по элементу на файл. Виды файлов
+различаются по media_type: 1 — фото, 2 — видео, 8 — карусель, 19 — пост без
+медиа вовсе (у него, что важно, image_versions2 присутствует, но пуст).
 """
 
 import base64
@@ -132,6 +137,11 @@ class ThreadsIE(InfoExtractor):
         проверки пользователь получил бы чужое видео вместо запрошенного
         (проверено на выдуманном коде: приходит 585 КБ нормального вида,
         og:url при этом вырождается в голый https://www.threads.com/).
+
+        Одному коду отвечает несколько узлов разной полноты, и первый
+        попавшийся годится не всегда: у поста-карусели рядом лежит «худой»
+        двойник с одной обложкой. Взяв его, мы отдали бы одну картинку вместо
+        шести файлов, поэтому собираем всех кандидатов и берём содержательного.
         """
         found = []
 
@@ -151,8 +161,19 @@ class ThreadsIE(InfoExtractor):
             except Exception:
                 continue
             if found:
-                return found[0]
+                return max(found, key=self._richness)
         return None
+
+    @classmethod
+    def _richness(cls, node):
+        """Похож ли узел на полные данные поста, а не на огрызок."""
+        if cls._carousel_items(node):
+            return 3
+        if node.get('video_versions'):
+            return 2
+        if cls._candidates(node):
+            return 1
+        return 0
 
     @staticmethod
     def _unescape(blob):
@@ -162,14 +183,29 @@ class ThreadsIE(InfoExtractor):
         return blob.replace('&amp;', '&').replace('&lt;', '<').replace('&gt;', '>').replace('&quot;', '"')
 
     @staticmethod
-    def _media_of(node):
-        """Узел с видео: сам пост либо первый видео-элемент карусели."""
-        if node.get('video_versions'):
-            return node
-        for item in node.get('carousel_media') or []:
-            if isinstance(item, dict) and item.get('video_versions'):
-                return item
-        return None
+    def _carousel_items(node):
+        """Элементы карусели. У обычного поста их нет — вернётся пустой список."""
+        items = node.get('carousel_media')
+        if not isinstance(items, list):
+            return []
+        return [item for item in items if isinstance(item, dict)]
+
+    @staticmethod
+    def _candidates(node):
+        """Варианты снимка. Пустой список — значит картинки у узла нет вовсе.
+
+        Проверять именно кандидатов, а не наличие самого image_versions2:
+        текстовые посты (media_type=19) несут этот объект пустым, и по одному
+        его присутствию мы принимали бы запись без единой картинки за фото.
+        """
+        return [candidate
+                for candidate in traverse_obj(node, ('image_versions2', 'candidates')) or []
+                if isinstance(candidate, dict) and url_or_none(candidate.get('url'))]
+
+    @classmethod
+    def _media_items(cls, node):
+        """Файлы поста по порядку. Одиночный пост — сам себе единственный файл."""
+        return cls._carousel_items(node) or [node]
 
     @staticmethod
     def _delivered_size(media, video_url):
@@ -204,30 +240,62 @@ class ThreadsIE(InfoExtractor):
         except Exception:
             return None
 
-    def _info_from_node(self, node, code, url):
-        media = self._media_of(node)
-        if not media:
-            return None
-        video_url = url_or_none(traverse_obj(media, ('video_versions', 0, 'url')))
-        if not video_url:
-            return None
+    def _thumbnails(self, item):
+        """Обложки по возрастанию размера — самая крупная последней.
 
-        # Все три version type (101/102/103) указывают на один и тот же файл —
-        # выбора качества у Threads нет, рендер ровно один.
-        width, height = self._delivered_size(media, video_url)
-        has_audio = media.get('has_audio')
-        uploader = traverse_obj(node, ('user', 'username'))
-        caption = traverse_obj(node, ('caption', 'text')) or ''
-        title = caption.strip().splitlines()[0][:120] if caption.strip() else None
-
+        Порядок здесь не косметика, а уговор с сервером: полноразмерный снимок
+        он берёт последним в списке (см. bestPhotoUrl в server/src/lib/playlist.ts).
+        В самом JSON кандидаты идут наоборот, от крупного к мелкому, и часть из
+        них — квадратные обрезки того же кадра, поэтому сортируем по площади, а
+        не полагаемся на исходный порядок. Ту же сортировку делает и сам yt-dlp,
+        но только когда размеры заполнены, — а он у нас не единственный
+        потребитель этого списка.
+        """
         thumbnails = [{
             'url': candidate['url'],
             'width': int_or_none(candidate.get('width')),
             'height': int_or_none(candidate.get('height')),
-        } for candidate in traverse_obj(media, ('image_versions2', 'candidates')) or []
-            if url_or_none(candidate.get('url'))]
+        } for candidate in self._candidates(item)]
+        thumbnails.sort(key=lambda t: (t['width'] or 0) * (t['height'] or 0))
+        return thumbnails
 
-        fallback_title = f'Threads video by @{uploader}' if uploader else f'Threads {code}'
+    def _entry_from_item(self, item, node, index, code, url):
+        """Один файл поста: видео либо фотография.
+
+        Фотография возвращается с пустым formats — так её отличает и yt-dlp, и
+        наш сервер (entryKind в server/src/lib/playlist.ts): у снимка форматов
+        нет, а ссылка на него лежит в обложках.
+        """
+        thumbnails = self._thumbnails(item)
+        # Элементы карусели своего кода не имеют — только pk. Собираем id из
+        # кода поста и номера, чтобы он оставался читаемым и не совпадал у
+        # соседних файлов.
+        entry_id = code if item is node else f'{code}-{index}'
+
+        video_url = url_or_none(traverse_obj(item, ('video_versions', 0, 'url')))
+        if not video_url:
+            if not thumbnails:
+                return None
+            return {
+                'id': entry_id,
+                'formats': [],
+                'thumbnails': thumbnails,
+                'width': int_or_none(item.get('original_width')),
+                'height': int_or_none(item.get('original_height')),
+            }
+
+        # Все три version type (101/102/103) указывают на один и тот же файл —
+        # выбора качества у Threads нет, рендер ровно один.
+        width, height = self._delivered_size(item, video_url)
+
+        # has_audio у элементов карусели не заполнен — его нет ни у самого
+        # элемента, ни у поста над ним (проверено на смешанной карусели
+        # 12.08.2026). Раз признак неизвестен, считаем, что звук есть: рендеры
+        # Threads прогрессивные и смикшированные, а вот пометив живой ролик
+        # беззвучным, мы отдали бы пользователю немое видео.
+        has_audio = item.get('has_audio')
+        if has_audio is None:
+            has_audio = node.get('has_audio')
 
         # Формат отдаём СПИСКОМ, а не полями url/ext на верхнем уровне. При
         # единственном формате yt-dlp принимает и то и другое, но в --dump-json
@@ -244,23 +312,55 @@ class ThreadsIE(InfoExtractor):
             'vcodec': 'avc1',
             # Файл прогрессивный, звук уже смикширован — проверено ffprobe
             # (h264 + aac в одном mp4), доклеивать ffmpeg-ом нечего.
-            'acodec': 'aac' if has_audio else 'none',
+            'acodec': 'none' if has_audio is False else 'aac',
         }
 
         return {
-            'id': code,
-            'title': title or fallback_title,
-            'description': caption.strip() or None,
+            'id': entry_id,
             'formats': [video_format],
             'duration': self._duration(video_url),
             'thumbnails': thumbnails,
+            'width': width,
+            'height': height,
+        }
+
+    def _info_from_node(self, node, code, url):
+        uploader = traverse_obj(node, ('user', 'username'))
+        caption = traverse_obj(node, ('caption', 'text')) or ''
+        title = caption.strip().splitlines()[0][:120] if caption.strip() else None
+        fallback_title = f'Threads post by @{uploader}' if uploader else f'Threads {code}'
+
+        common = {
+            'title': title or fallback_title,
+            'description': caption.strip() or None,
             'uploader': traverse_obj(node, ('user', 'full_name')),
             'uploader_id': uploader,
             'uploader_url': f'https://www.threads.com/@{uploader}' if uploader else None,
             'timestamp': int_or_none(node.get('taken_at')),
             'like_count': int_or_none(node.get('like_count')),
             'webpage_url': url,
-            'extractor_key': self.ie_key(),
+        }
+
+        entries = []
+        for index, item in enumerate(self._media_items(node), 1):
+            entry = self._entry_from_item(item, node, index, code, url)
+            if entry:
+                entries.append({**common, **entry, 'extractor_key': self.ie_key()})
+
+        if not entries:
+            return None
+
+        # Один файл отдаём как один файл, а не как плейлист из одного: так
+        # ответ для обычного поста остаётся ровно таким, каким был до появления
+        # каруселей, и весь код ниже по течению не замечает разницы.
+        if len(entries) == 1:
+            return {**entries[0], 'id': code}
+
+        return {
+            **common,
+            '_type': 'playlist',
+            'id': code,
+            'entries': entries,
         }
 
     # ------------------------------------------------------------------ #
@@ -303,9 +403,10 @@ class ThreadsIE(InfoExtractor):
                     if info:
                         self._note_primary(True)
                         return info
-                    # Пост нашёлся, но видео в нём нет — повторять бессмысленно.
+                    # Пост нашёлся, но медиа в нём нет — повторять бессмысленно.
                     self._note_primary(True)
-                    raise ExtractorError('В этом посте Threads нет видео', expected=True)
+                    raise ExtractorError(
+                        'В этом посте Threads нет ни видео, ни фотографий', expected=True)
             if attempt < attempts:
                 time.sleep(_RETRY_SLEEP)
         self._note_primary(False)
@@ -346,7 +447,8 @@ class ThreadsIE(InfoExtractor):
         # разбираем его тем же кодом — расхождению в полях взяться неоткуда.
         info = self._info_from_node(node, node.get('code') or code, url)
         if not info:
-            raise ExtractorError('В этом посте Threads нет видео', expected=True)
+            raise ExtractorError(
+                'В этом посте Threads нет ни видео, ни фотографий', expected=True)
         return info
 
     # ------------------------------------------------------------------ #

@@ -108,6 +108,10 @@ function touchIdle() {
  * отдаёт 404, а молча показывает посторонние — без сверки резолвер вернул бы
  * чужое видео. На странице поста рядом лежат ещё и «похожие треды», так что
  * взять первое попавшееся видео тем более нельзя.
+ *
+ * Совпадений по коду в разметке несколько, и они разной полноты: у карусели
+ * рядом лежит «худой» двойник с одной обложкой. Первый попавшийся брать нельзя —
+ * отдали бы одну картинку вместо шести файлов, поэтому выбираем содержательного.
  */
 function extractInPage(code) {
   // Ссылка «Поделиться» кода поста не содержит — достаём его из og:url.
@@ -121,15 +125,25 @@ function extractInPage(code) {
     code = m[2];
   }
 
+  // Насколько узел похож на полные данные поста. Пустой image_versions2 в
+  // расчёт не идёт: текстовые посты несут его без единого кандидата, и по
+  // одному его наличию запись без картинок сошла бы за фотографию.
+  const richness = (obj) => {
+    if (obj.carousel_media && obj.carousel_media.length) return 3;
+    if (obj.video_versions && obj.video_versions.length) return 2;
+    const candidates = obj.image_versions2 && obj.image_versions2.candidates;
+    if (candidates && candidates.length) return 1;
+    return 0;
+  };
+
   const found = [];
   const walk = (obj) => {
-    if (found.length) return;
     if (Array.isArray(obj)) {
       obj.forEach(walk);
       return;
     }
     if (obj && typeof obj === 'object') {
-      if (obj.code === code && (obj.video_versions || obj.carousel_media)) {
+      if (obj.code === code && richness(obj) > 0) {
         found.push(obj);
         return;
       }
@@ -145,6 +159,7 @@ function extractInPage(code) {
     }
     if (found.length) break;
   }
+  found.sort((a, b) => richness(b) - richness(a));
 
   // Заглушка, которую Threads показывает вместо поста, когда решил нам его не
   // отдавать. Отличить её важно: без этого каждая неудачная попытка досиживала
@@ -156,10 +171,23 @@ function extractInPage(code) {
   return { node: found[0] || null, gone };
 }
 
-function hasVideo(node) {
+// Скачиваем не только видео: пост может нести фотографии, в том числе вперемешку
+// с роликами. Признак «данные приехали» и признак «отдавать нечего» считаем по
+// любому медиа, иначе пост из одних снимков досиживал бы весь таймаут ожидания,
+// а потом объявлялся пустым.
+function hasMedia(node) {
   if (!node) return false;
-  if (node.video_versions && node.video_versions.length) return true;
-  return (node.carousel_media || []).some((m) => m && m.video_versions && m.video_versions.length);
+  const own = (item) =>
+    Boolean(
+      (item.video_versions && item.video_versions.length) ||
+        (item.image_versions2 &&
+          item.image_versions2.candidates &&
+          item.image_versions2.candidates.length),
+    );
+  if (node.carousel_media && node.carousel_media.length) {
+    return node.carousel_media.some((m) => m && own(m));
+  }
+  return own(node);
 }
 
 async function resolve(rawUrl) {
@@ -246,10 +274,10 @@ async function attemptResolve(parsed, code) {
         lastEvalError = e.message;
         node = null;
       }
-      if (hasVideo(node)) break;
+      if (hasMedia(node)) break;
       await page.waitForTimeout(300);
     }
-    if (!hasVideo(node) && lastEvalError) {
+    if (!hasMedia(node) && lastEvalError) {
       console.error(`разбор страницы не удался: ${lastEvalError}`);
     }
   } catch (e) {
@@ -260,9 +288,9 @@ async function attemptResolve(parsed, code) {
   }
 
   if (!node) return { ok: false, error: 'Пост не найден или недоступен' };
-  // fatal: пост открылся, видео в нём просто нет — повторы ничего не изменят.
-  if (!hasVideo(node)) {
-    return { ok: false, fatal: true, error: 'В этом посте Threads нет видео' };
+  // fatal: пост открылся, медиа в нём просто нет — повторы ничего не изменят.
+  if (!hasMedia(node)) {
+    return { ok: false, fatal: true, error: 'В этом посте Threads нет ни видео, ни фотографий' };
   }
   return { ok: true, node };
 }

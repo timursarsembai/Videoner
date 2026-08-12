@@ -504,8 +504,12 @@ export const VideoInfoSection = ({
                         onClick={() => {
                           // Последовательно, с паузой: браузеры глушат
                           // несколько загрузок, запущенных в один тик.
+                          // downloadFile ждёт голое имя файла и достраивает
+                          // адрес сам (см. lib/utils.ts). Готовый путь
+                          // /downloads/... превратился бы в
+                          // .../download//downloads/... и вёл бы в никуда.
                           postItems.forEach((item, index) => {
-                            setTimeout(() => downloadFile(item.downloadUrl), index * 800);
+                            setTimeout(() => downloadFile(item.filename), index * 800);
                           });
                         }}
                       >
@@ -532,7 +536,7 @@ export const VideoInfoSection = ({
                             size="sm"
                             variant="ghost"
                             className="gap-1.5"
-                            onClick={() => downloadFile(item.downloadUrl)}
+                            onClick={() => downloadFile(item.filename)}
                           >
                             <Download className="h-3.5 w-3.5" />
                             {t("video.downloadOne")}

@@ -41,6 +41,7 @@ export async function publishLink(
   title: string,
   thumbnail: string | undefined,
   lang: Lang,
+  coverFileId?: string,
 ) {
   if (!SHARE_CHANNEL) return;
   if (published.has(url)) return;
@@ -49,6 +50,15 @@ export async function publishLink(
   const caption = messages[lang].channelPost(title, url);
 
   try {
+    // У поста из фотографий обложка площадки — это сам снимок в полном
+    // качестве, и публиковать его значило бы выкладывать в канал материал, а не
+    // ссылку на него. Поэтому для таких постов бот передаёт сюда уменьшенный
+    // вариант, который вернул сам Telegram, приняв снимок, — по file_id, без
+    // повторной загрузки.
+    if (coverFileId) {
+      await api.sendPhoto(SHARE_CHANNEL, coverFileId, { caption });
+      return;
+    }
     if (thumbnail) {
       // Скачиваем и заливаем сами, а не передаём ссылку на CDN строкой:
       // обложки Instagram и Threads лежат за подписанными адресами fbcdn,

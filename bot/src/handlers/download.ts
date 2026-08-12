@@ -39,6 +39,30 @@ function sessionKey(chatId: number, messageId: number): string {
 // Предел Telegram на один альбом.
 const ALBUM_LIMIT = 10;
 
+// Обложка для канала — намеренно не самый крупный вариант.
+//
+// У фотографии превью и есть само содержимое: обложкой поста из снимков
+// оказывался исходник в полном качестве, и в канал уходил он, хотя туда мы
+// публикуем ссылку с превью, а не сам материал (см. publishLink). Размеры
+// вариантов у Instagram не заполнены вовсе, так что выбрать вариант поменьше по
+// данным площадки нельзя — зато Telegram, приняв снимок, сам возвращает
+// лесенку своих размеров, и вот из неё выбор надёжен на любой площадке.
+const COVER_MAX_SIDE = 800;
+
+function previewFileId(
+  sizes: readonly { file_id: string; width: number; height: number }[] | undefined,
+): string | undefined {
+  if (!sizes?.length) return undefined;
+  const area = (s: { width: number; height: number }) => s.width * s.height;
+  const fits = sizes.filter((s) => Math.max(s.width, s.height) <= COVER_MAX_SIDE);
+  // Из уместившихся берём самый крупный. Не уместился ни один — самый мелкий из
+  // всех: обложка должна остаться превью, даже если лесенка начинается высоко.
+  const chosen = fits.length
+    ? fits.reduce((best, s) => (area(s) > area(best) ? s : best))
+    : sizes.reduce((best, s) => (area(s) < area(best) ? s : best));
+  return chosen.file_id;
+}
+
 const sessions = new Map<
   string,
   { url: string; title: string; thumbnail?: string; videoQualities: string[]; createdAt: number }
@@ -95,17 +119,23 @@ async function performDownload(
     editMessageText: (messageId: number, text: string) => Promise<unknown>;
     replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) => Promise<unknown>;
     replyWithAudio: (file: InputFile, caption: string) => Promise<unknown>;
+    // Снимок отдаём именно фотографией: пост может состоять из одного фото, и
+    // отправлять его видео нельзя — Telegram получил бы jpeg под видом ролика.
+    replyWithPhoto: (file: InputFile, caption: string) => Promise<string | undefined>;
     deleteMessage: (messageId: number) => Promise<unknown>;
     publishToChannel: (
       url: string,
       title: string,
       thumbnail: string | undefined,
       lang: Lang,
+      coverFileId?: string,
     ) => Promise<unknown>;
+    // Возвращает file_id уменьшенного варианта первого снимка — обложку для
+    // канала (см. publishToChannel).
     replyWithAlbum: (
       items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
       caption: string,
-    ) => Promise<unknown>;
+    ) => Promise<string | undefined>;
   },
   dlMeta: DownloadMeta,
   title: string,
@@ -148,9 +178,9 @@ async function performDownload(
     const items = status.items ?? [];
     if (items.length > 1) {
       await send.editMessageText(msg.message_id, m.sendingAlbum(items.length));
-      await send.replyWithAlbum(items, m.fileCaption(title, url));
+      const cover = await send.replyWithAlbum(items, m.fileCaption(title, url));
       await send.deleteMessage(msg.message_id);
-      await send.publishToChannel(url, title, thumbnail, lang);
+      await send.publishToChannel(url, title, thumbnail, lang, cover);
       return;
     }
 
@@ -172,6 +202,16 @@ async function performDownload(
 
     await send.editMessageText(msg.message_id, m.sendingFile);
     const file = new InputFile(new URL(fileUrl));
+    // Пост из ОДНОГО снимка сюда же и попадает — items длиной в единицу
+    // альбомом не отправляется. Кнопка при этом нажата видеокачества (другой у
+    // такого поста нет), поэтому решает вид файла, а не kind: иначе jpeg уходил
+    // бы в sendVideo.
+    if (items[0]?.kind === "PHOTO") {
+      const cover = await send.replyWithPhoto(file, m.fileCaption(title, url));
+      await send.deleteMessage(msg.message_id);
+      await send.publishToChannel(url, title, thumbnail, lang, cover);
+      return;
+    }
     if (kind === "v") {
       // Размеры передаём явно: без них Telegram на iOS показывает вертикальное
       // видео сплющенным в квадрат (Desktop читает поток сам и рисует верно).
@@ -311,9 +351,18 @@ export function registerDownloadHandlers(bot: Bot) {
         ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims }),
       replyWithAudio: (file: InputFile, caption: string) =>
         ctx.replyWithAudio(file, { caption }),
+      replyWithPhoto: async (file: InputFile, caption: string) => {
+        const sent = await ctx.replyWithPhoto(file, { caption });
+        return previewFileId(sent.photo);
+      },
       deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
-      publishToChannel: (u: string, t: string, th: string | undefined, l: Lang) =>
-        publishLink(ctx.api, u, t, th, l),
+      publishToChannel: (
+        u: string,
+        t: string,
+        th: string | undefined,
+        l: Lang,
+        cover?: string,
+      ) => publishLink(ctx.api, u, t, th, l, cover),
       replyWithAlbum: async (
         items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
         caption: string,
@@ -322,6 +371,7 @@ export function registerDownloadHandlers(bot: Bot) {
         // карусели Instagram их бывает до двадцати — режем на части. Подпись
         // ставим только на первый элемент первого альбома: на каждом она
         // повторялась бы под каждым файлом.
+        let cover: string | undefined;
         for (let start = 0; start < items.length; start += ALBUM_LIMIT) {
           const chunk = items.slice(start, start + ALBUM_LIMIT);
           const media = chunk.map((item, index) => {
@@ -340,8 +390,14 @@ export function registerDownloadHandlers(bot: Bot) {
                   supports_streaming: true,
                 });
           });
-          await ctx.replyWithMediaGroup(media);
+          const sent = await ctx.replyWithMediaGroup(media);
+          // Обложку для канала берём у первого снимка первого альбома — и
+          // именно у той, что вернул Telegram, а не у исходника (см. ниже).
+          if (start === 0 && items[0]?.kind === "PHOTO") {
+            cover = previewFileId(sent[0]?.photo);
+          }
         }
+        return cover;
       },
     };
     await performDownload(

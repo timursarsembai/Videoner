@@ -498,13 +498,29 @@ export class DownloadService {
   // Файлы, которые реально появились на диске. Имя базы содержит метку
   // времени (см. getFileName), поэтому префикс уникален и чужие файлы под
   // выборку не попадут.
-  private collectPlaylistFiles(downloadDir: string, fileName: string): string[] {
+  private collectPlaylistFiles(
+    downloadDir: string,
+    fileName: string,
+  ): { name: string; position: number }[] {
     const dot = fileName.lastIndexOf('.');
     const base = dot > 0 ? fileName.slice(0, dot) : fileName;
+    const ext = dot > 0 ? fileName.slice(dot + 1) : 'mp4';
+    // Маска строгая: «база-НОМЕР.расширение» и ничего больше. Простого
+    // startsWith(base + '-') мало — под него попадают и промежуточные файлы
+    // слияния вида «база-01.f137.mp4», которые yt-dlp иногда оставляет, если
+    // элемент не докачался.
+    const pattern = new RegExp(
+      `^${base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}-(\\d+)\\.${ext}$`,
+    );
     return fs
       .readdirSync(downloadDir)
-      .filter((name) => name.startsWith(`${base}-`))
-      .sort();
+      .map((name) => ({ name, match: pattern.exec(name) }))
+      .filter((entry) => entry.match)
+      // Номер берём из имени, а не из порядка в массиве: если какой-то элемент
+      // поста не скачался (--ignore-errors), на диске окажутся, например, 01 и
+      // 03 — и позиции должны остаться теми же, что у площадки.
+      .map((entry) => ({ name: entry.name, position: Number(entry.match![1]) }))
+      .sort((a, b) => a.position - b.position);
   }
 
   // Завершение скачивания карусели. Первый файл дублируется в поля самого
@@ -515,6 +531,7 @@ export class DownloadService {
     downloadDir: string,
     fileName: string,
     progressSubject: Subject<ProgressType | Error>,
+    kind: 'VIDEO' | 'AUDIO' = 'VIDEO',
   ) {
     const files = this.collectPlaylistFiles(downloadDir, fileName);
     if (!files.length) {
@@ -522,13 +539,13 @@ export class DownloadService {
     }
 
     const items = [];
-    for (const [index, name] of files.entries()) {
-      const filePath = join(downloadDir, name);
+    for (const file of files) {
+      const filePath = join(downloadDir, file.name);
       const dims = await this.probeVideoDimensions(filePath);
       items.push({
-        position: index + 1,
-        filename: name,
-        kind: 'VIDEO' as const,
+        position: file.position,
+        filename: file.name,
+        kind,
         width: dims.width ?? null,
         height: dims.height ?? null,
         duration: dims.duration ?? null,
@@ -541,6 +558,8 @@ export class DownloadService {
     });
 
     const first = items[0];
+    // Событию complete нужно настоящее имя, а не шаблон (см. setFilename).
+    VideoDownload.setFilename(downloadId, first.filename);
     await this.updateDownloadStatus(downloadId, {
       status: DownloadStatus.COMPLETED,
       filename: first.filename,
@@ -824,7 +843,14 @@ export class DownloadService {
       const info = await this.checkDurationLimit(url, req);
 
       const downloadDir = this.ensureDownloadDirectory();
-      const fileName = getFileName(info.title, quality, extension);
+      // Пост из нескольких файлов и в аудио остаётся несколькими файлами.
+      // Без шаблона с номером yt-dlp писал бы все дорожки в ОДНО имя, и от
+      // карусели оставалась бы последняя — молча, без всякой ошибки.
+      const multi = isPlaylist(info);
+      const baseFileName = getFileName(info.title, quality, extension);
+      const fileName = multi
+        ? this.playlistTemplate(baseFileName)
+        : baseFileName;
 
       // См. downloadVideo() — та же TOCTOU-защита дневного лимита.
       const createDownloadRecord = async () => {
@@ -833,7 +859,7 @@ export class DownloadService {
         return this.createDownload({
           originalUrl: url,
           downloader: this.resolveDownloader((req as any).platform),
-          filename: fileName,
+          filename: baseFileName,
           apiKeyId: (req as any).apiKey?.id,
           botUserId,
           source: meta.source,
@@ -849,7 +875,9 @@ export class DownloadService {
       const progressSubject = this.createProgressSubject(
         download.id,
         extension || 'mp3',
-        fileName,
+        // Не fileName: у карусели это шаблон с %(playlist_index)02d.
+        // Настоящее имя первого файла подставит completePlaylistDownload.
+        baseFileName,
       );
 
       console.log('start download', {
@@ -868,21 +896,32 @@ export class DownloadService {
         filter: 'audioonly',
         quality: quality,
         format: extension,
+        playlist: multi,
         output: {
           outDir: downloadDir,
           fileName: fileName,
         },
-      });
+      } as any);
 
       this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
         console.log('Download complete');
         try {
-          await this.completeDownload(
-            download.id,
-            `/downloads/${fileName}`,
-            join(downloadDir, fileName),
-            progressSubject,
-          );
+          if (multi) {
+            await this.completePlaylistDownload(
+              download.id,
+              downloadDir,
+              baseFileName,
+              progressSubject,
+              'AUDIO',
+            );
+          } else {
+            await this.completeDownload(
+              download.id,
+              `/downloads/${baseFileName}`,
+              join(downloadDir, baseFileName),
+              progressSubject,
+            );
+          }
         } catch (error) {
           await this.markDownloadFailed(download.id, error, progressSubject);
         }
@@ -891,7 +930,10 @@ export class DownloadService {
       return {
         message: 'Download started',
         downloadId: download.id,
-        fileName: fileName,
+        // Базовое имя, а не шаблон: настоящие имена файлов карусели
+        // потребитель берёт из items в /download/:id/status.
+        fileName: baseFileName,
+        itemCount: playlistEntries(info).length,
       };
     } catch (error) {
       if (

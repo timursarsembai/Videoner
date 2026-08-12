@@ -172,6 +172,17 @@ export class VideoDownload {
     }
   }
 
+  // Настоящее имя файла становится известно только после скачивания, если
+  // пост состоял из нескольких файлов: номер к имени подставляет yt-dlp.
+  // Без этого событие complete уносило бы на сайт базовое имя, которого на
+  // диске нет, и одиночная карусель скачивалась бы по мёртвой ссылке.
+  static setFilename(downloadId: string, filename: string) {
+    const info = this.downloadInfo.get(downloadId);
+    if (info) {
+      this.downloadInfo.set(downloadId, { ...info, filename });
+    }
+  }
+
   static getProgressSubject(
     downloadId: string,
   ): Subject<ProgressType | Error> | undefined {

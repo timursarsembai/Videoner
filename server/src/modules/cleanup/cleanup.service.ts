@@ -53,7 +53,12 @@ export class CleanupService {
         try {
           const stats = await stat(filePath);
           const fileAge = Date.now() - stats.mtime.getTime();
-          const isOlder = fileAge > 1 * 60 * 60 * 1000; // 1 hour in milliseconds
+          // Полчаса, а не час: пост из карусели занимает на диске столько же
+          // места, сколько раньше занимал десяток скачиваний, и держать всё это
+          // лишний час незачем. Цикл идёт каждые 30 минут, так что файл живёт
+          // от 30 до 60 минут — боту это безразлично (он отдаёт файл сразу),
+          // а на сайте у человека остаётся полчаса гарантированно.
+          const isOlder = fileAge > 30 * 60 * 1000;
 
           if (isOlder) {
             await unlink(filePath);

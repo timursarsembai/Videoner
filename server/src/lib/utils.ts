@@ -1,8 +1,30 @@
+// Имя файла собирается из ЧУЖИХ данных: заголовок приходит от площадки, а
+// quality и extension — прямо из тела запроса. Заголовок чистился и раньше, а
+// два других поля подставлялись как есть, хотя проверяются они только zod-схемой
+// с `quality: z.string()` — то есть не проверяются вовсе (декораторы @IsEnum в
+// DTO не работают: глобального ValidationPipe в приложении нет).
+//
+// Через это имя уходило в -o для yt-dlp, и `quality: "../../../../cookies/X"`
+// записывал файл ВНЕ каталога загрузок — воспроизведено на staging 19.08.2026,
+// файл лёг в примонтированный с хоста server/cookies/. Дотянуться туда мог любой
+// посетитель сайта: прокси web-а форвардит POST download/video, подставляя
+// админский ключ на своей стороне, а тело запроса задаёт клиент.
+//
+// Поэтому здесь тот же фильтр, что и для заголовка: всё, кроме букв и цифр,
+// превращается в подчёркивание. Разделители пути, точки и «..» после этого не
+// выживают в принципе. Вторая, независимая проверка — в getOutputPath()
+// (ytdlp-process.service.ts): она отбивает любое имя с разделителем пути, от
+// какого бы вызывающего оно ни пришло.
+const sanitizeNamePart = (value?: string) =>
+  (value ?? '').replace(/[^a-zA-Z0-9]/g, '_').replace(/_{2,}/g, '_');
+
 export const getFileName = (title: string, quality?: string, extension?: string) => {
   const timestamp = new Date().getTime();
   let cleanTitle = title.replace(/[^a-zA-Z0-9]/g, '_');
   cleanTitle = cleanTitle.replace(/_{2,}/g, '_').slice(0, 100);
-  return `${cleanTitle}_${quality}_${timestamp}.${extension}`;
+  // Расширение остаётся отдельным куском после точки, поэтому чистим и его:
+  // «mp4/../../x» иначе снова дало бы путь.
+  return `${cleanTitle}_${sanitizeNamePart(quality)}_${timestamp}.${sanitizeNamePart(extension)}`;
 };
 
 export const PROGRESS_STRING =

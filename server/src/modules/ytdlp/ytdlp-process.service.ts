@@ -489,6 +489,24 @@ export class YtdlpProcessService implements OnModuleInit {
       }
 
       if (output.fileName) {
+        // Имя файла — ИМЯ, а не путь. Проверка на расширение это не ловила:
+        // «X_../../../../cookies/Y_123.mp4» её проходит, а path.join ниже
+        // послушно уводит запись за пределы каталога загрузок. Ровно так на
+        // staging 19.08.2026 файл оказался в примонтированном с хоста
+        // server/cookies/ — через поле quality, которое подставляется в имя
+        // (см. getFileName в lib/utils.ts) и не проверяется ничем: zod берёт
+        // его как строку, а декораторы @IsEnum в DTO не работают, потому что
+        // глобального ValidationPipe в приложении нет.
+        //
+        // Здесь запрет стоит намеренно ДО расширения и независимо от того, кто
+        // вызвал: getFileName чистит свои куски сам, но это единственное место,
+        // через которое имя попадает в -o, и последним рубежом должно быть оно.
+        if (
+          output.fileName !== path.basename(output.fileName) ||
+          output.fileName.includes('\\')
+        ) {
+          throw new Error('File name not valid');
+        }
         if (extReg.test(output.fileName)) {
           newObj.filename = output.fileName;
         } else {

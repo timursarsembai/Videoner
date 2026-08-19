@@ -14,41 +14,36 @@
 # забыть ключ уже нельзя.
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
+# Путь к каталогу скриптов запоминаем ДО cd — иначе `. $(dirname $0)/lib-...`
+# ниже не найдёт файл при запуске изнутри самого scripts/ (там dirname
+# даёт ".", а мы к тому моменту уже поднялись на уровень выше).
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR/.."
 
 if [ $# -eq 0 ]; then
   echo "Usage: $0 <service> [service...]   (e.g. $0 web  or  $0 server web bot)" >&2
   exit 1
 fi
 
-# Кэш docker buildx (драйвер docker-container) живёт в СВОЁМ отдельном volume,
-# отдельно от обычного docker image store — docker image prune его не трогает
-# вообще. Инцидент 2026-07-23: за один день частых пересборок он вырос до
-# ~36 ГБ, диск ушёл с 30 до 68 ГБ занятых. Чистим здесь автоматически, но
-# только когда кэш реально большой — а не на каждый деплой, иначе теряется
-# смысл кэширования между сборками (следующая сборка станет намного медленнее).
-BUILD_CACHE_PRUNE_THRESHOLD_GB="${BUILD_CACHE_PRUNE_THRESHOLD_GB:-20}"
-
-maybe_prune_build_cache() {
-  local size_str size_gb
-  size_str=$(docker system df --format '{{.Type}}|{{.Size}}' 2>/dev/null | awk -F'|' '$1=="Build Cache"{print $2}')
-  size_gb=$(python3 -c "
-import re
-m = re.match(r'([\d.]+)\s*([KMGT]?B)', '${size_str:-0B}')
-val, unit = (float(m.group(1)), m.group(2)) if m else (0.0, 'B')
-mult = {'B':1,'KB':1024,'MB':1024**2,'GB':1024**3,'TB':1024**4}[unit]
-print(int(val * mult / 1024**3))
-" 2>/dev/null || echo 0)
-
-  if [ "${size_gb:-0}" -ge "$BUILD_CACHE_PRUNE_THRESHOLD_GB" ]; then
-    echo "==> Кэш сборки (docker buildx) занимает ${size_gb} ГБ (порог ${BUILD_CACHE_PRUNE_THRESHOLD_GB} ГБ) — чищу..."
-    docker buildx prune -af >/dev/null 2>&1 || true
-    docker builder prune -af >/dev/null 2>&1 || true
-    echo "    ✓ Кэш сборки очищен"
+# Общие куски вынесены в scripts/lib-*.sh. Проверяем существование явно: под
+# `set -euo pipefail` отсутствующий файл роняет деплой невнятным «No such file»
+# ещё до первой сборки, а случиться это может буднично — например, если
+# deploy.sh закоммитили, а библиотеку забыли добавить в git.
+for lib in lib-buildcache lib-secrets; do
+  if [ ! -f "$SCRIPT_DIR/$lib.sh" ]; then
+    echo "!! Не найден $SCRIPT_DIR/$lib.sh — он нужен deploy.sh; проверь, что файл не потерялся при git pull" >&2
+    exit 1
   fi
-}
+  . "$SCRIPT_DIR/$lib.sh"
+done
 
+# Кэш buildx общий на всю машину, чистим по порогу — подробности в
+# scripts/lib-buildcache.sh.
 maybe_prune_build_cache
+
+# Секреты подтягиваются из Infisical (проект videoner, окружение prod).
+# Подробности и поведение при недоступности — в scripts/lib-secrets.sh.
+fetch_secrets prod .env
 
 # Compose v2 (плагин `docker compose`), а не v1 (`docker-compose`). Переезд
 # 05.08.2026: v1 1.29.2 несовместим с Docker Engine 29 — тот убрал поле

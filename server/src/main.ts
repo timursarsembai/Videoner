@@ -3,6 +3,7 @@ import { AppModule } from './modules/app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Request } from 'express';
+import { ShadowValidationPipe } from './lib/shadow-validation.pipe';
 
 // Без этого необработанный reject где угодно в приложении (например,
 // fs.unlinkSync внутри async-колбэка RxJS-подписки в download.service.ts,
@@ -21,6 +22,19 @@ process.on('uncaughtException', (error) => {
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Режим наблюдения за валидацией входа. По умолчанию ВЫКЛЮЧЕН: без явного
+  // VALIDATION_MODE=shadow пайп не ставится вовсе, и приложение работает ровно
+  // как раньше. В режиме наблюдения он ничего не отвергает — только пишет, что
+  // отверг бы (см. lib/shadow-validation.pipe.ts и modules/validation-report).
+  //
+  // Строгого режима здесь пока НЕТ намеренно: включать его можно только по
+  // итогам наблюдения за живым трафиком, иначе перестанут приниматься рабочие
+  // запросы, форму которых описания DTO сейчас передают неточно.
+  if (process.env.VALIDATION_MODE === 'shadow') {
+    app.useGlobalPipes(new ShadowValidationPipe());
+    console.log('[ShadowValidation] режим наблюдения включён: запросы не отвергаются');
+  }
 
   // За нами ровно один прокси-хоп — Nginx Proxy Manager (proxy-network в
   // docker-compose.prod.yml). Без этого req.ip всегда резолвился во внутренний

@@ -1,16 +1,22 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
 
-// Описание формы запроса и Swagger-документация, НЕ проверка входа: декораторы
-// class-validator без ValidationPipe (его в приложении нет) не выполняются,
-// поэтому убраны 19.08.2026. Ручка целиком под @AdminOnly() —
-// см. AnalyticsController.
+// Правила ниже работают ТОЛЬКО в режиме наблюдения (VALIDATION_MODE=shadow) —
+// см. lib/shadow-validation.pipe.ts. Ручка целиком под @AdminOnly(), это и есть
+// её настоящая защита.
+
 export class GrantUnlimitedDto {
   @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt()
   telegramId?: number;
 
   @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
   username?: string;
 
   @ApiProperty()
+  @IsBoolean()
   isUnlimited: boolean;
 }

@@ -57,6 +57,9 @@ services:
       # Резолвер Threads берём из прод-стека — он в общей сети internal, как и
       # bgutil-provider. Второй Chromium ради staging поднимать незачем.
       THREADS_RESOLVER_URL: http://threads-resolver:4417
+      # Режим наблюдения за валидацией — здесь он нужен, чтобы проверять сам
+      # механизм, не трогая прод. Ничего не отвергает (см. прод-compose).
+      VALIDATION_MODE: shadow
     volumes:
       - downloads_staging:/app/dist/downloads
       # Каталог, а не файл — см. подробный комментарий в docker-compose.prod.yml

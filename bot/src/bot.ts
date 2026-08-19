@@ -5,6 +5,7 @@ import { API_KEY, BOT_API_ROOT } from "./helpers.js";
 import { registerAdminHandlers } from "./handlers/admin.js";
 import { registerMembershipHandlers } from "./handlers/membership.js";
 import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown } from "./handlers/download.js";
+import { registerInlineHandlers } from "./handlers/inline.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -33,6 +34,10 @@ bot.command("start", async (ctx) => {
 });
 
 registerAdminHandlers(bot);
+// Инлайн-режим («@бот <ссылка>» в любом чате). Слушает СВОИ типы обновлений
+// (inline_query, chosen_inline_result), с обработчиками сообщений и коллбэков
+// не пересекается, поэтому порядок регистрации здесь роли не играет.
+registerInlineHandlers(bot);
 // ДО registerDownloadHandlers: там generic bot.on("callback_query:data", ...),
 // который иначе перехватил бы и sub|check — grammY останавливается на первом
 // совпадении, а generic-обработчик ждёт сессию скачивания и отвечал бы

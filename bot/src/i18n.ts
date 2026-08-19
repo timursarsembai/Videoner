@@ -21,6 +21,15 @@ interface Messages {
   sendingAlbum: (count: number) => string;
   failedPrefix: string;
   fileCaption: (title: string, sourceUrl: string) => string;
+  // Инлайн-режим: «@бот <ссылка>» в любом чате (см. handlers/inline.ts).
+  inlineHintButton: string;
+  inlineResultTitle: string;
+  inlineResultDescription: string;
+  inlinePlaceholder: string;
+  inlineOpenBot: string;
+  inlineOnlySingleVideo: string;
+  inlineSubscribeRequired: (channel: string) => string;
+  inlineRateLimited: string;
   subscribeRequired: (channel: string) => string;
   openChannelButton: string;
   checkSubscriptionButton: string;
@@ -84,6 +93,17 @@ const ru: Messages = {
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
   errorNoVideoContent: "По этой ссылке нет видео для скачивания — похоже, пост содержит только фото.",
   errorRateLimited: "Слишком много ссылок подряд — подожди немного и пришли снова.",
+  inlineHintButton: "Отправьте ссылку боту",
+  inlineResultTitle: "⬇️ Скачать видео",
+  inlineResultDescription: "Видео придёт прямо в этот чат",
+  inlinePlaceholder: "⏬ Скачиваю видео, это может занять пару минут...",
+  inlineOpenBot: "Открыть бота",
+  inlineOnlySingleVideo:
+    "В этом режиме отправляется одно видео. Пост из нескольких файлов или фотографии — пришлите ссылку боту в личные сообщения.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Чтобы скачивать, подпишитесь на ${channel} и попробуйте снова.`,
+  inlineRateLimited: "Слишком много запросов подряд. Подождите минуту и попробуйте снова.",
+
 };
 
 const en: Messages = {
@@ -131,6 +151,17 @@ const en: Messages = {
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
   errorNoVideoContent: "This link doesn't have a video to download — the post appears to be photo-only.",
   errorRateLimited: "Too many links in a row — wait a bit and send it again.",
+  inlineHintButton: "Send a link to the bot",
+  inlineResultTitle: "⬇️ Download video",
+  inlineResultDescription: "The video will be posted right in this chat",
+  inlinePlaceholder: "⏬ Downloading, this may take a couple of minutes...",
+  inlineOpenBot: "Open the bot",
+  inlineOnlySingleVideo:
+    "This mode sends a single video. For multi-file posts or photos, send the link to the bot in a private chat.",
+  inlineSubscribeRequired: (channel: string) =>
+    `To download, subscribe to ${channel} and try again.`,
+  inlineRateLimited: "Too many requests in a row. Wait a minute and try again.",
+
 };
 
 export const messages: Record<Lang, Messages> = { ru, en };

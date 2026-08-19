@@ -75,6 +75,11 @@ services:
         NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
         NEXT_PUBLIC_TELEGRAM_BOT_USERNAME: ${NEXT_PUBLIC_TELEGRAM_BOT_USERNAME}
         NEXT_PUBLIC_TELEGRAM_BOT_ID: ${NEXT_PUBLIC_TELEGRAM_BOT_ID}
+        # Объявлен, но НАМЕРЕННО без значения в .env.staging: счётчик Метрики
+        # один на прод, и стейдж не должен подмешивать в него свои визиты. Сам
+        # build-arg нужен, иначе проверка деплоя справедливо ругается, что
+        # переменная используется в коде web/, но не передаётся в сборку.
+        NEXT_PUBLIC_YANDEX_METRIKA_ID: ${NEXT_PUBLIC_YANDEX_METRIKA_ID:-}
     container_name: videoner-web-staging
     restart: unless-stopped
     environment:

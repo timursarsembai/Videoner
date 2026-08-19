@@ -1,4 +1,3 @@
-import { downloaders } from "@/config/downloaders";
 import { Platform } from "@/types";
 
 export const isValidUrl = (url: string) => {
@@ -340,14 +339,34 @@ export const isThreadsUrl = (url: string) => {
   }
 };
 
+// Список площадок здесь, а НЕ через config/downloaders, хотя порядок тот же.
+// Причина не в красоте: downloaders импортирует валидаторы отсюда, а detectPlatform
+// импортировал downloaders — получался цикл. В сборке страниц он до поры сходил
+// с рук, а в edge-бандле middleware (ссылки-префиксы) развалился на инициализации
+// модуля: «ReferenceError: Cannot access 'e5' before initialization», 500 на
+// каждый запрос. Односторонняя зависимость (downloaders -> url) цикл убирает
+// совсем, а не маскирует.
+//
+// Порядок повторяет config/downloaders — он же порядок проверки на сервере
+// (server/src/validate/url.ts getPlatform). Площадки не пересекаются по доменам,
+// так что порядок влияет только на скорость, но пусть везде будет одинаковый.
+const PLATFORM_MATCHERS: readonly [Platform, (url: string) => boolean][] = [
+  ["youtube", isYoutubeUrl],
+  ["tiktok", isTikTokUrl],
+  ["instagram", isInstagramUrl],
+  ["threads", isThreadsUrl],
+  ["facebook", isFacebookUrl],
+  ["twitter", isTwitterUrl],
+  ["pinterest", isPinterestUrl],
+  ["vk", isVkUrl],
+  ["vimeo", isVimeoUrl],
+  ["rutube", isRutubeUrl],
+  ["okru", isOkRuUrl],
+];
+
 export const detectPlatform = (url: string): Platform | null => {
   if (!isValidUrl(url)) return null;
 
-  const downloader = downloaders.find((downloader) =>
-    downloader.isUrlValid(url)
-  );
-
-  if (downloader) return downloader.value;
-
-  return null;
+  const match = PLATFORM_MATCHERS.find(([, isUrlValid]) => isUrlValid(url));
+  return match ? match[0] : null;
 };

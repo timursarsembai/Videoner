@@ -1,14 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBoolean,
-  IsEnum,
-  IsInt,
-  IsNumber,
-  IsOptional,
-  IsString,
-  IsUrl,
-} from 'class-validator';
-import {
   VideoQuality,
   AudioQuality,
   VideoFormat,
@@ -16,23 +7,31 @@ import {
 } from '../../../types';
 import { DownloadSource } from '@prisma/client';
 
-// Опциональные поля контекста запроса (кто и откуда скачивает) — сейчас
-// без runtime-валидации, т.к. глобальный ValidationPipe в проекте не включён,
-// но типизация нужна для DownloadService и аналитики.
+// ВНИМАНИЕ: это описание ФОРМЫ запроса и источник Swagger-документации, а НЕ
+// проверка входа. Декораторы class-validator (@IsUrl/@IsEnum/@IsOptional) здесь
+// стояли, но не работали ни дня: они срабатывают только при включённом
+// ValidationPipe, а в приложении его нет (см. main.ts). Убраны 19.08.2026 —
+// именно из-за них поле quality считалось проверенным, хотя приходило любым, и
+// через него получался обход пути при записи файла (коммит d898657).
+//
+// Где вход проверяется на самом деле:
+//   url      — ValidUrlGuard (../auth/platform.guard) + parseAndValidateUrl;
+//   quality/extension/options — zod-схема DownloadOptionsSchema (validate/schema.ts),
+//              плюс санитизация при сборке имени файла (lib/utils.ts getFileName)
+//              и запрет пути в getOutputPath (ytdlp-process.service.ts);
+//   telegramId и лимиты — enforceWebLimits в DownloadService.
+//
+// Если когда-нибудь включать ValidationPipe — это отдельная задача с прогоном
+// ВСЕХ запросов бота и сайта: сейчас они шлют, например, quality "hd"/"sd" для
+// Facebook, и неаккуратное включение просто перестанет их принимать.
 class RequestMetaDto {
   @ApiProperty({ description: 'Telegram user id', required: false })
-  @IsOptional()
-  @IsNumber()
   telegramId?: number;
 
   @ApiProperty({ description: 'Telegram username', required: false })
-  @IsOptional()
-  @IsString()
   telegramUsername?: string;
 
   @ApiProperty({ description: 'Telegram client language code', required: false })
-  @IsOptional()
-  @IsString()
   telegramLanguageCode?: string;
 
   @ApiProperty({
@@ -40,8 +39,6 @@ class RequestMetaDto {
     enum: DownloadSource,
     required: false,
   })
-  @IsOptional()
-  @IsEnum(DownloadSource)
   source?: DownloadSource;
 }
 
@@ -50,7 +47,6 @@ export class DownloadVideoDto extends RequestMetaDto {
     description: 'YouTube video URL',
     example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
   })
-  @IsUrl({}, { message: 'Invalid YouTube URL' })
   url: string;
 
   @ApiProperty({
@@ -58,7 +54,6 @@ export class DownloadVideoDto extends RequestMetaDto {
     enum: VideoQuality,
     example: VideoQuality['1080p'],
   })
-  @IsEnum(VideoQuality)
   quality: VideoQuality;
 
   @ApiProperty({
@@ -67,8 +62,6 @@ export class DownloadVideoDto extends RequestMetaDto {
     example: VideoFormat.mp4,
     required: false,
   })
-  @IsOptional()
-  @IsEnum(VideoFormat)
   extension?: VideoFormat;
 }
 
@@ -77,7 +70,6 @@ export class DownloadAudioDto extends RequestMetaDto {
     description: 'YouTube video URL',
     example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
   })
-  @IsUrl({}, { message: 'Invalid YouTube URL' })
   url: string;
 
   @ApiProperty({
@@ -85,7 +77,6 @@ export class DownloadAudioDto extends RequestMetaDto {
     enum: AudioQuality,
     example: AudioQuality.best,
   })
-  @IsEnum(AudioQuality)
   quality: AudioQuality;
 
   @ApiProperty({
@@ -94,8 +85,6 @@ export class DownloadAudioDto extends RequestMetaDto {
     example: AudioFormat.mp3,
     required: false,
   })
-  @IsOptional()
-  @IsEnum(AudioFormat)
   extension?: AudioFormat;
 }
 

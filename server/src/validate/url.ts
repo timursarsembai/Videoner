@@ -135,6 +135,7 @@ export const isTikTokUrl = (url: string) => {
       'www.tiktok.com',
       'm.tiktok.com',
       'vm.tiktok.com',
+      'vt.tiktok.com',
     ];
 
     if (!validDomains.includes(hostname)) {
@@ -143,6 +144,19 @@ export const isTikTokUrl = (url: string) => {
 
     // Handle different URL patterns
     const path = urlObj.pathname.toLowerCase();
+
+    // Кнопка «Поделиться» в приложении отдаёт короткую ссылку вида
+    // vt.tiktok.com/ZSVA5W8ky/ или vm.tiktok.com/ZMxxxxxxx/ — голый код, без
+    // /t/ и без имени автора. Такие ссылки мы отвергали как невалидные ещё до
+    // сервера: домен vt.tiktok.com в списке отсутствовал вовсе, а путь не
+    // подходил ни под один шаблон ниже. То есть самый ходовой способ поделиться
+    // видео с телефона у нас не работал (найдено 19.08.2026). yt-dlp такие
+    // ссылки разворачивает сам, от нас нужно только не отбросить их на входе.
+    const isShortHost =
+      hostname === 'vm.tiktok.com' || hostname === 'vt.tiktok.com';
+    if (isShortHost) {
+      return /^\/[\w.-]+\/?$/.test(path) && path.length > 1;
+    }
 
     // TikTok video pattern: /@username/video/1234567890
     if (path.match(/^\/@[\w.-]+\/video\/\d+/)) {

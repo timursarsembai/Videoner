@@ -16,8 +16,22 @@ WORKDIR /app
 # это Python-zipapp с shebang `#!/usr/bin/env python3` и без Python он не запускается.
 # Кладём в /app/bin — приложение ищет его именно там и не пытается качать сам.
 # Рядом yt-dlp.conf включает JS-рантайм node (свежему yt-dlp он нужен для YouTube; node уже в образе).
+# Канал сборок — НОЧНОЙ, и это осознанно. Площадки ломают экстракторы
+# постоянно, а в стабильный релиз правка попадает недели спустя: TikTok не
+# работал у нас 12 дней (7-19.08.2026, все ссылки, «Unexpected response from
+# webpage request») ровно потому, что стабильная 2026.07.04 предшествовала
+# изменению на их стороне, а в ночной исправление уже было. Проверено на
+# четырёх площадках: YouTube (с куками и прокси), Instagram, Facebook и Threads
+# ночная отдаёт то же самое, что стабильная, а TikTok — чинит.
+#
+# Версия ЗАКРЕПЛЕНА, а не latest: иначе состав бинаря менялся бы на каждом
+# деплое сам собой, и регрессия в ночной сборке приезжала бы в прод вместе с
+# правкой совсем другого места. Обновлять осознанно:
+#   ./scripts/deploy.sh server  (после смены версии здесь)
+# Свежие теги: https://github.com/yt-dlp/yt-dlp-nightly-builds/releases
+ARG YTDLP_VERSION=2026.08.18.122307
 RUN mkdir -p /app/bin \
-  && curl -fsSL -o /app/bin/yt-dlp https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux \
+  && curl -fsSL -o /app/bin/yt-dlp https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/download/${YTDLP_VERSION}/yt-dlp_linux \
   && chmod +x /app/bin/yt-dlp \
   && printf '%s\n' '--js-runtimes node' > /app/bin/yt-dlp.conf
 

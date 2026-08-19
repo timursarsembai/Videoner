@@ -11,6 +11,7 @@ import { InfoModule } from '../info/info.module';
 import { AlertModule } from '../alert/alert.module';
 import { AnalyticsModule } from '../analytics/analytics.module';
 import { NudgeModule } from '../nudge/nudge.module';
+import { ProxyHealthModule } from '../proxy-health/proxy-health.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { NudgeModule } from '../nudge/nudge.module';
     CleanupModule,
     InfoModule,
     NudgeModule,
+    ProxyHealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

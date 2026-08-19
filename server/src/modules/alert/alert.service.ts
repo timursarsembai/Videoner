@@ -36,6 +36,32 @@ export class AlertService {
     await this.notifyWithCooldown(platform, text);
   }
 
+  // ISP-прокси не отвечает. Шлётся БЕЗ кулдауна, в отличие от алертов выше:
+  // ограничитель здесь — само расписание проверки (раз в час), а кулдаун в час
+  // поверх часового крона глушил бы каждое второе сообщение (проверка занимает
+  // секунды, и соседние тики попадали бы то чуть внутрь окна, то чуть наружу).
+  async notifyProxyDown(
+    maskedProxyUrl: string,
+    probeUrl: string,
+    reason: string,
+  ) {
+    const text =
+      '🚨 ISP-прокси не отвечает.\n\n' +
+      `Проверка: GET ${probeUrl} через ${maskedProxyUrl}\n` +
+      `Причина: ${reason}\n\n` +
+      'Пока он лежит, YouTube не работает СОВСЕМ (он ходит через прокси всегда, ' +
+      'без попытки напрямую), а Threads не открывается по коротким ссылкам.\n\n' +
+      'Чаще всего это закончившаяся аренда. Порядок: купить новый прокси, ' +
+      'обновить YOUTUBE_PROXY_URL в Infisical в ОБОИХ окружениях (prod и staging), ' +
+      'затем ./scripts/deploy.sh server threads-resolver и ./scripts/deploy-staging.sh server.';
+
+    await this.send(text);
+  }
+
+  async notifyProxyRecovered(maskedProxyUrl: string) {
+    await this.send(`✅ ISP-прокси снова отвечает (${maskedProxyUrl}).`);
+  }
+
   private async notifyWithCooldown(key: string, text: string) {
     const now = Date.now();
     const lastAt = this.lastAlertAt.get(key) ?? 0;

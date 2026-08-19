@@ -1005,7 +1005,16 @@ export class DownloadService {
       // Без шаблона с номером yt-dlp писал бы все дорожки в ОДНО имя, и от
       // карусели оставалась бы последняя — молча, без всякой ошибки.
       const multi = isPlaylist(info);
-      const baseFileName = getFileName(info.title, quality, extension);
+      // Значение по умолчанию обязательно: поле extension необязательное, и без
+      // него имя файла собиралось с пустым хвостом («...123.»), а проверка
+      // имени такое отвергает — запрос падал с «File name not valid» вместо
+      // скачивания. У видео эту же дыру закрыли раньше жёстким 'mp4' (см.
+      // downloadVideo), аудио-путь остался с ней; поймано ревью 19.08.2026.
+      // 'mp3' — ровно то, во что yt-dlp конвертирует по умолчанию
+      // (parseDownloadOptions: format ? format : 'mp3'), так что имя и файл
+      // совпадают.
+      const audioExtension = extension || 'mp3';
+      const baseFileName = getFileName(info.title, quality, audioExtension);
       const fileName = multi
         ? this.playlistTemplate(baseFileName)
         : baseFileName;
@@ -1032,7 +1041,7 @@ export class DownloadService {
       // Create progress subject
       const progressSubject = this.createProgressSubject(
         download.id,
-        extension || 'mp3',
+        audioExtension,
         // Не fileName: у карусели это шаблон с %(playlist_index)02d.
         // Настоящее имя первого файла подставит completePlaylistDownload.
         baseFileName,
@@ -1040,7 +1049,7 @@ export class DownloadService {
 
       console.log('start download', {
         quality,
-        extension,
+        extension: audioExtension,
         fileName,
       });
 
@@ -1053,7 +1062,10 @@ export class DownloadService {
       const progress$ = await this.ytdlp.download(url, (req as any).platform, {
         filter: 'audioonly',
         quality: quality,
-        format: extension,
+        // Тот же audioExtension, что и в имени файла: иначе имя и реальный
+        // формат могли бы разойтись (yt-dlp по умолчанию делает mp3, а имя
+        // собиралось бы из пустого значения).
+        format: audioExtension,
         playlist: multi,
         output: {
           outDir: downloadDir,

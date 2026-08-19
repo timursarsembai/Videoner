@@ -87,7 +87,12 @@ export class DownloadVideoDto extends RequestMetaDto {
     required: false,
   })
   @IsOptional()
-  @IsIn(['avi', 'flv', 'mkv', 'mov', 'mp4', 'webm', 'ogg'])
+  // Список короче, чем в zod-схеме (там ещё avi и mov), и это не опечатка:
+  // getOutputPath принимает только расширения из extReg, а avi/mov в нём нет —
+  // запрос с ними проходит все проверки и умирает в конце на «File name not
+  // valid». Описывать здесь то, что заведомо не работает, значит однажды
+  // включить строгий режим и узаконить сломанный вход.
+  @IsIn(['mp4', 'mkv', 'webm', 'flv', 'ogg'])
   extension?: VideoFormat;
 }
 
@@ -114,7 +119,9 @@ export class DownloadAudioDto extends RequestMetaDto {
     required: false,
   })
   @IsOptional()
-  @IsIn(['aac', 'flac', 'mp3', 'm4a', 'opus', 'vorbis', 'wav', 'alac'])
+  // Без alac — по той же причине, что и у видео выше: zod его пропускает, а
+  // extReg в getOutputPath не знает, и скачивание падает на имени файла.
+  @IsIn(['mp3', 'm4a', 'aac', 'flac', 'opus', 'vorbis', 'wav'])
   extension?: AudioFormat;
 }
 

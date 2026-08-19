@@ -4,7 +4,7 @@ import {
   Logger,
   ValidationPipe,
 } from '@nestjs/common';
-import { getMetadataStorage } from 'class-validator';
+import { ValidationTypes, getMetadataStorage } from 'class-validator';
 
 // Режим наблюдения за валидацией входа.
 //
@@ -65,14 +65,22 @@ export class ShadowValidationPipe extends ValidationPipe {
     // дыра, с которой началась вся эта история: описание выглядело проверкой,
     // не будучи ею. Молчание в отчёте должно означать отсутствие трафика, а не
     // отсутствие правил.
-    if (
-      getMetadataStorage().getTargetValidationMetadatas(
+    // CONDITIONAL_VALIDATION отфильтровано намеренно: такую запись регистрирует
+    // @IsOptional(), который сам по себе НИЧЕГО не проверяет — он лишь говорит
+    // «поля может не быть». DTO, где из декораторов остался один @IsOptional,
+    // проходил бы super.transform() без единой претензии и попадал в отчёт как
+    // «полностью проверенный, ноль несовпадений» — то есть ровно тот класс
+    // самообмана, ради которого этот счётчик и написан.
+    const rules = getMetadataStorage()
+      .getTargetValidationMetadatas(
         metadata.metatype as Function,
         name,
         true,
         false,
-      ).length === 0
-    ) {
+      )
+      .filter((rule) => rule.type !== ValidationTypes.CONDITIONAL_VALIDATION);
+
+    if (rules.length === 0) {
       bump(name, 'norules');
       return value;
     }

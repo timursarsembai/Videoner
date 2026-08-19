@@ -25,8 +25,17 @@ export class ProxyHealthService {
   // логин с паролем (истёкшая аренда даёт 407). Через CONNECT-туннель для
   // https пришлось бы городить разбор ответа туннеля ради того же самого.
   // Ответ — сам выходной адрес, его удобно видеть в логе.
-  private readonly PROBE_URL =
-    process.env.PROXY_PROBE_URL || 'http://ifconfig.me/ip';
+  // ДВА адреса, а не один. Проверка ходит через прокси на чужой сервис, и его
+  // собственные неприятности — 429 при лимите запросов, редирект, страница
+  // блокировки — выглядели бы точно так же, как отказ прокси. Алерт при этом
+  // советует вполне конкретное и в таком случае неверное действие («купить
+  // новый прокси»), да ещё каждый час. Поэтому неоднозначный ответ первого
+  // адреса перепроверяется вторым, и только если оба молчат, речь идёт о
+  // прокси.
+  private readonly PROBE_URLS = [
+    process.env.PROXY_PROBE_URL || 'http://ifconfig.me/ip',
+    'http://icanhazip.com',
+  ];
 
   // Чтобы отправить «снова работает» ровно один раз, а не после каждой удачной
   // проверки. Живёт в памяти: после передеплоя сервера состояние теряется, и
@@ -53,18 +62,48 @@ export class ProxyHealthService {
       return;
     }
 
-    let reason = await this.probe(proxyUrl);
-    if (reason) {
-      await new Promise((resolve) => setTimeout(resolve, this.RETRY_DELAY_MS));
-      reason = await this.probe(proxyUrl);
+    let verdict = await this.probe(proxyUrl, this.PROBE_URLS[0]);
+
+    // Ответ, по которому нельзя судить о прокси (не 200 и не 407) — идём на
+    // запасной адрес. Если там всё хорошо, дело было в первом сервисе, и
+    // будить админа не за чем.
+    if (verdict && !verdict.proxyFault) {
+      const fallback = await this.probe(proxyUrl, this.PROBE_URLS[1]);
+      if (!fallback) {
+        this.logger.warn(
+          `${this.PROBE_URLS[0]} ответил странно (${verdict.reason}), но через запасной адрес прокси жив — тревогу не поднимаю`,
+        );
+        verdict = null;
+      } else {
+        verdict = {
+          proxyFault: fallback.proxyFault,
+          reason: `${this.PROBE_URLS[0]}: ${verdict.reason}; ${this.PROBE_URLS[1]}: ${fallback.reason}`,
+        };
+      }
     }
 
+    // Одна осечка — не повод будить админа: сеть могла моргнуть ровно в момент
+    // проверки.
+    if (verdict) {
+      await new Promise((resolve) => setTimeout(resolve, this.RETRY_DELAY_MS));
+      verdict = await this.probe(proxyUrl, this.PROBE_URLS[0]);
+      if (verdict && !verdict.proxyFault) {
+        const fallback = await this.probe(proxyUrl, this.PROBE_URLS[1]);
+        verdict = fallback ? verdict : null;
+      }
+    }
+
+    const reason = verdict?.reason ?? null;
     const masked = this.maskCredentials(proxyUrl);
 
     if (reason) {
       this.failing = true;
       this.logger.error(`Прокси ${masked} не отвечает: ${reason}`);
-      await this.alert.notifyProxyDown(masked, this.PROBE_URL, reason);
+      await this.alert.notifyProxyDown(
+        masked,
+        this.PROBE_URLS.join(' и '),
+        reason,
+      );
       return;
     }
 
@@ -75,16 +114,24 @@ export class ProxyHealthService {
     }
   }
 
-  // null — прокси в порядке; строка — человекочитаемая причина отказа.
-  private probe(proxyUrl: string): Promise<string | null> {
+  // null — прокси в порядке. Иначе причина отказа и признак того, виноват ли
+  // именно прокси: 407 и обрыв связи — да, а неожиданный статус от сервиса-
+  // мишени сам по себе ещё ни о чём не говорит.
+  private probe(
+    proxyUrl: string,
+    probeUrl: string,
+  ): Promise<{ reason: string; proxyFault: boolean } | null> {
     return new Promise((resolve) => {
       let proxy: URL;
       let target: URL;
       try {
         proxy = new URL(proxyUrl);
-        target = new URL(this.PROBE_URL);
+        target = new URL(probeUrl);
       } catch {
-        resolve('YOUTUBE_PROXY_URL не разбирается как адрес');
+        resolve({
+          reason: 'YOUTUBE_PROXY_URL не разбирается как адрес',
+          proxyFault: true,
+        });
         return;
       }
 
@@ -122,11 +169,16 @@ export class ProxyHealthService {
               this.logger.log(`Прокси жив, выходной адрес: ${body.trim()}`);
               resolve(null);
             } else if (res.statusCode === 407) {
-              resolve(
-                'прокси не принял логин и пароль (HTTP 407) — обычно это значит, что аренда закончилась',
-              );
+              resolve({
+                reason:
+                  'прокси не принял логин и пароль (HTTP 407) — обычно это значит, что аренда закончилась',
+                proxyFault: true,
+              });
             } else {
-              resolve(`прокси ответил HTTP ${res.statusCode}`);
+              resolve({
+                reason: `ответ HTTP ${res.statusCode}`,
+                proxyFault: false,
+              });
             }
           });
         },
@@ -137,7 +189,11 @@ export class ProxyHealthService {
       req.on('timeout', () => {
         req.destroy(new Error(`нет ответа за ${this.TIMEOUT_MS / 1000} с`));
       });
-      req.on('error', (error: Error) => resolve(error.message));
+      // Обрыв связи и таймаут — это уже про прокси: до сервиса-мишени мы даже
+      // не добрались.
+      req.on('error', (error: Error) =>
+        resolve({ reason: error.message, proxyFault: true }),
+      );
       req.end();
     });
   }
@@ -145,6 +201,11 @@ export class ProxyHealthService {
   // В логи и в Telegram уходит адрес без пароля: сообщение о поломке — не то
   // место, где стоит светить учётными данными.
   private maskCredentials(proxyUrl: string): string {
-    return proxyUrl.replace(/\/\/[^/@]*@/, '//***@');
+    // Жадный [^/]*, а не [^/@]*: пароль может содержать «@» (new URL() такое
+    // принимает и делит по ПОСЛЕДНЕМУ), и нежадный вариант обрывался на первом
+    // символе — из «http://user:p@ss@host» получалось «//***@ss@host», то есть
+    // хвост пароля утекал и в лог, и в Telegram. Ровно то, что эта функция
+    // должна была предотвращать.
+    return proxyUrl.replace(/\/\/[^/]*@/, '//***@');
   }
 }

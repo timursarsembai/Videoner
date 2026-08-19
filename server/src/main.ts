@@ -33,7 +33,9 @@ async function bootstrap() {
   // запросы, форму которых описания DTO сейчас передают неточно.
   if (process.env.VALIDATION_MODE === 'shadow') {
     app.useGlobalPipes(new ShadowValidationPipe());
-    console.log('[ShadowValidation] режим наблюдения включён: запросы не отвергаются');
+    console.log(
+      '[ShadowValidation] режим наблюдения включён: запросы не отвергаются',
+    );
   }
 
   // За нами ровно один прокси-хоп — Nginx Proxy Manager (proxy-network в

@@ -29,7 +29,10 @@ export class GetVideoInfoDto {
   @IsString()
   telegramUsername?: string;
 
-  @ApiProperty({ description: 'Telegram client language code', required: false })
+  @ApiProperty({
+    description: 'Telegram client language code',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   telegramLanguageCode?: string;

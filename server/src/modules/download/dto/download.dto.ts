@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsIn, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
+import {
+  IsEnum,
+  IsIn,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Matches,
+} from 'class-validator';
 import {
   VideoQuality,
   AudioQuality,
@@ -39,7 +46,10 @@ class RequestMetaDto {
   @IsString()
   telegramUsername?: string;
 
-  @ApiProperty({ description: 'Telegram client language code', required: false })
+  @ApiProperty({
+    description: 'Telegram client language code',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   telegramLanguageCode?: string;

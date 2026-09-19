@@ -25,6 +25,11 @@ GraphQL-запросом уже в браузере. Приватный API /api
 фотографиями — такой отдаём плейлистом, по элементу на файл. Виды файлов
 различаются по media_type: 1 — фото, 2 — видео, 8 — карусель, 19 — пост без
 медиа вовсе (у него, что важно, image_versions2 присутствует, но пуст).
+
+Отдельный случай — пост с прикреплённой записью Instagram: собственного медиа
+у него нет (тот самый media_type=19), а вложение лежит в
+text_post_app_info.linked_inline_media. Файл за него забираем не из Threads, а
+с instagram.com — почему именно так, написано у _instagram_node.
 """
 
 import base64
@@ -173,6 +178,10 @@ class ThreadsIE(InfoExtractor):
             return 2
         if cls._candidates(node):
             return 1
+        # Своего медиа нет, но есть прикреплённая запись Instagram — узел всё
+        # равно содержательный, и «худому» двойнику его предпочесть надо.
+        if cls._linked_instagram_code(node):
+            return 1
         return 0
 
     @staticmethod
@@ -201,6 +210,59 @@ class ThreadsIE(InfoExtractor):
         return [candidate
                 for candidate in traverse_obj(node, ('image_versions2', 'candidates')) or []
                 if isinstance(candidate, dict) and url_or_none(candidate.get('url'))]
+
+    @staticmethod
+    def _linked_instagram_code(node):
+        """Код записи Instagram, прикреплённой к посту, если она есть.
+
+        Пост Threads может нести не собственное медиа, а прикреплённую запись
+        Instagram — она лежит в text_post_app_info.linked_inline_media. Свой
+        text_post_app_info у неё пустой (у постов Threads он заполнен всегда),
+        по нему вложение и отличаем: у ссылки на чужой пост Threads забирать
+        медиа со стороны Instagram было бы неверно.
+        """
+        media = traverse_obj(node, ('text_post_app_info', 'linked_inline_media'))
+        if not isinstance(media, dict) or media.get('text_post_app_info'):
+            return None
+        code = media.get('code')
+        return code if isinstance(code, str) and code else None
+
+    def _instagram_node(self, code):
+        """Данные прикреплённой записи Instagram, взятые с instagram.com.
+
+        Копию вложения Threads кладёт прямо в пост, и соблазн разобрать её
+        на месте велик — но в ней НЕТ звуковой дорожки. Проверено 19.09.2026
+        на трёх постах и обоими путями сразу: и в SSR для робота, и через
+        резолвер в настоящем браузере приходит один и тот же файл в один trak,
+        has_audio=false, а в video_dash_manifest нет аудио-AdaptationSet. Это
+        превью для ленты, где вложение играет беззвучно. Отдай мы его — человек
+        молча получил бы немой ролик, а на скачивании всё равно бы споткнулся:
+        формат без звука не проходит отбор muxed-качества на сервере.
+
+        У той же записи на instagram.com has_audio=true и прогрессивный mp4 с
+        дорожкой aac. Идём туда: форма JSON у Instagram и Threads общая (обе
+        площадки — Meta), и узел разбирается тем же кодом, что и свой.
+
+        Страница Instagram тоже отвечает роботу через раз, поэтому повторяем
+        столько же раз, сколько и основной путь.
+        """
+        target = f'https://www.instagram.com/p/{code}/'
+        for attempt in range(1, _ATTEMPTS + 1):
+            webpage = self._download_webpage(
+                target, code, fatal=False,
+                headers={'User-Agent': _CRAWLER_UA, 'Accept-Language': 'en-US,en;q=0.9'},
+                note=f'Запрашиваю вложение Instagram (попытка {attempt} из {_ATTEMPTS})',
+                errnote=False)
+            node = self._post_node(webpage, code) if webpage else None
+            if node:
+                return node
+            if attempt < _ATTEMPTS:
+                time.sleep(_RETRY_SLEEP)
+        # Ошибка именно про вложение: сказать «в посте нет медиа» было бы
+        # неправдой — медиа есть, не открылась его настоящая запись.
+        raise ExtractorError(
+            'Не удалось получить вложение Instagram из этого поста Threads',
+            expected=True)
 
     @classmethod
     def _media_items(cls, node):
@@ -330,6 +392,15 @@ class ThreadsIE(InfoExtractor):
             'height': height,
         }
 
+    def _entries(self, node, code, url, common):
+        """Готовые элементы по узлу поста — по одному на файл."""
+        entries = []
+        for index, item in enumerate(self._media_items(node), 1):
+            entry = self._entry_from_item(item, node, index, code, url)
+            if entry:
+                entries.append({**common, **entry, 'extractor_key': self.ie_key()})
+        return entries
+
     def _info_from_node(self, node, code, url):
         uploader = traverse_obj(node, ('user', 'username'))
         caption = traverse_obj(node, ('caption', 'text')) or ''
@@ -347,11 +418,17 @@ class ThreadsIE(InfoExtractor):
             'webpage_url': url,
         }
 
-        entries = []
-        for index, item in enumerate(self._media_items(node), 1):
-            entry = self._entry_from_item(item, node, index, code, url)
-            if entry:
-                entries.append({**common, **entry, 'extractor_key': self.ie_key()})
+        entries = self._entries(node, code, url, common)
+        if not entries:
+            # Своих файлов у поста нет — возможно, к нему прикреплена запись
+            # Instagram. Подписи, автор и время остаются от поста Threads:
+            # человек прислал ссылку именно на него, из Instagram берём только
+            # сам файл. Когда своё медиа есть, вложение не смотрим вовсе —
+            # показывать два поста вместо одного мы не умеем.
+            linked = self._linked_instagram_code(node)
+            if linked:
+                entries = self._entries(
+                    self._instagram_node(linked), linked, url, common)
 
         if not entries:
             return None

@@ -128,11 +128,24 @@ function extractInPage(code) {
   // Насколько узел похож на полные данные поста. Пустой image_versions2 в
   // расчёт не идёт: текстовые посты несут его без единого кандидата, и по
   // одному его наличию запись без картинок сошла бы за фотографию.
+  // Пост может нести не своё медиа, а прикреплённую запись Instagram: она
+  // лежит в text_post_app_info.linked_inline_media, и свой text_post_app_info
+  // у неё пустой (у постов Threads он заполнен всегда). Для нас такой узел
+  // содержательный, хотя файлов в нём нет: сам файл плагин потом заберёт с
+  // instagram.com, потому что в копии из Threads нет звуковой дорожки
+  // (см. _instagram_node в server/ytdlp-plugins/threads). Без этой ветки
+  // резолвер объявлял такие посты пустыми.
+  const linkedAttachment = (obj) => {
+    const media = obj.text_post_app_info && obj.text_post_app_info.linked_inline_media;
+    return Boolean(media && media.code && !media.text_post_app_info);
+  };
+
   const richness = (obj) => {
     if (obj.carousel_media && obj.carousel_media.length) return 3;
     if (obj.video_versions && obj.video_versions.length) return 2;
     const candidates = obj.image_versions2 && obj.image_versions2.candidates;
     if (candidates && candidates.length) return 1;
+    if (linkedAttachment(obj)) return 1;
     return 0;
   };
 
@@ -177,6 +190,9 @@ function extractInPage(code) {
 // а потом объявлялся пустым.
 function hasMedia(node) {
   if (!node) return false;
+  // Прикреплённая запись Instagram — тоже медиа, просто забираемое не отсюда.
+  const linked = node.text_post_app_info && node.text_post_app_info.linked_inline_media;
+  if (linked && linked.code && !linked.text_post_app_info) return true;
   const own = (item) =>
     Boolean(
       (item.video_versions && item.video_versions.length) ||

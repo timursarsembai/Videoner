@@ -42,6 +42,7 @@ interface Messages {
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
   errorNoVideoContent: string;
+  errorRegionBlocked: string;
   errorRateLimited: string;
 }
 
@@ -92,6 +93,10 @@ const ru: Messages = {
     "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads.",
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
   errorNoVideoContent: "По этой ссылке нет видео для скачивания — похоже, пост содержит только фото.",
+  errorRegionBlocked:
+    "Это видео закрыто для просмотра за пределами страны автора — площадка не " +
+    "отдаёт его нашему серверу. Обойти это нельзя: ограничение стоит на стороне " +
+    "площадки.\n\nОстальные ссылки скачиваются как обычно.",
   errorRateLimited: "Слишком много ссылок подряд — подожди немного и пришли снова.",
   inlineHintButton: "Отправьте ссылку боту",
   inlineResultTitle: "⬇️ Скачать видео",
@@ -150,6 +155,10 @@ const en: Messages = {
     "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads.",
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
   errorNoVideoContent: "This link doesn't have a video to download — the post appears to be photo-only.",
+  errorRegionBlocked:
+    "This video is blocked outside the author's country — the platform won't serve " +
+    "it to our server. There's no way around it: the restriction is on their side." +
+    "\n\nOther links download as usual.",
   errorRateLimited: "Too many links in a row — wait a bit and send it again.",
   inlineHintButton: "Send a link to the bot",
   inlineResultTitle: "⬇️ Download video",

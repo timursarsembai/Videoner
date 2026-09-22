@@ -5,6 +5,20 @@ import { ErrorCategory } from '@prisma/client';
 export function categorizeError(raw: string): ErrorCategory {
   const msg = (raw || '').toLowerCase();
 
+  // Региональная блокировка. Проверяется раньше LOGIN_REQUIRED намеренно:
+  // вход тут не поможет, ролик не отдают нашему адресу в принципе. Ловим и
+  // сырой код TikTok (10231 = "cross_border_violation"), и уже причёсанный
+  // текст из InfoService.handleError(), и общие формулировки других площадок.
+  if (
+    msg.includes('status code 10231') ||
+    msg.includes('cross_border_violation') ||
+    msg.includes("blocked outside the author's country") ||
+    /not available (?:from|in) your (?:location|country|region)/.test(msg) ||
+    /geo[-\s]?restrict/.test(msg)
+  ) {
+    return ErrorCategory.REGION_BLOCKED;
+  }
+
   if (/sign in to confirm/.test(msg)) {
     return ErrorCategory.YOUTUBE_AUTH_REQUIRED;
   }

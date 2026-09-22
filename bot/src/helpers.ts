@@ -120,6 +120,22 @@ export function friendlyError(raw: string, lang: Lang): string {
   const msg = (raw || "").toLowerCase();
   const m = messages[lang];
 
+  // Раньше проверки на вход: при региональной блокировке площадка отвечает
+  // отказом, похожим на «нужна авторизация», но вход тут ничего не даёт —
+  // ролик не отдают нашему адресу вообще. Сырой код TikTok (10231) ловим
+  // тоже: до бота он доходит причёсанным сервером, но при прямом обращении
+  // к /download может прийти и как есть.
+  if (
+    msg.includes("status code 10231") ||
+    msg.includes("cross_border_violation") ||
+    msg.includes("blocked outside the author's country") ||
+    msg.includes("not available in your country") ||
+    msg.includes("not available in your region") ||
+    msg.includes("not available from your location")
+  ) {
+    return m.errorRegionBlocked;
+  }
+
   if (
     msg.includes("certain audiences") ||
     msg.includes("age-restricted") ||

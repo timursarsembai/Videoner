@@ -216,6 +216,12 @@ export class InfoService {
       // Отрезаем хвост со служебными ссылками yt-dlp ("See https://…", "Also see …"),
       // сохраняя суть (в т.ч. "Sign in to confirm…", по которой бот распознаёт нужность cookies).
       msg = msg.split(/\s*(?:See|Also see)\s+https?:\/\//i)[0].trim();
+      // Второй служебный хвост yt-dlp — просьба завести issue на GitHub с
+      // инструкцией обновиться. Он приезжает не только на настоящих поломках
+      // экстрактора, но и на обычных отказах площадки (так TikTok отвечает на
+      // региональную блокировку, поймано 14.09.2026), и пользователь бота
+      // видел его целиком. Оставляем только суть — первую фразу.
+      msg = msg.split(/[;,.]?\s*please report this issue/i)[0].trim();
       errorMessage = msg || errorMessage;
     }
 
@@ -229,6 +235,18 @@ export class InfoService {
       // на деле это почти всегда пост без видео (например, пин с одними фото).
       errorMessage =
         "This link doesn't contain a downloadable video — the post appears to be photo-only content.";
+    }
+
+    // TikTok, статус 10231 — на странице он подписан "cross_border_violation":
+    // ролик закрыт для просмотра за пределами страны автора. Обойти нечем,
+    // нужен выходной адрес в той же стране: проверено 14.09.2026 на видео
+    // казахстанского аккаунта — и прямой IP VPS (Франция), и наш ISP-прокси
+    // (тоже Франция) получают ровно этот код, а app-API TikTok на тот же ролик
+    // отдаёт пустой ответ. В тексте yt-dlp это "Video not available, status
+    // code 10231", по которому пользователю не понять ничего.
+    if (/status code 10231/i.test(errorMessage)) {
+      errorMessage =
+        "This video is blocked outside the author's country — the platform refuses to serve it to our region.";
     }
 
     return errorMessage;

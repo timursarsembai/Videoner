@@ -1,4 +1,4 @@
-import { Bot, InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
+import { Api, Bot, Context, InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
 import { detectLang, messages, type Lang } from "../i18n.js";
 import {
   api,
@@ -13,6 +13,7 @@ import {
 } from "../helpers.js";
 import { SHARE_CHANNEL, publishLink } from "./share.js";
 import { blockUnlessSubscribed, isChannelMember, subscribeKeyboard } from "./membership.js";
+import { LinkQueues, QUEUE_LIMIT, extractUrls, type Current, type OwnerState } from "../queue.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -23,16 +24,7 @@ type VideoDimensions = {
   duration?: number;
 };
 
-// Ссылка на видео — callback_data в Telegram ограничена 64 байтами, поэтому
-// URL храним здесь, а в кнопке передаём только тип и качество. videoQualities
-// нужен, чтобы в callback-обработчике знать, есть ли у видео варианты ниже 720p.
-// Ключ — chatId+messageId сообщения с клавиатурой, а НЕ просто chatId: раньше
-// ключом был один chatId на весь чат, и вторая присланная ссылка (в том же
-// чате, до клика по первой) молча перезаписывала запись — клик по кнопкам
-// ПЕРВОГО сообщения скачивал видео ИЗ ВТОРОГО. В группах это ещё и означало,
-// что клик одного участника по чужой ссылке мог расходовать не то, что он
-// видел на экране. Привязка к конкретному message_id делает каждую клавиатуру
-// независимой от остальных сообщений в том же чате.
+// Ключ активного скачивания — чат плюс сообщение «⏬ Скачиваю...».
 function sessionKey(chatId: number, messageId: number): string {
   return `${chatId}:${messageId}`;
 }
@@ -63,22 +55,33 @@ function previewFileId(
   return chosen.file_id;
 }
 
-const sessions = new Map<
-  string,
-  { url: string; title: string; thumbnail?: string; videoQualities: string[]; createdAt: number }
->();
+// Ссылки каждого человека (см. queue.ts). Заменили прежнюю таблицу сессий по
+// сообщению с клавиатурой: живая клавиатура у человека теперь одна — у текущей
+// ссылки, — и какую ссылку качать по нажатию, говорит очередь, а не кнопка.
+// callback_data ограничена 64 байтами, поэтому в кнопке по-прежнему только тип
+// и качество, а адрес живёт здесь.
+const queues = new LinkQueues();
 
-// Без TTL sessions рос бы пропорционально числу всех когда-либо присланных
-// ссылок за всё время жизни процесса (в отличие от userRequests в helpers.ts,
-// у которого чистка уже была). Час — с запасом больше, чем реально нужно
-// кликнуть по клавиатуре выбора качества после присланной ссылки.
-const SESSION_TTL_MS = 60 * 60 * 1000;
-setInterval(() => {
-  const cutoff = Date.now() - SESSION_TTL_MS;
-  for (const [key, entry] of sessions.entries()) {
-    if (entry.createdAt < cutoff) sessions.delete(key);
-  }
-}, 60_000);
+// Не нажали кнопку качества — очередь не должна стоять вечно.
+const CHOOSE_TIMEOUT_MS = 30 * 60 * 1000;
+const chooseTimers = new Map<string, NodeJS.Timeout>();
+
+function clearChooseTimer(key: string) {
+  const timer = chooseTimers.get(key);
+  if (timer) clearTimeout(timer);
+  chooseTimers.delete(key);
+}
+
+// Долгая работа идёт В ФОНЕ, а не внутри обработчика, и это главное в этом
+// файле. bot.start() в grammY обрабатывает обновления строго по одному и ждёт
+// каждый обработчик до конца. Пока обработчик ждал скачивание (до 20 минут
+// опроса сервера плюс отправка файла), бот не видел НИЧЬИХ новых сообщений —
+// ни этого человека, ни остальных. Обработчик теперь только меняет состояние и
+// сразу возвращается; ошибки фоновой работы ловим здесь, иначе они ушли бы в
+// unhandledRejection мимо bot.catch.
+function inBackground(label: string, work: Promise<unknown>) {
+  work.catch((e) => console.error(`${label}:`, e?.message ?? e));
+}
 
 type DownloadMeta = {
   telegramId?: number;
@@ -98,13 +101,26 @@ const activeDownloads = new Map<string, { chatId: number; messageId: number; lan
 
 export async function notifyActiveDownloadsBeforeShutdown(bot: Bot) {
   console.log(`Уведомляю ${activeDownloads.size} активных скачиваний перед остановкой...`);
-  await Promise.allSettled(
-    Array.from(activeDownloads.values()).map(({ chatId, messageId, lang }) =>
-      bot.api
-        .editMessageText(chatId, messageId, messages[lang].downloadInterrupted)
-        .catch((e) => console.error(`Failed to notify chat ${chatId} about shutdown:`, e)),
-    ),
+  const notices: Promise<unknown>[] = Array.from(activeDownloads.values()).map(({ chatId, messageId, lang }) =>
+    bot.api
+      .editMessageText(chatId, messageId, messages[lang].downloadInterrupted)
+      .catch((e) => console.error(`Failed to notify chat ${chatId} about shutdown:`, e)),
   );
+  // Очередь живёт в памяти и с процессом пропадает. Текущее скачивание уже
+  // получило своё сообщение выше — здесь считаем остальное: ждущие ссылки и
+  // ту, по которой ещё не выбрано качество (её клавиатура после перезапуска
+  // ответит «сессия устарела»).
+  for (const [, state] of queues.entries()) {
+    const lost = state.pending.length + (state.current && state.current.phase !== "downloading" ? 1 : 0);
+    if (!lost) continue;
+    const lang = detectLang(state.languageCode);
+    notices.push(
+      bot.api
+        .sendMessage(state.chatId, messages[lang].queueLostOnRestart(lost))
+        .catch((e) => console.error(`Failed to notify chat ${state.chatId} about lost queue:`, e)),
+    );
+  }
+  await Promise.allSettled(notices);
 }
 
 async function performDownload(
@@ -234,17 +250,185 @@ async function performDownload(
   }
 }
 
+// Как отправлять файлы в чат, где нажата кнопка. Вынесено из обработчика
+// кнопки, чтобы тот читался как последовательность шагов очереди.
+function sendersFor(ctx: Context, chatId: number) {
+  return {
+    reply: (text: string) => ctx.reply(text),
+    editMessageText: (messageId: number, text: string) => ctx.api.editMessageText(chatId, messageId, text),
+    // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
+    // ссылка на первоисточник и упоминание бота остаются с видео у любого,
+    // кому его переслали.
+    replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) =>
+      ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims }),
+    replyWithAudio: (file: InputFile, caption: string) =>
+      ctx.replyWithAudio(file, { caption }),
+    replyWithPhoto: async (file: InputFile, caption: string) => {
+      const sent = await ctx.replyWithPhoto(file, { caption });
+      return previewFileId(sent.photo);
+    },
+    deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
+    publishToChannel: (
+      u: string,
+      t: string,
+      th: string | undefined,
+      l: Lang,
+      cover?: string,
+    ) => publishLink(ctx.api, u, t, th, l, cover),
+    replyWithAlbum: async (
+      items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
+      caption: string,
+    ) => {
+      // Telegram принимает не больше 10 элементов в одном альбоме, а в
+      // карусели Instagram их бывает до двадцати — режем на части. Подпись
+      // ставим только на первый элемент первого альбома: на каждом она
+      // повторялась бы под каждым файлом.
+      let cover: string | undefined;
+      for (let start = 0; start < items.length; start += ALBUM_LIMIT) {
+        const chunk = items.slice(start, start + ALBUM_LIMIT);
+        const media = chunk.map((item, index) => {
+          const file = new InputFile(
+            new URL(`${API_URL}/download/${encodeURIComponent(item.filename)}`),
+          );
+          const withCaption = start === 0 && index === 0 ? { caption } : {};
+          return item.kind === "PHOTO"
+            ? InputMediaBuilder.photo(file, withCaption)
+            : InputMediaBuilder.video(file, {
+                ...withCaption,
+                // Без размеров Telegram на iOS сплющивает вертикальное видео.
+                width: item.width,
+                height: item.height,
+                duration: item.duration,
+                supports_streaming: true,
+              });
+        });
+        const sent = await ctx.replyWithMediaGroup(media);
+        // Обложку для канала берём у первого снимка первого альбома — и
+        // именно у той, что вернул Telegram, а не у исходника (см. ниже).
+        // Альбом возвращает сообщения разных видов, и photo есть только у
+        // снимка — проверяем это, а не верим items на слово.
+        const first = sent[0];
+        if (start === 0 && first && "photo" in first) {
+          cover = previewFileId(first.photo);
+        }
+      }
+      return cover;
+    },
+  };
+}
+
+// Анализирует текущую ссылку и показывает выбор качества. Не разобралась —
+// пишет ошибку и берёт следующую, пока очередь не кончится или одна из ссылок
+// не дойдёт до выбора: ошибка одной ссылки не должна держать остальные.
+async function showNextChoice(tg: Api, key: string) {
+  for (;;) {
+    const state = queues.get(key);
+    const current = state?.current;
+    if (!state || !current || current.phase !== "analyzing") return;
+    if (await showChoice(tg, key, state, current)) return;
+    if (!queues.finish(key, current.token)) return;
+  }
+}
+
+// true — клавиатура показана, ждём нажатия. false — ссылку надо пропустить.
+async function showChoice(tg: Api, key: string, state: OwnerState, current: Current): Promise<boolean> {
+  const lang = detectLang(state.languageCode);
+  const m = messages[lang];
+  let messageId: number | undefined;
+  try {
+    messageId = (await tg.sendMessage(state.chatId, m.fetchingInfo)).message_id;
+    current.messageId = messageId;
+
+    const info = await api<{
+      title: string;
+      duration?: number;
+      thumbnail?: string;
+      qualities: { video: string[]; audio: string[] };
+    }>("/info", {
+      url: current.url,
+      telegramId: state.userId,
+      telegramUsername: state.username,
+      telegramLanguageCode: state.languageCode,
+    });
+    current.title = info.title ?? "";
+    current.thumbnail = info.thumbnail;
+
+    const kb = new InlineKeyboard();
+    for (const q of (info.qualities.video ?? []).slice(0, 6)) {
+      // Замок с HD-качеств снят вместе с платными функциями: все качества
+      // доступны всем без исключения.
+      // "original" сервер присылает для поста, где нет ни одного видео —
+      // выбирать там нечего, снимки забираются в исходном размере.
+      kb.text(q === "original" ? m.photoButton : `🎬 ${q}`, `v|${q}`).row();
+    }
+    // У поста из одних фотографий звуковой дорожки нет — кнопку не рисуем,
+    // иначе она вела бы в заведомую ошибку.
+    if ((info.qualities.audio ?? []).length) {
+      kb.text(m.audioOnlyButton, "a|128Kbps").row();
+    }
+    // Отказаться от ссылки, не дожидаясь получаса: иначе следующие в очереди
+    // ждали бы, пока истечёт время выбора.
+    kb.text(m.skipButton, "x|skip");
+
+    const dur = fmtDuration(info.duration);
+    const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";
+    const rest = state.pending.length ? m.queueRest(state.pending.length) : "";
+    await tg.editMessageText(state.chatId, messageId, m.chooseQuality(current.title, dur) + notice + rest, {
+      reply_markup: kb,
+    });
+  } catch (e: any) {
+    const text = `${m.failedPrefix}${friendlyError(e?.message ?? String(e), lang)}`;
+    if (messageId) {
+      await tg.editMessageText(state.chatId, messageId, text).catch((err) => console.error("Не удалось показать ошибку:", err?.message ?? err));
+    } else {
+      // Не удалось даже отправить «Получаю информацию» — скорее всего бот
+      // заблокирован. Писать ошибку некуда, остаётся лог.
+      console.error(`Ссылка из очереди ${key} не показана:`, e?.message ?? e);
+    }
+    return false;
+  }
+
+  current.phase = "choosing";
+  clearChooseTimer(key);
+  const token = current.token;
+  const timer = setTimeout(() => {
+    chooseTimers.delete(key);
+    inBackground("Пропуск по времени", skipByTimeout(tg, key, token));
+  }, CHOOSE_TIMEOUT_MS);
+  // Таймер не должен держать процесс при остановке.
+  timer.unref();
+  chooseTimers.set(key, timer);
+  return true;
+}
+
+async function skipByTimeout(tg: Api, key: string, token: number) {
+  const state = queues.get(key);
+  const current = state?.current;
+  if (!state || !current || current.token !== token || current.phase !== "choosing") return;
+  const messageId = current.messageId;
+  queues.finish(key, token);
+  if (messageId) {
+    // Новый текст без reply_markup заодно убирает клавиатуру.
+    await tg
+      .editMessageText(state.chatId, messageId, messages[detectLang(state.languageCode)].chooseTimedOut)
+      .catch((e) => console.error("Не удалось отметить пропуск:", e?.message ?? e));
+  }
+  await showNextChoice(tg, key);
+}
+
 export function registerDownloadHandlers(bot: Bot) {
   bot.on("message:text", async (ctx) => {
     const lang = detectLang(ctx.from?.language_code);
     const m = messages[lang];
-    const url = ctx.message.text.trim();
-    if (!/^https?:\/\//i.test(url)) {
+    // Без отправителя очередь не к кому привязать (служебные сообщения групп).
+    if (!ctx.from) return;
+    const urls = extractUrls(ctx.message.text);
+    if (!urls.length) {
       await ctx.reply(m.notLink);
       return;
     }
 
-    if (ctx.from && ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
+    if (ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
       await ctx.reply(m.errorRateLimited);
       return;
     }
@@ -253,51 +437,29 @@ export function registerDownloadHandlers(bot: Bot) {
     // показывать выбор качества тому, кто всё равно не сможет скачать.
     if (await blockUnlessSubscribed(ctx, lang)) return;
 
-    const msg = await ctx.reply(m.fetchingInfo);
-    try {
-      const info = await api<{
-        title: string;
-        duration?: number;
-        thumbnail?: string;
-        qualities: { video: string[]; audio: string[] };
-      }>("/info", {
-        url,
-        telegramId: ctx.from?.id,
-        telegramUsername: ctx.from?.username,
-        telegramLanguageCode: ctx.from?.language_code,
-      });
+    const key = LinkQueues.key(ctx.chat.id, ctx.from.id);
+    const added = queues.enqueue(
+      key,
+      {
+        chatId: ctx.chat.id,
+        userId: ctx.from.id,
+        username: ctx.from.username,
+        languageCode: ctx.from.language_code,
+      },
+      urls,
+    );
 
-      const videoQualities = info.qualities.video ?? [];
-      sessions.set(sessionKey(ctx.chat.id, msg.message_id), {
-        url,
-        title: info.title ?? '',
-        thumbnail: info.thumbnail,
-        videoQualities,
-        createdAt: Date.now(),
-      });
+    // Если начинаем прямо сейчас, про остальные ссылки скажет сообщение с
+    // выбором качества («в очереди ещё …»). Отдельное сообщение пришло бы
+    // вперемешку с ним: анализ идёт в фоне, и порядок двух отправок не задан.
+    const notes: string[] = [];
+    if (!added.startNow && added.queued === 1) notes.push(m.queuedOne(added.waiting + 1));
+    if (!added.startNow && added.queued > 1) notes.push(m.queuedMany(added.queued, added.waiting));
+    if (added.duplicates) notes.push(m.queueDuplicates(added.duplicates));
+    if (added.overLimit) notes.push(m.queueFull(QUEUE_LIMIT, added.overLimit));
+    if (notes.length) await ctx.reply(notes.join("\n\n"));
 
-      const kb = new InlineKeyboard();
-      for (const q of videoQualities.slice(0, 6)) {
-        // Замок с HD-качеств снят вместе с платными функциями: все качества
-        // доступны всем без исключения.
-        // "original" сервер присылает для поста, где нет ни одного видео —
-        // выбирать там нечего, снимки забираются в исходном размере.
-        kb.text(q === "original" ? m.photoButton : `🎬 ${q}`, `v|${q}`).row();
-      }
-      // У поста из одних фотографий звуковой дорожки нет — кнопку не рисуем,
-      // иначе она вела бы в заведомую ошибку.
-      if ((info.qualities.audio ?? []).length) {
-        kb.text(m.audioOnlyButton, "a|128Kbps");
-      }
-
-      const dur = fmtDuration(info.duration);
-      const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";
-      await ctx.api.editMessageText(ctx.chat.id, msg.message_id, m.chooseQuality(info.title, dur) + notice, {
-        reply_markup: kb,
-      });
-    } catch (e: any) {
-      await ctx.api.editMessageText(ctx.chat.id, msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
-    }
+    if (added.startNow) inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
   });
 
   bot.on("callback_query:data", async (ctx) => {
@@ -305,8 +467,13 @@ export function registerDownloadHandlers(bot: Bot) {
     const m = messages[lang];
     const chatId = ctx.chat?.id;
     const messageId = ctx.callbackQuery.message?.message_id;
-    const session = chatId && messageId ? sessions.get(sessionKey(chatId, messageId)) : undefined;
-    if (!chatId || !messageId || !session) {
+    const key = chatId ? LinkQueues.key(chatId, ctx.from.id) : "";
+    const state = queues.get(key);
+    const current = state?.current;
+    // Нажать можно только клавиатуру ТЕКУЩЕЙ ссылки этого человека. Всё
+    // остальное — кнопки, пережившие перезапуск бота, уже выбранные или
+    // пропущенные ссылки, чужая клавиатура в группе.
+    if (!chatId || !messageId || !state || !current || current.phase !== "choosing" || current.messageId !== messageId) {
       await ctx.answerCallbackQuery({ text: m.sessionExpired });
       return;
     }
@@ -316,6 +483,18 @@ export function registerDownloadHandlers(bot: Bot) {
     // callback_data (переживший живую сессию редеплой), всё, что не "v",
     // молча трактовалось бы как "a" (аудио) с бессмысленным quality.
     const [kind, quality] = ctx.callbackQuery.data.split("|");
+    const token = current.token;
+
+    if (kind === "x") {
+      // Состояние меняем ДО первого await: второе нажатие, пришедшее следом,
+      // должно увидеть ссылку уже закрытой.
+      clearChooseTimer(key);
+      queues.finish(key, token);
+      await ctx.answerCallbackQuery();
+      await ctx.editMessageText(m.skipped).catch((e) => console.error("Не удалось отметить пропуск:", e?.message ?? e));
+      inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
+      return;
+    }
     if ((kind !== "v" && kind !== "a") || !quality) {
       await ctx.answerCallbackQuery({ text: m.sessionExpired });
       return;
@@ -331,84 +510,42 @@ export function registerDownloadHandlers(bot: Bot) {
       return;
     }
 
+    // Пока шла проверка подписки, могли нажать ещё раз или сработал таймер.
+    // Проверка и смена фазы — без await между ними, иначе два нажатия
+    // запустили бы два скачивания.
+    if (state.current !== current || current.phase !== "choosing") return;
+    current.phase = "downloading";
+    clearChooseTimer(key);
+    // Клавиатуру убираем: выбор сделан, повторное нажатие скачало бы файл
+    // второй раз.
+    await ctx.editMessageReplyMarkup().catch((e) => console.error("Не удалось убрать клавиатуру:", e?.message ?? e));
+
     const quota = await getQuotaInfo(ctx.from?.id);
 
     // Единственное оставшееся ограничение — суточный лимит. Снять его деньгами
     // нельзя: платных функций нет. unlimited остаётся только как ручной
     // админский грант через /grant.
     if (!quota.unlimited && quota.remaining <= 0) {
-      await ctx.reply(m.dailyLimitReached);
+      // Остальные ссылки сегодня тоже не скачать — держать их незачем.
+      const dropped = queues.clear(key);
+      await ctx.reply(m.dailyLimitReached + (dropped ? m.queueDroppedByLimit(dropped) : ""));
       return;
     }
 
-    const send = {
-      reply: (text: string) => ctx.reply(text),
-      editMessageText: (messageId: number, text: string) => ctx.api.editMessageText(chatId, messageId, text),
-      // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
-      // ссылка на первоисточник и упоминание бота остаются с видео у любого,
-      // кому его переслали.
-      replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) =>
-        ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims }),
-      replyWithAudio: (file: InputFile, caption: string) =>
-        ctx.replyWithAudio(file, { caption }),
-      replyWithPhoto: async (file: InputFile, caption: string) => {
-        const sent = await ctx.replyWithPhoto(file, { caption });
-        return previewFileId(sent.photo);
-      },
-      deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
-      publishToChannel: (
-        u: string,
-        t: string,
-        th: string | undefined,
-        l: Lang,
-        cover?: string,
-      ) => publishLink(ctx.api, u, t, th, l, cover),
-      replyWithAlbum: async (
-        items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
-        caption: string,
-      ) => {
-        // Telegram принимает не больше 10 элементов в одном альбоме, а в
-        // карусели Instagram их бывает до двадцати — режем на части. Подпись
-        // ставим только на первый элемент первого альбома: на каждом она
-        // повторялась бы под каждым файлом.
-        let cover: string | undefined;
-        for (let start = 0; start < items.length; start += ALBUM_LIMIT) {
-          const chunk = items.slice(start, start + ALBUM_LIMIT);
-          const media = chunk.map((item, index) => {
-            const file = new InputFile(
-              new URL(`${API_URL}/download/${encodeURIComponent(item.filename)}`),
-            );
-            const withCaption = start === 0 && index === 0 ? { caption } : {};
-            return item.kind === "PHOTO"
-              ? InputMediaBuilder.photo(file, withCaption)
-              : InputMediaBuilder.video(file, {
-                  ...withCaption,
-                  // Без размеров Telegram на iOS сплющивает вертикальное видео.
-                  width: item.width,
-                  height: item.height,
-                  duration: item.duration,
-                  supports_streaming: true,
-                });
-          });
-          const sent = await ctx.replyWithMediaGroup(media);
-          // Обложку для канала берём у первого снимка первого альбома — и
-          // именно у той, что вернул Telegram, а не у исходника (см. ниже).
-          if (start === 0 && items[0]?.kind === "PHOTO") {
-            cover = previewFileId(sent[0]?.photo);
-          }
-        }
-        return cover;
-      },
-    };
-    await performDownload(
-      chatId, kind, quality, extension, session.url, lang, send,
+    const download = performDownload(
+      chatId, kind, quality, extension, current.url, lang, sendersFor(ctx, chatId),
       {
         telegramId: ctx.from?.id,
         telegramUsername: ctx.from?.username,
         telegramLanguageCode: ctx.from?.language_code,
       },
-      session.title,
-      session.thumbnail,
-    );
+      current.title ?? "",
+      current.thumbnail,
+    ).finally(() => {
+      // Следующая ссылка получает выбор качества только после того, как файл
+      // этой отправлен (или скачивание не удалось) — так и задумано.
+      if (queues.finish(key, token)) inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
+    });
+    inBackground("Скачивание", download);
   });
 }

@@ -44,6 +44,17 @@ interface Messages {
   errorNoVideoContent: string;
   errorRegionBlocked: string;
   errorRateLimited: string;
+  // Очередь ссылок (см. queue.ts): выбор качества — только у текущей.
+  queueRest: (count: number) => string;
+  queuedOne: (position: number) => string;
+  queuedMany: (added: number, waiting: number) => string;
+  queueDuplicates: (count: number) => string;
+  queueFull: (limit: number, rejected: number) => string;
+  skipButton: string;
+  skipped: string;
+  chooseTimedOut: string;
+  queueDroppedByLimit: (count: number) => string;
+  queueLostOnRestart: (count: number) => string;
 }
 
 const ru: Messages = {
@@ -108,7 +119,23 @@ const ru: Messages = {
   inlineSubscribeRequired: (channel: string) =>
     `Чтобы скачивать, подпишитесь на ${channel} и попробуйте снова.`,
   inlineRateLimited: "Слишком много запросов подряд. Подождите минуту и попробуйте снова.",
-
+  queueRest: (count) => `\n\n📋 В очереди ещё ссылок: ${count}. Покажу их по одной, когда закончим с этой.`,
+  queuedOne: (position) =>
+    `📋 Ссылка в очереди, ${position}-я. Сначала закончим с текущей — потом покажу выбор качества для неё.`,
+  queuedMany: (added, waiting) =>
+    `📋 Добавил в очередь ссылок: ${added}. Всего ждут: ${waiting}. Покажу их по одной, когда закончим с текущей.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Эта ссылка уже в очереди — второй раз не добавляю."
+      : `Ссылки, которые уже в очереди, второй раз не добавляю (повторов: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `В очереди может быть не больше ${limit} ссылок — лишние не добавил (${rejected}). Пришлите их, когда очередь продвинется.`,
+  skipButton: "✖️ Не скачивать",
+  skipped: "⏭ Эту ссылку пропустил.",
+  chooseTimedOut: "⌛ Качество не выбрано за 30 минут — эту ссылку пропускаю.",
+  queueDroppedByLimit: (count) => `\n\nСсылки из очереди (${count}) сегодня тоже не скачать — пришлите их завтра.`,
+  queueLostOnRestart: (count) =>
+    `⚠️ Бот перезапускается для обновления — очередь сброшена (ссылок: ${count}). Пришлите их снова через минуту.`,
 };
 
 const en: Messages = {
@@ -170,7 +197,23 @@ const en: Messages = {
   inlineSubscribeRequired: (channel: string) =>
     `To download, subscribe to ${channel} and try again.`,
   inlineRateLimited: "Too many requests in a row. Wait a minute and try again.",
-
+  queueRest: (count) => `\n\n📋 Links still in the queue: ${count}. I'll show them one by one after this one.`,
+  queuedOne: (position) =>
+    `📋 Link queued, #${position}. Let's finish the current one first — then I'll show the quality choice for it.`,
+  queuedMany: (added, waiting) =>
+    `📋 Added links to the queue: ${added}. Waiting in total: ${waiting}. I'll show them one by one after the current one.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "This link is already in the queue — not adding it twice."
+      : `Links already in the queue are not added twice (repeats: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `The queue holds at most ${limit} links — the extra ones were not added (${rejected}). Send them once the queue moves on.`,
+  skipButton: "✖️ Don't download",
+  skipped: "⏭ Skipped this link.",
+  chooseTimedOut: "⌛ No quality chosen within 30 minutes — skipping this link.",
+  queueDroppedByLimit: (count) => `\n\nThe queued links (${count}) can't be downloaded today either — send them tomorrow.`,
+  queueLostOnRestart: (count) =>
+    `⚠️ The bot is restarting for an update — the queue was reset (links: ${count}). Please send them again in a minute.`,
 };
 
 export const messages: Record<Lang, Messages> = { ru, en };

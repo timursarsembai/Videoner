@@ -101,129 +101,136 @@ export function registerInlineHandlers(bot: Bot) {
     if (handled.has(inlineMessageId)) return;
     handled.add(inlineMessageId);
 
-    const say = (text: string) =>
-      bot.api
-        .editMessageTextInline(inlineMessageId, text, {
-          link_preview_options: { is_disabled: true },
-        })
-        .catch((e) => console.error("Не удалось обновить инлайн-сообщение:", e?.message ?? e));
+    // Скачивание — в фоне, обработчик возвращается сразу (вызов в конце). bot.start()
+    // в grammY ждёт каждый обработчик до конца, и пока здесь шло скачивание (до 20
+    // минут), бот не отвечал никому.
+    const deliver = async () => {
+      const say = (text: string) =>
+        bot.api
+          .editMessageTextInline(inlineMessageId, text, {
+            link_preview_options: { is_disabled: true },
+          })
+          .catch((e) => console.error("Не удалось обновить инлайн-сообщение:", e?.message ?? e));
 
-    try {
-      if (ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
-        await say(m.inlineRateLimited);
-        return;
-      }
-      if (SHARE_CHANNEL && !(await isChannelMember(ctx, ctx.from.id))) {
-        await say(m.inlineSubscribeRequired(SHARE_CHANNEL));
-        return;
-      }
+      try {
+        if (ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
+          await say(m.inlineRateLimited);
+          return;
+        }
+        if (SHARE_CHANNEL && !(await isChannelMember(ctx, ctx.from.id))) {
+          await say(m.inlineSubscribeRequired(SHARE_CHANNEL));
+          return;
+        }
 
-      const info = await api<{
-        title: string;
-        itemCount?: number;
-        qualities: { video: string[]; audio: string[] };
-      }>("/info", {
-        url,
-        telegramId: ctx.from.id,
-        telegramUsername: ctx.from.username,
-        telegramLanguageCode: ctx.from.language_code,
-      });
-
-      // Карусель и фотопосты в инлайне не отправить: заменить заглушку можно
-      // ровно одним файлом, альбом сюда не поместится.
-      const quality = pickQuality(info.qualities?.video ?? []);
-      if ((info.itemCount ?? 1) > 1 || !quality || quality === "original") {
-        await say(m.inlineOnlySingleVideo);
-        return;
-      }
-
-      const started = await api<{ downloadId: string; fileName: string }>(
-        "/download/video",
-        {
+        const info = await api<{
+          title: string;
+          itemCount?: number;
+          qualities: { video: string[]; audio: string[] };
+        }>("/info", {
           url,
-          quality,
-          extension: "mp4",
-          source: "BOT",
           telegramId: ctx.from.id,
           telegramUsername: ctx.from.username,
           telegramLanguageCode: ctx.from.language_code,
-        },
-      );
+        });
 
-      let status: { status: string; items?: { filename: string }[] } | undefined;
-      for (let i = 0; i < 400; i++) {
-        await new Promise((r) => setTimeout(r, 3000));
-        status = await api(`/download/${started.downloadId}/status`);
-        if (status && (status.status === "COMPLETED" || status.status === "FAILED")) break;
-      }
-      if (!status || status.status !== "COMPLETED") {
-        throw new Error(status?.status === "FAILED" ? m.downloadFailed : m.downloadTimeout);
-      }
+        // Карусель и фотопосты в инлайне не отправить: заменить заглушку можно
+        // ровно одним файлом, альбом сюда не поместится.
+        const quality = pickQuality(info.qualities?.video ?? []);
+        if ((info.itemCount ?? 1) > 1 || !quality || quality === "original") {
+          await say(m.inlineOnlySingleVideo);
+          return;
+        }
 
-      const fileName = encodeURIComponent(status.items?.[0]?.filename ?? started.fileName);
-      const fileUrl = `${API_URL}/download/${fileName}`;
-      const meta = await api<{
-        size: number;
-        width?: number;
-        height?: number;
-        duration?: number;
-      }>(`/download/${fileName}/metadata`);
-
-      if (!BOT_API_ROOT && meta.size > CLOUD_SIZE_LIMIT) {
-        const mb = (meta.size / 1024 / 1024).toFixed(1);
-        await say(m.fileTooBig(mb, url));
-        return;
-      }
-
-      // Инлайн-сообщение нельзя заменить ЗАГРУЖАЕМЫМ файлом — Telegram
-      // принимает здесь только file_id или ссылку, по которой сходит сам.
-      // Ссылка отпадает: файл лежит во внутренней сети, наружу его отдаёт
-      // только сайт, да и облачный лимит на скачивание по ссылке всего 20 МБ.
-      // Поэтому сначала отправляем видео себе (в личный чат админа), берём у
-      // отправленного сообщения file_id и уже им заменяем заглушку. Служебное
-      // сообщение сразу удаляем — file_id остаётся рабочим и после удаления.
-      // Без личного чата админа промежуточную загрузку делать негде — честно
-      // говорим об этом в лог и оставляем человеку понятное сообщение, а не
-      // молчащую заглушку.
-      if (!ADMIN_TELEGRAM_ID) {
-        console.error(
-          "ADMIN_TELEGRAM_ID не задан — инлайн-режим не может загрузить видео (нужен чат для промежуточной отправки)",
+        const started = await api<{ downloadId: string; fileName: string }>(
+          "/download/video",
+          {
+            url,
+            quality,
+            extension: "mp4",
+            source: "BOT",
+            telegramId: ctx.from.id,
+            telegramUsername: ctx.from.username,
+            telegramLanguageCode: ctx.from.language_code,
+          },
         );
-        await say(m.inlineOnlySingleVideo);
-        return;
+
+        let status: { status: string; items?: { filename: string }[] } | undefined;
+        for (let i = 0; i < 400; i++) {
+          await new Promise((r) => setTimeout(r, 3000));
+          status = await api(`/download/${started.downloadId}/status`);
+          if (status && (status.status === "COMPLETED" || status.status === "FAILED")) break;
+        }
+        if (!status || status.status !== "COMPLETED") {
+          throw new Error(status?.status === "FAILED" ? m.downloadFailed : m.downloadTimeout);
+        }
+
+        const fileName = encodeURIComponent(status.items?.[0]?.filename ?? started.fileName);
+        const fileUrl = `${API_URL}/download/${fileName}`;
+        const meta = await api<{
+          size: number;
+          width?: number;
+          height?: number;
+          duration?: number;
+        }>(`/download/${fileName}/metadata`);
+
+        if (!BOT_API_ROOT && meta.size > CLOUD_SIZE_LIMIT) {
+          const mb = (meta.size / 1024 / 1024).toFixed(1);
+          await say(m.fileTooBig(mb, url));
+          return;
+        }
+
+        // Инлайн-сообщение нельзя заменить ЗАГРУЖАЕМЫМ файлом — Telegram
+        // принимает здесь только file_id или ссылку, по которой сходит сам.
+        // Ссылка отпадает: файл лежит во внутренней сети, наружу его отдаёт
+        // только сайт, да и облачный лимит на скачивание по ссылке всего 20 МБ.
+        // Поэтому сначала отправляем видео себе (в личный чат админа), берём у
+        // отправленного сообщения file_id и уже им заменяем заглушку. Служебное
+        // сообщение сразу удаляем — file_id остаётся рабочим и после удаления.
+        // Без личного чата админа промежуточную загрузку делать негде — честно
+        // говорим об этом в лог и оставляем человеку понятное сообщение, а не
+        // молчащую заглушку.
+        if (!ADMIN_TELEGRAM_ID) {
+          console.error(
+            "ADMIN_TELEGRAM_ID не задан — инлайн-режим не может загрузить видео (нужен чат для промежуточной отправки)",
+          );
+          await say(m.inlineOnlySingleVideo);
+          return;
+        }
+
+        const staged = await bot.api.sendVideo(
+          ADMIN_TELEGRAM_ID,
+          new InputFile(new URL(fileUrl)),
+          {
+            width: meta.width,
+            height: meta.height,
+            duration: meta.duration,
+            disable_notification: true,
+            caption: `служебная загрузка для инлайна: ${info.title ?? ""}`.slice(0, 200),
+          },
+        );
+
+        const fileId = staged.video?.file_id;
+        if (!fileId) throw new Error("Telegram не вернул file_id для отправленного видео");
+
+        await bot.api.editMessageMediaInline(
+          inlineMessageId,
+          InputMediaBuilder.video(fileId, { caption: m.fileCaption(info.title ?? "", url) }),
+          {
+            reply_markup: new InlineKeyboard().url(
+              m.inlineOpenBot,
+              `https://t.me/${ctx.me.username}`,
+            ),
+          },
+        );
+
+        await bot.api
+          .deleteMessage(ADMIN_TELEGRAM_ID, staged.message_id)
+          .catch(() => {});
+      } catch (e: any) {
+        await say(`${m.failedPrefix}${friendlyError(e?.message ?? String(e), lang)}`);
       }
-
-      const staged = await bot.api.sendVideo(
-        ADMIN_TELEGRAM_ID,
-        new InputFile(new URL(fileUrl)),
-        {
-          width: meta.width,
-          height: meta.height,
-          duration: meta.duration,
-          disable_notification: true,
-          caption: `служебная загрузка для инлайна: ${info.title ?? ""}`.slice(0, 200),
-        },
-      );
-
-      const fileId = staged.video?.file_id;
-      if (!fileId) throw new Error("Telegram не вернул file_id для отправленного видео");
-
-      await bot.api.editMessageMediaInline(
-        inlineMessageId,
-        InputMediaBuilder.video(fileId, { caption: m.fileCaption(info.title ?? "", url) }),
-        {
-          reply_markup: new InlineKeyboard().url(
-            m.inlineOpenBot,
-            `https://t.me/${ctx.me.username}`,
-          ),
-        },
-      );
-
-      await bot.api
-        .deleteMessage(ADMIN_TELEGRAM_ID, staged.message_id)
-        .catch(() => {});
-    } catch (e: any) {
-      await say(`${m.failedPrefix}${friendlyError(e?.message ?? String(e), lang)}`);
-    }
+    };
+    // Ошибки внутри ловит свой try/catch, этот — на случай, если упадёт он сам.
+    void deliver().catch((e) => console.error("Инлайн-скачивание упало:", e?.message ?? e));
   });
 }

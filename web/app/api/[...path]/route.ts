@@ -60,6 +60,7 @@ const ALLOWED_PROXY_PATHS: { method: string; path: string }[] = [
   { method: "POST", path: "info" },
   { method: "POST", path: "download/video" },
   { method: "POST", path: "download/audio" },
+  { method: "POST", path: "download/subtitles" },
   { method: "GET", path: "download/quota" },
 ];
 
@@ -205,12 +206,14 @@ async function handleRequest(request: NextRequest, path: string[]) {
 
     // Скачивание на сайте требует входа через Telegram и подчиняется тому же
     // суточному лимиту, что и бот (см. DownloadService.enforceWebLimits).
+    // Субтитры тоже только после входа, но в лимит не считаются — это
+    // несколько килобайт текста (DownloadService.downloadSubtitles).
     // telegramId берём из проверенной сессии (cookie), а не от клиента — иначе
     // можно было бы просто подставить чужой id и обойти лимит.
     if (
       path.length === 2 &&
       path[0] === "download" &&
-      (path[1] === "video" || path[1] === "audio") &&
+      (path[1] === "video" || path[1] === "audio" || path[1] === "subtitles") &&
       request.method === "POST"
     ) {
       const telegramId = await getSessionTelegramId();

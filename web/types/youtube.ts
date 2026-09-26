@@ -41,4 +41,15 @@ export type VideoInfo = {
     video: string[];
     audio: string[];
   };
+  // Только у YouTube и только если субтитры у ролика есть. Необязательное:
+  // сайт может оказаться новее сервера, и тогда поля просто нет.
+  subtitles?: SubtitleTrack[];
+};
+
+// lang уходит обратно на сервер как есть; auto — распознанная речь, а не
+// субтитры автора (см. server/src/lib/subtitles.ts).
+export type SubtitleTrack = {
+  lang: string;
+  name: string;
+  auto: boolean;
 };

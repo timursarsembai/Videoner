@@ -12,6 +12,7 @@ import { getVideoFormats } from 'src/lib/helper';
 import { AlertService } from '../alert/alert.service';
 import { BotUserService } from '../analytics/bot-user.service';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
+import { listSubtitles } from 'src/lib/subtitles';
 import {
   describeItems,
   entryKind,
@@ -97,6 +98,9 @@ export class InfoService {
         tags: info.tags || [],
         likeCount: info.like_count,
         commentCount: info.comment_count,
+        // Пока только YouTube: у остальных площадок субтитры не проверены,
+        // а Vimeo, где они бывают, сейчас не скачивается вовсе.
+        subtitles: platform === 'youtube' ? listSubtitles(info) : [],
       };
 
       return videoInfo;

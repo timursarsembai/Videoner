@@ -55,6 +55,14 @@ interface Messages {
   chooseTimedOut: string;
   queueDroppedByLimit: (count: number) => string;
   queueLostOnRestart: (count: number) => string;
+  // Субтитры YouTube (см. subtitles.ts).
+  subtitlesButton: string;
+  subtitlesBack: string;
+  subtitlesAuto: string;
+  subtitlesChoose: string;
+  subtitlesPreparing: string;
+  subtitlesFailed: string;
+  subtitlesBusy: string;
 }
 
 const ru: Messages = {
@@ -136,6 +144,13 @@ const ru: Messages = {
   queueDroppedByLimit: (count) => `\n\nСсылки из очереди (${count}) сегодня тоже не скачать — пришлите их завтра.`,
   queueLostOnRestart: (count) =>
     `⚠️ Бот перезапускается для обновления — очередь сброшена (ссылок: ${count}). Пришлите их снова через минуту.`,
+  subtitlesButton: "📝 Субтитры",
+  subtitlesBack: "⬅️ Назад к качеству",
+  subtitlesAuto: "авто",
+  subtitlesChoose: "Выберите язык субтитров",
+  subtitlesPreparing: "📝 Готовлю субтитры...",
+  subtitlesFailed: "Не получилось скачать субтитры на этом языке. Попробуйте другой язык.",
+  subtitlesBusy: "YouTube сейчас не отдаёт субтитры — попробуйте через несколько минут.",
 };
 
 const en: Messages = {
@@ -214,6 +229,13 @@ const en: Messages = {
   queueDroppedByLimit: (count) => `\n\nThe queued links (${count}) can't be downloaded today either — send them tomorrow.`,
   queueLostOnRestart: (count) =>
     `⚠️ The bot is restarting for an update — the queue was reset (links: ${count}). Please send them again in a minute.`,
+  subtitlesButton: "📝 Subtitles",
+  subtitlesBack: "⬅️ Back to quality",
+  subtitlesAuto: "auto",
+  subtitlesChoose: "Choose the subtitle language",
+  subtitlesPreparing: "📝 Preparing subtitles...",
+  subtitlesFailed: "Couldn't download subtitles in this language. Try another language.",
+  subtitlesBusy: "YouTube is not serving subtitles right now — try again in a few minutes.",
 };
 
 export const messages: Record<Lang, Messages> = { ru, en };

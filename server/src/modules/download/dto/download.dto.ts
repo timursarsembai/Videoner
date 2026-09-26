@@ -125,6 +125,32 @@ export class DownloadAudioDto extends RequestMetaDto {
   extension?: AudioFormat;
 }
 
+export class DownloadSubtitlesDto extends RequestMetaDto {
+  @ApiProperty({
+    description: 'YouTube video URL',
+    example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  })
+  @IsString()
+  url: string;
+
+  @ApiProperty({
+    description: 'Subtitle track code from /info subtitles[].lang',
+    example: 'en',
+  })
+  // Та же форма, что проверяет сервис (SUBTITLE_LANG_RE), — здесь она только
+  // наблюдается (shadow), а отказывает сам сервис.
+  @Matches(/^[A-Za-z][A-Za-z0-9-]{0,19}$/)
+  lang: string;
+
+  @ApiProperty({
+    description: 'Video title for the file name',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  title?: string;
+}
+
 export class DownloadResponseDto {
   @ApiProperty({
     description: 'Status message',

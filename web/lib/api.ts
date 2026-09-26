@@ -99,6 +99,22 @@ class ApiClient {
     }
   }
 
+  // Субтитры готовятся за несколько секунд, поэтому без отслеживания хода:
+  // ответ — сразу имя файла для downloadFile.
+  async downloadSubtitles(url: string, lang: string, title: string): Promise<{ fileName: string }> {
+    try {
+      const response = await this.client.post<{ fileName: string }>("/download/subtitles", {
+        url,
+        lang,
+        title,
+        source: "WEB",
+      });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   subscribeToProgress(
     downloadId: string,
     callbacks: ProgressCallbacks

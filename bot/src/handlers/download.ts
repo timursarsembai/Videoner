@@ -14,6 +14,7 @@ import {
 import { SHARE_CHANNEL, publishLink } from "./share.js";
 import { blockUnlessSubscribed, isChannelMember, subscribeKeyboard } from "./membership.js";
 import { LinkQueues, QUEUE_LIMIT, extractUrls, type Current, type OwnerState } from "../queue.js";
+import { orderTracks, type SubtitleTrack } from "../subtitles.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -330,6 +331,78 @@ async function showNextChoice(tg: Api, key: string) {
   }
 }
 
+// Клавиатура выбора текущей ссылки. Собирается из запомненного в очереди, а не
+// из ответа сервера: после экрана языков субтитров её надо вернуть как была.
+function choiceKeyboard(m: (typeof messages)[Lang], current: Current): InlineKeyboard {
+  const kb = new InlineKeyboard();
+  for (const q of (current.qualities?.video ?? []).slice(0, 6)) {
+    // Замок с HD-качеств снят вместе с платными функциями: все качества
+    // доступны всем без исключения.
+    // "original" сервер присылает для поста, где нет ни одного видео —
+    // выбирать там нечего, снимки забираются в исходном размере.
+    kb.text(q === "original" ? m.photoButton : `🎬 ${q}`, `v|${q}`).row();
+  }
+  // У поста из одних фотографий звуковой дорожки нет — кнопку не рисуем,
+  // иначе она вела бы в заведомую ошибку.
+  if (current.qualities?.audio.length) {
+    kb.text(m.audioOnlyButton, "a|128Kbps").row();
+  }
+  if (current.subtitles?.length) {
+    kb.text(m.subtitlesButton, "s|list").row();
+  }
+  // Отказаться от ссылки, не дожидаясь получаса: иначе следующие в очереди
+  // ждали бы, пока истечёт время выбора.
+  kb.text(m.skipButton, "x|skip");
+  return kb;
+}
+
+function subtitlesKeyboard(m: (typeof messages)[Lang], tracks: SubtitleTrack[]): InlineKeyboard {
+  const kb = new InlineKeyboard();
+  // В кнопке — номер дорожки, а не код языка: callback_data ограничена 64
+  // байтами, а номер к тому же не даст прислать произвольный код.
+  tracks.forEach((track, i) => {
+    kb.text(track.auto ? `${track.name} (${m.subtitlesAuto})` : track.name, `s|${i}`).row();
+  });
+  kb.text(m.subtitlesBack, "s|back");
+  return kb;
+}
+
+// Кто сейчас ждёт субтитры: повторное нажатие не запускает второй запрос.
+const subtitlesInFlight = new Set<string>();
+
+// Готовит .srt на сервере и присылает документом. Ссылка при этом остаётся
+// текущей: субтитры обычно берут вместе с видео, и выбор качества после них
+// возвращается на место. Очередь двигает только видео, «Не скачивать» или
+// истёкшее время.
+async function sendSubtitles(ctx: Context, key: string, current: Current, track: SubtitleTrack, lang: Lang) {
+  const m = messages[lang];
+  const chatId = ctx.chat?.id;
+  if (!chatId) return;
+  const note = await ctx.reply(m.subtitlesPreparing);
+  try {
+    const { fileName } = await api<{ fileName: string }>("/download/subtitles", {
+      url: current.url,
+      lang: track.lang,
+      title: current.title,
+      source: "BOT",
+      telegramId: ctx.from?.id,
+      telegramUsername: ctx.from?.username,
+      telegramLanguageCode: ctx.from?.language_code,
+    });
+    await ctx.replyWithDocument(new InputFile(new URL(`${API_URL}/download/${encodeURIComponent(fileName)}`), fileName), {
+      caption: m.fileCaption(current.title ?? "", current.url),
+    });
+    await ctx.api.deleteMessage(chatId, note.message_id).catch((e) => console.error("Не удалось убрать «готовлю»:", e?.message ?? e));
+  } catch (e: any) {
+    const raw = e?.message ?? String(e);
+    console.error(`Субтитры ${track.lang} для ${current.url}:`, raw);
+    const text = /refusing/i.test(raw) ? m.subtitlesBusy : m.subtitlesFailed;
+    await ctx.api.editMessageText(chatId, note.message_id, `${m.failedPrefix}${text}`).catch((err) => console.error("Не удалось показать ошибку субтитров:", err?.message ?? err));
+  } finally {
+    subtitlesInFlight.delete(key);
+  }
+}
+
 // true — клавиатура показана, ждём нажатия. false — ссылку надо пропустить.
 async function showChoice(tg: Api, key: string, state: OwnerState, current: Current): Promise<boolean> {
   const lang = detectLang(state.languageCode);
@@ -344,6 +417,7 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       duration?: number;
       thumbnail?: string;
       qualities: { video: string[]; audio: string[] };
+      subtitles?: SubtitleTrack[];
     }>("/info", {
       url: current.url,
       telegramId: state.userId,
@@ -352,23 +426,11 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
     });
     current.title = info.title ?? "";
     current.thumbnail = info.thumbnail;
+    current.qualities = { video: info.qualities.video ?? [], audio: info.qualities.audio ?? [] };
+    // Сервер отдаёт субтитры только для YouTube; у остальных поле пустое.
+    current.subtitles = orderTracks(info.subtitles ?? []);
 
-    const kb = new InlineKeyboard();
-    for (const q of (info.qualities.video ?? []).slice(0, 6)) {
-      // Замок с HD-качеств снят вместе с платными функциями: все качества
-      // доступны всем без исключения.
-      // "original" сервер присылает для поста, где нет ни одного видео —
-      // выбирать там нечего, снимки забираются в исходном размере.
-      kb.text(q === "original" ? m.photoButton : `🎬 ${q}`, `v|${q}`).row();
-    }
-    // У поста из одних фотографий звуковой дорожки нет — кнопку не рисуем,
-    // иначе она вела бы в заведомую ошибку.
-    if ((info.qualities.audio ?? []).length) {
-      kb.text(m.audioOnlyButton, "a|128Kbps").row();
-    }
-    // Отказаться от ссылки, не дожидаясь получаса: иначе следующие в очереди
-    // ждали бы, пока истечёт время выбора.
-    kb.text(m.skipButton, "x|skip");
+    const kb = choiceKeyboard(m, current);
 
     const dur = fmtDuration(info.duration);
     const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";
@@ -493,6 +555,31 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.answerCallbackQuery();
       await ctx.editMessageText(m.skipped).catch((e) => console.error("Не удалось отметить пропуск:", e?.message ?? e));
       inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
+      return;
+    }
+    if (kind === "s") {
+      const tracks = current.subtitles ?? [];
+      if (quality === "list" || quality === "back") {
+        await ctx.answerCallbackQuery();
+        const kb = quality === "list" ? subtitlesKeyboard(m, tracks) : choiceKeyboard(m, current);
+        await ctx.editMessageReplyMarkup({ reply_markup: kb }).catch((e) => console.error("Не удалось сменить клавиатуру:", e?.message ?? e));
+        return;
+      }
+      const track = /^\d+$/.test(quality ?? "") ? tracks[Number(quality)] : undefined;
+      if (!track) {
+        await ctx.answerCallbackQuery({ text: m.sessionExpired });
+        return;
+      }
+      if (subtitlesInFlight.has(key)) {
+        await ctx.answerCallbackQuery({ text: m.subtitlesPreparing });
+        return;
+      }
+      subtitlesInFlight.add(key);
+      await ctx.answerCallbackQuery();
+      // Возвращаем выбор качества сразу: субтитры готовятся в фоне, а видео
+      // можно выбрать, не дожидаясь их.
+      await ctx.editMessageReplyMarkup({ reply_markup: choiceKeyboard(m, current) }).catch((e) => console.error("Не удалось вернуть клавиатуру:", e?.message ?? e));
+      inBackground("Субтитры", sendSubtitles(ctx, key, current, track, lang));
       return;
     }
     if ((kind !== "v" && kind !== "a") || !quality) {

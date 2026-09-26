@@ -1,3 +1,5 @@
+import type { SubtitleTrack } from '../lib/subtitles';
+
 export interface VideoFormat {
   format_id: string;
   format_note?: string;
@@ -52,6 +54,10 @@ export interface YtdlpVideoInfo {
   live_status?: string;
   availability: string;
   original_url: string;
+  // Субтитры по кодам языков — что из них показывать, решает
+  // lib/subtitles.ts (там же, почему не всё).
+  subtitles?: Record<string, { ext: string; name?: string }[]>;
+  automatic_captions?: Record<string, { ext: string; name?: string }[]>;
 }
 
 // Элемент карусели в ответе /info. Для обычного поста массив items содержит
@@ -90,6 +96,9 @@ export type VideoInfoResponse = {
     video: string[];
     audio: string[];
   };
+  // Пусто у всех площадок, кроме YouTube, и у роликов без субтитров — тогда
+  // ни сайт, ни бот кнопку не показывают.
+  subtitles: SubtitleTrack[];
 };
 
 export type PlaylistVideoInfo = {

@@ -29,6 +29,8 @@ import { Observable, Subject } from 'rxjs';
 import { YtdlpProcessService } from '../ytdlp/ytdlp-process.service';
 import { YtdlpFormatService } from '../ytdlp/ytdlp-format.service';
 import { getFileName } from 'src/lib/utils';
+import { isAutoTrack, SUBTITLE_LANG_RE } from 'src/lib/subtitles';
+import { getPlatform } from 'src/validate/url';
 import { BotUserService } from '../analytics/bot-user.service';
 import { categorizeError } from 'src/lib/error-category';
 import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
@@ -787,6 +789,73 @@ export class DownloadService {
     } catch (error) {
       await this.markDownloadFailed(downloadId, error, progressSubject);
     }
+  }
+
+  // Субтитры YouTube отдельным файлом .srt — что предлагать, решает
+  // lib/subtitles.ts. Файл кладём туда же, где видео: отдаёт его обычный
+  // GET /download/:filename, убирает тот же уборщик через полчаса.
+  //
+  // Без записи Download и без суточного лимита: это несколько килобайт текста,
+  // а не скачивание ролика. Вход на сайте при этом обязателен, как у видео, —
+  // иначе ручка стала бы анонимным входом в yt-dlp с нашими куками YouTube.
+  async downloadSubtitles(
+    url: string,
+    lang: string,
+    title: string | undefined,
+    meta: DownloadRequestMeta = {},
+  ): Promise<{ fileName: string }> {
+    if (getPlatform(url) !== 'youtube') {
+      throw new BadRequestException('Subtitles are available for YouTube only');
+    }
+    // «all» проходит форму, но скачал бы все дорожки разом.
+    if (!SUBTITLE_LANG_RE.test(lang) || lang.toLowerCase() === 'all') {
+      throw new BadRequestException('Invalid subtitle language');
+    }
+    if (meta.source === DownloadSource.WEB && !meta.telegramId) {
+      throw new UnauthorizedException('Login required to download on the website');
+    }
+
+    const dir = this.ensureDownloadDirectory();
+    // getFileName оставляет в названии только латиницу и цифры; у русского
+    // ролика от него остались бы одни подчёркивания.
+    const nameSource = title && /[A-Za-z0-9]/.test(title) ? title : 'subtitles';
+    const fileName = getFileName(nameSource, lang, 'srt');
+    const base = fileName.slice(0, -'.srt'.length);
+
+    try {
+      await this.ytdlp.ytdlp([
+        '--skip-download',
+        '--no-playlist',
+        // Ключ выбираем по коду, а не по флагу от клиента: --write-subs берёт
+        // только авторские, и машинный перевод им не запросить вовсе.
+        isAutoTrack(lang) ? '--write-auto-subs' : '--write-subs',
+        '--sub-langs',
+        lang,
+        '--sub-format',
+        'srt/best',
+        '--convert-subs',
+        'srt',
+        '-o',
+        join(dir, `${base}.%(ext)s`),
+        url,
+      ]);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(`Subtitles ${lang} for ${url} failed:`, message);
+      if (/HTTP Error 429/i.test(message)) {
+        throw new BadRequestException('YouTube is refusing subtitle requests right now — try again in a few minutes');
+      }
+      throw new BadRequestException('Subtitles could not be downloaded');
+    }
+
+    // yt-dlp сам дописывает код языка: <base>.<lang>.srt. Файла нет — значит
+    // такой дорожки у ролика нет, а yt-dlp на это не ругается, только молчит.
+    const written = join(dir, `${base}.${lang}.srt`);
+    if (!fs.existsSync(written)) {
+      throw new BadRequestException('No subtitles in this language');
+    }
+    await fs.promises.rename(written, join(dir, fileName));
+    return { fileName };
   }
 
   async downloadVideo(

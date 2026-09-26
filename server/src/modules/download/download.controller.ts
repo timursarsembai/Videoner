@@ -30,6 +30,7 @@ import { Public } from '../auth/public.decorator';
 import {
   DownloadAudioDto,
   DownloadResponseDto,
+  DownloadSubtitlesDto,
   DownloadVideoDto,
 } from './dto/download.dto';
 import { ValidUrlGuard } from '../auth/platform.guard';
@@ -248,5 +249,17 @@ export class DownloadController {
       req,
       downloadDto,
     );
+  }
+
+  // Субтитры отдаются сразу, без отслеживания хода, в отличие от видео: это
+  // несколько секунд работы yt-dlp. Ответ — имя файла для GET /download/:filename.
+  @ApiSecurity('X-API-Key')
+  @Post('subtitles')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Download YouTube subtitles as .srt' })
+  @ApiBody({ type: DownloadSubtitlesDto })
+  @UseGuards(ValidUrlGuard)
+  async downloadSubtitles(@Body() dto: DownloadSubtitlesDto) {
+    return this.downloadService.downloadSubtitles(dto.url, dto.lang, dto.title, dto);
   }
 }

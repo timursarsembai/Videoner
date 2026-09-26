@@ -16,6 +16,7 @@ import { VideoInfo } from "@/types/youtube";
 import { DownloadItem } from "@/types";
 import { motion } from "framer-motion";
 import {
+  Captions,
   Clock,
   Download,
   FileVideo,
@@ -28,6 +29,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { TelegramLoginWidget } from "./TelegramLoginWidget";
+import { SubtitlesPanel } from "./SubtitlesPanel";
 
 
 interface VideoInfoSectionProps {
@@ -70,6 +72,10 @@ export const VideoInfoSection = ({
     string | null
   >(null);
   const [activeTab, setActiveTab] = useState<FormatType>(restoredTab);
+  // Субтитры — не третий FormatType, а отдельная панель поверх выбора: см.
+  // SubtitlesPanel.tsx, почему их не вплетаем в логику качеств.
+  const subtitleTracks = videoInfo.subtitles ?? [];
+  const [showSubtitles, setShowSubtitles] = useState(false);
   const [selectedExtension, setSelectedExtension] = useState<string>(() =>
     initialExtension && videoInfo.extensions[restoredTab]?.includes(initialExtension)
       ? initialExtension
@@ -228,6 +234,7 @@ export const VideoInfoSection = ({
   };
 
   const handleActiveTab = (tab: FormatType) => {
+    setShowSubtitles(false);
     setPostItems([]);
     setActiveTab(tab);
     setSelectedQuality(null);
@@ -335,7 +342,7 @@ export const VideoInfoSection = ({
                         size="lg"
                         onClick={() => handleActiveTab(tab as FormatType)}
                         className={`relative ${
-                          activeTab === tab
+                          activeTab === tab && !showSubtitles
                             ? "bg-primary hover:bg-primary/90"
                             : "bg-muted/50 hover:bg-muted/80"
                         }`}
@@ -343,14 +350,14 @@ export const VideoInfoSection = ({
                         <div className="flex items-center justify-center gap-3">
                           <Video
                             className={`h-5 w-5 ${
-                              activeTab === tab
+                              activeTab === tab && !showSubtitles
                                 ? "text-primary-foreground"
                                 : "text-muted-foreground"
                             }`}
                           />
                           <span
                             className={`font-semibold capitalize ${
-                              activeTab === tab
+                              activeTab === tab && !showSubtitles
                                 ? "text-primary-foreground"
                                 : "text-muted-foreground"
                             }`}
@@ -362,9 +369,29 @@ export const VideoInfoSection = ({
                         </div>
                       </Button>
                     ))}
+                    {subtitleTracks.length > 0 && (
+                      <Button
+                        size="lg"
+                        onClick={() => setShowSubtitles(true)}
+                        className={showSubtitles ? "bg-primary hover:bg-primary/90" : "bg-muted/50 hover:bg-muted/80"}
+                      >
+                        <div className="flex items-center justify-center gap-3">
+                          <Captions
+                            className={`h-5 w-5 ${showSubtitles ? "text-primary-foreground" : "text-muted-foreground"}`}
+                          />
+                          <span
+                            className={`font-semibold capitalize ${
+                              showSubtitles ? "text-primary-foreground" : "text-muted-foreground"
+                            }`}
+                          >
+                            {t("video.subtitlesTab")}
+                          </span>
+                        </div>
+                      </Button>
+                    )}
                   </div>
 
-                  {activeTab === "audio" && (
+                  {activeTab === "audio" && !showSubtitles && (
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -392,7 +419,7 @@ export const VideoInfoSection = ({
                   )}
                 </div>
 
-                {selectedQuality && (
+                {selectedQuality && !showSubtitles && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -403,6 +430,10 @@ export const VideoInfoSection = ({
                 )}
               </div>
 
+              {showSubtitles ? (
+                <SubtitlesPanel url={url} title={videoInfo.title} tracks={subtitleTracks} />
+              ) : (
+              <>
               {/* Quality Grid */}
               <div className="grid gap-3 grid-cols-[repeat(auto-fit,minmax(160px,1fr))]">
                 {(activeTab === "video"
@@ -619,6 +650,8 @@ export const VideoInfoSection = ({
                   )}
                 </div>
               </div>
+              </>
+              )}
             </div>
           </motion.div>
         </div>

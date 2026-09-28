@@ -352,9 +352,9 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="fixed right-0 top-0 h-screen w-full max-w-md border-l bg-background p-6 shadow-lg pt-20"
+              className="fixed right-0 top-0 h-dvh overflow-y-auto overscroll-contain w-full max-w-md border-l bg-background p-6 shadow-lg pt-20"
             >
-              <div className="flex h-full flex-col">
+              <div className="flex min-h-full flex-col">
                 <div className="flex-1 space-y-4">
                   {navConfig.mainNav.map((item) => (
                     <MobileNavLink key={item.href} item={item} />

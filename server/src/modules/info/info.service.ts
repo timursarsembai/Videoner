@@ -13,6 +13,7 @@ import { AlertService } from '../alert/alert.service';
 import { BotUserService } from '../analytics/bot-user.service';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
 import { listSubtitles } from 'src/lib/subtitles';
+import { capYoutubeQualities } from 'src/lib/youtube-budget';
 import {
   describeItems,
   entryKind,
@@ -74,6 +75,13 @@ export class InfoService {
         info,
         platform,
       );
+      // YouTube идёт через прокси с оплатой за трафик — качества выше потолка
+      // не предлагаем вовсе (см. lib/youtube-budget.ts). Сервер всё равно
+      // режет качество и при скачивании, здесь — чтобы не показывать кнопку,
+      // которая отдаст не то, что на ней написано.
+      if (platform === 'youtube') {
+        allFormats.video = capYoutubeQualities(allFormats.video, info.duration);
+      }
 
       // У плейлиста собственных thumbnail/duration нет — берём у первого
       // элемента, иначе карточка поста на сайте окажется пустой.

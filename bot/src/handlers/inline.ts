@@ -141,18 +141,44 @@ export function registerInlineHandlers(bot: Bot) {
           return;
         }
 
-        const started = await api<{ downloadId: string; fileName: string }>(
-          "/download/video",
-          {
-            url,
-            quality,
-            extension: "mp4",
-            source: "BOT",
-            telegramId: ctx.from.id,
-            telegramUsername: ctx.from.username,
-            telegramLanguageCode: ctx.from.language_code,
-          },
-        );
+        const startDownload = (acceptTelegramFileId: boolean) =>
+          api<{ downloadId: string; fileName: string; telegramFileId?: string }>(
+            "/download/video",
+            {
+              url,
+              quality,
+              extension: "mp4",
+              source: "BOT",
+              acceptTelegramFileId,
+              telegramId: ctx.from.id,
+              telegramUsername: ctx.from.username,
+              telegramLanguageCode: ctx.from.language_code,
+            },
+          );
+        const replaceStub = (fileId: string) =>
+          bot.api.editMessageMediaInline(
+            inlineMessageId,
+            InputMediaBuilder.video(fileId, { caption: m.fileCaption(info.title ?? "", url) }),
+            {
+              reply_markup: new InlineKeyboard().url(
+                m.inlineOpenBot,
+                `https://t.me/${ctx.me.username}`,
+              ),
+            },
+          );
+
+        let started = await startDownload(true);
+        // Ролик уже отправляли — заглушку заменяем по file_id из кеша, без
+        // скачивания и промежуточной загрузки. Не сработал — качаем заново.
+        if (started.telegramFileId) {
+          try {
+            await replaceStub(started.telegramFileId);
+            return;
+          } catch (e: any) {
+            console.error(`file_id из кеша для ${url} не сработал, качаю заново:`, e?.message ?? e);
+            started = await startDownload(false);
+          }
+        }
 
         let status: { status: string; items?: { filename: string }[] } | undefined;
         for (let i = 0; i < 400; i++) {
@@ -212,16 +238,10 @@ export function registerInlineHandlers(bot: Bot) {
         const fileId = staged.video?.file_id;
         if (!fileId) throw new Error("Telegram не вернул file_id для отправленного видео");
 
-        await bot.api.editMessageMediaInline(
-          inlineMessageId,
-          InputMediaBuilder.video(fileId, { caption: m.fileCaption(info.title ?? "", url) }),
-          {
-            reply_markup: new InlineKeyboard().url(
-              m.inlineOpenBot,
-              `https://t.me/${ctx.me.username}`,
-            ),
-          },
+        api(`/download/${started.downloadId}/telegram-file`, { fileId }).catch((e) =>
+          console.error("Не удалось запомнить file_id:", e?.message ?? e),
         );
+        await replaceStub(fileId);
 
         await bot.api
           .deleteMessage(ADMIN_TELEGRAM_ID, staged.message_id)

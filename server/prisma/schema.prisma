@@ -60,6 +60,16 @@ model Download {
   videoHeight   Int?
   fileSize      BigInt?
   errorCategory ErrorCategory?
+  // Повторы одного и того же ролика отдаются без нового скачивания (см.
+  // DownloadService.findCached): YouTube идёт через прокси с оплатой за
+  // гигабайты. cacheKey — площадка, id ролика, тип и качество; у карусели и
+  // фотопостов его нет, их не кешируем. telegramFileId — file_id, который
+  // вернул Telegram, когда бот отправил файл: по нему бот пересылает ролик
+  // повторно, не загружая его вовсе. fromCache — запись выдана из кеша, через
+  // прокси ничего не шло; суточный лимит трафика YouTube такие не считает.
+  cacheKey       String?
+  telegramFileId String?
+  fromCache      Boolean        @default(false)
   // Файлы поста. У обычного скачивания ровно один и он же продублирован в
   // filename/downloadUrl выше — так старый код, рассчитанный на один файл,
   // продолжает работать без изменений. У карусели записей несколько.
@@ -71,6 +81,7 @@ model Download {
   @@index([status])
   @@index([downloader])
   @@index([createdAt])
+  @@index([cacheKey])
 }
 
 // Один файл внутри скачивания. Отдельная таблица, а не массив в Download:

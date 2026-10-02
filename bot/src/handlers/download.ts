@@ -134,8 +134,10 @@ async function performDownload(
   send: {
     reply: (text: string) => Promise<{ message_id: number }>;
     editMessageText: (messageId: number, text: string) => Promise<unknown>;
-    replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) => Promise<unknown>;
-    replyWithAudio: (file: InputFile, caption: string) => Promise<unknown>;
+    // Файл или file_id из кеша. Возвращают file_id отправленного — его
+    // запоминает сервер, чтобы повтор того же ролика переслать без скачивания.
+    replyWithVideo: (file: InputFile | string, caption: string, dims?: VideoDimensions) => Promise<string | undefined>;
+    replyWithAudio: (file: InputFile | string, caption: string) => Promise<string | undefined>;
     // Снимок отдаём именно фотографией: пост может состоять из одного фото, и
     // отправлять его видео нельзя — Telegram получил бы jpeg под видом ролика.
     replyWithPhoto: (file: InputFile, caption: string) => Promise<string | undefined>;
@@ -164,10 +166,36 @@ async function performDownload(
   activeDownloads.set(trackingKey, { chatId, messageId: msg.message_id, lang });
 
   try {
-    const started = await api<{ downloadId: string; fileName: string }>(
-      kind === "v" ? "/download/video" : "/download/audio",
-      { url, quality, extension, source: "BOT", ...dlMeta },
-    );
+    const startDownload = (acceptTelegramFileId: boolean) =>
+      api<{ downloadId: string; fileName: string; telegramFileId?: string }>(
+        kind === "v" ? "/download/video" : "/download/audio",
+        { url, quality, extension, source: "BOT", acceptTelegramFileId, ...dlMeta },
+      );
+    let started = await startDownload(true);
+
+    // Этот ролик уже отправляли — сервер вернул file_id, и Telegram перешлёт
+    // файл сам: ни скачивания через прокси, ни загрузки. Не сработал file_id
+    // (Telegram его забыл) — просим скачать заново, уже без кеша по file_id.
+    if (started.telegramFileId) {
+      let sentFromCache = false;
+      try {
+        await send.editMessageText(msg.message_id, m.sendingFile);
+        if (kind === "v") {
+          await send.replyWithVideo(started.telegramFileId, m.fileCaption(title, url));
+        } else {
+          await send.replyWithAudio(started.telegramFileId, m.fileCaption(title, url));
+        }
+        sentFromCache = true;
+      } catch (e: any) {
+        console.error(`file_id из кеша для ${url} не сработал, качаю заново:`, e?.message ?? e);
+        started = await startDownload(false);
+      }
+      if (sentFromCache) {
+        await send.deleteMessage(msg.message_id);
+        await send.publishToChannel(url, title, thumbnail, lang);
+        return;
+      }
+    }
 
     // items — файлы поста. Пусто или одна запись — обычное скачивание,
     // несколько — карусель, её отправляем альбомом.
@@ -229,16 +257,23 @@ async function performDownload(
       await send.publishToChannel(url, title, thumbnail, lang, cover);
       return;
     }
+    let fileId: string | undefined;
     if (kind === "v") {
       // Размеры передаём явно: без них Telegram на iOS показывает вертикальное
       // видео сплющенным в квадрат (Desktop читает поток сам и рисует верно).
-      await send.replyWithVideo(file, m.fileCaption(title, url), {
+      fileId = await send.replyWithVideo(file, m.fileCaption(title, url), {
         width: meta.width,
         height: meta.height,
         duration: meta.duration,
       });
     } else {
-      await send.replyWithAudio(file, m.fileCaption(title, url));
+      fileId = await send.replyWithAudio(file, m.fileCaption(title, url));
+    }
+    if (fileId) {
+      // Не ждём: файл человеку уже отправлен, а сбой записи кеша — не его забота.
+      api(`/download/${started.downloadId}/telegram-file`, { fileId }).catch((e) =>
+        console.error("Не удалось запомнить file_id:", e?.message ?? e),
+      );
     }
     await send.deleteMessage(msg.message_id);
     // Ссылка уходит в канал после того, как файл дошёл до человека: пост о
@@ -260,10 +295,10 @@ function sendersFor(ctx: Context, chatId: number) {
     // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
     // ссылка на первоисточник и упоминание бота остаются с видео у любого,
     // кому его переслали.
-    replyWithVideo: (file: InputFile, caption: string, dims?: VideoDimensions) =>
-      ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims }),
-    replyWithAudio: (file: InputFile, caption: string) =>
-      ctx.replyWithAudio(file, { caption }),
+    replyWithVideo: async (file: InputFile | string, caption: string, dims?: VideoDimensions) =>
+      (await ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims })).video?.file_id,
+    replyWithAudio: async (file: InputFile | string, caption: string) =>
+      (await ctx.replyWithAudio(file, { caption })).audio?.file_id,
     replyWithPhoto: async (file: InputFile, caption: string) => {
       const sent = await ctx.replyWithPhoto(file, { caption });
       return previewFileId(sent.photo);

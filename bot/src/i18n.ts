@@ -38,6 +38,7 @@ interface Messages {
   channelNotice: (channel: string) => string;
   channelPost: (title: string, url: string) => string;
   dailyLimitReached: string;
+  errorYoutubeDailyLimit: string;
   errorLoginRequired: string;
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
@@ -66,7 +67,7 @@ interface Messages {
 }
 
 const ru: Messages = {
-  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K и 8K. HD не нужно открывать за деньги — платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.",
+  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество — лучшее, что отдаёт площадка; для YouTube — до 720p, чтобы сервис оставался бесплатным. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
   fetchingInfo: "🔍 Получаю информацию о видео...",
   audioOnlyButton: "🎵 Только аудио (mp3)",
@@ -102,7 +103,7 @@ const ru: Messages = {
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `${url}\n\n` +
     "Скачать это и любое другое видео бесплатно: @VideonerBot",
-  dailyLimitReached: "📅 На сегодня всё: достигнут суточный лимит в 20 скачиваний. Он обновится в течение суток — приходи позже, скачивать снова можно будет бесплатно и в любом качестве.",
+  dailyLimitReached: "📅 На сегодня всё: достигнут суточный лимит в 20 скачиваний. Он обновится в течение суток — приходи позже, скачивать снова можно будет бесплатно.",
   errorLoginRequired:
     "Эта запись недоступна без входа в аккаунт: площадка отдаёт её только " +
     "авторизованным. Так бывает с приватными записями, возрастными ограничениями " +
@@ -110,6 +111,7 @@ const ru: Messages = {
     "Публичные записи скачиваются без проблем — попробуйте другую ссылку.",
   errorUnsupportedPlatform:
     "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads.",
+  errorYoutubeDailyLimit: "📅 На сегодня лимит YouTube исчерпан: за сутки можно скачать с него не больше определённого объёма. Видео с других площадок качаются как обычно, а YouTube снова станет доступен в течение суток.",
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
   errorNoVideoContent: "По этой ссылке нет видео для скачивания — похоже, пост содержит только фото.",
   errorRegionBlocked:
@@ -154,7 +156,7 @@ const ru: Messages = {
 };
 
 const en: Messages = {
-  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ No quality limits at all: you get whatever the platform offers, up to 4K and 8K. HD costs nothing to unlock — there are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.",
+  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ You get the best quality the platform offers; for YouTube it is up to 720p, so the service can stay free. There are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.",
   notLink: "That doesn't look like a link. Send me a video link.",
   fetchingInfo: "🔍 Fetching video info...",
   audioOnlyButton: "🎵 Audio only (mp3)",
@@ -187,7 +189,7 @@ const en: Messages = {
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `${url}\n\n` +
     "Download this and any other video for free: @VideonerBot",
-  dailyLimitReached: "📅 That is it for today: you have reached the daily limit of 20 downloads. It refreshes within 24 hours — come back later and download again, free and in any quality.",
+  dailyLimitReached: "📅 That is it for today: you have reached the daily limit of 20 downloads. It refreshes within 24 hours — come back later and download again, free.",
   errorLoginRequired:
     "This post is not available without signing in: the platform serves it only to " +
     "logged-in users. That happens with private posts, age-restricted content and " +
@@ -195,6 +197,7 @@ const en: Messages = {
     "Public posts download without trouble — try another link.",
   errorUnsupportedPlatform:
     "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads.",
+  errorYoutubeDailyLimit: "📅 Your YouTube limit for today is used up: there is a cap on how much you can download from it per day. Other platforms work as usual, and YouTube will be available again within 24 hours.",
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
   errorNoVideoContent: "This link doesn't have a video to download — the post appears to be photo-only.",
   errorRegionBlocked:

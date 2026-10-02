@@ -156,6 +156,10 @@ export function friendlyError(raw: string, lang: Lang): string {
     return m.errorUnsupportedPlatform;
   }
 
+  if (msg.includes("daily youtube traffic limit")) {
+    return m.errorYoutubeDailyLimit;
+  }
+
   if (msg.includes("requested format is not available")) {
     return m.errorFormatUnavailable;
   }

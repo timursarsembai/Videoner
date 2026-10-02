@@ -32,6 +32,7 @@ import {
   DownloadResponseDto,
   DownloadSubtitlesDto,
   DownloadVideoDto,
+  TelegramFileDto,
 } from './dto/download.dto';
 import { ValidUrlGuard } from '../auth/platform.guard';
 
@@ -249,6 +250,21 @@ export class DownloadController {
       req,
       downloadDto,
     );
+  }
+
+  // Бот сообщает file_id, под которым Telegram сохранил отправленный файл:
+  // повтор того же ролика бот перешлёт по нему, без скачивания через прокси
+  // (см. DownloadService.findCached). Сайту путь не открыт — его нет в списке
+  // web/app/api/[...path]/route.ts.
+  @ApiSecurity('X-API-Key')
+  @Post(':id/telegram-file')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Remember the Telegram file_id of a sent download' })
+  async setTelegramFileId(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: TelegramFileDto,
+  ) {
+    return this.downloadService.setTelegramFileId(id, dto.fileId);
   }
 
   // Субтитры отдаются сразу, без отслеживания хода, в отличие от видео: это

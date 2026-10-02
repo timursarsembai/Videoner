@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsEnum,
   IsIn,
   IsNumber,
@@ -62,6 +63,21 @@ class RequestMetaDto {
   @IsOptional()
   @IsEnum(DownloadSource)
   source?: DownloadSource;
+
+  @ApiProperty({
+    description:
+      'Client can send a cached file by Telegram file_id (bot only)',
+    required: false,
+  })
+  @IsOptional()
+  @IsBoolean()
+  acceptTelegramFileId?: boolean;
+}
+
+export class TelegramFileDto {
+  @ApiProperty({ description: 'Telegram file_id of the sent file' })
+  @IsString()
+  fileId: string;
 }
 
 export class DownloadVideoDto extends RequestMetaDto {

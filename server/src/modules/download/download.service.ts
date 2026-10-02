@@ -35,6 +35,10 @@ import { BotUserService } from '../analytics/bot-user.service';
 import { categorizeError } from 'src/lib/error-category';
 import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
 import {
+  capYoutubeQuality,
+  youtubeDailyLimitBytes,
+} from 'src/lib/youtube-budget';
+import {
   entryKind,
   hasVideoEntries,
   isPhotoExtension,
@@ -51,7 +55,27 @@ export interface DownloadRequestMeta {
   telegramUsername?: string;
   telegramLanguageCode?: string;
   source?: DownloadSource;
+  // Клиент умеет отправить файл по Telegram file_id (бот). Только он: сайт и
+  // инлайн-режим ждут файл на диске, а запись из кеша по file_id его не имеет.
+  acceptTelegramFileId?: boolean;
 }
+
+// Найденная в кеше выдача (см. findCached).
+interface CachedFile {
+  filename: string;
+  onDisk: boolean;
+  telegramFileId: string | null;
+  fileSize: bigint | null;
+  videoWidth: number | null;
+  videoHeight: number | null;
+  videoDuration: number | null;
+}
+
+// Сколько живёт file_id в кеше. Telegram не обещает вечный срок, а битый
+// file_id бот переживёт (повторит запрос без кеша), но лишняя попытка — это
+// задержка для человека. Месяца хватает с запасом: популярные ролики качают
+// в первые дни после выхода.
+const TELEGRAM_FILE_ID_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 const execFileAsync = promisify(execFile);
 
@@ -141,6 +165,183 @@ export class DownloadService {
     if (usedToday >= DAILY_DOWNLOAD_LIMIT) {
       throw new ForbiddenException('Daily download limit reached');
     }
+  }
+
+  // Суточный лимит трафика YouTube на человека — и для бота, и для сайта (в
+  // отличие от enforceWebLimits, у бота счётчик скачиваний свой, а трафик
+  // общий). Проверяем уже скачанное, а не размер будущего файла: заранее он
+  // известен не всегда, а перебор на один ролик сверх лимита не страшен.
+  // Без telegramId (прямые обращения к API) лимит не применяется — там нет
+  // человека, которому его считать. Выдача из кеша сюда не попадает вовсе.
+  private async enforceYoutubeTraffic(
+    meta: DownloadRequestMeta,
+    platform: string,
+  ) {
+    if (platform !== 'youtube' || !meta.telegramId) return;
+    const limit = youtubeDailyLimitBytes();
+    if (!limit) return;
+    if (await this.botUser.isUnlimited(meta.telegramId)) return;
+
+    const used = await this.botUser.youtubeBytesToday(meta.telegramId);
+    if (used >= limit) {
+      throw new ForbiddenException(
+        `Daily YouTube traffic limit reached (${Math.round(limit / 1024 ** 3)} GB per day) — try again tomorrow`,
+      );
+    }
+  }
+
+  // Ключ кеша: площадка, id ролика у неё, тип и качество, контейнер. Пост из
+  // нескольких файлов не кешируем — у него нет одного файла, который можно
+  // отдать повторно.
+  private cacheKeyFor(
+    platform: string,
+    info: { id?: string },
+    kind: 'v' | 'a',
+    quality: string,
+    extension: string,
+  ): string | null {
+    if (!platform || !info?.id) return null;
+    return `${platform}:${info.id}:${kind}:${quality}:${extension}`;
+  }
+
+  // Ищет, чем ответить на повтор без нового скачивания. Два вида попадания:
+  //   файл ещё на диске (живёт 30-60 минут, см. CleanupService) — годится
+  //     всем, и сайту, и боту;
+  //   Telegram file_id от прошлой отправки ботом — годится только боту, зато
+  //     живёт долго и не требует даже загрузки файла в Telegram.
+  private async findCached(
+    cacheKey: string,
+    acceptTelegramFileId: boolean,
+  ): Promise<CachedFile | null> {
+    const select = {
+      filename: true,
+      fileSize: true,
+      videoWidth: true,
+      videoHeight: true,
+      videoDuration: true,
+      telegramFileId: true,
+    };
+
+    const recent = await this.prisma.download.findFirst({
+      where: { cacheKey, status: DownloadStatus.COMPLETED },
+      orderBy: { createdAt: 'desc' },
+      select,
+    });
+    let onDisk = false;
+    if (recent) {
+      try {
+        const filePath = this.resolveDownloadPath(recent.filename);
+        if (fs.existsSync(filePath)) {
+          // Продлеваем файлу жизнь: очистка удаляет по mtime, а человек,
+          // получивший его из кеша, должен успеть скачать.
+          const now = new Date();
+          await fs.promises.utimes(filePath, now, now);
+          onDisk = true;
+        }
+      } catch {
+        onDisk = false;
+      }
+    }
+
+    if (acceptTelegramFileId) {
+      const sent = await this.prisma.download.findFirst({
+        where: {
+          cacheKey,
+          telegramFileId: { not: null },
+          createdAt: { gte: new Date(Date.now() - TELEGRAM_FILE_ID_TTL_MS) },
+        },
+        orderBy: { createdAt: 'desc' },
+        select,
+      });
+      if (sent) {
+        return {
+          ...sent,
+          filename: onDisk ? recent.filename : sent.filename,
+          onDisk,
+        };
+      }
+    }
+
+    if (onDisk) {
+      return { ...recent, telegramFileId: null, onDisk: true };
+    }
+    return null;
+  }
+
+  // Отвечает на запрос из кеша, если есть чем. Запись Download создаётся
+  // всё равно — для статистики и суточного счётчика скачиваний, — но сразу
+  // завершённой и с пометкой fromCache.
+  private async serveFromCache(params: {
+    cacheKey: string | null;
+    url: string;
+    req: Request;
+    meta: DownloadRequestMeta;
+    title?: string;
+  }) {
+    const { cacheKey, url, req, meta, title } = params;
+    if (!cacheKey) return null;
+    const hit = await this.findCached(cacheKey, !!meta.acceptTelegramFileId);
+    if (!hit) return null;
+
+    const createRecord = async () => {
+      // Суточный счётчик скачиваний действует и на повторы: он про число
+      // скачиваний, а не про трафик. Лимит трафика YouTube — нет.
+      await this.enforceWebLimits(meta);
+      const botUserId = await this.resolveBotUserId(meta);
+      return this.prisma.download.create({
+        data: {
+          originalUrl: url,
+          // Только file_id, файла на диске уже нет — это ровно то, что
+          // CleanupService называет EXPIRED: выдано, но с диска удалено.
+          status: hit.onDisk ? DownloadStatus.COMPLETED : DownloadStatus.EXPIRED,
+          downloader: this.resolveDownloader((req as any).platform),
+          filename: hit.filename,
+          downloadUrl: hit.onDisk ? `/downloads/${hit.filename}` : null,
+          apiKeyId: (req as any).apiKey?.id,
+          botUserId,
+          source: meta.source ?? DownloadSource.API,
+          videoTitle: title,
+          videoDuration: hit.videoDuration,
+          videoWidth: hit.videoWidth,
+          videoHeight: hit.videoHeight,
+          fileSize: hit.fileSize,
+          cacheKey,
+          telegramFileId: hit.telegramFileId,
+          fromCache: true,
+        },
+      });
+    };
+    const download = meta.telegramId
+      ? await this.withWebLimitLock(meta.telegramId, createRecord)
+      : await createRecord();
+
+    console.log('served from cache', {
+      cacheKey,
+      onDisk: hit.onDisk,
+      telegramFileId: !!hit.telegramFileId,
+    });
+
+    return {
+      message: 'Download started',
+      downloadId: download.id,
+      fileName: hit.filename,
+      itemCount: 1,
+      ...(hit.telegramFileId ? { telegramFileId: hit.telegramFileId } : {}),
+    };
+  }
+
+  // Бот сообщает file_id, который Telegram вернул на отправку файла. Пишем
+  // только в записи с ключом кеша: без него повторно найти этот file_id
+  // всё равно нечем.
+  async setTelegramFileId(downloadId: string, fileId: string) {
+    if (!/^[A-Za-z0-9_-]{10,255}$/.test(fileId)) {
+      throw new BadRequestException('Invalid file_id');
+    }
+    const { count } = await this.prisma.download.updateMany({
+      where: { id: downloadId, cacheKey: { not: null } },
+      data: { telegramFileId: fileId },
+    });
+    return { saved: count > 0 };
   }
 
   // filename приходит от клиента (публичный, без API-ключа) роутом — нельзя
@@ -295,6 +496,7 @@ export class DownloadService {
     source?: DownloadSource;
     videoTitle?: string;
     videoDuration?: number;
+    cacheKey?: string | null;
   }) {
     return this.prisma.download.create({
       data: {
@@ -307,6 +509,7 @@ export class DownloadService {
         source: data.source ?? DownloadSource.API,
         videoTitle: data.videoTitle,
         videoDuration: data.videoDuration,
+        cacheKey: data.cacheKey ?? null,
       },
     });
   }
@@ -437,8 +640,14 @@ export class DownloadService {
       const data = {
         type:
           download.status === DownloadStatus.COMPLETED ? 'complete' : 'error',
+        // Имя файла в поле data — ровно как в событии complete живого
+        // скачивания (VideoDownload): сайт читает именно его. Раньше здесь
+        // было только downloadUrl, и сайт, подписавшийся уже после
+        // завершения, получал «ссылка не получена». Пока скачивание длилось
+        // дольше подписки, это не проявлялось; выдача из кеша завершается
+        // мгновенно и попадает сюда всегда.
         ...(download.status === DownloadStatus.COMPLETED
-          ? { downloadUrl: download.downloadUrl }
+          ? { data: download.filename, downloadUrl: download.downloadUrl }
           : { message: 'Download failed' }),
       };
       res.write(`data: ${JSON.stringify(data)}\n\n`);
@@ -868,6 +1077,13 @@ export class DownloadService {
     try {
       // Check duration limit before proceeding
       const info = await this.checkDurationLimit(url, req);
+      const platform: string = (req as any).platform;
+
+      // Потолок качества YouTube (см. lib/youtube-budget.ts). Режем здесь, а
+      // не полагаемся на список из /info: запрос мог прийти в обход него.
+      if (platform === 'youtube') {
+        quality = capYoutubeQuality(quality, info.duration);
+      }
 
       // Пост из нескольких файлов (карусель) идёт отдельной веткой: имя
       // получает шаблон с номером, конвертация не делается.
@@ -876,6 +1092,19 @@ export class DownloadService {
       // Нумерованное имя нужно и одиночному фото: снимки мы сохраняем сами,
       // и делать для них отдельную схему именования — только плодить ветки.
       const multi = isPlaylist(info) || photos.length > 0;
+
+      const cacheKey =
+        multi || !hasVideo
+          ? null
+          : this.cacheKeyFor(platform, info, 'v', quality, extension || 'mp4');
+      const cached = await this.serveFromCache({
+        cacheKey,
+        url,
+        req,
+        meta,
+        title: info.title,
+      });
+      if (cached) return cached;
 
       const downloadDir = this.ensureDownloadDirectory();
 
@@ -913,16 +1142,18 @@ export class DownloadService {
       // одна запись ещё не создана) и все проходят проверку разом (TOCTOU).
       const createDownloadRecord = async () => {
         await this.enforceWebLimits(meta);
+        await this.enforceYoutubeTraffic(meta, platform);
         const botUserId = await this.resolveBotUserId(meta);
         return this.createDownload({
           originalUrl: url,
-          downloader: this.resolveDownloader((req as any).platform),
+          downloader: this.resolveDownloader(platform),
           filename: finalFileName,
           apiKeyId: (req as any).apiKey?.id,
           botUserId,
           source: meta.source,
           videoTitle: info.title,
           videoDuration: info.duration,
+          cacheKey,
         });
       };
       const download = meta.telegramId
@@ -1083,6 +1314,21 @@ export class DownloadService {
       // (parseDownloadOptions: format ? format : 'mp3'), так что имя и файл
       // совпадают.
       const audioExtension = extension || 'mp3';
+      const platform: string = (req as any).platform;
+
+      // Повтор той же дорожки — из кеша, см. downloadVideo().
+      const cacheKey = multi
+        ? null
+        : this.cacheKeyFor(platform, info, 'a', quality, audioExtension);
+      const cached = await this.serveFromCache({
+        cacheKey,
+        url,
+        req,
+        meta,
+        title: info.title,
+      });
+      if (cached) return cached;
+
       const baseFileName = getFileName(info.title, quality, audioExtension);
       const fileName = multi
         ? this.playlistTemplate(baseFileName)
@@ -1091,16 +1337,18 @@ export class DownloadService {
       // См. downloadVideo() — та же TOCTOU-защита дневного лимита.
       const createDownloadRecord = async () => {
         await this.enforceWebLimits(meta);
+        await this.enforceYoutubeTraffic(meta, platform);
         const botUserId = await this.resolveBotUserId(meta);
         return this.createDownload({
           originalUrl: url,
-          downloader: this.resolveDownloader((req as any).platform),
+          downloader: this.resolveDownloader(platform),
           filename: baseFileName,
           apiKeyId: (req as any).apiKey?.id,
           botUserId,
           source: meta.source,
           videoTitle: info.title,
           videoDuration: info.duration,
+          cacheKey,
         });
       };
       const download = meta.telegramId

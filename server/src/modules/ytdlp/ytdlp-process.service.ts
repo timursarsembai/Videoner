@@ -750,10 +750,17 @@ export class YtdlpProcessService implements OnModuleInit {
     }
   }
 
+  // extras.infoJson — уже полученные метаданные ролика (вывод
+  // --dump-single-json). С ними yt-dlp не открывает страницу заново, а сразу
+  // качает по ссылкам из них: для YouTube это минус одно обращение через
+  // прокси с оплатой за гигабайты. Ссылки на видео у YouTube привязаны к IP,
+  // с которого получены метаданные, — у нас это тот же статический прокси,
+  // и живут они часами, а метаданные в кеше — минуты (YtdlpFormatService).
   async download<T extends DownloadKeyWord>(
     url: string,
     platform: Platform,
     options?: DownloadOptions<T>,
+    extras?: { infoJson?: string },
   ): Promise<Observable<ProgressType | Error>> {
     const subject = new Subject<ProgressType | Error>();
     const parseUrl = parseAndValidateUrl(url, platform);
@@ -783,11 +790,32 @@ export class YtdlpProcessService implements OnModuleInit {
     const isPlaylistDownload = Boolean((options as any)?.playlist);
 
     const processArgs = [
-      parseUrl,
       ...parseOptions,
       '--progress-template',
       PROGRESS_STRING,
     ];
+
+    // Только одиночный ролик YouTube: экономия нужна именно там, а у
+    // карусели других площадок своя логика пропуска элементов, которую с
+    // готовыми метаданными никто не проверял.
+    let infoFile: string | null = null;
+    if (extras?.infoJson && platform === 'youtube' && !isPlaylistDownload) {
+      try {
+        infoFile = path.join(
+          os.tmpdir(),
+          `ytdlp-info-${process.pid}-${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2, 8)}.json`,
+        );
+        fsSync.writeFileSync(infoFile, extras.infoJson);
+      } catch {
+        // Не записали — качаем обычным путём, это лишь упущенная экономия.
+        infoFile = null;
+      }
+    }
+    // Сбрасывается в false, если попытка с готовыми метаданными упала:
+    // повтор идёт уже обычным путём, со свежей страницей ролика.
+    let useInfoFile = infoFile !== null;
 
     // Одноразовая копия, а не эталонный файл — см. makeDisposableCookies().
     // В аргументы НЕ вшивается: от кук может понадобиться отказаться на
@@ -816,6 +844,13 @@ export class YtdlpProcessService implements OnModuleInit {
       }
       finished = true;
       this.dropDisposableCookies(disposableCookies);
+      if (infoFile) {
+        try {
+          fsSync.unlinkSync(infoFile);
+        } catch {
+          // Файл в /tmp, потеря не критична.
+        }
+      }
       releaseYoutubeSlot?.();
       releaseGlobalSlot();
     };
@@ -836,7 +871,10 @@ export class YtdlpProcessService implements OnModuleInit {
       // Решение о прокси перечитываем на каждой попытке: предыдущая могла
       // наткнуться на блокировку и пометить площадку.
       const useProxyNow = this.needsProxy(platform);
-      const attemptArgs = [...processArgs];
+      const attemptArgs = [
+        ...(useInfoFile ? ['--load-info-json', infoFile as string] : [parseUrl]),
+        ...processArgs,
+      ];
       if (useCookies && disposableCookies) {
         attemptArgs.push('--cookies', disposableCookies);
       }
@@ -853,7 +891,8 @@ export class YtdlpProcessService implements OnModuleInit {
       let hasError = false;
       let errorMessage = '';
       // null — повторов не будет, ошибка окончательная.
-      let pendingRetry: 'transient' | 'proxy' | 'nocookies' | null = null;
+      let pendingRetry: 'transient' | 'proxy' | 'nocookies' | 'fresh' | null =
+        null;
 
       childProcess.stdout.on('data', (data) => {
         const dataStr = Buffer.from(data).toString();
@@ -897,6 +936,15 @@ export class YtdlpProcessService implements OnModuleInit {
           }
 
           errorMessage = dataStr.trim();
+
+          // Попытка с готовыми метаданными упала до первого байта — ссылки
+          // в них могли протухнуть или не подойти. Повторяем обычным путём,
+          // и уже там сработают все остальные повторы ниже: так сбой
+          // экономии стоит одной лишней попытки, а не скачивания.
+          if (useInfoFile && !progressEmitted) {
+            pendingRetry = 'fresh';
+            return;
+          }
 
           // Блокировка по адресу вскрылась уже на загрузке (страница открылась,
           // а CDN отдал 403): уходим на прокси и пробуем ещё раз. Площадку
@@ -972,6 +1020,14 @@ export class YtdlpProcessService implements OnModuleInit {
 
       childProcess.on('exit', (code) => {
         if (code !== 0 && pendingRetry) {
+          if (pendingRetry === 'fresh') {
+            useInfoFile = false;
+            console.warn(
+              `[info-json] ${platform}: загрузка по готовым метаданным не удалась, повторяю обычным путём: ${errorMessage.slice(0, 200)}`,
+            );
+            startAttempt();
+            return;
+          }
           if (pendingRetry === 'proxy') {
             // Пометка нужна прямо сейчас: следующая попытка читает решение
             // через needsProxy(). Если она провалится, отметку снимаем ниже.

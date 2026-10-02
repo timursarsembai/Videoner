@@ -1211,16 +1211,22 @@ export class DownloadService {
 
       // Start video download
       this.ytdlp
-        .download(url, (req as any).platform, {
-          filter: 'mergevideo',
-          quality: quality,
-          format: initialExtension as VideoFormat,
-          playlist: multi,
-          output: {
-            outDir: downloadDir,
-            fileName: tempFileName,
-          },
-        } as any)
+        .download(
+          url,
+          (req as any).platform,
+          {
+            filter: 'mergevideo',
+            quality: quality,
+            format: initialExtension as VideoFormat,
+            playlist: multi,
+            output: {
+              outDir: downloadDir,
+              fileName: tempFileName,
+            },
+          } as any,
+          // Метаданные уже есть — yt-dlp не будет открывать ролик заново.
+          { infoJson: JSON.stringify(info) },
+        )
         .then((progress$) => {
           this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
             console.log('Download complete');
@@ -1388,7 +1394,7 @@ export class DownloadService {
           outDir: downloadDir,
           fileName: fileName,
         },
-      } as any);
+      } as any, { infoJson: JSON.stringify(info) });
 
       this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
         console.log('Download complete');

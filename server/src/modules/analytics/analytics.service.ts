@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DownloadStatus, Downloaders } from '@prisma/client';
+import { DownloadSource, DownloadStatus, Downloaders } from '@prisma/client';
 
 // NULL и явное значение enum (например 'OTHER') должны схлопываться в одну
 // группу при агрегации по nullable-полю — иначе они приходят как два разных
@@ -28,15 +28,31 @@ function mergeNullableGroups<T>(
 export class AnalyticsService {
   constructor(private prisma: PrismaService) {}
 
-  async overview() {
+  // Счётчики скачиваний — за выбранный на дашборде период и без запросов
+  // напрямую в API. Раньше они считались за всё время и врали в обе стороны:
+  //   успешным считался только COMPLETED, а CleanupService через 30-60 минут
+  //   переводит каждое успешное скачивание в EXPIRED (файл удалён с диска,
+  //   но скачивание-то было). В «Успешных» оставались лишь файлы последнего
+  //   часа, и успешность выходила заниженной в разы;
+  //   ошибки копились с самого начала, включая проверки при разработке. Бот
+  //   и сайт помечают свои запросы BOT и WEB, а API — это ручные проверки и
+  //   тесты, живых пользователей там нет.
+  async overview(days: number) {
+    const scope = {
+      createdAt: { gte: new Date(Date.now() - days * 24 * 60 * 60 * 1000) },
+      source: { not: DownloadSource.API },
+    };
     const [total, completed, failed, totalBotUsers, webLoginUsers] =
       await Promise.all([
-        this.prisma.download.count(),
+        this.prisma.download.count({ where: scope }),
         this.prisma.download.count({
-          where: { status: DownloadStatus.COMPLETED },
+          where: {
+            ...scope,
+            status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
+          },
         }),
         this.prisma.download.count({
-          where: { status: DownloadStatus.FAILED },
+          where: { ...scope, status: DownloadStatus.FAILED },
         }),
         this.prisma.botUser.count(),
         this.prisma.botUser.count({ where: { lastWebLoginAt: { not: null } } }),
@@ -104,6 +120,47 @@ export class AnalyticsService {
         count: row.count,
       })),
     };
+  }
+
+  // Объём и число успешных скачиваний по дням и площадкам. bytes — что
+  // реально скачано из сети (для YouTube это трафик прокси), cachedBytes —
+  // что отдано повторно из кеша, не потратив ничего. Запросы через API здесь
+  // учитываются: трафик они тратят по-настоящему. Сумма BigInt в Postgres
+  // даёт numeric, а его Prisma отдаёт объектом Decimal — приводим к float8,
+  // точности double на байтах хватает с запасом.
+  async trafficDaily(days: number) {
+    return this.prisma.$queryRaw<
+      { day: Date; platform: string; count: number; bytes: number; cachedBytes: number }[]
+    >`
+      SELECT date_trunc('day', "createdAt") as day,
+             downloader::text as platform,
+             COUNT(*)::int as count,
+             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache"), 0)::float8 as bytes,
+             COALESCE(SUM("fileSize") FILTER (WHERE "fromCache"), 0)::float8 as "cachedBytes"
+      FROM "Download"
+      WHERE status IN ('COMPLETED', 'EXPIRED')
+        AND "createdAt" >= NOW() - make_interval(days => ${days}::int)
+      GROUP BY day, platform
+      ORDER BY day ASC
+    `;
+  }
+
+  // То же помесячно за всё время — чтобы видеть, во что обходится каждый
+  // расчётный период прокси.
+  async trafficMonthly() {
+    return this.prisma.$queryRaw<
+      { month: Date; platform: string; count: number; bytes: number; cachedBytes: number }[]
+    >`
+      SELECT date_trunc('month', "createdAt") as month,
+             downloader::text as platform,
+             COUNT(*)::int as count,
+             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache"), 0)::float8 as bytes,
+             COALESCE(SUM("fileSize") FILTER (WHERE "fromCache"), 0)::float8 as "cachedBytes"
+      FROM "Download"
+      WHERE status IN ('COMPLETED', 'EXPIRED')
+      GROUP BY month, platform
+      ORDER BY month ASC
+    `;
   }
 
   async usersActivity() {

@@ -15,8 +15,24 @@ export class AnalyticsController {
   ) {}
 
   @Get('overview')
-  overview() {
-    return this.analyticsService.overview();
+  overview(@Query('days') days?: string) {
+    const parsed = parseInt(days ?? '30', 10);
+    return this.analyticsService.overview(
+      Number.isFinite(parsed) && parsed > 0 ? parsed : 30,
+    );
+  }
+
+  @Get('traffic/daily')
+  trafficDaily(@Query('days') days?: string) {
+    const parsed = parseInt(days ?? '30', 10);
+    return this.analyticsService.trafficDaily(
+      Number.isFinite(parsed) && parsed > 0 ? parsed : 30,
+    );
+  }
+
+  @Get('traffic/monthly')
+  trafficMonthly() {
+    return this.analyticsService.trafficMonthly();
   }
 
   @Get('platforms')

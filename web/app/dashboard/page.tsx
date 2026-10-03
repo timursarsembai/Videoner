@@ -28,6 +28,7 @@ import {
   type AnalyticsSnapshot,
   type AttemptRow,
   type ErrorTimeseriesPoint,
+  type TrafficPoint,
 } from "@/lib/analytics-api";
 
 const PERIOD_OPTIONS = [7, 30, 90] as const;
@@ -39,6 +40,11 @@ const PLATFORM_COLORS: Record<string, string> = {
   FACEBOOK: "#3b82f6",
   TWITTER: "#0ea5e9",
   THREADS: "#374151",
+  VIMEO: "#14b8a6",
+  VK: "#6366f1",
+  RUTUBE: "#f97316",
+  OKRU: "#eab308",
+  PINTEREST: "#be123c",
 };
 
 const SOURCE_COLORS: Record<string, string> = {
@@ -109,6 +115,159 @@ function mergeErrorsTimeseries(rows: ErrorTimeseriesPoint[]) {
       return row;
     });
   return { data, categories };
+}
+
+// Дни периода целиком, включая те, где не было ни одного скачивания: иначе
+// на графике объёма пустой день просто исчезал бы, и ось сжималась бы.
+// Ключ — тот же ISO-формат полуночи UTC, в котором сервер отдаёт date_trunc.
+function periodDayKeys(days: number): string[] {
+  const now = new Date();
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const keys: string[] = [];
+  for (let i = days - 1; i >= 0; i--) {
+    keys.push(new Date(today - i * 24 * 60 * 60 * 1000).toISOString());
+  }
+  return keys;
+}
+
+function formatMonth(iso: string): string {
+  return new Date(iso).toLocaleDateString("ru-RU", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+const BYTE_UNITS = [
+  { label: "ГБ", size: 1024 ** 3 },
+  { label: "МБ", size: 1024 ** 2 },
+  { label: "КБ", size: 1024 },
+];
+
+// Единица — по самому большому значению графика, одна на всю ось: подписи
+// «0,3 ГБ» и «300 МБ» вперемешку на одной шкале читаются хуже.
+function pickByteUnit(max: number) {
+  return BYTE_UNITS.find((unit) => max >= unit.size) ?? BYTE_UNITS[BYTE_UNITS.length - 1];
+}
+
+function formatBytes(bytes: number): string {
+  const unit = pickByteUnit(bytes);
+  const value = bytes / unit.size;
+  return `${value.toLocaleString("ru-RU", { maximumFractionDigits: value < 10 ? 2 : 1 })} ${unit.label}`;
+}
+
+function PlatformSelect({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
+    >
+      {PLATFORM_OPTIONS.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+// Объём скачанного одной площадкой: из сети и из кеша, стопкой. Площадка
+// выбирается у каждого графика своя, по умолчанию YouTube — ради него всё и
+// затевалось: его трафик идёт через прокси с оплатой за гигабайты.
+function TrafficChart({
+  title,
+  rows,
+  periodKeys,
+  keyOf,
+  formatKey,
+}: {
+  title: string;
+  rows: TrafficPoint[];
+  // Все точки оси по порядку; без них — только те, где есть данные.
+  periodKeys?: string[];
+  keyOf: (row: TrafficPoint) => string;
+  formatKey: (key: string) => string;
+}) {
+  const [platform, setPlatform] = useState("YOUTUBE");
+
+  const byKey = new Map<string, { bytes: number; cachedBytes: number }>();
+  for (const row of rows) {
+    if (row.platform !== platform) continue;
+    byKey.set(keyOf(row), { bytes: row.bytes, cachedBytes: row.cachedBytes });
+  }
+  const keys = periodKeys ?? Array.from(byKey.keys()).sort();
+  const max = Math.max(0, ...keys.map((k) => (byKey.get(k)?.bytes ?? 0) + (byKey.get(k)?.cachedBytes ?? 0)));
+  const unit = pickByteUnit(max);
+  const data = keys.map((key) => ({
+    label: formatKey(key),
+    bytes: (byKey.get(key)?.bytes ?? 0) / unit.size,
+    cachedBytes: (byKey.get(key)?.cachedBytes ?? 0) / unit.size,
+  }));
+  const total = keys.reduce((sum, k) => sum + (byKey.get(k)?.bytes ?? 0), 0);
+  const cached = keys.reduce((sum, k) => sum + (byKey.get(k)?.cachedBytes ?? 0), 0);
+  const round = (v: number) => v.toLocaleString("ru-RU", { maximumFractionDigits: 2 });
+
+  return (
+    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="text-sm font-medium text-foreground/70">{title}</h2>
+          <p className="mt-1 text-xs text-foreground/40">
+            Из сети {formatBytes(total)}, из кеша {formatBytes(cached)}
+          </p>
+        </div>
+        <PlatformSelect value={platform} onChange={setPlatform} />
+      </div>
+      <ResponsiveContainer width="100%" height={280}>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+          <XAxis dataKey="label" fontSize={12} />
+          <YAxis fontSize={12} unit={` ${unit.label}`} width={70} />
+          <Tooltip formatter={(value) => `${round(Number(value))} ${unit.label}`} />
+          <Legend />
+          <Bar dataKey="bytes" name="Из сети" stackId="traffic" fill={PLATFORM_COLORS[platform] ?? "#9ca3af"} />
+          <Bar dataKey="cachedBytes" name="Из кеша (без трафика)" stackId="traffic" fill="#9ca3af" fillOpacity={0.5} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+// Число успешных скачиваний по дням — отдельной линией на каждую площадку.
+function mergePlatformCounts(rows: TrafficPoint[], keys: string[]) {
+  const platforms = Array.from(new Set(rows.map((r) => r.platform))).sort();
+  const byDay = new Map<string, Record<string, number>>();
+  for (const row of rows) {
+    const day = byDay.get(row.day ?? "") ?? {};
+    day[row.platform] = row.count;
+    byDay.set(row.day ?? "", day);
+  }
+  const data = keys.map((key) => {
+    const counts = byDay.get(key) ?? {};
+    const point: Record<string, string | number> = { day: formatDay(key) };
+    for (const platform of platforms) point[platform] = counts[platform] ?? 0;
+    return point;
+  });
+  return { data, platforms };
+}
+
+// Сколько скачано из сети каждой площадкой за период.
+function platformVolume(rows: TrafficPoint[]) {
+  const totals = new Map<string, number>();
+  for (const row of rows) {
+    totals.set(row.platform, (totals.get(row.platform) ?? 0) + row.bytes);
+  }
+  return Array.from(totals.entries())
+    .filter(([, bytes]) => bytes > 0)
+    .map(([platform, bytes]) => ({ platform, bytes }))
+    .sort((a, b) => b.bytes - a.bytes);
 }
 
 function StatCard({
@@ -495,6 +654,12 @@ export default function AnalyticsPage() {
   const { data: errorsTimeseriesData, categories: errorCategories } = mergeErrorsTimeseries(
     snapshot.errorsTimeseries
   );
+  const dayKeys = periodDayKeys(days);
+  const { data: platformCountsData, platforms: countedPlatforms } = mergePlatformCounts(
+    snapshot.trafficDaily,
+    dayKeys
+  );
+  const volume = platformVolume(snapshot.trafficDaily);
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-8">
@@ -532,9 +697,15 @@ export default function AnalyticsPage() {
         </div>
 
         <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          <StatCard label="Скачиваний всего" value={overview.totalDownloads} />
-          <StatCard label="Успешных" value={overview.completedDownloads} />
-          <StatCard label="Ошибок" value={overview.failedDownloads} />
+          {/* Четыре счётчика ниже — за выбранный период и только бот с
+              сайтом: запросы напрямую в API — это проверки при разработке. */}
+          <StatCard label="Попыток" value={overview.totalDownloads} hint={`За ${days} дн., бот и сайт`} />
+          <StatCard
+            label="Успешных"
+            value={overview.completedDownloads}
+            hint="Включая файлы, уже удалённые с диска"
+          />
+          <StatCard label="Ошибок" value={overview.failedDownloads} hint={`За ${days} дн., бот и сайт`} />
           <StatCard
             label="Успешность"
             value={
@@ -542,6 +713,7 @@ export default function AnalyticsPage() {
                 ? `${Math.round(overview.successRate * 100)}%`
                 : "—"
             }
+            hint="Успешные из завершённых"
           />
           <StatCard label="Пользователей бота" value={overview.totalBotUsers} />
           <StatCard label="Входили на сайт через Telegram" value={overview.webLoginUsers} />
@@ -614,6 +786,75 @@ export default function AnalyticsPage() {
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
+          </div>
+
+          <TrafficChart
+            title={`Объём скачанного по дням, ${days} дней`}
+            rows={snapshot.trafficDaily}
+            periodKeys={dayKeys}
+            keyOf={(row) => row.day ?? ""}
+            formatKey={formatDay}
+          />
+
+          <TrafficChart
+            title="Объём скачанного по месяцам"
+            rows={snapshot.trafficMonthly}
+            keyOf={(row) => row.month ?? ""}
+            formatKey={formatMonth}
+          />
+
+          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+            <h2 className="mb-4 text-sm font-medium text-foreground/70">
+              Успешные скачивания по платформам, {days} дней
+            </h2>
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={platformCountsData}>
+                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                <XAxis dataKey="day" fontSize={12} />
+                <YAxis fontSize={12} allowDecimals={false} />
+                <Tooltip />
+                <Legend />
+                {countedPlatforms.map((platform) => (
+                  <Line
+                    key={platform}
+                    type="monotone"
+                    dataKey={platform}
+                    name={platform}
+                    stroke={PLATFORM_COLORS[platform] ?? "#9ca3af"}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+            <h2 className="mb-4 text-sm font-medium text-foreground/70">
+              Объём по платформам, {days} дней
+            </h2>
+            {volume.length ? (
+              <ResponsiveContainer width="100%" height={280}>
+                <PieChart>
+                  <Pie
+                    data={volume}
+                    dataKey="bytes"
+                    nameKey="platform"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    label={(entry) => `${entry.platform}: ${formatBytes(entry.bytes)}`}
+                  >
+                    {volume.map((v) => (
+                      <Cell key={v.platform} fill={PLATFORM_COLORS[v.platform] ?? "#9ca3af"} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => formatBytes(Number(value))} />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <p className="py-24 text-center text-sm text-foreground/40">За период нет данных о размере файлов</p>
+            )}
           </div>
 
           <div className="rounded-lg border border-border/60 bg-background/60 p-4">

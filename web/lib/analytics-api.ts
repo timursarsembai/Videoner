@@ -57,6 +57,18 @@ export interface ErrorDatum {
   count: number;
 }
 
+// Успешные скачивания площадки за день (или месяц, тогда в поле month).
+// bytes — скачано из сети (у YouTube это трафик прокси), cachedBytes — отдано
+// повторно из кеша, не потратив трафика.
+export interface TrafficPoint {
+  day?: string;
+  month?: string;
+  platform: string;
+  count: number;
+  bytes: number;
+  cachedBytes: number;
+}
+
 export interface ErrorTimeseriesPoint {
   day: string;
   category: string;
@@ -96,6 +108,8 @@ export interface AnalyticsSnapshot {
   topUsers: TopUser[];
   errors: ErrorDatum[];
   errorsTimeseries: ErrorTimeseriesPoint[];
+  trafficDaily: TrafficPoint[];
+  trafficMonthly: TrafficPoint[];
 }
 
 // Ходит на СВОЙ Next.js-прокси (app/api/dashboard/[...path]/route.ts), а не
@@ -141,8 +155,10 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     topUsers,
     errors,
     errorsTimeseries,
+    trafficDaily,
+    trafficMonthly,
   ] = await Promise.all([
-    get<OverviewData>("/overview"),
+    get<OverviewData>(`/overview?days=${days}`),
     get<PlatformDatum[]>("/platforms"),
     get<SourceDatum[]>("/sources"),
     get<TimeseriesData>(`/timeseries?days=${days}`),
@@ -150,6 +166,8 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     get<TopUser[]>("/users/top?limit=20"),
     get<ErrorDatum[]>("/errors"),
     get<ErrorTimeseriesPoint[]>(`/errors/timeseries?days=${days}`),
+    get<TrafficPoint[]>(`/traffic/daily?days=${days}`),
+    get<TrafficPoint[]>("/traffic/monthly"),
   ]);
 
   return {
@@ -161,6 +179,8 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     topUsers,
     errors,
     errorsTimeseries,
+    trafficDaily,
+    trafficMonthly,
   };
 }
 

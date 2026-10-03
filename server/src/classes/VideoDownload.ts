@@ -7,6 +7,20 @@ interface Progress {
   [key: string]: any;
 }
 
+// Ход скачивания для тех, кто спрашивает статус опросом (бот), а не слушает
+// поток событий, как сайт.
+export interface LiveProgress {
+  phase: 'downloading' | 'converting';
+  // Не убывает. У YouTube видео и звук качаются по очереди, и процент
+  // текущего файла после видео начинается с нуля заново — человеку прыжок
+  // назад показывать незачем, звук докачивается за секунды.
+  percentage: number;
+  // Оставшееся время по текущей скорости — считает сам yt-dlp, секунды.
+  eta: number | null;
+  downloaded: number | null;
+  total: number | null;
+}
+
 export class VideoDownload {
   private static downloads: Map<string, Subject<ProgressType | Error>> =
     new Map();
@@ -19,6 +33,28 @@ export class VideoDownload {
     { extension: string; filename: string }
   > = new Map();
   private static readonly SKIP_INITIAL_UPDATES = 3;
+  private static live: Map<string, LiveProgress> = new Map();
+
+  static getLiveProgress(downloadId: string): LiveProgress | undefined {
+    return this.live.get(downloadId);
+  }
+
+  private static rememberLive(downloadId: string, progress: ProgressType) {
+    const phase = progress.status === 'converting' ? 'converting' : 'downloading';
+    const previous = this.live.get(downloadId);
+    const samePhase = previous?.phase === phase;
+    const finite = (n: number) => (Number.isFinite(n) && n >= 0 ? n : null);
+    this.live.set(downloadId, {
+      phase,
+      percentage: Math.max(
+        samePhase ? previous.percentage : 0,
+        finite(progress.percentage) ?? 0,
+      ),
+      eta: finite(progress.eta),
+      downloaded: finite(progress.downloaded),
+      total: finite(progress.total),
+    });
+  }
 
   static subscribeToProgress(downloadId: string, res: Response) {
     // Set up SSE headers
@@ -59,6 +95,11 @@ export class VideoDownload {
     // Subscribe to progress updates
     subject.subscribe({
       next: (progress) => {
+        // До проверки подписчиков: бот спрашивает ход опросом, и SSE-клиентов
+        // у его скачивания нет вовсе.
+        if (!(progress instanceof Error)) {
+          this.rememberLive(downloadId, progress);
+        }
         const clients = this.clients.get(downloadId);
         if (clients) {
           if (progress instanceof Error) {
@@ -136,6 +177,7 @@ export class VideoDownload {
         this.progressTracker.delete(downloadId);
         this.progressUpdateCounter.delete(downloadId);
         this.downloadInfo.delete(downloadId);
+        this.live.delete(downloadId);
       },
       error: (error) => {
         const clients = this.clients.get(downloadId);
@@ -152,6 +194,7 @@ export class VideoDownload {
         this.progressTracker.delete(downloadId);
         this.progressUpdateCounter.delete(downloadId);
         this.downloadInfo.delete(downloadId);
+        this.live.delete(downloadId);
       },
     });
 
@@ -228,6 +271,7 @@ export class VideoDownload {
 
   // Clean up method to clear all data
   public static cleanup(downloadId: string) {
+    this.live.delete(downloadId);
     this.progressTracker.delete(downloadId);
     this.progressUpdateCounter.delete(downloadId);
     this.downloadInfo.delete(downloadId);

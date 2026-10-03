@@ -15,6 +15,12 @@ interface Messages {
   downloading: string;
   downloadFailed: string;
   downloadTimeout: string;
+  downloadProgress: (percent: number, eta: string, done: string) => string;
+  downloadFinishing: string;
+  converting: (percent: number) => string;
+  etaUnderMinute: string;
+  etaMinutes: (minutes: number) => string;
+  etaHours: (hours: number, minutes: number) => string;
   downloadInterrupted: string;
   fileTooBig: (mb: string, url: string) => string;
   sendingFile: string;
@@ -79,6 +85,13 @@ const ru: Messages = {
   sessionExpired: "Сессия устарела — пришли ссылку ещё раз",
   downloading: "⏬ Скачиваю, это может занять пару минут...",
   downloadFailed: "загрузка завершилась ошибкой",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Скачиваю: ${percent}%${eta ? ` · осталось ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Почти готово — собираю файл...",
+  converting: (percent) => `⚙️ Конвертирую: ${percent}%`,
+  etaUnderMinute: "меньше минуты",
+  etaMinutes: (minutes) => `~${minutes} мин`,
+  etaHours: (hours, minutes) => `~${hours} ч${minutes ? ` ${minutes} мин` : ""}`,
   downloadTimeout: "загрузка идёт слишком долго — видео, похоже, очень тяжёлое. Попробуй качество пониже.",
   downloadInterrupted: "⚠️ Бот обновляется и должен перезапуститься — скачивание прервано. Пришли ссылку ещё раз через минуту.",
   fileTooBig: (mb, url) =>
@@ -171,6 +184,13 @@ const en: Messages = {
   sessionExpired: "Session expired — send the link again",
   downloading: "⏬ Downloading, this may take a couple of minutes...",
   downloadFailed: "download failed",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Downloading: ${percent}%${eta ? ` · ${eta} left` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Almost done — putting the file together...",
+  converting: (percent) => `⚙️ Converting: ${percent}%`,
+  etaUnderMinute: "under a minute",
+  etaMinutes: (minutes) => `~${minutes} min`,
+  etaHours: (hours, minutes) => `~${hours} h${minutes ? ` ${minutes} min` : ""}`,
   downloadTimeout: "the download is taking too long — the video seems very heavy. Try a lower quality.",
   downloadInterrupted: "⚠️ The bot is restarting for an update — your download was interrupted. Please send the link again in a minute.",
   fileTooBig: (mb, url) =>

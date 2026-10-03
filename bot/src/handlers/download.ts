@@ -38,6 +38,42 @@ const ALBUM_LIMIT = 10;
 // дольше прежних 20 минут, и человек получал «тайм-аут», хотя сервер его
 // докачивал.
 const DOWNLOAD_WAIT_POLLS = 900;
+// Как часто обновлять сообщение с ходом скачивания. Чаще не стоит: Telegram
+// ограничивает правку сообщений, а прыгающие цифры раз в секунду только
+// мельтешат.
+const PROGRESS_EDIT_INTERVAL_MS = 12_000;
+
+type LiveProgress = {
+  phase: "downloading" | "converting";
+  percentage: number;
+  eta: number | null;
+  downloaded: number | null;
+  total: number | null;
+};
+
+function fmtEta(seconds: number | null, m: (typeof messages)[Lang]): string {
+  if (seconds === null || !Number.isFinite(seconds)) return "";
+  if (seconds < 60) return m.etaUnderMinute;
+  const minutes = Math.ceil(seconds / 60);
+  if (minutes < 60) return m.etaMinutes(minutes);
+  return m.etaHours(Math.floor(minutes / 60), minutes % 60);
+}
+
+// Текст сообщения «скачиваю» по ходу скачивания с сервера. null — хода ещё
+// нет (скачивание ждёт свободного места), оставляем исходный текст.
+function progressText(p: LiveProgress | null | undefined, m: (typeof messages)[Lang], lang: Lang): string | null {
+  if (!p) return null;
+  const percent = Math.min(100, Math.floor(p.percentage));
+  if (p.phase === "converting") return m.converting(percent);
+  // 100% — файлы скачаны, yt-dlp склеивает видео со звуком: это ещё секунды,
+  // и «осталось меньше минуты» при 100% выглядело бы странно.
+  if (percent >= 100) return m.downloadFinishing;
+  const done =
+    p.downloaded !== null && p.total
+      ? `${fmtSize(p.downloaded, lang)} / ${fmtSize(p.total, lang)}`
+      : "";
+  return m.downloadProgress(percent, fmtEta(p.eta, m), done);
+}
 
 // Обложка для канала — намеренно не самый крупный вариант.
 //
@@ -216,12 +252,28 @@ async function performDownload(
       fileSize?: number;
     };
     let status:
-      | { status: string; downloadUrl?: string; items?: StatusItem[] }
+      | { status: string; downloadUrl?: string; items?: StatusItem[]; progress?: LiveProgress | null }
       | undefined;
+    // Живой ход скачивания: процент и оставшееся время, которые yt-dlp считает
+    // по реальной скорости. Прогноз заранее по размеру не годится — один и
+    // тот же ролик VK шёл и 185 КБ/с, и 2,7 МБ/с, а одновременные скачивания
+    // делят канал сервера.
+    let shownText = m.downloading;
+    let lastEditAt = 0;
     for (let i = 0; i < DOWNLOAD_WAIT_POLLS; i++) {
       await new Promise((r) => setTimeout(r, 3000));
       status = await api(`/download/${started.downloadId}/status`);
       if (status && (status.status === "COMPLETED" || status.status === "FAILED")) break;
+      const text = progressText(status?.progress, m, lang);
+      if (text && text !== shownText && Date.now() - lastEditAt >= PROGRESS_EDIT_INTERVAL_MS) {
+        lastEditAt = Date.now();
+        shownText = text;
+        // Сбой правки (лимит Telegram, сообщение удалили) не повод бросать
+        // скачивание — следующая попытка через 12 секунд.
+        await send.editMessageText(msg.message_id, text).catch((e) =>
+          console.error("Не удалось обновить ход скачивания:", e?.message ?? e),
+        );
+      }
     }
     if (!status || status.status !== "COMPLETED") {
       throw new Error(status?.status === "FAILED" ? m.downloadFailed : m.downloadTimeout);

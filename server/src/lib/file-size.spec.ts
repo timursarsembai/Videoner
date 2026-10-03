@@ -66,6 +66,19 @@ describe('estimateVideoSize', () => {
     expect(size / 1024 ** 2).toBeLessThan(140);
   });
 
+  it('VK: HLS со звуком внутри, если он есть', () => {
+    const vk = {
+      duration: 3599,
+      formats: [
+        { format_id: 'hls-365', protocol: 'm3u8_native', width: 426, height: 240, tbr: 365.543 },
+        { format_id: 'hls_fmp4-289', protocol: 'm3u8_native', vcodec: 'avc1', acodec: 'none', width: 426, height: 240, tbr: 289.363 },
+        { format_id: 'hls-576', protocol: 'm3u8_native', width: 640, height: 360, tbr: 576.746 },
+        { format_id: 'url240', protocol: 'https', ext: 'mp4', height: 240, source_preference: 1 },
+      ],
+    };
+    expect(estimateVideoSize(vk, '240p', 'vk')).toBe(Math.round(365.543 * 125 * 3599));
+  });
+
   it('Facebook — по имени формата', () => {
     const fb = { duration: 60, formats: [{ format_id: 'hd', vcodec: 'avc1', acodec: 'mp4a', filesize: 7_000_000 }] };
     expect(estimateVideoSize(fb, 'hd', 'facebook')).toBe(7_000_000);

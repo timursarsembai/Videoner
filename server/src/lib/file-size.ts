@@ -23,6 +23,7 @@ interface SizedFormat {
   filesize_approx?: number;
   tbr?: number;
   source_preference?: number;
+  protocol?: string;
 }
 
 interface SizedInfo {
@@ -71,10 +72,18 @@ export function estimateVideoSize(
   // 1280x720, и вертикальный 720x1280. Вверх: у 480p длинная сторона 854.
   const long = Math.ceil((height * 16) / 9);
   const isYoutube = platform === 'youtube';
-  const candidates = formats
-    .filter(
-      (f) => hasVideo(f) && shortSide(f) <= height && longSide(f) <= long,
-    )
+  let fitting = formats.filter(
+    (f) => hasVideo(f) && shortSide(f) <= height && longSide(f) <= long,
+  );
+  // VK качаем HLS со звуком внутри (см. parseDownloadOptions) — по нему и
+  // меряем, пока такой есть.
+  if (platform === 'vk') {
+    const hls = fitting.filter(
+      (f) => f.protocol?.startsWith('m3u8') && hasAudio(f),
+    );
+    if (hls.length) fitting = hls;
+  }
+  const candidates = fitting
     .sort((a, b) => {
       // Не YouTube: yt-dlp берёт форматы, которые площадка пометила
       // предпочтительными (у VK это прогрессивные url240..url2160, хотя

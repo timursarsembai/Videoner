@@ -22,6 +22,7 @@ interface SizedFormat {
   filesize?: number;
   filesize_approx?: number;
   tbr?: number;
+  source_preference?: number;
 }
 
 interface SizedInfo {
@@ -38,8 +39,16 @@ function formatSize(format: SizedFormat, duration?: number): number | null {
   return null;
 }
 
-const hasVideo = (f: SizedFormat) => !!f.vcodec && f.vcodec !== 'none';
-const hasAudio = (f: SizedFormat) => !!f.acodec && f.acodec !== 'none';
+// Кодек неизвестен (VK отдаёт прогрессивные url240..url2160 вовсе без него) —
+// значит, это обычный файл со звуком: yt-dlp считает так же.
+const hasVideo = (f: SizedFormat) => f.vcodec !== 'none' && !!f.height;
+const hasAudio = (f: SizedFormat) =>
+  f.acodec ? f.acodec !== 'none' : !f.vcodec;
+// Ширины у прогрессивных файлов VK нет — тогда известна только высота.
+const shortSide = (f: SizedFormat) =>
+  f.width ? Math.min(f.width, f.height ?? 0) : (f.height ?? 0);
+const longSide = (f: SizedFormat) =>
+  f.width ? Math.max(f.width, f.height ?? 0) : (f.height ?? 0);
 
 export function estimateVideoSize(
   info: SizedInfo,
@@ -57,25 +66,28 @@ export function estimateVideoSize(
 
   const height = qualityHeight(quality);
   if (!height) return null;
-  // Тот же кап по обеим сторонам, что и в селекторе формата: «720p» — это и
+  // Тот же кап, что и в селекторе формата: короткая сторона не выше
+  // выбранного качества, длинная — не больше 16:9 от него. «720p» — это и
   // 1280x720, и вертикальный 720x1280. Вверх: у 480p длинная сторона 854.
   const long = Math.ceil((height * 16) / 9);
-  const preferAvc = platform === 'youtube';
+  const isYoutube = platform === 'youtube';
   const candidates = formats
     .filter(
-      (f) =>
-        hasVideo(f) &&
-        f.width &&
-        f.height &&
-        f.width <= long &&
-        f.height <= long,
+      (f) => hasVideo(f) && shortSide(f) <= height && longSide(f) <= long,
     )
     .sort((a, b) => {
-      const res =
-        Math.min(b.width ?? 0, b.height ?? 0) -
-        Math.min(a.width ?? 0, a.height ?? 0);
+      // Не YouTube: yt-dlp берёт форматы, которые площадка пометила
+      // предпочтительными (у VK это прогрессивные url240..url2160, хотя
+      // рядом лежат DASH и HLS того же разрешения). Проверено на живом
+      // ролике VK 03.10.2026.
+      if (!isYoutube) {
+        const pref = (b.source_preference ?? 0) - (a.source_preference ?? 0);
+        if (pref !== 0) return pref;
+      }
+      const res = shortSide(b) - shortSide(a);
       if (res !== 0) return res;
-      if (preferAvc) {
+      // YouTube: селектор просит H.264 (-S vcodec:avc1).
+      if (isYoutube) {
         const avc =
           Number(b.vcodec?.startsWith('avc1')) -
           Number(a.vcodec?.startsWith('avc1'));
@@ -85,15 +97,26 @@ export function estimateVideoSize(
     });
   const video = candidates[0];
   if (!video) return null;
-  const videoSize = formatSize(video, duration);
-  if (videoSize === null) return null;
+
+  let videoSize = formatSize(video, duration);
+  if (videoSize === null) {
+    // Размер выбранного неизвестен (те же url240 у VK) — берём самый
+    // скромный битрейт среди форматов того же разрешения: прогрессивный файл
+    // обычно ближе всего к нему (240p: оценка ~130 МБ, настоящий файл
+    // 124,7 МБ). Это общий битрейт со звуком, дорожку не добавляем.
+    const rates = formats
+      .filter((f) => hasVideo(f) && shortSide(f) === shortSide(video) && f.tbr)
+      .map((f) => f.tbr as number);
+    if (!rates.length || !duration) return null;
+    return Math.round(Math.min(...rates) * 125 * duration);
+  }
   if (hasAudio(video)) return videoSize;
 
   // Видео без звука — к нему докачается лучшая дорожка (у YouTube — AAC).
   const audio = formats
-    .filter((f) => hasAudio(f) && !hasVideo(f))
+    .filter((f) => f.acodec && f.acodec !== 'none' && f.vcodec === 'none')
     .sort((a, b) => {
-      if (preferAvc) {
+      if (isYoutube) {
         const aac =
           Number(b.acodec?.startsWith('mp4a')) -
           Number(a.acodec?.startsWith('mp4a'));
@@ -102,7 +125,8 @@ export function estimateVideoSize(
       return (b.tbr ?? 0) - (a.tbr ?? 0);
     })[0];
   const audioSize = audio ? formatSize(audio, duration) : null;
-  return videoSize + (audioSize ?? 0);
+  videoSize += audioSize ?? 0;
+  return videoSize;
 }
 
 // mp3 с заданным битрейтом: размер зависит только от длительности.

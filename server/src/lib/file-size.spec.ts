@@ -46,6 +46,26 @@ describe('estimateVideoSize', () => {
     expect(estimateVideoSize(vk, '240p', 'vk')).toBe(280 * 125 * 3600);
   });
 
+  it('VK: прогрессивный файл без размера — по скромному битрейту того же разрешения', () => {
+    // Срез настоящего ролика VK (03.10.2026): yt-dlp берёт url240, у
+    // которого нет ни размера, ни кодека; настоящий файл весил 124,7 МБ.
+    const vk = {
+      duration: 3599,
+      formats: [
+        { format_id: 'hls_fmp4-289', vcodec: 'avc1', acodec: 'none', width: 426, height: 240, tbr: 289.363 },
+        { format_id: 'dash_sep-2', vcodec: 'avc1', acodec: 'none', width: 426, height: 240, tbr: 424.874 },
+        { format_id: 'dash_sep-13', vcodec: 'none', acodec: 'mp4a', tbr: 265.483 },
+        { format_id: 'url240', ext: 'mp4', height: 240, source_preference: 1 },
+        { format_id: 'url360', ext: 'mp4', height: 360, source_preference: 1 },
+        { format_id: 'url720', ext: 'mp4', height: 720, source_preference: 1 },
+      ],
+    };
+    const size = estimateVideoSize(vk, '240p', 'vk') as number;
+    expect(size).toBe(Math.round(289.363 * 125 * 3599));
+    expect(size / 1024 ** 2).toBeGreaterThan(110);
+    expect(size / 1024 ** 2).toBeLessThan(140);
+  });
+
   it('Facebook — по имени формата', () => {
     const fb = { duration: 60, formats: [{ format_id: 'hd', vcodec: 'avc1', acodec: 'mp4a', filesize: 7_000_000 }] };
     expect(estimateVideoSize(fb, 'hd', 'facebook')).toBe(7_000_000);

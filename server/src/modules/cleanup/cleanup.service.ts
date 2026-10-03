@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { join } from 'path';
 import * as fs from 'fs';
@@ -11,12 +11,43 @@ const unlink = promisify(fs.unlink);
 const readdir = promisify(fs.readdir);
 
 @Injectable()
-export class CleanupService {
+export class CleanupService implements OnModuleInit {
   private readonly logger = new Logger(CleanupService.name);
   private readonly downloadPath: string;
 
   constructor(private prisma: PrismaService) {
     this.downloadPath = join(__dirname, '..', '..', '..', 'downloads');
+  }
+
+  // Скачивание живёт в процессе yt-dlp, порождённом этим сервером, и
+  // перезапуск (каждая выкатка) убивает его без следа. Запись в БД при этом
+  // навсегда оставалась «качается» — и очистка ниже, которая ждёт, пока не
+  // останется ни одного активного скачивания, больше не запускалась никогда:
+  // диск только копил файлы. Сразу после старта активных скачиваний быть не
+  // может, поэтому всё незавершённое помечаем неудачным — оно и правда не
+  // завершилось.
+  async onModuleInit() {
+    try {
+      const { count } = await this.prisma.download.updateMany({
+        where: {
+          status: {
+            in: [
+              DownloadStatus.PENDING,
+              DownloadStatus.DOWNLOADING,
+              DownloadStatus.CONVERTING,
+            ],
+          },
+        },
+        data: { status: DownloadStatus.FAILED },
+      });
+      if (count > 0) {
+        this.logger.warn(
+          `Marked ${count} download(s) interrupted by the restart as failed.`,
+        );
+      }
+    } catch (error) {
+      this.logger.error('Failed to mark interrupted downloads:', error);
+    }
   }
 
   @Cron(CronExpression.EVERY_30_MINUTES)

@@ -219,6 +219,24 @@ export class YtdlpProcessService implements OnModuleInit {
     return YtdlpProcessService.TRANSIENT_PATTERNS.some((re) => re.test(message));
   }
 
+  // Сетевой сбой ДО первого полученного байта. Выше таймауты исключены из
+  // повторов, потому что оборванный на середине файл — это удвоенный трафик;
+  // здесь трафика ещё не было вовсе, и повтор ничего не стоит. Применяется
+  // только на загрузке и только пока не пришло ни одного события прогресса.
+  // Поймано 03.10.2026 на VK: CDN не ответил на первый фрагмент за 20 секунд
+  // («vk6-30.vkuser.net: Read timed out»), скачивание упало, а тот же запрос
+  // сразу после прошёл дважды подряд.
+  private static readonly EARLY_NETWORK_PATTERNS: RegExp[] = [
+    /read timed out/i,
+    /connection timed out/i,
+    /connection reset by peer/i,
+    /remote end closed connection/i,
+  ];
+
+  private isEarlyNetworkError(message: string): boolean {
+    return YtdlpProcessService.EARLY_NETWORK_PATTERNS.some((re) => re.test(message));
+  }
+
   // Протухшая сессия в cookies/<платформа>.txt. Площадка отвечает отказом
   // авторизации именно ПОТОМУ, что мы пришли с недействительными куками —
   // анонимный запрос при этом проходит нормально. Такой откат уже был для
@@ -564,7 +582,11 @@ export class YtdlpProcessService implements OnModuleInit {
         if (useProxy) {
           attemptArgs.push('--proxy', this.youtubeProxyUrl as string);
         }
-        console.log(attemptArgs);
+        // Логин и пароль прокси в лог не пишем: логи читают при разборе
+        // ошибок, копируют и пересылают, а это доступ к платному прокси.
+        console.log(
+          attemptArgs.map((a) => a.replace(/\/\/[^/@\s]+@/, '//***@')),
+        );
 
         try {
           const result = await this.runProcess(this.ytdlpPath, attemptArgs);
@@ -976,10 +998,12 @@ export class YtdlpProcessService implements OnModuleInit {
             return;
           }
 
-          // Антибот-заглушка — повторяем тем же маршрутом после паузы.
+          // Антибот-заглушка или сетевой сбой до первого байта — повторяем
+          // тем же маршрутом после паузы.
           if (
             !progressEmitted &&
-            this.isTransientError(errorMessage) &&
+            (this.isTransientError(errorMessage) ||
+              this.isEarlyNetworkError(errorMessage)) &&
             transientAttempt < this.MAX_TRANSIENT_RETRIES
           ) {
             pendingRetry = 'transient';
@@ -1051,7 +1075,7 @@ export class YtdlpProcessService implements OnModuleInit {
           const wait = this.transientRetryDelay(transientAttempt);
           transientAttempt++;
           console.warn(
-            `[retry] ${platform}: антибот-заглушка на загрузке, попытка ${transientAttempt + 1} из ${this.MAX_TRANSIENT_RETRIES + 1} через ${wait} мс`,
+            `[retry] ${platform}: антибот-заглушка или сетевой сбой до первого байта, попытка ${transientAttempt + 1} из ${this.MAX_TRANSIENT_RETRIES + 1} через ${wait} мс`,
           );
           setTimeout(startAttempt, wait);
           return;

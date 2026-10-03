@@ -52,7 +52,9 @@ type LiveProgress = {
 };
 
 function fmtEta(seconds: number | null, m: (typeof messages)[Lang]): string {
-  if (seconds === null || !Number.isFinite(seconds)) return "";
+  // Ноль yt-dlp присылает в первые секунды, пока скорость ещё не измерена:
+  // «0% · осталось меньше минуты» было бы враньём.
+  if (seconds === null || !Number.isFinite(seconds) || seconds <= 0) return "";
   if (seconds < 60) return m.etaUnderMinute;
   const minutes = Math.ceil(seconds / 60);
   if (minutes < 60) return m.etaMinutes(minutes);

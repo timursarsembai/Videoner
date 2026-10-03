@@ -39,6 +39,9 @@ interface Messages {
   channelPost: (title: string, url: string) => string;
   dailyLimitReached: string;
   errorYoutubeDailyLimit: string;
+  errorFileTooLarge: string;
+  qualitiesHiddenBySize: (limit: string) => string;
+  videoTooBigForTelegram: (smallest: string) => string;
   errorLoginRequired: string;
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
@@ -76,7 +79,7 @@ const ru: Messages = {
   sessionExpired: "Сессия устарела — пришли ссылку ещё раз",
   downloading: "⏬ Скачиваю, это может занять пару минут...",
   downloadFailed: "загрузка завершилась ошибкой",
-  downloadTimeout: "тайм-аут загрузки",
+  downloadTimeout: "загрузка идёт слишком долго — видео, похоже, очень тяжёлое. Попробуй качество пониже.",
   downloadInterrupted: "⚠️ Бот обновляется и должен перезапуститься — скачивание прервано. Пришли ссылку ещё раз через минуту.",
   fileTooBig: (mb, url) =>
     `Файл получился большим (${mb} МБ) — Telegram не даст боту его отправить.\nСкачай по ссылке: ${url}`,
@@ -112,6 +115,9 @@ const ru: Messages = {
   errorUnsupportedPlatform:
     "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads.",
   errorYoutubeDailyLimit: "📅 На сегодня лимит YouTube исчерпан: за сутки можно скачать с него не больше определённого объёма. Видео с других площадок качаются как обычно, а YouTube снова станет доступен в течение суток.",
+  errorFileTooLarge: "файл в этом качестве слишком большой. Пришли ссылку ещё раз и выбери качество пониже — примерный размер написан на кнопках.",
+  qualitiesHiddenBySize: (limit) => `\n\n⚖️ Качества тяжелее ${limit} не показаны: файлы больше Telegram не даёт боту отправить.`,
+  videoTooBigForTelegram: (smallest) => `\n\n⚖️ Видео слишком тяжёлое для Telegram даже в самом низком качестве (~${smallest}). Можно скачать только звук.`,
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
   errorNoVideoContent: "По этой ссылке нет видео для скачивания — похоже, пост содержит только фото.",
   errorRegionBlocked:
@@ -165,7 +171,7 @@ const en: Messages = {
   sessionExpired: "Session expired — send the link again",
   downloading: "⏬ Downloading, this may take a couple of minutes...",
   downloadFailed: "download failed",
-  downloadTimeout: "download timed out",
+  downloadTimeout: "the download is taking too long — the video seems very heavy. Try a lower quality.",
   downloadInterrupted: "⚠️ The bot is restarting for an update — your download was interrupted. Please send the link again in a minute.",
   fileTooBig: (mb, url) =>
     `The file turned out large (${mb} MB) — Telegram won't let the bot send it.\nDownload it here: ${url}`,
@@ -198,6 +204,9 @@ const en: Messages = {
   errorUnsupportedPlatform:
     "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads.",
   errorYoutubeDailyLimit: "📅 Your YouTube limit for today is used up: there is a cap on how much you can download from it per day. Other platforms work as usual, and YouTube will be available again within 24 hours.",
+  errorFileTooLarge: "the file is too large in this quality. Send the link again and pick a lower quality — the approximate size is shown on the buttons.",
+  qualitiesHiddenBySize: (limit) => `\n\n⚖️ Qualities heavier than ${limit} are hidden: Telegram does not let bots send larger files.`,
+  videoTooBigForTelegram: (smallest) => `\n\n⚖️ This video is too heavy for Telegram even in the lowest quality (~${smallest}). Only the audio can be downloaded.`,
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
   errorNoVideoContent: "This link doesn't have a video to download — the post appears to be photo-only.",
   errorRegionBlocked:

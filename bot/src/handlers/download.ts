@@ -9,7 +9,9 @@ import {
   API_URL,
   BOT_API_ROOT,
   CLOUD_SIZE_LIMIT,
+  BOT_FILE_LIMIT,
   ADMIN_TELEGRAM_ID,
+  fmtSize,
 } from "../helpers.js";
 import { SHARE_CHANNEL, publishLink } from "./share.js";
 import { blockUnlessSubscribed, isChannelMember, subscribeKeyboard } from "./membership.js";
@@ -31,6 +33,11 @@ function sessionKey(chatId: number, messageId: number): string {
 }
 // Предел Telegram на один альбом.
 const ALBUM_LIMIT = 10;
+// Сколько ждём скачивание, опрашивая сервер раз в 3 секунды: 45 минут.
+// Тяжёлый ролик в пределах 2 ГБ с медленного CDN (VK, OK.ru) качается
+// дольше прежних 20 минут, и человек получал «тайм-аут», хотя сервер его
+// докачивал.
+const DOWNLOAD_WAIT_POLLS = 900;
 
 // Обложка для канала — намеренно не самый крупный вариант.
 //
@@ -211,7 +218,7 @@ async function performDownload(
     let status:
       | { status: string; downloadUrl?: string; items?: StatusItem[] }
       | undefined;
-    for (let i = 0; i < 400; i++) {
+    for (let i = 0; i < DOWNLOAD_WAIT_POLLS; i++) {
       await new Promise((r) => setTimeout(r, 3000));
       status = await api(`/download/${started.downloadId}/status`);
       if (status && (status.status === "COMPLETED" || status.status === "FAILED")) break;
@@ -368,19 +375,22 @@ async function showNextChoice(tg: Api, key: string) {
 
 // Клавиатура выбора текущей ссылки. Собирается из запомненного в очереди, а не
 // из ответа сервера: после экрана языков субтитров её надо вернуть как была.
-function choiceKeyboard(m: (typeof messages)[Lang], current: Current): InlineKeyboard {
+function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang): InlineKeyboard {
   const kb = new InlineKeyboard();
+  // Примерный вес на кнопке — чтобы человек сам выбрал качество полегче.
+  const sized = (label: string, bytes: number | undefined) =>
+    bytes ? `${label} · ~${fmtSize(bytes, lang)}` : label;
   for (const q of (current.qualities?.video ?? []).slice(0, 6)) {
     // Замок с HD-качеств снят вместе с платными функциями: все качества
     // доступны всем без исключения.
     // "original" сервер присылает для поста, где нет ни одного видео —
     // выбирать там нечего, снимки забираются в исходном размере.
-    kb.text(q === "original" ? m.photoButton : `🎬 ${q}`, `v|${q}`).row();
+    kb.text(q === "original" ? m.photoButton : sized(`🎬 ${q}`, current.sizes?.video[q]), `v|${q}`).row();
   }
   // У поста из одних фотографий звуковой дорожки нет — кнопку не рисуем,
   // иначе она вела бы в заведомую ошибку.
   if (current.qualities?.audio.length) {
-    kb.text(m.audioOnlyButton, "a|128Kbps").row();
+    kb.text(sized(m.audioOnlyButton, current.sizes?.audio["128Kbps"]), "a|128Kbps").row();
   }
   if (current.subtitles?.length) {
     kb.text(m.subtitlesButton, "s|list").row();
@@ -452,6 +462,7 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       duration?: number;
       thumbnail?: string;
       qualities: { video: string[]; audio: string[] };
+      sizes?: { video: Record<string, number>; audio: Record<string, number> };
       subtitles?: SubtitleTrack[];
     }>("/info", {
       url: current.url,
@@ -461,16 +472,31 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
     });
     current.title = info.title ?? "";
     current.thumbnail = info.thumbnail;
-    current.qualities = { video: info.qualities.video ?? [], audio: info.qualities.audio ?? [] };
+    // Качества, которые заведомо не пролезут в Telegram, не показываем вовсе:
+    // иначе человек ждал бы загрузку, которую бот всё равно не сможет
+    // отправить. Неизвестный размер — не повод прятать.
+    const sizes = info.sizes ?? { video: {}, audio: {} };
+    const allVideo = info.qualities.video ?? [];
+    const fits = (q: string) => !(sizes.video[q] > BOT_FILE_LIMIT);
+    const video = allVideo.filter(fits);
+    const hidden = allVideo.filter((q) => !fits(q));
+    current.qualities = { video, audio: info.qualities.audio ?? [] };
+    current.sizes = sizes;
+    current.sizeNote = !hidden.length
+      ? undefined
+      : video.length
+        ? m.qualitiesHiddenBySize(fmtSize(BOT_FILE_LIMIT, lang))
+        : m.videoTooBigForTelegram(fmtSize(Math.min(...hidden.map((q) => sizes.video[q])), lang));
     // Сервер отдаёт субтитры только для YouTube; у остальных поле пустое.
     current.subtitles = orderTracks(info.subtitles ?? []);
 
-    const kb = choiceKeyboard(m, current);
+    const kb = choiceKeyboard(m, current, lang);
 
     const dur = fmtDuration(info.duration);
     const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";
     const rest = state.pending.length ? m.queueRest(state.pending.length) : "";
-    await tg.editMessageText(state.chatId, messageId, m.chooseQuality(current.title, dur) + notice + rest, {
+    const sizeNote = current.sizeNote ?? "";
+    await tg.editMessageText(state.chatId, messageId, m.chooseQuality(current.title, dur) + sizeNote + notice + rest, {
       reply_markup: kb,
     });
   } catch (e: any) {
@@ -596,7 +622,7 @@ export function registerDownloadHandlers(bot: Bot) {
       const tracks = current.subtitles ?? [];
       if (quality === "list" || quality === "back") {
         await ctx.answerCallbackQuery();
-        const kb = quality === "list" ? subtitlesKeyboard(m, tracks) : choiceKeyboard(m, current);
+        const kb = quality === "list" ? subtitlesKeyboard(m, tracks) : choiceKeyboard(m, current, lang);
         await ctx.editMessageReplyMarkup({ reply_markup: kb }).catch((e) => console.error("Не удалось сменить клавиатуру:", e?.message ?? e));
         return;
       }
@@ -613,7 +639,7 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.answerCallbackQuery();
       // Возвращаем выбор качества сразу: субтитры готовятся в фоне, а видео
       // можно выбрать, не дожидаясь их.
-      await ctx.editMessageReplyMarkup({ reply_markup: choiceKeyboard(m, current) }).catch((e) => console.error("Не удалось вернуть клавиатуру:", e?.message ?? e));
+      await ctx.editMessageReplyMarkup({ reply_markup: choiceKeyboard(m, current, lang) }).catch((e) => console.error("Не удалось вернуть клавиатуру:", e?.message ?? e));
       inBackground("Субтитры", sendSubtitles(ctx, key, current, track, lang));
       return;
     }

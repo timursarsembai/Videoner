@@ -4,6 +4,7 @@ import {
   ADMIN_TELEGRAM_ID,
   API_URL,
   BOT_API_ROOT,
+  BOT_FILE_LIMIT,
   CLOUD_SIZE_LIMIT,
   api,
   checkUserRateLimit,
@@ -39,9 +40,11 @@ const handled = new Set<string>();
 // Качество для инлайна выбираем сами: выбирать в этом режиме негде, кнопок нет.
 // 720p — компромисс между «прилично выглядит» и «дойдёт за разумное время»;
 // если его нет, берём первое предложенное сервером.
-function pickQuality(available: string[]): string | null {
-  if (!available.length) return null;
-  return available.find((q) => q === "720p") ?? available[0];
+// Тяжелее предела Telegram не берём: такой файл бот не сможет отправить.
+function pickQuality(available: string[], sizes: Record<string, number> = {}): string | null {
+  const fits = available.filter((q) => !(sizes[q] > BOT_FILE_LIMIT));
+  if (!fits.length) return null;
+  return fits.find((q) => q === "720p") ?? fits[0];
 }
 
 export function registerInlineHandlers(bot: Bot) {
@@ -126,6 +129,7 @@ export function registerInlineHandlers(bot: Bot) {
           title: string;
           itemCount?: number;
           qualities: { video: string[]; audio: string[] };
+          sizes?: { video: Record<string, number> };
         }>("/info", {
           url,
           telegramId: ctx.from.id,
@@ -135,7 +139,7 @@ export function registerInlineHandlers(bot: Bot) {
 
         // Карусель и фотопосты в инлайне не отправить: заменить заглушку можно
         // ровно одним файлом, альбом сюда не поместится.
-        const quality = pickQuality(info.qualities?.video ?? []);
+        const quality = pickQuality(info.qualities?.video ?? [], info.sizes?.video);
         if ((info.itemCount ?? 1) > 1 || !quality || quality === "original") {
           await say(m.inlineOnlySingleVideo);
           return;

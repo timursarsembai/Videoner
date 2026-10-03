@@ -14,10 +14,26 @@ export const ADMIN_TELEGRAM_ID = process.env.ADMIN_TELEGRAM_ID
 // Если не задан — используется облачный api.telegram.org с лимитом 50 МБ.
 export const BOT_API_ROOT = process.env.BOT_API_ROOT || undefined;
 export const CLOUD_SIZE_LIMIT = 48 * 1024 * 1024;
+// Сколько Telegram даёт боту отправить через локальный Bot API. Качества
+// тяжелее этого бот не предлагает: скачивать их — заведомо зря. Без
+// локального сервера не ограничиваем: там файл больше 50 МБ отдаётся
+// ссылкой (см. fileTooBig), и вес до 2 ГБ этому не мешает.
+export const BOT_FILE_LIMIT = BOT_API_ROOT ? 2000 * 1024 * 1024 : Infinity;
+
+// «850 МБ», «1,2 ГБ» — для подписи на кнопках качества.
+export function fmtSize(bytes: number, lang: Lang): string {
+  const gb = bytes / 1024 ** 3;
+  if (gb >= 1) {
+    const value = gb.toLocaleString(lang === "ru" ? "ru-RU" : "en-US", { maximumFractionDigits: 1 });
+    return `${value} ${lang === "ru" ? "ГБ" : "GB"}`;
+  }
+  const mb = Math.max(1, Math.round(bytes / 1024 ** 2));
+  return `${mb} ${lang === "ru" ? "МБ" : "MB"}`;
+}
 
 // Без таймаута зависший (не 5xx, а именно hang — например под нагрузкой)
-// запрос к серверу мог висеть неограниченно, ломая расчётный 20-минутный
-// потолок ожидания в performDownload (400 итераций × 3с) — пользователь
+// запрос к серверу мог висеть неограниченно, ломая расчётный потолок
+// ожидания в performDownload (DOWNLOAD_WAIT_POLLS × 3с) — пользователь
 // весь это время видел "⏬ Скачиваю..." без единого сообщения об ошибке.
 const API_TIMEOUT_MS = 30_000;
 
@@ -158,6 +174,16 @@ export function friendlyError(raw: string, lang: Lang): string {
 
   if (msg.includes("daily youtube traffic limit")) {
     return m.errorYoutubeDailyLimit;
+  }
+
+  // Сервер отказал заранее (см. server/src/lib/file-size.ts) или Telegram не
+  // принял файл: обоим нужен один совет — качество пониже.
+  if (
+    msg.includes("file too large") ||
+    msg.includes("request entity too large") ||
+    msg.includes("file is too big")
+  ) {
+    return m.errorFileTooLarge;
   }
 
   if (msg.includes("requested format is not available")) {

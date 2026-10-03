@@ -39,6 +39,12 @@ import {
   youtubeDailyLimitBytes,
 } from 'src/lib/youtube-budget';
 import {
+  estimateAudioSize,
+  estimateVideoSize,
+  formatGigabytes,
+  maxFileBytes,
+} from 'src/lib/file-size';
+import {
   entryKind,
   hasVideoEntries,
   isPhotoExtension,
@@ -186,6 +192,19 @@ export class DownloadService {
     if (used >= limit) {
       throw new ForbiddenException(
         `Daily YouTube traffic limit reached (${Math.round(limit / 1024 ** 3)} GB per day) — try again tomorrow`,
+      );
+    }
+  }
+
+  // Отказ заранее, если файл заведомо больше предела для этого клиента (см.
+  // lib/file-size.ts). Без этого бот качал ролик на несколько гигабайт
+  // десятки минут, чтобы в конце Telegram отказался его принять. Размер
+  // примерный; неизвестен — пропускаем, решит само скачивание.
+  private enforceSizeLimit(estimated: number | null, meta: DownloadRequestMeta) {
+    const limit = maxFileBytes(meta.source);
+    if (estimated !== null && estimated > limit) {
+      throw new BadRequestException(
+        `File too large: about ${formatGigabytes(estimated)} in this quality, the limit is ${formatGigabytes(limit)}. Choose a lower quality.`,
       );
     }
   }
@@ -1093,6 +1112,10 @@ export class DownloadService {
       // и делать для них отдельную схему именования — только плодить ветки.
       const multi = isPlaylist(info) || photos.length > 0;
 
+      if (!multi && hasVideo) {
+        this.enforceSizeLimit(estimateVideoSize(info, quality, platform), meta);
+      }
+
       const cacheKey =
         multi || !hasVideo
           ? null
@@ -1321,6 +1344,10 @@ export class DownloadService {
       // совпадают.
       const audioExtension = extension || 'mp3';
       const platform: string = (req as any).platform;
+
+      if (!multi) {
+        this.enforceSizeLimit(estimateAudioSize(info, quality), meta);
+      }
 
       // Повтор той же дорожки — из кеша, см. downloadVideo().
       const cacheKey = multi

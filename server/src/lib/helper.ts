@@ -153,7 +153,11 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
       // нешарибельно, поэтому остальные площадки оставлены как были.
       // Первым идёт bv (чистая видеодорожка), иначе на горизонтальных роликах
       // подхватывается муксованный HLS (формат 96) вместо DASH.
-      const long = Math.round((Number(height) * 16) / 9);
+      // Вверх, а не до ближайшего: у 480p длинная сторона 854, а 480*16/9 =
+      // 853,3 — округление вниз отсекало настоящий 854x480, и на «480p»
+      // приходил 640x360 (поймано 03.10.2026 на этом же расчёте в оценке
+      // размера, lib/file-size.ts; проверено yt-dlp на живом ролике).
+      const long = Math.ceil((Number(height) * 16) / 9);
       const cap = `[width<=${long}][height<=${long}]`;
       formatArr = [
         '-f',
@@ -232,7 +236,8 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
       // Побочный эффект тот же, что у Instagram: выше ~720p Facebook в H.264
       // не отдаёт, и на «1080p» приходит `hd`. Отдать вместо него AV1
       // 1080x1920 — значит вернуть файл, который на телефоне не играет.
-      const long = Math.round((Number(height) * 16) / 9);
+      // Вверх — см. YouTube-ветку выше про 854x480.
+      const long = Math.ceil((Number(height) * 16) / 9);
       const cap = `[width<=?${long}][height<=?${long}]`;
       // Прогрессивный H.264 Facebook: у остальных площадок этой ветки таких
       // форматов нет, там строка пустая и цепочка остаётся прежней.

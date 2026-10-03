@@ -34,6 +34,10 @@ export type Current = {
   // Из чего собрана клавиатура выбора. Храним, чтобы вернуть её после
   // экрана языков субтитров, не спрашивая сервер второй раз.
   qualities?: { video: string[]; audio: string[] };
+  // Примерный размер файла по качествам, байты (см. server/src/lib/file-size.ts).
+  sizes?: { video: Record<string, number>; audio: Record<string, number> };
+  // Строка под выбором качества, если тяжёлые качества спрятаны.
+  sizeNote?: string;
   // Уже упорядоченные под кнопки (orderTracks) — номер кнопки ссылается сюда.
   subtitles?: SubtitleTrack[];
   // Отличает эту ссылку от следующей с тем же адресом: таймер пропуска и

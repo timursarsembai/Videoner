@@ -26,6 +26,11 @@ export type VideoInfo = {
     video: string[];
     audio: string[];
   };
+  // Примерный размер файла по качествам, в байтах; неизвестные отсутствуют.
+  sizes?: {
+    video: Record<string, number>;
+    audio: Record<string, number>;
+  };
   thumbnail: string;
   description: string;
   uploader: string;

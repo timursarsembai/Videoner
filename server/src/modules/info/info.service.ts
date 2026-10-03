@@ -14,6 +14,7 @@ import { BotUserService } from '../analytics/bot-user.service';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
 import { listSubtitles } from 'src/lib/subtitles';
 import { capYoutubeQualities } from 'src/lib/youtube-budget';
+import { estimateSizes } from 'src/lib/file-size';
 import {
   describeItems,
   entryKind,
@@ -102,6 +103,13 @@ export class InfoService {
         timestamp: info.timestamp,
         categories: info.categories || [],
         qualities: allFormats,
+        // Примерный вес каждого качества — подпись на кнопках, чтобы человек
+        // видел, что выбирает, ещё до скачивания (см. lib/file-size.ts). У
+        // поста из нескольких файлов размер на кнопке ничего бы не значил.
+        sizes:
+          entries.length > 1
+            ? { video: {}, audio: {} }
+            : estimateSizes(info, platform, allFormats),
         extensions: allExtensions,
         tags: info.tags || [],
         likeCount: info.like_count,

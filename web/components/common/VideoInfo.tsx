@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { api } from "@/lib/api";
 import { useLanguage } from "@/lib/i18n/context";
-import { downloadFile, extractErrorMessage, formatDuration } from "@/lib/utils";
+import { downloadFile, extractErrorMessage, formatApproxSize, formatDuration } from "@/lib/utils";
 import { useAuth } from "@/lib/auth/context";
 import { VideoInfo } from "@/types/youtube";
 import { DownloadItem } from "@/types";
@@ -467,6 +467,13 @@ export const VideoInfoSection = ({
                             ? t("video.photoQuality")
                             : quality}
                         </span>
+                        {/* Примерный вес — чтобы выбрать качество полегче
+                            до скачивания, а не после долгого ожидания. */}
+                        {videoInfo.sizes?.[activeTab]?.[quality] ? (
+                          <span className="text-xs opacity-60">
+                            {formatApproxSize(videoInfo.sizes[activeTab][quality])}
+                          </span>
+                        ) : null}
                       </div>
                       {selectedQuality === quality && (
                         <motion.div

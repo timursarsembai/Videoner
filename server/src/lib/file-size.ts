@@ -172,13 +172,20 @@ function envMegabytes(name: string, fallback: number): number {
 }
 
 // Предел размера файла по источнику запроса. Бот упирается в Telegram:
-// локальный Bot API принимает от бота до 2000 МБ. У сайта ограничение своё —
-// место на диске и терпение человека; 4 ГБ — с запасом для любого ролика в
-// разумном качестве.
-export function maxFileBytes(source?: DownloadSource | string): number {
-  return source === DownloadSource.BOT
-    ? envMegabytes('MAX_FILE_SIZE_BOT_MB', 2000)
-    : envMegabytes('MAX_FILE_SIZE_WEB_MB', 4096);
+// локальный Bot API принимает от бота до 2000 МБ, файл тяжелее он всё равно
+// не отправит — этот предел остаётся для всех площадок. У сайта ограничение
+// своё — место на диске и терпение человека; 4 ГБ с запасом. YouTube на
+// сайте без предела (03.10.2026 сняли по решению владельца): его трафик и
+// так держит суточный лимит на человека (YOUTUBE_DAILY_GB).
+export function maxFileBytes(
+  source?: DownloadSource | string,
+  platform?: string,
+): number {
+  if (source === DownloadSource.BOT) {
+    return envMegabytes('MAX_FILE_SIZE_BOT_MB', 2000);
+  }
+  if (platform === 'youtube') return Infinity;
+  return envMegabytes('MAX_FILE_SIZE_WEB_MB', 4096);
 }
 
 export function formatGigabytes(bytes: number): string {

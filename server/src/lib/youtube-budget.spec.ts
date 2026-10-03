@@ -17,8 +17,27 @@ beforeEach(() => {
   for (const name of VARS) delete process.env[name];
 });
 
+// Потолок, который был по умолчанию до 03.10.2026: проверяем сам механизм.
+function capAt720() {
+  process.env.YOUTUBE_MAX_HEIGHT = '720';
+  process.env.YOUTUBE_LONG_VIDEO_MINUTES = '30';
+}
+
+describe('по умолчанию потолка нет', () => {
+  it('качества и запрос не режутся', () => {
+    expect(youtubeMaxHeight(3 * 60 * 60)).toBe(Infinity);
+    expect(capYoutubeQualities(['2160p', '1080p', '720p'], 3 * 60 * 60)).toEqual([
+      '2160p',
+      '1080p',
+      '720p',
+    ]);
+    expect(capYoutubeQuality('2160p', 60)).toBe('2160p');
+  });
+});
+
 describe('youtubeMaxHeight', () => {
-  it('по умолчанию 720, для роликов от 30 минут — 480', () => {
+  it('720 и 480 для роликов от 30 минут', () => {
+    capAt720();
     expect(youtubeMaxHeight(60)).toBe(720);
     expect(youtubeMaxHeight(29 * 60)).toBe(720);
     expect(youtubeMaxHeight(30 * 60)).toBe(480);
@@ -34,19 +53,22 @@ describe('youtubeMaxHeight', () => {
   });
 
   it('YOUTUBE_LONG_VIDEO_MINUTES=0 отключает отдельный потолок для длинных', () => {
+    process.env.YOUTUBE_MAX_HEIGHT = '720';
     process.env.YOUTUBE_LONG_VIDEO_MINUTES = '0';
     expect(youtubeMaxHeight(3 * 60 * 60)).toBe(720);
   });
 
   it('потолок для длинных не поднимает общий', () => {
+    capAt720();
     process.env.YOUTUBE_LONG_MAX_HEIGHT = '1080';
     expect(youtubeMaxHeight(2 * 60 * 60)).toBe(720);
   });
 
   it('мусор в окружении — значения по умолчанию', () => {
     process.env.YOUTUBE_MAX_HEIGHT = 'abc';
+    process.env.YOUTUBE_LONG_VIDEO_MINUTES = '30';
     process.env.YOUTUBE_LONG_MAX_HEIGHT = '-1';
-    expect(youtubeMaxHeight(60)).toBe(720);
+    expect(youtubeMaxHeight(60)).toBe(Infinity);
     expect(youtubeMaxHeight(60 * 60)).toBe(480);
   });
 });
@@ -62,6 +84,8 @@ describe('qualityHeight', () => {
 });
 
 describe('capYoutubeQualities', () => {
+  beforeEach(capAt720);
+
   it('убирает всё выше потолка и сохраняет порядок', () => {
     expect(
       capYoutubeQualities(['2160p', '1080p', '720p', '480p', '360p'], 60),
@@ -80,6 +104,8 @@ describe('capYoutubeQualities', () => {
 });
 
 describe('capYoutubeQuality', () => {
+  beforeEach(capAt720);
+
   it('опускает запрошенное качество до потолка', () => {
     expect(capYoutubeQuality('2160p', 60)).toBe('720p');
     expect(capYoutubeQuality('1080p', 2 * 60 * 60)).toBe('480p');

@@ -20,10 +20,13 @@ function envNumber(name: string, fallback: number): number {
 
 // Потолок качества по короткой стороне кадра: 720 — это и 1280x720, и
 // вертикальный 720x1280. 1080p весит примерно вдвое больше 720p, а 4K — ещё в
-// несколько раз больше.
+// несколько раз больше. По умолчанию потолка нет (03.10.2026 сняли по решению
+// владельца): 0 в YOUTUBE_MAX_HEIGHT и YOUTUBE_LONG_VIDEO_MINUTES. Если
+// трафик прокси снова прижмёт, потолок включается одной переменной в .env,
+// без правки кода. Infinity — «без ограничения».
 export function youtubeMaxHeight(duration?: number | null): number {
-  const max = envNumber('YOUTUBE_MAX_HEIGHT', 720) || 720;
-  const longMinutes = envNumber('YOUTUBE_LONG_VIDEO_MINUTES', 30);
+  const max = envNumber('YOUTUBE_MAX_HEIGHT', 0) || Infinity;
+  const longMinutes = envNumber('YOUTUBE_LONG_VIDEO_MINUTES', 0);
   const longMax = envNumber('YOUTUBE_LONG_MAX_HEIGHT', 480) || max;
   // Длинные ролики дают основной объём: один часовой весит как десятки шортсов.
   if (longMinutes > 0 && duration && duration >= longMinutes * 60) {
@@ -57,7 +60,8 @@ export function capYoutubeQualities(
   // У ролика все форматы выше потолка (так не бывает на настоящем YouTube, но
   // пустой список оставил бы человека без единой кнопки) — предлагаем сам
   // потолок, селектор формата возьмёт лучшее, что в него помещается.
-  return allowed.length ? allowed : [`${cap}p`];
+  if (allowed.length || !Number.isFinite(cap)) return allowed;
+  return [`${cap}p`];
 }
 
 // Качество, которое реально скачиваем. Сервер не доверяет списку из /info:

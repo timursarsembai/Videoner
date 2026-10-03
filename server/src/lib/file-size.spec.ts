@@ -118,6 +118,12 @@ describe('maxFileBytes', () => {
     expect(maxFileBytes(undefined)).toBe(4096 * 1024 ** 2);
   });
 
+  it('YouTube на сайте без предела, в боте — предел Telegram', () => {
+    expect(maxFileBytes('WEB', 'youtube')).toBe(Infinity);
+    expect(maxFileBytes('BOT', 'youtube')).toBe(2000 * 1024 ** 2);
+    expect(maxFileBytes('WEB', 'vk')).toBe(4096 * 1024 ** 2);
+  });
+
   it('читает пределы из окружения', () => {
     process.env.MAX_FILE_SIZE_BOT_MB = '1000';
     expect(maxFileBytes('BOT')).toBe(1000 * 1024 ** 2);

@@ -200,8 +200,12 @@ export class DownloadService {
   // lib/file-size.ts). Без этого бот качал ролик на несколько гигабайт
   // десятки минут, чтобы в конце Telegram отказался его принять. Размер
   // примерный; неизвестен — пропускаем, решит само скачивание.
-  private enforceSizeLimit(estimated: number | null, meta: DownloadRequestMeta) {
-    const limit = maxFileBytes(meta.source);
+  private enforceSizeLimit(
+    estimated: number | null,
+    meta: DownloadRequestMeta,
+    platform: string,
+  ) {
+    const limit = maxFileBytes(meta.source, platform);
     if (estimated !== null && estimated > limit) {
       throw new BadRequestException(
         `File too large: about ${formatGigabytes(estimated)} in this quality, the limit is ${formatGigabytes(limit)}. Choose a lower quality.`,
@@ -1117,7 +1121,11 @@ export class DownloadService {
       const multi = isPlaylist(info) || photos.length > 0;
 
       if (!multi && hasVideo) {
-        this.enforceSizeLimit(estimateVideoSize(info, quality, platform), meta);
+        this.enforceSizeLimit(
+          estimateVideoSize(info, quality, platform),
+          meta,
+          platform,
+        );
       }
 
       const cacheKey =
@@ -1350,7 +1358,7 @@ export class DownloadService {
       const platform: string = (req as any).platform;
 
       if (!multi) {
-        this.enforceSizeLimit(estimateAudioSize(info, quality), meta);
+        this.enforceSizeLimit(estimateAudioSize(info, quality), meta, platform);
       }
 
       // Повтор той же дорожки — из кеша, см. downloadVideo().

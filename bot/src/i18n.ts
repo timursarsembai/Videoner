@@ -44,7 +44,6 @@ interface Messages {
   channelNotice: (channel: string) => string;
   channelPost: (title: string, url: string) => string;
   dailyLimitReached: string;
-  errorYoutubeDailyLimit: string;
   errorFileTooLarge: string;
   qualitiesHiddenBySize: (limit: string) => string;
   videoTooBigForTelegram: (smallest: string) => string;
@@ -127,7 +126,6 @@ const ru: Messages = {
     "Публичные записи скачиваются без проблем — попробуйте другую ссылку.",
   errorUnsupportedPlatform:
     "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads.",
-  errorYoutubeDailyLimit: "📅 На сегодня лимит YouTube исчерпан: за сутки можно скачать с него не больше определённого объёма. Видео с других площадок качаются как обычно, а YouTube снова станет доступен в течение суток.",
   errorFileTooLarge: "файл в этом качестве слишком большой. Пришли ссылку ещё раз и выбери качество пониже — примерный размер написан на кнопках.",
   qualitiesHiddenBySize: (limit) => `\n\n⚖️ Качества тяжелее ${limit} не показаны: файлы больше Telegram не даёт боту отправить.`,
   videoTooBigForTelegram: (smallest) => `\n\n⚖️ Видео слишком тяжёлое для Telegram даже в самом низком качестве (~${smallest}). Можно скачать только звук.`,
@@ -223,7 +221,6 @@ const en: Messages = {
     "Public posts download without trouble — try another link.",
   errorUnsupportedPlatform:
     "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads.",
-  errorYoutubeDailyLimit: "📅 Your YouTube limit for today is used up: there is a cap on how much you can download from it per day. Other platforms work as usual, and YouTube will be available again within 24 hours.",
   errorFileTooLarge: "the file is too large in this quality. Send the link again and pick a lower quality — the approximate size is shown on the buttons.",
   qualitiesHiddenBySize: (limit) => `\n\n⚖️ Qualities heavier than ${limit} are hidden: Telegram does not let bots send larger files.`,
   videoTooBigForTelegram: (smallest) => `\n\n⚖️ This video is too heavy for Telegram even in the lowest quality (~${smallest}). Only the audio can be downloaded.`,

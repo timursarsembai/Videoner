@@ -176,7 +176,7 @@ function envMegabytes(name: string, fallback: number): number {
 // не отправит — этот предел остаётся для всех площадок. У сайта ограничение
 // своё — место на диске и терпение человека; 4 ГБ с запасом. YouTube на
 // сайте без предела (03.10.2026 сняли по решению владельца): его трафик и
-// так держит суточный лимит на человека (YOUTUBE_DAILY_GB).
+// так держит суточный лимит с одного IP (YOUTUBE_DAILY_GB_PER_IP).
 export function maxFileBytes(
   source?: DownloadSource | string,
   platform?: string,

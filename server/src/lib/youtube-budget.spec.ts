@@ -2,7 +2,7 @@ import {
   capYoutubeQualities,
   capYoutubeQuality,
   qualityHeight,
-  youtubeDailyLimitBytes,
+  youtubeDailyLimitPerIpBytes,
   youtubeMaxHeight,
 } from './youtube-budget';
 
@@ -10,7 +10,7 @@ const VARS = [
   'YOUTUBE_MAX_HEIGHT',
   'YOUTUBE_LONG_VIDEO_MINUTES',
   'YOUTUBE_LONG_MAX_HEIGHT',
-  'YOUTUBE_DAILY_GB',
+  'YOUTUBE_DAILY_GB_PER_IP',
 ];
 
 beforeEach(() => {
@@ -117,12 +117,12 @@ describe('capYoutubeQuality', () => {
   });
 });
 
-describe('youtubeDailyLimitBytes', () => {
-  it('по умолчанию 2 ГБ, 0 — без лимита', () => {
-    expect(youtubeDailyLimitBytes()).toBe(2 * 1024 ** 3);
-    process.env.YOUTUBE_DAILY_GB = '0';
-    expect(youtubeDailyLimitBytes()).toBe(0);
-    process.env.YOUTUBE_DAILY_GB = '1.5';
-    expect(youtubeDailyLimitBytes()).toBe(Math.round(1.5 * 1024 ** 3));
+describe('youtubeDailyLimitPerIpBytes', () => {
+  it('по умолчанию 5 ГБ, 0 — без лимита', () => {
+    expect(youtubeDailyLimitPerIpBytes()).toBe(5 * 1024 ** 3);
+    process.env.YOUTUBE_DAILY_GB_PER_IP = '0';
+    expect(youtubeDailyLimitPerIpBytes()).toBe(0);
+    process.env.YOUTUBE_DAILY_GB_PER_IP = '1.5';
+    expect(youtubeDailyLimitPerIpBytes()).toBe(Math.round(1.5 * 1024 ** 3));
   });
 });

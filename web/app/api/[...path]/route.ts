@@ -204,12 +204,13 @@ async function handleRequest(request: NextRequest, path: string[]) {
       delete body.turnstileToken;
     }
 
-    // Скачивание на сайте требует входа через Telegram и подчиняется тому же
-    // суточному лимиту, что и бот (см. DownloadService.enforceWebLimits).
-    // Субтитры тоже только после входа, но в лимит не считаются — это
-    // несколько килобайт текста (DownloadService.downloadSubtitles).
-    // telegramId берём из проверенной сессии (cookie), а не от клиента — иначе
-    // можно было бы просто подставить чужой id и обойти лимит.
+    // Скачивание на сайте свободное, без входа (с 04.10.2026). Серверу
+    // передаём IP посетителя — по нему считается суточный лимит трафика
+    // YouTube (DownloadService.enforceYoutubeTraffic): сам браузер к серверу
+    // не ходит, и без этого сервер видел бы один адрес — этого прокси.
+    // Значения от клиента перезаписываем, чтобы IP нельзя было подставить.
+    // telegramId старой сессии, если она ещё жива, по-прежнему уходит в
+    // статистику — но ни на что не влияет.
     if (
       path.length === 2 &&
       path[0] === "download" &&
@@ -217,13 +218,11 @@ async function handleRequest(request: NextRequest, path: string[]) {
       request.method === "POST"
     ) {
       const telegramId = await getSessionTelegramId();
-      if (!telegramId) {
-        return NextResponse.json(
-          { message: "Login required to download on the website", error: "Unauthorized" },
-          { status: 401 }
-        );
-      }
-      body = { ...(body ?? {}), telegramId };
+      body = {
+        ...(body ?? {}),
+        clientIp: getClientIp(request),
+        telegramId: telegramId ?? undefined,
+      };
     }
 
     // Аналогично — GET /download/quota должен отдавать квоту ТОЛЬКО текущей

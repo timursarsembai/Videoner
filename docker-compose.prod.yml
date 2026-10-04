@@ -87,13 +87,13 @@ services:
       YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
       # Экономия трафика прокси (оплата за гигабайты), см. server/src/lib/youtube-budget.ts:
       # потолок качества YouTube, потолок пониже для роликов длиннее N минут и
-      # суточный лимит трафика YouTube на человека (0 — без лимита). Менять в
+      # суточный лимит трафика YouTube с одного IP на сайте (0 — без лимита). Менять в
       # .env и перезапускать server — пересборка не нужна.
       # 0 — без потолка (по умолчанию с 03.10.2026).
       YOUTUBE_MAX_HEIGHT: ${YOUTUBE_MAX_HEIGHT:-0}
       YOUTUBE_LONG_VIDEO_MINUTES: ${YOUTUBE_LONG_VIDEO_MINUTES:-0}
       YOUTUBE_LONG_MAX_HEIGHT: ${YOUTUBE_LONG_MAX_HEIGHT:-480}
-      YOUTUBE_DAILY_GB: ${YOUTUBE_DAILY_GB:-2}
+      YOUTUBE_DAILY_GB_PER_IP: ${YOUTUBE_DAILY_GB_PER_IP:-5}
       # Предел размера файла, МБ (см. server/src/lib/file-size.ts): бот упирается
       # в Telegram — локальный Bot API принимает до 2000 МБ; у сайта свой запас.
       MAX_FILE_SIZE_BOT_MB: ${MAX_FILE_SIZE_BOT_MB:-2000}

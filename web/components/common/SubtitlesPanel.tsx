@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
-import { useAuth } from "@/lib/auth/context";
 import { useLanguage } from "@/lib/i18n/context";
 import { downloadFile, extractErrorMessage } from "@/lib/utils";
 import { SubtitleTrack } from "@/types/youtube";
@@ -10,7 +9,6 @@ import { motion } from "framer-motion";
 import { Captions, Download, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { TelegramLoginWidget } from "./TelegramLoginWidget";
 
 // Субтитры YouTube — отдельной панелью, а не третьим видом в общей логике
 // VideoInfo. Там выбор завязан на качества, расширения и восстановление после
@@ -29,7 +27,6 @@ export const SubtitlesPanel = ({
   tracks: SubtitleTrack[];
 }) => {
   const { t } = useLanguage();
-  const { user } = useAuth();
   const [selected, setSelected] = useState<string | null>(tracks.length === 1 ? tracks[0].lang : null);
   const [busy, setBusy] = useState(false);
 
@@ -75,24 +72,16 @@ export const SubtitlesPanel = ({
         ))}
       </div>
 
-      {user === null ? (
-        <div className="flex flex-col items-center gap-2 rounded-lg bg-muted/30 p-4 text-center">
-          <p className="text-sm text-muted-foreground">{t("video.loginRequiredHint")}</p>
-          {/* После входа человек вернётся на ту же ссылку; язык выберет заново —
-              он один клик, и тащить его через адрес незачем. */}
-          <TelegramLoginWidget label={t("auth.loginButton")} preserveParams={{ url }} />
-        </div>
-      ) : (
-        <Button
-          onClick={handleDownload}
-          disabled={!selected || busy || user === undefined}
-          className="w-full gap-2"
-          size="lg"
-        >
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-          {busy ? t("video.subtitlesDownloading") : t("video.subtitlesDownload")}
-        </Button>
-      )}
+      {/* Без входа (с 04.10.2026), как и скачивание видео. */}
+      <Button
+        onClick={handleDownload}
+        disabled={!selected || busy}
+        className="w-full gap-2"
+        size="lg"
+      >
+        {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+        {busy ? t("video.subtitlesDownloading") : t("video.subtitlesDownload")}
+      </Button>
     </div>
   );
 };

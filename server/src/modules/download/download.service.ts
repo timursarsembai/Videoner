@@ -36,8 +36,9 @@ import { categorizeError } from 'src/lib/error-category';
 import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
 import {
   capYoutubeQuality,
-  youtubeDailyLimitBytes,
+  youtubeDailyLimitPerIpBytes,
 } from 'src/lib/youtube-budget';
+import { createHash } from 'crypto';
 import {
   estimateAudioSize,
   estimateVideoSize,
@@ -64,6 +65,15 @@ export interface DownloadRequestMeta {
   // Клиент умеет отправить файл по Telegram file_id (бот). Только он: сайт и
   // инлайн-режим ждут файл на диске, а запись из кеша по file_id его не имеет.
   acceptTelegramFileId?: boolean;
+  // IP посетителя сайта. Присылает только прокси сайта (web/app/api), сам
+  // браузер к серверу не ходит; нужен для суточного лимита YouTube.
+  clientIp?: string;
+}
+
+// Адрес храним хешем: для лимита нужно только сравнение «тот же или нет».
+function hashClientIp(ip?: string): string | null {
+  if (!ip || ip === 'unknown') return null;
+  return createHash('sha256').update(ip).digest('hex').slice(0, 32);
 }
 
 // Найденная в кеше выдача (см. findCached).
@@ -89,7 +99,7 @@ const execFileAsync = promisify(execFile);
 export class DownloadService {
   private readonly downloadPath: string;
 
-  // TOCTOU-защита для enforceWebLimits: без неё несколько параллельных вкладок
+  // TOCTOU-защита суточных лимитов: без неё несколько параллельных вкладок
   // одного пользователя читают ОДИН И ТОТ ЖЕ freeUsed (запись Download ещё не
   // создана ни для одного из запросов), все проходят проверку лимита и создают
   // записи одновременно — дневной лимит можно пробить числом параллельных
@@ -146,52 +156,34 @@ export class DownloadService {
     return info;
   }
 
-  // Ограничения для запросов с сайта (meta.source === WEB): обязательный вход
-  // через Telegram и суточный лимит. Бот считает свой лимит сам.
-  //
-  // Раньше здесь же стоял гейт платного HD. Он снят вместе со всеми платными
-  // функциями: сервис бесплатный, и качество больше ни от чего не зависит.
-  // С гейтом ушли параметры quality/info/platform/isVideo — они были нужны
-  // только ему, — и метод getAvailableVideoQualities, который их считал.
-  //
-  // telegramId для WEB приходит уже проверенным из сессии (см.
-  // web/app/api/[...path]/route.ts), а не как есть от браузера.
-  private async enforceWebLimits(meta: DownloadRequestMeta) {
-    if (meta.source !== DownloadSource.WEB) return;
-
-    if (!meta.telegramId) {
-      throw new UnauthorizedException('Login required to download on the website');
-    }
-
-    // Безлимит выдаётся ТОЛЬКО вручную админом через /grant; купить его нельзя.
-    const unlimited = await this.botUser.isUnlimited(meta.telegramId);
-    if (unlimited) return;
-
-    const usedToday = await this.botUser.countDownloadsToday(meta.telegramId);
-    if (usedToday >= DAILY_DOWNLOAD_LIMIT) {
-      throw new ForbiddenException('Daily download limit reached');
-    }
-  }
-
-  // Суточный лимит трафика YouTube на человека — и для бота, и для сайта (в
-  // отличие от enforceWebLimits, у бота счётчик скачиваний свой, а трафик
-  // общий). Проверяем уже скачанное, а не размер будущего файла: заранее он
-  // известен не всегда, а перебор на один ролик сверх лимита не страшен.
-  // Без telegramId (прямые обращения к API) лимит не применяется — там нет
-  // человека, которому его считать. Выдача из кеша сюда не попадает вовсе.
+  // Суточный лимит трафика YouTube с одного IP — только для сайта (см.
+  // lib/youtube-budget.ts). Входа на сайте больше нет, и привязать лимит к
+  // человеку не к чему. Проверяем уже скачанное, а не размер будущего файла:
+  // заранее он известен не всегда, а перебор на один ролик сверх лимита не
+  // страшен. Выдача из кеша сюда не попадает вовсе.
   private async enforceYoutubeTraffic(
     meta: DownloadRequestMeta,
     platform: string,
   ) {
-    if (platform !== 'youtube' || !meta.telegramId) return;
-    const limit = youtubeDailyLimitBytes();
+    if (platform !== 'youtube' || meta.source !== DownloadSource.WEB) return;
+    const ipHash = hashClientIp(meta.clientIp);
+    if (!ipHash) return;
+    const limit = youtubeDailyLimitPerIpBytes();
     if (!limit) return;
-    if (await this.botUser.isUnlimited(meta.telegramId)) return;
 
-    const used = await this.botUser.youtubeBytesToday(meta.telegramId);
-    if (used >= limit) {
+    const result = await this.prisma.download.aggregate({
+      _sum: { fileSize: true },
+      where: {
+        clientIpHash: ipHash,
+        downloader: Downloaders.YOUTUBE,
+        fromCache: false,
+        status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
+        createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+      },
+    });
+    if (Number(result._sum.fileSize ?? 0) >= limit) {
       throw new ForbiddenException(
-        `Daily YouTube traffic limit reached (${Math.round(limit / 1024 ** 3)} GB per day) — try again tomorrow`,
+        `Daily YouTube limit for your network reached (${Math.round(limit / 1024 ** 3)} GB per day) — try again tomorrow`,
       );
     }
   }
@@ -307,9 +299,6 @@ export class DownloadService {
     if (!hit) return null;
 
     const createRecord = async () => {
-      // Суточный счётчик скачиваний действует и на повторы: он про число
-      // скачиваний, а не про трафик. Лимит трафика YouTube — нет.
-      await this.enforceWebLimits(meta);
       const botUserId = await this.resolveBotUserId(meta);
       return this.prisma.download.create({
         data: {
@@ -331,6 +320,7 @@ export class DownloadService {
           cacheKey,
           telegramFileId: hit.telegramFileId,
           fromCache: true,
+          clientIpHash: hashClientIp(meta.clientIp),
         },
       });
     };
@@ -520,6 +510,7 @@ export class DownloadService {
     videoTitle?: string;
     videoDuration?: number;
     cacheKey?: string | null;
+    clientIp?: string;
   }) {
     return this.prisma.download.create({
       data: {
@@ -533,6 +524,7 @@ export class DownloadService {
         videoTitle: data.videoTitle,
         videoDuration: data.videoDuration,
         cacheKey: data.cacheKey ?? null,
+        clientIpHash: hashClientIp(data.clientIp),
       },
     });
   }
@@ -1047,10 +1039,6 @@ export class DownloadService {
     if (!SUBTITLE_LANG_RE.test(lang) || lang.toLowerCase() === 'all') {
       throw new BadRequestException('Invalid subtitle language');
     }
-    if (meta.source === DownloadSource.WEB && !meta.telegramId) {
-      throw new UnauthorizedException('Login required to download on the website');
-    }
-
     const dir = this.ensureDownloadDirectory();
     // getFileName оставляет в названии только латиницу и цифры; у русского
     // ролика от него остались бы одни подчёркивания.
@@ -1176,7 +1164,6 @@ export class DownloadService {
       // несколько параллельных вкладок читают один и тот же freeUsed (ни
       // одна запись ещё не создана) и все проходят проверку разом (TOCTOU).
       const createDownloadRecord = async () => {
-        await this.enforceWebLimits(meta);
         await this.enforceYoutubeTraffic(meta, platform);
         const botUserId = await this.resolveBotUserId(meta);
         return this.createDownload({
@@ -1189,6 +1176,7 @@ export class DownloadService {
           videoTitle: info.title,
           videoDuration: info.duration,
           cacheKey,
+          clientIp: meta.clientIp,
         });
       };
       const download = meta.telegramId
@@ -1381,7 +1369,6 @@ export class DownloadService {
 
       // См. downloadVideo() — та же TOCTOU-защита дневного лимита.
       const createDownloadRecord = async () => {
-        await this.enforceWebLimits(meta);
         await this.enforceYoutubeTraffic(meta, platform);
         const botUserId = await this.resolveBotUserId(meta);
         return this.createDownload({
@@ -1394,6 +1381,7 @@ export class DownloadService {
           videoTitle: info.title,
           videoDuration: info.duration,
           cacheKey,
+          clientIp: meta.clientIp,
         });
       };
       const download = meta.telegramId

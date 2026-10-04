@@ -11,7 +11,6 @@ import {
 import { api } from "@/lib/api";
 import { useLanguage } from "@/lib/i18n/context";
 import { downloadFile, extractErrorMessage, formatApproxSize, formatDuration } from "@/lib/utils";
-import { useAuth } from "@/lib/auth/context";
 import { VideoInfo } from "@/types/youtube";
 import { DownloadItem } from "@/types";
 import { motion } from "framer-motion";
@@ -28,7 +27,6 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { TelegramLoginWidget } from "./TelegramLoginWidget";
 import { SubtitlesPanel } from "./SubtitlesPanel";
 
 
@@ -91,26 +89,9 @@ export const VideoInfoSection = ({
     progress: 0,
     isConverting: false,
   });
-  // Статус — из общего AuthProvider (один запрос /api/auth/me на страницу,
-  // а не отдельный на каждый компонент — см. lib/auth/context.tsx).
-  const { user } = useAuth();
-  const [quota, setQuota] = useState<{ unlimited: boolean; remaining: number } | null>(
-    null
-  );
-
-  // Скачивание на сайте требует входа через Telegram и подчиняется тому же
-  // суточному лимиту, что и бот. Платного HD больше нет — сервис бесплатный.
-  // Финальное решение всё равно на сервере (enforceWebLimits), это только UI.
-  useEffect(() => {
-    if (!user || user.isUnlimited) {
-      setQuota(null);
-      return;
-    }
-    api
-      .getQuota(user.telegramId)
-      .then((q) => setQuota({ unlimited: q.unlimited, remaining: q.remaining }))
-      .catch(() => setQuota(null));
-  }, [user]);
+  // Скачивание на сайте свободное, без входа и суточного счётчика (с
+  // 04.10.2026). Остался только лимит трафика YouTube с одного IP — его
+  // проверяет сервер, и до него обычный посетитель не доходит.
 
   // Function to trigger file download
 
@@ -251,7 +232,6 @@ export const VideoInfoSection = ({
   // Единственная причина, по которой скачивание может быть недоступно, —
   // исчерпанный суточный лимит. Замок на HD-качествах снят вместе со всеми
   // платными функциями.
-  const limitReached = !!quota && !quota.unlimited && quota.remaining <= 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-background py-8 items-center flex">
@@ -602,43 +582,10 @@ export const VideoInfoSection = ({
                     )}
 
                   {downloadState.status !== "downloading" &&
-                    isNewDownload &&
-                    user === null && (
-                      <div className="flex flex-1 flex-col items-center gap-2 rounded-lg bg-muted/30 p-4 text-center">
-                        <p className="text-sm text-muted-foreground">
-                          {t("video.loginRequiredHint")}
-                        </p>
-                        <TelegramLoginWidget
-                          label={t("auth.loginButton")}
-                          preserveParams={{
-                            url,
-                            tab: activeTab,
-                            ext: selectedExtension,
-                            ...(selectedQuality ? { quality: selectedQuality } : {}),
-                          }}
-                        />
-                      </div>
-                    )}
-
-                  {downloadState.status !== "downloading" &&
-                    isNewDownload &&
-                    !!user &&
-                    selectedQuality &&
-                    limitReached && (
-                      <div className="flex flex-1 flex-col items-center gap-2 rounded-lg bg-muted/30 p-4 text-center">
-                        <p className="text-sm text-muted-foreground">
-                          {t("video.quotaExceededHint")}
-                        </p>
-                      </div>
-                    )}
-
-                  {downloadState.status !== "downloading" &&
-                    isNewDownload &&
-                    user !== null &&
-                    !(!!user && selectedQuality && limitReached) && (
+                    isNewDownload && (
                       <Button
                         onClick={handleDownload}
-                        disabled={!selectedQuality || user === undefined}
+                        disabled={!selectedQuality}
                         className="flex-1 gap-2"
                         size="lg"
                       >

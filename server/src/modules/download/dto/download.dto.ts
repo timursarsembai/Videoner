@@ -72,6 +72,14 @@ class RequestMetaDto {
   @IsOptional()
   @IsBoolean()
   acceptTelegramFileId?: boolean;
+
+  @ApiProperty({
+    description: 'Website visitor IP (set by the website proxy only)',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  clientIp?: string;
 }
 
 export class TelegramFileDto {

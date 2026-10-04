@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { DownloadStatus, Downloaders } from '@prisma/client';
+import { DownloadStatus } from '@prisma/client';
 
 export interface UpsertBotUserInput {
   telegramId: number;
@@ -114,29 +114,5 @@ export class BotUserService {
         createdAt: { gte: since },
       },
     });
-  }
-
-  // Сколько байт YouTube человек скачал за последние 24ч — для суточного
-  // лимита трафика (см. lib/youtube-budget.ts). Выдачи из кеша не считаем:
-  // через прокси при них ничего не шло. Размер файла — приближение к трафику
-  // прокси, но близкое: видео не перекодируется, а склеивается из скачанного.
-  async youtubeBytesToday(telegramId: number): Promise<number> {
-    const botUser = await this.prisma.botUser.findUnique({
-      where: { telegramId: BigInt(telegramId) },
-    });
-    if (!botUser) return 0;
-
-    const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    const result = await this.prisma.download.aggregate({
-      _sum: { fileSize: true },
-      where: {
-        botUserId: botUser.id,
-        downloader: Downloaders.YOUTUBE,
-        fromCache: false,
-        status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
-        createdAt: { gte: since },
-      },
-    });
-    return Number(result._sum.fileSize ?? 0);
   }
 }

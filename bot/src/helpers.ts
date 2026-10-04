@@ -172,10 +172,6 @@ export function friendlyError(raw: string, lang: Lang): string {
     return m.errorUnsupportedPlatform;
   }
 
-  if (msg.includes("daily youtube traffic limit")) {
-    return m.errorYoutubeDailyLimit;
-  }
-
   // Сервер отказал заранее (см. server/src/lib/file-size.ts) или Telegram не
   // принял файл: обоим нужен один совет — качество пониже.
   if (

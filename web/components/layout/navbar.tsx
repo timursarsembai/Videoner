@@ -10,49 +10,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { LanguageToggle } from "../ui/language-toggle";
 import { ModeToggle } from "../ui/theme-toggle";
-import { UserMenu } from "./UserMenu";
 import type { TranslationKey } from "@/lib/i18n/context";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { t, language } = useLanguage();
-
-  // Единственное место, обрабатывающее возврат с oauth.telegram.org
-  // (#tgAuthResult=base64(JSON) во фрагменте URL, не query-параметры —
-  // см. TelegramLoginWidget.tsx). Navbar монтируется один раз на страницу,
-  // в отличие от UserMenu (десктоп+мобильная версии одновременно в DOM).
-  // После входа — полный редирект на чистый URL, чтобы оба экземпляра
-  // UserMenu синхронно перечитали свежую сессию, а не гадали о состоянии гонки.
-  useEffect(() => {
-    const rawHash = window.location.hash;
-    if (!rawHash.startsWith("#tgAuthResult=")) return;
-
-    const cleanUrl = window.location.pathname + window.location.search;
-    const encoded = rawHash.slice("#tgAuthResult=".length);
-
-    (async () => {
-      try {
-        const padded = encoded + "=".repeat((4 - (encoded.length % 4)) % 4);
-        const decoded = JSON.parse(atob(padded));
-        if (decoded && typeof decoded === "object" && decoded.hash) {
-          await fetch("/api/auth/telegram", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(decoded),
-          });
-        }
-      } catch (error) {
-        console.error("Failed to process Telegram auth result:", error);
-      } finally {
-        window.location.replace(cleanUrl);
-      }
-    })();
-  }, []);
 
   const handleDropdownClick = (name: string) => {
     setActiveDropdown(activeDropdown === name ? null : name);
@@ -296,15 +263,13 @@ export function Navbar() {
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
-            <UserMenu />
             <LanguageToggle />
             <ModeToggle />
           </div>
 
-          {/* Mobile: компактная иконка входа/аккаунта — раньше была спрятана в
-              выпадающем меню и была слишком мелкой, теперь всегда в шапке. */}
+          {/* Вход через Telegram на сайте убран (04.10.2026) — скачивание
+              свободное, иконки аккаунта в шапке больше нет. */}
           <div className="flex items-center gap-1 md:hidden">
-            <UserMenu compact />
             <Button
               variant="ghost"
               size="icon"

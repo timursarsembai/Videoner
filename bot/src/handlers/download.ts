@@ -205,9 +205,21 @@ async function performDownload(
   dlMeta: DownloadMeta,
   title: string,
   thumbnail: string | undefined,
+  // Сообщение «Выбери качество» с названием ролика. Когда файл дошёл, оно
+  // больше ни к чему и только загромождает чат — удаляем вместе с «Скачиваю».
+  // При ошибке оставляем: по нему видно, какой ролик не скачался.
+  choiceMessageId?: number,
 ) {
   const m = messages[lang];
   const msg = await send.reply(m.downloading);
+  const clearServiceMessages = async () => {
+    await send.deleteMessage(msg.message_id);
+    if (choiceMessageId) {
+      await send
+        .deleteMessage(choiceMessageId)
+        .catch((e) => console.error("Не удалось убрать выбор качества:", e?.message ?? e));
+    }
+  };
   const trackingKey = sessionKey(chatId, msg.message_id);
   activeDownloads.set(trackingKey, { chatId, messageId: msg.message_id, lang });
 
@@ -237,7 +249,7 @@ async function performDownload(
         started = await startDownload(false);
       }
       if (sentFromCache) {
-        await send.deleteMessage(msg.message_id);
+        await clearServiceMessages();
         await send.publishToChannel(url, title, thumbnail, lang);
         return;
       }
@@ -286,7 +298,7 @@ async function performDownload(
     if (items.length > 1) {
       await send.editMessageText(msg.message_id, m.sendingAlbum(items.length));
       const cover = await send.replyWithAlbum(items, m.fileCaption(title, url));
-      await send.deleteMessage(msg.message_id);
+      await clearServiceMessages();
       await send.publishToChannel(url, title, thumbnail, lang, cover);
       return;
     }
@@ -315,7 +327,7 @@ async function performDownload(
     // бы в sendVideo.
     if (items[0]?.kind === "PHOTO") {
       const cover = await send.replyWithPhoto(file, m.fileCaption(title, url));
-      await send.deleteMessage(msg.message_id);
+      await clearServiceMessages();
       await send.publishToChannel(url, title, thumbnail, lang, cover);
       return;
     }
@@ -337,7 +349,7 @@ async function performDownload(
         console.error("Не удалось запомнить file_id:", e?.message ?? e),
       );
     }
-    await send.deleteMessage(msg.message_id);
+    await clearServiceMessages();
     // Ссылка уходит в канал после того, как файл дошёл до человека: пост о
     // том, что скачать не удалось, никому не нужен.
     await send.publishToChannel(url, title, thumbnail, lang);
@@ -744,6 +756,7 @@ export function registerDownloadHandlers(bot: Bot) {
       },
       current.title ?? "",
       current.thumbnail,
+      messageId,
     ).finally(() => {
       // Следующая ссылка получает выбор качества только после того, как файл
       // этой отправлен (или скачивание не удалось) — так и задумано.

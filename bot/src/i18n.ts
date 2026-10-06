@@ -53,6 +53,9 @@ interface Messages {
   errorNoVideoContent: string;
   errorRegionBlocked: string;
   errorRateLimited: string;
+  errorPlatformRefused: string;
+  errorTooLong: string;
+  errorUnknown: string;
   // Очередь ссылок (см. queue.ts): выбор качества — только у текущей.
   queueRest: (count: number) => string;
   queuedOne: (position: number) => string;
@@ -136,6 +139,12 @@ const ru: Messages = {
     "отдаёт его нашему серверу. Обойти это нельзя: ограничение стоит на стороне " +
     "площадки.\n\nОстальные ссылки скачиваются как обычно.",
   errorRateLimited: "Слишком много ссылок подряд — подожди немного и пришли снова.",
+  errorPlatformRefused:
+    "площадка не отдала это видео нашему серверу. Так бывает с закрытыми и " +
+    "возрастными публикациями, а иногда площадка просто временно ограничивает " +
+    "доступ. Попробуй ещё раз через несколько минут.",
+  errorTooLong: "видео слишком длинное — такие мы пока не скачиваем.",
+  errorUnknown: "не удалось скачать это видео. Попробуй ещё раз чуть позже или пришли другую ссылку.",
   inlineHintButton: "Отправьте ссылку боту",
   inlineResultTitle: "⬇️ Скачать видео",
   inlineResultDescription: "Видео придёт прямо в этот чат",
@@ -231,6 +240,12 @@ const en: Messages = {
     "it to our server. There's no way around it: the restriction is on their side." +
     "\n\nOther links download as usual.",
   errorRateLimited: "Too many links in a row — wait a bit and send it again.",
+  errorPlatformRefused:
+    "the platform didn't give this video to our server. This happens with private " +
+    "or age-restricted posts, and sometimes the platform just limits access for a " +
+    "while. Try again in a few minutes.",
+  errorTooLong: "the video is too long — we can't download videos that long yet.",
+  errorUnknown: "couldn't download this video. Try again a bit later or send another link.",
   inlineHintButton: "Send a link to the bot",
   inlineResultTitle: "⬇️ Download video",
   inlineResultDescription: "The video will be posted right in this chat",

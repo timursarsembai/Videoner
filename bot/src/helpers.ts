@@ -95,12 +95,14 @@ export function checkUserRateLimit(telegramId: number): boolean {
   return true;
 }
 
+// unref: таймер уборки не должен держать процесс — иначе тесты, которые
+// импортируют этот модуль ради friendlyError, никогда не завершались бы.
 setInterval(() => {
   const now = Date.now();
   for (const [id, entry] of userRequests.entries()) {
     if (entry.resetAt < now) userRequests.delete(id);
   }
-}, 60_000);
+}, 60_000).unref();
 
 // 20 скачиваний в сутки на пользователя (см. DAILY_DOWNLOAD_LIMIT на сервере).
 // Снять лимит деньгами нельзя — платных функций в сервисе нет; unlimited
@@ -136,6 +138,12 @@ export function friendlyError(raw: string, lang: Lang): string {
   const msg = (raw || "").toLowerCase();
   const m = messages[lang];
 
+  // Свои, уже переведённые тексты: бот сам бросает их как ошибки
+  // (performDownload), и заменять их общим «не удалось» незачем.
+  if (raw === m.downloadFailed || raw === m.downloadTimeout) {
+    return raw;
+  }
+
   // Раньше проверки на вход: при региональной блокировке площадка отвечает
   // отказом, похожим на «нужна авторизация», но вход тут ничего не даёт —
   // ролик не отдают нашему адресу вообще. Сырой код TikTok (10231) ловим
@@ -150,6 +158,23 @@ export function friendlyError(raw: string, lang: Lang): string {
     msg.includes("not available from your location")
   ) {
     return m.errorRegionBlocked;
+  }
+
+  // Площадка отказала нашему серверу, а не человеку. Instagram пишет «empty
+  // media response ... check if this post is accessible without being
+  // logged-in» и по публичным роликам, когда временно ограничивает доступ с
+  // нашего адреса (поймано 06.10.2026: человек получил этот текст как есть,
+  // по-английски). «Запись недоступна без входа» тут была бы неправдой.
+  // Сюда же антибот-проверка YouTube: она про наш сервер, а не про ролик.
+  // Стоит раньше проверки на вход — в обоих текстах есть «sign in»/«--cookies».
+  if (
+    msg.includes("empty media response") ||
+    msg.includes("without being logged-in") ||
+    msg.includes("rate-limit reached") ||
+    msg.includes("confirm you're not a bot") ||
+    msg.includes("confirm you’re not a bot")
+  ) {
+    return m.errorPlatformRefused;
   }
 
   if (
@@ -190,5 +215,19 @@ export function friendlyError(raw: string, lang: Lang): string {
     return m.errorNoVideoContent;
   }
 
-  return raw;
+  // Предел длительности ролика у API-ключа (DownloadService.checkDurationLimit).
+  if (msg.includes("exceeds the allowed limit")) {
+    return m.errorTooLong;
+  }
+
+  if (msg.includes("rate limit exceeded") || msg.includes("too many requests")) {
+    return m.errorRateLimited;
+  }
+
+  // Всё нераспознанное — общим понятным текстом на языке человека. Раньше
+  // сюда возвращался сырой текст yt-dlp: английский, с флагами вроде
+  // --cookies, которые человеку ничего не говорят. Сам текст — в лог, чтобы
+  // по нему добавлять новые случаи выше.
+  console.error("Ошибка без перевода, показан общий текст:", raw);
+  return m.errorUnknown;
 }

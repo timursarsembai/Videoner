@@ -20,6 +20,7 @@ import {
 } from "recharts";
 import { Button } from "@/components/ui/button";
 import {
+  TooManyAttemptsError,
   UnauthorizedError,
   fetchAnalyticsSnapshot,
   fetchAttempts,
@@ -531,26 +532,33 @@ function AttemptsLog() {
   );
 }
 
-function ApiKeyForm({
+function LoginForm({
   onSubmit,
   error,
 }: {
-  onSubmit: (key: string) => Promise<void>;
+  onSubmit: (username: string, password: string, code: string) => Promise<void>;
   error?: string;
 }) {
-  const [value, setValue] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!value.trim()) return;
+    if (!username.trim() || !password || code.length !== 6) return;
     setSubmitting(true);
     try {
-      await onSubmit(value.trim());
+      await onSubmit(username.trim(), password, code);
     } finally {
+      // Код одноразовый: после любой попытки поле очищаем, нужен свежий.
+      setCode("");
       setSubmitting(false);
     }
   };
+
+  const inputClass =
+    "mb-3 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring";
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -560,15 +568,36 @@ function ApiKeyForm({
       >
         <h1 className="mb-4 text-lg font-semibold">Analytics</h1>
         <input
-          type="password"
           autoFocus
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="API ключ дашборда"
-          className="mb-3 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          autoComplete="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Логин"
+          className={inputClass}
+        />
+        <input
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Пароль"
+          className={inputClass}
+        />
+        <input
+          inputMode="numeric"
+          autoComplete="one-time-code"
+          maxLength={6}
+          value={code}
+          onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+          placeholder="Код из Google Authenticator"
+          className={`${inputClass} tracking-widest`}
         />
         {error && <p className="mb-3 text-sm text-destructive">{error}</p>}
-        <Button type="submit" className="w-full" disabled={submitting}>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={submitting || !username.trim() || !password || code.length !== 6}
+        >
           {submitting ? "Проверяю…" : "Войти"}
         </Button>
       </form>
@@ -608,13 +637,19 @@ export default function AnalyticsPage() {
       .finally(() => setLoading(false));
   }, [authenticated, days, refreshKey]);
 
-  const handleKeySubmit = async (key: string) => {
+  const handleLogin = async (username: string, password: string, code: string) => {
     try {
-      await loginDashboard(key);
+      await loginDashboard(username, password, code);
       setError(undefined);
       setAuthenticated(true);
-    } catch {
-      setError("Неверный или отозванный ключ");
+    } catch (e) {
+      if (e instanceof TooManyAttemptsError) {
+        setError("Слишком много попыток — попробуйте через 15 минут");
+      } else if (e instanceof UnauthorizedError) {
+        setError("Неверный логин, пароль или код");
+      } else {
+        setError(e instanceof Error ? e.message : "Не удалось войти");
+      }
     }
   };
 
@@ -625,7 +660,7 @@ export default function AnalyticsPage() {
   };
 
   if (authenticated === false) {
-    return <ApiKeyForm onSubmit={handleKeySubmit} error={error} />;
+    return <LoginForm onSubmit={handleLogin} error={error} />;
   }
 
   if (loading && !snapshot) {
@@ -641,7 +676,7 @@ export default function AnalyticsPage() {
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-foreground/60">
         <p>{error}</p>
         <Button variant="outline" onClick={handleLogout}>
-          Ввести ключ заново
+          Войти заново
         </Button>
       </div>
     );

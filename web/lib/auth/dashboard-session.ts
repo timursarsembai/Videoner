@@ -1,6 +1,6 @@
-// Имя httpOnly-cookie, хранящей ключ дашборд-аналитики на сервере (см.
-// app/api/dashboard/auth/route.ts и app/api/dashboard/[...path]/route.ts).
-// Отдельная константа, а не значение внутри route.ts — Next.js допускает
-// именованные экспорты помимо HTTP-методов в route.ts, но общие константы
-// принято выносить в lib, как и SESSION_COOKIE_NAME рядом.
-export const DASHBOARD_KEY_COOKIE = "videoner_dashboard_key";
+// Имя httpOnly-cookie с сессией дашборда (см. app/api/dashboard/auth/route.ts
+// и lib/auth/dashboard-auth.ts). В ней подписанный токен после входа по
+// логину, паролю и коду из Google Authenticator. Раньше здесь лежал сам
+// API-ключ администратора (cookie videoner_dashboard_key); прежние cookie
+// с этим именем больше ничего не открывают.
+export const DASHBOARD_SESSION_COOKIE = "videoner_dashboard_session";

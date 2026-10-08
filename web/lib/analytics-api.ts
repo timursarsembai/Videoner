@@ -127,18 +127,25 @@ async function get<T>(path: string): Promise<T> {
   return res.json();
 }
 
-// Один раз обменивает введённый ключ на httpOnly-сессию (см.
-// app/api/dashboard/auth/route.ts) — сам ключ после этого в клиентском JS
-// не хранится нигде (ни в памяти, ни тем более в sessionStorage).
-export async function loginDashboard(apiKey: string): Promise<void> {
+export class TooManyAttemptsError extends Error {
+  constructor() {
+    super("Too many attempts");
+    this.name = "TooManyAttemptsError";
+  }
+}
+
+// Вход по логину, паролю и коду из Google Authenticator. Сервер сайта ставит
+// httpOnly-cookie с сессией (см. app/api/dashboard/auth/route.ts); сам ответ
+// никаких секретов в клиентский JS не возвращает.
+export async function loginDashboard(username: string, password: string, code: string): Promise<void> {
   const res = await fetch("/api/dashboard/auth", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ apiKey }),
+    body: JSON.stringify({ username, password, code }),
   });
-  if (!res.ok) {
-    throw new UnauthorizedError();
-  }
+  if (res.status === 429) throw new TooManyAttemptsError();
+  if (res.status === 503) throw new Error("Вход в дашборд не настроен на сервере");
+  if (!res.ok) throw new UnauthorizedError();
 }
 
 export async function logoutDashboard(): Promise<void> {

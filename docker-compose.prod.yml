@@ -198,6 +198,11 @@ services:
       TURNSTILE_SECRET: ${TURNSTILE_SECRET}
       # Подпись сессионных JWT для входа через Telegram Login Widget
       SESSION_SECRET: ${SESSION_SECRET}
+      # Вход в дашборд: логин, пароль и Google Authenticator. Создаются скриптом
+      # web/scripts/dashboard-setup.mjs. Не заданы — войти в дашборд нельзя.
+      DASHBOARD_USERNAME: ${DASHBOARD_USERNAME:-}
+      DASHBOARD_PASSWORD_HASH: ${DASHBOARD_PASSWORD_HASH:-}
+      DASHBOARD_TOTP_SECRET: ${DASHBOARD_TOTP_SECRET:-}
     depends_on: [server]
     networks: [internal, proxy]
 

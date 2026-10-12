@@ -50,7 +50,11 @@ export function categorizeError(raw: string): ErrorCategory {
     return ErrorCategory.FORMAT_UNAVAILABLE;
   }
 
-  if (msg.includes('no video formats found')) {
+  if (
+    msg.includes('no video formats found') ||
+    // Threads: пост без видимого медиа (текстовый или медиа только для вошедших).
+    msg.includes('no video or photo is visible in this threads post')
+  ) {
     return ErrorCategory.NO_VIDEO_CONTENT;
   }
 

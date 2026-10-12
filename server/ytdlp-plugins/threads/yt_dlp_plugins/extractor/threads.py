@@ -50,6 +50,18 @@ from yt_dlp.utils import ExtractorError, int_or_none, traverse_obj, url_or_none
 # а лишние узлы тут — прямой риск отдать пользователю не тот ролик.
 _CRAWLER_UA = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
 
+# Пост найден, но медиа в нём не видно. По данным не отличить настоящий
+# текстовый пост от поста, чьё видео Threads показывает только вошедшим в
+# аккаунт: у обоих media_type=19, пустой image_versions2 и одинаковые остальные
+# поля (сверено 12.10.2026 на посте с видео, которое без входа не отдаётся ни
+# роботу, ни браузеру, и на текстовых ответах под ним). Прежнее «нет ни видео,
+# ни фотографий» во втором случае было неправдой. Фраза английская и
+# устойчивая: по ней бот выбирает понятный текст на языке человека
+# (bot/src/helpers.ts, friendlyError), а сайт показывает её как есть.
+_NO_MEDIA_MESSAGE = (
+    'No video or photo is visible in this Threads post: it is either a text-only post, '
+    'or its media is shown only to signed-in users and cannot be downloaded without logging in')
+
 # Столько раз пробуем дешёвый путь, прежде чем поднимать Chromium.
 _ATTEMPTS = 5
 _RETRY_SLEEP = 1.5
@@ -488,8 +500,7 @@ class ThreadsIE(InfoExtractor):
                         return info
                     # Пост нашёлся, но медиа в нём нет — повторять бессмысленно.
                     self._note_primary(True)
-                    raise ExtractorError(
-                        'В этом посте Threads нет ни видео, ни фотографий', expected=True)
+                    raise ExtractorError(_NO_MEDIA_MESSAGE, expected=True)
             if attempt < attempts:
                 time.sleep(_RETRY_SLEEP)
         self._note_primary(False)
@@ -530,8 +541,7 @@ class ThreadsIE(InfoExtractor):
         # разбираем его тем же кодом — расхождению в полях взяться неоткуда.
         info = self._info_from_node(node, node.get('code') or code, url)
         if not info:
-            raise ExtractorError(
-                'В этом посте Threads нет ни видео, ни фотографий', expected=True)
+            raise ExtractorError(_NO_MEDIA_MESSAGE, expected=True)
         return info
 
     # ------------------------------------------------------------------ #

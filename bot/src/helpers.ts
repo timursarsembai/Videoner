@@ -160,6 +160,14 @@ export function friendlyError(raw: string, lang: Lang): string {
     return m.errorRegionBlocked;
   }
 
+  // Threads не показывает медиа поста без входа — или пост и правда текстовый:
+  // по данным площадки это не отличить (см. _NO_MEDIA_MESSAGE в плагине
+  // server/ytdlp-plugins/threads). Раньше проверки на вход: в тексте есть
+  // «signed-in», и его нельзя принять за обычную закрытую запись.
+  if (msg.includes("no video or photo is visible in this threads post")) {
+    return m.errorThreadsNoMedia;
+  }
+
   // Площадка отказала нашему серверу, а не человеку. Instagram пишет «empty
   // media response ... check if this post is accessible without being
   // logged-in» и по публичным роликам, когда временно ограничивает доступ с

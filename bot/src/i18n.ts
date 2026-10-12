@@ -54,6 +54,7 @@ interface Messages {
   errorRegionBlocked: string;
   errorRateLimited: string;
   errorPlatformRefused: string;
+  errorThreadsNoMedia: string;
   errorTooLong: string;
   errorUnknown: string;
   // Очередь ссылок (см. queue.ts): выбор качества — только у текущей.
@@ -143,6 +144,9 @@ const ru: Messages = {
     "площадка не отдала это видео нашему серверу. Так бывает с закрытыми и " +
     "возрастными публикациями, а иногда площадка просто временно ограничивает " +
     "доступ. Попробуй ещё раз через несколько минут.",
+  errorThreadsNoMedia:
+    "в этом посте Threads не видно ни видео, ни фото. Либо это текстовый пост, либо " +
+    "Threads показывает его медиа только тем, кто вошёл в аккаунт, — такие посты без входа скачать нельзя.",
   errorTooLong: "видео слишком длинное — такие мы пока не скачиваем.",
   errorUnknown: "не удалось скачать это видео. Попробуй ещё раз чуть позже или пришли другую ссылку.",
   inlineHintButton: "Отправьте ссылку боту",
@@ -244,6 +248,9 @@ const en: Messages = {
     "the platform didn't give this video to our server. This happens with private " +
     "or age-restricted posts, and sometimes the platform just limits access for a " +
     "while. Try again in a few minutes.",
+  errorThreadsNoMedia:
+    "no video or photo is visible in this Threads post. Either it is a text-only post, or " +
+    "Threads shows its media only to signed-in users — such posts can't be downloaded without logging in.",
   errorTooLong: "the video is too long — we can't download videos that long yet.",
   errorUnknown: "couldn't download this video. Try again a bit later or send another link.",
   inlineHintButton: "Send a link to the bot",

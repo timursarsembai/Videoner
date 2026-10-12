@@ -29,3 +29,11 @@ test("свои переведённые тексты не заменяются",
   assert.equal(friendlyError(messages.ru.downloadTimeout, "ru"), messages.ru.downloadTimeout);
   assert.equal(friendlyError(messages.en.downloadFailed, "en"), messages.en.downloadFailed);
 });
+
+test("Threads: пост без видимого медиа — своё объяснение, а не общий текст", () => {
+  // Дословно то, что сервер отдаёт по посту DeYFuUkmnev (12.10.2026).
+  const raw =
+    "[threads] DeYFuUkmnev: No video or photo is visible in this Threads post: it is either a text-only post, or its media is shown only to signed-in users and cannot be downloaded without logging in";
+  assert.equal(friendlyError(raw, "ru"), messages.ru.errorThreadsNoMedia);
+  assert.equal(friendlyError(raw, "en"), messages.en.errorThreadsNoMedia);
+});

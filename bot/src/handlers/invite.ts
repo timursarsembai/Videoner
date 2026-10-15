@@ -27,8 +27,11 @@ export async function openInvite(ctx: Context, code: string, lang: Lang): Promis
   try {
     ({ url } = await api<{ url: string }>(`/share-links/${code}`));
   } catch (e: any) {
-    console.error(`Не удалось открыть приглашение ${code}:`, e?.message ?? e);
-    await ctx.reply(m.inviteNotFound);
+    const reason = e?.message ?? String(e);
+    console.error(`Не удалось открыть приглашение ${code}:`, reason);
+    // Текст 404 задаёт ShareLinkService.resolve. Остальное — сбой связи или
+    // сервера: ссылка, скорее всего, рабочая, и говорить «не нашёл» неверно.
+    await ctx.reply(reason === "Share link not found" ? m.inviteNotFound : m.inviteUnavailable);
     return;
   }
 

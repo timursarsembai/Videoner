@@ -17,3 +17,10 @@ test("ссылка «Поделиться» идёт последней стро
 test("без SHARE_LINK_BASE ссылки нет и сервер не спрашиваем", async () => {
   assert.equal(await shareLinkFor("https://youtu.be/x"), undefined);
 });
+
+test("строка «Поделиться» не выводит подпись за лимит Telegram в 1024 символа", () => {
+  const longSource = "https://www.facebook.com/watch?v=1&" + "x".repeat(900);
+  const caption = messages.ru.fileCaption("Ролик", longSource, "https://videoner.download/b/abc");
+  assert.ok(!caption.includes("Поделиться"));
+  assert.equal(caption, messages.ru.fileCaption("Ролик", longSource));
+});

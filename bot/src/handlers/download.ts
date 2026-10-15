@@ -495,6 +495,8 @@ async function sendSubtitles(ctx: Context, key: string, current: Current, track:
   const m = messages[lang];
   const chatId = ctx.chat?.id;
   if (!chatId) return;
+  // Заранее, пока готовятся субтитры — как в performDownload.
+  const shareLink = shareLinkFor(current.url);
   const note = await ctx.reply(m.subtitlesPreparing);
   try {
     const { fileName } = await api<{ fileName: string }>("/download/subtitles", {
@@ -507,7 +509,7 @@ async function sendSubtitles(ctx: Context, key: string, current: Current, track:
       telegramLanguageCode: ctx.from?.language_code,
     });
     await ctx.replyWithDocument(new InputFile(new URL(`${API_URL}/download/${encodeURIComponent(fileName)}`), fileName), {
-      caption: m.fileCaption(current.title ?? "", current.url, await shareLinkFor(current.url)),
+      caption: m.fileCaption(current.title ?? "", current.url, await shareLink),
     });
     await ctx.api.deleteMessage(chatId, note.message_id).catch((e) => console.error("Не удалось убрать «готовлю»:", e?.message ?? e));
   } catch (e: any) {
@@ -616,12 +618,16 @@ async function skipByTimeout(tg: Api, key: string, token: number) {
  * (/start <код>, см. invite.ts): лимиты, подписка, очередь, выбор качества.
  * Один путь для обоих случаев, чтобы приглашение не обходило ни одну проверку.
  */
-export async function handleLinks(ctx: Context, urls: string[]) {
+// resumed — ссылки, с которыми человек раньше упёрся в подписку (см.
+// membership.ts). Лимит они уже прошли тогда: второй раз их не считаем, иначе
+// отказ по лимиту потерял бы ссылку, которую пришедший по приглашению
+// повторить не может.
+export async function handleLinks(ctx: Context, urls: string[], { resumed = false } = {}) {
   if (!ctx.from || !ctx.chat) return;
   const lang = detectLang(ctx.from.language_code);
   const m = messages[lang];
 
-  if (ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
+  if (!resumed && ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
     await ctx.reply(m.errorRateLimited);
     return;
   }

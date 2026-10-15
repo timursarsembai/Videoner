@@ -49,7 +49,7 @@ registerInlineHandlers(bot);
 // который иначе перехватил бы и sub|check — grammY останавливается на первом
 // совпадении, а generic-обработчик ждёт сессию скачивания и отвечал бы
 // «сессия устарела».
-registerMembershipHandlers(bot, handleLinks);
+registerMembershipHandlers(bot, (ctx, urls) => handleLinks(ctx, urls, { resumed: true }));
 // ПОСЛЕДНИМ: содержит generic bot.on("callback_query:data", ...), который
 // перехватил бы любые более конкретные обработчики — grammY останавливается
 // на первом совпадении.

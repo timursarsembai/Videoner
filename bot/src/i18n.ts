@@ -10,6 +10,7 @@ interface Messages {
   // Приход по ссылке-приглашению (handlers/invite.ts).
   inviteGreeting: string;
   inviteNotFound: string;
+  inviteUnavailable: string;
   fetchingInfo: string;
   audioOnlyButton: string;
   photoButton: string;
@@ -82,11 +83,22 @@ interface Messages {
   subtitlesBusy: string;
 }
 
+// Строка «Поделиться» — только если влезает в лимит подписи Telegram (1024
+// символа): ссылка на источник не обрезается и бывает очень длинной, и из-за
+// необязательной строки файл не должен перестать отправляться.
+const CAPTION_LIMIT = 1024;
+function withShareLine(caption: string, shareLine: string | undefined): string {
+  if (!shareLine) return caption;
+  const full = `${caption}\n\n${shareLine}`;
+  return full.length <= CAPTION_LIMIT ? full : caption;
+}
+
 const ru: Messages = {
   start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
   inviteGreeting: "Привет! Я Videoner — бесплатно скачиваю видео из YouTube, TikTok, Instagram и других площадок. Сейчас подготовлю видео, которым с тобой поделились 👇",
   inviteNotFound: "Не нашёл видео по этой ссылке-приглашению. Пришли мне ссылку на видео — и я его скачаю.",
+  inviteUnavailable: "Не получилось открыть видео по ссылке — сервис сейчас не отвечает. Открой ту же ссылку ещё раз через минуту.",
   fetchingInfo: "🔍 Получаю информацию о видео...",
   audioOnlyButton: "🎵 Только аудио (mp3)",
   photoButton: "📷 Скачать фото",
@@ -114,11 +126,13 @@ const ru: Messages = {
   // shareUrl — ссылка-приглашение: кто её откроет, сразу получит этот же
   // ролик в боте (handlers/invite.ts).
   fileCaption: (title, sourceUrl, shareUrl) =>
-    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
-    `Источник: ${sourceUrl}\n` +
-    "Права на видео принадлежат его автору.\n" +
-    "Скачано бесплатно через @VideonerBot" +
-    (shareUrl ? `\n\n🔗 Поделиться: ${shareUrl}` : ""),
+    withShareLine(
+      (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+        `Источник: ${sourceUrl}\n` +
+        "Права на видео принадлежат его автору.\n" +
+        "Скачано бесплатно через @VideonerBot",
+      shareUrl && `🔗 Поделиться: ${shareUrl}`,
+    ),
   subscribeRequired: (channel) =>
     `Чтобы скачивать, подпишитесь на наш канал ${channel} — это единственное условие, сервис остаётся бесплатным.\n\n` +
     "Подпишитесь и нажмите «Я подписался».",
@@ -200,6 +214,7 @@ const en: Messages = {
   notLink: "That doesn't look like a link. Send me a video link.",
   inviteGreeting: "Hi! I'm Videoner — I download videos from YouTube, TikTok, Instagram and other platforms for free. Getting the video someone shared with you ready 👇",
   inviteNotFound: "I couldn't find a video for this invite link. Send me a video link and I'll download it.",
+  inviteUnavailable: "I couldn't open the video from this link — the service isn't responding right now. Open the same link again in a minute.",
   fetchingInfo: "🔍 Fetching video info...",
   audioOnlyButton: "🎵 Audio only (mp3)",
   photoButton: "📷 Download photos",
@@ -222,11 +237,13 @@ const en: Messages = {
   sendingAlbum: (count) => `📤 This post has several files (${count}) — sending them as an album...`,
   failedPrefix: "❌ Failed: ",
   fileCaption: (title, sourceUrl, shareUrl) =>
-    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
-    `Source: ${sourceUrl}\n` +
-    "All rights to the video belong to its author.\n" +
-    "Downloaded for free with @VideonerBot" +
-    (shareUrl ? `\n\n🔗 Share: ${shareUrl}` : ""),
+    withShareLine(
+      (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+        `Source: ${sourceUrl}\n` +
+        "All rights to the video belong to its author.\n" +
+        "Downloaded for free with @VideonerBot",
+      shareUrl && `🔗 Share: ${shareUrl}`,
+    ),
   subscribeRequired: (channel) =>
     `To download, please subscribe to our channel ${channel} — that is the only condition, the service stays free.\n\n` +
     "Subscribe and press «I subscribed».",

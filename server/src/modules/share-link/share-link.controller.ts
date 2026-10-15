@@ -4,7 +4,10 @@ import { ValidUrlGuard } from '../auth/platform.guard';
 import { CreateShareLinkDto } from './dto/create-share-link.dto';
 import { ShareLinkService } from './share-link.service';
 
-const MAX_URL_LENGTH = 2048;
+// В байтах, а не в символах: на url стоит уникальный B-tree индекс, а строка
+// такого индекса в Postgres не может быть длиннее ~2700 байт. 2048 символов
+// кириллицы — это уже 4 КБ, и вставка падала бы с 500 вместо понятного 400.
+const MAX_URL_BYTES = 2048;
 
 // Ссылки-приглашения в бота (videoner.download/b/<code> → t.me/<бот>?start=<code>).
 // Оба эндпоинта под общим ApiKeyGuard: зовут их только бот и сайт. Код выдаётся
@@ -22,7 +25,7 @@ export class ShareLinkController {
   async create(@Body() dto: CreateShareLinkDto) {
     // Явная проверка, а не только @MaxLength: DTO здесь валидируются в режиме
     // наблюдения (lib/shadow-validation.pipe.ts) и запрос не отвергают.
-    if (dto.url.length > MAX_URL_LENGTH) throw new BadRequestException('URL is too long');
+    if (Buffer.byteLength(dto.url, 'utf8') > MAX_URL_BYTES) throw new BadRequestException('URL is too long');
     return { code: await this.shareLinkService.getOrCreate(dto.url.trim()) };
   }
 

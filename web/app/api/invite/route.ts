@@ -8,7 +8,8 @@ import { NextRequest, NextResponse } from "next/server";
 // Любая неудача — всё равно в бота, только без видео: человек шёл туда.
 const API_URL = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL!;
 const API_KEY = process.env.API_KEY!;
-const BOT_URL = `https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "VideonerBot"}`;
+// ||, а не ??: build-arg без значения приезжает пустой строкой, а не undefined.
+const BOT_URL = `https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "VideonerBot"}`;
 const API_TIMEOUT_MS = 5_000;
 // Заголовком, а не ?url=: после rewrite из middleware route handler видит
 // исходный адрес запроса (/bot/https:/...), и query переписанного адреса до
@@ -30,11 +31,8 @@ function getClientIp(request: NextRequest): string {
 
 function allowVisitor(ip: string): boolean {
   const now = Date.now();
-  for (const [key, entry] of visitorRequests) {
-    if (entry.resetAt < now) visitorRequests.delete(key);
-  }
   const entry = visitorRequests.get(ip);
-  if (!entry) {
+  if (!entry || entry.resetAt < now) {
     visitorRequests.set(ip, { count: 1, resetAt: now + 60_000 });
     return true;
   }
@@ -43,8 +41,25 @@ function allowVisitor(ip: string): boolean {
   return true;
 }
 
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of visitorRequests.entries()) {
+    if (entry.resetAt < now) visitorRequests.delete(ip);
+  }
+}, 60_000);
+
+function inviteUrl(request: NextRequest): string | null {
+  const raw = request.headers.get(INVITE_URL_HEADER);
+  if (!raw) return null;
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(request: NextRequest) {
-  const url = request.headers.get(INVITE_URL_HEADER);
+  const url = inviteUrl(request);
   if (!url || !allowVisitor(getClientIp(request))) {
     return NextResponse.redirect(BOT_URL, 307);
   }

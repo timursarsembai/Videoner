@@ -94,7 +94,8 @@ function prefixedLink(request: NextRequest): NextResponse | null {
 // Код для длинной формы выдаёт сервер — за ним ходит /api/invite, middleware
 // только переписывает туда запрос. Короткую форму проверяет сам бот: здесь
 // идти на сервер незачем.
-const BOT_URL = `https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "VideonerBot"}`;
+// ||, а не ??: build-arg без значения приезжает пустой строкой, а не undefined.
+const BOT_URL = `https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "VideonerBot"}`;
 const INVITE_CODE = /^\/b\/([A-Za-z0-9]{4,32})\/?$/;
 const INVITE_LINK = /^\/bot(?:\/|&|%26)(.+)$/i;
 const BOT_ONLY = /^\/bot\/?$/i;
@@ -117,8 +118,10 @@ function botInvite(request: NextRequest): NextResponse | null {
   url.pathname = "/api/invite";
   url.search = "";
   // Ссылку передаём заголовком — почему не query, см. app/api/invite/route.ts.
+  // Закодированной: после decodeURIComponent в ней бывают кириллица и
+  // переводы строк, а Headers.set на них бросает исключение.
   const headers = new Headers(request.headers);
-  headers.set("x-videoner-invite-url", target);
+  headers.set("x-videoner-invite-url", encodeURIComponent(target));
   return NextResponse.rewrite(url, { request: { headers } });
 }
 

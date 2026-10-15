@@ -56,27 +56,34 @@ export function subscribeKeyboard(lang: Lang): InlineKeyboard {
 // пришёл по ссылке-приглашению (invite.ts) — ссылку они не присылали сами и
 // повторить её не смогут. Хранится в памяти: после перезапуска бота человек
 // просто пришлёт ссылку ещё раз, как и раньше.
+//
+// Ключ — чат и человек, как у очереди ссылок (LinkQueues.key): ссылку из
+// группы нельзя продолжать в личке. Повторный отказ ссылки не затирает, а
+// добавляет к уже отложенным; очередь сама отсечёт дубли и лишнее.
 const PENDING_TTL_MS = 60 * 60_000;
-const pendingLinks = new Map<number, { urls: string[]; expiresAt: number }>();
+const pendingLinks = new Map<string, { urls: string[]; expiresAt: number }>();
 
-function rememberPendingLinks(userId: number, urls: string[]) {
+const pendingKey = (chatId: number, userId: number) => `${chatId}:${userId}`;
+
+function rememberPendingLinks(key: string, urls: string[]) {
   const now = Date.now();
-  for (const [id, entry] of pendingLinks) {
-    if (entry.expiresAt < now) pendingLinks.delete(id);
+  for (const [k, entry] of pendingLinks) {
+    if (entry.expiresAt < now) pendingLinks.delete(k);
   }
-  pendingLinks.set(userId, { urls, expiresAt: now + PENDING_TTL_MS });
+  const previous = pendingLinks.get(key)?.urls ?? [];
+  pendingLinks.set(key, { urls: [...new Set([...previous, ...urls])], expiresAt: now + PENDING_TTL_MS });
 }
 
-function takePendingLinks(userId: number): string[] {
-  const entry = pendingLinks.get(userId);
-  pendingLinks.delete(userId);
+function takePendingLinks(key: string): string[] {
+  const entry = pendingLinks.get(key);
+  pendingLinks.delete(key);
   return entry && entry.expiresAt >= Date.now() ? entry.urls : [];
 }
 
 /** Отвечает приглашением подписаться. true — доступ закрыт, вызывающий прекращает работу. */
 export async function blockUnlessSubscribed(ctx: Context, lang: Lang, urls: string[] = []): Promise<boolean> {
   if (await isChannelMember(ctx, ctx.from?.id)) return false;
-  if (ctx.from && urls.length) rememberPendingLinks(ctx.from.id, urls);
+  if (ctx.from && ctx.chat && urls.length) rememberPendingLinks(pendingKey(ctx.chat.id, ctx.from.id), urls);
   const m = messages[lang];
   await ctx.reply(m.subscribeRequired(SHARE_CHANNEL), {
     reply_markup: subscribeKeyboard(lang),
@@ -95,7 +102,7 @@ export function registerMembershipHandlers(
     const m = messages[lang];
     if (await isChannelMember(ctx, ctx.from?.id)) {
       await ctx.answerCallbackQuery();
-      const urls = takePendingLinks(ctx.from.id);
+      const urls = ctx.chat ? takePendingLinks(pendingKey(ctx.chat.id, ctx.from.id)) : [];
       await ctx.editMessageText(urls.length ? m.subscribeThanksResuming : m.subscribeThanks).catch(() => {});
       if (urls.length) await resumeLinks(ctx, urls);
     } else {

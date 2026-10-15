@@ -43,6 +43,7 @@ interface Messages {
   openChannelButton: string;
   checkSubscriptionButton: string;
   subscribeThanks: string;
+  subscribeThanksResuming: string;
   subscribeStillMissing: string;
   channelNotice: (channel: string) => string;
   channelPost: (title: string, url: string) => string;
@@ -121,6 +122,7 @@ const ru: Messages = {
   openChannelButton: "📣 Открыть канал",
   checkSubscriptionButton: "Я подписался",
   subscribeThanks: "Спасибо! Теперь пришлите ссылку на видео.",
+  subscribeThanksResuming: "Спасибо! Продолжаю с вашей ссылкой.",
   subscribeStillMissing: "Подписка пока не видна. Подпишитесь и нажмите ещё раз.",
   channelNotice: (channel) => `\n\nСсылка на этот пост появится в канале ${channel} — анонимно, без вашего имени.`,
   channelPost: (title, url) =>
@@ -227,6 +229,7 @@ const en: Messages = {
   openChannelButton: "📣 Open the channel",
   checkSubscriptionButton: "I subscribed",
   subscribeThanks: "Thank you! Now send me a link to a video.",
+  subscribeThanksResuming: "Thank you! Picking up your link now.",
   subscribeStillMissing: "I do not see the subscription yet. Subscribe and press again.",
   channelNotice: (channel) => `\n\nThe link to this post will appear in ${channel} — anonymously, without your name.`,
   channelPost: (title, url) =>

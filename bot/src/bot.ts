@@ -4,7 +4,7 @@ import { detectLang, messages } from "./i18n.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
 import { registerAdminHandlers } from "./handlers/admin.js";
 import { registerMembershipHandlers } from "./handlers/membership.js";
-import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown } from "./handlers/download.js";
+import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown, handleLinks } from "./handlers/download.js";
 import { registerInlineHandlers } from "./handlers/inline.js";
 import { openInvite } from "./handlers/invite.js";
 
@@ -49,7 +49,7 @@ registerInlineHandlers(bot);
 // который иначе перехватил бы и sub|check — grammY останавливается на первом
 // совпадении, а generic-обработчик ждёт сессию скачивания и отвечал бы
 // «сессия устарела».
-registerMembershipHandlers(bot);
+registerMembershipHandlers(bot, handleLinks);
 // ПОСЛЕДНИМ: содержит generic bot.on("callback_query:data", ...), который
 // перехватил бы любые более конкретные обработчики — grammY останавливается
 // на первом совпадении.

@@ -623,7 +623,7 @@ export async function handleLinks(ctx: Context, urls: string[]) {
 
   // Проверяем здесь, до запроса метаданных: незачем гонять сервер и
   // показывать выбор качества тому, кто всё равно не сможет скачать.
-  if (await blockUnlessSubscribed(ctx, lang)) return;
+  if (await blockUnlessSubscribed(ctx, lang, urls)) return;
 
   const key = LinkQueues.key(ctx.chat.id, ctx.from.id);
   const added = queues.enqueue(

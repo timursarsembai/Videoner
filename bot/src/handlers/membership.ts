@@ -51,9 +51,32 @@ export function subscribeKeyboard(lang: Lang): InlineKeyboard {
     .text(m.checkSubscriptionButton, "sub|check");
 }
 
+// Ссылки, с которыми человек упёрся в подписку: после «Я подписался»
+// продолжаем с ними, а не просим прислать заново. Особенно важно для тех, кто
+// пришёл по ссылке-приглашению (invite.ts) — ссылку они не присылали сами и
+// повторить её не смогут. Хранится в памяти: после перезапуска бота человек
+// просто пришлёт ссылку ещё раз, как и раньше.
+const PENDING_TTL_MS = 60 * 60_000;
+const pendingLinks = new Map<number, { urls: string[]; expiresAt: number }>();
+
+function rememberPendingLinks(userId: number, urls: string[]) {
+  const now = Date.now();
+  for (const [id, entry] of pendingLinks) {
+    if (entry.expiresAt < now) pendingLinks.delete(id);
+  }
+  pendingLinks.set(userId, { urls, expiresAt: now + PENDING_TTL_MS });
+}
+
+function takePendingLinks(userId: number): string[] {
+  const entry = pendingLinks.get(userId);
+  pendingLinks.delete(userId);
+  return entry && entry.expiresAt >= Date.now() ? entry.urls : [];
+}
+
 /** Отвечает приглашением подписаться. true — доступ закрыт, вызывающий прекращает работу. */
-export async function blockUnlessSubscribed(ctx: Context, lang: Lang): Promise<boolean> {
+export async function blockUnlessSubscribed(ctx: Context, lang: Lang, urls: string[] = []): Promise<boolean> {
   if (await isChannelMember(ctx, ctx.from?.id)) return false;
+  if (ctx.from && urls.length) rememberPendingLinks(ctx.from.id, urls);
   const m = messages[lang];
   await ctx.reply(m.subscribeRequired(SHARE_CHANNEL), {
     reply_markup: subscribeKeyboard(lang),
@@ -61,13 +84,20 @@ export async function blockUnlessSubscribed(ctx: Context, lang: Lang): Promise<b
   return true;
 }
 
-export function registerMembershipHandlers(bot: Bot) {
+// resumeLinks — handleLinks из download.ts. Передаётся параметром, а не
+// импортом: download.ts сам импортирует этот модуль.
+export function registerMembershipHandlers(
+  bot: Bot,
+  resumeLinks: (ctx: Context, urls: string[]) => Promise<void>,
+) {
   bot.callbackQuery("sub|check", async (ctx) => {
     const lang = detectLang(ctx.from?.language_code);
     const m = messages[lang];
     if (await isChannelMember(ctx, ctx.from?.id)) {
       await ctx.answerCallbackQuery();
-      await ctx.editMessageText(m.subscribeThanks).catch(() => {});
+      const urls = takePendingLinks(ctx.from.id);
+      await ctx.editMessageText(urls.length ? m.subscribeThanksResuming : m.subscribeThanks).catch(() => {});
+      if (urls.length) await resumeLinks(ctx, urls);
     } else {
       await ctx.answerCallbackQuery({ text: m.subscribeStillMissing, show_alert: true });
     }

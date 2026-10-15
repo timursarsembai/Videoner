@@ -7,6 +7,9 @@ export function detectLang(languageCode?: string): Lang {
 interface Messages {
   start: string;
   notLink: string;
+  // Приход по ссылке-приглашению (handlers/invite.ts).
+  inviteGreeting: string;
+  inviteNotFound: string;
   fetchingInfo: string;
   audioOnlyButton: string;
   photoButton: string;
@@ -81,6 +84,8 @@ interface Messages {
 const ru: Messages = {
   start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
+  inviteGreeting: "Привет! Я Videoner — бесплатно скачиваю видео из YouTube, TikTok, Instagram и других площадок. Сейчас подготовлю видео, которым с тобой поделились 👇",
+  inviteNotFound: "Не нашёл видео по этой ссылке-приглашению. Пришли мне ссылку на видео — и я его скачаю.",
   fetchingInfo: "🔍 Получаю информацию о видео...",
   audioOnlyButton: "🎵 Только аудио (mp3)",
   photoButton: "📷 Скачать фото",
@@ -188,6 +193,8 @@ const ru: Messages = {
 const en: Messages = {
   start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ No quality limits: you get whatever the platform offers, up to 4K — as long as the file fits in 2 GB, Telegram's limit for bots. There are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.",
   notLink: "That doesn't look like a link. Send me a video link.",
+  inviteGreeting: "Hi! I'm Videoner — I download videos from YouTube, TikTok, Instagram and other platforms for free. Getting the video someone shared with you ready 👇",
+  inviteNotFound: "I couldn't find a video for this invite link. Send me a video link and I'll download it.",
   fetchingInfo: "🔍 Fetching video info...",
   audioOnlyButton: "🎵 Audio only (mp3)",
   photoButton: "📷 Download photos",

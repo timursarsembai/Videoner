@@ -606,6 +606,50 @@ async function skipByTimeout(tg: Api, key: string, token: number) {
   await showNextChoice(tg, key);
 }
 
+/**
+ * Ссылки, которые человек прислал сам или открыл по приглашению
+ * (/start <код>, см. invite.ts): лимиты, подписка, очередь, выбор качества.
+ * Один путь для обоих случаев, чтобы приглашение не обходило ни одну проверку.
+ */
+export async function handleLinks(ctx: Context, urls: string[]) {
+  if (!ctx.from || !ctx.chat) return;
+  const lang = detectLang(ctx.from.language_code);
+  const m = messages[lang];
+
+  if (ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
+    await ctx.reply(m.errorRateLimited);
+    return;
+  }
+
+  // Проверяем здесь, до запроса метаданных: незачем гонять сервер и
+  // показывать выбор качества тому, кто всё равно не сможет скачать.
+  if (await blockUnlessSubscribed(ctx, lang)) return;
+
+  const key = LinkQueues.key(ctx.chat.id, ctx.from.id);
+  const added = queues.enqueue(
+    key,
+    {
+      chatId: ctx.chat.id,
+      userId: ctx.from.id,
+      username: ctx.from.username,
+      languageCode: ctx.from.language_code,
+    },
+    urls,
+  );
+
+  // Если начинаем прямо сейчас, про остальные ссылки скажет сообщение с
+  // выбором качества («в очереди ещё …»). Отдельное сообщение пришло бы
+  // вперемешку с ним: анализ идёт в фоне, и порядок двух отправок не задан.
+  const notes: string[] = [];
+  if (!added.startNow && added.queued === 1) notes.push(m.queuedOne(added.waiting + 1));
+  if (!added.startNow && added.queued > 1) notes.push(m.queuedMany(added.queued, added.waiting));
+  if (added.duplicates) notes.push(m.queueDuplicates(added.duplicates));
+  if (added.overLimit) notes.push(m.queueFull(QUEUE_LIMIT, added.overLimit));
+  if (notes.length) await ctx.reply(notes.join("\n\n"));
+
+  if (added.startNow) inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
+}
+
 export function registerDownloadHandlers(bot: Bot) {
   bot.on("message:text", async (ctx) => {
     const lang = detectLang(ctx.from?.language_code);
@@ -617,39 +661,7 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.reply(m.notLink);
       return;
     }
-
-    if (ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
-      await ctx.reply(m.errorRateLimited);
-      return;
-    }
-
-    // Проверяем здесь, до запроса метаданных: незачем гонять сервер и
-    // показывать выбор качества тому, кто всё равно не сможет скачать.
-    if (await blockUnlessSubscribed(ctx, lang)) return;
-
-    const key = LinkQueues.key(ctx.chat.id, ctx.from.id);
-    const added = queues.enqueue(
-      key,
-      {
-        chatId: ctx.chat.id,
-        userId: ctx.from.id,
-        username: ctx.from.username,
-        languageCode: ctx.from.language_code,
-      },
-      urls,
-    );
-
-    // Если начинаем прямо сейчас, про остальные ссылки скажет сообщение с
-    // выбором качества («в очереди ещё …»). Отдельное сообщение пришло бы
-    // вперемешку с ним: анализ идёт в фоне, и порядок двух отправок не задан.
-    const notes: string[] = [];
-    if (!added.startNow && added.queued === 1) notes.push(m.queuedOne(added.waiting + 1));
-    if (!added.startNow && added.queued > 1) notes.push(m.queuedMany(added.queued, added.waiting));
-    if (added.duplicates) notes.push(m.queueDuplicates(added.duplicates));
-    if (added.overLimit) notes.push(m.queueFull(QUEUE_LIMIT, added.overLimit));
-    if (notes.length) await ctx.reply(notes.join("\n\n"));
-
-    if (added.startNow) inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
+    await handleLinks(ctx, urls);
   });
 
   bot.on("callback_query:data", async (ctx) => {

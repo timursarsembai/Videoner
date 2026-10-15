@@ -6,6 +6,7 @@ import { registerAdminHandlers } from "./handlers/admin.js";
 import { registerMembershipHandlers } from "./handlers/membership.js";
 import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown } from "./handlers/download.js";
 import { registerInlineHandlers } from "./handlers/inline.js";
+import { openInvite } from "./handlers/invite.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -30,6 +31,12 @@ const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT 
 
 bot.command("start", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
+  // t.me/<бот>?start=<код> — человек пришёл по ссылке-приглашению на видео.
+  const code = ctx.match.trim();
+  if (code) {
+    await openInvite(ctx, code, lang);
+    return;
+  }
   await ctx.reply(messages[lang].start);
 });
 

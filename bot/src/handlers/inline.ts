@@ -11,6 +11,7 @@ import {
   friendlyError,
 } from "../helpers.js";
 import { isChannelMember } from "./membership.js";
+import { shareLinkFor } from "../share-link.js";
 
 // Инлайн-режим: «@бот <ссылка>» в ЛЮБОМ чате, даже там, где бота нет. Человек
 // выбирает единственный результат, в чат уходит заглушка, а как только видео
@@ -159,10 +160,12 @@ export function registerInlineHandlers(bot: Bot) {
               telegramLanguageCode: ctx.from.language_code,
             },
           );
-        const replaceStub = (fileId: string) =>
+        // Как в performDownload: запрашиваем заранее, к замене заглушки готово.
+        const shareLink = shareLinkFor(url);
+        const replaceStub = async (fileId: string) =>
           bot.api.editMessageMediaInline(
             inlineMessageId,
-            InputMediaBuilder.video(fileId, { caption: m.fileCaption(info.title ?? "", url) }),
+            InputMediaBuilder.video(fileId, { caption: m.fileCaption(info.title ?? "", url, await shareLink) }),
             {
               reply_markup: new InlineKeyboard().url(
                 m.inlineOpenBot,

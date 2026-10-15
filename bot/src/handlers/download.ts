@@ -17,6 +17,7 @@ import { SHARE_CHANNEL, publishLink } from "./share.js";
 import { blockUnlessSubscribed, isChannelMember, subscribeKeyboard } from "./membership.js";
 import { LinkQueues, QUEUE_LIMIT, extractUrls, type Current, type OwnerState } from "../queue.js";
 import { orderTracks, type SubtitleTrack } from "../subtitles.js";
+import { shareLinkFor } from "../share-link.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -211,6 +212,10 @@ async function performDownload(
   choiceMessageId?: number,
 ) {
   const m = messages[lang];
+  // Ссылку «Поделиться» запрашиваем сразу, параллельно со скачиванием: к
+  // отправке файла она обычно уже готова. shareLinkFor не бросает.
+  const shareLink = shareLinkFor(url);
+  const caption = async () => m.fileCaption(title, url, await shareLink);
   const msg = await send.reply(m.downloading);
   const clearServiceMessages = async () => {
     await send.deleteMessage(msg.message_id);
@@ -239,9 +244,9 @@ async function performDownload(
       try {
         await send.editMessageText(msg.message_id, m.sendingFile);
         if (kind === "v") {
-          await send.replyWithVideo(started.telegramFileId, m.fileCaption(title, url));
+          await send.replyWithVideo(started.telegramFileId, await caption());
         } else {
-          await send.replyWithAudio(started.telegramFileId, m.fileCaption(title, url));
+          await send.replyWithAudio(started.telegramFileId, await caption());
         }
         sentFromCache = true;
       } catch (e: any) {
@@ -297,7 +302,7 @@ async function performDownload(
     const items = status.items ?? [];
     if (items.length > 1) {
       await send.editMessageText(msg.message_id, m.sendingAlbum(items.length));
-      const cover = await send.replyWithAlbum(items, m.fileCaption(title, url));
+      const cover = await send.replyWithAlbum(items, await caption());
       await clearServiceMessages();
       await send.publishToChannel(url, title, thumbnail, lang, cover);
       return;
@@ -326,7 +331,7 @@ async function performDownload(
     // такого поста нет), поэтому решает вид файла, а не kind: иначе jpeg уходил
     // бы в sendVideo.
     if (items[0]?.kind === "PHOTO") {
-      const cover = await send.replyWithPhoto(file, m.fileCaption(title, url));
+      const cover = await send.replyWithPhoto(file, await caption());
       await clearServiceMessages();
       await send.publishToChannel(url, title, thumbnail, lang, cover);
       return;
@@ -335,13 +340,13 @@ async function performDownload(
     if (kind === "v") {
       // Размеры передаём явно: без них Telegram на iOS показывает вертикальное
       // видео сплющенным в квадрат (Desktop читает поток сам и рисует верно).
-      fileId = await send.replyWithVideo(file, m.fileCaption(title, url), {
+      fileId = await send.replyWithVideo(file, await caption(), {
         width: meta.width,
         height: meta.height,
         duration: meta.duration,
       });
     } else {
-      fileId = await send.replyWithAudio(file, m.fileCaption(title, url));
+      fileId = await send.replyWithAudio(file, await caption());
     }
     if (fileId) {
       // Не ждём: файл человеку уже отправлен, а сбой записи кеша — не его забота.
@@ -502,7 +507,7 @@ async function sendSubtitles(ctx: Context, key: string, current: Current, track:
       telegramLanguageCode: ctx.from?.language_code,
     });
     await ctx.replyWithDocument(new InputFile(new URL(`${API_URL}/download/${encodeURIComponent(fileName)}`), fileName), {
-      caption: m.fileCaption(current.title ?? "", current.url),
+      caption: m.fileCaption(current.title ?? "", current.url, await shareLinkFor(current.url)),
     });
     await ctx.api.deleteMessage(chatId, note.message_id).catch((e) => console.error("Не удалось убрать «готовлю»:", e?.message ?? e));
   } catch (e: any) {

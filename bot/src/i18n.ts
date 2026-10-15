@@ -29,7 +29,7 @@ interface Messages {
   sendingFile: string;
   sendingAlbum: (count: number) => string;
   failedPrefix: string;
-  fileCaption: (title: string, sourceUrl: string) => string;
+  fileCaption: (title: string, sourceUrl: string, shareUrl?: string) => string;
   // Инлайн-режим: «@бот <ссылка>» в любом чате (см. handlers/inline.ts).
   inlineHintButton: string;
   inlineResultTitle: string;
@@ -111,11 +111,14 @@ const ru: Messages = {
   // Подпись прикрепляется к самому файлу, поэтому уезжает вместе с ним при
   // пересылке — ради этого всё и делается. Заголовок подрезаем: у подписи в
   // Telegram лимит 1024 символа, а название ролика бывает на пол-экрана.
-  fileCaption: (title, sourceUrl) =>
+  // shareUrl — ссылка-приглашение: кто её откроет, сразу получит этот же
+  // ролик в боте (handlers/invite.ts).
+  fileCaption: (title, sourceUrl, shareUrl) =>
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `Источник: ${sourceUrl}\n` +
     "Права на видео принадлежат его автору.\n" +
-    "Скачано бесплатно через @VideonerBot",
+    "Скачано бесплатно через @VideonerBot" +
+    (shareUrl ? `\n\n🔗 Поделиться: ${shareUrl}` : ""),
   subscribeRequired: (channel) =>
     `Чтобы скачивать, подпишитесь на наш канал ${channel} — это единственное условие, сервис остаётся бесплатным.\n\n` +
     "Подпишитесь и нажмите «Я подписался».",
@@ -218,11 +221,12 @@ const en: Messages = {
   sendingFile: "📤 Sending file...",
   sendingAlbum: (count) => `📤 This post has several files (${count}) — sending them as an album...`,
   failedPrefix: "❌ Failed: ",
-  fileCaption: (title, sourceUrl) =>
+  fileCaption: (title, sourceUrl, shareUrl) =>
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `Source: ${sourceUrl}\n` +
     "All rights to the video belong to its author.\n" +
-    "Downloaded for free with @VideonerBot",
+    "Downloaded for free with @VideonerBot" +
+    (shareUrl ? `\n\n🔗 Share: ${shareUrl}` : ""),
   subscribeRequired: (channel) =>
     `To download, please subscribe to our channel ${channel} — that is the only condition, the service stays free.\n\n` +
     "Subscribe and press «I subscribed».",

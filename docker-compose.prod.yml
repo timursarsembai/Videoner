@@ -167,6 +167,10 @@ services:
       # вправе этим делиться. Автопостинг всего скачанного обсуждался и
       # отклонён: ссылки пользователей — это их история просмотров.
       TELEGRAM_CHANNEL_ID: ${TELEGRAM_CHANNEL_ID:-}
+      # Сайт, на котором живут ссылки-приглашения /b/<код> для строки
+      # «Поделиться» в подписи под файлом (bot/src/share-link.ts). Пусто —
+      # строки нет.
+      SHARE_LINK_BASE: https://${PUBLIC_DOMAIN}
     depends_on: [server, telegram-bot-api]
     networks: [internal]
 

@@ -24,16 +24,10 @@ const PREFIXED_LOCALES = ["ru", "es"];
 // валидация уже дважды разъезжалась между веб- и серверной копией).
 const LOCALE_PREFIX = /^\/(ru|es)(?=\/)/;
 
-function prefixedLink(request: NextRequest): NextResponse | null {
-  let path = request.nextUrl.pathname.slice(1);
-
-  // Ссылка может приехать с локальным префиксом: /ru/https://...
-  let locale = "";
-  const localeMatch = `/${path}`.match(LOCALE_PREFIX);
-  if (localeMatch) {
-    locale = localeMatch[1];
-    path = path.slice(locale.length + 1);
-  }
+// Исходная ссылка из пути запроса: общий разбор для префикс-ссылки и
+// ссылки-приглашения в бота. null — в пути не ссылка.
+function extractLink(rawPath: string, search: string): string | null {
+  let path = rawPath;
 
   // Мессенджеры и почтовые клиенты нередко отдают ссылку закодированной
   // (%3A%2F%2F) — принимаем и такую форму.
@@ -57,7 +51,22 @@ function prefixedLink(request: NextRequest): NextResponse | null {
   // videoner.download/https://youtube.com/watch?v=abc часть ?v=abc попадает в
   // query нашего запроса. Без неё от ссылки осталось бы "/watch" без
   // идентификатора видео.
-  const target = restored + request.nextUrl.search;
+  return restored + search;
+}
+
+function prefixedLink(request: NextRequest): NextResponse | null {
+  let path = request.nextUrl.pathname.slice(1);
+
+  // Ссылка может приехать с локальным префиксом: /ru/https://...
+  let locale = "";
+  const localeMatch = `/${path}`.match(LOCALE_PREFIX);
+  if (localeMatch) {
+    locale = localeMatch[1];
+    path = path.slice(locale.length + 1);
+  }
+
+  const target = extractLink(path, request.nextUrl.search);
+  if (!target) return null;
 
   const url = request.nextUrl.clone();
   url.search = "";
@@ -78,6 +87,41 @@ function prefixedLink(request: NextRequest): NextResponse | null {
   return NextResponse.redirect(url, 307);
 }
 
+// Ссылки-приглашения в бота (см. bot/src/handlers/invite.ts):
+//   /b/<код>       — короткая, её бот ставит в подпись под каждым файлом;
+//   /bot/<ссылка>  — длинная, её можно собрать руками (принимаем и /bot&<ссылка>);
+//   /bot           — просто бот.
+// Код для длинной формы выдаёт сервер — за ним ходит /api/invite, middleware
+// только переписывает туда запрос. Короткую форму проверяет сам бот: здесь
+// идти на сервер незачем.
+const BOT_URL = `https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "VideonerBot"}`;
+const INVITE_CODE = /^\/b\/([A-Za-z0-9]{4,32})\/?$/;
+const INVITE_LINK = /^\/bot(?:\/|&|%26)(.+)$/i;
+const BOT_ONLY = /^\/bot\/?$/i;
+
+function botInvite(request: NextRequest): NextResponse | null {
+  const { pathname } = request.nextUrl;
+
+  const code = pathname.match(INVITE_CODE);
+  if (code) return NextResponse.redirect(`${BOT_URL}?start=${code[1]}`, 307);
+  if (BOT_ONLY.test(pathname)) return NextResponse.redirect(BOT_URL, 307);
+
+  const link = pathname.match(INVITE_LINK);
+  if (!link) return null;
+  const target = extractLink(link[1], request.nextUrl.search);
+  // Ссылку не разобрали или площадка не наша — всё равно ведём в бота:
+  // человек шёл именно туда, а там подскажут, какие ссылки подходят.
+  if (!target || !detectPlatform(target)) return NextResponse.redirect(BOT_URL, 307);
+
+  const url = request.nextUrl.clone();
+  url.pathname = "/api/invite";
+  url.search = "";
+  // Ссылку передаём заголовком — почему не query, см. app/api/invite/route.ts.
+  const headers = new Headers(request.headers);
+  headers.set("x-videoner-invite-url", target);
+  return NextResponse.rewrite(url, { request: { headers } });
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -85,6 +129,9 @@ export function middleware(request: NextRequest) {
   // ему /en бессмысленно.
   const prefixed = prefixedLink(request);
   if (prefixed) return prefixed;
+
+  const invite = botInvite(request);
+  if (invite) return invite;
 
   // /en — не публичный префикс (en живёт без префикса); если кто-то зашёл сюда
   // напрямую (старая ссылка, любопытный краулер), редиректим на канонический

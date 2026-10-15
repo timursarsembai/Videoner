@@ -181,3 +181,14 @@ enum ErrorCategory {
   REGION_BLOCKED
   OTHER
 }
+
+// Короткий код ссылки-приглашения в бота: t.me/<бот>?start=<code>. Telegram
+// пропускает в start не больше 64 символов из [A-Za-z0-9_-], исходная ссылка
+// туда не влезает — её храним здесь, а в Telegram уходит только код. Одна
+// ссылка — один код (url уникален), поэтому повторная выдача ничего не плодит.
+model ShareLink {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  url       String   @unique
+  createdAt DateTime @default(now())
+}

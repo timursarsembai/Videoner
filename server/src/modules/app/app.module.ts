@@ -13,6 +13,7 @@ import { AnalyticsModule } from '../analytics/analytics.module';
 import { NudgeModule } from '../nudge/nudge.module';
 import { ProxyHealthModule } from '../proxy-health/proxy-health.module';
 import { ValidationReportModule } from '../validation-report/validation-report.module';
+import { ShareLinkModule } from '../share-link/share-link.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ValidationReportModule } from '../validation-report/validation-report.m
     NudgeModule,
     ProxyHealthModule,
     ValidationReportModule,
+    ShareLinkModule,
   ],
   controllers: [AppController],
   providers: [AppService],

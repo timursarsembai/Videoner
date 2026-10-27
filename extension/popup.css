@@ -47,6 +47,7 @@ body {
    ширину своей рамки. */
 body.embed {
   width: auto;
+  min-height: 0;
 }
 
 .header {
@@ -59,6 +60,23 @@ body.embed {
 
 .brand {
   font-weight: 600;
+}
+
+.close {
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.close:hover {
+  background: var(--surface);
+  color: var(--text);
 }
 
 main {

@@ -18,7 +18,22 @@ import {
 
 const app = document.getElementById("app");
 const params = new URLSearchParams(location.search);
-if (params.get("embed") === "1") document.body.classList.add("embed");
+const embedded = params.get("embed") === "1";
+
+// Во встроенном режиме (кнопка на странице, см. content.js) окошко живёт в
+// рамке: сообщает ей свою высоту, чтобы рамка была ровно по содержимому, и
+// закрывается своим крестиком — клик мимо, как у обычного окошка, тут ничего
+// не закрывает. Адресат — "*": домен страницы заранее неизвестен, а кроме
+// высоты и просьбы закрыться ничего не уходит.
+if (embedded) {
+  document.body.classList.add("embed");
+  const close = document.getElementById("close");
+  close.hidden = false;
+  close.addEventListener("click", () => window.parent.postMessage({ videoner: "close" }, "*"));
+  new ResizeObserver(() => {
+    window.parent.postMessage({ videoner: "height", height: document.documentElement.scrollHeight }, "*");
+  }).observe(document.body);
+}
 
 // Ответ /info держим 10 минут: «Скачать ещё» и повторное открытие окошка не
 // должны тратить запрос — у расширения на /info строгий лимит.

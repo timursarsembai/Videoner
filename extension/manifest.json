@@ -23,6 +23,68 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["activeTab", "downloads", "storage"],
-  "host_permissions": ["https://videoner.download/*"]
+  "permissions": [
+    "activeTab",
+    "downloads",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://videoner.download/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.youtube.com/*",
+        "https://*.tiktok.com/*",
+        "https://*.instagram.com/*",
+        "https://*.facebook.com/*",
+        "https://*.x.com/*",
+        "https://*.twitter.com/*",
+        "https://*.vimeo.com/*",
+        "https://*.vk.com/*",
+        "https://*.vk.ru/*",
+        "https://*.vkvideo.ru/*",
+        "https://*.rutube.ru/*",
+        "https://*.ok.ru/*",
+        "https://*.pinterest.com/*",
+        "https://*.pinterest.ru/*",
+        "https://*.threads.net/*",
+        "https://*.threads.com/*"
+      ],
+      "js": [
+        "video-pages.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "popup.html",
+        "popup.js",
+        "popup.css",
+        "shared.js",
+        "icons/*"
+      ],
+      "matches": [
+        "https://*.youtube.com/*",
+        "https://*.tiktok.com/*",
+        "https://*.instagram.com/*",
+        "https://*.facebook.com/*",
+        "https://*.x.com/*",
+        "https://*.twitter.com/*",
+        "https://*.vimeo.com/*",
+        "https://*.vk.com/*",
+        "https://*.vk.ru/*",
+        "https://*.vkvideo.ru/*",
+        "https://*.rutube.ru/*",
+        "https://*.ok.ru/*",
+        "https://*.pinterest.com/*",
+        "https://*.pinterest.ru/*",
+        "https://*.threads.net/*",
+        "https://*.threads.com/*"
+      ]
+    }
+  ]
 }

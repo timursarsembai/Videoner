@@ -98,6 +98,8 @@ export interface AttemptRow {
   status: string;
   platform: string;
   source: string;
+  // Файл скачал сам браузер (расширение), а не сервер.
+  clientSide: boolean;
   url: string;
   title: string | null;
   errorCategory: string | null;

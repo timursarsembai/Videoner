@@ -25,6 +25,15 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     sendResponse({ ok: true });
     return false;
   }
+  if (message?.type === "direct") {
+    startDirect(message).catch((e) => console.error("Videoner: direct", e));
+    sendResponse({ ok: true });
+    return false;
+  }
+  if (message?.type === "videoner:direct-progress") {
+    directProgress(message);
+    return false;
+  }
   if (message?.type === "subtitles") {
     // Субтитры сервер готовит за несколько секунд и отдаёт сразу, без
     // отслеживания хода — окошко ждёт ответа.
@@ -40,25 +49,145 @@ async function startDownload({ url, title, kind, quality }) {
   if (active.has(url)) return;
   active.add(url);
   try {
-    const job = { url, title, kind, quality, state: "starting", startedAt: Date.now() };
-    await setJob(url, job);
-
-    let started;
-    try {
-      started = await api(`/download/${kind === "audio" ? "audio" : "video"}`, {
-        url,
-        quality,
-        extension: kind === "audio" ? "mp3" : "mp4",
-      });
-    } catch (e) {
-      await setJob(url, { ...job, state: "error", error: friendlyError(e) });
-      return;
-    }
-
-    await follow({ ...job, state: "downloading", downloadId: started.downloadId });
+    await serverDownload({ url, title, kind, quality });
   } finally {
     active.delete(url);
   }
+}
+
+// Скачивание через сервер. extra — дополнительные поля задачи (например,
+// пометка, что это запасной путь после неудачи в браузере).
+async function serverDownload({ url, title, kind, quality }, extra = {}) {
+  const job = { url, title, kind, quality, ...extra, state: "starting", startedAt: Date.now() };
+  await setJob(url, job);
+
+  let started;
+  try {
+    started = await api(`/download/${kind === "audio" ? "audio" : "video"}`, {
+      url,
+      quality,
+      extension: kind === "audio" ? "mp3" : "mp4",
+    });
+  } catch (e) {
+    await setJob(url, { ...job, state: "error", error: friendlyError(e) });
+    return;
+  }
+
+  await follow({ ...job, state: "downloading", downloadId: started.downloadId });
+}
+
+// ---- Скачивание силами браузера (TikTok, Threads — см. page-media.js) ----
+//
+// Ход прямого скачивания пишут двое: эта функция и сообщения страницы о
+// прогрессе. Записи по одной ссылке выстраиваем в очередь, иначе запоздавший
+// процент мог бы затереть «готово».
+const jobWrites = new Map();
+
+function updateJob(url, mutate) {
+  const next = (jobWrites.get(url) ?? Promise.resolve()).then(async () => {
+    const job = await getJob(url);
+    const updated = mutate(job);
+    if (updated !== undefined) await setJob(url, updated);
+  });
+  jobWrites.set(url, next.catch(() => {}));
+  return next;
+}
+
+const CHROME_DOWNLOAD_POLL_MS = 1_000;
+
+async function startDirect({ url, tabId, media }) {
+  if (active.has(url)) return;
+  active.add(url);
+  try {
+    const title = media.title;
+    await updateJob(url, () => ({ url, title, kind: "video", direct: true, state: "downloading", progress: null, startedAt: Date.now() }));
+
+    const filename = `${safeFileName(title)}.mp4`;
+    let size;
+    try {
+      size = media.method === "page-fetch"
+        ? await pageFetch(tabId, media.url, filename, url)
+        : await chromeDownload(media.url, filename, url);
+    } catch (e) {
+      console.warn("Videoner: browser download failed, falling back to the server", e);
+      await fallbackToServer(url, title);
+      return;
+    }
+
+    // Отчёт — только для статистики: его сбой не должен портить человеку
+    // скачанный файл.
+    api("/download/report", { url, fileSize: size, title }).catch((e) => console.warn("Videoner: report", e));
+    await updateJob(url, (job) => ({ ...job, state: "done", progress: null }));
+  } finally {
+    active.delete(url);
+  }
+}
+
+// TikTok: качает страница (content.js) — её запрос несёт Referer, без
+// которого CDN отвечает 403. Отвечает размером скачанного.
+async function pageFetch(tabId, mediaUrl, filename, jobUrl) {
+  const result = await chrome.tabs.sendMessage(tabId, { type: "videoner:page-fetch", url: mediaUrl, filename, jobUrl });
+  if (!result?.ok) throw new Error(result?.error ?? "page fetch failed");
+  return result.size;
+}
+
+function directProgress({ jobUrl, received, total }) {
+  updateJob(jobUrl, (job) => {
+    if (!job?.direct || job.state !== "downloading") return undefined;
+    const percentage = total ? (received / total) * 100 : null;
+    return { ...job, progress: { phase: "downloading", percentage, eta: null, downloaded: received, total } };
+  });
+}
+
+// Threads: обычная загрузка браузера. Ход — из chrome.downloads.search.
+async function chromeDownload(mediaUrl, filename, jobUrl) {
+  const id = await chrome.downloads.download({ url: mediaUrl, filename, conflictAction: "uniquify" });
+  for (;;) {
+    await sleep(CHROME_DOWNLOAD_POLL_MS);
+    const [item] = await chrome.downloads.search({ id });
+    if (!item) throw new Error("download disappeared");
+    if (item.state === "complete") return item.fileSize || item.bytesReceived;
+    if (item.state === "interrupted") throw new Error(item.error || "interrupted");
+    const total = item.totalBytes > 0 ? item.totalBytes : null;
+    directProgress({ jobUrl, received: item.bytesReceived, total });
+  }
+}
+
+// Не вышло в браузере — тот же ролик через сервер, в лучшем качестве из
+// /info (его окошко обычно уже запрашивало — берём из кеша).
+async function fallbackToServer(url, title) {
+  await updateJob(url, (job) => ({ ...job, state: "starting", direct: false, fallback: true, progress: null }));
+  let info;
+  try {
+    info = await infoFor(url);
+  } catch (e) {
+    await updateJob(url, (job) => ({ ...job, state: "error", error: friendlyError(e) }));
+    return;
+  }
+  const quality = bestVideoQuality(info.qualities?.video ?? []);
+  if (!quality) {
+    await updateJob(url, (job) => ({ ...job, state: "error", error: friendlyError({ message: "failed" }) }));
+    return;
+  }
+  // Дождаться очереди записей: иначе поздний процент лёг бы поверх задачи сервера.
+  await jobWrites.get(url);
+  await serverDownload({ url, title: info.title || title, kind: "video", quality }, { fallback: true });
+}
+
+async function infoFor(url) {
+  const key = `info:${url}`;
+  const cached = (await chrome.storage.session.get(key))[key];
+  if (cached?.info) return cached.info;
+  const info = await api("/info", { url });
+  await chrome.storage.session.set({ [key]: { at: Date.now(), info } });
+  return info;
+}
+
+// «1080p» > «720p» > …; нечисловые («original», «hd») — в конце, но годятся,
+// если других нет.
+function bestVideoQuality(qualities) {
+  const score = (q) => parseInt(q, 10) || 0;
+  return [...qualities].sort((a, b) => score(b) - score(a))[0] ?? null;
 }
 
 // Опрос статуса до готовности. Каждый шаг пишет состояние в storage — это же
@@ -145,6 +274,12 @@ async function downloadSubtitles({ url, title, lang }) {
 async function resumeJobs() {
   for (const job of await getAllJobs()) {
     if (active.has(job.url)) continue;
+    // Прямое скачивание после перезапуска не подхватить: связь со страницей
+    // (TikTok) или опрос загрузки (Threads) жили в остановленном экземпляре.
+    if (job.direct && job.state === "downloading") {
+      await setJob(job.url, { ...job, state: "error", error: friendlyError({ message: "failed" }) });
+      continue;
+    }
     if (job.state === "starting" && !job.downloadId) {
       await setJob(job.url, { ...job, state: "error", error: friendlyError({ message: "failed" }) });
       continue;

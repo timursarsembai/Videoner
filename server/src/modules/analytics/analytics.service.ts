@@ -125,7 +125,9 @@ export class AnalyticsService {
   // Объём и число успешных скачиваний по дням и площадкам. bytes — что
   // реально скачано из сети (для YouTube это трафик прокси), cachedBytes —
   // что отдано повторно из кеша, не потратив ничего. Запросы через API здесь
-  // учитываются: трафик они тратят по-настоящему. Сумма BigInt в Postgres
+  // учитываются: трафик они тратят по-настоящему. Скачанное самим браузером
+  // (clientSide, отчёт расширения) входит в число, но не в объём: сервер
+  // его не качал. Сумма BigInt в Postgres
   // даёт numeric, а его Prisma отдаёт объектом Decimal — приводим к float8,
   // точности double на байтах хватает с запасом.
   async trafficDaily(days: number) {
@@ -135,7 +137,7 @@ export class AnalyticsService {
       SELECT date_trunc('day', "createdAt") as day,
              downloader::text as platform,
              COUNT(*)::int as count,
-             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache"), 0)::float8 as bytes,
+             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache" AND NOT "clientSide"), 0)::float8 as bytes,
              COALESCE(SUM("fileSize") FILTER (WHERE "fromCache"), 0)::float8 as "cachedBytes"
       FROM "Download"
       WHERE status IN ('COMPLETED', 'EXPIRED')
@@ -154,7 +156,7 @@ export class AnalyticsService {
       SELECT date_trunc('month', "createdAt") as month,
              downloader::text as platform,
              COUNT(*)::int as count,
-             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache"), 0)::float8 as bytes,
+             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache" AND NOT "clientSide"), 0)::float8 as bytes,
              COALESCE(SUM("fileSize") FILTER (WHERE "fromCache"), 0)::float8 as "cachedBytes"
       FROM "Download"
       WHERE status IN ('COMPLETED', 'EXPIRED')
@@ -310,6 +312,8 @@ export class AnalyticsService {
         status: row.status,
         platform: row.downloader,
         source: row.source,
+        // Скачал сам браузер (отчёт расширения), сервер файл не качал.
+        clientSide: row.clientSide,
         url: row.originalUrl,
         title: row.videoTitle,
         errorCategory: row.errorCategory,

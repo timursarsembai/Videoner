@@ -1,4 +1,4 @@
-/* global videonerIsVideoPage */
+/* global videonerIsVideoPage, videonerFindPageMedia */
 // Кнопка «Скачать» на странице видео. Плавающая, в углу экрана, а не вставка
 // рядом с плеером: у одиннадцати площадок своя вёрстка, и вставки ломались бы
 // при каждом их редизайне. По клику над кнопкой открывается то же окошко,
@@ -125,6 +125,58 @@
     const show = videonerIsVideoPage(href) && hiddenFor !== href && !document.fullscreenElement;
     if (show && !host.isConnected) document.documentElement.append(host);
     if (!show && host.isConnected) host.remove();
+  }
+
+  // Скачивание силами браузера (см. page-media.js, background.js). Окошко
+  // спрашивает, есть ли на странице готовый mp4; фоновая часть просит скачать
+  // его отсюда — запрос со страницы площадки несёт её Referer, без которого
+  // CDN TikTok отвечает 403.
+  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    if (message?.type === "videoner:media") {
+      sendResponse(videonerFindPageMedia());
+      return false;
+    }
+    if (message?.type === "videoner:page-fetch") {
+      pageFetch(message)
+        .then((size) => sendResponse({ ok: true, size }))
+        .catch((e) => sendResponse({ ok: false, error: String(e?.message ?? e) }));
+      return true;
+    }
+    return false;
+  });
+
+  // Ход сообщаем не чаще раза в полсекунды: чаще окошку не нужно.
+  const PROGRESS_EVERY_MS = 500;
+
+  async function pageFetch({ url, filename, jobUrl }) {
+    const res = await fetch(url, { credentials: "include" });
+    if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
+    const total = Number(res.headers.get("content-length")) || null;
+    const reader = res.body.getReader();
+    const chunks = [];
+    let received = 0;
+    let reportedAt = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      received += value.length;
+      if (Date.now() - reportedAt > PROGRESS_EVERY_MS) {
+        reportedAt = Date.now();
+        chrome.runtime.sendMessage({ type: "videoner:direct-progress", jobUrl, received, total }).catch(() => {});
+      }
+    }
+    if (!received) throw new Error("empty file");
+
+    // Ссылка на blob страницы с атрибутом download: такой файл браузер
+    // сохраняет в «Загрузки» под нашим именем, как обычную загрузку.
+    const href = URL.createObjectURL(new Blob(chunks, { type: res.headers.get("content-type") || "video/mp4" }));
+    const link = document.createElement("a");
+    link.href = href;
+    link.download = filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(href), 60_000);
+    return received;
   }
 
   update();

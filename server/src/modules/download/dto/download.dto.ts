@@ -211,3 +211,25 @@ export class DownloadStatusResponseDto {
   })
   downloadUrl: string | null;
 }
+
+// Отчёт расширения о файле, который браузер скачал сам (см.
+// DownloadService.reportClientDownload). Как и всё в этом файле — только
+// наблюдение; настоящая проверка значений — в сервисе.
+export class ReportClientDownloadDto extends RequestMetaDto {
+  @ApiProperty({
+    description: 'Page URL of the downloaded video',
+    example: 'https://www.tiktok.com/@user/video/7300000000000000000',
+  })
+  @IsString()
+  url: string;
+
+  @ApiProperty({ description: 'Size of the saved file in bytes', required: false })
+  @IsOptional()
+  @IsNumber()
+  fileSize?: number;
+
+  @ApiProperty({ description: 'Video title', required: false })
+  @IsOptional()
+  @IsString()
+  title?: string;
+}

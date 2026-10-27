@@ -484,6 +484,7 @@ function AttemptsLog() {
                 </td>
                 <td className="py-2 text-foreground/60">
                   {SOURCE_LABELS[row.source] ?? row.source}
+                  {row.clientSide ? " · в браузере" : ""}
                 </td>
                 <td className="py-2 text-foreground/60">{row.platform}</td>
                 <td className="py-2">

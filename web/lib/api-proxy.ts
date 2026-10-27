@@ -190,7 +190,7 @@ export async function proxyApiRequest(
     if (
       path.length === 2 &&
       path[0] === "download" &&
-      (path[1] === "video" || path[1] === "audio" || path[1] === "subtitles") &&
+      (path[1] === "video" || path[1] === "audio" || path[1] === "subtitles" || path[1] === "report") &&
       request.method === "POST"
     ) {
       const telegramId = await getSessionTelegramId();

@@ -31,6 +31,7 @@ import {
   DownloadAudioDto,
   DownloadResponseDto,
   DownloadSubtitlesDto,
+  ReportClientDownloadDto,
   DownloadVideoDto,
   TelegramFileDto,
 } from './dto/download.dto';
@@ -277,5 +278,17 @@ export class DownloadController {
   @UseGuards(ValidUrlGuard)
   async downloadSubtitles(@Body() dto: DownloadSubtitlesDto) {
     return this.downloadService.downloadSubtitles(dto.url, dto.lang, dto.title, dto);
+  }
+
+  // Расширение скачало файл силами браузера (TikTok, Threads) и сообщает об
+  // этом для статистики. Открыт только входу расширения (web/app/api/ext).
+  @ApiSecurity('X-API-Key')
+  @Post('report')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Record a download made by the browser extension itself' })
+  @ApiBody({ type: ReportClientDownloadDto })
+  @UseGuards(ValidUrlGuard)
+  async reportClientDownload(@Body() dto: ReportClientDownloadDto, @Req() req: Request) {
+    return this.downloadService.reportClientDownload(dto.url, (req as any).platform, dto);
   }
 }

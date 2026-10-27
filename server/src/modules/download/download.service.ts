@@ -70,6 +70,12 @@ export interface DownloadRequestMeta {
   clientIp?: string;
 }
 
+// Пределы для отчёта расширения (reportClientDownload). Длина ссылки — как у
+// ShareLink: строка индекса в Postgres не длиннее ~2700 байт. Размер — с
+// запасом выше любого файла, который браузер реально скачает с площадки.
+const MAX_REPORT_URL_BYTES = 2048;
+const MAX_REPORT_FILE_BYTES = 20 * 1024 ** 3;
+
 // Адрес храним хешем: для лимита нужно только сравнение «тот же или нет».
 function hashClientIp(ip?: string): string | null {
   if (!ip || ip === 'unknown') return null;
@@ -183,6 +189,7 @@ export class DownloadService {
         clientIpHash: ipHash,
         downloader: Downloaders.YOUTUBE,
         fromCache: false,
+        clientSide: false,
         status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
         createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
       },
@@ -565,6 +572,41 @@ export class DownloadService {
   // произойдёт (новая платформа в getPlatform() без соответствующего
   // значения в enum Downloaders), проблема будет видна сразу, а не через
   // недели в перекошенной статистике.
+  // Отчёт расширения о файле, который браузер скачал сам (TikTok, Threads —
+  // см. extension/page-media.js): сервер ничего не качал, запись нужна только
+  // для статистики. Принимаем лишь от входа расширения — он сам ставит
+  // source = EXTENSION (web/lib/api-proxy.ts). Проверки здесь, а не в DTO:
+  // DTO валидируются только в режиме наблюдения.
+  async reportClientDownload(url: string, platform: string, meta: DownloadRequestMeta & { fileSize?: unknown; title?: unknown }) {
+    if (meta.source !== DownloadSource.EXTENSION) {
+      throw new BadRequestException('Reports are accepted from the browser extension only');
+    }
+    if (Buffer.byteLength(url, 'utf8') > MAX_REPORT_URL_BYTES) {
+      throw new BadRequestException('URL is too long');
+    }
+    const size = Number(meta.fileSize);
+    const fileSize =
+      Number.isInteger(size) && size > 0 && size <= MAX_REPORT_FILE_BYTES ? BigInt(size) : null;
+    const title = typeof meta.title === 'string' ? meta.title.slice(0, 300) : null;
+
+    await this.prisma.download.create({
+      data: {
+        originalUrl: url,
+        status: DownloadStatus.COMPLETED,
+        // Файла на сервере нет. Пустое имя не совпадёт ни с одним файлом в
+        // папке загрузок, и очистка (CleanupService) такую запись не тронет.
+        filename: '',
+        downloader: this.resolveDownloader(platform),
+        source: DownloadSource.EXTENSION,
+        videoTitle: title,
+        fileSize,
+        clientIpHash: hashClientIp(meta.clientIp),
+        clientSide: true,
+      },
+    });
+    return { ok: true };
+  }
+
   private resolveDownloader(platform: string): Downloaders {
     const key = platform?.toUpperCase() as keyof typeof Downloaders;
     const downloader = Downloaders[key];

@@ -216,6 +216,13 @@ button {
   color: var(--text);
 }
 
+.note {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
 .progress {
   height: 8px;
   border-radius: 4px;

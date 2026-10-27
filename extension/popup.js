@@ -42,6 +42,11 @@ const infoKey = (url) => `info:${url}`;
 
 let url = null;
 let info = null;
+let tabId = null;
+// Готовый mp4 на самой странице (page-media.js): тогда первым предлагаем
+// скачать его прямо из браузера, а качества сервера — по кнопке.
+let media = null;
+let serverChoices = false;
 
 function el(tag, attrs = {}, ...children) {
   const node = document.createElement(tag);
@@ -72,11 +77,25 @@ function siteButton() {
   return el("button", { class: "secondary", onclick: () => chrome.tabs.create({ url: SITE }) }, t.openSite);
 }
 
+// Вкладка с видео — активная: и для окошка по значку, и для окошка в рамке
+// на самой странице (кнопка на странице открывается только в активной).
 async function targetUrl() {
-  const fromParam = params.get("url");
-  if (fromParam) return fromParam;
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  return tab?.url ?? null;
+  tabId = tab?.id ?? null;
+  return params.get("url") || tab?.url || null;
+}
+
+// Спрашиваем страницу (content.js), есть ли на ней готовый mp4. Нет скрипта
+// на странице (не площадка, страницу открыли до установки расширения) — нет
+// и прямого пути. Ответ сверяем с адресом: он должен быть про это видео.
+async function findMedia() {
+  if (tabId === null) return null;
+  try {
+    const found = await chrome.tabs.sendMessage(tabId, { type: "videoner:media" });
+    return found && found.pageUrl === url && found.url ? found : null;
+  } catch {
+    return null;
+  }
 }
 
 async function loadInfo() {
@@ -165,9 +184,45 @@ function showSubtitles() {
   );
 }
 
+function startDirectDownload() {
+  chrome.runtime.sendMessage({ type: "direct", url, tabId, media });
+  showLoading(t.starting);
+}
+
+function showDirect() {
+  show(
+    videoCard(),
+    el("button", { class: "primary", onclick: startDirectDownload }, t.directDownload),
+    el("div", { class: "note" }, t.directNote),
+    el("button", { class: "secondary", onclick: showServerChoices }, t.moreOptions)
+  );
+}
+
+// Качества сервера — /info. Без прямого пути это обычный экран, с ним —
+// по кнопке «Другие качества и звук».
+async function showServerChoices() {
+  showLoading(t.loading);
+  try {
+    info = await loadInfo();
+  } catch (e) {
+    showMessage(friendlyError(e), {
+      error: true,
+      actions: [media ? el("button", { class: "secondary", onclick: showDirect }, t.back) : siteButton()],
+    });
+    return;
+  }
+  serverChoices = true;
+  showChoices();
+}
+
+function showStart() {
+  if (media && !serverChoices) showDirect();
+  else showChoices();
+}
+
 async function resetJob() {
   await setJob(url, null);
-  showChoices();
+  showStart();
 }
 
 function showProgress(job) {
@@ -175,7 +230,10 @@ function showProgress(job) {
   let text;
   let percent = null;
   if (job.state === "starting") {
-    text = t.starting;
+    text = job.fallback ? t.fallback : t.starting;
+  } else if (job.direct && !Number.isFinite(p?.percentage)) {
+    // Прямое скачивание без известного размера: процента нет, но идёт.
+    text = `${t.downloading}…`;
   } else if (!p) {
     // Статус уже есть, а хода ещё нет — задача ждёт свободного места на
     // сервере (или только что запустилась).
@@ -191,7 +249,7 @@ function showProgress(job) {
 }
 
 function render(job) {
-  if (!job) return showChoices();
+  if (!job) return showStart();
   switch (job.state) {
     case "starting":
     case "downloading":
@@ -206,7 +264,7 @@ function render(job) {
         actions: [el("button", { class: "primary", onclick: resetJob }, t.retry)],
       });
     default:
-      return showChoices();
+      return showStart();
   }
 }
 
@@ -217,12 +275,19 @@ async function main() {
     return;
   }
 
-  showLoading(t.loading);
-  try {
-    info = await loadInfo();
-  } catch (e) {
-    showMessage(friendlyError(e), { error: true, actions: [siteButton()] });
-    return;
+  media = await findMedia();
+  if (media) {
+    // Название и обложку берём со страницы — /info не нужен, пока человек не
+    // попросит другие качества.
+    info = { title: media.title, thumbnail: media.thumbnail, duration: media.duration };
+  } else {
+    showLoading(t.loading);
+    try {
+      info = await loadInfo();
+    } catch (e) {
+      showMessage(friendlyError(e), { error: true, actions: [siteButton()] });
+      return;
+    }
   }
 
   render(await getJob(url));

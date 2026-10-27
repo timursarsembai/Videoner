@@ -25,7 +25,9 @@ const allowRequest = createVisitorRateLimiter(EXTENSION_RATE_LIMIT);
 const allowInfo = createVisitorRateLimiter(EXTENSION_INFO_RATE_LIMIT);
 
 const EXTENSION_PROXY: ProxyOptions = {
-  allowedPaths: DOWNLOAD_PROXY_PATHS,
+  // report — отчёт о файле, который браузер скачал сам (TikTok, Threads), для
+  // статистики; сайту этот путь не нужен и не открыт.
+  allowedPaths: [...DOWNLOAD_PROXY_PATHS, { method: "POST", path: "download/report" }],
   allowVisitor: (ip, request, path) =>
     allowRequest(ip) && (!isInfoRequest(request, path) || allowInfo(ip)),
   requireCaptcha: false,

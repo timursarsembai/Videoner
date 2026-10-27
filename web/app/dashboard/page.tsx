@@ -614,12 +614,19 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(false);
   const [days, setDays] = useState<number>(30);
   const [refreshKey, setRefreshKey] = useState(0);
+  // Зависимость эффекта — только «вышли или нет», а не сам authenticated:
+  // иначе переход undefined → true после первой удачной загрузки запускал
+  // эффект повторно, и каждое открытие страницы грузило все графики дважды
+  // (21 запрос вместо 11). Сайт ходит на сервер с одного IP, и пары
+  // перезагрузок хватало, чтобы упереться в его лимит 60 запросов в минуту.
+  // После входа (false → true) эффект по-прежнему срабатывает.
+  const loggedOut = authenticated === false;
 
   useEffect(() => {
     // Ключ больше не хранится в клиентском JS — на каждую загрузку страницы
     // просто пробуем запрос; httpOnly-cookie (если есть) браузер приложит сам,
     // а 401 однозначно скажет "сессии нет", без отдельной проверки заранее.
-    if (authenticated === false) return;
+    if (loggedOut) return;
     setLoading(true);
     setError(undefined);
     fetchAnalyticsSnapshot(days)
@@ -635,7 +642,7 @@ export default function AnalyticsPage() {
         }
       })
       .finally(() => setLoading(false));
-  }, [authenticated, days, refreshKey]);
+  }, [loggedOut, days, refreshKey]);
 
   const handleLogin = async (username: string, password: string, code: string) => {
     try {

@@ -136,6 +136,7 @@ model BotUser {
   // писать никогда, даже если он так и не скачал ничего.
   nudgeSentAt       DateTime?
   downloads         Download[]
+  activityDays      UserActivityDay[]
   firstSeenAt       DateTime          @default(now())
   lastSeenAt        DateTime          @default(now())
 
@@ -191,4 +192,19 @@ model ShareLink {
   code      String   @unique
   url       String   @unique
   createdAt DateTime @default(now())
+}
+
+// Дни, когда пользователь был активен (UTC): одна строка на человека и день.
+// lastSeenAt хранит только последний визит, и по нему MAU за прошлые даты не
+// посчитать — отсюда графики MAU по дням и месяцам на дашборде. Пишется там
+// же, где обновляется lastSeenAt (BotUserService.upsertBotUser), поэтому
+// «активный» здесь значит ровно то же, что в карточках DAU/WAU/MAU. Дни до
+// появления таблицы восстановлены миграцией из скачиваний и дат визитов.
+model UserActivityDay {
+  botUser   BotUser  @relation(fields: [botUserId], references: [id], onDelete: Cascade)
+  botUserId String
+  day       DateTime @db.Date
+
+  @@id([botUserId, day])
+  @@index([day])
 }

@@ -616,8 +616,8 @@ export default function AnalyticsPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   // Зависимость эффекта — только «вышли или нет», а не сам authenticated:
   // иначе переход undefined → true после первой удачной загрузки запускал
-  // эффект повторно, и каждое открытие страницы грузило все графики дважды
-  // (21 запрос вместо 11). Сайт ходит на сервер с одного IP, и пары
+  // эффект повторно, и каждое открытие страницы грузило все графики дважды.
+  // Сайт ходит на сервер с одного IP, и пары
   // перезагрузок хватало, чтобы упереться в его лимит 60 запросов в минуту.
   // После входа (false → true) эффект по-прежнему срабатывает.
   const loggedOut = authenticated === false;
@@ -702,6 +702,8 @@ export default function AnalyticsPage() {
     dayKeys
   );
   const volume = platformVolume(snapshot.trafficDaily);
+  const mauDaily = snapshot.mauDaily.map((p) => ({ day: formatDay(p.day), mau: p.mau }));
+  const mauMonthly = snapshot.mauMonthly.map((p) => ({ month: formatMonth(p.month), users: p.users }));
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-8">
@@ -769,6 +771,53 @@ export default function AnalyticsPage() {
             label="Новые / вернувшиеся за 30 дн."
             value={`${activity.newUsersLast30Days} / ${activity.returningUsersLast30Days}`}
           />
+        </section>
+
+        <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+            <h2 className="mb-1 text-sm font-medium text-foreground/70">
+              MAU по дням, {days} дней
+            </h2>
+            {/* Дни до 27.10.2026 восстановлены из скачиваний и дат визитов
+                (см. миграцию user_activity_days) и чуть ниже настоящих. */}
+            <p className="mb-4 text-xs text-foreground/50">
+              Активных за 30 дней на каждую дату
+            </p>
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={mauDaily}>
+                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                <XAxis dataKey="day" fontSize={12} />
+                <YAxis fontSize={12} allowDecimals={false} />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="mau"
+                  name="MAU"
+                  stroke="#3b82f6"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+            <h2 className="mb-1 text-sm font-medium text-foreground/70">
+              Активные пользователи по месяцам
+            </h2>
+            <p className="mb-4 text-xs text-foreground/50">
+              Разных пользователей за календарный месяц; текущий ещё растёт
+            </p>
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={mauMonthly}>
+                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                <XAxis dataKey="month" fontSize={12} />
+                <YAxis fontSize={12} allowDecimals={false} />
+                <Tooltip />
+                <Bar dataKey="users" name="Активных" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </section>
 
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">

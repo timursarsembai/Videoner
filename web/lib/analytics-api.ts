@@ -42,6 +42,19 @@ export interface ActivityData {
   returningUsersLast30Days: number;
 }
 
+// MAU на конкретный день: разные активные пользователи за 30 дней по этот
+// день включительно (UTC).
+export interface MauDailyPoint {
+  day: string;
+  mau: number;
+}
+
+// Активные пользователи за календарный месяц.
+export interface MauMonthlyPoint {
+  month: string;
+  users: number;
+}
+
 export interface TopUser {
   id: string;
   telegramId: string;
@@ -110,6 +123,8 @@ export interface AnalyticsSnapshot {
   errorsTimeseries: ErrorTimeseriesPoint[];
   trafficDaily: TrafficPoint[];
   trafficMonthly: TrafficPoint[];
+  mauDaily: MauDailyPoint[];
+  mauMonthly: MauMonthlyPoint[];
 }
 
 // Ходит на СВОЙ Next.js-прокси (app/api/dashboard/[...path]/route.ts), а не
@@ -164,6 +179,8 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     errorsTimeseries,
     trafficDaily,
     trafficMonthly,
+    mauDaily,
+    mauMonthly,
   ] = await Promise.all([
     get<OverviewData>(`/overview?days=${days}`),
     get<PlatformDatum[]>("/platforms"),
@@ -175,6 +192,8 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     get<ErrorTimeseriesPoint[]>(`/errors/timeseries?days=${days}`),
     get<TrafficPoint[]>(`/traffic/daily?days=${days}`),
     get<TrafficPoint[]>("/traffic/monthly"),
+    get<MauDailyPoint[]>(`/users/mau/daily?days=${days}`),
+    get<MauMonthlyPoint[]>("/users/mau/monthly"),
   ]);
 
   return {
@@ -188,6 +207,8 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     errorsTimeseries,
     trafficDaily,
     trafficMonthly,
+    mauDaily,
+    mauMonthly,
   };
 }
 

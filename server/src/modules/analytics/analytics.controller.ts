@@ -58,6 +58,20 @@ export class AnalyticsController {
     return this.analyticsService.usersActivity();
   }
 
+  @Get('users/mau/daily')
+  mauDaily(@Query('days') days?: string) {
+    const parsed = parseInt(days ?? '30', 10);
+    // Потолок — год: каждая точка считается отдельным подзапросом.
+    return this.analyticsService.mauDaily(
+      Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 366) : 30,
+    );
+  }
+
+  @Get('users/mau/monthly')
+  mauMonthly() {
+    return this.analyticsService.mauMonthly();
+  }
+
   @Get('users/top')
   topUsers(@Query('limit') limit?: string) {
     const parsed = parseInt(limit ?? '20', 10);

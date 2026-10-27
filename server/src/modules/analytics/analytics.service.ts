@@ -187,6 +187,36 @@ export class AnalyticsService {
     };
   }
 
+  // MAU на каждый день периода: сколько разных людей были активны за 30
+  // календарных дней по этот день включительно (UTC). Последняя точка — то же
+  // число, что в карточке MAU, с точностью до границы суток.
+  async mauDaily(days: number) {
+    return this.prisma.$queryRaw<{ day: Date; mau: number }[]>`
+      SELECT d::timestamp AS day,
+             (SELECT COUNT(DISTINCT a."botUserId")
+                FROM "UserActivityDay" a
+               WHERE a.day BETWEEN d::date - 29 AND d::date)::int AS mau
+      FROM generate_series(
+             (NOW() AT TIME ZONE 'UTC')::date - (${days}::int - 1),
+             (NOW() AT TIME ZONE 'UTC')::date,
+             interval '1 day'
+           ) AS d
+      ORDER BY day ASC
+    `;
+  }
+
+  // Активные пользователи по календарным месяцам за всё время. Текущий месяц
+  // ещё не закончился, поэтому его столбик растёт до конца месяца.
+  async mauMonthly() {
+    return this.prisma.$queryRaw<{ month: Date; users: number }[]>`
+      SELECT date_trunc('month', day::timestamp) AS month,
+             COUNT(DISTINCT "botUserId")::int AS users
+      FROM "UserActivityDay"
+      GROUP BY month
+      ORDER BY month ASC
+    `;
+  }
+
   async topUsers(limit: number) {
     const users = await this.prisma.botUser.findMany({
       orderBy: { downloads: { _count: 'desc' } },

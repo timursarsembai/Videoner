@@ -30,7 +30,7 @@ export class BotUserService {
   async upsertBotUser(data: UpsertBotUserInput) {
     const telegramId = BigInt(data.telegramId);
     const webLogin = data.markWebLogin ? { lastWebLoginAt: new Date() } : {};
-    return this.prisma.botUser.upsert({
+    const botUser = await this.prisma.botUser.upsert({
       where: { telegramId },
       create: {
         telegramId,
@@ -47,6 +47,23 @@ export class BotUserService {
         ...webLogin,
       },
     });
+    await this.recordActivityDay(botUser.id);
+    return botUser;
+  }
+
+  // День активности для графиков MAU (см. модель UserActivityDay). Сбой
+  // записи только в лог: из-за статистики скачивание ломаться не должно.
+  private async recordActivityDay(botUserId: string) {
+    const now = new Date();
+    const day = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+    try {
+      await this.prisma.userActivityDay.createMany({
+        data: [{ botUserId, day }],
+        skipDuplicates: true,
+      });
+    } catch (e) {
+      console.error(`Failed to record activity day for BotUser ${botUserId}:`, e);
+    }
   }
 
   // Профиль для входа на сайт через Telegram Login Widget

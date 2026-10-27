@@ -51,12 +51,14 @@ const PLATFORM_COLORS: Record<string, string> = {
 const SOURCE_COLORS: Record<string, string> = {
   BOT: "#0ea5e9",
   WEB: "#22c55e",
+  EXTENSION: "#8b5cf6",
   API: "#9ca3af",
 };
 
 const SOURCE_LABELS: Record<string, string> = {
   BOT: "Бот",
   WEB: "Сайт",
+  EXTENSION: "Расширение",
   API: "API",
 };
 

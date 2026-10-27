@@ -1,120 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
-import { getSessionTelegramId } from "@/lib/auth/session";
 import { isSameOriginRequest } from "@/lib/auth/request-origin";
+import {
+  DOWNLOAD_PROXY_PATHS,
+  createVisitorRateLimiter,
+  proxyApiRequest,
+  type ProxyOptions,
+} from "@/lib/api-proxy";
 
-// Внутренний адрес бэкенда для серверного прокси (в Docker — http://server:3001).
-// Если не задан, падаем на публичный NEXT_PUBLIC_API_URL (как в локальной разработке).
-const API_URL = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL!;
-const API_KEY = process.env.API_KEY!;
-
-// На бэкенде (server) все запросы отсюда видны с ОДНОГО internal docker-IP
-// этого web-контейнера — per-IP лимит там не различает реальных посетителей
-// сайта между собой. Здесь, на входе в /api/*, x-forwarded-for ещё содержит
-// настоящий IP браузера (его проставляет ваш nginx на этом хопе) — поэтому
-// троттлим по нему именно тут, до похода в NestJS API.
+// Прокси сайта к NestJS API. Общая логика — в lib/api-proxy.ts (её же
+// использует вход для расширения, app/api/ext/[...path]/route.ts); здесь —
+// то, что относится только к сайту: проверка Origin, капча на /info, квота.
 const VISITOR_RATE_LIMIT = Number(process.env.VISITOR_RATE_LIMIT) || 30; // запросов/мин
-const visitorRequests = new Map<string, { count: number; resetAt: number }>();
+const allowVisitor = createVisitorRateLimiter(VISITOR_RATE_LIMIT);
 
-function getClientIp(request: NextRequest): string {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  if (forwardedFor) return forwardedFor.split(",")[0].trim();
-  return request.headers.get("x-real-ip") || "unknown";
-}
+const SITE_PROXY: ProxyOptions = {
+  allowedPaths: [...DOWNLOAD_PROXY_PATHS, { method: "GET", path: "download/quota" }],
+  allowVisitor: (ip) => allowVisitor(ip),
+  requireCaptcha: true,
+  source: "WEB",
+};
 
-function checkVisitorRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = visitorRequests.get(ip);
-
-  if (!entry || entry.resetAt < now) {
-    visitorRequests.set(ip, { count: 1, resetAt: now + 60_000 });
-    return true;
-  }
-
-  if (entry.count >= VISITOR_RATE_LIMIT) {
-    return false;
-  }
-
-  entry.count++;
-  return true;
-}
-
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, entry] of visitorRequests.entries()) {
-    if (entry.resetAt < now) visitorRequests.delete(ip);
-  }
-}, 60_000);
-
-// Allow-list форвардящихся путей. КРИТИЧНО: этот прокси прикладывает к каждому
-// запросу общий API_KEY, который принадлежит admin-пользователю (см. seed.ts) —
-// им защищены /users/*, /api-keys/*, /analytics/*, а также /bot-users/* (эти
-// вообще не под @AdminOnly и доверяют любому валидному ключу по design —
-// предполагались только для бота). Без allow-list браузер с этой же страницы
-// мог одним fetch() слить email всех пользователей и сырые API-ключи или
-// удалить админский аккаунт. Найдено и
-// закрыто 2026-07-23 (код-ревью). Добавляя новый путь сюда — сначала убедись,
-// что соответствующий эндпоинт на сервере НЕ admin-only и не мутирует чужие
-// данные без собственной проверки владельца.
-const ALLOWED_PROXY_PATHS: { method: string; path: string }[] = [
-  { method: "POST", path: "info" },
-  { method: "POST", path: "download/video" },
-  { method: "POST", path: "download/audio" },
-  { method: "POST", path: "download/subtitles" },
-  { method: "GET", path: "download/quota" },
-];
-
-// UUID v4, как генерирует Prisma @default(uuid()) для Download.id.
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-function isAllowedPath(method: string, path: string[]): boolean {
-  const joined = path.join("/");
-  if (ALLOWED_PROXY_PATHS.some((p) => p.method === method && p.path === joined)) {
-    return true;
-  }
-  // GET /download/:id/status — единственный путь с динамическим сегментом.
-  return (
-    method === "GET" &&
-    path.length === 3 &&
-    path[0] === "download" &&
-    UUID_RE.test(path[1]) &&
-    path[2] === "status"
-  );
-}
-
-// Cloudflare Turnstile: проверяем токен ТОЛЬКО на /info — это единственная
-// форма на сайте (см. TurnstileWidget в Page.tsx), и самая ресурсоёмкая точка
-// входа (дёргает yt-dlp). Бот сюда не заходит вообще — он бьёт напрямую в
-// NestJS (API_URL в bot/src/bot.ts), минуя этот прокси, так что проверка не
-// может сломать бота даже случайно.
-const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET;
-
-async function verifyTurnstile(token: unknown, remoteIp: string): Promise<boolean> {
-  if (!TURNSTILE_SECRET) {
-    console.error("TURNSTILE_SECRET not configured — failing closed on /info");
-    return false;
-  }
-  if (typeof token !== "string" || !token) return false;
-
-  try {
-    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        secret: TURNSTILE_SECRET,
-        response: token,
-        remoteip: remoteIp,
-      }),
-    });
-    const result = await res.json();
-    return result.success === true;
-  } catch (error) {
-    console.error("Turnstile siteverify request failed:", error);
-    return false;
-  }
-}
-
-export async function GET(
+async function handle(
   request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
@@ -124,159 +30,10 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
-  return handleRequest(request, path);
+  return proxyApiRequest(request, path, SITE_PROXY);
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
-) {
-  const { path } = await params;
-
-  if (!isSameOriginRequest(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
-
-  return handleRequest(request, path);
-}
-
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
-) {
-  const { path } = await params;
-
-  if (!isSameOriginRequest(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
-
-  return handleRequest(request, path);
-}
-
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
-) {
-  const { path } = await params;
-
-  if (!isSameOriginRequest(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
-
-  return handleRequest(request, path);
-}
-
-
-async function handleRequest(request: NextRequest, path: string[]) {
-  if (!isAllowedPath(request.method, path)) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
-
-  if (!API_KEY) {
-    return NextResponse.json(
-      { error: "API key not configured" },
-      { status: 500 }
-    );
-  }
-
-  if (!checkVisitorRateLimit(getClientIp(request))) {
-    return NextResponse.json(
-      { error: "Rate limit exceeded, try again later" },
-      { status: 429 }
-    );
-  }
-
-  try {
-    // ВАЖНО: search-параметры (?telegramId=... и т.п.) сюда добавляются НИЖЕ,
-    // явно и только там, где это безопасно (см. блок про download/quota) —
-    // request.nextUrl.search НЕ пробрасывается вслепую. Раньше он не
-    // пробрасывался вообще никак, из-за чего GET /download/quota всегда уходил
-    // на бэкенд без telegramId (BigInt(NaN) → 500) — эта же правка заодно
-    // чинит и эту поломку.
-    let targetUrl = `${API_URL}/${path.join("/")}`;
-    let body = request.body ? await request.json() : undefined;
-
-    if (path.length === 1 && path[0] === "info" && request.method === "POST") {
-      const ok = await verifyTurnstile(body?.turnstileToken, getClientIp(request));
-      if (!ok) {
-        return NextResponse.json({ error: "Captcha verification failed" }, { status: 403 });
-      }
-      delete body.turnstileToken;
-    }
-
-    // Скачивание на сайте свободное, без входа (с 04.10.2026). Серверу
-    // передаём IP посетителя — по нему считается суточный лимит трафика
-    // YouTube (DownloadService.enforceYoutubeTraffic): сам браузер к серверу
-    // не ходит, и без этого сервер видел бы один адрес — этого прокси.
-    // Значения от клиента перезаписываем, чтобы IP нельзя было подставить.
-    // telegramId старой сессии, если она ещё жива, по-прежнему уходит в
-    // статистику — но ни на что не влияет.
-    if (
-      path.length === 2 &&
-      path[0] === "download" &&
-      (path[1] === "video" || path[1] === "audio" || path[1] === "subtitles") &&
-      request.method === "POST"
-    ) {
-      const telegramId = await getSessionTelegramId();
-      body = {
-        ...(body ?? {}),
-        clientIp: getClientIp(request),
-        telegramId: telegramId ?? undefined,
-      };
-    }
-
-    // Аналогично — GET /download/quota должен отдавать квоту ТОЛЬКО текущей
-    // сессии, а не любого telegramId, который пришлёт браузер (IDOR, см.
-    // код-ревью 2026-07-23). Анонимным (без входа) — 401, у бота на сайте
-    // скачивание в принципе требует логина (см. enforceWebLimits на сервере).
-    if (path.length === 2 && path[0] === "download" && path[1] === "quota" && request.method === "GET") {
-      const telegramId = await getSessionTelegramId();
-      if (!telegramId) {
-        return NextResponse.json(
-          { message: "Login required to check quota", error: "Unauthorized" },
-          { status: 401 }
-        );
-      }
-      targetUrl += `?telegramId=${encodeURIComponent(String(telegramId))}`;
-    }
-
-    const response = await axios({
-      method: request.method,
-      url: targetUrl,
-      data: body,
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
-        host: new URL(API_URL).host,
-      },
-      validateStatus: () => true,
-    });
-
-    const headers = new Headers();
-
-    // Forward rate limit headers
-    const rateLimitHeaders = [
-      "X-RateLimit-Limit",
-      "X-RateLimit-Remaining",
-      "X-RateLimit-Reset",
-    ];
-
-    rateLimitHeaders.forEach((header) => {
-      const value = response.headers[header.toLowerCase()];
-      if (value) {
-        headers.set(header, value.toString());
-      }
-    });
-
-    return NextResponse.json(response.data, {
-      status: response.status,
-      headers,
-    });
-  } catch (error) {
-    console.error("API proxy error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
-  }
-}
+export const GET = handle;
+export const POST = handle;
+export const PUT = handle;
+export const DELETE = handle;

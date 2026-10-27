@@ -170,6 +170,8 @@ enum DownloadSource {
   BOT
   WEB
   API
+  // Браузерное расширение (extension/), ходит через web/app/api/ext.
+  EXTENSION
 }
 
 enum ErrorCategory {

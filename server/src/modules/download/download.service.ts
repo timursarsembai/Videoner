@@ -156,16 +156,22 @@ export class DownloadService {
     return info;
   }
 
-  // Суточный лимит трафика YouTube с одного IP — только для сайта (см.
-  // lib/youtube-budget.ts). Входа на сайте больше нет, и привязать лимит к
-  // человеку не к чему. Проверяем уже скачанное, а не размер будущего файла:
-  // заранее он известен не всегда, а перебор на один ролик сверх лимита не
-  // страшен. Выдача из кеша сюда не попадает вовсе.
+  // Суточный лимит трафика YouTube с одного IP — для сайта и расширения (см.
+  // lib/youtube-budget.ts): у обоих нет входа, и привязать лимит к человеку
+  // не к чему. Трафик одного IP с сайта и из расширения считается вместе.
+  // Проверяем уже скачанное, а не размер будущего файла: заранее он известен
+  // не всегда, а перебор на один ролик сверх лимита не страшен. Выдача из
+  // кеша сюда не попадает вовсе.
   private async enforceYoutubeTraffic(
     meta: DownloadRequestMeta,
     platform: string,
   ) {
-    if (platform !== 'youtube' || meta.source !== DownloadSource.WEB) return;
+    if (
+      platform !== 'youtube' ||
+      (meta.source !== DownloadSource.WEB && meta.source !== DownloadSource.EXTENSION)
+    ) {
+      return;
+    }
     const ipHash = hashClientIp(meta.clientIp);
     if (!ipHash) return;
     const limit = youtubeDailyLimitPerIpBytes();

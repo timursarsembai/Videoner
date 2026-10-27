@@ -1,0 +1,229 @@
+:root {
+  --bg: #ffffff;
+  --surface: #f5f5fa;
+  --border: #e3e3ee;
+  --text: #1c1b29;
+  --muted: #6b6a80;
+  --accent: #6a65d4;
+  --accent-hover: #5a55c4;
+  --accent-text: #ffffff;
+  --danger: #c2410c;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17161f;
+    --surface: #22212d;
+    --border: #33323f;
+    --text: #ececf3;
+    --muted: #a3a2b6;
+    --accent: #817cea;
+    --accent-hover: #918cf0;
+    --accent-text: #ffffff;
+    --danger: #fb923c;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  width: 360px;
+  min-height: 120px;
+}
+
+/* Окошко, встроенное в страницу (кнопка на странице, ?embed=1), занимает
+   ширину своей рамки. */
+body.embed {
+  width: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  font-weight: 600;
+}
+
+main {
+  padding: 14px 16px 16px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.message {
+  margin: 4px 0 12px;
+}
+
+.message.error {
+  color: var(--danger);
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.video {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.thumb {
+  width: 96px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--surface);
+  flex: none;
+}
+
+.title {
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.meta {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.section-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 12px 0 6px;
+}
+
+.spacer {
+  height: 10px;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.choice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+}
+
+.choice:hover,
+.choice:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.choice .size {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.primary,
+.secondary {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.primary {
+  border: none;
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.primary:hover {
+  background: var(--accent-hover);
+}
+
+.secondary {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface);
+  overflow: hidden;
+  margin: 10px 0 6px;
+}
+
+.progress > div {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.progress.indeterminate > div {
+  width: 35%;
+  animation: slide 1.2s ease-in-out infinite;
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}

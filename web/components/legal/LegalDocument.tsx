@@ -48,7 +48,7 @@ export function LegalDocument({
   }).format(new Date(LEGAL_UPDATED));
 
   return (
-    <article className="container max-w-3xl py-12 sm:py-16">
+    <article className="container max-w-3xl pb-12 pt-24 sm:pb-16 sm:pt-28">
       <Link
         href={localizedHref(lang, "/")}
         className="inline-flex items-center gap-1.5 text-sm text-foreground/60 transition-colors hover:text-primary"

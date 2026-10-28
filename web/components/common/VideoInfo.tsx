@@ -28,6 +28,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { SubtitlesPanel } from "./SubtitlesPanel";
+import { showDownloadError } from "./DownloadErrorToast";
 
 
 interface VideoInfoSectionProps {
@@ -58,7 +59,7 @@ export const VideoInfoSection = ({
   initialTab,
   initialExtension,
 }: VideoInfoSectionProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const restoredTab: FormatType =
     initialTab && videoInfo.qualities[initialTab]?.length ? initialTab : "video";
   const [selectedQuality, setSelectedQuality] = useState<string | null>(() =>
@@ -148,7 +149,7 @@ export const VideoInfoSection = ({
               error,
               isConverting: false,
             }));
-            toast.error(error);
+            showDownloadError(error, url, language, t);
           }
         },
         onInit: (es) => {
@@ -204,7 +205,7 @@ export const VideoInfoSection = ({
         error: errorMessage,
         isConverting: false,
       });
-      toast.error(errorMessage);
+      showDownloadError(errorMessage, url, language, t);
     }
   };
 

@@ -19,6 +19,7 @@ import { toast } from "react-hot-toast";
 import { PlatformContent } from "./PlatformContent";
 import { TurnstileWidget } from "./TurnstileWidget";
 import { VideoInfoSection } from "./VideoInfo";
+import { showDownloadError } from "./DownloadErrorToast";
 
 interface PageProps {
   platform: Platform;
@@ -70,7 +71,7 @@ const Page = ({ platform }: PageProps) => {
   const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const videoSectionRef = useRef<HTMLDivElement>(null);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   // Тексты страницы платформы берём из словаря по её ключу.
   const news = t(`platforms.${platform}.news`);
@@ -126,12 +127,12 @@ const Page = ({ platform }: PageProps) => {
         }
       }, 100);
     } catch (error: unknown) {
-      toast.error(extractErrorMessage(error));
+      showDownloadError(extractErrorMessage(error), url, language, t);
       setVideoInfo(null);
     } finally {
       setLoading(false);
     }
-  }, [t, turnstileToken]);
+  }, [t, language, turnstileToken]);
 
   // Переход с главной (?url=...) вызывает автозапуск ДО того, как Turnstile-виджет
   // успевает загрузиться и выдать токен (скрипт грузится асинхронно) — откладываем

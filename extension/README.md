@@ -49,7 +49,13 @@ Videoner работает дальше.
 ### Сборка архива
 
 `scripts/pack-extension.sh` → `dist/videoner-extension-<версия>.zip`. Версию
-перед раздачей поднимите в `manifest.json`.
+перед раздачей поднимите в `manifest.json`. Скрипт заодно кладёт архив на
+страницу сайта videoner.download/extension (`web/public/extension/`,
+`web/lib/extension-version.ts`) — закоммитьте их и задеплойте web.
+
+Туда же ведут бот и сайт, когда площадка не отдала ролик серверу, а
+расширение скачает его под входом человека (`bot/src/helpers.ts`
+`extensionLinkFor`, `web/lib/extension-hint.ts`).
 
 ## Устройство
 

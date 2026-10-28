@@ -60,6 +60,10 @@ interface Messages {
   errorRateLimited: string;
   errorPlatformRefused: string;
   errorThreadsNoMedia: string;
+  // Площадка не отдала ролик серверу, а расширение для браузера скачает его
+  // под входом человека (см. extensionLinkFor в helpers.ts).
+  extensionHint: string;
+  extensionButton: string;
   errorTooLong: string;
   errorUnknown: string;
   // Очередь ссылок (см. queue.ts): выбор качества — только у текущей.
@@ -171,6 +175,10 @@ const ru: Messages = {
   errorThreadsNoMedia:
     "в этом посте Threads не видно ни видео, ни фото. Либо это текстовый пост, либо " +
     "Threads показывает его медиа только тем, кто вошёл в аккаунт, — такие посты без входа скачать нельзя.",
+  extensionHint:
+    "\n\n💻 Такое видео можно скачать расширением Videoner для браузера на компьютере: " +
+    "оно качает под вашим входом на площадке, пароль и куки никуда не передаются.",
+  extensionButton: "🧩 Скачать через расширение",
   errorTooLong: "видео слишком длинное — такие мы пока не скачиваем.",
   errorUnknown: "не удалось скачать это видео. Попробуй ещё раз чуть позже или пришли другую ссылку.",
   inlineHintButton: "Отправьте ссылку боту",
@@ -282,6 +290,10 @@ const en: Messages = {
   errorThreadsNoMedia:
     "no video or photo is visible in this Threads post. Either it is a text-only post, or " +
     "Threads shows its media only to signed-in users — such posts can't be downloaded without logging in.",
+  extensionHint:
+    "\n\n💻 You can download it with the Videoner browser extension on a computer: " +
+    "it downloads using your own sign-in on the platform, and no password or cookies leave your browser.",
+  extensionButton: "🧩 Download with the extension",
   errorTooLong: "the video is too long — we can't download videos that long yet.",
   errorUnknown: "couldn't download this video. Try again a bit later or send another link.",
   inlineHintButton: "Send a link to the bot",

@@ -98,6 +98,9 @@ const en = {
     downloadStarted: "Download started!",
     downloadCompleted: "Download completed!",
     downloadUrlNotReceived: "Download URL not received",
+    needsBrowser:
+      "The platform didn't give this video to our server: it's only available to signed-in users, or access is temporarily limited. You can download it with the Videoner browser extension on a computer — it downloads using your own sign-in.",
+    needsBrowserLink: "Get the extension →",
   },
   platforms: {
     youtube: {
@@ -437,6 +440,9 @@ const es: Translations = {
     downloadStarted: "¡Descarga iniciada!",
     downloadCompleted: "¡Descarga completada!",
     downloadUrlNotReceived: "No se recibió la URL de descarga",
+    needsBrowser:
+      "La plataforma no entregó este video a nuestro servidor: solo está disponible para usuarios con sesión iniciada o el acceso está limitado temporalmente. Puedes descargarlo con la extensión de Videoner para el navegador en un ordenador: descarga con tu propia sesión.",
+    needsBrowserLink: "Obtener la extensión →",
   },
   platforms: {
     youtube: {
@@ -774,6 +780,9 @@ const ru: Translations = {
     downloadStarted: "Загрузка началась!",
     downloadCompleted: "Загрузка завершена!",
     downloadUrlNotReceived: "Ссылка на загрузку не получена",
+    needsBrowser:
+      "Площадка не отдала это видео нашему серверу: оно доступно только после входа в аккаунт, или площадка временно ограничила доступ. Его можно скачать расширением Videoner для браузера на компьютере — оно качает под вашим входом.",
+    needsBrowserLink: "Установить расширение →",
   },
   platforms: {
     youtube: {

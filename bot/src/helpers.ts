@@ -239,3 +239,34 @@ export function friendlyError(raw: string, lang: Lang): string {
   console.error("Ошибка без перевода, показан общий текст:", raw);
   return m.errorUnknown;
 }
+
+// Страница расширения для браузера на сайте (web/app/[locale]/extension).
+const EXTENSION_PAGE_BASE = (process.env.EXTENSION_PAGE_BASE ?? "https://videoner.download").replace(/\/+$/, "");
+
+// Площадки, которые расширение качает прямо в браузере, под входом человека
+// (extension/page-media.js). Остальные оно качает тем же сервером — там
+// предлагать его бессмысленно.
+const BROWSER_HOSTS = /(^|\.)(instagram\.com|facebook\.com|fb\.watch|tiktok\.com|threads\.(net|com))$/i;
+
+/**
+ * Ссылка на страницу расширения для ошибки, которую расширение обойдёт:
+ * площадка не отдала ролик нашему серверу (нужен вход, закрытая запись,
+ * временный отказ нашему адресу). Иначе null. Та же логика на сайте —
+ * web/lib/extension-hint.ts.
+ */
+export function extensionLinkFor(raw: string, url: string, lang: Lang): string | null {
+  let host: string;
+  try {
+    host = new URL(url).hostname;
+  } catch {
+    return null;
+  }
+  if (!BROWSER_HOSTS.test(host)) return null;
+  const m = messages[lang];
+  const text = friendlyError(raw, lang);
+  if (text !== m.errorLoginRequired && text !== m.errorPlatformRefused && text !== m.errorThreadsNoMedia) {
+    return null;
+  }
+  const page = lang === "ru" ? "/ru/extension" : "/extension";
+  return `${EXTENSION_PAGE_BASE}${page}?url=${encodeURIComponent(url)}`;
+}

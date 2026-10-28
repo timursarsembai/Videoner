@@ -4,6 +4,7 @@ import {
   api,
   getQuotaInfo,
   fmtDuration,
+  extensionLinkFor,
   friendlyError,
   checkUserRateLimit,
   API_URL,
@@ -180,7 +181,7 @@ async function performDownload(
   lang: Lang,
   send: {
     reply: (text: string) => Promise<{ message_id: number }>;
-    editMessageText: (messageId: number, text: string) => Promise<unknown>;
+    editMessageText: (messageId: number, text: string, keyboard?: InlineKeyboard) => Promise<unknown>;
     // Файл или file_id из кеша. Возвращают file_id отправленного — его
     // запоминает сервер, чтобы повтор того же ролика переслать без скачивания.
     replyWithVideo: (file: InputFile | string, caption: string, dims?: VideoDimensions) => Promise<string | undefined>;
@@ -359,10 +360,22 @@ async function performDownload(
     // том, что скачать не удалось, никому не нужен.
     await send.publishToChannel(url, title, thumbnail, lang);
   } catch (e: any) {
-    await send.editMessageText(msg.message_id, `${m.failedPrefix}${friendlyError(e.message, lang)}`);
+    const failure = failureMessage(e?.message ?? String(e), url, lang);
+    await send.editMessageText(msg.message_id, failure.text, failure.keyboard);
   } finally {
     activeDownloads.delete(trackingKey);
   }
+}
+
+// Текст ошибки для человека. Если площадка не отдала ролик нашему серверу, а
+// расширение для браузера скачает его под входом человека, — ещё совет и
+// кнопка на страницу расширения.
+function failureMessage(raw: string, url: string, lang: Lang): { text: string; keyboard?: InlineKeyboard } {
+  const m = messages[lang];
+  const text = `${m.failedPrefix}${friendlyError(raw, lang)}`;
+  const link = extensionLinkFor(raw, url, lang);
+  if (!link) return { text };
+  return { text: text + m.extensionHint, keyboard: new InlineKeyboard().url(m.extensionButton, link) };
 }
 
 // Как отправлять файлы в чат, где нажата кнопка. Вынесено из обработчика
@@ -370,7 +383,8 @@ async function performDownload(
 function sendersFor(ctx: Context, chatId: number) {
   return {
     reply: (text: string) => ctx.reply(text),
-    editMessageText: (messageId: number, text: string) => ctx.api.editMessageText(chatId, messageId, text),
+    editMessageText: (messageId: number, text: string, keyboard?: InlineKeyboard) =>
+      ctx.api.editMessageText(chatId, messageId, text, keyboard ? { reply_markup: keyboard } : undefined),
     // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
     // ссылка на первоисточник и упоминание бота остаются с видео у любого,
     // кому его переслали.
@@ -574,9 +588,9 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       reply_markup: kb,
     });
   } catch (e: any) {
-    const text = `${m.failedPrefix}${friendlyError(e?.message ?? String(e), lang)}`;
+    const { text, keyboard } = failureMessage(e?.message ?? String(e), current.url, lang);
     if (messageId) {
-      await tg.editMessageText(state.chatId, messageId, text).catch((err) => console.error("Не удалось показать ошибку:", err?.message ?? err));
+      await tg.editMessageText(state.chatId, messageId, text, keyboard ? { reply_markup: keyboard } : undefined).catch((err) => console.error("Не удалось показать ошибку:", err?.message ?? err));
     } else {
       // Не удалось даже отправить «Получаю информацию» — скорее всего бот
       // заблокирован. Писать ошибку некуда, остаётся лог.

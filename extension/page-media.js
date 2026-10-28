@@ -9,8 +9,22 @@
 //   Threads — JSON-скрипты страницы: пост с этим кодом, video_versions[0].
 //             CDN отдаёт без Referer, качает chrome.downloads.
 //
-// Не взяты: Instagram и Facebook (без входа видео не показывают — проверить
-// не на чем), Pinterest (ссылка лежит во внутреннем формате вперемешку с
+//   Instagram — то же устройство, что у Threads (оба — Meta): пост с этим
+//             кодом и video_versions[0]. Перешёл к посту внутри сайта (без
+//             перезагрузки) — в скриптах страницы поста нет, тогда
+//             спрашиваем API сайта, как сама страница.
+//   Facebook  — JSON-скрипты страницы: объект видео с этим id и
+//             browser_native_hd_url / _sd_url.
+//   Оба CDN отдают mp4 со звуком без Referer — качает chrome.downloads.
+//
+// Запросы идут из браузера человека с его куками, поэтому скачивается и то,
+// что он видит только под своим аккаунтом (закрытые профили, группы), а сами
+// куки браузер не покидают. Публичные ролики Instagram и Facebook проверены
+// вживую 28.10.2026 без входа (720p, видео и звук). Со входом — устройство
+// данных то же, но вживую не проверено: на сервере аккаунта нет. Не нашли —
+// null и обычный путь через сервер.
+//
+// Не взяты: Pinterest (ссылка лежит во внутреннем формате вперемешку с
 // соседними пинами), X, VK, Rutube (видео идёт потоком HLS/DASH, не файлом).
 // Для них и для любого сбоя здесь — обычный путь через сервер.
 //
@@ -21,11 +35,13 @@
 // Обычный скрипт, не модуль: content scripts в Chrome модулями не подключаются.
 
 // eslint-disable-next-line no-unused-vars
-function videonerFindPageMedia() {
+async function videonerFindPageMedia() {
   try {
-    const host = location.hostname.replace(/^www\./, "");
+    const host = location.hostname.replace(/^(www|m|web)\./, "");
     if (host === "tiktok.com") return tiktokMedia();
     if (host === "threads.net" || host === "threads.com") return threadsMedia();
+    if (host === "instagram.com") return await instagramMedia();
+    if (host === "facebook.com") return facebookMedia();
   } catch (e) {
     console.debug("Videoner: page media", e);
   }
@@ -51,32 +67,127 @@ function tiktokMedia() {
 
 function threadsMedia() {
   const code = location.pathname.match(/\/post\/([\w-]+)/)?.[1];
+  return code ? metaPostMedia(postFromScripts(code)) : null;
+}
+
+async function instagramMedia() {
+  const code = location.pathname.match(/^\/(?:p|reels?|tv)\/([\w-]+)/)?.[1];
   if (!code) return null;
+  return metaPostMedia(postFromScripts(code) ?? (await instagramApiPost(code)));
+}
+
+// Пост Threads/Instagram → что качать. Карусель (несколько файлов) и пост
+// без видео — серверу: он соберёт всё.
+function metaPostMedia(post) {
+  if (!post || post.carousel_media?.length || !post.video_versions?.[0]?.url) return null;
+  return {
+    pageUrl: location.href,
+    url: post.video_versions[0].url,
+    method: "download",
+    title: post.caption?.text || post.user?.username || "",
+    thumbnail: post.image_versions2?.candidates?.[0]?.url || "",
+    duration: post.video_duration || null,
+  };
+}
+
+function postFromScripts(code) {
   for (const script of document.querySelectorAll('script[type="application/json"]')) {
     const text = script.textContent;
-    if (!text.includes(code) || !text.includes("video_versions")) continue;
-    const post = findPost(JSON.parse(text), code);
-    // Карусель (несколько файлов) и пост без видео — серверу: он соберёт всё.
-    if (!post || post.carousel_media?.length || !post.video_versions?.[0]?.url) continue;
+    if (!text.includes(code.slice(0, 11)) || !text.includes("video_versions")) continue;
+    const post = findNode(
+      JSON.parse(text),
+      (node) => sameCode(node.code, code) && ("video_versions" in node || "carousel_media" in node)
+    );
+    if (post) return post;
+  }
+  return null;
+}
+
+// У постов закрытых аккаунтов Instagram код в адресе длиннее: первые 11
+// знаков — код поста, дальше хвост. В данных лежит короткий.
+function sameCode(nodeCode, code) {
+  return typeof nodeCode === "string" && (nodeCode === code || (nodeCode.length === 11 && code.startsWith(nodeCode)));
+}
+
+// Код поста — это его числовой id в base64-алфавите (как в yt-dlp).
+const INSTAGRAM_CODE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+// Публичный id веб-приложения Instagram: без него API сайта отвечает отказом.
+const INSTAGRAM_APP_ID = "936619743392459";
+
+function instagramMediaId(code) {
+  let id = 0n;
+  for (const ch of code.slice(0, 11)) {
+    const digit = INSTAGRAM_CODE_ALPHABET.indexOf(ch);
+    if (digit < 0) return null;
+    id = id * 64n + BigInt(digit);
+  }
+  return id.toString();
+}
+
+// Тот же запрос, что делает сама страница Instagram: с её адреса и с куками
+// человека. Без входа ответ — отказ, и тогда остаётся сервер.
+async function instagramApiPost(code) {
+  const id = instagramMediaId(code);
+  if (!id) return null;
+  const res = await fetch(`/api/v1/media/${id}/info/`, {
+    credentials: "include",
+    headers: { "X-IG-App-ID": INSTAGRAM_APP_ID },
+    // Окошко ждёт этого ответа, прежде чем что-то показать.
+    signal: AbortSignal.timeout(5_000),
+  });
+  if (!res.ok) return null;
+  const item = (await res.json())?.items?.[0];
+  return item && sameCode(item.code, code) ? item : null;
+}
+
+function facebookVideoId() {
+  if (location.pathname.startsWith("/watch")) return new URLSearchParams(location.search).get("v");
+  return location.pathname.match(/\/(?:videos|reel)\/(?:[^/]+\/)?(\d+)/)?.[1] ?? null;
+}
+
+// mp4 со звуком: в новых страницах — в videoDeliveryLegacyFields, в старых —
+// прямо в объекте видео.
+function facebookUrl(video) {
+  const fields = video.videoDeliveryLegacyFields ?? video;
+  return fields.browser_native_hd_url || fields.browser_native_sd_url || video.playable_url_quality_hd || video.playable_url || null;
+}
+
+function facebookMedia() {
+  const id = facebookVideoId();
+  if (!id || !/^\d+$/.test(id)) return null;
+  for (const script of document.querySelectorAll('script[type="application/json"]')) {
+    const text = script.textContent;
+    if (!text.includes(id) || !(text.includes("browser_native_") || text.includes("playable_url"))) continue;
+    const video = findNode(JSON.parse(text), (node) => (node.id === id || node.videoId === id) && !!facebookUrl(node));
+    if (!video) continue;
     return {
       pageUrl: location.href,
-      url: post.video_versions[0].url,
+      url: facebookUrl(video),
       method: "download",
-      title: post.caption?.text || post.user?.username || "",
-      thumbnail: post.image_versions2?.candidates?.[0]?.url || "",
-      duration: post.video_duration || null,
+      title: video.title?.text || video.name || facebookPageTitle(),
+      thumbnail: video.preferred_thumbnail?.image?.uri || video.thumbnailImage?.uri || "",
+      duration: video.length_in_second || (video.playable_duration_in_ms ? video.playable_duration_in_ms / 1000 : null),
     };
   }
   return null;
 }
 
-// Объект поста с данным кодом где-то в глубине данных страницы. Обход с
+// У Reels своего названия в данных нет — берём заголовок страницы. Он вида
+// «36 тыс. просмотров · 872 реакции | подпись | автор»: счётчики в имени
+// файла ни к чему.
+function facebookPageTitle() {
+  const parts = (document.querySelector('meta[property="og:title"]')?.content ?? "").split(" | ");
+  if (parts.length > 1 && /\d.*·/.test(parts[0])) parts.shift();
+  return parts.join(" | ");
+}
+
+// Объект, подходящий под условие, где-то в глубине данных страницы. Обход с
 // пределом глубины: данные большие и вложенные, но не бесконечные.
-function findPost(node, code, depth = 0) {
+function findNode(node, matches, depth = 0) {
   if (!node || typeof node !== "object" || depth > 60) return null;
-  if (node.code === code && ("video_versions" in node || "carousel_media" in node)) return node;
+  if (!Array.isArray(node) && matches(node)) return node;
   for (const value of Object.values(node)) {
-    const found = findPost(value, code, depth + 1);
+    const found = findNode(value, matches, depth + 1);
     if (found) return found;
   }
   return null;

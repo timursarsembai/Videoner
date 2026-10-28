@@ -133,8 +133,9 @@
   // CDN TikTok отвечает 403.
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message?.type === "videoner:media") {
-      sendResponse(videonerFindPageMedia());
-      return false;
+      // Ответ асинхронный: Instagram может спросить API сайта.
+      videonerFindPageMedia().then(sendResponse, () => sendResponse(null));
+      return true;
     }
     if (message?.type === "videoner:page-fetch") {
       pageFetch(message)

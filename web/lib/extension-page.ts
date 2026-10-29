@@ -11,7 +11,6 @@ export interface ExtensionPageText {
   failedVideo: string;
   failedVideoHint: string;
   openVideo: string;
-  download: string;
   version: string;
   browsersTitle: string;
   browsers: string;
@@ -24,10 +23,13 @@ export interface ExtensionPageText {
   steps: string[];
   // Firefox: своя установка — подписанный .xpi ставится кнопкой с сайта.
   browsersFirefox: string;
-  firefoxInstall: string;
   firefoxSoon: string;
-  chromeZipLink: string;
-  firefoxLink: string;
+  chromeTitle: string;
+  chromeHint: string;
+  firefoxTitle: string;
+  firefoxHint: string;
+  yourBrowser: string;
+  soon: string;
   firefoxStepsTitle: string;
   firefoxSteps: string[];
   back: string;
@@ -43,7 +45,6 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     failedVideoHint:
       "Установите расширение, войдите на площадку в этом же браузере, откройте видео и нажмите «Скачать» в правом нижнем углу.",
     openVideo: "Открыть видео",
-    download: "Скачать расширение (.zip)",
     version: "Версия",
     browsersTitle: "Где работает",
     browsers:
@@ -64,14 +65,17 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "Готово: на странице видео появится кнопка «Скачать», а значок Videoner — на панели браузера.",
     ],
     browsersFirefox: "Mozilla Firefox 128 и новее — тоже на компьютере.",
-    firefoxInstall: "Установить в Firefox",
     firefoxSoon:
       "Версия для Firefox скоро появится. Пока расширение работает в Chrome, Яндекс Браузере, Edge, Opera и других браузерах на основе Chromium.",
-    chromeZipLink: "Скачать для Chrome, Яндекс Браузера, Edge и Opera (.zip)",
-    firefoxLink: "Пользуетесь Firefox? Установить в Firefox",
+    chromeTitle: "Chrome, Яндекс Браузер, Edge, Opera",
+    chromeHint: "Архив .zip — установка за пару минут",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Установка в один клик",
+    yourBrowser: "Ваш браузер",
+    soon: "Скоро",
     firefoxStepsTitle: "Как установить в Firefox",
     firefoxSteps: [
-      "Нажмите «Установить в Firefox» на этой странице.",
+      "Нажмите кнопку Firefox вверху этой страницы.",
       "Firefox спросит, разрешить ли сайту videoner.download установить дополнение, — нажмите «Продолжить установку».",
       "В окошке «Добавить Videoner?» нажмите «Добавить».",
       "Готово: на странице видео появится кнопка «Скачать», а значок Videoner — на панели браузера. Обновления Firefox будет ставить сам.",
@@ -87,7 +91,6 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     failedVideoHint:
       "Install the extension, sign in to the platform in this browser, open the video and click Download in the bottom-right corner.",
     openVideo: "Open the video",
-    download: "Download the extension (.zip)",
     version: "Version",
     browsersTitle: "Where it works",
     browsers:
@@ -108,14 +111,17 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "Done: video pages get a Download button, and the Videoner icon appears in the browser toolbar.",
     ],
     browsersFirefox: "Mozilla Firefox 128 or later — also on a computer.",
-    firefoxInstall: "Add to Firefox",
     firefoxSoon:
       "The Firefox version is coming soon. For now the extension works in Chrome, Yandex Browser, Edge, Opera and other Chromium-based browsers.",
-    chromeZipLink: "Download for Chrome, Yandex Browser, Edge and Opera (.zip)",
-    firefoxLink: "Using Firefox? Add to Firefox",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "A .zip archive — installs in a couple of minutes",
+    firefoxTitle: "Firefox",
+    firefoxHint: "One-click install",
+    yourBrowser: "Your browser",
+    soon: "Coming soon",
     firefoxStepsTitle: "How to install in Firefox",
     firefoxSteps: [
-      "Click “Add to Firefox” on this page.",
+      "Click the Firefox button at the top of this page.",
       "Firefox asks whether to let videoner.download install an add-on — click “Continue to Installation”.",
       "In the “Add Videoner?” prompt, click “Add”.",
       "Done: video pages get a Download button, and the Videoner icon appears in the toolbar. Firefox installs updates by itself.",
@@ -131,7 +137,6 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     failedVideoHint:
       "Instala la extensión, inicia sesión en la plataforma en este navegador, abre el video y pulsa Descargar en la esquina inferior derecha.",
     openVideo: "Abrir el video",
-    download: "Descargar la extensión (.zip)",
     version: "Versión",
     browsersTitle: "Dónde funciona",
     browsers:
@@ -152,14 +157,17 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "Listo: las páginas de video tendrán un botón Descargar y el icono de Videoner aparecerá en la barra del navegador.",
     ],
     browsersFirefox: "Mozilla Firefox 128 o posterior, también en un ordenador.",
-    firefoxInstall: "Añadir a Firefox",
     firefoxSoon:
       "La versión para Firefox llegará pronto. Por ahora la extensión funciona en Chrome, Yandex Browser, Edge, Opera y otros navegadores basados en Chromium.",
-    chromeZipLink: "Descargar para Chrome, Yandex Browser, Edge y Opera (.zip)",
-    firefoxLink: "¿Usas Firefox? Añadir a Firefox",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Archivo .zip: se instala en un par de minutos",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Instalación en un clic",
+    yourBrowser: "Tu navegador",
+    soon: "Próximamente",
     firefoxStepsTitle: "Cómo instalarla en Firefox",
     firefoxSteps: [
-      "Pulsa «Añadir a Firefox» en esta página.",
+      "Pulsa el botón de Firefox en la parte superior de esta página.",
       "Firefox preguntará si permites que videoner.download instale un complemento: pulsa «Continuar con la instalación».",
       "En la ventana «¿Añadir Videoner?», pulsa «Añadir».",
       "Listo: las páginas de video tendrán un botón Descargar y el icono de Videoner aparecerá en la barra. Firefox instalará las actualizaciones por sí mismo.",

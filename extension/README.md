@@ -100,6 +100,18 @@ videoner.download/extension пишет Firefox-пользователям «ск
    версию, `update_link` с `?v=<версия>` и `update_hash` (sha256 файла).
    Задеплоить web: установленные расширения обновятся сами в течение суток.
 
+Каталог addons.mozilla.org (с 1.4.1, 29.10.2026): страница
+https://addons.mozilla.org/firefox/addon/videoner-video-downloader/ —
+описание, категории и ссылки заполнены через API (поддержка — бот
+@VideonerBot). Каталожная сборка — `dist/firefox-amo/` (без `update_url`),
+отправка той же командой, что выше, но
+`--channel listed --source-dir /d/firefox-amo --amo-metadata /d/amo-metadata.json --approval-timeout 0`
+(скопировать `scripts/amo-metadata.json` в `dist/`). Там лицензия версии и
+заметка для проверяющего: откуда vendor/mux.min.js (официальная сборка
+mux.js 7.1.0, sha256 в заметке) и зачем упоминание offscreen. Проверка —
+от пары дней до пары недель; номер версии нельзя повторять ни в каталоге, ни
+среди версий для сайта.
+
 ## Установка вручную
 
 В магазин расширений Videoner не выкладывается — ставится из архива.

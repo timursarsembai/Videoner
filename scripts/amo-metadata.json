@@ -1,0 +1,6 @@
+{
+  "version": {
+    "license": "all-rights-reserved",
+    "approval_notes": "Third-party library: vendor/mux.min.js is mux.js 7.1.0 (Apache-2.0), unmodified official build — https://cdn.jsdelivr.net/npm/mux.js@7.1.0/dist/mux.min.js (sha256 eb088a07f954554db7c38114487b21df6d1f28c4a84d53003644e962c7567b5b), source: https://github.com/videojs/mux.js/tree/v7.1.0. All other files are unminified source. The offscreen API reference in background.js is guarded by `chrome.offscreen` feature detection and is only used in the Chrome build; in Firefox the background page does the same work. The extension sends the video page URL to our server (videoner.download) only for platforms the browser can't download from directly; no cookies or credentials are sent. To test: open a YouTube video page and click the Download button in the bottom-right corner."
+  }
+}

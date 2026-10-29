@@ -18,6 +18,9 @@
 #     (about:debugging → «Загрузить временное дополнение») и подписывают у
 #     Mozilla. Подписанный .xpi кладётся на сайт отдельно.
 #   dist/videoner-firefox-<версия>.zip — то же одним архивом.
+#   dist/firefox-amo/ — вариант для каталога addons.mozilla.org: тот же, но
+#     без update_url (обновления каталожной версии раздаёт сама Mozilla, а
+#     каталог такой адрес не принимает). Отправка — extension/README.md.
 #   Отличия от Chrome — только в manifest (FIREFOX_MANIFEST ниже) и в
 #   наборе файлов: фоновая часть — страница background.html, а не service
 #   worker, и скрытая страница gc-offscreen.* не нужна (см. background.js).
@@ -99,4 +102,13 @@ for path in ff_files:
 ff_zip = dist / f"videoner-firefox-{version}.zip"
 pack(ff_zip, ff_files, "", ff_text)
 print(f"{ff_zip}: {len(ff_files)} файлов, {ff_zip.stat().st_size // 1024} КБ; распакованное — {ff_dir}/")
+
+# ---- Firefox, каталог Mozilla ----
+amo = json.loads(ff_text)
+del amo["browser_specific_settings"]["gecko"]["update_url"]
+amo_dir = dist / "firefox-amo"
+shutil.rmtree(amo_dir, ignore_errors=True)
+shutil.copytree(ff_dir, amo_dir)
+(amo_dir / "manifest.json").write_text(json.dumps(amo, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+print(f"{amo_dir}/: вариант для каталога addons.mozilla.org")
 EOF

@@ -81,6 +81,25 @@ Mozilla дополнение: подписываем без публикации
 (`web/middleware.ts`). Пока там `null`, страница
 videoner.download/extension пишет Firefox-пользователям «скоро».
 
+Подпись новой версии (поднять `version` в manifest, затем):
+
+1. `./scripts/pack-extension.sh`.
+2. Ключи Mozilla (AMO, аккаунт владельца) лежат в Infisical, проект videoner,
+   окружение Development: `AMO_JWT_ISSUER`, `AMO_JWT_SECRET`. Выгрузить их в
+   файл `~/.config/videoner-amo.env` (права 600) — не в `.env` проекта.
+3. ```
+   docker run --rm -u $(id -u):$(id -g) -e HOME=/tmp --env-file ~/.config/videoner-amo.env \
+     -v $PWD/dist:/d node:22-bookworm-slim sh -c 'npx -y web-ext@8.3.0 sign \
+     --channel unlisted --source-dir /d/firefox --artifacts-dir /d/signed \
+     --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"'
+   ```
+   Mozilla проверяет и подписывает автоматически, обычно за пару минут.
+4. Скопировать `dist/signed/*-<версия>.xpi` в
+   `web/public/extension/videoner-firefox.xpi`, вписать версию в
+   `web/lib/extension-firefox-version.ts`, а в `firefox-updates.json` — новую
+   версию, `update_link` с `?v=<версия>` и `update_hash` (sha256 файла).
+   Задеплоить web: установленные расширения обновятся сами в течение суток.
+
 ## Установка вручную
 
 В магазин расширений Videoner не выкладывается — ставится из архива.

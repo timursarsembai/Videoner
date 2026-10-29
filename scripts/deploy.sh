@@ -152,6 +152,19 @@ for service in "$@"; do
         exit 1
       fi
       echo "    ✓ Nest стартовал"
+      # Публичный /download/* (статус скачивания, файлы) nginx-proxy-manager
+      # отдаёт напрямую на videoner-server, и адрес этого имени nginx
+      # запоминает при загрузке конфига. Новый контейнер получает новый IP — до
+      # перезагрузки nginx /download/* отвечал 502 (29.10.2026: у сайта и
+      # расширения сломались прогресс и сохранение файла).
+      if docker ps --format '{{.Names}}' | grep -qx nginx-proxy-manager; then
+        if docker exec nginx-proxy-manager nginx -s reload >/dev/null 2>&1; then
+          echo "    ✓ nginx-proxy-manager перечитал адрес сервера"
+        else
+          echo "    ✗ Не удалось перезагрузить nginx-proxy-manager — /download/* может отвечать 502" >&2
+          exit 1
+        fi
+      fi
       ;;
     bot)
       # Раньше bot деплоился вручную ad hoc командами (docker buildx build

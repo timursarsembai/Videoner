@@ -25,9 +25,11 @@ const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
 // при пересоздании контейнера — после рассылки его копируют на хост.
 const SENT_LOG = "/tmp/broadcast-extension.sent";
 const SEND_DELAY_MS = 400;
-// 06:00–15:00 UTC = 11:00–20:00 по Алматы, как у nudge.service.ts.
+// 06:00–17:00 UTC = 11:00–22:00 по Алматы (владелец, 29.10.2026). --any-time
+// снимает проверку — только по прямой просьбе владельца.
 const WINDOW_START_UTC = 6;
-const WINDOW_END_UTC = 15;
+const WINDOW_END_UTC = 17;
+const ANY_TIME = process.argv.includes("--any-time");
 
 // Русский — тем, у кого язык Telegram русский или украинский; остальным —
 // английский.
@@ -123,7 +125,7 @@ async function main() {
     const counts = { sent: 0, blocked: 0, failed: 0 };
     for (const user of queue) {
       const hour = new Date().getUTCHours();
-      if (hour < WINDOW_START_UTC || hour >= WINDOW_END_UTC) {
+      if (!ANY_TIME && (hour < WINDOW_START_UTC || hour >= WINDOW_END_UTC)) {
         console.log(`Вне окна ${WINDOW_START_UTC}:00–${WINDOW_END_UTC}:00 UTC — остановлено, повторный запуск продолжит`);
         break;
       }

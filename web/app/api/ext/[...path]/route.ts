@@ -34,10 +34,13 @@ const EXTENSION_PROXY: ProxyOptions = {
   source: "EXTENSION",
 };
 
-// Chrome, Яндекс Браузер и Edge — все на Chromium, адрес страниц расширения у
-// них один и тот же по виду.
+// Chrome, Яндекс Браузер, Edge и Opera — все на Chromium, адрес страниц
+// расширения у них chrome-extension://…; у Firefox — moz-extension://… (свой
+// случайный адрес у каждой установки, проверено 29.10.2026).
+const EXTENSION_ORIGIN = /^(chrome|moz)-extension:\/\/[\w-]+$/;
+
 function isExtensionRequest(request: NextRequest): boolean {
-  return request.headers.get("origin")?.startsWith("chrome-extension://") ?? false;
+  return EXTENSION_ORIGIN.test(request.headers.get("origin") ?? "");
 }
 
 async function handle(

@@ -10,6 +10,7 @@ import {
   getJob,
   isPlatformUrl,
   jobKey,
+  session,
   setJob,
   t,
 } from "./shared.js";
@@ -35,6 +36,29 @@ if (embedded) {
   new ResizeObserver(() => {
     window.parent.postMessage({ videoner: "height", height: document.documentElement.scrollHeight }, "*");
   }).observe(document.body);
+}
+
+// Вкладка и её страница. Firefox даёт окошку в рамке на чужой странице только
+// то, что и content script: runtime, storage, i18n — без tabs (проверено
+// 29.10.2026). Тогда спрашиваем фоновую часть: она видит, из какой вкладки
+// пришло сообщение (background.js, «embed-tab»). В Chrome и в окошке по значку
+// tabs есть всегда.
+const HAS_TABS = Boolean(chrome.tabs);
+
+async function activeTab() {
+  if (!HAS_TABS) return chrome.runtime.sendMessage({ type: "embed-tab" });
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  return tab ?? null;
+}
+
+function sendToTab(message, frameId) {
+  if (!HAS_TABS) return chrome.runtime.sendMessage({ type: "embed-tab-message", message, frameId });
+  return chrome.tabs.sendMessage(tabId, message, frameId === undefined ? undefined : { frameId });
+}
+
+function openTab(url) {
+  if (HAS_TABS) chrome.tabs.create({ url });
+  else window.open(url, "_blank", "noopener");
 }
 
 // Ответ /info держим 10 минут: «Скачать ещё» и повторное открытие окошка не
@@ -82,13 +106,13 @@ function showMessage(text, { error = false, actions = [] } = {}) {
 }
 
 function siteButton() {
-  return el("button", { class: "secondary", onclick: () => chrome.tabs.create({ url: SITE }) }, t.openSite);
+  return el("button", { class: "secondary", onclick: () => openTab(SITE) }, t.openSite);
 }
 
 // Вкладка с видео — активная: и для окошка по значку, и для окошка в рамке
 // на самой странице (кнопка на странице открывается только в активной).
 async function targetUrl() {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tab = await activeTab();
   tabId = tab?.id ?? null;
   // Название вкладки видно только окошку по значку (activeTab); в рамке на
   // плеере его нет.
@@ -102,7 +126,7 @@ async function targetUrl() {
 async function findMedia() {
   if (tabId === null) return null;
   try {
-    const found = await chrome.tabs.sendMessage(tabId, { type: "videoner:media" });
+    const found = await sendToTab({ type: "videoner:media" });
     return found && found.pageUrl === url && found.url ? found : null;
   } catch {
     return null;
@@ -110,10 +134,10 @@ async function findMedia() {
 }
 
 async function loadInfo() {
-  const cached = (await chrome.storage.session.get(infoKey(url)))[infoKey(url)];
+  const cached = (await session.get(infoKey(url)))[infoKey(url)];
   if (cached && Date.now() - cached.at < INFO_TTL_MS) return cached.info;
   const fresh = await api("/info", { url });
-  await chrome.storage.session.set({ [infoKey(url)]: { at: Date.now(), info: fresh } });
+  await session.set({ [infoKey(url)]: { at: Date.now(), info: fresh } });
   return fresh;
 }
 
@@ -233,16 +257,14 @@ async function showServerChoices() {
 async function findGetCoursePlayers() {
   if (tabId === null) return [];
   const prefix = gcPlayerPrefix(tabId);
-  const keys = Object.keys(await chrome.storage.session.get(null)).filter((key) => key.startsWith(prefix));
+  const keys = Object.keys(await session.get()).filter((key) => key.startsWith(prefix));
   const answers = await Promise.all(
     keys.map((key) =>
-      chrome.tabs
-        .sendMessage(tabId, { type: "videoner:gc-ping" }, { frameId: Number(key.slice(prefix.length)) })
-        .catch(() => null)
+      sendToTab({ type: "videoner:gc-ping" }, Number(key.slice(prefix.length))).catch(() => null)
     )
   );
   const dead = keys.filter((_, i) => !answers[i]?.master);
-  if (dead.length) await chrome.storage.session.remove(dead);
+  if (dead.length) await session.remove(dead);
   // Одно и то же видео, вставленное в урок дважды, — один пункт.
   const byHash = new Map();
   for (const player of answers) if (player?.master && !byHash.has(player.hash)) byHash.set(player.hash, player);
@@ -380,7 +402,13 @@ function render(job) {
 
 async function main() {
   // Ход скачивания пишет background.js — окошко просто перерисовывается.
-  chrome.storage.session.onChanged.addListener((changes) => {
+  session.onChanged(async (changes) => {
+    // null — связь с фоновой частью восстановлена (Firefox, см. shared.js):
+    // изменения за время разрыва не пришли, перечитываем задачу.
+    if (changes === null) {
+      if (url) render(await getJob(url));
+      return;
+    }
     const change = url && changes[jobKey(url)];
     if (change) render(change.newValue ?? null);
   });

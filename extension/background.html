@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Videoner</title>
+  </head>
+  <body>
+    <!-- Фоновая часть в Firefox (manifest собирает scripts/pack-extension.sh).
+         В Chrome фоновая часть — service worker background.js, а mux.js
+         подключает скрытая страница gc-offscreen.html. -->
+    <script src="vendor/mux.min.js"></script>
+    <script type="module" src="background.js"></script>
+  </body>
+</html>

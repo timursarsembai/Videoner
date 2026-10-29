@@ -2,7 +2,8 @@
 
 Скачивает видео со страницы, где его смотрят: кнопка «Скачать» в углу
 страницы видео (или клик по значку Videoner в панели браузера) → выбор
-качества → файл в «Загрузках». Работает в Chrome, Яндекс Браузере и Edge.
+качества → файл в «Загрузках». Работает в Chrome, Яндекс Браузере, Edge,
+Opera и Firefox (с 1.4.0 — см. «Firefox» ниже).
 
 Кнопка появляется только на странице конкретного видео или поста, не на
 главной и не в ленте. Крестик на ней прячет её до перехода к другому видео.
@@ -28,9 +29,10 @@ TikTok, Threads, Instagram и Facebook браузер скачивает сам,
 фоновой части — окошко по значку покажет все видео урока. Доступа ко всем
 сайтам расширению для этого не нужно.
 
-Качает и склеивает урок браузер: скрытая страница расширения
-(`gc-offscreen.html`, `gc-offscreen.js`) берёт кусочки .ts по шесть
-параллельно и перекладывает их в mp4 библиотекой mux.js
+Качает и склеивает урок браузер (`gc-remux.js`): в Chrome — на скрытой
+странице расширения (`gc-offscreen.html`, `gc-offscreen.js`), в Firefox —
+прямо в фоновой части. Кусочки .ts идут по шесть параллельно и
+перекладываются в mp4 библиотекой mux.js
 (`vendor/mux.min.js`, 7.1.0, Apache-2.0) без перекодирования. Файл копится в
 памяти и сохраняется целиком (40 минут в 1080p — около гигабайта). Запросы
 идут из браузера ученика, так что всё, что он видит под своим входом в
@@ -43,6 +45,41 @@ TikTok, Threads, Instagram и Facebook браузер скачивает сам,
 Название файла — заголовок вкладки, если окошко открыто значком; из кнопки на
 плеере заголовок страницы школы недоступен (другой домен), и файл называется
 «Урок GetCourse».
+
+## Firefox
+
+Та же папка `extension/`, отличается только сборка (`scripts/pack-extension.sh`
+→ `dist/firefox/`): свой manifest (фоновая часть — страница `background.html`
+вместо service worker, без `offscreen`, идентификатор
+`videoner@videoner.download`, обновления с нашего сайта) и без
+`gc-offscreen.*`. Отличия Firefox, которые учтены в коде (проверено
+29.10.2026 в Firefox 153):
+
+- окошку в рамке на чужой странице (кнопка «Скачать») Firefox даёт только
+  `runtime`, `i18n` и `storage` без `session` — нет `tabs` и `downloads`. Тогда
+  окошко спрашивает о вкладке и хранилище фоновую часть (`popup.js`
+  `activeTab`/`sendToTab`, `shared.js` `session`, `background.js`
+  «embed-tab», «embed-storage»);
+- нет `storage.session.onChanged` — везде общее `storage.onChanged`;
+- фоновую страницу Firefox усыпляет примерно через 30 секунд без событий, а
+  сетевые запросы событием не считаются — урок в 1080p обрывался. Пока урок
+  склеивается, фоновая часть раз в 4 секунды пишет метку в `storage.session`
+  и сама получает событие `storage.onChanged` (`background.js`, `keepAlive`);
+- в API сайта расширение приходит с `Origin: moz-extension://…` (у каждой
+  установки свой адрес) — его пускает `web/app/api/ext/[...path]/route.ts`.
+
+Проверка: `web-ext lint -s dist/firefox --self-hosted`; поставить для пробы —
+`about:debugging` → «Этот Firefox» → «Загрузить временное дополнение» →
+`dist/firefox/manifest.json`. Обычный Firefox ставит только подписанное
+Mozilla дополнение: подписываем без публикации в каталоге (unlisted), файл
+`.xpi` кладём в `web/public/extension/videoner-firefox.xpi`, его версию — в
+`web/lib/extension-firefox-version.ts`, а для обновлений —
+`web/public/extension/firefox-updates.json` (адрес — в `update_url` сборки;
+формат — список версий со ссылками на свои .xpi). Сайт отдаёт .xpi с типом
+`application/x-xpinstall` — без него Firefox сохранил бы файл, а не предложил
+установку; .xpi и .json не проходят через языковой middleware сайта
+(`web/middleware.ts`). Пока там `null`, страница
+videoner.download/extension пишет Firefox-пользователям «скоро».
 
 ## Установка вручную
 
@@ -90,5 +127,7 @@ Videoner работает дальше.
 - `shared.js` — адрес API, тексты на русском и английском, перевод ошибок.
 - `content.js`, `video-pages.js` — кнопка на страницах площадок; по клику
   открывает то же окошко в рамке (`popup.html?embed=1&url=…`).
-- `getcourse.js`, `getcourse-hls.js`, `gc-offscreen.*`, `vendor/` — уроки
-  GetCourse (см. выше).
+- `getcourse.js`, `getcourse-hls.js`, `gc-remux.js`, `gc-offscreen.*`,
+  `vendor/` — уроки GetCourse (см. выше).
+- `background.html` — фоновая часть в Firefox (подключает mux.js и
+  `background.js`); Chrome её не использует.

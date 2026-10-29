@@ -22,6 +22,14 @@ export interface ExtensionPageText {
   privacy: string;
   stepsTitle: string;
   steps: string[];
+  // Firefox: своя установка — подписанный .xpi ставится кнопкой с сайта.
+  browsersFirefox: string;
+  firefoxInstall: string;
+  firefoxSoon: string;
+  chromeZipLink: string;
+  firefoxLink: string;
+  firefoxStepsTitle: string;
+  firefoxSteps: string[];
   back: string;
 }
 
@@ -47,13 +55,26 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     privacyTitle: "Ваш вход остаётся у вас",
     privacy:
       "Расширение не спрашивает пароль и не передаёт куки: запрос к площадке делает ваш собственный браузер. Нашему серверу уходит только короткий отчёт для статистики — ссылка, размер файла и название.",
-    stepsTitle: "Как установить",
+    stepsTitle: "Как установить в Chrome, Яндекс Браузер, Edge и Opera",
     steps: [
       "Скачайте архив и распакуйте его — появится папка videoner-extension.",
       "Откройте страницу расширений: в адресной строке наберите chrome://extensions (в Edge — edge://extensions, в Opera — opera://extensions).",
       "Включите «Режим разработчика» — переключатель вверху страницы.",
       "Нажмите «Загрузить распакованное расширение» и выберите папку videoner-extension.",
       "Готово: на странице видео появится кнопка «Скачать», а значок Videoner — на панели браузера.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 и новее — тоже на компьютере.",
+    firefoxInstall: "Установить в Firefox",
+    firefoxSoon:
+      "Версия для Firefox скоро появится. Пока расширение работает в Chrome, Яндекс Браузере, Edge, Opera и других браузерах на основе Chromium.",
+    chromeZipLink: "Скачать для Chrome, Яндекс Браузера, Edge и Opera (.zip)",
+    firefoxLink: "Пользуетесь Firefox? Установить в Firefox",
+    firefoxStepsTitle: "Как установить в Firefox",
+    firefoxSteps: [
+      "Нажмите «Установить в Firefox» на этой странице.",
+      "Firefox спросит, разрешить ли сайту videoner.download установить дополнение, — нажмите «Продолжить установку».",
+      "В окошке «Добавить Videoner?» нажмите «Добавить».",
+      "Готово: на странице видео появится кнопка «Скачать», а значок Videoner — на панели браузера. Обновления Firefox будет ставить сам.",
     ],
     back: "На главную",
   },
@@ -78,13 +99,26 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     privacyTitle: "Your sign-in stays with you",
     privacy:
       "The extension never asks for a password and never sends cookies: your own browser makes the request to the platform. Our server only gets a short report for statistics — the link, file size and title.",
-    stepsTitle: "How to install",
+    stepsTitle: "How to install in Chrome, Yandex Browser, Edge and Opera",
     steps: [
       "Download the archive and unzip it — you'll get a videoner-extension folder.",
       "Open the extensions page: type chrome://extensions in the address bar (edge://extensions in Edge, opera://extensions in Opera).",
       "Turn on Developer mode — the switch at the top of the page.",
       "Click “Load unpacked” and choose the videoner-extension folder.",
       "Done: video pages get a Download button, and the Videoner icon appears in the browser toolbar.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 or later — also on a computer.",
+    firefoxInstall: "Add to Firefox",
+    firefoxSoon:
+      "The Firefox version is coming soon. For now the extension works in Chrome, Yandex Browser, Edge, Opera and other Chromium-based browsers.",
+    chromeZipLink: "Download for Chrome, Yandex Browser, Edge and Opera (.zip)",
+    firefoxLink: "Using Firefox? Add to Firefox",
+    firefoxStepsTitle: "How to install in Firefox",
+    firefoxSteps: [
+      "Click “Add to Firefox” on this page.",
+      "Firefox asks whether to let videoner.download install an add-on — click “Continue to Installation”.",
+      "In the “Add Videoner?” prompt, click “Add”.",
+      "Done: video pages get a Download button, and the Videoner icon appears in the toolbar. Firefox installs updates by itself.",
     ],
     back: "Home",
   },
@@ -109,13 +143,26 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     privacyTitle: "Tu sesión se queda contigo",
     privacy:
       "La extensión nunca pide contraseñas ni envía cookies: la solicitud a la plataforma la hace tu propio navegador. Nuestro servidor solo recibe un breve informe para estadísticas: el enlace, el tamaño del archivo y el título.",
-    stepsTitle: "Cómo instalarla",
+    stepsTitle: "Cómo instalarla en Chrome, Yandex Browser, Edge y Opera",
     steps: [
       "Descarga el archivo y descomprímelo: obtendrás la carpeta videoner-extension.",
       "Abre la página de extensiones: escribe chrome://extensions en la barra de direcciones (edge://extensions en Edge, opera://extensions en Opera).",
       "Activa el Modo de desarrollador con el interruptor de la parte superior.",
       "Pulsa «Cargar descomprimida» y elige la carpeta videoner-extension.",
       "Listo: las páginas de video tendrán un botón Descargar y el icono de Videoner aparecerá en la barra del navegador.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 o posterior, también en un ordenador.",
+    firefoxInstall: "Añadir a Firefox",
+    firefoxSoon:
+      "La versión para Firefox llegará pronto. Por ahora la extensión funciona en Chrome, Yandex Browser, Edge, Opera y otros navegadores basados en Chromium.",
+    chromeZipLink: "Descargar para Chrome, Yandex Browser, Edge y Opera (.zip)",
+    firefoxLink: "¿Usas Firefox? Añadir a Firefox",
+    firefoxStepsTitle: "Cómo instalarla en Firefox",
+    firefoxSteps: [
+      "Pulsa «Añadir a Firefox» en esta página.",
+      "Firefox preguntará si permites que videoner.download instale un complemento: pulsa «Continuar con la instalación».",
+      "En la ventana «¿Añadir Videoner?», pulsa «Añadir».",
+      "Listo: las páginas de video tendrán un botón Descargar y el icono de Videoner aparecerá en la barra. Firefox instalará las actualizaciones por sí mismo.",
     ],
     back: "Inicio",
   },

@@ -272,7 +272,43 @@ export function formatDuration(seconds) {
   return h ? `${h}:${pad(m)}:${pad(s % 60)}` : `${m}:${pad(s % 60)}`;
 }
 
-// Состояние скачиваний живёт в chrome.storage.session: окошко закрывается при
+// chrome.storage.session. Окошку в рамке на чужой странице Firefox его не даёт
+// (как и tabs, см. popup.js; проверено 29.10.2026) — тогда то же самое через
+// фоновую часть: чтение и запись — сообщениями «embed-storage», изменения
+// присылает соединение «embed-storage» (background.js).
+const SESSION = chrome.storage.session;
+const viaBackground = (op, extra) => chrome.runtime.sendMessage({ type: "embed-storage", op, ...extra });
+
+export const session = {
+  get: (keys = null) => (SESSION ? SESSION.get(keys) : viaBackground("get", { keys }).then((items) => items ?? {})),
+  set: (items) => (SESSION ? SESSION.set(items) : viaBackground("set", { items })),
+  remove: (keys) => (SESSION ? SESSION.remove(keys) : viaBackground("remove", { keys })),
+  // listener(changes) — как у storage.onChanged, только для этой области.
+  // Общее storage.onChanged, а не storage.session.onChanged: второго нет в
+  // Firefox.
+  onChanged(listener) {
+    if (SESSION) {
+      chrome.storage.onChanged.addListener((changes, area) => {
+        if (area === "session") listener(changes);
+      });
+      return;
+    }
+    // Фоновую часть Firefox может остановить и запустить заново — соединение
+    // тогда рвётся. Подключаемся снова и отдаём слушателю пустые изменения:
+    // пусть перечитает состояние, пропущенное за время разрыва.
+    const connect = () => {
+      const port = chrome.runtime.connect({ name: "embed-storage" });
+      port.onMessage.addListener(listener);
+      port.onDisconnect.addListener(() => setTimeout(() => {
+        connect();
+        listener(null);
+      }, 1_000));
+    };
+    connect();
+  },
+};
+
+// Состояние скачиваний живёт в storage.session: окошко закрывается при
 // любом клике мимо, а скачивание должно идти дальше и сохраниться в
 // «Загрузки» без него. Одна задача на ссылку, у каждой свой ключ: общий
 // объект на все задачи терял бы обновления, когда две идут параллельно.
@@ -281,19 +317,19 @@ const JOB_PREFIX = "job:";
 export const jobKey = (url) => `${JOB_PREFIX}${url}`;
 
 export async function getJob(url) {
-  return (await chrome.storage.session.get(jobKey(url)))[jobKey(url)] ?? null;
+  return (await session.get(jobKey(url)))[jobKey(url)] ?? null;
 }
 
 export async function getAllJobs() {
-  const all = await chrome.storage.session.get(null);
+  const all = await session.get();
   return Object.entries(all)
     .filter(([key]) => key.startsWith(JOB_PREFIX))
     .map(([, job]) => job);
 }
 
 export async function setJob(url, job) {
-  if (job) await chrome.storage.session.set({ [jobKey(url)]: job });
-  else await chrome.storage.session.remove(jobKey(url));
+  if (job) await session.set({ [jobKey(url)]: job });
+  else await session.remove(jobKey(url));
 }
 
 // Плееры GetCourse во вкладке (getcourse.js): ключ на каждую рамку с плеером,

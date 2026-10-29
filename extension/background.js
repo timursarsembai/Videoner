@@ -1,4 +1,5 @@
 import { reportUrl } from "./getcourse-hls.js";
+import { remuxLesson } from "./gc-remux.js";
 import {
   api,
   downloadStatus,
@@ -42,6 +43,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ ok: true });
     return false;
   }
+  // Окошко в рамке на странице в Firefox: без tabs оно не знает своей вкладки
+  // и не может спросить её страницу (popup.js, activeTab и sendToTab). Отвечаем
+  // только окошку расширения и только про ту вкладку, в которой оно открыто.
+  if (message?.type === "embed-tab") {
+    if (!isEmbeddedPopup(sender)) return false;
+    sendResponse({ id: sender.tab.id, url: sender.tab.url, title: sender.tab.title });
+    return false;
+  }
+  if (message?.type === "embed-tab-message") {
+    if (!isEmbeddedPopup(sender)) return false;
+    const options = Number.isInteger(message.frameId) ? { frameId: message.frameId } : undefined;
+    chrome.tabs.sendMessage(sender.tab.id, message.message, options).then(sendResponse, () => sendResponse(null));
+    return true;
+  }
+  if (message?.type === "embed-storage") {
+    if (!isEmbeddedPopup(sender)) return false;
+    const area = chrome.storage.session;
+    const op =
+      message.op === "get" ? area.get(message.keys ?? null)
+      : message.op === "set" ? area.set(message.items)
+      : message.op === "remove" ? area.remove(message.keys)
+      : null;
+    if (!op) return false;
+    op.then((result) => sendResponse(result ?? {}), () => sendResponse(null));
+    return true;
+  }
   if (message?.type === "videoner:direct-progress") {
     directProgress(message);
     return false;
@@ -69,11 +96,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return false;
   }
   if (message?.type === "videoner:gc-progress") {
-    updateJob(message.key, (job) => {
-      if (!isBrowserGetCourse(job)) return undefined;
-      const { percentage, eta, downloaded } = message;
-      return { ...job, progress: { phase: "downloading", percentage, eta, downloaded, total: null } };
-    });
+    getCourseProgress(message.key, message);
     return false;
   }
   if (message?.type === "videoner:gc-done") {
@@ -95,6 +118,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   return false;
 });
+
+// Изменения storage.session — окошку в рамке Firefox (shared.js, session),
+// пока оно открыто.
+chrome.runtime.onConnect.addListener((port) => {
+  if (port.name !== "embed-storage") return;
+  if (!isEmbeddedPopup(port.sender)) {
+    port.disconnect();
+    return;
+  }
+  const forward = (changes, area) => {
+    if (area === "session") port.postMessage(changes);
+  };
+  chrome.storage.onChanged.addListener(forward);
+  port.onDisconnect.addListener(() => chrome.storage.onChanged.removeListener(forward));
+});
+
+function isEmbeddedPopup(sender) {
+  return sender.tab?.id !== undefined && sender.url?.startsWith(chrome.runtime.getURL("popup.html"));
+}
 
 async function startDownload({ url, title, kind, quality }) {
   if (active.has(url)) return;
@@ -227,7 +269,40 @@ async function fallbackToServer(url, title) {
   await serverDownload({ url, title: info.title || title, kind: "video", quality }, { fallback: true });
 }
 
-// ---- GetCourse: урок качает и склеивает браузер (getcourse.js, gc-offscreen.js) ----
+// ---- GetCourse: урок качает и склеивает браузер (getcourse.js, gc-remux.js) ----
+//
+// Где склеивается урок, зависит от браузера. В Chrome фоновая часть — service
+// worker без URL.createObjectURL, поэтому урок уходит на скрытую страницу
+// (chrome.offscreen, gc-offscreen.js) и приходит обратно сообщениями. В
+// Firefox скрытых страниц нет, зато фоновая часть — сама страница
+// (background.html): урок склеивается прямо здесь.
+const OFFSCREEN = Boolean(chrome.offscreen);
+// Firefox: уроки, которые склеиваются в этом экземпляре, и готовые файлы,
+// ждущие сохранения, — по ключу задачи.
+const localLessons = new Set();
+const localBlobs = new Map();
+
+// Firefox усыпляет фоновую страницу примерно через 30 секунд без событий, и
+// сетевые запросы событием не считаются: урок в 1080p с закрытым окошком
+// обрывался посередине (проверено 29.10.2026). Пока урок склеивается, раз в
+// несколько секунд пишем метку в storage.session — событие storage.onChanged,
+// пришедшее сюда же, продлевает жизнь страницы. Слушатель — на верхнем уровне:
+// событие доставляется, только если он есть.
+const KEEP_ALIVE_KEY = "keep-alive";
+const KEEP_ALIVE_MS = 4_000;
+let keepAliveTimer = null;
+
+if (!OFFSCREEN) chrome.storage.onChanged.addListener(() => {});
+
+function keepAlive() {
+  if (localLessons.size && !keepAliveTimer) {
+    keepAliveTimer = setInterval(() => chrome.storage.session.set({ [KEEP_ALIVE_KEY]: Date.now() }), KEEP_ALIVE_MS);
+  } else if (!localLessons.size && keepAliveTimer) {
+    clearInterval(keepAliveTimer);
+    keepAliveTimer = null;
+    chrome.storage.session.remove(KEEP_ALIVE_KEY);
+  }
+}
 
 chrome.tabs.onRemoved.addListener(async (tabId) => {
   const all = await chrome.storage.session.get(null);
@@ -239,6 +314,7 @@ const OFFSCREEN_URL = "gc-offscreen.html";
 const isOffscreen = (sender) => sender.url === chrome.runtime.getURL(OFFSCREEN_URL);
 
 async function hasOffscreen() {
+  if (!OFFSCREEN) return false;
   const contexts = await chrome.runtime.getContexts({ contextTypes: ["OFFSCREEN_DOCUMENT"] });
   return contexts.length > 0;
 }
@@ -277,8 +353,20 @@ async function sendStart(job) {
 const isBrowserGetCourse = (job) => Boolean(job?.gc && job.direct && job.state === "downloading");
 
 async function startGetCourse({ key, title, quality, variantUrl, master }) {
+  // Двойной клик: второй запуск не ждёт чтения задачи и отсекается сразу.
+  if (localLessons.has(key)) return;
+  if (!OFFSCREEN) {
+    localLessons.add(key);
+    keepAlive();
+  }
   const current = await getJob(key);
-  if (current && ["starting", "downloading", "saving"].includes(current.state)) return;
+  if (current && ["starting", "downloading", "saving"].includes(current.state)) {
+    if (!OFFSCREEN) {
+      localLessons.delete(key);
+      keepAlive();
+    }
+    return;
+  }
   await updateJob(key, () => ({
     url: key,
     title,
@@ -290,6 +378,10 @@ async function startGetCourse({ key, title, quality, variantUrl, master }) {
     progress: null,
     startedAt: Date.now(),
   }));
+  if (!OFFSCREEN) {
+    runLocalLesson(key, variantUrl);
+    return;
+  }
   try {
     await sendStart({ key, variantUrl });
   } catch (e) {
@@ -298,7 +390,35 @@ async function startGetCourse({ key, title, quality, variantUrl, master }) {
   }
 }
 
+// Firefox: то же, что делает скрытая страница Chrome, но без сообщений.
+async function runLocalLesson(key, variantUrl) {
+  try {
+    const { href, size } = await remuxLesson(variantUrl, (progress) => getCourseProgress(key, progress));
+    localBlobs.set(key, href);
+    await getCourseDone({ key, href, size });
+  } catch (e) {
+    console.warn("Videoner: browser download of GetCourse failed, falling back to the server", e);
+    await getCourseFailed(key);
+  } finally {
+    localLessons.delete(key);
+    keepAlive();
+  }
+}
+
+function getCourseProgress(key, { percentage, eta, downloaded }) {
+  updateJob(key, (job) => {
+    if (!isBrowserGetCourse(job)) return undefined;
+    return { ...job, progress: { phase: "downloading", percentage, eta, downloaded, total: null } };
+  });
+}
+
 function releaseBlob(key) {
+  if (!OFFSCREEN) {
+    const href = localBlobs.get(key);
+    if (href) URL.revokeObjectURL(href);
+    localBlobs.delete(key);
+    return;
+  }
   chrome.runtime.sendMessage({ target: "gc-offscreen", type: "release", key }).catch(() => {});
 }
 
@@ -344,10 +464,14 @@ async function getCourseFailed(key) {
 
 // Сторож: страница могла упасть (например, не хватило памяти на длинный урок
 // в 1080p) и больше ничего не прислать. Окошко при открытии просит
-// проверить: урок «качается», а страницы нет — отдаём его серверу.
+// проверить: урок «качается», а страницы нет — отдаём его серверу. В Firefox
+// то же самое — урок «качается», а этот экземпляр фоновой части его не ведёт
+// (её перезапустили).
 async function checkGetCourse(key) {
   const job = await getJob(key);
-  if (isBrowserGetCourse(job) && !(await hasOffscreen())) await getCourseFailed(key);
+  if (!isBrowserGetCourse(job)) return;
+  const alive = OFFSCREEN ? await hasOffscreen() : localLessons.has(key);
+  if (!alive) await getCourseFailed(key);
 }
 
 async function infoFor(url) {
@@ -451,8 +575,9 @@ async function resumeJobs() {
   const offscreenAlive = await hasOffscreen();
   for (const job of await getAllJobs()) {
     if (active.has(job.url)) continue;
-    // Урок GetCourse качает скрытая страница, а не этот экземпляр: жива она —
-    // её сообщения подхватит и новый.
+    // Урок GetCourse в Chrome качает скрытая страница, а не этот экземпляр:
+    // жива она — её сообщения подхватит и новый. В Firefox урок жил в
+    // остановленном экземпляре — ниже он станет ошибкой.
     if (job.gc && job.direct && job.state === "downloading" && offscreenAlive) continue;
     // Прямое скачивание после перезапуска не подхватить: связь со страницей
     // (TikTok) или опрос загрузки (Threads) жили в остановленном экземпляре.

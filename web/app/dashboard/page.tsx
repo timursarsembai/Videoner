@@ -46,6 +46,7 @@ const PLATFORM_COLORS: Record<string, string> = {
   RUTUBE: "#f97316",
   OKRU: "#eab308",
   PINTEREST: "#be123c",
+  GETCOURSE: "#16a34a",
 };
 
 const SOURCE_COLORS: Record<string, string> = {
@@ -415,6 +416,7 @@ const PLATFORM_OPTIONS = [
   "OKRU",
   "PINTEREST",
   "THREADS",
+  "GETCOURSE",
 ] as const;
 
 const STATUS_OPTIONS = [

@@ -98,7 +98,12 @@ const TEXTS = {
   ru: {
     loading: "Получаю информацию о видео…",
     notVideoPage:
-      "Откройте страницу с видео на YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads и нажмите на значок ещё раз.",
+      "Откройте страницу с видео на YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads и нажмите на значок ещё раз. Урок GetCourse: если страница урока была открыта до установки расширения, обновите её.",
+    gcLesson: "Урок GetCourse",
+    gcPick: "В уроке несколько видео — выберите нужное",
+    gcVideo: (n) => `Видео ${n}`,
+    gcNote: "Качает и склеивает ваш браузер. Окошко можно закрыть, браузер — нет.",
+    gcNoStream: "Не удалось получить видео из плеера. Обновите страницу урока и попробуйте снова.",
     video: "Видео",
     photo: "Фото в исходном размере",
     audioOnly: "Только звук (mp3)",
@@ -137,7 +142,12 @@ const TEXTS = {
   en: {
     loading: "Fetching video info…",
     notVideoPage:
-      "Open a video page on YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest or Threads and click the icon again.",
+      "Open a video page on YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest or Threads and click the icon again. GetCourse lesson: if the lesson page was open before the extension was installed, reload it.",
+    gcLesson: "GetCourse lesson",
+    gcPick: "This lesson has several videos — pick one",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Your browser downloads and joins it. You can close this window, but not the browser.",
+    gcNoStream: "Couldn't get the video from the player. Reload the lesson page and try again.",
     video: "Video",
     photo: "Photos in original size",
     audioOnly: "Audio only (mp3)",
@@ -285,3 +295,8 @@ export async function setJob(url, job) {
   if (job) await chrome.storage.session.set({ [jobKey(url)]: job });
   else await chrome.storage.session.remove(jobKey(url));
 }
+
+// Плееры GetCourse во вкладке (getcourse.js): ключ на каждую рамку с плеером,
+// значение — хеш видео. Пишет фоновая часть, читает окошко.
+export const gcPlayerPrefix = (tabId) => `gc-player:${tabId}:`;
+export const gcPlayerKey = (tabId, frameId) => `${gcPlayerPrefix(tabId)}${frameId}`;

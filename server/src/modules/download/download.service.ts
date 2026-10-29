@@ -220,7 +220,8 @@ export class DownloadService {
 
   // Ключ кеша: площадка, id ролика у неё, тип и качество, контейнер. Пост из
   // нескольких файлов не кешируем — у него нет одного файла, который можно
-  // отдать повторно.
+  // отдать повторно. Уроки GetCourse не кешируем вовсе: урок видит только
+  // ученик школы, и файл из кеша достался бы любому, у кого есть адрес.
   private cacheKeyFor(
     platform: string,
     info: { id?: string },
@@ -228,7 +229,7 @@ export class DownloadService {
     quality: string,
     extension: string,
   ): string | null {
-    if (!platform || !info?.id) return null;
+    if (!platform || !info?.id || platform === 'getcourse') return null;
     return `${platform}:${info.id}:${kind}:${quality}:${extension}`;
   }
 

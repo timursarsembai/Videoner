@@ -153,4 +153,5 @@ export type Platform =
   | 'rutube'
   | 'okru'
   | 'pinterest'
-  | 'threads';
+  | 'threads'
+  | 'getcourse';

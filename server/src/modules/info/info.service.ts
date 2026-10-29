@@ -216,6 +216,10 @@ export class InfoService {
         return info.title || 'TikTok Video';
       case 'twitter':
         return info.title || 'Twitter Video';
+      case 'getcourse':
+        // yt-dlp знает только адрес потока, и названием стал бы его кусок.
+        // Расширение подставляет название урока со страницы школы.
+        return 'GetCourse';
       default:
         return info.title;
     }

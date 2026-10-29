@@ -169,6 +169,7 @@ enum Downloaders {
   OKRU
   PINTEREST
   THREADS
+  GETCOURSE
 }
 
 enum DownloadSource {

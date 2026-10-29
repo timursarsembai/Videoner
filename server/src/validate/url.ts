@@ -353,6 +353,25 @@ export const isThreadsUrl = (url: string) => {
   }
 };
 
+// GetCourse: не страница урока (у каждой школы свой домен), а адрес его
+// HLS-потока — master-плейлист из плеера. Его находит в браузере ученика
+// расширение (extension/getcourse.js): для отчёта о скачивании в браузере и
+// для запасного пути через сервер. Плеер у всех школ на доменах GetCourse.
+const GETCOURSE_PLAYER_HOST = /(^|\.)(gceuproxy\.com|gcvh\.ru|getcourse\.ru)$/;
+
+export const isGetCourseUrl = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    return (
+      urlObj.protocol === 'https:' &&
+      GETCOURSE_PLAYER_HOST.test(urlObj.hostname.toLowerCase()) &&
+      /^\/api\/playlist\/master\/[0-9a-f]{32}\/[0-9a-f]+\/?$/i.test(urlObj.pathname)
+    );
+  } catch {
+    return false;
+  }
+};
+
 export const getPlatform = (url: string) => {
   if (isYoutubeUrl(url)) return 'youtube';
   if (isFacebookUrl(url)) return 'facebook';
@@ -365,5 +384,6 @@ export const getPlatform = (url: string) => {
   if (isOkRuUrl(url)) return 'okru';
   if (isPinterestUrl(url)) return 'pinterest';
   if (isThreadsUrl(url)) return 'threads';
+  if (isGetCourseUrl(url)) return 'getcourse';
   return null;
 };

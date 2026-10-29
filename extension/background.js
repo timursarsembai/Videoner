@@ -1,4 +1,16 @@
-import { api, downloadStatus, fileUrl, friendlyError, getAllJobs, getJob, safeFileName, setJob } from "./shared.js";
+import { reportUrl } from "./getcourse-hls.js";
+import {
+  api,
+  downloadStatus,
+  fileUrl,
+  friendlyError,
+  gcPlayerKey,
+  gcPlayerPrefix,
+  getAllJobs,
+  getJob,
+  safeFileName,
+  setJob,
+} from "./shared.js";
 
 // Фоновая часть: запускает скачивание на сервере, следит за ним и сохраняет
 // готовый файл в «Загрузки». Окошко (popup.js) только показывает состояние из
@@ -19,7 +31,7 @@ const active = new Set();
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === "download") {
     startDownload(message).catch((e) => console.error("Videoner: download", e));
     sendResponse({ ok: true });
@@ -32,6 +44,45 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   }
   if (message?.type === "videoner:direct-progress") {
     directProgress(message);
+    return false;
+  }
+  if (message?.type === "videoner:gc-player") {
+    // Плеер GetCourse в рамке вкладки (getcourse.js). Ключ на каждую рамку,
+    // а не список на вкладку: два плеера урока сообщают о себе одновременно,
+    // и общий список терял бы одного из них.
+    if (sender.tab?.id !== undefined) {
+      chrome.storage.session.set({ [gcPlayerKey(sender.tab.id, sender.frameId)]: message.hash });
+    }
+    return false;
+  }
+  if (message?.type === "gc-download") {
+    startGetCourse(message).catch((e) => console.error("Videoner: getcourse", e));
+    sendResponse({ ok: true });
+    return false;
+  }
+  if (message?.type === "gc-check") {
+    checkGetCourse(message.key).catch((e) => console.error("Videoner: getcourse check", e));
+    return false;
+  }
+  // Ход и итог урока принимаем только от своей скрытой страницы.
+  if (message?.type?.startsWith("videoner:gc-") && message.type !== "videoner:gc-player" && !isOffscreen(sender)) {
+    return false;
+  }
+  if (message?.type === "videoner:gc-progress") {
+    updateJob(message.key, (job) => {
+      if (!isBrowserGetCourse(job)) return undefined;
+      const { percentage, eta, downloaded } = message;
+      return { ...job, progress: { phase: "downloading", percentage, eta, downloaded, total: null } };
+    });
+    return false;
+  }
+  if (message?.type === "videoner:gc-done") {
+    getCourseDone(message).catch((e) => console.error("Videoner: getcourse save", e));
+    return false;
+  }
+  if (message?.type === "videoner:gc-failed") {
+    console.warn("Videoner: browser download of GetCourse failed, falling back to the server", message.error);
+    getCourseFailed(message.key).catch((e) => console.error("Videoner: getcourse fallback", e));
     return false;
   }
   if (message?.type === "subtitles") {
@@ -56,15 +107,17 @@ async function startDownload({ url, title, kind, quality }) {
 }
 
 // Скачивание через сервер. extra — дополнительные поля задачи (например,
-// пометка, что это запасной путь после неудачи в браузере).
-async function serverDownload({ url, title, kind, quality }, extra = {}) {
+// пометка, что это запасной путь после неудачи в браузере). apiUrl — что
+// качать, если это не сама ссылка задачи (у GetCourse ключ задачи — урок, а
+// качается адрес его потока).
+async function serverDownload({ url, apiUrl, title, kind, quality }, extra = {}) {
   const job = { url, title, kind, quality, ...extra, state: "starting", startedAt: Date.now() };
   await setJob(url, job);
 
   let started;
   try {
     started = await api(`/download/${kind === "audio" ? "audio" : "video"}`, {
-      url,
+      url: apiUrl ?? url,
       quality,
       extension: kind === "audio" ? "mp3" : "mp4",
     });
@@ -174,6 +227,129 @@ async function fallbackToServer(url, title) {
   await serverDownload({ url, title: info.title || title, kind: "video", quality }, { fallback: true });
 }
 
+// ---- GetCourse: урок качает и склеивает браузер (getcourse.js, gc-offscreen.js) ----
+
+chrome.tabs.onRemoved.addListener(async (tabId) => {
+  const all = await chrome.storage.session.get(null);
+  const keys = Object.keys(all).filter((key) => key.startsWith(gcPlayerPrefix(tabId)));
+  if (keys.length) await chrome.storage.session.remove(keys);
+});
+
+const OFFSCREEN_URL = "gc-offscreen.html";
+const isOffscreen = (sender) => sender.url === chrome.runtime.getURL(OFFSCREEN_URL);
+
+async function hasOffscreen() {
+  const contexts = await chrome.runtime.getContexts({ contextTypes: ["OFFSCREEN_DOCUMENT"] });
+  return contexts.length > 0;
+}
+
+// Проверка и создание — внутри одного общего обещания: два урока, запущенные
+// подряд, иначе оба увидели бы «страницы нет», и второе создание упало бы.
+// Закрывается страница сама, когда у неё не остаётся ни уроков, ни файлов
+// (gc-offscreen.js), — фоновая часть её не закрывает и не гоняется с ней.
+let offscreenReady = null;
+
+function ensureOffscreen() {
+  offscreenReady ??= (async () => {
+    if (await hasOffscreen()) return;
+    await chrome.offscreen.createDocument({
+      url: OFFSCREEN_URL,
+      reasons: ["BLOBS"],
+      justification: "Join the downloaded pieces of a GetCourse lesson into one mp4 file",
+    });
+  })().finally(() => {
+    offscreenReady = null;
+  });
+  return offscreenReady;
+}
+
+// Страница подтверждает, что взяла урок. Нет ответа — она как раз
+// закрывалась: создаём заново и пробуем ещё раз.
+async function sendStart(job) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    await ensureOffscreen();
+    const answer = await chrome.runtime.sendMessage({ target: "gc-offscreen", type: "start", job }).catch(() => null);
+    if (answer?.ok) return;
+  }
+  throw new Error("offscreen did not take the job");
+}
+
+const isBrowserGetCourse = (job) => Boolean(job?.gc && job.direct && job.state === "downloading");
+
+async function startGetCourse({ key, title, quality, variantUrl, master }) {
+  const current = await getJob(key);
+  if (current && ["starting", "downloading", "saving"].includes(current.state)) return;
+  await updateJob(key, () => ({
+    url: key,
+    title,
+    kind: "video",
+    quality,
+    direct: true,
+    gc: { master, quality },
+    state: "downloading",
+    progress: null,
+    startedAt: Date.now(),
+  }));
+  try {
+    await sendStart({ key, variantUrl });
+  } catch (e) {
+    console.warn("Videoner: offscreen", e);
+    await getCourseFailed(key);
+  }
+}
+
+function releaseBlob(key) {
+  chrome.runtime.sendMessage({ target: "gc-offscreen", type: "release", key }).catch(() => {});
+}
+
+async function getCourseDone({ key, href, size }) {
+  try {
+    // Только для урока, который всё ещё качает браузер: если тот уже ушёл на
+    // сервер, вторая копия файла не нужна.
+    const job = await getJob(key);
+    if (!isBrowserGetCourse(job)) return;
+    await updateJob(key, (current) => ({ ...current, state: "saving", progress: null }));
+    await chromeDownload(href, `${safeFileName(job.title)}.mp4`, key);
+    api("/download/report", { url: reportUrl(job.gc.master), fileSize: size, title: job.title }).catch((e) =>
+      console.warn("Videoner: report", e)
+    );
+    await updateJob(key, (current) => ({ ...current, state: "done", progress: null }));
+  } catch (e) {
+    console.error("Videoner: getcourse save", e);
+    await updateJob(key, (current) => ({ ...current, state: "error", error: friendlyError({ message: "failed" }) }));
+  } finally {
+    releaseBlob(key);
+  }
+}
+
+// Не вышло в браузере — тот же поток качает сервер (yt-dlp), в том же
+// качестве. Подпись потока проверена с чужого IP только на открытом уроке:
+// закрытый сервер может и не открыть — тогда честная ошибка. Проверка и
+// пометка — в одной записи очереди: два сигнала о сбое подряд не должны
+// запустить два скачивания на сервере.
+async function getCourseFailed(key) {
+  let job = null;
+  await updateJob(key, (current) => {
+    if (!isBrowserGetCourse(current)) return undefined;
+    job = current;
+    return { ...current, state: "starting", direct: false, fallback: true, progress: null };
+  });
+  if (!job) return;
+  await jobWrites.get(key);
+  await serverDownload(
+    { url: key, apiUrl: job.gc.master, title: job.title, kind: "video", quality: job.gc.quality },
+    { fallback: true, gc: job.gc }
+  );
+}
+
+// Сторож: страница могла упасть (например, не хватило памяти на длинный урок
+// в 1080p) и больше ничего не прислать. Окошко при открытии просит
+// проверить: урок «качается», а страницы нет — отдаём его серверу.
+async function checkGetCourse(key) {
+  const job = await getJob(key);
+  if (isBrowserGetCourse(job) && !(await hasOffscreen())) await getCourseFailed(key);
+}
+
 async function infoFor(url) {
   const key = `info:${url}`;
   const cached = (await chrome.storage.session.get(key))[key];
@@ -272,12 +448,17 @@ async function downloadSubtitles({ url, title, lang }) {
 // и файл сохранится (в худшем случае — второй копией). Задача, застрявшая на
 // запуске, номера скачивания не получила — следить не за чем.
 async function resumeJobs() {
+  const offscreenAlive = await hasOffscreen();
   for (const job of await getAllJobs()) {
     if (active.has(job.url)) continue;
+    // Урок GetCourse качает скрытая страница, а не этот экземпляр: жива она —
+    // её сообщения подхватит и новый.
+    if (job.gc && job.direct && job.state === "downloading" && offscreenAlive) continue;
     // Прямое скачивание после перезапуска не подхватить: связь со страницей
     // (TikTok) или опрос загрузки (Threads) жили в остановленном экземпляре.
-    if (job.direct && job.state === "downloading") {
+    if (job.direct && (job.state === "downloading" || job.state === "saving")) {
       await setJob(job.url, { ...job, state: "error", error: friendlyError({ message: "failed" }) });
+      if (job.gc) releaseBlob(job.url);
       continue;
     }
     if (job.state === "starting" && !job.downloadId) {

@@ -274,6 +274,18 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
         '--concurrent-fragments',
         '8',
       ];
+    } else if (height && platform === 'getcourse') {
+      // Урок GetCourse — HLS, где видео и звук в одном потоке (H.264 + AAC),
+      // кусочками по 3 секунды: у сорокаминутного урока их около 700. По
+      // одному они качались бы долго, поэтому параллельно, как у VK.
+      formatArr = [
+        '-f',
+        `b[height<=${height}]/b`,
+        '--merge-output-format',
+        'mp4',
+        '--concurrent-fragments',
+        '8',
+      ];
     } else if (height) {
       formatArr = [
         '-f',

@@ -1,3 +1,4 @@
+import { fetchQualities } from "./getcourse-hls.js";
 import {
   SITE,
   api,
@@ -5,6 +6,7 @@ import {
   formatEta,
   formatSize,
   friendlyError,
+  gcPlayerPrefix,
   getJob,
   isPlatformUrl,
   jobKey,
@@ -47,6 +49,12 @@ let tabId = null;
 // скачать его прямо из браузера, а качества сервера — по кнопке.
 let media = null;
 let serverChoices = false;
+// Урок GetCourse: плееры вкладки (getcourse.js), выбранный плеер и его
+// качества. Ссылка задачи у урока — getcourse:<хеш видео>.
+let tabTitle = null;
+let gcPlayers = [];
+let gcPlayer = null;
+let gcQualities = null;
 
 function el(tag, attrs = {}, ...children) {
   const node = document.createElement(tag);
@@ -62,7 +70,7 @@ function el(tag, attrs = {}, ...children) {
 }
 
 function show(...nodes) {
-  app.replaceChildren(...nodes);
+  app.replaceChildren(...nodes.filter((node) => node !== null && node !== undefined));
 }
 
 function showLoading(text) {
@@ -82,6 +90,9 @@ function siteButton() {
 async function targetUrl() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   tabId = tab?.id ?? null;
+  // Название вкладки видно только окошку по значку (activeTab); в рамке на
+  // плеере его нет.
+  tabTitle = tab?.title || null;
   return params.get("url") || tab?.url || null;
 }
 
@@ -215,8 +226,107 @@ async function showServerChoices() {
   showChoices();
 }
 
+// ---- GetCourse ----
+
+// Плееры урока из реестра фоновой части. Каждый переспрашиваем: рамка могла
+// исчезнуть (переход к другому уроку), такие из реестра убираем.
+async function findGetCoursePlayers() {
+  if (tabId === null) return [];
+  const prefix = gcPlayerPrefix(tabId);
+  const keys = Object.keys(await chrome.storage.session.get(null)).filter((key) => key.startsWith(prefix));
+  const answers = await Promise.all(
+    keys.map((key) =>
+      chrome.tabs
+        .sendMessage(tabId, { type: "videoner:gc-ping" }, { frameId: Number(key.slice(prefix.length)) })
+        .catch(() => null)
+    )
+  );
+  const dead = keys.filter((_, i) => !answers[i]?.master);
+  if (dead.length) await chrome.storage.session.remove(dead);
+  // Одно и то же видео, вставленное в урок дважды, — один пункт.
+  const byHash = new Map();
+  for (const player of answers) if (player?.master && !byHash.has(player.hash)) byHash.set(player.hash, player);
+  return [...byHash.values()];
+}
+
+function gcTitle(index) {
+  const base = tabTitle || t.gcLesson;
+  return gcPlayers.length > 1 ? `${base} (${index + 1})` : base;
+}
+
+async function openGetCourse(player) {
+  gcPlayer = player;
+  gcQualities = null;
+  url = `getcourse:${player.hash}`;
+  info = { title: gcTitle(gcPlayers.indexOf(player)), thumbnail: player.thumbnail, duration: player.duration };
+  chrome.runtime.sendMessage({ type: "gc-check", key: url }).catch(() => {});
+  render(await getJob(url));
+}
+
+function showPlayerList() {
+  gcPlayer = null;
+  url = null;
+  show(
+    el("div", { class: "section-label" }, t.gcPick),
+    el(
+      "div",
+      { class: "choices" },
+      ...gcPlayers.map((player, index) =>
+        choice(t.gcVideo(index + 1), formatDuration(player.duration), () => openGetCourse(player))
+      )
+    )
+  );
+}
+
+async function showGcChoices() {
+  const back = gcPlayers.length > 1 ? el("button", { class: "secondary", onclick: showPlayerList }, t.back) : null;
+  if (!gcQualities) {
+    showLoading(t.loading);
+    try {
+      gcQualities = await fetchQualities(gcPlayer.master);
+    } catch (e) {
+      console.warn("Videoner: getcourse master", e);
+      gcQualities = [];
+    }
+    // Пока грузились качества, урок могли запустить из другого окошка (кнопка
+    // на плеере и значок) — тогда показываем ход, а не выбор.
+    const job = await getJob(url);
+    if (job) return render(job);
+  }
+  if (!gcQualities.length) {
+    gcQualities = null;
+    showMessage(t.gcNoStream, { error: true, actions: back ? [back] : [] });
+    return;
+  }
+  const estimate = (variant) => (variant.bandwidth && info.duration ? (variant.bandwidth * info.duration) / 8 : null);
+  show(
+    videoCard(),
+    el("div", { class: "section-label" }, t.video),
+    el(
+      "div",
+      { class: "choices" },
+      ...gcQualities.map((variant) =>
+        choice(variant.quality, formatSize(estimate(variant)), () => {
+          chrome.runtime.sendMessage({
+            type: "gc-download",
+            key: url,
+            title: info.title,
+            quality: variant.quality,
+            variantUrl: variant.url,
+            master: gcPlayer.master,
+          });
+          showLoading(t.starting);
+        })
+      )
+    ),
+    el("div", { class: "note" }, t.gcNote),
+    back
+  );
+}
+
 function showStart() {
-  if (media && !serverChoices) showDirect();
+  if (gcPlayer) showGcChoices();
+  else if (media && !serverChoices) showDirect();
   else showChoices();
 }
 
@@ -269,8 +379,21 @@ function render(job) {
 }
 
 async function main() {
+  // Ход скачивания пишет background.js — окошко просто перерисовывается.
+  chrome.storage.session.onChanged.addListener((changes) => {
+    const change = url && changes[jobKey(url)];
+    if (change) render(change.newValue ?? null);
+  });
+
   url = await targetUrl();
-  if (!url || !isPlatformUrl(url)) {
+  // Урок GetCourse: школа на своём домене, видео — в плеере GetCourse внутри
+  // страницы. Кнопка на самом плеере присылает хеш своего видео (?gc=).
+  const gcHash = params.get("gc");
+  if (gcHash || !url || !isPlatformUrl(url)) {
+    const players = await findGetCoursePlayers();
+    gcPlayers = gcHash ? players.filter((player) => player.hash === gcHash) : players;
+    if (gcPlayers.length === 1) return openGetCourse(gcPlayers[0]);
+    if (gcPlayers.length > 1) return showPlayerList();
     showMessage(t.notVideoPage, { actions: [siteButton()] });
     return;
   }
@@ -291,12 +414,6 @@ async function main() {
   }
 
   render(await getJob(url));
-
-  // Ход скачивания пишет background.js — окошко просто перерисовывается.
-  chrome.storage.session.onChanged.addListener((changes) => {
-    const change = changes[jobKey(url)];
-    if (change) render(change.newValue ?? null);
-  });
 }
 
 main();

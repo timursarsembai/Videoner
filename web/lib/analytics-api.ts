@@ -42,15 +42,23 @@ export interface ActivityData {
   returningUsersLast30Days: number;
 }
 
-// MAU на конкретный день: разные активные пользователи за 30 дней по этот
-// день включительно (UTC).
-export interface MauDailyPoint {
+// Активные на конкретный день (UTC): DAU — в этот день, WAU и MAU — разные
+// пользователи за 7 и 30 дней по этот день включительно.
+export interface ActiveDailyPoint {
   day: string;
+  dau: number;
+  wau: number;
   mau: number;
 }
 
+// Активные пользователи за календарную неделю (с понедельника).
+export interface ActiveWeeklyPoint {
+  week: string;
+  users: number;
+}
+
 // Активные пользователи за календарный месяц.
-export interface MauMonthlyPoint {
+export interface ActiveMonthlyPoint {
   month: string;
   users: number;
 }
@@ -125,8 +133,9 @@ export interface AnalyticsSnapshot {
   errorsTimeseries: ErrorTimeseriesPoint[];
   trafficDaily: TrafficPoint[];
   trafficMonthly: TrafficPoint[];
-  mauDaily: MauDailyPoint[];
-  mauMonthly: MauMonthlyPoint[];
+  activeDaily: ActiveDailyPoint[];
+  activeWeekly: ActiveWeeklyPoint[];
+  activeMonthly: ActiveMonthlyPoint[];
 }
 
 // Ходит на СВОЙ Next.js-прокси (app/api/dashboard/[...path]/route.ts), а не
@@ -181,8 +190,9 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     errorsTimeseries,
     trafficDaily,
     trafficMonthly,
-    mauDaily,
-    mauMonthly,
+    activeDaily,
+    activeWeekly,
+    activeMonthly,
   ] = await Promise.all([
     get<OverviewData>(`/overview?days=${days}`),
     get<PlatformDatum[]>("/platforms"),
@@ -194,8 +204,9 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     get<ErrorTimeseriesPoint[]>(`/errors/timeseries?days=${days}`),
     get<TrafficPoint[]>(`/traffic/daily?days=${days}`),
     get<TrafficPoint[]>("/traffic/monthly"),
-    get<MauDailyPoint[]>(`/users/mau/daily?days=${days}`),
-    get<MauMonthlyPoint[]>("/users/mau/monthly"),
+    get<ActiveDailyPoint[]>(`/users/active/daily?days=${days}`),
+    get<ActiveWeeklyPoint[]>("/users/active/weekly?weeks=26"),
+    get<ActiveMonthlyPoint[]>("/users/active/monthly"),
   ]);
 
   return {
@@ -209,8 +220,9 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     errorsTimeseries,
     trafficDaily,
     trafficMonthly,
-    mauDaily,
-    mauMonthly,
+    activeDaily,
+    activeWeekly,
+    activeMonthly,
   };
 }
 

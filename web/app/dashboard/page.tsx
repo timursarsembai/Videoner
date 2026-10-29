@@ -141,6 +141,15 @@ function formatMonth(iso: string): string {
   });
 }
 
+// Неделя подписывается датой её понедельника.
+function formatWeek(iso: string): string {
+  return new Date(iso).toLocaleDateString("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: "UTC",
+  });
+}
+
 const BYTE_UNITS = [
   { label: "ГБ", size: 1024 ** 3 },
   { label: "МБ", size: 1024 ** 2 },
@@ -287,6 +296,71 @@ function StatCard({
       <div className="text-sm text-foreground/60">{label}</div>
       <div className="mt-1 text-2xl font-semibold">{value}</div>
       {hint && <div className="mt-1 text-xs text-foreground/40">{hint}</div>}
+    </div>
+  );
+}
+
+const ACTIVE_LABELS = { dau: "DAU", wau: "WAU", mau: "MAU" } as const;
+
+function ActiveDailyChart({
+  data,
+  dataKey,
+  title,
+  hint,
+}: {
+  data: { day: string; dau: number; wau: number; mau: number }[];
+  dataKey: keyof typeof ACTIVE_LABELS;
+  title: string;
+  hint: string;
+}) {
+  return (
+    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+      <h2 className="mb-1 text-sm font-medium text-foreground/70">{title}</h2>
+      <p className="mb-4 text-xs text-foreground/50">{hint}</p>
+      <ResponsiveContainer width="100%" height={280}>
+        <LineChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+          <XAxis dataKey="day" fontSize={12} />
+          <YAxis fontSize={12} allowDecimals={false} />
+          <Tooltip />
+          <Line
+            type="monotone"
+            dataKey={dataKey}
+            name={ACTIVE_LABELS[dataKey]}
+            stroke="#3b82f6"
+            strokeWidth={2}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function ActivePeriodChart({
+  data,
+  xKey,
+  title,
+  hint,
+}: {
+  data: ({ users: number } & Record<string, string | number>)[];
+  xKey: string;
+  title: string;
+  hint: string;
+}) {
+  return (
+    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+      <h2 className="mb-1 text-sm font-medium text-foreground/70">{title}</h2>
+      <p className="mb-4 text-xs text-foreground/50">{hint}</p>
+      <ResponsiveContainer width="100%" height={280}>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+          <XAxis dataKey={xKey} fontSize={12} />
+          <YAxis fontSize={12} allowDecimals={false} />
+          <Tooltip />
+          <Bar dataKey="users" name="Активных" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }
@@ -705,8 +779,9 @@ export default function AnalyticsPage() {
     dayKeys
   );
   const volume = platformVolume(snapshot.trafficDaily);
-  const mauDaily = snapshot.mauDaily.map((p) => ({ day: formatDay(p.day), mau: p.mau }));
-  const mauMonthly = snapshot.mauMonthly.map((p) => ({ month: formatMonth(p.month), users: p.users }));
+  const activeDaily = snapshot.activeDaily.map((p) => ({ ...p, day: formatDay(p.day) }));
+  const activeWeekly = snapshot.activeWeekly.map((p) => ({ week: formatWeek(p.week), users: p.users }));
+  const activeMonthly = snapshot.activeMonthly.map((p) => ({ month: formatMonth(p.month), users: p.users }));
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-8">
@@ -776,51 +851,39 @@ export default function AnalyticsPage() {
           />
         </section>
 
+        {/* Дни до 27.10.2026 восстановлены из скачиваний и дат визитов (см.
+            миграцию user_activity_days) и чуть ниже настоящих. */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-1 text-sm font-medium text-foreground/70">
-              MAU по дням, {days} дней
-            </h2>
-            {/* Дни до 27.10.2026 восстановлены из скачиваний и дат визитов
-                (см. миграцию user_activity_days) и чуть ниже настоящих. */}
-            <p className="mb-4 text-xs text-foreground/50">
-              Активных за 30 дней на каждую дату
-            </p>
-            <ResponsiveContainer width="100%" height={280}>
-              <LineChart data={mauDaily}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                <XAxis dataKey="day" fontSize={12} />
-                <YAxis fontSize={12} allowDecimals={false} />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="mau"
-                  name="MAU"
-                  stroke="#3b82f6"
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-1 text-sm font-medium text-foreground/70">
-              Активные пользователи по месяцам
-            </h2>
-            <p className="mb-4 text-xs text-foreground/50">
-              Разных пользователей за календарный месяц; текущий ещё растёт
-            </p>
-            <ResponsiveContainer width="100%" height={280}>
-              <BarChart data={mauMonthly}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                <XAxis dataKey="month" fontSize={12} />
-                <YAxis fontSize={12} allowDecimals={false} />
-                <Tooltip />
-                <Bar dataKey="users" name="Активных" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <ActiveDailyChart
+            data={activeDaily}
+            dataKey="dau"
+            title={`DAU по дням, ${days} дней`}
+            hint="Активных за календарный день (UTC); сегодняшний ещё растёт"
+          />
+          <ActiveDailyChart
+            data={activeDaily}
+            dataKey="wau"
+            title={`WAU по дням, ${days} дней`}
+            hint="Активных за 7 дней на каждую дату"
+          />
+          <ActiveDailyChart
+            data={activeDaily}
+            dataKey="mau"
+            title={`MAU по дням, ${days} дней`}
+            hint="Активных за 30 дней на каждую дату"
+          />
+          <ActivePeriodChart
+            data={activeWeekly}
+            xKey="week"
+            title="Активные пользователи по неделям"
+            hint="Разных пользователей за неделю с понедельника, полгода; текущая ещё растёт"
+          />
+          <ActivePeriodChart
+            data={activeMonthly}
+            xKey="month"
+            title="Активные пользователи по месяцам"
+            hint="Разных пользователей за календарный месяц; текущий ещё растёт"
+          />
         </section>
 
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">

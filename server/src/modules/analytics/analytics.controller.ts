@@ -58,18 +58,26 @@ export class AnalyticsController {
     return this.analyticsService.usersActivity();
   }
 
-  @Get('users/mau/daily')
-  mauDaily(@Query('days') days?: string) {
+  @Get('users/active/daily')
+  activeDaily(@Query('days') days?: string) {
     const parsed = parseInt(days ?? '30', 10);
-    // Потолок — год: каждая точка считается отдельным подзапросом.
-    return this.analyticsService.mauDaily(
+    // Потолок — год: каждая точка считается отдельными подзапросами.
+    return this.analyticsService.activeDaily(
       Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 366) : 30,
     );
   }
 
-  @Get('users/mau/monthly')
-  mauMonthly() {
-    return this.analyticsService.mauMonthly();
+  @Get('users/active/weekly')
+  activeWeekly(@Query('weeks') weeks?: string) {
+    const parsed = parseInt(weeks ?? '26', 10);
+    return this.analyticsService.activeWeekly(
+      Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 260) : 26,
+    );
+  }
+
+  @Get('users/active/monthly')
+  activeMonthly() {
+    return this.analyticsService.activeMonthly();
   }
 
   @Get('users/top')

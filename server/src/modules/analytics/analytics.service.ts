@@ -189,12 +189,21 @@ export class AnalyticsService {
     };
   }
 
-  // MAU на каждый день периода: сколько разных людей были активны за 30
-  // календарных дней по этот день включительно (UTC). Последняя точка — то же
-  // число, что в карточке MAU, с точностью до границы суток.
-  async mauDaily(days: number) {
-    return this.prisma.$queryRaw<{ day: Date; mau: number }[]>`
+  // DAU, WAU и MAU на каждый день периода: сколько разных людей были активны
+  // в этот календарный день, за 7 и за 30 дней по него включительно (UTC).
+  // Последняя точка — те же числа, что в карточках, с точностью до границы
+  // суток (карточки считают последние 24 часа, 7 и 30 суток от «сейчас»).
+  async activeDaily(days: number) {
+    return this.prisma.$queryRaw<
+      { day: Date; dau: number; wau: number; mau: number }[]
+    >`
       SELECT d::timestamp AS day,
+             (SELECT COUNT(*)
+                FROM "UserActivityDay" a
+               WHERE a.day = d::date)::int AS dau,
+             (SELECT COUNT(DISTINCT a."botUserId")
+                FROM "UserActivityDay" a
+               WHERE a.day BETWEEN d::date - 6 AND d::date)::int AS wau,
              (SELECT COUNT(DISTINCT a."botUserId")
                 FROM "UserActivityDay" a
                WHERE a.day BETWEEN d::date - 29 AND d::date)::int AS mau
@@ -207,9 +216,22 @@ export class AnalyticsService {
     `;
   }
 
+  // Активные пользователи по календарным неделям (с понедельника) за
+  // последние weeks недель. Текущая неделя ещё не закончилась и растёт.
+  async activeWeekly(weeks: number) {
+    return this.prisma.$queryRaw<{ week: Date; users: number }[]>`
+      SELECT date_trunc('week', day::timestamp) AS week,
+             COUNT(DISTINCT "botUserId")::int AS users
+      FROM "UserActivityDay"
+      WHERE day >= date_trunc('week', NOW() AT TIME ZONE 'UTC')::date - (${weeks}::int - 1) * 7
+      GROUP BY week
+      ORDER BY week ASC
+    `;
+  }
+
   // Активные пользователи по календарным месяцам за всё время. Текущий месяц
   // ещё не закончился, поэтому его столбик растёт до конца месяца.
-  async mauMonthly() {
+  async activeMonthly() {
     return this.prisma.$queryRaw<{ month: Date; users: number }[]>`
       SELECT date_trunc('month', day::timestamp) AS month,
              COUNT(DISTINCT "botUserId")::int AS users

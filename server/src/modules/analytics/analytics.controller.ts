@@ -80,6 +80,14 @@ export class AnalyticsController {
     return this.analyticsService.activeMonthly();
   }
 
+  @Get('users/blocked')
+  blocked(@Query('days') days?: string) {
+    const parsed = parseInt(days ?? '30', 10);
+    return this.analyticsService.blocked(
+      Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 366) : 30,
+    );
+  }
+
   @Get('users/top')
   topUsers(@Query('limit') limit?: string) {
     const parsed = parseInt(limit ?? '20', 10);

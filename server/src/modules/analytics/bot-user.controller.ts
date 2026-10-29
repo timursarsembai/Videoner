@@ -58,6 +58,17 @@ export class BotUserController {
     return this.botUserService.getProfile(dto.id);
   }
 
+  // Бот сообщает, что человек его заблокировал или разблокировал (Telegram
+  // присылает боту my_chat_member). Только для статистики в дашборде.
+  @Post('blocked')
+  async setBlocked(@Body() body: { telegramId?: unknown; blocked?: unknown }) {
+    if (!Number.isSafeInteger(body?.telegramId) || typeof body?.blocked !== 'boolean') {
+      throw new BadRequestException('telegramId and blocked are required');
+    }
+    await this.botUserService.setBlocked(body.telegramId as number, body.blocked, 'telegram');
+    return { ok: true };
+  }
+
   // Для обновления профиля на сайте (GET /api/auth/me) без повторной проверки
   // подписи Telegram при каждом заходе — сессия сайта уже подтверждает
   // личность, тут просто читаем актуальные данные по telegramId.

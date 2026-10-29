@@ -366,6 +366,36 @@ function ActivePeriodChart({
   );
 }
 
+// Блокировки и разблокировки бота за период — две серии в одних единицах
+// (люди), поэтому одна ось.
+function BlockedChart({
+  data,
+  title,
+  hint,
+}: {
+  data: { label: string; blocked: number; unblocked: number }[];
+  title: string;
+  hint: string;
+}) {
+  return (
+    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+      <h2 className="mb-1 text-sm font-medium text-foreground/70">{title}</h2>
+      <p className="mb-4 text-xs text-foreground/50">{hint}</p>
+      <ResponsiveContainer width="100%" height={280}>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+          <XAxis dataKey="label" fontSize={12} />
+          <YAxis fontSize={12} allowDecimals={false} />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="blocked" name="Заблокировали" fill="#ef4444" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="unblocked" name="Разблокировали" fill="#22c55e" radius={[4, 4, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
 const ATTEMPTS_PAGE_SIZE = 50;
 
 const STATUS_LABELS: Record<string, string> = {
@@ -784,6 +814,10 @@ export default function AnalyticsPage() {
   const activeDaily = snapshot.activeDaily.map((p) => ({ ...p, day: formatDay(p.day) }));
   const activeWeekly = snapshot.activeWeekly.map((p) => ({ week: formatWeek(p.week), users: p.users }));
   const activeMonthly = snapshot.activeMonthly.map((p) => ({ month: formatMonth(p.month), users: p.users }));
+  const blocked = snapshot.blocked;
+  const blockedDaily = blocked.daily.map((p) => ({ ...p, label: formatDay(p.period) }));
+  const blockedWeekly = blocked.weekly.map((p) => ({ ...p, label: formatWeek(p.period) }));
+  const blockedMonthly = blocked.monthly.map((p) => ({ ...p, label: formatMonth(p.period) }));
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-8">
@@ -843,13 +877,18 @@ export default function AnalyticsPage() {
           <StatCard label="Входили на сайт через Telegram" value={overview.webLoginUsers} />
         </section>
 
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-4">
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-5">
           <StatCard label="DAU" value={activity.dau} hint="Активных пользователей за последние сутки" />
           <StatCard label="WAU" value={activity.wau} hint="Активных пользователей за последние 7 дней" />
           <StatCard label="MAU" value={activity.mau} hint="Активных пользователей за последние 30 дней" />
           <StatCard
             label="Новые / вернувшиеся за 30 дн."
             value={`${activity.newUsersLast30Days} / ${activity.returningUsersLast30Days}`}
+          />
+          <StatCard
+            label="Заблокировали бота"
+            value={`${blocked.blocked} (${blocked.total ? ((blocked.blocked / blocked.total) * 100).toFixed(1) : 0}%)`}
+            hint={`Из ${blocked.total} пользователей бота, включая удаливших аккаунт. Учёт по дням — с 29.10.2026`}
           />
         </section>
 
@@ -885,6 +924,27 @@ export default function AnalyticsPage() {
             xKey="month"
             title="Активные пользователи по месяцам"
             hint="Разных пользователей за календарный месяц; текущий ещё растёт"
+          />
+        </section>
+
+        {/* Учёт блокировок — с 29.10.2026: заблокировавшие раньше входят в
+            карточку «Заблокировали бота», но не в графики (дата их блокировки
+            неизвестна). */}
+        <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <BlockedChart
+            data={blockedDaily}
+            title={`Блокировки бота по дням, ${days} дней`}
+            hint="Сколько человек заблокировали и разблокировали бота за день (UTC)"
+          />
+          <BlockedChart
+            data={blockedWeekly}
+            title="Блокировки бота по неделям"
+            hint="За неделю с понедельника, полгода; текущая ещё растёт"
+          />
+          <BlockedChart
+            data={blockedMonthly}
+            title="Блокировки бота по месяцам"
+            hint="За календарный месяц, год; текущий ещё растёт"
           />
         </section>
 

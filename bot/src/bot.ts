@@ -7,6 +7,7 @@ import { registerMembershipHandlers } from "./handlers/membership.js";
 import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown, handleLinks } from "./handlers/download.js";
 import { registerInlineHandlers } from "./handlers/inline.js";
 import { openInvite } from "./handlers/invite.js";
+import { registerBlockedHandlers } from "./handlers/blocked.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -41,6 +42,8 @@ bot.command("start", async (ctx) => {
 });
 
 registerAdminHandlers(bot);
+// Свой тип обновлений (my_chat_member) — порядок не важен.
+registerBlockedHandlers(bot);
 // Инлайн-режим («@бот <ссылка>» в любом чате). Слушает СВОИ типы обновлений
 // (inline_query, chosen_inline_result), с обработчиками сообщений и коллбэков
 // не пересекается, поэтому порядок регистрации здесь роли не играет.

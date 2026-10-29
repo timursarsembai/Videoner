@@ -48,7 +48,38 @@ export class BotUserService {
       },
     });
     await this.recordActivityDay(botUser.id);
+    // Блокировку здесь не снимаем: сюда приходят и запросы сайта, а человек,
+    // заблокировавший бота, может пользоваться сайтом. О разблокировке Telegram
+    // сообщает боту сам (setBlocked).
     return botUser;
+  }
+
+  // Человек заблокировал бота или разблокировал его. Событие для графиков
+  // пишется только при смене состояния: Telegram может прислать то же самое
+  // повторно. Смена и проверка — одним условным update, чтобы два
+  // одновременных вызова не записали два события. Незнакомых боту людей
+  // пропускаем: статистика — только по тем, кого мы уже видели.
+  async setBlocked(telegramId: number | string, blocked: boolean, source: string) {
+    try {
+      const at = new Date();
+      await this.prisma.$transaction(async (tx) => {
+        const botUser = await tx.botUser.findUnique({
+          where: { telegramId: BigInt(telegramId) },
+          select: { id: true },
+        });
+        if (!botUser) return;
+        const changed = await tx.botUser.updateMany({
+          where: { id: botUser.id, blockedAt: blocked ? null : { not: null } },
+          data: { blockedAt: blocked ? at : null },
+        });
+        if (changed.count !== 1) return;
+        await tx.botBlockEvent.create({
+          data: { botUserId: botUser.id, blocked, source, at },
+        });
+      });
+    } catch (e) {
+      console.error(`Failed to record block state for BotUser ${telegramId}:`, e);
+    }
   }
 
   // День активности для графиков MAU (см. модель UserActivityDay). Сбой

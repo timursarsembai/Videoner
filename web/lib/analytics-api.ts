@@ -122,6 +122,21 @@ export interface AttemptsPage {
   rows: AttemptRow[];
 }
 
+// Блокировки бота за период (день, неделя с понедельника или месяц, UTC).
+export interface BlockedPoint {
+  period: string;
+  blocked: number;
+  unblocked: number;
+}
+
+export interface BlockedData {
+  total: number;
+  blocked: number;
+  daily: BlockedPoint[];
+  weekly: BlockedPoint[];
+  monthly: BlockedPoint[];
+}
+
 export interface AnalyticsSnapshot {
   overview: OverviewData;
   platforms: PlatformDatum[];
@@ -136,6 +151,7 @@ export interface AnalyticsSnapshot {
   activeDaily: ActiveDailyPoint[];
   activeWeekly: ActiveWeeklyPoint[];
   activeMonthly: ActiveMonthlyPoint[];
+  blocked: BlockedData;
 }
 
 // Ходит на СВОЙ Next.js-прокси (app/api/dashboard/[...path]/route.ts), а не
@@ -193,6 +209,7 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     activeDaily,
     activeWeekly,
     activeMonthly,
+    blocked,
   ] = await Promise.all([
     get<OverviewData>(`/overview?days=${days}`),
     get<PlatformDatum[]>("/platforms"),
@@ -207,6 +224,7 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     get<ActiveDailyPoint[]>(`/users/active/daily?days=${days}`),
     get<ActiveWeeklyPoint[]>("/users/active/weekly?weeks=26"),
     get<ActiveMonthlyPoint[]>("/users/active/monthly"),
+    get<BlockedData>(`/users/blocked?days=${days}`),
   ]);
 
   return {
@@ -223,6 +241,7 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     activeDaily,
     activeWeekly,
     activeMonthly,
+    blocked,
   };
 }
 

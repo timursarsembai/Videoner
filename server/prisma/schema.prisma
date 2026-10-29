@@ -140,8 +140,12 @@ model BotUser {
   // 48 часов молчания (см. nudge.service.ts). Непустое значение = больше не
   // писать никогда, даже если он так и не скачал ничего.
   nudgeSentAt       DateTime?
+  // Когда заблокировал бота (или удалил аккаунт); null — бот ему доступен.
+  // История изменений — BotBlockEvent.
+  blockedAt         DateTime?
   downloads         Download[]
   activityDays      UserActivityDay[]
+  blockEvents       BotBlockEvent[]
   firstSeenAt       DateTime          @default(now())
   lastSeenAt        DateTime          @default(now())
 
@@ -215,4 +219,20 @@ model UserActivityDay {
 
   @@id([botUserId, day])
   @@index([day])
+}
+
+// Человек заблокировал бота (blocked) или разблокировал его — для графиков
+// блокировок в дашборде. Пишется только при смене состояния BotUser.blockedAt.
+// source: telegram — Telegram сам сообщил боту (my_chat_member); check — тихая проверка
+// scripts/check-blocked.mjs; baseline — заблокировали до начала учёта
+// (29.10.2026), когда именно — неизвестно, на графиках по периодам не видны.
+model BotBlockEvent {
+  id        String   @id @default(uuid())
+  botUser   BotUser  @relation(fields: [botUserId], references: [id], onDelete: Cascade)
+  botUserId String
+  blocked   Boolean
+  source    String
+  at        DateTime @default(now())
+
+  @@index([at])
 }

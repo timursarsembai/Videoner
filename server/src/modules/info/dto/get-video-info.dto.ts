@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { DownloadSource } from '@prisma/client';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 // Правила ниже работают ТОЛЬКО в режиме наблюдения (VALIDATION_MODE=shadow):
 // проверяются и пишутся в лог, но запрос не отвергают — см.
@@ -36,4 +37,15 @@ export class GetVideoInfoDto {
   @IsOptional()
   @IsString()
   telegramLanguageCode?: string;
+
+  // Ставит прокси сайта (web/lib/api-proxy.ts), а не клиент. Нужен, чтобы не
+  // слать админу алерты о куках по запросам расширения: см. InfoService.
+  @ApiProperty({
+    description: 'Where the request came from',
+    enum: DownloadSource,
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(DownloadSource)
+  source?: DownloadSource;
 }

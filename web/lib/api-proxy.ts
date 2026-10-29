@@ -177,7 +177,13 @@ export async function proxyApiRequest(
           return NextResponse.json({ error: "Captcha verification failed" }, { status: 403 });
         }
       }
-      if (body) delete body.turnstileToken;
+      // Источник — по той же причине, что у скачиваний ниже: значение от
+      // клиента перезаписываем. По нему сервер не шлёт админу алерты о куках
+      // на запросы расширения (InfoService).
+      if (body) {
+        delete body.turnstileToken;
+        body.source = options.source;
+      }
     }
 
     // Скачивание на сайте свободное, без входа (с 04.10.2026). Серверу

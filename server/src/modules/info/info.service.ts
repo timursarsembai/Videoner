@@ -1,3 +1,4 @@
+import { DownloadSource } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   audioExtensionLabel,
@@ -54,6 +55,12 @@ export class InfoService {
 
   async getVideoInfo(dto: GetVideoInfoDto): Promise<VideoInfoResponse> {
     const { url, telegramId, telegramUsername, telegramLanguageCode } = dto;
+    // Алерты о куках — только по запросам сайта и бота. Окошко расширения
+    // спрашивает /info на каждой открытой странице видео, и случайные сбои
+    // первой попытки (удачный повтор без кук) слали админу ложные «куки
+    // протухли» (29.10.2026). Протухнут куки по-настоящему — это увидят и
+    // запросы сайта с ботом.
+    const alerts = dto.source !== DownloadSource.EXTENSION;
     const platform = getPlatform(url);
     if (!platform) {
       throw new BadRequestException('Unsupported platform or invalid URL');
@@ -70,7 +77,7 @@ export class InfoService {
     }
 
     try {
-      const info = await this.fetchInfoWithCookieFallback(url, platform);
+      const info = await this.fetchInfoWithCookieFallback(url, platform, alerts);
 
       const { allFormats, allExtensions } = this.getPlatformFormats(
         info,
@@ -121,12 +128,16 @@ export class InfoService {
 
       return videoInfo;
     } catch (error) {
-      const errorMessage = this.handleError(error, platform);
+      const errorMessage = this.handleError(error, platform, alerts);
       throw new BadRequestException(errorMessage);
     }
   }
 
-  private async fetchInfoWithCookieFallback(url: string, platform: string) {
+  private async fetchInfoWithCookieFallback(
+    url: string,
+    platform: string,
+    alerts: boolean,
+  ) {
     const allowPhotos = PHOTO_PLATFORMS.includes(platform);
 
     if (!COOKIE_FALLBACK_PLATFORMS.includes(platform)) {
@@ -150,7 +161,11 @@ export class InfoService {
           skipCookies: true,
           allowPhotos,
         });
-        void this.alert.notifyCookiesExpired(platform, message);
+        // Threads куки не нужны вовсе: удачный повтор там — просто повтор
+        // после случайного сбоя, а не признак протухших кук.
+        if (alerts && platform !== 'threads') {
+          void this.alert.notifyCookiesExpired(platform, message);
+        }
         return result;
       } catch {
         throw error;
@@ -225,7 +240,11 @@ export class InfoService {
     }
   }
 
-  private handleError(error: unknown, platform: string): string {
+  private handleError(
+    error: unknown,
+    platform: string,
+    alerts: boolean,
+  ): string {
     let errorMessage = `Invalid ${platform || ''} URL`;
     if (error instanceof Error) {
       errorMessage = error.message;
@@ -249,7 +268,7 @@ export class InfoService {
       errorMessage = msg || errorMessage;
     }
 
-    if (/sign in to confirm/i.test(errorMessage)) {
+    if (alerts && /sign in to confirm/i.test(errorMessage)) {
       // Не ждём отправки — не задерживаем ответ пользователю алертом в Telegram.
       void this.alert.notifyYoutubeAuthRequired(errorMessage);
     }

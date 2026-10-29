@@ -26,6 +26,7 @@ const en = {
   nav: {
     home: "Home",
     downloaders: "Downloaders",
+    extension: "Extension",
     switchTheme: "Switch theme",
     language: "Language",
     comingSoon: "Coming Soon",
@@ -37,6 +38,7 @@ const en = {
   },
   footer: {
     botCta: "Also available as a Telegram bot:",
+    extension: "Browser extension",
     developedBy: "Developed by",
     rights: "All rights reserved.",
   },
@@ -368,6 +370,7 @@ const es: Translations = {
   nav: {
     home: "Inicio",
     downloaders: "Descargadores",
+    extension: "Extensión",
     switchTheme: "Cambiar tema",
     language: "Idioma",
     comingSoon: "Próximamente",
@@ -379,6 +382,7 @@ const es: Translations = {
   },
   footer: {
     botCta: "También disponible como bot de Telegram:",
+    extension: "Extensión para el navegador",
     developedBy: "Desarrollado por",
     rights: "Todos los derechos reservados.",
   },
@@ -708,6 +712,7 @@ const ru: Translations = {
   nav: {
     home: "Главная",
     downloaders: "Загрузчики",
+    extension: "Расширение",
     switchTheme: "Сменить тему",
     language: "Язык",
     comingSoon: "Скоро",
@@ -719,6 +724,7 @@ const ru: Translations = {
   },
   footer: {
     botCta: "Также доступен в виде Telegram-бота:",
+    extension: "Расширение для браузера",
     developedBy: "Разработано",
     rights: "Все права защищены.",
   },

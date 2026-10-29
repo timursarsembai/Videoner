@@ -3,7 +3,7 @@
 import { useLanguage } from "@/lib/i18n/context";
 import Image from "next/image";
 import Link from "next/link";
-import { Send } from "lucide-react";
+import { Puzzle, Send } from "lucide-react";
 import { localizedHref } from "@/lib/i18n/routing";
 import { legal } from "@/lib/legal/documents";
 import { LEGAL_SLUGS } from "@/lib/legal/types";
@@ -59,6 +59,13 @@ export function Footer() {
             <Send className="h-4 w-4" />
             {t("footer.botCta")} @{TELEGRAM_BOT}
           </a>
+          <Link
+            href={localizedHref(language, "/extension")}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            <Puzzle className="h-4 w-4" />
+            {t("footer.extension")}
+          </Link>
           <span className="text-sm text-foreground/60">
             {t("footer.developedBy")}{" "}
             <a

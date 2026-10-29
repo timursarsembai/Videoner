@@ -16,6 +16,8 @@ export interface ExtensionPageText {
   browsersTitle: string;
   browsers: string;
   mobile: string;
+  getcourseTitle: string;
+  getcourse: string;
   privacyTitle: string;
   privacy: string;
   stepsTitle: string;
@@ -39,6 +41,9 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     browsers:
       "Google Chrome, Яндекс Браузер, Microsoft Edge, Opera, Brave, Vivaldi и другие браузеры на основе Chromium — на компьютере.",
     mobile: "На телефонах и планшетах расширения не поддерживаются — там скачивайте через сайт или Telegram-бот.",
+    getcourseTitle: "Уроки GetCourse",
+    getcourse:
+      "Откройте урок в школе на GetCourse под своим входом: в правом верхнем углу плеера появится кнопка «Скачать», а значок Videoner покажет все видео урока. Браузер сам скачивает урок и собирает его в mp4 — файл не проходит через наш сервер. Если в браузере не получилось, урок в том же качестве скачает наш сервер: тогда ему уходит ссылка на видео из плеера.",
     privacyTitle: "Ваш вход остаётся у вас",
     privacy:
       "Расширение не спрашивает пароль и не передаёт куки: запрос к площадке делает ваш собственный браузер. Нашему серверу уходит только короткий отчёт для статистики — ссылка, размер файла и название.",
@@ -67,6 +72,9 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     browsers:
       "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi and other Chromium-based browsers — on a computer.",
     mobile: "Phones and tablets don't support extensions — use the website or the Telegram bot there.",
+    getcourseTitle: "GetCourse lessons",
+    getcourse:
+      "Open a lesson in a GetCourse school while signed in: a Download button appears in the top-right corner of the player, and the Videoner icon lists every video in the lesson. Your browser downloads the lesson and assembles it into an mp4 itself — the file doesn’t pass through our server. If that fails, our server downloads the lesson in the same quality instead; in that case it receives the video link from the player.",
     privacyTitle: "Your sign-in stays with you",
     privacy:
       "The extension never asks for a password and never sends cookies: your own browser makes the request to the platform. Our server only gets a short report for statistics — the link, file size and title.",
@@ -95,6 +103,9 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     browsers:
       "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi y otros navegadores basados en Chromium, en un ordenador.",
     mobile: "Los teléfonos y tabletas no admiten extensiones: allí usa el sitio web o el bot de Telegram.",
+    getcourseTitle: "Lecciones de GetCourse",
+    getcourse:
+      "Abre una lección de una escuela en GetCourse con tu sesión iniciada: aparecerá un botón Descargar en la esquina superior derecha del reproductor, y el icono de Videoner mostrará todos los videos de la lección. Tu navegador descarga la lección y la convierte en mp4 por sí mismo: el archivo no pasa por nuestro servidor. Si no lo consigue, nuestro servidor descarga la lección en la misma calidad; en ese caso recibe el enlace del video del reproductor.",
     privacyTitle: "Tu sesión se queda contigo",
     privacy:
       "La extensión nunca pide contraseñas ni envía cookies: la solicitud a la plataforma la hace tu propio navegador. Nuestro servidor solo recibe un breve informe para estadísticas: el enlace, el tamaño del archivo y el título.",

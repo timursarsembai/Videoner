@@ -106,6 +106,11 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
       </section>
 
       <section className="mt-10">
+        <h2 className="text-xl font-semibold">{text.getcourseTitle}</h2>
+        <p className="mt-3 leading-relaxed text-foreground/80">{text.getcourse}</p>
+      </section>
+
+      <section className="mt-10">
         <h2 className="text-xl font-semibold">{text.privacyTitle}</h2>
         <p className="mt-3 leading-relaxed text-foreground/80">{text.privacy}</p>
       </section>

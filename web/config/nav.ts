@@ -1,5 +1,5 @@
 import { Downloader, NavConfig } from "@/types/nav";
-import { Home, Download, Gem, CreditCard } from "lucide-react";
+import { Home, Download, Gem, CreditCard, Puzzle } from "lucide-react";
 import { downloaders } from "./downloaders";
 
 export const navConfig: NavConfig = {
@@ -14,6 +14,11 @@ export const navConfig: NavConfig = {
       href: "#",
       icon: Download,
       subMenu: downloaders,
+    },
+    {
+      name: "Extension",
+      href: "/extension",
+      icon: Puzzle,
     },
   ],
 };

@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Bot } from "grammy";
+import { Bot, InlineKeyboard } from "grammy";
 import { detectLang, messages } from "./i18n.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
 import { registerAdminHandlers } from "./handlers/admin.js";
@@ -41,6 +41,15 @@ bot.command("start", async (ctx) => {
   await ctx.reply(messages[lang].start);
 });
 
+// Страница расширения для браузера на сайте.
+bot.command("extension", async (ctx) => {
+  const lang = detectLang(ctx.from?.language_code);
+  const page = lang === "ru" ? "https://videoner.download/ru/extension" : "https://videoner.download/extension";
+  await ctx.reply(messages[lang].extensionCommand, {
+    reply_markup: new InlineKeyboard().url(messages[lang].extensionPageButton, page),
+  });
+});
+
 registerAdminHandlers(bot);
 // Свой тип обновлений (my_chat_member) — порядок не важен.
 registerBlockedHandlers(bot);
@@ -72,6 +81,23 @@ async function shutdownGracefully(signal: string) {
 }
 process.on("SIGTERM", () => void shutdownGracefully("SIGTERM"));
 process.on("SIGINT", () => void shutdownGracefully("SIGINT"));
+
+// Меню команд (кнопка «Меню» в чате). Ставим при каждом запуске — так оно
+// всегда совпадает с кодом; сбой не мешает боту работать.
+const COMMANDS = {
+  ru: [
+    { command: "start", description: "Как пользоваться ботом" },
+    { command: "extension", description: "Расширение для браузера" },
+  ],
+  en: [
+    { command: "start", description: "How to use the bot" },
+    { command: "extension", description: "Browser extension" },
+  ],
+};
+void bot.api.setMyCommands(COMMANDS.en).catch((e) => console.error("setMyCommands:", e?.message ?? e));
+void bot.api
+  .setMyCommands(COMMANDS.ru, { language_code: "ru" })
+  .catch((e) => console.error("setMyCommands ru:", e?.message ?? e));
 
 bot.start({
   onStart: (me) => console.log(`Бот @${me.username} запущен${BOT_API_ROOT ? ` (локальный Bot API: ${BOT_API_ROOT})` : " (облачный Bot API, лимит 50 МБ)"}`),

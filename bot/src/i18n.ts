@@ -64,6 +64,9 @@ interface Messages {
   // под входом человека (см. extensionLinkFor в helpers.ts).
   extensionHint: string;
   extensionButton: string;
+  // Команда /extension (меню бота).
+  extensionCommand: string;
+  extensionPageButton: string;
   errorTooLong: string;
   errorUnknown: string;
   // Очередь ссылок (см. queue.ts): выбор качества — только у текущей.
@@ -98,7 +101,7 @@ function withShareLine(caption: string, shareLine: string | undefined): string {
 }
 
 const ru: Messages = {
-  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.",
+  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.\n\n🧩 Качаете на компьютере? Поставьте расширение для браузера — кнопка «Скачать» появится прямо на странице видео: videoner.download/ru/extension",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
   inviteGreeting: "Привет! Я Videoner — бесплатно скачиваю видео из YouTube, TikTok, Instagram и других площадок. Сейчас подготовлю видео, которым с тобой поделились 👇",
   inviteNotFound: "Не нашёл видео по этой ссылке-приглашению. Пришли мне ссылку на видео — и я его скачаю.",
@@ -179,6 +182,9 @@ const ru: Messages = {
     "\n\n💻 Такое видео можно скачать расширением Videoner для браузера на компьютере: " +
     "оно качает под вашим входом на площадке, пароль и куки никуда не передаются.",
   extensionButton: "🧩 Скачать через расширение",
+  extensionCommand:
+    "🧩 Videoner для браузера: кнопка «Скачать» прямо на странице видео — YouTube, Instagram, TikTok, VK, закрытые видео из вашего аккаунта и уроки GetCourse.\n\nДля Chrome, Яндекс Браузера, Edge, Opera и Firefox на компьютере.",
+  extensionPageButton: "🧩 Установить расширение",
   errorTooLong: "видео слишком длинное — такие мы пока не скачиваем.",
   errorUnknown: "не удалось скачать это видео. Попробуй ещё раз чуть позже или пришли другую ссылку.",
   inlineHintButton: "Отправьте ссылку боту",
@@ -218,7 +224,7 @@ const ru: Messages = {
 };
 
 const en: Messages = {
-  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ No quality limits: you get whatever the platform offers, up to 4K — as long as the file fits in 2 GB, Telegram's limit for bots. There are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.",
+  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ No quality limits: you get whatever the platform offers, up to 4K — as long as the file fits in 2 GB, Telegram's limit for bots. There are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.\n\n🧩 Downloading on a computer? Install the browser extension — a Download button appears right on the video page: videoner.download/extension",
   notLink: "That doesn't look like a link. Send me a video link.",
   inviteGreeting: "Hi! I'm Videoner — I download videos from YouTube, TikTok, Instagram and other platforms for free. Getting the video someone shared with you ready 👇",
   inviteNotFound: "I couldn't find a video for this invite link. Send me a video link and I'll download it.",
@@ -294,6 +300,9 @@ const en: Messages = {
     "\n\n💻 You can download it with the Videoner browser extension on a computer: " +
     "it downloads using your own sign-in on the platform, and no password or cookies leave your browser.",
   extensionButton: "🧩 Download with the extension",
+  extensionCommand:
+    "🧩 Videoner for your browser: a Download button right on the video page — YouTube, Instagram, TikTok, VK, private videos from your account and GetCourse lessons.\n\nFor Chrome, Edge, Opera, Yandex Browser and Firefox on a computer.",
+  extensionPageButton: "🧩 Install the extension",
   errorTooLong: "the video is too long — we can't download videos that long yet.",
   errorUnknown: "couldn't download this video. Try again a bit later or send another link.",
   inlineHintButton: "Send a link to the bot",

@@ -72,6 +72,18 @@ interface Messages {
   groupWelcome: string;
   // Кнопка под /start в личке: добавить бота в группу (t.me/<бот>?startgroup).
   addToGroupButton: string;
+  // Настройки группы (/settings, handlers/group.ts).
+  fileCaptionShort: (title: string, sourceUrl: string) => string;
+  sentBy: (name: string) => string;
+  groupSettings: (s: { deleteLinks: boolean; caption: string; quality: string; longVideos: boolean }, canDelete: boolean) => string;
+  settingsDeleteButton: (on: boolean) => string;
+  settingsCaptionButton: (style: string) => string;
+  settingsQualityButton: (mode: string) => string;
+  settingsLongButton: (on: boolean) => string;
+  settingsDoneButton: string;
+  settingsAdminsOnly: string;
+  settingsGroupsOnly: string;
+  settingsFailed: string;
   errorTooLong: string;
   errorUnknown: string;
   // Очередь ссылок (см. queue.ts): выбор качества — только у текущей.
@@ -191,9 +203,31 @@ const ru: Messages = {
     "🧩 Videoner для браузера: кнопка «Скачать» прямо на странице видео — YouTube, Instagram, TikTok, VK, закрытые видео из вашего аккаунта и уроки GetCourse.\n\nДля Chrome, Яндекс Браузера, Edge, Opera и Firefox на компьютере.",
   extensionPageButton: "🧩 Установить расширение",
   addToGroupButton: "👥 Добавить в группу",
+  fileCaptionShort: (title, sourceUrl) => (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl,
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Настройки бота в этой группе\n\n" +
+    `🗑 Удалять сообщение со ссылкой: ${s.deleteLinks ? "да" : "нет"}\n` +
+    "Когда видео отправлено, сообщение, где была только ссылка, удаляется — в чате остаётся одно видео с именем того, кто его прислал.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Сейчас я не могу удалять сообщения: сделайте меня администратором с правом «Удаление сообщений».\n"
+      : "") +
+    `\n✍️ Подпись под видео: ${{ full: "полная", short: "название и источник", none: "без подписи" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Качество: ${s.quality === "max" ? "максимальное, которое пропускает Telegram" : "обычное (720p)"}\n` +
+    `\n⏱ Длинные видео: ${s.longVideos ? "качаю любой длины" : "только до 15 минут"}\n` +
+    "\nМенять настройки могут только администраторы группы.",
+  settingsDeleteButton: (on) => `🗑 Удалять ссылки: ${on ? "да" : "нет"}`,
+  settingsCaptionButton: (style) =>
+    `✍️ Подпись: ${{ full: "полная", short: "короткая", none: "нет" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Качество: ${mode === "max" ? "максимальное" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Длинные видео: ${on ? "да" : "до 15 мин"}`,
+  settingsDoneButton: "✅ Готово",
+  settingsAdminsOnly: "Настройки меняют только администраторы группы.",
+  settingsGroupsOnly: "Настройки — для групп: добавьте меня в группу и отправьте там /settings.",
+  settingsFailed: "Не получилось сохранить настройки, попробуйте ещё раз.",
   groupWelcome:
     "👋 Привет! Присылайте в чат ссылки на видео из TikTok, Instagram, YouTube, VK и других площадок — я отвечу самим видео.\n\n" +
-    "Короткие ролики (до 15 минут) скачиваю сам, без команд. На остальные сообщения не отвечаю. Длинное видео или другое качество — в личных сообщениях @VideonerBot.",
+    "Ролики до 15 минут скачиваю сам, без команд. На остальные сообщения не отвечаю.\n\n⚙️ Админы группы могут настроить меня командой /settings: удалять сообщения со ссылками, вид подписи, качество и длинные видео.",
   errorTooLong: "видео слишком длинное — такие мы пока не скачиваем.",
   errorUnknown: "не удалось скачать это видео. Попробуй ещё раз чуть позже или пришли другую ссылку.",
   inlineHintButton: "Отправьте ссылку боту",
@@ -313,9 +347,30 @@ const en: Messages = {
     "🧩 Videoner for your browser: a Download button right on the video page — YouTube, Instagram, TikTok, VK, private videos from your account and GetCourse lessons.\n\nFor Chrome, Edge, Opera, Yandex Browser and Firefox on a computer.",
   extensionPageButton: "🧩 Install the extension",
   addToGroupButton: "👥 Add to a group",
+  fileCaptionShort: (title, sourceUrl) => (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl,
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Bot settings for this group\n\n" +
+    `🗑 Delete the message with the link: ${s.deleteLinks ? "yes" : "no"}\n` +
+    "Once the video is sent, a message that contained only the link is deleted — the chat keeps just the video with the name of whoever shared it.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ I can't delete messages right now: make me an admin with the \"Delete messages\" right.\n"
+      : "") +
+    `\n✍️ Caption under the video: ${{ full: "full", short: "title and source", none: "no caption" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Quality: ${s.quality === "max" ? "the highest Telegram accepts" : "standard (720p)"}\n` +
+    `\n⏱ Long videos: ${s.longVideos ? "any length" : "up to 15 minutes only"}\n` +
+    "\nOnly group admins can change the settings.",
+  settingsDeleteButton: (on) => `🗑 Delete links: ${on ? "yes" : "no"}`,
+  settingsCaptionButton: (style) => `✍️ Caption: ${{ full: "full", short: "short", none: "none" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Quality: ${mode === "max" ? "highest" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Long videos: ${on ? "yes" : "up to 15 min"}`,
+  settingsDoneButton: "✅ Done",
+  settingsAdminsOnly: "Only group admins can change the settings.",
+  settingsGroupsOnly: "Settings are for groups: add me to a group and send /settings there.",
+  settingsFailed: "Couldn't save the settings, please try again.",
   groupWelcome:
     "👋 Hi! Post links to videos from TikTok, Instagram, YouTube, VK and other platforms in this chat — I'll reply with the video itself.\n\n" +
-    "I download short clips (up to 15 minutes) on my own, no commands needed, and stay quiet otherwise. For long videos or another quality, message @VideonerBot privately.",
+    "I download clips up to 15 minutes on my own, no commands needed, and stay quiet otherwise.\n\n⚙️ Group admins can tune me with /settings: delete link messages, caption style, quality and long videos.",
   errorTooLong: "the video is too long — we can't download videos that long yet.",
   errorUnknown: "couldn't download this video. Try again a bit later or send another link.",
   inlineHintButton: "Send a link to the bot",

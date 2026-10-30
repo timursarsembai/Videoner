@@ -113,6 +113,24 @@ void bot.api.setMyCommands(COMMANDS.en).catch((e) => console.error("setMyCommand
 void bot.api
   .setMyCommands(COMMANDS.ru, { language_code: "ru" })
   .catch((e) => console.error("setMyCommands ru:", e?.message ?? e));
+// В группах — своё меню: там бот работает сам, а админам нужна /settings
+// (handlers/group.ts).
+const GROUP_COMMANDS = {
+  ru: [
+    { command: "settings", description: "Настройки бота в группе (для админов)" },
+    { command: "start", description: "Как бот работает в группе" },
+  ],
+  en: [
+    { command: "settings", description: "Bot settings for this group (admins)" },
+    { command: "start", description: "How the bot works in a group" },
+  ],
+};
+void bot.api
+  .setMyCommands(GROUP_COMMANDS.en, { scope: { type: "all_group_chats" } })
+  .catch((e) => console.error("setMyCommands groups:", e?.message ?? e));
+void bot.api
+  .setMyCommands(GROUP_COMMANDS.ru, { scope: { type: "all_group_chats" }, language_code: "ru" })
+  .catch((e) => console.error("setMyCommands groups ru:", e?.message ?? e));
 
 bot.start({
   onStart: (me) => console.log(`Бот @${me.username} запущен${BOT_API_ROOT ? ` (локальный Bot API: ${BOT_API_ROOT})` : " (облачный Bot API, лимит 50 МБ)"}`),

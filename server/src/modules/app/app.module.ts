@@ -14,6 +14,7 @@ import { NudgeModule } from '../nudge/nudge.module';
 import { ProxyHealthModule } from '../proxy-health/proxy-health.module';
 import { ValidationReportModule } from '../validation-report/validation-report.module';
 import { ShareLinkModule } from '../share-link/share-link.module';
+import { GroupSettingsModule } from '../group-settings/group-settings.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ShareLinkModule } from '../share-link/share-link.module';
     ProxyHealthModule,
     ValidationReportModule,
     ShareLinkModule,
+    GroupSettingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

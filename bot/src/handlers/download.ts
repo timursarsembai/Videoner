@@ -203,6 +203,12 @@ export async function performDownload(
       items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
       caption: string,
     ) => Promise<string | undefined>;
+    // Своя подпись под файлом (настройки группы, handlers/group.ts). Нет —
+    // обычная fileCaption.
+    formatCaption?: (title: string, sourceUrl: string, shareUrl?: string) => string;
+    // Группа: не скачалось — молча убрать «Скачиваю», а не оставлять в общем
+    // чате сообщение об ошибке (handlers/group.ts).
+    quiet?: boolean;
   },
   dlMeta: DownloadMeta,
   title: string,
@@ -211,15 +217,22 @@ export async function performDownload(
   // больше ни к чему и только загромождает чат — удаляем вместе с «Скачиваю».
   // При ошибке оставляем: по нему видно, какой ролик не скачался.
   choiceMessageId?: number,
-) {
+  // true — файл дошёл до чата. Группа по этому решает, удалять ли сообщение
+  // со ссылкой (handlers/group.ts).
+): Promise<boolean> {
   const m = messages[lang];
   // Ссылку «Поделиться» запрашиваем сразу, параллельно со скачиванием: к
   // отправке файла она обычно уже готова. shareLinkFor не бросает.
   const shareLink = shareLinkFor(url);
-  const caption = async () => m.fileCaption(title, url, await shareLink);
+  const caption = async () => (send.formatCaption ?? m.fileCaption)(title, url, await shareLink);
   const msg = await send.reply(m.downloading);
+  // Файл уже в чате. Сбой после этого (убрать «Скачиваю», опубликовать в
+  // канал) — не повод писать человеку «не получилось» поверх его видео.
+  let delivered = false;
   const clearServiceMessages = async () => {
-    await send.deleteMessage(msg.message_id);
+    await send
+      .deleteMessage(msg.message_id)
+      .catch((e) => console.error("Не удалось убрать «Скачиваю»:", e?.message ?? e));
     if (choiceMessageId) {
       await send
         .deleteMessage(choiceMessageId)
@@ -250,6 +263,7 @@ export async function performDownload(
           await send.replyWithAudio(started.telegramFileId, await caption());
         }
         sentFromCache = true;
+        delivered = true;
       } catch (e: any) {
         console.error(`file_id из кеша для ${url} не сработал, качаю заново:`, e?.message ?? e);
         started = await startDownload(false);
@@ -257,7 +271,7 @@ export async function performDownload(
       if (sentFromCache) {
         await clearServiceMessages();
         await send.publishToChannel(url, title, thumbnail, lang);
-        return;
+        return true;
       }
     }
 
@@ -304,9 +318,10 @@ export async function performDownload(
     if (items.length > 1) {
       await send.editMessageText(msg.message_id, m.sendingAlbum(items.length));
       const cover = await send.replyWithAlbum(items, await caption());
+      delivered = true;
       await clearServiceMessages();
       await send.publishToChannel(url, title, thumbnail, lang, cover);
-      return;
+      return true;
     }
 
     // У карусели настоящее имя первого файла известно только из items —
@@ -321,8 +336,12 @@ export async function performDownload(
     // Без локального Bot API сервера облачный лимит — 50 МБ на файл от бота
     if (!BOT_API_ROOT && meta.size > CLOUD_SIZE_LIMIT) {
       const mb = (meta.size / 1024 / 1024).toFixed(1);
+      if (send.quiet) {
+        await clearServiceMessages();
+        return false;
+      }
       await send.editMessageText(msg.message_id, m.fileTooBig(mb, fileUrl));
-      return;
+      return false;
     }
 
     await send.editMessageText(msg.message_id, m.sendingFile);
@@ -333,9 +352,10 @@ export async function performDownload(
     // бы в sendVideo.
     if (items[0]?.kind === "PHOTO") {
       const cover = await send.replyWithPhoto(file, await caption());
+      delivered = true;
       await clearServiceMessages();
       await send.publishToChannel(url, title, thumbnail, lang, cover);
-      return;
+      return true;
     }
     let fileId: string | undefined;
     if (kind === "v") {
@@ -349,6 +369,7 @@ export async function performDownload(
     } else {
       fileId = await send.replyWithAudio(file, await caption());
     }
+    delivered = true;
     if (fileId) {
       // Не ждём: файл человеку уже отправлен, а сбой записи кеша — не его забота.
       api(`/download/${started.downloadId}/telegram-file`, { fileId }).catch((e) =>
@@ -359,9 +380,22 @@ export async function performDownload(
     // Ссылка уходит в канал после того, как файл дошёл до человека: пост о
     // том, что скачать не удалось, никому не нужен.
     await send.publishToChannel(url, title, thumbnail, lang);
+    return true;
   } catch (e: any) {
+    if (delivered) {
+      console.error(`Файл ${url} отправлен, но дальше сбой:`, e?.message ?? e);
+      return true;
+    }
+    if (send.quiet) {
+      console.log(`Не скачалось (в группе — молча): ${url}:`, e?.message ?? e);
+      await clearServiceMessages();
+      return false;
+    }
     const failure = failureMessage(e?.message ?? String(e), url, lang);
-    await send.editMessageText(msg.message_id, failure.text, failure.keyboard);
+    await send
+      .editMessageText(msg.message_id, failure.text, failure.keyboard)
+      .catch((err) => console.error("Не удалось показать ошибку скачивания:", err?.message ?? err));
+    return false;
   } finally {
     activeDownloads.delete(trackingKey);
   }

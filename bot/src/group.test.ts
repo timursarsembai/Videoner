@@ -1,6 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { GroupLimiter, isVideoHostUrl, pickGroupQuality } from "./group.js";
+import {
+  DEFAULT_GROUP_SETTINGS,
+  GroupLimiter,
+  SettingsCache,
+  isVideoHostUrl,
+  nextCaption,
+  onlyLinks,
+  pickGroupQuality,
+} from "./group.js";
 
 test("ссылки с видеоплощадок узнаются, включая поддомены", () => {
   assert.equal(isVideoHostUrl("https://www.youtube.com/watch?v=abc"), true);
@@ -39,4 +47,34 @@ test("лимит группы считается за скользящий ча�
   // Первая попытка вышла из окна — место освободилось.
   assert.equal(limiter.take(1, 1001), true);
   assert.equal(limiter.take(1, 1002), false);
+});
+
+test("максимальное качество — лучшее из влезающих", () => {
+  assert.equal(pickGroupQuality(["1080p", "720p"], {}, 50, "max"), "1080p");
+  assert.equal(pickGroupQuality(["1080p", "720p"], { "1080p": 90 }, 50, "max"), "720p");
+  assert.equal(pickGroupQuality(["original"], {}, 50, "max"), "original");
+});
+
+test("подпись переключается по кругу", () => {
+  assert.equal(nextCaption("full"), "short");
+  assert.equal(nextCaption("short"), "none");
+  assert.equal(nextCaption("none"), "full");
+});
+
+test("удаляем только сообщение из одних ссылок", () => {
+  const u = "https://vt.tiktok.com/ZSabc/";
+  assert.equal(onlyLinks(u, [u]), true);
+  assert.equal(onlyLinks(`  ${u}\n`, [u]), true);
+  assert.equal(onlyLinks(`(${u}).`, [u]), true);
+  assert.equal(onlyLinks(`${u} ${u}2`, [u, `${u}2`]), true);
+  assert.equal(onlyLinks(`смотри ${u}`, [u]), false);
+  assert.equal(onlyLinks(`${u} 😂`, [u]), false);
+});
+
+test("кеш настроек живёт заданное время", () => {
+  const cache = new SettingsCache(1000);
+  cache.set(1, { ...DEFAULT_GROUP_SETTINGS, deleteLinks: true }, 0);
+  assert.equal(cache.get(1, 999)?.deleteLinks, true);
+  assert.equal(cache.get(1, 1000), undefined);
+  assert.equal(cache.get(2, 0), undefined);
 });

@@ -236,3 +236,23 @@ model BotBlockEvent {
 
   @@index([at])
 }
+
+// Настройки режима для групп (bot/src/handlers/group.ts), одна строка на чат.
+// Нет строки — у группы настройки по умолчанию. Меняют только админы группы
+// командой /settings; права проверяет бот, сервер доверяет ему по API-ключу.
+model GroupSettings {
+  // Идентификатор чата Telegram (у групп отрицательный).
+  chatId      BigInt   @id
+  // Удалять сообщение со ссылкой, когда видео отправлено. Только если в нём
+  // ничего, кроме ссылок, нет, и только если бот — админ с правом удалять.
+  deleteLinks Boolean  @default(false)
+  // Подпись под видео: full — как в личке, short — название и источник,
+  // none — без подписи.
+  caption     String   @default("full")
+  // standard — 720p или ближе к нему, max — лучшее, что влезает в лимит Telegram.
+  quality     String   @default("standard")
+  // Качать и видео длиннее 15 минут. По умолчанию нет: длинное видео в группу
+  // чаще кидают обсудить, а не скачать (handlers/group.ts).
+  longVideos  Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+}

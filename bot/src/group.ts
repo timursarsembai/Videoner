@@ -45,10 +45,19 @@ export const GROUP_LINKS_PER_MESSAGE = 3;
 // Качество без выбора: в группе кнопок нет. 720p — как в инлайн-режиме;
 // тяжелее предела Telegram не берём. "original" — пост из одних фотографий,
 // другого качества у него нет.
-export function pickGroupQuality(available: string[], sizes: Record<string, number>, fileLimit: number): string | null {
+//
+// max — лучшее из того, что влезает: сервер присылает качества от лучшего к
+// худшему, поэтому это первое подходящее.
+export function pickGroupQuality(
+  available: string[],
+  sizes: Record<string, number>,
+  fileLimit: number,
+  mode: "standard" | "max" = "standard",
+): string | null {
   if (available.includes("original")) return "original";
   const fits = available.filter((q) => !(sizes[q] > fileLimit));
   if (!fits.length) return null;
+  if (mode === "max") return fits[0];
   return fits.find((q) => q === "720p") ?? fits[0];
 }
 
@@ -73,5 +82,55 @@ export class GroupLimiter {
     fresh.push(now);
     this.hits.set(chatId, fresh);
     return true;
+  }
+}
+
+// Настройки группы (/settings, только админы). Хранит сервер (GroupSettings),
+// значения те же.
+export type CaptionStyle = "full" | "short" | "none";
+export type QualityMode = "standard" | "max";
+export type GroupSettings = { deleteLinks: boolean; caption: CaptionStyle; quality: QualityMode; longVideos: boolean };
+
+export const DEFAULT_GROUP_SETTINGS: GroupSettings = {
+  deleteLinks: false,
+  caption: "full",
+  quality: "standard",
+  longVideos: false,
+};
+
+// Кнопка подписи перебирает варианты по кругу — так все настройки помещаются
+// в одно сообщение, по кнопке на каждую.
+const CAPTION_ORDER: CaptionStyle[] = ["full", "short", "none"];
+export function nextCaption(current: CaptionStyle): CaptionStyle {
+  return CAPTION_ORDER[(CAPTION_ORDER.indexOf(current) + 1) % CAPTION_ORDER.length];
+}
+
+// Удалять можно, только если в сообщении нет ничего, кроме ссылок: подпись
+// или вопрос к ссылке — часть разговора, их удалять нельзя.
+export function onlyLinks(text: string, urls: string[]): boolean {
+  let rest = text;
+  // Сначала длинные: иначе ссылка-префикс другой оставила бы её хвост текстом.
+  for (const url of [...urls].sort((a, b) => b.length - a.length)) rest = rest.split(url).join(" ");
+  // Хвостовая пунктуация, которую extractUrls срезал с адреса, — тоже не текст.
+  return rest.replace(/[\s.,;:!?()[\]{}«»"'<>]+/g, "") === "";
+}
+
+// Настройки читаются на каждую ссылку в группе — держим их в памяти, чтобы
+// не спрашивать сервер каждый раз. Меняет их только этот же процесс бота
+// (/settings), и он же сразу обновляет кеш, поэтому срок жизни может быть
+// долгим: он нужен лишь на случай правки настроек мимо бота.
+export class SettingsCache {
+  private entries = new Map<number, { value: GroupSettings; expiresAt: number }>();
+
+  constructor(private readonly ttlMs = 10 * 60_000) {}
+
+  get(chatId: number, now = Date.now()): GroupSettings | undefined {
+    const entry = this.entries.get(chatId);
+    if (!entry || entry.expiresAt <= now) return undefined;
+    return entry.value;
+  }
+
+  set(chatId: number, value: GroupSettings, now = Date.now()) {
+    this.entries.set(chatId, { value, expiresAt: now + this.ttlMs });
   }
 }

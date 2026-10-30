@@ -135,6 +135,23 @@ function firstLimitNoticeToday(chatId: number, userId: number): boolean {
   return true;
 }
 
+// Приветствие в группе — не чаще раза в минуту. Бота, добавленного кнопкой
+// «Добавить в группу» (t.me/<бот>?startgroup), Telegram сразу же сам зовёт
+// командой /start@<бот> — без этого приветствие приходило дважды подряд.
+const WELCOME_COOLDOWN_MS = 60_000;
+const lastWelcome = new Map<number, number>();
+
+export async function sendGroupWelcome(ctx: Context) {
+  const chatId = ctx.chat!.id;
+  const now = Date.now();
+  if (now - (lastWelcome.get(chatId) ?? 0) < WELCOME_COOLDOWN_MS) return;
+  lastWelcome.set(chatId, now);
+  if (lastWelcome.size > 10_000) lastWelcome.clear();
+  await ctx
+    .reply(messages[detectLang(ctx.from?.language_code)].groupWelcome)
+    .catch((e) => console.error(`Не удалось поздороваться в группе ${chatId}:`, e?.message ?? e));
+}
+
 // Предел Telegram на подпись к файлу.
 const CAPTION_LIMIT = 1024;
 
@@ -239,9 +256,7 @@ export function registerGroupHandlers(bot: Bot) {
     const wasIn = ["member", "administrator"].includes(before.status);
     const isIn = ["member", "administrator"].includes(after.status);
     if (wasIn || !isIn) return;
-    await ctx
-      .reply(messages[detectLang(ctx.from?.language_code)].groupWelcome)
-      .catch((e) => console.error(`Не удалось поздороваться в группе ${ctx.chat.id}:`, e?.message ?? e));
+    await sendGroupWelcome(ctx);
   });
 
   bot.command("settings", async (ctx) => {

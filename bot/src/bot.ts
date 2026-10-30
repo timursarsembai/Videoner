@@ -8,7 +8,7 @@ import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown, handleLi
 import { registerInlineHandlers } from "./handlers/inline.js";
 import { openInvite } from "./handlers/invite.js";
 import { registerBlockedHandlers } from "./handlers/blocked.js";
-import { registerGroupHandlers } from "./handlers/group.js";
+import { registerGroupHandlers, sendGroupWelcome } from "./handlers/group.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -35,7 +35,7 @@ bot.command("start", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
   // В группе — как бот работает там (handlers/group.ts), а не инструкция для лички.
   if (ctx.chat.type !== "private") {
-    await ctx.reply(messages[lang].groupWelcome);
+    await sendGroupWelcome(ctx);
     return;
   }
   // t.me/<бот>?start=<код> — человек пришёл по ссылке-приглашению на видео.

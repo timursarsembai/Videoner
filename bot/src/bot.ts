@@ -13,6 +13,7 @@ import { registerBlockedHandlers } from "./handlers/blocked.js";
 import { registerGroupHandlers, sendGroupWelcome } from "./handlers/group.js";
 import { registerAccountHandlers, showAccounts } from "./handlers/accounts.js";
 import { registerLanguageHandlers } from "./handlers/language.js";
+import { startBlogChannel } from "./blog-channel.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -129,6 +130,9 @@ for (const lang of LANGS.filter((l) => l !== "en")) {
     .setMyCommands(GROUP_COMMANDS[lang], { scope: { type: "all_group_chats" }, language_code: lang })
     .catch((e) => console.error(`setMyCommands groups ${lang}:`, e?.message ?? e));
 }
+
+// Статьи блога → канал новостей (blog-channel.ts).
+startBlogChannel(bot.api);
 
 bot.start({
   onStart: (me) => console.log(`Бот @${me.username} запущен${BOT_API_ROOT ? ` (локальный Bot API: ${BOT_API_ROOT})` : " (облачный Bot API, лимит 50 МБ)"}`),

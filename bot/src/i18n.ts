@@ -5,6 +5,10 @@ export function detectLang(languageCode?: string): Lang {
   return isLang(base) ? base : "en";
 }
 
+// Канал новостей проекта: ссылка на него — в подписи к каждому файлу
+// (fileCaption), туда же уходят статьи блога (blog-channel.ts).
+export const NEWS_CHANNEL = "@videonerdownload";
+
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
 export const LANGS: Lang[] = ["ru", "uk", "kk", "en"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
@@ -225,7 +229,8 @@ const ru: Messages = {
       (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
         `Источник: ${sourceUrl}\n` +
         "Права на видео принадлежат его автору.\n" +
-        "Скачано бесплатно через @VideonerBot",
+        "Скачано бесплатно через @VideonerBot\n" +
+        `📣 Новости проекта: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Поделиться: ${shareUrl}`,
     ),
   subscribeRequired: (channel) =>
@@ -419,7 +424,8 @@ const en: Messages = {
       (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
         `Source: ${sourceUrl}\n` +
         "All rights to the video belong to its author.\n" +
-        "Downloaded for free with @VideonerBot",
+        "Downloaded for free with @VideonerBot\n" +
+        `📣 Project news: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Share: ${shareUrl}`,
     ),
   subscribeRequired: (channel) =>
@@ -612,7 +618,8 @@ const uk: Messages = {
       (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
         `Джерело: ${sourceUrl}\n` +
         "Права на відео належать його автору.\n" +
-        "Завантажено безкоштовно через @VideonerBot",
+        "Завантажено безкоштовно через @VideonerBot\n" +
+        `📣 Новини проєкту: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Поділитися: ${shareUrl}`,
     ),
   subscribeRequired: (channel) =>
@@ -811,7 +818,8 @@ const kk: Messages = {
       (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
         `Дереккөз: ${sourceUrl}\n` +
         "Видеоға құқық оның авторына тиесілі.\n" +
-        "@VideonerBot арқылы тегін жүктеп алынды",
+        "@VideonerBot арқылы тегін жүктеп алынды\n" +
+        `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Бөлісу: ${shareUrl}`,
     ),
   subscribeRequired: (channel) =>

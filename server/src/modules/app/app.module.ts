@@ -14,6 +14,7 @@ import { NudgeModule } from '../nudge/nudge.module';
 import { ProxyHealthModule } from '../proxy-health/proxy-health.module';
 import { ValidationReportModule } from '../validation-report/validation-report.module';
 import { ShareLinkModule } from '../share-link/share-link.module';
+import { ChannelPostsModule } from '../channel-posts/channel-posts.module';
 import { GroupSettingsModule } from '../group-settings/group-settings.module';
 import { UserCookiesModule } from '../user-cookies/user-cookies.module';
 
@@ -33,6 +34,7 @@ import { UserCookiesModule } from '../user-cookies/user-cookies.module';
     ValidationReportModule,
     ShareLinkModule,
     GroupSettingsModule,
+    ChannelPostsModule,
     UserCookiesModule,
   ],
   controllers: [AppController],

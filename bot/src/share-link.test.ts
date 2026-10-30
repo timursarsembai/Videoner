@@ -3,9 +3,9 @@ import assert from "node:assert/strict";
 import { messages } from "./i18n.js";
 import { shareLinkFor } from "./share-link.js";
 
-test("подпись без ссылки «Поделиться» осталась прежней", () => {
+test("подпись без ссылки «Поделиться» заканчивается каналом новостей", () => {
   const caption = messages.ru.fileCaption("Ролик", "https://youtu.be/x");
-  assert.ok(caption.endsWith("Скачано бесплатно через @VideonerBot"));
+  assert.ok(caption.endsWith("Скачано бесплатно через @VideonerBot\n📣 Новости проекта: @videonerdownload"));
 });
 
 test("ссылка «Поделиться» идёт последней строкой подписи", () => {

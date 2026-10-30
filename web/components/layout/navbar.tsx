@@ -27,7 +27,13 @@ export function Navbar() {
 
   // Метки главного меню переводим по href (идентичность в state/ключах — по name).
   const navLabel = (item: NavItem) =>
-    item.href === "/" ? t("nav.home") : item.href === "/extension" ? t("nav.extension") : t("nav.downloaders");
+    item.href === "/"
+      ? t("nav.home")
+      : item.href === "/extension"
+        ? t("nav.extension")
+        : item.href === "/blog"
+          ? t("nav.blog")
+          : t("nav.downloaders");
 
   // Названия загрузчиков — имена собственные (оставляем), описания переводим по платформе.
   const subLabel = (subItem: NavItem) =>

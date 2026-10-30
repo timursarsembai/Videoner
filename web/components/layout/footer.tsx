@@ -3,7 +3,8 @@
 import { useLanguage } from "@/lib/i18n/context";
 import Image from "next/image";
 import Link from "next/link";
-import { Puzzle, Send } from "lucide-react";
+import { Newspaper, Puzzle, Send } from "lucide-react";
+import { NEWS_CHANNEL_URL } from "@/lib/blog/ui";
 import { localizedHref } from "@/lib/i18n/routing";
 import { legal } from "@/lib/legal/documents";
 import { LEGAL_SLUGS } from "@/lib/legal/types";
@@ -66,6 +67,15 @@ export function Footer() {
             <Puzzle className="h-4 w-4" />
             {t("footer.extension")}
           </Link>
+          <a
+            href={NEWS_CHANNEL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            <Newspaper className="h-4 w-4" />
+            {t("footer.news")} @videonerdownload
+          </a>
           <span className="text-sm text-foreground/60">
             {t("footer.developedBy")}{" "}
             <a

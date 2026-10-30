@@ -310,3 +310,12 @@ model CookieConnectCode {
 
   @@index([expiresAt])
 }
+
+// Статьи блога, опубликованные в канале новостей (бот, blog-channel.ts).
+// Строка создаётся ДО отправки — так два запуска бота не опубликуют одну
+// статью дважды; не отправилось — строку удаляют.
+model ChannelPost {
+  slug        String   @id
+  messageId   Int?
+  publishedAt DateTime @default(now())
+}

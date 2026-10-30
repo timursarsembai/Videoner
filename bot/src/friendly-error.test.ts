@@ -68,3 +68,8 @@ test("сторис Instagram — честно: бот их не качает, р
   const url = "https://www.instagram.com/stories/someone/4019154360952804279";
   assert.match(extensionLinkFor(raw, url, "ru") ?? "", /\/ru\/extension\?url=/);
 });
+
+test("сторис по ссылке без номера — просим ссылку на конкретную", () => {
+  const raw = "[instagram:story] auto.01kk: story link without an id";
+  assert.equal(friendlyError(raw, "ru"), messages.ru.errorStoryNeedsId);
+});

@@ -218,10 +218,11 @@ async function downloadInGroup(
     // Сторис Instagram — исключение из молчания: человек явно хотел её
     // скачать, и без ответа решил бы, что бот сломался. Отвечаем одной
     // строкой и кнопкой на расширение, которое сторис скачает.
-    if (friendlyError(raw, lang) === m.errorInstagramStory) {
-      const link = extensionLinkFor(raw, url, lang);
+    const storyText = friendlyError(raw, lang);
+    if (storyText === m.errorInstagramStory || storyText === m.errorStoryNeedsId) {
+      const link = storyText === m.errorInstagramStory ? extensionLinkFor(raw, url, lang) : null;
       await ctx
-        .reply(`${m.failedPrefix}${m.errorInstagramStory}`, {
+        .reply(`${m.failedPrefix}${storyText}`, {
           ...(replyTo ? { reply_parameters: { message_id: replyTo, allow_sending_without_reply: true } } : {}),
           ...(link ? { reply_markup: new InlineKeyboard().url(m.extensionButton, link) } : {}),
         })

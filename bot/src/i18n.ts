@@ -55,6 +55,7 @@ interface Messages {
   errorLoginRequired: string;
   // Сторис Instagram: их видно только вошедшим, сервер их не получит.
   errorInstagramStory: string;
+  errorStoryNeedsId: string;
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
   errorNoVideoContent: string;
@@ -206,6 +207,8 @@ const ru: Messages = {
     `${url}\n\n` +
     "Скачать это и любое другое видео бесплатно: @VideonerBot",
   dailyLimitReached: "📅 На сегодня всё: достигнут суточный лимит в 20 скачиваний. Он обновится в течение суток — приходи позже, скачивать снова можно будет бесплатно.",
+  errorStoryNeedsId:
+    "пришлите ссылку на конкретную сторис: в приложении Instagram откройте её и нажмите «Поделиться» → «Копировать ссылку».",
   errorInstagramStory:
     "сторис Instagram бот пока не скачивает: Instagram показывает их только тем, кто вошёл в аккаунт.",
   errorLoginRequired:
@@ -389,6 +392,8 @@ const en: Messages = {
     `${url}\n\n` +
     "Download this and any other video for free: @VideonerBot",
   dailyLimitReached: "📅 That is it for today: you have reached the daily limit of 20 downloads. It refreshes within 24 hours — come back later and download again, free.",
+  errorStoryNeedsId:
+    "send a link to a specific story: open it in the Instagram app and tap Share → Copy link.",
   errorInstagramStory:
     "the bot can't download Instagram stories yet: Instagram shows them only to people who are signed in.",
   errorLoginRequired:

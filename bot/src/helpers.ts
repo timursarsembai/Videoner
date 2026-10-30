@@ -179,6 +179,11 @@ export function friendlyError(raw: string, lang: Lang): string {
   // Сторис Instagram без входа не отдаёт вовсе (yt-dlp: «[instagram:story] …
   // This content is unreachable. Use --cookies…»). Совет войти тут не годится —
   // входить негде; честно говорим, что бот их не качает, а расширение — да.
+  // Ссылка /stories/<ник>/ без номера, а профиль Instagram серверу не отдал
+  // (server/src/lib/instagram-story.ts) — просим ссылку на конкретную сторис.
+  if (msg.includes("story link without an id")) {
+    return m.errorStoryNeedsId;
+  }
   if (msg.includes("[instagram:story]") || msg.includes("this content is unreachable")) {
     return m.errorInstagramStory;
   }

@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Bot, InlineKeyboard } from "grammy";
-import { LANGS, messages, sitePath } from "./i18n.js";
+import { LANGS, NEWS_CHANNEL, messages, sitePath } from "./i18n.js";
 import { langOf } from "./language.js";
 import { COMMANDS, GROUP_COMMANDS } from "./commands.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
@@ -57,7 +57,10 @@ bot.command("start", async (ctx) => {
   // Кнопка открывает в Telegram выбор группы, куда добавить бота (режим для
   // групп — handlers/group.ts).
   await ctx.reply(messages[lang].start, {
-    reply_markup: new InlineKeyboard().url(messages[lang].addToGroupButton, `https://t.me/${ctx.me.username}?startgroup=true`),
+    reply_markup: new InlineKeyboard()
+      .url(messages[lang].addToGroupButton, `https://t.me/${ctx.me.username}?startgroup=true`)
+      .row()
+      .url(messages[lang].newsButton, `https://t.me/${NEWS_CHANNEL.slice(1)}`),
   });
 });
 

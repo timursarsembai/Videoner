@@ -94,6 +94,8 @@ interface Messages {
   groupWelcome: string;
   // Кнопка под /start в личке: добавить бота в группу (t.me/<бот>?startgroup).
   addToGroupButton: string;
+  // Кнопка под /start: канал новостей проекта.
+  newsButton: string;
   // Настройки группы (/settings, handlers/group.ts).
   fileCaptionShort: (title: string, sourceUrl: string) => string;
   sentBy: (name: string) => string;
@@ -193,7 +195,7 @@ function withShareLine(caption: string, shareLine: string | undefined): string {
 }
 
 const ru: Messages = {
-  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.\n\n🧩 Качаете на компьютере? Поставьте расширение для браузера — кнопка «Скачать» появится прямо на странице видео: videoner.download/ru/extension\n\n👥 Добавьте меня в группу — буду сам присылать видео по ссылкам, которые там публикуют.\n\n🌐 Язык бота: /language",
+  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.\n\n🧩 Качаете на компьютере? Поставьте расширение для браузера — кнопка «Скачать» появится прямо на странице видео: videoner.download/ru/extension\n\n👥 Добавьте меня в группу — буду сам присылать видео по ссылкам, которые там публикуют.\n\n📣 Новости проекта: @videonerdownload\n\n🌐 Язык бота: /language",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
   inviteGreeting: "Привет! Я Videoner — бесплатно скачиваю видео из YouTube, TikTok, Instagram и других площадок. Сейчас подготовлю видео, которым с тобой поделились 👇",
   inviteNotFound: "Не нашёл видео по этой ссылке-приглашению. Пришли мне ссылку на видео — и я его скачаю.",
@@ -283,7 +285,9 @@ const ru: Messages = {
     "🧩 Videoner для браузера: кнопка «Скачать» прямо на странице видео — YouTube, Instagram, TikTok, VK, закрытые видео из вашего аккаунта и уроки GetCourse.\n\nДля Chrome, Яндекс Браузера, Edge, Opera и Firefox на компьютере.",
   extensionPageButton: "🧩 Установить расширение",
   addToGroupButton: "👥 Добавить в группу",
-  fileCaptionShort: (title, sourceUrl) => (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl,
+  newsButton: "📣 Новости проекта",
+  fileCaptionShort: (title, sourceUrl) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl + `\n📣 Новости проекта: ${NEWS_CHANNEL}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Настройки бота в этой группе\n\n" +
@@ -345,7 +349,7 @@ const ru: Messages = {
     "Код подключения в общем чате могут подсмотреть — я его уничтожил и убрал сообщение. Получите новый и отправьте командой /connect КОД: сообщение с командой я удаляю сразу.",
   groupWelcome:
     "👋 Привет! Присылайте в чат ссылки на видео из TikTok, Instagram, YouTube, VK и других площадок — я отвечу самим видео.\n\n" +
-    "Ролики до 15 минут скачиваю сам, без команд. На остальные сообщения не отвечаю.\n\n⚙️ Админы группы могут настроить меня командой /settings: удалять сообщения со ссылками, вид подписи, качество, длинные видео и язык.",
+    "Ролики до 15 минут скачиваю сам, без команд. На остальные сообщения не отвечаю.\n\n⚙️ Админы группы могут настроить меня командой /settings: удалять сообщения со ссылками, вид подписи, качество, длинные видео и язык.\n\n📣 Новости проекта: @videonerdownload",
   errorTooLong: "видео слишком длинное — такие мы пока не скачиваем.",
   errorUnknown: "не удалось скачать это видео. Попробуй ещё раз чуть позже или пришли другую ссылку.",
   inlineHintButton: "Отправьте ссылку боту",
@@ -393,7 +397,7 @@ const ru: Messages = {
 };
 
 const en: Messages = {
-  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ No quality limits: you get whatever the platform offers, up to 4K — as long as the file fits in 2 GB, Telegram's limit for bots. There are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.\n\n🧩 Downloading on a computer? Install the browser extension — a Download button appears right on the video page: videoner.download/extension\n\n👥 Add me to a group and I'll post the videos for the links people share there.\n\n🌐 Bot language: /language",
+  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ No quality limits: you get whatever the platform offers, up to 4K — as long as the file fits in 2 GB, Telegram's limit for bots. There are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.\n\n🧩 Downloading on a computer? Install the browser extension — a Download button appears right on the video page: videoner.download/extension\n\n👥 Add me to a group and I'll post the videos for the links people share there.\n\n📣 Project news: @videonerdownload\n\n🌐 Bot language: /language",
   notLink: "That doesn't look like a link. Send me a video link.",
   inviteGreeting: "Hi! I'm Videoner — I download videos from YouTube, TikTok, Instagram and other platforms for free. Getting the video someone shared with you ready 👇",
   inviteNotFound: "I couldn't find a video for this invite link. Send me a video link and I'll download it.",
@@ -478,7 +482,9 @@ const en: Messages = {
     "🧩 Videoner for your browser: a Download button right on the video page — YouTube, Instagram, TikTok, VK, private videos from your account and GetCourse lessons.\n\nFor Chrome, Edge, Opera, Yandex Browser and Firefox on a computer.",
   extensionPageButton: "🧩 Install the extension",
   addToGroupButton: "👥 Add to a group",
-  fileCaptionShort: (title, sourceUrl) => (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl,
+  newsButton: "📣 Project news",
+  fileCaptionShort: (title, sourceUrl) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl + `\n📣 Project news: ${NEWS_CHANNEL}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bot settings for this group\n\n" +
@@ -539,7 +545,7 @@ const en: Messages = {
     "A connection code posted in the group chat can be seen by others — I destroyed it and removed the message. Get a new one and send it with /connect CODE: I delete that command message right away.",
   groupWelcome:
     "👋 Hi! Post links to videos from TikTok, Instagram, YouTube, VK and other platforms in this chat — I'll reply with the video itself.\n\n" +
-    "I download clips up to 15 minutes on my own, no commands needed, and stay quiet otherwise.\n\n⚙️ Group admins can tune me with /settings: delete link messages, caption style, quality, long videos and language.",
+    "I download clips up to 15 minutes on my own, no commands needed, and stay quiet otherwise.\n\n⚙️ Group admins can tune me with /settings: delete link messages, caption style, quality, long videos and language.\n\n📣 Project news: @videonerdownload",
   errorTooLong: "the video is too long — we can't download videos that long yet.",
   errorUnknown: "couldn't download this video. Try again a bit later or send another link.",
   inlineHintButton: "Send a link to the bot",
@@ -587,7 +593,7 @@ const en: Messages = {
 };
 
 const uk: Messages = {
-  start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n🌐 Мова бота: /language",
+  start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
   inviteGreeting: "Привіт! Я Videoner — безкоштовно завантажую відео з YouTube, TikTok, Instagram та інших платформ. Зараз підготую відео, яким із тобою поділилися 👇",
   inviteNotFound: "Не знайшов відео за цим посиланням-запрошенням. Надішли мені посилання на відео — і я його завантажу.",
@@ -672,7 +678,9 @@ const uk: Messages = {
     "🧩 Videoner для браузера: кнопка «Завантажити» прямо на сторінці відео — YouTube, Instagram, TikTok, VK, закриті відео з вашого акаунта й уроки GetCourse.\n\nДля Chrome, Edge, Opera й Firefox на комп'ютері.",
   extensionPageButton: "🧩 Встановити розширення",
   addToGroupButton: "👥 Додати в групу",
-  fileCaptionShort: (title, sourceUrl) => (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl,
+  newsButton: "📣 Новини проєкту",
+  fileCaptionShort: (title, sourceUrl) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl + `\n📣 Новини проєкту: ${NEWS_CHANNEL}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Налаштування бота в цій групі\n\n" +
@@ -734,7 +742,7 @@ const uk: Messages = {
     "Код підключення в загальному чаті можуть підгледіти — я його знищив і прибрав повідомлення. Отримайте новий і надішліть командою /connect КОД: повідомлення з командою я видаляю одразу.",
   groupWelcome:
     "👋 Привіт! Надсилайте в чат посилання на відео з TikTok, Instagram, YouTube, VK та інших платформ — я відповім самим відео.\n\n" +
-    "Ролики до 15 хвилин завантажую сам, без команд. На інші повідомлення не відповідаю.\n\n⚙️ Адміни групи можуть налаштувати мене командою /settings: видаляти повідомлення з посиланнями, вигляд підпису, якість, довгі відео й мову.",
+    "Ролики до 15 хвилин завантажую сам, без команд. На інші повідомлення не відповідаю.\n\n⚙️ Адміни групи можуть налаштувати мене командою /settings: видаляти повідомлення з посиланнями, вигляд підпису, якість, довгі відео й мову.\n\n📣 Новини проєкту: @videonerdownload",
   errorTooLong: "відео задовге — такі ми поки не завантажуємо.",
   errorUnknown: "не вдалося завантажити це відео. Спробуй ще раз трохи пізніше або надішли інше посилання.",
   inlineHintButton: "Надішліть посилання боту",
@@ -782,7 +790,7 @@ const uk: Messages = {
 };
 
 const kk: Messages = {
-  start: "Сәлем! Маған YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest немесе Threads видеосының сілтемесін жібер — оны жүктеп алуға көмектесемін.\n\n✨ Сапа ешнәрсемен шектелмейді: платформада бар сапаның бәрін, 4K-ге дейін беремін — тек файл 2 ГБ-тан аспаса болғаны, одан үлкенін Telegram ботқа жіберуге мүмкіндік бермейді. Мұнда ақылы функциялар мүлдем жоқ.\n\nТолығымен тегін: жазылымсыз, жарнамасыз, ішкі сатып алуларсыз.\n\n🧩 Компьютерден жүктейсіз бе? Браузерге кеңейтім орнатыңыз — «Жүктеп алу» батырмасы видео бетінде тікелей пайда болады: videoner.download/kk/extension\n\n👥 Мені топқа қосыңыз — онда жарияланған сілтемелер бойынша видеоларды өзім жіберіп отырамын.\n\n🌐 Бот тілі: /language",
+  start: "Сәлем! Маған YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest немесе Threads видеосының сілтемесін жібер — оны жүктеп алуға көмектесемін.\n\n✨ Сапа ешнәрсемен шектелмейді: платформада бар сапаның бәрін, 4K-ге дейін беремін — тек файл 2 ГБ-тан аспаса болғаны, одан үлкенін Telegram ботқа жіберуге мүмкіндік бермейді. Мұнда ақылы функциялар мүлдем жоқ.\n\nТолығымен тегін: жазылымсыз, жарнамасыз, ішкі сатып алуларсыз.\n\n🧩 Компьютерден жүктейсіз бе? Браузерге кеңейтім орнатыңыз — «Жүктеп алу» батырмасы видео бетінде тікелей пайда болады: videoner.download/kk/extension\n\n👥 Мені топқа қосыңыз — онда жарияланған сілтемелер бойынша видеоларды өзім жіберіп отырамын.\n\n📣 Жоба жаңалықтары: @videonerdownload\n\n🌐 Бот тілі: /language",
   notLink: "Бұл сілтемеге ұқсамайды. Видео сілтемесін жібер.",
   inviteGreeting: "Сәлем! Мен Videoner — YouTube, TikTok, Instagram және басқа платформалардан видеоларды тегін жүктеп аламын. Қазір саған бөліскен видеоны дайындаймын 👇",
   inviteNotFound: "Осы шақыру сілтемесі бойынша видео табылмады. Маған видео сілтемесін жібер — мен оны жүктеп аламын.",
@@ -872,7 +880,9 @@ const kk: Messages = {
     "🧩 Браузерге арналған Videoner: «Жүктеп алу» батырмасы тікелей видео бетінде — YouTube, Instagram, TikTok, VK, аккаунтыңыздағы жабық видеолар және GetCourse сабақтары.\n\nКомпьютердегі Chrome, Яндекс Браузер, Edge, Opera және Firefox үшін.",
   extensionPageButton: "🧩 Кеңейтімді орнату",
   addToGroupButton: "👥 Топқа қосу",
-  fileCaptionShort: (title, sourceUrl) => (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl,
+  newsButton: "📣 Жоба жаңалықтары",
+  fileCaptionShort: (title, sourceUrl) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl + `\n📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Осы топтағы бот баптаулары\n\n" +
@@ -934,7 +944,7 @@ const kk: Messages = {
     "Ортақ чаттағы қосылу кодын басқалар көріп қоюы мүмкін — мен оны жойып, хабарламаны өшірдім. Жаңасын алып, /connect КОД командасымен жіберіңіз: командасы бар хабарламаны бірден өшіремін.",
   groupWelcome:
     "👋 Сәлем! Чатқа TikTok, Instagram, YouTube, VK және басқа платформалардағы видеолардың сілтемелерін жіберіңіз — мен видеоның өзімен жауап беремін.\n\n" +
-    "15 минутқа дейінгі видеоларды командасыз-ақ өзім жүктеп аламын. Басқа хабарламаларға жауап бермеймін.\n\n⚙️ Топ әкімшілері мені /settings командасымен баптай алады: сілтемесі бар хабарламаларды жою, сипаттама түрі, сапа, ұзын видеолар және тіл.",
+    "15 минутқа дейінгі видеоларды командасыз-ақ өзім жүктеп аламын. Басқа хабарламаларға жауап бермеймін.\n\n⚙️ Топ әкімшілері мені /settings командасымен баптай алады: сілтемесі бар хабарламаларды жою, сипаттама түрі, сапа, ұзын видеолар және тіл.\n\n📣 Жоба жаңалықтары: @videonerdownload",
   errorTooLong: "видео тым ұзын — мұндай видеоларды әзірге жүктеп алмаймыз.",
   errorUnknown: "бұл видеоны жүктеп алу мүмкін болмады. Сәл кейінірек қайта байқап көр немесе басқа сілтеме жібер.",
   inlineHintButton: "Сілтемені ботқа жіберіңіз",

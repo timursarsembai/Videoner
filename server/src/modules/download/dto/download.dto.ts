@@ -80,6 +80,15 @@ class RequestMetaDto {
   @IsOptional()
   @IsString()
   clientIp?: string;
+
+  @ApiProperty({
+    description:
+      'Where the requester connected their own cookies: user:<telegramId> or chat:<chatId> (bot only)',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  cookieScope?: string;
 }
 
 export class TelegramFileDto {

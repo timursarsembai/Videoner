@@ -48,4 +48,13 @@ export class GetVideoInfoDto {
   @IsOptional()
   @IsEnum(DownloadSource)
   source?: DownloadSource;
+
+  // Где человек подключил свои куки — только от бота (lib/cookie-scope.ts).
+  @ApiProperty({
+    description: 'Where the requester connected their own cookies: user:<telegramId> or chat:<chatId> (bot only)',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  cookieScope?: string;
 }

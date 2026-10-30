@@ -32,6 +32,8 @@ import { getFileName } from 'src/lib/utils';
 import { isAutoTrack, SUBTITLE_LANG_RE } from 'src/lib/subtitles';
 import { getPlatform } from 'src/validate/url';
 import { BotUserService } from '../analytics/bot-user.service';
+import { UserCookiesService } from '../user-cookies/user-cookies.service';
+import { userCookieScope } from 'src/lib/cookie-scope';
 import { categorizeError } from 'src/lib/error-category';
 import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
 import {
@@ -68,6 +70,8 @@ export interface DownloadRequestMeta {
   // IP посетителя сайта. Присылает только прокси сайта (web/app/api), сам
   // браузер к серверу не ходит; нужен для суточного лимита YouTube.
   clientIp?: string;
+  // Где человек подключил свои куки (только бот, см. lib/cookie-scope.ts).
+  cookieScope?: string;
 }
 
 // Пределы для отчёта расширения (reportClientDownload). Длина ссылки — как у
@@ -135,6 +139,7 @@ export class DownloadService {
     private ytdlp: YtdlpProcessService,
     private ytdlpFormat: YtdlpFormatService,
     private botUser: BotUserService,
+    private userCookies: UserCookiesService,
   ) {
     this.downloadPath = join(__dirname, '..', '..', '..', 'downloads');
     // Ensure downloads directory exists
@@ -143,10 +148,11 @@ export class DownloadService {
     }
   }
 
-  private async checkDurationLimit(url: string, req: Request) {
+  private async checkDurationLimit(url: string, req: Request, cookiesContent?: string) {
     const apiKey = (req as any).apiKey;
     const info = await this.ytdlpFormat.getYtdlpVideoInfo(url, {
       allowPhotos: PHOTO_PLATFORMS.includes((req as any).platform),
+      cookiesContent,
     });
 
     // У карусели собственной длительности нет. Складывать элементы неверно:
@@ -160,6 +166,32 @@ export class DownloadService {
     }
 
     return info;
+  }
+
+  // Метаданные для скачивания. Не вышло обычным путём, а человек (или его
+  // группа) подключил свой вход на этой площадке — пробуем от его аккаунта.
+  // userCookies в ответе — значит, ролик виден только вошедшим: качать его
+  // тоже с этими куками и мимо общего кеша (см. downloadVideo).
+  private async infoForDownload(
+    url: string,
+    req: Request,
+    meta: DownloadRequestMeta,
+  ): Promise<{ info: any; userCookies?: string }> {
+    try {
+      return { info: await this.checkDurationLimit(url, req) };
+    } catch (error) {
+      // Отказ по длительности — не про вход, куки его не изменят.
+      if (error instanceof BadRequestException) throw error;
+      const scope = userCookieScope(meta);
+      const platform: string = (req as any).platform;
+      if (!scope || !(await this.userCookies.hasActive(scope, platform))) throw error;
+      const { result } = await this.userCookies.withScopeCookies(scope, platform, async (cookies) => ({
+        info: await this.checkDurationLimit(url, req, cookies),
+        cookies,
+      }));
+      console.log(`[user-cookies] ${platform}: метаданные получены от подключённого входа (${scope.split(':')[0]})`);
+      return { info: result.info, userCookies: result.cookies };
+    }
   }
 
   // Суточный лимит трафика YouTube с одного IP — для сайта и расширения (см.
@@ -1140,7 +1172,7 @@ export class DownloadService {
   ) {
     try {
       // Check duration limit before proceeding
-      const info = await this.checkDurationLimit(url, req);
+      const { info, userCookies } = await this.infoForDownload(url, req, meta);
       const platform: string = (req as any).platform;
 
       // Потолок качества YouTube (см. lib/youtube-budget.ts). Режем здесь, а
@@ -1165,8 +1197,10 @@ export class DownloadService {
         );
       }
 
+      // Скачанное по чужому входу в общий кеш не кладём и из него не берём:
+      // иначе закрытый пост достался бы любому, у кого есть ссылка.
       const cacheKey =
-        multi || !hasVideo
+        userCookies || multi || !hasVideo
           ? null
           : this.cacheKeyFor(platform, info, 'v', quality, extension || 'mp4');
       const cached = await this.serveFromCache({
@@ -1297,7 +1331,7 @@ export class DownloadService {
             },
           } as any,
           // Метаданные уже есть — yt-dlp не будет открывать ролик заново.
-          { infoJson: JSON.stringify(info) },
+          { infoJson: JSON.stringify(info), cookiesContent: userCookies },
         )
         .then((progress$) => {
           this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
@@ -1376,7 +1410,7 @@ export class DownloadService {
   ) {
     try {
       // Check duration limit before proceeding
-      const info = await this.checkDurationLimit(url, req);
+      const { info, userCookies } = await this.infoForDownload(url, req, meta);
 
       const downloadDir = this.ensureDownloadDirectory();
       // Пост из нескольких файлов и в аудио остаётся несколькими файлами.
@@ -1399,7 +1433,7 @@ export class DownloadService {
       }
 
       // Повтор той же дорожки — из кеша, см. downloadVideo().
-      const cacheKey = multi
+      const cacheKey = userCookies || multi
         ? null
         : this.cacheKeyFor(platform, info, 'a', quality, audioExtension);
       const cached = await this.serveFromCache({
@@ -1470,7 +1504,7 @@ export class DownloadService {
           outDir: downloadDir,
           fileName: fileName,
         },
-      } as any, { infoJson: JSON.stringify(info) });
+      } as any, { infoJson: JSON.stringify(info), cookiesContent: userCookies });
 
       this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
         console.log('Download complete');

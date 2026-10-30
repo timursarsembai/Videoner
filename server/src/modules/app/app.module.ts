@@ -15,6 +15,7 @@ import { ProxyHealthModule } from '../proxy-health/proxy-health.module';
 import { ValidationReportModule } from '../validation-report/validation-report.module';
 import { ShareLinkModule } from '../share-link/share-link.module';
 import { GroupSettingsModule } from '../group-settings/group-settings.module';
+import { UserCookiesModule } from '../user-cookies/user-cookies.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { GroupSettingsModule } from '../group-settings/group-settings.module';
     ValidationReportModule,
     ShareLinkModule,
     GroupSettingsModule,
+    UserCookiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

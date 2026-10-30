@@ -12,6 +12,8 @@ import { FacebookVideoQuality } from 'src/types/facebook';
 import { getVideoFormats } from 'src/lib/helper';
 import { AlertService } from '../alert/alert.service';
 import { BotUserService } from '../analytics/bot-user.service';
+import { UserCookiesService } from '../user-cookies/user-cookies.service';
+import { userCookieScope } from 'src/lib/cookie-scope';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
 import { listSubtitles } from 'src/lib/subtitles';
 import { capYoutubeQualities } from 'src/lib/youtube-budget';
@@ -51,6 +53,7 @@ export class InfoService {
     private ytdlp: YtdlpFormatService,
     private alert: AlertService,
     private botUser: BotUserService,
+    private userCookies: UserCookiesService,
   ) {}
 
   async getVideoInfo(dto: GetVideoInfoDto): Promise<VideoInfoResponse> {
@@ -77,7 +80,7 @@ export class InfoService {
     }
 
     try {
-      const info = await this.fetchInfoWithCookieFallback(url, platform, alerts);
+      const info = await this.fetchInfoWithUserCookies(url, platform, alerts, userCookieScope(dto));
 
       const { allFormats, allExtensions } = this.getPlatformFormats(
         info,
@@ -130,6 +133,27 @@ export class InfoService {
     } catch (error) {
       const errorMessage = this.handleError(error, platform, alerts);
       throw new BadRequestException(errorMessage);
+    }
+  }
+
+  // Обычный путь не дал метаданных, а человек (или его группа) подключил свой
+  // вход на этой площадке — пробуем от его аккаунта (сторис, закрытые
+  // записи). Ответ в общий кеш не попадает (YtdlpFormatService).
+  private async fetchInfoWithUserCookies(
+    url: string,
+    platform: string,
+    alerts: boolean,
+    scope: string | undefined,
+  ) {
+    try {
+      return await this.fetchInfoWithCookieFallback(url, platform, alerts);
+    } catch (error) {
+      if (!scope || !(await this.userCookies.hasActive(scope, platform))) throw error;
+      const allowPhotos = PHOTO_PLATFORMS.includes(platform);
+      const { result } = await this.userCookies.withScopeCookies(scope, platform, (cookies) =>
+        this.ytdlp.getYtdlpVideoInfo(url, { allowPhotos, cookiesContent: cookies }),
+      );
+      return result;
     }
   }
 

@@ -542,9 +542,13 @@ export class YtdlpProcessService implements OnModuleInit {
 
   // Публичный — YtdlpFormatService зовёт его через DI для получения
   // метаданных (--dump-json), сам процесс/семафоры/куки остаются здесь.
+  //
+  // cookiesContent — куки, подключённые человеком (UserCookiesService), вместо
+  // файлов cookies/. С ними отказ авторизации НЕ повторяется анонимно: его
+  // должен увидеть пул, чтобы засчитать отказ этой записи.
   async ytdlp(
     args: string[],
-    options?: { skipCookies?: boolean },
+    options?: { skipCookies?: boolean; cookiesContent?: string },
   ): Promise<{ stdout: string; stderr: string }> {
     const isYoutube = args.some((a) => this.isYoutubeUrl(a));
     const releaseSlot = isYoutube ? await this.youtubeSemaphore.acquire() : null;
@@ -559,7 +563,9 @@ export class YtdlpProcessService implements OnModuleInit {
       const platform = urlArg ? getPlatform(urlArg) : null;
 
       const finalArgs = [...args];
-      if (!options?.skipCookies) {
+      if (options?.cookiesContent) {
+        disposableCookies = this.makeDisposableCookies(platform, options.cookiesContent);
+      } else if (!options?.skipCookies) {
         disposableCookies = this.makeDisposableCookies(platform);
       }
       let useCookies = disposableCookies !== null;
@@ -615,6 +621,7 @@ export class YtdlpProcessService implements OnModuleInit {
             useCookies &&
             !cookiesDropped &&
             disposableCookies &&
+            !options?.cookiesContent &&
             this.isAuthError(message)
           ) {
             console.warn(
@@ -740,9 +747,13 @@ export class YtdlpProcessService implements OnModuleInit {
   // запуску подсовывается одноразовая копия во временном каталоге, её yt-dlp и
   // портит. Настоящая ротация токенов при этом не сохраняется — но сохранять
   // там, как показали замеры, нечего.
-  private makeDisposableCookies(platform: string | null): string | null {
-    const source = this.resolveCookiesSource(platform);
-    if (!source) {
+  //
+  // content — куки человека (уже Netscape-текст): пишем их, а не копию
+  // файла сервера. Права 0600: в /tmp контейнера других пользователей нет, но
+  // чужие сессии не должны быть читаемы никем, кроме процесса.
+  private makeDisposableCookies(platform: string | null, content?: string): string | null {
+    const source = content === undefined ? this.resolveCookiesSource(platform) : null;
+    if (content === undefined && !source) {
       return null;
     }
     try {
@@ -752,7 +763,11 @@ export class YtdlpProcessService implements OnModuleInit {
           .toString(36)
           .slice(2, 8)}.txt`,
       );
-      fsSync.copyFileSync(source, tmpPath);
+      if (content !== undefined) {
+        fsSync.writeFileSync(tmpPath, content, { mode: 0o600 });
+      } else {
+        fsSync.copyFileSync(source as string, tmpPath);
+      }
       return tmpPath;
     } catch {
       // Не смогли сделать копию — работаем анонимно, это лучше, чем отдать
@@ -782,7 +797,8 @@ export class YtdlpProcessService implements OnModuleInit {
     url: string,
     platform: Platform,
     options?: DownloadOptions<T>,
-    extras?: { infoJson?: string },
+    // cookiesContent — см. ytdlp(): куки человека вместо файлов cookies/.
+    extras?: { infoJson?: string; cookiesContent?: string },
   ): Promise<Observable<ProgressType | Error>> {
     const subject = new Subject<ProgressType | Error>();
     const parseUrl = parseAndValidateUrl(url, platform);
@@ -843,7 +859,9 @@ export class YtdlpProcessService implements OnModuleInit {
     // В аргументы НЕ вшивается: от кук может понадобиться отказаться на
     // повторной попытке (протухшая сессия), поэтому флаг добавляется в
     // startAttempt(). Удаляется в finalize() ниже.
-    const disposableCookies = this.makeDisposableCookies(platform);
+    const disposableCookies = extras?.cookiesContent
+      ? this.makeDisposableCookies(platform, extras.cookiesContent)
+      : this.makeDisposableCookies(platform);
 
     // Общий слот — до YouTube-специфичного: если сервер и так забит другими
     // площадками, лишний смысл сначала ждать YouTube-слот, а потом ещё общий.
@@ -991,6 +1009,7 @@ export class YtdlpProcessService implements OnModuleInit {
             useCookies &&
             !cookiesDropped &&
             disposableCookies &&
+            !extras?.cookiesContent &&
             !progressEmitted &&
             this.isAuthError(errorMessage)
           ) {

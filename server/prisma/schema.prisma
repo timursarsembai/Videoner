@@ -254,5 +254,53 @@ model GroupSettings {
   // Качать и видео длиннее 15 минут. По умолчанию нет: длинное видео в группу
   // чаще кидают обсудить, а не скачать (handlers/group.ts).
   longVideos  Boolean  @default(false)
+  // Кто может подключать к группе свой вход на площадках (UserCookie):
+  // admins — только администраторы, all — любой участник.
+  cookiesBy   String   @default("admins")
   updatedAt   DateTime @updatedAt
+}
+
+// Куки, которые люди подключили боту сами (модуль user-cookies): чтобы бот
+// качал то, что видно только вошедшим (сторис Instagram, закрытые записи), —
+// от их аккаунта. Область (scope) — где ими можно пользоваться: личка
+// человека («user:<telegramId>») или одна группа («chat:<chatId>»). В других
+// группах те же куки не работают никогда — там их подключают заново.
+//
+// data — только Netscape-текст куки одной площадки (lib/user-cookies.ts),
+// зашифрованный AES-256-GCM ключом USER_COOKIES_KEY (lib/cookie-crypto.ts).
+// В открытом виде куки не лежат нигде, кроме одноразового файла для yt-dlp
+// на время одного запроса.
+model UserCookie {
+  id              String    @id @default(uuid())
+  scope           String
+  platform        String
+  ownerTelegramId BigInt
+  ownerName       String?
+  // Язык владельца — на нём пишем, если вход перестал работать.
+  ownerLang       String?
+  data            Bytes
+  // Подряд идущие отказы «вход не действует». Сбрасывается удачей; на
+  // третьем запись выключается (invalidAt) и владелец получает сообщение.
+  failures        Int       @default(0)
+  invalidAt       DateTime?
+  lastUsedAt      DateTime?
+  createdAt       DateTime  @default(now())
+
+  // Один человек — одна запись площадки в каждой области: повторное
+  // подключение заменяет старые куки свежими.
+  @@unique([scope, platform, ownerTelegramId])
+  @@index([ownerTelegramId])
+}
+
+// Одноразовый код от кнопки «Подключить аккаунт» в расширении: куки уходят на
+// сервер напрямую, а в чат человек отправляет только код (/connect <код>).
+// Живёт 10 минут и удаляется при первом использовании.
+model CookieConnectCode {
+  code      String   @id
+  platform  String
+  data      Bytes
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
 }

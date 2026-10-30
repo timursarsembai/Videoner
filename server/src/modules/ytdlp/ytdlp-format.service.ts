@@ -33,8 +33,16 @@ export class YtdlpFormatService {
 
   async getYtdlpVideoInfo(
     url: string,
-    options?: { skipCookies?: boolean; allowPhotos?: boolean },
+    options?: { skipCookies?: boolean; allowPhotos?: boolean; cookiesContent?: string },
   ): Promise<YtdlpVideoInfo> {
+    // С куками человека — мимо кеша в обе стороны: ответ получен от ЕГО
+    // аккаунта (закрытый пост, сторис) и не должен достаться никому другому
+    // по одной лишь ссылке; а из кеша ему не нужно — туда попадает только
+    // то, что видно и без входа.
+    if (options?.cookiesContent) {
+      return JSON.parse(await this.fetchInfoJson(url, options));
+    }
+
     // skipCookies в ключ не входит: удачный ответ годится всем, с куками он
     // получен или без. Наоборот, так повтор без кук в InfoService
     // (fetchInfoWithCookieFallback) избавляет /download от той же попытки
@@ -75,7 +83,7 @@ export class YtdlpFormatService {
 
   private async fetchInfoJson(
     url: string,
-    options?: { skipCookies?: boolean; allowPhotos?: boolean },
+    options?: { skipCookies?: boolean; allowPhotos?: boolean; cookiesContent?: string },
   ): Promise<string> {
     // --dump-single-json, а НЕ --dump-json: второй печатает по объекту на
     // каждый элемент поста, и JSON.parse всего вывода падает на второй строке

@@ -169,6 +169,10 @@ export async function proxyApiRequest(
     // чинит и эту поломку.
     let targetUrl = `${API_URL}/${path.join("/")}`;
     let body = request.body ? await request.json() : undefined;
+    // Область подключённых кук (вход человека на площадке) задаёт только бот.
+    // Сервер и сам не верит ей в запросах сайта и расширения
+    // (server/src/lib/cookie-scope.ts) — вырезаем и здесь, на входе.
+    if (body && typeof body === "object") delete body.cookieScope;
 
     if (isInfoRequest(request, path)) {
       if (options.requireCaptcha) {

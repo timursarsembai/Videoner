@@ -2,6 +2,7 @@ import { BadRequestException, Body, Controller, Get, Param, Post } from '@nestjs
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import {
   CAPTION_STYLES,
+  COOKIES_BY,
   GroupSettingsPatch,
   GroupSettingsService,
   QUALITY_MODES,
@@ -44,6 +45,10 @@ export class GroupSettingsController {
     if (body?.longVideos !== undefined) {
       if (typeof body.longVideos !== 'boolean') throw new BadRequestException('longVideos must be boolean');
       patch.longVideos = body.longVideos;
+    }
+    if (body?.cookiesBy !== undefined) {
+      if (!(COOKIES_BY as readonly unknown[]).includes(body.cookiesBy)) throw new BadRequestException('Invalid cookiesBy');
+      patch.cookiesBy = body.cookiesBy as GroupSettingsPatch['cookiesBy'];
     }
     if (body?.caption !== undefined) {
       if (!(CAPTION_STYLES as readonly unknown[]).includes(body.caption)) throw new BadRequestException('Invalid caption');

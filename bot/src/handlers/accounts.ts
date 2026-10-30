@@ -145,17 +145,21 @@ async function readDocument(ctx: Context): Promise<string> {
   return res.text();
 }
 
+// Список подключений. Его же показывает /start accounts — ссылка «Мои
+// подключения» в окошке расширения (t.me/<бот>?start=accounts).
+export async function showAccounts(ctx: Context) {
+  const m = messages[detectLang(ctx.from?.language_code)];
+  if (ctx.chat?.type === "channel") return;
+  try {
+    const { text, keyboard } = await listFor(ctx, m);
+    await ctx.reply(text, { reply_markup: keyboard });
+  } catch (e: any) {
+    await ctx.reply(errorText(m, e));
+  }
+}
+
 export function registerAccountHandlers(bot: Bot) {
-  bot.command("accounts", async (ctx) => {
-    const m = messages[detectLang(ctx.from?.language_code)];
-    if (ctx.chat.type === "channel") return;
-    try {
-      const { text, keyboard } = await listFor(ctx, m);
-      await ctx.reply(text, { reply_markup: keyboard });
-    } catch (e: any) {
-      await ctx.reply(errorText(m, e));
-    }
-  });
+  bot.command("accounts", showAccounts);
 
   bot.command("connect", async (ctx) => {
     const m = messages[detectLang(ctx.from?.language_code)];

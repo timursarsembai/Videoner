@@ -274,6 +274,12 @@ button {
   text-align: left;
 }
 
+.account .muted-link {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .account .link:hover {
   text-decoration: underline;
 }

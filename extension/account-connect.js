@@ -29,6 +29,9 @@ const PLATFORMS = {
 };
 
 const BOT_URL = "https://t.me/VideonerBot";
+// Бот сразу покажет список подключений (/start accounts): расширение само его
+// показать не может — оно не знает, чей это Telegram.
+const ACCOUNTS_URL = `${BOT_URL}?start=accounts`;
 
 export function platformOfUrl(url) {
   let host;
@@ -112,8 +115,15 @@ export async function mountAccountConnect(container, tabUrl) {
 
   const show = (...nodes) => container.replaceChildren(...nodes);
 
+  const accountsLink = () =>
+    el("button", { class: "link muted-link", type: "button", onclick: () => chrome.tabs.create({ url: ACCOUNTS_URL }) }, t.acctList);
+
   const start = () =>
-    show(el("button", { class: "link", type: "button", onclick: confirm }, t.acctButton(label)));
+    show(
+      el("button", { class: "link", type: "button", onclick: confirm }, t.acctButton(label)),
+      el("br"),
+      accountsLink()
+    );
 
   const confirm = () =>
     show(
@@ -185,7 +195,9 @@ export async function mountAccountConnect(container, tabUrl) {
         copy,
         el("button", { class: "primary", type: "button", onclick: () => chrome.tabs.create({ url: BOT_URL }) }, t.acctOpenBot)
       ),
-      el("button", { class: "link", type: "button", onclick: confirm }, t.acctNewCode)
+      el("button", { class: "link", type: "button", onclick: confirm }, t.acctNewCode),
+      el("br"),
+      accountsLink()
     );
   }
 

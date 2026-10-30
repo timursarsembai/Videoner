@@ -9,7 +9,7 @@ import { registerInlineHandlers } from "./handlers/inline.js";
 import { openInvite } from "./handlers/invite.js";
 import { registerBlockedHandlers } from "./handlers/blocked.js";
 import { registerGroupHandlers, sendGroupWelcome } from "./handlers/group.js";
-import { registerAccountHandlers } from "./handlers/accounts.js";
+import { registerAccountHandlers, showAccounts } from "./handlers/accounts.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -41,6 +41,11 @@ bot.command("start", async (ctx) => {
   }
   // t.me/<бот>?start=<код> — человек пришёл по ссылке-приглашению на видео.
   const code = ctx.match.trim();
+  // «Мои подключения» из окошка расширения (handlers/accounts.ts).
+  if (code === "accounts") {
+    await showAccounts(ctx);
+    return;
+  }
   if (code) {
     await openInvite(ctx, code, lang);
     return;

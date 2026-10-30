@@ -22,6 +22,7 @@ import {
   type GroupSettings,
 } from "../group.js";
 import { performDownload, sendersFor } from "./download.js";
+import { parseConnectCode } from "../accounts.js";
 
 // Режим для групп: бот добавлен в чат, видит ссылки на видео и отвечает на
 // них самим видео — без кнопок и команд.
@@ -56,7 +57,7 @@ const ANONYMOUS_ADMIN_ID = 1087968824;
 
 const settingsCache = new SettingsCache();
 
-async function loadSettings(chatId: number): Promise<GroupSettings> {
+export async function loadSettings(chatId: number): Promise<GroupSettings> {
   const cached = settingsCache.get(chatId);
   if (cached) return cached;
   try {
@@ -78,7 +79,7 @@ async function saveSettings(chatId: number, patch: Partial<GroupSettings>): Prom
   return value;
 }
 
-async function isGroupAdmin(ctx: Context): Promise<boolean> {
+export async function isGroupAdmin(ctx: Context): Promise<boolean> {
   const chat = ctx.chat;
   const from = ctx.from;
   if (!chat || !from) return false;
@@ -173,6 +174,8 @@ function settingsKeyboard(m: (typeof messages)[Lang], s: GroupSettings): InlineK
     .row()
     .text(m.settingsLongButton(s.longVideos), "gs|long")
     .row()
+    .text(m.settingsCookiesButton(s.cookiesBy), "gs|ck")
+    .row()
     .text(m.settingsDoneButton, "gs|done");
 }
 
@@ -197,6 +200,8 @@ async function downloadInGroup(
     telegramId: from.id,
     telegramUsername: from.username,
     telegramLanguageCode: from.language_code,
+    // Куки, подключённые к этой группе (handlers/accounts.ts), — только её.
+    cookieScope: `chat:${chatId}`,
   };
 
   let info: {
@@ -297,6 +302,13 @@ export function registerGroupHandlers(bot: Bot) {
     const { old_chat_member: before, new_chat_member: after } = ctx.myChatMember;
     const wasIn = ["member", "administrator"].includes(before.status);
     const isIn = ["member", "administrator"].includes(after.status);
+    // Бота удалили из группы — подключённые к ней аккаунты больше не нужны.
+    if (wasIn && !isIn) {
+      await api("/user-cookies/scope-delete", { scope: `chat:${ctx.chat.id}` }).catch((e) =>
+        console.error(`Группа ${ctx.chat.id}: подключения не удалены:`, e?.message ?? e),
+      );
+      return;
+    }
     if (wasIn || !isIn) return;
     await sendGroupWelcome(ctx);
   });
@@ -325,7 +337,9 @@ export function registerGroupHandlers(bot: Bot) {
             ? { quality: s.quality === "max" ? "standard" : "max" }
             : action === "long"
               ? { longVideos: !s.longVideos }
-              : {};
+              : action === "ck"
+                ? { cookiesBy: s.cookiesBy === "all" ? "admins" : "all" }
+                : {};
     let saved: GroupSettings;
     try {
       saved = await saveSettings(ctx.chat.id, patch);
@@ -354,6 +368,17 @@ export function registerGroupHandlers(bot: Bot) {
     if (!from || (from.is_bot && from.id !== ANONYMOUS_ADMIN_ID) || ctx.message.is_automatic_forward) return;
 
     const text = ctx.message.text;
+    // Код подключения аккаунта, присланный в общий чат без команды, — уже
+    // засвечен: уничтожаем его и убираем сообщение (handlers/accounts.ts).
+    const leakedCode = parseConnectCode(text, { strict: true });
+    if (leakedCode) {
+      void (async () => {
+        await api("/user-cookies/burn", { code: leakedCode }).catch(() => {});
+        await ctx.deleteMessage().catch(() => {});
+        await ctx.reply(messages[detectLang(from.language_code)].connectCodeInGroup).catch(() => {});
+      })();
+      return;
+    }
     const urls = [...new Set(extractUrls(text).filter(isVideoHostUrl))].slice(0, GROUP_LINKS_PER_MESSAGE);
     if (!urls.length) return;
 
@@ -413,10 +438,15 @@ export function registerGroupHandlers(bot: Bot) {
     const newChatId = ctx.message.migrate_to_chat_id;
     try {
       const old = await api<GroupSettings>(`/group-settings/${ctx.chat.id}`);
-      const { deleteLinks, caption, quality, longVideos } = { ...DEFAULT_GROUP_SETTINGS, ...old };
-      await saveSettings(newChatId, { deleteLinks, caption, quality, longVideos });
+      const { deleteLinks, caption, quality, longVideos, cookiesBy } = { ...DEFAULT_GROUP_SETTINGS, ...old };
+      await saveSettings(newChatId, { deleteLinks, caption, quality, longVideos, cookiesBy });
     } catch (e: any) {
       console.error(`Группа ${ctx.chat.id} → ${newChatId}: настройки не перенесены:`, e?.message ?? e);
     }
+    // Подключённые к группе аккаунты — туда же (handlers/accounts.ts), и
+    // независимо от того, удалось ли перенести настройки.
+    await api("/user-cookies/migrate", { from: `chat:${ctx.chat.id}`, to: `chat:${newChatId}` }).catch((e) =>
+      console.error(`Группа ${ctx.chat.id} → ${newChatId}: подключения не перенесены:`, e?.message ?? e),
+    );
   });
 }

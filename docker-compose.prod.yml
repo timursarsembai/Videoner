@@ -171,6 +171,11 @@ services:
       # «Поделиться» в подписи под файлом (bot/src/share-link.ts). Пусто —
       # строки нет.
       SHARE_LINK_BASE: https://${PUBLIC_DOMAIN}
+    # Файлы, которые люди присылают боту (cookies.txt, handlers/accounts.ts):
+    # локальный Bot API хранит их у себя и отдаёт путь на диске. С записью —
+    # бот удаляет файл кук сразу после чтения, открытым он лежать не должен.
+    volumes:
+      - botapi_data:/var/lib/telegram-bot-api
     depends_on: [server, telegram-bot-api]
     networks: [internal]
 

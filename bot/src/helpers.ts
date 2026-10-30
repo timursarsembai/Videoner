@@ -1,3 +1,4 @@
+import { createHmac } from "node:crypto";
 import { messages, type Lang } from "./i18n.js";
 
 // Раньше весь bot.ts (494 строки) держал это на одном уровне вместе со всеми
@@ -37,6 +38,13 @@ export function fmtSize(bytes: number, lang: Lang): string {
 // весь это время видел "⏬ Скачиваю..." без единого сообщения об ошибке.
 const API_TIMEOUT_MS = 30_000;
 
+// Подпись «это бот» (server/src/lib/bot-auth.ts): HMAC от токена бота, сам
+// токен по сети не ходит. Без неё сервер не даст ни подключённых людьми кук,
+// ни путей /user-cookies — ключа API для этого мало, он общий с сайтом.
+const BOT_SIGNATURE = process.env.BOT_TOKEN
+  ? createHmac("sha256", process.env.BOT_TOKEN).update("videoner-bot-v1").digest("hex")
+  : "";
+
 export async function api<T = any>(path: string, body?: unknown): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
@@ -44,7 +52,7 @@ export async function api<T = any>(path: string, body?: unknown): Promise<T> {
   try {
     res = await fetch(`${API_URL}${path}`, {
       method: body ? "POST" : "GET",
-      headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+      headers: { "Content-Type": "application/json", "X-API-Key": API_KEY, "X-Videoner-Bot": BOT_SIGNATURE },
       body: body ? JSON.stringify(body) : undefined,
       signal: controller.signal,
     });

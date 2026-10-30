@@ -9,6 +9,7 @@ import { registerInlineHandlers } from "./handlers/inline.js";
 import { openInvite } from "./handlers/invite.js";
 import { registerBlockedHandlers } from "./handlers/blocked.js";
 import { registerGroupHandlers, sendGroupWelcome } from "./handlers/group.js";
+import { registerAccountHandlers } from "./handlers/accounts.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -61,6 +62,10 @@ bot.command("extension", async (ctx) => {
 });
 
 registerAdminHandlers(bot);
+// Подключённые аккаунты — ДО групп и лички: /connect и /accounts иначе
+// проглотил бы групповой обработчик текста (см. handlers/group.ts про
+// порядок), а код или куки, присланные в личку, — обработчик ссылок.
+registerAccountHandlers(bot);
 // Группы — ДО обработчика блокировок и обработчика лички: оба слушают те же
 // типы обновлений (my_chat_member, message:text), а grammY останавливается на
 // первом совпадении. Групповой ловит только сообщения групп и дальше их не
@@ -103,10 +108,12 @@ const COMMANDS = {
   ru: [
     { command: "start", description: "Как пользоваться ботом" },
     { command: "extension", description: "Расширение для браузера" },
+    { command: "accounts", description: "Свои аккаунты для сторис и закрытых записей" },
   ],
   en: [
     { command: "start", description: "How to use the bot" },
     { command: "extension", description: "Browser extension" },
+    { command: "accounts", description: "Your accounts for stories and private posts" },
   ],
 };
 void bot.api.setMyCommands(COMMANDS.en).catch((e) => console.error("setMyCommands:", e?.message ?? e));
@@ -118,10 +125,12 @@ void bot.api
 const GROUP_COMMANDS = {
   ru: [
     { command: "settings", description: "Настройки бота в группе (для админов)" },
+    { command: "accounts", description: "Аккаунты, подключённые к группе" },
     { command: "start", description: "Как бот работает в группе" },
   ],
   en: [
     { command: "settings", description: "Bot settings for this group (admins)" },
+    { command: "accounts", description: "Accounts connected to this group" },
     { command: "start", description: "How the bot works in a group" },
   ],
 };

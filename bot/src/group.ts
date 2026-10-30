@@ -96,13 +96,21 @@ export class GroupLimiter {
 // значения те же.
 export type CaptionStyle = "full" | "short" | "none";
 export type QualityMode = "standard" | "max";
-export type GroupSettings = { deleteLinks: boolean; caption: CaptionStyle; quality: QualityMode; longVideos: boolean };
+export type GroupSettings = {
+  deleteLinks: boolean;
+  caption: CaptionStyle;
+  quality: QualityMode;
+  longVideos: boolean;
+  // Кто может подключать к группе свой вход на площадках (handlers/accounts.ts).
+  cookiesBy: "admins" | "all";
+};
 
 export const DEFAULT_GROUP_SETTINGS: GroupSettings = {
   deleteLinks: false,
   caption: "full",
   quality: "standard",
   longVideos: false,
+  cookiesBy: "admins",
 };
 
 // Кнопка подписи перебирает варианты по кругу — так все настройки помещаются

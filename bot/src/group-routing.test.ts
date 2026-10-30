@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { Bot } from "grammy";
 import type { Update } from "grammy/types";
 import { registerGroupHandlers } from "./handlers/group.js";
+import { registerAccountHandlers } from "./handlers/accounts.js";
 
 // Порядок обработчиков в grammY проверяется только живой цепочкой: групповой
 // блок (bot.chatType) встаёт в неё в момент создания, и команда, объявленная
@@ -34,6 +35,8 @@ function makeBot() {
     }
     return { ok: true, result: { message_id: 100, date: 0, chat: { id: -100, type: "supergroup" } } } as any;
   });
+  // Порядок — как в bot.ts.
+  registerAccountHandlers(bot);
   registerGroupHandlers(bot);
   return { bot, sent };
 }
@@ -64,4 +67,38 @@ test("обычная фраза в группе остаётся без отве
   const { bot, sent } = makeBot();
   await bot.handleUpdate(groupText("всем привет"));
   assert.equal(sent.filter((s) => s.method === "sendMessage").length, 0);
+});
+
+test("/connect и /accounts в группе доходят до своих обработчиков", async () => {
+  for (const cmd of ["/connect@VideonerBot ABC-234", "/accounts@VideonerBot"]) {
+    const { bot, sent } = makeBot();
+    await bot.handleUpdate(groupText(cmd));
+    assert.ok(sent.some((s) => s.method === "sendMessage"), `бот должен ответить на ${cmd}`);
+  }
+});
+
+function privateText(text: string): Update {
+  return {
+    update_id: 2,
+    message: {
+      message_id: 6,
+      date: 0,
+      chat: { id: 42, type: "private", first_name: "A" },
+      from: { id: 42, is_bot: false, first_name: "A", language_code: "ru" },
+      text,
+    },
+  } as Update;
+}
+
+test("в личке код подключения перехватывается, обычный текст идёт дальше", async () => {
+  const { bot, sent } = makeBot();
+  let passed = false;
+  bot.on("message:text", () => {
+    passed = true;
+  });
+  await bot.handleUpdate(privateText("ABC-234"));
+  assert.equal(passed, false, "код не должен уйти обработчику ссылок");
+  assert.ok(sent.some((s) => s.method === "sendMessage"));
+  await bot.handleUpdate(privateText("просто текст"));
+  assert.equal(passed, true, "обычный текст должен дойти до обработчика ссылок");
 });

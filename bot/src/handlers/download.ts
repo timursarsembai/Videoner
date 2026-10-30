@@ -136,6 +136,9 @@ type DownloadMeta = {
   telegramId?: number;
   telegramUsername?: string;
   telegramLanguageCode?: string;
+  // Где искать подключённые людьми куки (handlers/accounts.ts): user:<id>
+  // или chat:<id>. Сервер берёт их, только если обычный путь не сработал.
+  cookieScope?: string;
 };
 
 // Раньше рестарт/редеплой бота (docker-compose rm -sf bot, шлёт SIGTERM) молча
@@ -244,11 +247,15 @@ export async function performDownload(
 
   try {
     const startDownload = (acceptTelegramFileId: boolean) =>
-      api<{ downloadId: string; fileName: string; telegramFileId?: string }>(
+      api<{ downloadId: string; fileName: string; telegramFileId?: string; viaUserCookies?: boolean }>(
         kind === "v" ? "/download/video" : "/download/audio",
         { url, quality, extension, source: "BOT", acceptTelegramFileId, ...dlMeta },
       );
     let started = await startDownload(true);
+    // Скачано от подключённого человеком аккаунта (handlers/accounts.ts) —
+    // это может быть закрытое (сторис, закрытый профиль): в канал не публикуем.
+    const publish: typeof send.publishToChannel = (...args) =>
+      started.viaUserCookies ? Promise.resolve() : send.publishToChannel(...args);
 
     // Этот ролик уже отправляли — сервер вернул file_id, и Telegram перешлёт
     // файл сам: ни скачивания через прокси, ни загрузки. Не сработал file_id
@@ -270,7 +277,7 @@ export async function performDownload(
       }
       if (sentFromCache) {
         await clearServiceMessages();
-        await send.publishToChannel(url, title, thumbnail, lang);
+        await publish(url, title, thumbnail, lang);
         return true;
       }
     }
@@ -320,7 +327,7 @@ export async function performDownload(
       const cover = await send.replyWithAlbum(items, await caption());
       delivered = true;
       await clearServiceMessages();
-      await send.publishToChannel(url, title, thumbnail, lang, cover);
+      await publish(url, title, thumbnail, lang, cover);
       return true;
     }
 
@@ -354,7 +361,7 @@ export async function performDownload(
       const cover = await send.replyWithPhoto(file, await caption());
       delivered = true;
       await clearServiceMessages();
-      await send.publishToChannel(url, title, thumbnail, lang, cover);
+      await publish(url, title, thumbnail, lang, cover);
       return true;
     }
     let fileId: string | undefined;
@@ -379,7 +386,7 @@ export async function performDownload(
     await clearServiceMessages();
     // Ссылка уходит в канал после того, как файл дошёл до человека: пост о
     // том, что скачать не удалось, никому не нужен.
-    await send.publishToChannel(url, title, thumbnail, lang);
+    await publish(url, title, thumbnail, lang);
     return true;
   } catch (e: any) {
     if (delivered) {
@@ -604,6 +611,7 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       telegramId: state.userId,
       telegramUsername: state.username,
       telegramLanguageCode: state.languageCode,
+      cookieScope: state.chatId > 0 ? `user:${state.userId}` : `chat:${state.chatId}`,
     });
     current.title = info.title ?? "";
     current.thumbnail = info.thumbnail;
@@ -837,6 +845,7 @@ export function registerDownloadHandlers(bot: Bot) {
         telegramId: ctx.from?.id,
         telegramUsername: ctx.from?.username,
         telegramLanguageCode: ctx.from?.language_code,
+        cookieScope: chatId > 0 ? `user:${ctx.from.id}` : `chat:${chatId}`,
       },
       current.title ?? "",
       current.thumbnail,

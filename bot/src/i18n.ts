@@ -77,7 +77,10 @@ interface Messages {
   // Настройки группы (/settings, handlers/group.ts).
   fileCaptionShort: (title: string, sourceUrl: string) => string;
   sentBy: (name: string) => string;
-  groupSettings: (s: { deleteLinks: boolean; caption: string; quality: string; longVideos: boolean }, canDelete: boolean) => string;
+  groupSettings: (
+    s: { deleteLinks: boolean; caption: string; quality: string; longVideos: boolean; cookiesBy: string },
+    canDelete: boolean,
+  ) => string;
   settingsDeleteButton: (on: boolean) => string;
   settingsCaptionButton: (style: string) => string;
   settingsQualityButton: (mode: string) => string;
@@ -86,6 +89,36 @@ interface Messages {
   settingsAdminsOnly: string;
   settingsGroupsOnly: string;
   settingsFailed: string;
+  settingsCookiesButton: (by: string) => string;
+  // Подключённые аккаунты (куки людей): handlers/accounts.ts.
+  accountsIntro: string;
+  accountsHowTo: string;
+  accountsWarning: string;
+  accountsNone: string;
+  accountsGroupTitle: string;
+  accountsGroupHowTo: string;
+  accountsLine: (platform: string, where: string, active: boolean) => string;
+  accountsGroupLine: (platform: string, owner: string, active: boolean) => string;
+  accountsWhereHere: string;
+  accountsWhereGroup: (title: string) => string;
+  accountsDeleteButton: (platform: string, where: string) => string;
+  accountsDeleteAllButton: string;
+  accountsDeleted: string;
+  accountsDeletedAll: (n: number) => string;
+  accountsNotAllowed: string;
+  connectUsage: string;
+  connectOnlyAdmins: string;
+  connectDone: (platform: string, where: string) => string;
+  connectWhereGroup: string;
+  connectWhereHere: string;
+  connectCodeNotFound: string;
+  connectRejectedNoSession: string;
+  connectRejectedUnknown: string;
+  connectUnavailable: string;
+  connectFailed: string;
+  connectFileTooBig: string;
+  connectNotAnonymous: string;
+  connectCodeInGroup: string;
   errorTooLong: string;
   errorUnknown: string;
   // Очередь ссылок (см. queue.ts): выбор качества — только у текущей.
@@ -219,6 +252,7 @@ const ru: Messages = {
     `\n✍️ Подпись под видео: ${{ full: "полная", short: "название и источник", none: "без подписи" }[s.caption] ?? s.caption}\n` +
     `\n🎞 Качество: ${s.quality === "max" ? "максимальное, которое пропускает Telegram" : "обычное (720p)"}\n` +
     `\n⏱ Длинные видео: ${s.longVideos ? "качаю любой длины" : "только до 15 минут"}\n` +
+    `\n🔑 Подключать свои аккаунты (для сторис и закрытых записей): ${s.cookiesBy === "all" ? "любой участник" : "только администраторы"}\n` +
     "\nМенять настройки могут только администраторы группы.",
   settingsDeleteButton: (on) => `🗑 Удалять ссылки: ${on ? "да" : "нет"}`,
   settingsCaptionButton: (style) =>
@@ -229,6 +263,42 @@ const ru: Messages = {
   settingsAdminsOnly: "Настройки меняют только администраторы группы.",
   settingsGroupsOnly: "Настройки — для групп: добавьте меня в группу и отправьте там /settings.",
   settingsFailed: "Не получилось сохранить настройки, попробуйте ещё раз.",
+  settingsCookiesButton: (by) => `🔑 Подключать аккаунты: ${by === "all" ? "все" : "админы"}`,
+  accountsIntro:
+    "🔑 Подключённые аккаунты\n\nБот может скачивать то, что видно только вошедшим (сторис Instagram, закрытые записи), — от вашего аккаунта. Вход работает только там, куда вы его подключили: здесь, в личке, или в конкретной группе.",
+  accountsHowTo:
+    "Как подключить:\n1. Проще всего — расширение Videoner на компьютере: войдите на сайт площадки, откройте окошко Videoner, нажмите «Подключить аккаунт» и пришлите мне код. Для группы — отправьте в группе /connect КОД.\n2. Или пришлите мне файл cookies.txt (экспорт кук из браузера) — или вставьте его текст сообщением.",
+  accountsWarning:
+    "⚠️ Площадки не любят автоматические скачивания и могут ограничить или заблокировать аккаунт. Лучше подключать отдельный, не основной аккаунт. Куки хранятся зашифрованными, используются только для скачиваний и удаляются кнопкой ниже.",
+  accountsNone: "Пока ничего не подключено.",
+  accountsGroupTitle: "🔑 Аккаунты, подключённые к этой группе",
+  accountsGroupHowTo:
+    "Подключить свой: получите код кнопкой «Подключить аккаунт» в расширении Videoner и отправьте здесь /connect КОД. Подробнее и свои подключения — в личке у @VideonerBot: /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ вход не работает)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ вход не работает)"}`,
+  accountsWhereHere: "в личке",
+  accountsWhereGroup: (title) => `группа «${title}»`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Удалить все мои подключения",
+  accountsDeleted: "Удалено.",
+  accountsDeletedAll: (n) => `Удалено подключений: ${n}.`,
+  accountsNotAllowed: "Удалить может только тот, кто подключил, или администратор группы.",
+  connectUsage:
+    "Отправьте /connect КОД. Код даёт кнопка «Подключить аккаунт» в расширении Videoner на компьютере. Список подключений — /accounts.",
+  connectOnlyAdmins: "Подключать аккаунты к этой группе могут только администраторы (настройка в /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} подключён ${where}. Теперь бот скачивает и то, что видно только вошедшим. Посмотреть или удалить — /accounts.\n\n⚠️ Площадка может ограничить аккаунт за автоматические скачивания — лучше подключать не основной.`,
+  connectWhereGroup: "к этой группе",
+  connectWhereHere: "для ваших скачиваний в личке и инлайн-режиме",
+  connectCodeNotFound: "Код не найден или уже устарел (он живёт 10 минут). Получите новый в расширении Videoner.",
+  connectRejectedNoSession: "В этих куках нет входа в аккаунт. Войдите на сайте площадки и выгрузите куки заново.",
+  connectRejectedUnknown: "Не нашёл куки поддерживаемых площадок: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Подключение аккаунтов пока недоступно.",
+  connectFailed: "Не получилось подключить, попробуйте ещё раз.",
+  connectFileTooBig: "Файл слишком большой — выгрузите куки только нужного сайта.",
+  connectNotAnonymous: "Подключайте аккаунт от своего имени, а не анонимно от имени группы: иначе подключения админов перепутаются. Код я уничтожил — получите новый.",
+  connectCodeInGroup:
+    "Код подключения в общем чате могут подсмотреть — я его уничтожил и убрал сообщение. Получите новый и отправьте командой /connect КОД: сообщение с командой я удаляю сразу.",
   groupWelcome:
     "👋 Привет! Присылайте в чат ссылки на видео из TikTok, Instagram, YouTube, VK и других площадок — я отвечу самим видео.\n\n" +
     "Ролики до 15 минут скачиваю сам, без команд. На остальные сообщения не отвечаю.\n\n⚙️ Админы группы могут настроить меня командой /settings: удалять сообщения со ссылками, вид подписи, качество и длинные видео.",
@@ -365,6 +435,7 @@ const en: Messages = {
     `\n✍️ Caption under the video: ${{ full: "full", short: "title and source", none: "no caption" }[s.caption] ?? s.caption}\n` +
     `\n🎞 Quality: ${s.quality === "max" ? "the highest Telegram accepts" : "standard (720p)"}\n` +
     `\n⏱ Long videos: ${s.longVideos ? "any length" : "up to 15 minutes only"}\n` +
+    `\n🔑 Who can connect their accounts (for stories and private posts): ${s.cookiesBy === "all" ? "any member" : "admins only"}\n` +
     "\nOnly group admins can change the settings.",
   settingsDeleteButton: (on) => `🗑 Delete links: ${on ? "yes" : "no"}`,
   settingsCaptionButton: (style) => `✍️ Caption: ${{ full: "full", short: "short", none: "none" }[style] ?? style}`,
@@ -374,6 +445,42 @@ const en: Messages = {
   settingsAdminsOnly: "Only group admins can change the settings.",
   settingsGroupsOnly: "Settings are for groups: add me to a group and send /settings there.",
   settingsFailed: "Couldn't save the settings, please try again.",
+  settingsCookiesButton: (by) => `🔑 Connecting accounts: ${by === "all" ? "everyone" : "admins"}`,
+  accountsIntro:
+    "🔑 Connected accounts\n\nThe bot can download what only signed-in people see (Instagram stories, private posts) — using your account. A login works only where you connected it: here in the private chat, or in one specific group.",
+  accountsHowTo:
+    "How to connect:\n1. Easiest: the Videoner extension on a computer — sign in on the platform's site, open the Videoner popup, press \"Connect account\" and send me the code. For a group, send /connect CODE in that group.\n2. Or send me a cookies.txt file (cookies exported from the browser), or paste its text as a message.",
+  accountsWarning:
+    "⚠️ Platforms dislike automated downloads and may restrict or ban the account. Better connect a secondary account, not your main one. Cookies are stored encrypted, used only for downloads, and removed with the buttons below.",
+  accountsNone: "Nothing is connected yet.",
+  accountsGroupTitle: "🔑 Accounts connected to this group",
+  accountsGroupHowTo:
+    "To connect yours: get a code with the \"Connect account\" button in the Videoner extension and send /connect CODE here. Details and your own connections are in a private chat with @VideonerBot: /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ login not working)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ login not working)"}`,
+  accountsWhereHere: "private chat",
+  accountsWhereGroup: (title) => `group "${title}"`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Remove all my connections",
+  accountsDeleted: "Removed.",
+  accountsDeletedAll: (n) => `Connections removed: ${n}.`,
+  accountsNotAllowed: "Only the person who connected it or a group admin can remove it.",
+  connectUsage:
+    "Send /connect CODE. The \"Connect account\" button in the Videoner extension on a computer gives you the code. Your connections: /accounts.",
+  connectOnlyAdmins: "Only admins can connect accounts to this group (see /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} connected ${where}. The bot now also downloads what only signed-in people see. View or remove: /accounts.\n\n⚠️ The platform may restrict the account for automated downloads — better use a secondary one.`,
+  connectWhereGroup: "to this group",
+  connectWhereHere: "for your downloads in the private chat and inline mode",
+  connectCodeNotFound: "Code not found or expired (codes live 10 minutes). Get a new one in the Videoner extension.",
+  connectRejectedNoSession: "These cookies have no login. Sign in on the platform's site and export the cookies again.",
+  connectRejectedUnknown: "No cookies of supported platforms found: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Connecting accounts isn't available yet.",
+  connectFailed: "Couldn't connect, please try again.",
+  connectFileTooBig: "The file is too large — export cookies of the needed site only.",
+  connectNotAnonymous: "Connect the account as yourself, not anonymously as the group: otherwise admins' connections get mixed up. I destroyed the code — get a new one.",
+  connectCodeInGroup:
+    "A connection code posted in the group chat can be seen by others — I destroyed it and removed the message. Get a new one and send it with /connect CODE: I delete that command message right away.",
   groupWelcome:
     "👋 Hi! Post links to videos from TikTok, Instagram, YouTube, VK and other platforms in this chat — I'll reply with the video itself.\n\n" +
     "I download clips up to 15 minutes on my own, no commands needed, and stay quiet otherwise.\n\n⚙️ Group admins can tune me with /settings: delete link messages, caption style, quality and long videos.",

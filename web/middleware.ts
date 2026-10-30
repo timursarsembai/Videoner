@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { detectPlatform } from "@/lib/validations/url";
 
-// en — дефолтная локаль без префикса в URL (/vimeo), ru/es/uk — с префиксом
+// en — дефолтная локаль без префикса в URL (/vimeo), ru/es/uk/kk — с префиксом
 // (/ru/vimeo, /es/vimeo, /uk/vimeo). Список совпадает с LANGUAGES
 // (lib/i18n/translations.ts): сюда словари не тянем, они тяжёлые. Здесь просто дописываем /en для дефолтных путей,
 // чтобы они попали в те же файлы app/[locale]/... — адресная строка у
 // пользователя не меняется (rewrite, не redirect).
-const PREFIXED_LOCALES = ["ru", "es", "uk"];
+const PREFIXED_LOCALES = ["ru", "es", "uk", "kk"];
 
 // Ссылка-префикс: videoner.download/<ЦЕЛИКОМ ИСХОДНАЯ ССЫЛКА>. Пользователь
 // дописывает наш домен перед своей ссылкой, попадает на страницу нужной
@@ -23,7 +23,7 @@ const PREFIXED_LOCALES = ["ru", "es", "uk"];
 // Площадку определяем ТЕМ ЖЕ detectPlatform, что и сайт: заводить здесь
 // собственный список доменов — верный способ получить расхождение (эта
 // валидация уже дважды разъезжалась между веб- и серверной копией).
-const LOCALE_PREFIX = /^\/(ru|es|uk)(?=\/)/;
+const LOCALE_PREFIX = /^\/(ru|es|uk|kk)(?=\/)/;
 
 // Исходная ссылка из пути запроса: общий разбор для префикс-ссылки и
 // ссылки-приглашения в бота. null — в пути не ссылка.

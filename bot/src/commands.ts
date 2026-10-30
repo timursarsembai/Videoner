@@ -19,6 +19,13 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Підключити акаунт за кодом із розширення" },
     { command: "language", description: "Мова бота" },
   ],
+  kk: [
+    { command: "start", description: "Ботты қалай пайдалану керек" },
+    { command: "extension", description: "Браузерге арналған кеңейтім" },
+    { command: "accounts", description: "Сторис пен жабық жазбаларға арналған өз аккаунттарыңыз" },
+    { command: "connect", description: "Кеңейтімдегі код арқылы аккаунт қосу" },
+    { command: "language", description: "Бот тілі" },
+  ],
   en: [
     { command: "start", description: "How to use the bot" },
     { command: "extension", description: "Browser extension" },
@@ -44,6 +51,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Підключити акаунт до групи за кодом" },
     { command: "language", description: "Мова бота в групі (для адмінів)" },
     { command: "start", description: "Як бот працює в групі" },
+  ],
+  kk: [
+    { command: "settings", description: "Топтағы бот баптаулары (әкімшілерге)" },
+    { command: "accounts", description: "Топқа қосылған аккаунттар" },
+    { command: "connect", description: "Код арқылы топқа аккаунт қосу" },
+    { command: "language", description: "Топтағы бот тілі (әкімшілерге)" },
+    { command: "start", description: "Бот топта қалай жұмыс істейді" },
   ],
   en: [
     { command: "settings", description: "Bot settings for this group (admins)" },

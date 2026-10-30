@@ -24,6 +24,7 @@ export const BOT_FILE_LIMIT = BOT_API_ROOT ? 2000 * 1024 * 1024 : Infinity;
 const SIZE_UNITS: Record<Lang, { locale: string; gb: string; mb: string }> = {
   ru: { locale: "ru-RU", gb: "ГБ", mb: "МБ" },
   uk: { locale: "uk-UA", gb: "ГБ", mb: "МБ" },
+  kk: { locale: "kk-KZ", gb: "ГБ", mb: "МБ" },
   en: { locale: "en-US", gb: "GB", mb: "MB" },
 };
 

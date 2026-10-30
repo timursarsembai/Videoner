@@ -16,13 +16,15 @@
   // uiLang) или язык браузера. Выбор читается асинхронно, поэтому сначала
   // подпись по браузеру, потом — по выбору.
   const ui = chrome.i18n.getUILanguage().toLowerCase();
-  const l = ui.startsWith("uk") ? "uk" : ui.startsWith("ru") ? "ru" : "en";
-  const LABELS = { ru: "Скачать", uk: "Завантажити", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
+    kk: "Осы видео үшін батырманы жасыру",
     en: "Hide the button for this video",
   };
+  const base = ui.split("-")[0];
+  const l = base in LABELS ? base : "en";
   const PANEL_WIDTH = 360;
 
   const host = document.createElement("div");

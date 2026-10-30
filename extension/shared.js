@@ -233,6 +233,75 @@ const TEXTS = {
     langAuto: "Авто",
     langLabel: "Мова",
   },
+  kk: {
+    loading: "Видео туралы ақпарат алынуда…",
+    notVideoPage:
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest немесе Threads сайтында видеосы бар бетті ашып, белгішені қайта басыңыз. GetCourse сабағы: егер сабақ беті кеңейтімді орнатпас бұрын ашылған болса, оны жаңартыңыз.",
+    gcLesson: "GetCourse сабағы",
+    gcPick: "Сабақта бірнеше видео бар — керегін таңдаңыз",
+    gcVideo: (n) => `Видео ${n}`,
+    gcNote: "Жүктеп алу мен біріктіруді браузеріңіз жасайды. Терезені жабуға болады, браузерді — жоқ.",
+    gcNoStream: "Ойнатқыштан видеоны алу мүмкін болмады. Сабақ бетін жаңартып, қайта байқап көріңіз.",
+    video: "Видео",
+    photo: "Түпнұсқа өлшемдегі фото",
+    audioOnly: "Тек дыбыс (mp3)",
+    subtitles: "Субтитрлер (.srt)",
+    subtitlesAuto: "автоматты",
+    back: "Артқа",
+    starting: "Жүктеп алуды бастап жатырмын…",
+    waiting: "Сервердегі кезегімді күтіп тұрмын…",
+    downloading: "Жүктеп алынуда",
+    converting: "Өңделуде",
+    left: (eta) => `${eta} қалды`,
+    saving: "«Жүктеулер» қалтасына сақталуда…",
+    done: "Дайын — файл «Жүктеулер» қалтасында.",
+    again: "Тағы жүктеп алу",
+    directDownload: "Видеоны жүктеп алу (mp4)",
+    directPhoto: "Фотоны жүктеп алу (jpg)",
+    directNote: "Тікелей браузерден — сервердегі кезексіз",
+    moreOptions: "Басқа сапалар және дыбыс",
+    fallback: "Браузерден болмады — сервер арқылы жүктеп аламын.",
+    openSite: "videoner.download сайтын ашу",
+    retry: "Қайта байқап көру",
+    min: "мин",
+    sec: "с",
+    errNetwork: "Videoner-мен байланыс жоқ. Интернетті тексеріп, қайта байқап көріңіз.",
+    errRateLimit: "Қатарынан тым көп сұраныс. Бір минут күтіп, қайта байқап көріңіз.",
+    errUnsupported:
+      "Бұл беттен Videoner жүктеп ала алатын видео табылмады. Нақты видеоның немесе жазбаның бетін ашыңыз.",
+    errYoutubeDaily: "Желіңіз үшін YouTube-тың тәуліктік лимиті таусылды. Ертең байқап көріңіз.",
+    errTooLarge: "Бұл сападағы файл тым үлкен. Төменірек сапаны таңдаңыз.",
+    errLogin:
+      "Бұл жазба аккаунтқа кірмейінше қолжетімсіз: платформа оны тек авторизацияланған пайдаланушыларға береді. Ашық жазбалар еш қиындықсыз жүктеледі.",
+    errRegion: "Автор бұл жазбаны көруді елдер бойынша шектеген — оны жүктеп алу мүмкін емес.",
+    errServerBlocked: "Платформа біздің серверге қолжетімділікті уақытша шектеді. Кейінірек байқап көріңіз.",
+    errFailed: "Жүктеп алу мүмкін болмады. Қайта байқап көріңіз немесе басқа сапаны таңдаңыз.",
+    errGeneric: "Бірдеңе дұрыс болмады. Сәл кейінірек қайта байқап көріңіз.",
+    acctButton: (p) => `🔑 ${p} аккаунтын ботқа қосу`,
+    acctWarn: (p) =>
+      `@VideonerBot боты сіздің ${p} аккаунтыңыз арқылы тек кіргендерге көрінетін нәрселерді жүктеп ала алады: сторис, жабық жазбалар. Платформалар автоматты жүктеп алуды ұнатпайды және аккаунтты шектеуі мүмкін — негізгі емес аккаунтты қосқан дұрыс. Браузер осы сайттың куки файлдарына рұқсат сұрайды; серверге тек ${p} куки файлдары шифрланған түрде жіберіледі.`,
+    acctConfirm: "Қосу",
+    acctCancel: "Бас тарту",
+    acctSending: "Қосып жатырмын…",
+    acctDenied: "Кукиге рұқсатсыз аккаунтты қосу мүмкін емес.",
+    acctNoLogin: (p) => `Сіз бұл браузерде ${p} жүйесіне кірмегенсіз. Сайтқа кіріп, қайта басыңыз.`,
+    acctFailed: "Болмады. Сәл кейінірек қайта байқап көріңіз.",
+    acctCodeTitle: (p) => `${p} қосуға арналған код:`,
+    acctCodeHelp:
+      "Оны @VideonerBot ботына жеке чатта жіберіңіз — өз жүктеп алуларыңыз үшін. Топ үшін — топта /connect КОД жіберіңіз. Код 10 минут жарамды.",
+    acctCopy: "Көшіру",
+    acctCopied: "Көшірілді",
+    acctOpenBot: "Ботты ашу",
+    acctNewCode: "Жаңа код алу",
+    acctList: "Боттағы қосылымдарым",
+    acctRevoke: "Кукиге рұқсатты қайтарып алу",
+    acctRevoked:
+      "Кукиге рұқсат алынды — кеңейтім оларды енді оқымайды. Бұрын қосылған аккаунттар ботта қалады: оларды «Боттағы қосылымдарым» бөлімінде ажыратуға болады.",
+    updateAvailable: (v) => `Жаңа ${v} нұсқасы шықты.`,
+    updateHow: "Қалай жаңартуға болады",
+    langAuto: "Авто",
+    langLabel: "Тіл",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -310,7 +379,7 @@ const TEXTS = {
 // модули недоступны). lang и t — живые привязки: loadLang() меняет их до
 // первой отрисовки окошка.
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -319,8 +388,8 @@ export let t = TEXTS[lang];
 export const sitePath = (path) => (lang === "en" ? path : `/${lang}${path}`);
 
 function pickLang(uiLanguage) {
-  const code = uiLanguage.toLowerCase();
-  return code.startsWith("uk") ? "uk" : code.startsWith("ru") ? "ru" : "en";
+  const base = uiLanguage.toLowerCase().split("-")[0];
+  return base in TEXTS ? base : "en";
 }
 
 export async function loadLang() {
@@ -415,7 +484,7 @@ export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
   const latin = lang === "en";
-  const locale = { ru: "ru-RU", uk: "uk-UA", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${latin ? "GB" : "ГБ"}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${latin ? "MB" : "МБ"}`;
 }

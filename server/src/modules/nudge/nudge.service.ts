@@ -112,6 +112,21 @@ export class NudgeService {
   private textFor(languageCode: string | null): string {
     const code = languageCode?.toLowerCase() ?? '';
 
+    if (code.startsWith('kk')) {
+      return (
+        'Сәлеметсіз бе! Сіз бұл ботты іске қостыңыз, бірақ әлі ештеңе жүктеп алмадыңыз — ' +
+        'бәлкім, неден бастау керегі түсініксіз болған шығар.\n\n' +
+        'Бәрі бір әрекетпен жасалады: осында видео сілтемесін жіберіңіз, ' +
+        'мысалы https://youtube.com/watch?v=jNQXAC9IVRw — мен дайын ' +
+        'файлды шамамен жарты минутта қайтарамын.\n\n' +
+        'YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest және Threads жұмыс істейді. Толығымен тегін және кез келген ' +
+        'сапада — 4K-ге дейін, HD үшін қосымша төлеудің қажеті жоқ.\n\n' +
+        'Егер бірдеңе жұмыс істемесе, жауап ретінде жай ғана жазып жіберіңіз. Бұл ' +
+        'жалғыз еске салу, бұдан былай мазаламаймын.'
+      );
+    }
+
     if (code.startsWith('uk')) {
       return (
         'Вітаю! Ви запускали цього бота, але поки нічого не завантажили — ' +

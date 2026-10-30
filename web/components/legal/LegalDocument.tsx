@@ -7,7 +7,7 @@ import { LEGAL_UPDATED, operator } from "@/lib/legal/operator";
 import { LEGAL_SLUGS, LegalSlug, LegalContent } from "@/lib/legal/types";
 
 // Документ рисуется на сервере по локали из адреса, а не через клиентский
-// контекст языка: переключатель языка и так уводит на /ru/..., /es/... или /uk/...,
+// контекст языка: переключатель языка и так уводит на /<язык>/...,
 // зато поисковик и проверяющий получают текст сразу в разметке, без JS.
 
 const localeTag: Record<Language, string> = {
@@ -15,18 +15,20 @@ const localeTag: Record<Language, string> = {
   ru: "ru-RU",
   es: "es-ES",
   uk: "uk-UA",
+  kk: "kk-KZ",
 };
 
 function operatorLines(lang: Language) {
-  const name = { en: operator.nameEn, ru: operator.nameRu, es: operator.nameEs, uk: operator.nameUk }[lang];
+  const name = { en: operator.nameEn, ru: operator.nameRu, es: operator.nameEs, uk: operator.nameUk, kk: operator.nameKk }[lang];
   const address = {
     en: operator.addressEn,
     ru: operator.addressRu,
     es: operator.addressEs,
     uk: operator.addressUk,
+    kk: operator.addressKk,
   }[lang];
-  const basis = { en: operator.basisEn, ru: operator.basisRu, es: operator.basisEs, uk: operator.basisUk }[lang];
-  const binLabel = { en: "BIN/IIN", ru: "БИН/ИИН", es: "BIN/IIN", uk: "БІН/ІІН" }[lang];
+  const basis = { en: operator.basisEn, ru: operator.basisRu, es: operator.basisEs, uk: operator.basisUk, kk: operator.basisKk }[lang];
+  const binLabel = { en: "BIN/IIN", ru: "БИН/ИИН", es: "BIN/IIN", uk: "БІН/ІІН", kk: "БСН/ЖСН" }[lang];
   return [name, `${binLabel}: ${operator.bin}`, basis, address];
 }
 

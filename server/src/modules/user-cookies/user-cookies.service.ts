@@ -354,17 +354,20 @@ export class UserCookiesService {
     const token = process.env.BOT_TOKEN;
     if (!token) return;
     const code = (lang ?? '').toLowerCase();
-    const l = code.startsWith('uk') ? 'uk' : code.startsWith('ru') ? 'ru' : 'en';
+    const base = code.split('-')[0];
+    const l = base === 'uk' || base === 'ru' || base === 'kk' ? base : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
       ru: forGroup ? 'для группы' : 'для вас',
       uk: forGroup ? 'для групи' : 'для вас',
+      kk: forGroup ? 'топ үшін' : 'сіз үшін',
       en: forGroup ? 'for a group' : 'for you',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
       uk: `⚠️ Підключений вхід ${name} (${where}) перестав працювати: платформа його більше не приймає. Можливо, ви вийшли з акаунта або його обмежили.\n\nЩоб знову завантажувати з ним, підключіть акаунт заново. Список підключень — /accounts.`,
+      kk: `⚠️ ${name} аккаунтына қосылған кіру (${where}) жұмысын тоқтатты: платформа оны енді қабылдамайды. Мүмкін, сіз аккаунттан шығып кеткен боларсыз немесе аккаунт шектелген.\n\nОл арқылы қайта жүктеп алу үшін аккаунтты қайтадан қосыңыз. Қосылымдар тізімі — /accounts.`,
       en: `⚠️ Your connected ${name} login (${where}) stopped working: the platform no longer accepts it. You may have signed out, or the account was restricted.\n\nTo keep downloading with it, connect the account again. Your connections: /accounts.`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

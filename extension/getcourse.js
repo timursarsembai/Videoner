@@ -82,10 +82,11 @@
   // Всё в закрытом Shadow DOM, как кнопка на страницах площадок (content.js).
   function addButton() {
     const ui = chrome.i18n.getUILanguage().toLowerCase();
-    const l = ui.startsWith("uk") ? "uk" : ui.startsWith("ru") ? "ru" : "en";
     // Язык — как в content.js: сначала по браузеру, потом по выбору в окошке.
-    const LABELS = { ru: "Скачать", uk: "Завантажити", en: "Download" };
-    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", en: "Hide the button" };
+    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", en: "Download" };
+    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", en: "Hide the button" };
+    const base = ui.split("-")[0];
+    const l = base in LABELS ? base : "en";
     const PANEL_WIDTH = 340;
 
     const host = document.createElement("div");

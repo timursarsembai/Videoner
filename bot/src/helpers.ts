@@ -52,9 +52,12 @@ const BOT_SIGNATURE = process.env.BOT_TOKEN
   ? createHmac("sha256", process.env.BOT_TOKEN).update("videoner-bot-v1").digest("hex")
   : "";
 
-export async function api<T = any>(path: string, body?: unknown): Promise<T> {
+// timeoutMs — для запросов, без которых можно обойтись (язык ответа): бот
+// обрабатывает обновления по одному, и зависший сервер не должен держать
+// всех по 30 секунд.
+export async function api<T = any>(path: string, body?: unknown, { timeoutMs = API_TIMEOUT_MS } = {}): Promise<T> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   let res: Response;
   try {
     res = await fetch(`${API_URL}${path}`, {

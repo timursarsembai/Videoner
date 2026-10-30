@@ -2,6 +2,7 @@ import { Bot, Context, InlineKeyboard } from "grammy";
 import { LANGUAGE_NAMES, isLang, messages, type Lang } from "../i18n.js";
 import { langOf } from "../language.js";
 import { loadSettings, saveSettings } from "../settings-store.js";
+import { applyChatCommands } from "../commands.js";
 import {
   ADMIN_TELEGRAM_ID,
   BOT_FILE_LIMIT,
@@ -435,6 +436,8 @@ export function registerGroupHandlers(bot: Bot) {
       const old = await api<GroupSettings>(`/group-settings/${ctx.chat.id}`);
       const { deleteLinks, caption, quality, longVideos, cookiesBy, language } = { ...DEFAULT_GROUP_SETTINGS, ...old };
       await saveSettings(newChatId, { deleteLinks, caption, quality, longVideos, cookiesBy, language });
+      // Меню команд на языке группы — и у новой супергруппы.
+      if (isLang(language)) await applyChatCommands(ctx.api, newChatId, language, true);
     } catch (e: any) {
       console.error(`Группа ${ctx.chat.id} → ${newChatId}: настройки не перенесены:`, e?.message ?? e);
     }

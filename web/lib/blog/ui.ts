@@ -14,6 +14,8 @@ export const blogUi: Record<
     channel: string;
     channelCta: string;
     readOnSite: string;
+    // Пост в канале обрезан по лимиту Telegram.
+    readFull: string;
     dateLocale: string;
   }
 > = {
@@ -26,6 +28,7 @@ export const blogUi: Record<
     channel: "Новости в Telegram",
     channelCta: "Новости проекта — в Telegram-канале @videonerdownload.",
     readOnSite: "Читать на сайте",
+    readFull: "Читать полностью на сайте",
     dateLocale: "ru-RU",
   },
   uk: {
@@ -37,6 +40,7 @@ export const blogUi: Record<
     channel: "Новини в Telegram",
     channelCta: "Новини проєкту — у Telegram-каналі @videonerdownload.",
     readOnSite: "Читати на сайті",
+    readFull: "Читати повністю на сайті",
     dateLocale: "uk-UA",
   },
   kk: {
@@ -48,6 +52,7 @@ export const blogUi: Record<
     channel: "Telegram-дағы жаңалықтар",
     channelCta: "Жоба жаңалықтары — @videonerdownload Telegram-арнасында.",
     readOnSite: "Сайтта оқу",
+    readFull: "Сайтта толық оқу",
     dateLocale: "kk-KZ",
   },
   es: {
@@ -59,6 +64,7 @@ export const blogUi: Record<
     channel: "Noticias en Telegram",
     channelCta: "Las novedades del proyecto, en el canal de Telegram @videonerdownload.",
     readOnSite: "Leer en la web",
+    readFull: "Leer completo en la web",
     dateLocale: "es-ES",
   },
   en: {
@@ -70,6 +76,7 @@ export const blogUi: Record<
     channel: "News on Telegram",
     channelCta: "Project news is on the Telegram channel @videonerdownload.",
     readOnSite: "Read on the site",
+    readFull: "Read the full post on the site",
     dateLocale: "en-US",
   },
 };

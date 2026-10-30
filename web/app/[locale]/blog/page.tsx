@@ -10,6 +10,9 @@ import { resolveLocale } from "@/lib/legal/page";
 
 type Props = { params: Promise<{ locale: string }> };
 
+// Раз в час: статьи, выложенные заранее, появляются в списке в свой день.
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return LANGUAGES.map((locale) => ({ locale }));
 }

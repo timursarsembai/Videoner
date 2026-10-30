@@ -184,14 +184,23 @@ function langName(code: string): string {
   return isLang(code) ? LANGUAGE_NAMES[code] : code;
 }
 
-// Строка «Поделиться» — только если влезает в лимит подписи Telegram (1024
-// символа): ссылка на источник не обрезается и бывает очень длинной, и из-за
-// необязательной строки файл не должен перестать отправляться.
+// Необязательные строки подписи (канал новостей, «Поделиться») — только если
+// влезают в лимит подписи Telegram (1024 символа): ссылка на источник не
+// обрезается и бывает очень длинной, и из-за необязательной строки файл не
+// должен перестать отправляться. Каждая следующая добавляется, только если
+// влезли предыдущие.
 const CAPTION_LIMIT = 1024;
-function withShareLine(caption: string, shareLine: string | undefined): string {
-  if (!shareLine) return caption;
-  const full = `${caption}\n\n${shareLine}`;
-  return full.length <= CAPTION_LIMIT ? full : caption;
+function withOptionalLines(caption: string, newsLine: string, shareLine: string | undefined): string {
+  let out = caption;
+  for (const [line, sep] of [
+    [newsLine, "\n"],
+    [shareLine, "\n\n"],
+  ] as const) {
+    if (!line) continue;
+    if (`${out}${sep}${line}`.length > CAPTION_LIMIT) break;
+    out = `${out}${sep}${line}`;
+  }
+  return out;
 }
 
 const ru: Messages = {
@@ -227,12 +236,12 @@ const ru: Messages = {
   // shareUrl — ссылка-приглашение: кто её откроет, сразу получит этот же
   // ролик в боте (handlers/invite.ts).
   fileCaption: (title, sourceUrl, shareUrl) =>
-    withShareLine(
+    withOptionalLines(
       (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
         `Источник: ${sourceUrl}\n` +
         "Права на видео принадлежат его автору.\n" +
-        "Скачано бесплатно через @VideonerBot\n" +
-        `📣 Новости проекта: ${NEWS_CHANNEL}`,
+        "Скачано бесплатно через @VideonerBot",
+      `📣 Новости проекта: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Поделиться: ${shareUrl}`,
     ),
   subscribeRequired: (channel) =>
@@ -287,7 +296,7 @@ const ru: Messages = {
   addToGroupButton: "👥 Добавить в группу",
   newsButton: "📣 Новости проекта",
   fileCaptionShort: (title, sourceUrl) =>
-    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl + `\n📣 Новости проекта: ${NEWS_CHANNEL}`,
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Новости проекта: ${NEWS_CHANNEL}`, undefined),
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Настройки бота в этой группе\n\n" +
@@ -424,12 +433,12 @@ const en: Messages = {
   sendingAlbum: (count) => `📤 This post has several files (${count}) — sending them as an album...`,
   failedPrefix: "❌ Failed: ",
   fileCaption: (title, sourceUrl, shareUrl) =>
-    withShareLine(
+    withOptionalLines(
       (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
         `Source: ${sourceUrl}\n` +
         "All rights to the video belong to its author.\n" +
-        "Downloaded for free with @VideonerBot\n" +
-        `📣 Project news: ${NEWS_CHANNEL}`,
+        "Downloaded for free with @VideonerBot",
+      `📣 Project news: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Share: ${shareUrl}`,
     ),
   subscribeRequired: (channel) =>
@@ -484,7 +493,7 @@ const en: Messages = {
   addToGroupButton: "👥 Add to a group",
   newsButton: "📣 Project news",
   fileCaptionShort: (title, sourceUrl) =>
-    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl + `\n📣 Project news: ${NEWS_CHANNEL}`,
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Project news: ${NEWS_CHANNEL}`, undefined),
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bot settings for this group\n\n" +
@@ -620,12 +629,12 @@ const uk: Messages = {
   sendingAlbum: (count) => `📤 У дописі кілька файлів (${count}) — надсилаю альбомом...`,
   failedPrefix: "❌ Не вдалося: ",
   fileCaption: (title, sourceUrl, shareUrl) =>
-    withShareLine(
+    withOptionalLines(
       (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
         `Джерело: ${sourceUrl}\n` +
         "Права на відео належать його автору.\n" +
-        "Завантажено безкоштовно через @VideonerBot\n" +
-        `📣 Новини проєкту: ${NEWS_CHANNEL}`,
+        "Завантажено безкоштовно через @VideonerBot",
+      `📣 Новини проєкту: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Поділитися: ${shareUrl}`,
     ),
   subscribeRequired: (channel) =>
@@ -680,7 +689,7 @@ const uk: Messages = {
   addToGroupButton: "👥 Додати в групу",
   newsButton: "📣 Новини проєкту",
   fileCaptionShort: (title, sourceUrl) =>
-    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl + `\n📣 Новини проєкту: ${NEWS_CHANNEL}`,
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Новини проєкту: ${NEWS_CHANNEL}`, undefined),
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Налаштування бота в цій групі\n\n" +
@@ -822,12 +831,12 @@ const kk: Messages = {
   // shareUrl — ссылка-приглашение: кто её откроет, сразу получит этот же
   // ролик в боте (handlers/invite.ts).
   fileCaption: (title, sourceUrl, shareUrl) =>
-    withShareLine(
+    withOptionalLines(
       (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
         `Дереккөз: ${sourceUrl}\n` +
         "Видеоға құқық оның авторына тиесілі.\n" +
-        "@VideonerBot арқылы тегін жүктеп алынды\n" +
-        `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`,
+        "@VideonerBot арқылы тегін жүктеп алынды",
+      `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Бөлісу: ${shareUrl}`,
     ),
   subscribeRequired: (channel) =>
@@ -882,7 +891,7 @@ const kk: Messages = {
   addToGroupButton: "👥 Топқа қосу",
   newsButton: "📣 Жоба жаңалықтары",
   fileCaptionShort: (title, sourceUrl) =>
-    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl + `\n📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`,
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`, undefined),
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Осы топтағы бот баптаулары\n\n" +

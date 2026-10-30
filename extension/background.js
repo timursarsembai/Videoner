@@ -10,9 +10,19 @@ import {
   gcPlayerPrefix,
   getAllJobs,
   getJob,
+  LANG_KEY,
+  loadLang,
   safeFileName,
   setJob,
 } from "./shared.js";
+
+// Тексты ошибок пишутся здесь и показываются в окошке как есть — поэтому
+// язык тот же, что выбран в окошке (shared.js loadLang), и меняется вместе
+// с выбором.
+void loadLang();
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && LANG_KEY in changes) void loadLang();
+});
 
 // Фоновая часть: запускает скачивание на сервере, следит за ним и сохраняет
 // готовый файл в «Загрузки». Окошко (popup.js) только показывает состояние из

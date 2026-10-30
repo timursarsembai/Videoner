@@ -10,8 +10,10 @@ import { Block, parseBlocks } from "./markdown";
 //   summary: …
 //   date: YYYY-MM-DD
 //   ---
-// Читаются при сборке (страницы блога статические). Статьи с датой в
-// будущем не показываются — так статью можно выложить заранее.
+// Страницы блога собираются при сборке и пересобираются раз в час
+// (revalidate на страницах и в /api/blog/channel). Статьи с датой в будущем
+// не показываются — так статью можно выложить заранее: она появится на
+// сайте и в канале в свой день (по времени Алматы).
 
 export type BlogPost = {
   slug: string;
@@ -40,7 +42,8 @@ function parseFile(file: string): { meta: Record<string, string>; body: string }
 }
 
 function today(): string {
-  return new Date().toISOString().slice(0, 10);
+  // en-CA даёт ISO-вид YYYY-MM-DD.
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Almaty" }).format(new Date());
 }
 
 export function getPost(slug: string, lang: Language): BlogPost | null {

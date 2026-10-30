@@ -213,6 +213,12 @@ export class YtdlpProcessService implements OnModuleInit {
     // 401 на других шагах вполне может означать, что вход и правда нужен, и
     // повторять такое бессмысленно.
     /unable to download video json.*401/i,
+    // Платный прокси для YouTube иногда на мгновение отказывает в
+    // соединении («Tunnel connection failed: 403 Forbidden»): до площадки
+    // запрос не дошёл, трафика не было, повтор через пару секунд проходит
+    // (пойман 30.10.2026 на YouTube Shorts).
+    /unable to connect to proxy/i,
+    /tunnel connection failed/i,
   ];
 
   private isTransientError(message: string): boolean {

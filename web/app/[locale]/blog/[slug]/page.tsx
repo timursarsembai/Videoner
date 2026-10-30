@@ -13,7 +13,9 @@ import { resolveLocale } from "@/lib/legal/page";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
-export const dynamicParams = false;
+// Раз в час — чтобы статья, выложенная заранее, открылась в свой день
+// (lib/blog/posts.ts). Неизвестный адрес — 404 (getPost вернёт null).
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return LANGUAGES.flatMap((locale) => listPosts(locale).map((post) => ({ locale, slug: post.slug })));

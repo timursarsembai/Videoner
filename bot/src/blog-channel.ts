@@ -18,32 +18,54 @@ const BETWEEN_POSTS_MS = 3_000;
 type FeedPost = { slug: string; date: string; url: string; html: string };
 
 let running = false;
+// Опубликованные статьи, номер которых сервер ещё не записал.
+const pendingDone = new Map<string, number>();
+
+async function markDone(slug: string, messageId: number) {
+  try {
+    await api("/channel-posts/done", { slug, messageId });
+    pendingDone.delete(slug);
+  } catch (e: any) {
+    pendingDone.set(slug, messageId);
+    console.error(`Блог: «${slug}» опубликована, но сервер не записал номер:`, e?.message ?? e);
+  }
+}
 
 async function publishNew(tg: Api) {
   if (running) return;
   running = true;
   try {
+    for (const [slug, messageId] of pendingDone) await markDone(slug, messageId);
+    if (pendingDone.size) return;
     const res = await fetch(FEED_URL, { signal: AbortSignal.timeout(20_000) });
     if (!res.ok) throw new Error(`лента блога: HTTP ${res.status}`);
     const { posts } = (await res.json()) as { posts: FeedPost[] };
     const { slugs } = await api<{ slugs: string[] }>("/channel-posts");
     const fresh = posts
-      .filter((p) => !slugs.includes(p.slug))
+      .filter((p) => !slugs.includes(p.slug) && !pendingDone.has(p.slug))
       .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.slug.localeCompare(b.slug)));
     for (const post of fresh) {
       const { ok } = await api<{ ok: boolean }>("/channel-posts/claim", { slug: post.slug });
       if (!ok) continue;
+      let messageId: number;
       try {
         const msg = await tg.sendMessage(CHANNEL, post.html, {
           parse_mode: "HTML",
           link_preview_options: { url: post.url },
         });
-        await api("/channel-posts/done", { slug: post.slug, messageId: msg.message_id });
-        console.log(`Блог: «${post.slug}» опубликована в ${CHANNEL}`);
+        messageId = msg.message_id;
       } catch (e: any) {
+        // Не ушло — отдаём статью следующему запуску. Остальные статьи не
+        // ждут: одна сломанная не должна держать все новые.
+        console.error(`Блог: «${post.slug}» не опубликована:`, e?.message ?? e);
         await api("/channel-posts/release", { slug: post.slug }).catch(() => {});
-        throw e;
+        continue;
       }
+      // Пост уже в канале: отметку не снимаем ни при каком ответе сервера.
+      // Не записал номер — повторим в начале следующего запуска (pendingDone),
+      // иначе через 15 минут сервер счёл бы статью брошенной.
+      await markDone(post.slug, messageId);
+      console.log(`Блог: «${post.slug}» опубликована в ${CHANNEL}`);
       await new Promise((r) => setTimeout(r, BETWEEN_POSTS_MS));
     }
   } catch (e: any) {

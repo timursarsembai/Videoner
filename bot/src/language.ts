@@ -16,13 +16,17 @@ const TTL_MS = 10 * 60_000;
 // Сервер не ответил — недолго не спрашиваем снова, но и надолго «авто» не
 // запоминаем.
 const ERROR_TTL_MS = 60_000;
+// Язык — не повод ждать: не ответил сервер быстро — отвечаем по Telegram.
+const LOOKUP_TIMEOUT_MS = 2_000;
 const chosen = new Map<number, { value: Lang | null; expiresAt: number }>();
 
 export async function chosenLanguage(userId: number, now = Date.now()): Promise<Lang | null> {
   const hit = chosen.get(userId);
   if (hit && hit.expiresAt > now) return hit.value;
   try {
-    const { language } = await api<{ language: string | null }>(`/bot-users/${userId}/language`);
+    const { language } = await api<{ language: string | null }>(`/bot-users/${userId}/language`, undefined, {
+      timeoutMs: LOOKUP_TIMEOUT_MS,
+    });
     const value = isLang(language) ? language : null;
     remember(userId, value, now + TTL_MS);
     return value;

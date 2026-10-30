@@ -28,11 +28,29 @@ import {
   logoutDashboard,
   type AnalyticsSnapshot,
   type AttemptRow,
+  type BlockedUser,
   type ErrorTimeseriesPoint,
   type TrafficPoint,
 } from "@/lib/analytics-api";
 
 const PERIOD_OPTIONS = [7, 30, 90] as const;
+
+// Вкладки дашборда. Выбранная живёт в адресе (#users и т. п.): обновление
+// страницы и ссылка из закладок открывают ту же вкладку.
+const DASHBOARD_TABS = [
+  { id: "overview", label: "Обзор" },
+  { id: "users", label: "Пользователи" },
+  { id: "downloads", label: "Скачивания" },
+  { id: "errors", label: "Ошибки" },
+  { id: "log", label: "Журнал" },
+] as const;
+
+type DashboardTab = (typeof DASHBOARD_TABS)[number]["id"];
+
+function tabFromHash(): DashboardTab {
+  const id = window.location.hash.slice(1);
+  return DASHBOARD_TABS.find((t) => t.id === id)?.id ?? "overview";
+}
 
 const PLATFORM_COLORS: Record<string, string> = {
   YOUTUBE: "#ef4444",
@@ -308,14 +326,17 @@ function ActiveDailyChart({
   dataKey,
   title,
   hint,
+  wide = false,
 }: {
   data: { day: string; dau: number; wau: number; mau: number }[];
   dataKey: keyof typeof ACTIVE_LABELS;
   title: string;
   hint: string;
+  // На всю ширину сетки: по дням точек много, в половине им тесно.
+  wide?: boolean;
 }) {
   return (
-    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+    <div className={`rounded-lg border border-border/60 bg-background/60 p-4 ${wide ? "lg:col-span-2" : ""}`}>
       <h2 className="mb-1 text-sm font-medium text-foreground/70">{title}</h2>
       <p className="mb-4 text-xs text-foreground/50">{hint}</p>
       <ResponsiveContainer width="100%" height={280}>
@@ -372,13 +393,16 @@ function BlockedChart({
   data,
   title,
   hint,
+  wide = false,
 }: {
   data: { label: string; newUsers: number; blocked: number; unblocked: number }[];
   title: string;
   hint: string;
+  // На всю ширину сетки: по дням точек много, в половине им тесно.
+  wide?: boolean;
 }) {
   return (
-    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+    <div className={`rounded-lg border border-border/60 bg-background/60 p-4 ${wide ? "lg:col-span-2" : ""}`}>
       <h2 className="mb-1 text-sm font-medium text-foreground/70">{title}</h2>
       <p className="mb-4 text-xs text-foreground/50">{hint}</p>
       <ResponsiveContainer width="100%" height={280}>
@@ -393,6 +417,122 @@ function BlockedChart({
           <Bar dataKey="unblocked" name="Разблокировали" fill="#22c55e" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
+    </div>
+  );
+}
+
+// Время в днях и минутах (без секунд) — для таблиц, где важна дата, а не
+// точный момент; пояс тот же, что в журнале попыток.
+function formatShortTime(iso: string): string {
+  return new Date(iso).toLocaleString("ru-RU", {
+    timeZone: "Asia/Almaty",
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatShortDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("ru-RU", {
+    timeZone: "Asia/Almaty",
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+  });
+}
+
+// Насколько точно известно время последнего события — зависит от того, как
+// его узнали (BotBlockEvent.source).
+function blockEventTime(event: BlockedUser["lastEvent"]): { text: string; hint?: string } {
+  if (!event || event.source === "baseline") {
+    return { text: "до 29.10.26", hint: "Заблокировал до начала учёта — точная дата неизвестна" };
+  }
+  if (event.source === "check") {
+    return {
+      text: `≈ ${formatShortTime(event.at)}`,
+      hint: "Время проверки после рассылки; сама блокировка — между рассылкой и проверкой",
+    };
+  }
+  return { text: formatShortTime(event.at) };
+}
+
+// Сначала свежие события; те, чья дата неизвестна (baseline), — в конце.
+function sortBlockedUsers(users: BlockedUser[]): BlockedUser[] {
+  const time = (u: BlockedUser) =>
+    !u.lastEvent || u.lastEvent.source === "baseline" ? 0 : new Date(u.lastEvent.at).getTime();
+  return [...users].sort((a, b) => time(b) - time(a));
+}
+
+function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
+  const rows = sortBlockedUsers(users);
+  return (
+    <div className="rounded-lg border border-border/60 bg-background/60 p-4 lg:col-span-2">
+      <h2 className="mb-1 text-sm font-medium text-foreground/70">Заблокировали бота</h2>
+      <p className="mb-4 text-xs text-foreground/50">
+        Кто заблокировал бота или удалил аккаунт, и кто потом вернулся. Время — по Алматы.
+      </p>
+      <div className="max-h-[420px] overflow-auto">
+        <table className="w-full min-w-[640px] text-sm">
+          <thead className="sticky top-0 bg-background text-left text-foreground/60">
+            <tr>
+              <th className="pb-2 font-medium">Пользователь</th>
+              <th className="pb-2 font-medium">Язык</th>
+              <th className="pb-2 font-medium">Пришёл</th>
+              <th className="pb-2 text-right font-medium">Скачиваний</th>
+              <th className="pb-2 pl-4 font-medium">Когда</th>
+              <th className="pb-2 font-medium">Сейчас</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((u) => {
+              const when = blockEventTime(u.lastEvent);
+              return (
+                <tr key={u.telegramId} className="border-t border-border/40">
+                  <td className="py-2">
+                    {u.username ? (
+                      <a
+                        href={`https://t.me/${u.username}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        @{u.username}
+                      </a>
+                    ) : (
+                      <span className="text-foreground/70">{u.telegramId}</span>
+                    )}
+                    {u.firstName && <span className="ml-2 text-foreground/50">{u.firstName}</span>}
+                  </td>
+                  <td className="py-2 text-foreground/60">{u.languageCode ?? "—"}</td>
+                  <td className="py-2 tabular-nums text-foreground/60">{formatShortDate(u.firstSeenAt)}</td>
+                  <td className="py-2 text-right tabular-nums">{u.downloadCount}</td>
+                  <td className="whitespace-nowrap py-2 pl-4 tabular-nums text-foreground/80" title={when.hint}>
+                    {when.text}
+                  </td>
+                  <td className="py-2">
+                    <span
+                      className={`inline-block rounded px-2 py-0.5 text-xs ${
+                        u.blocked ? "bg-red-500/15 text-red-600" : "bg-emerald-500/15 text-emerald-600"
+                      }`}
+                    >
+                      {u.blocked ? "Заблокирован" : "Вернулся"}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+            {rows.length === 0 && (
+              <tr>
+                <td colSpan={6} className="py-6 text-center text-foreground/40">
+                  Пока никто не блокировал бота
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -497,7 +637,7 @@ function AttemptsLog() {
   const to = Math.min(offset + ATTEMPTS_PAGE_SIZE, total);
 
   return (
-    <section className="mt-6 rounded-lg border border-border/60 bg-background/60 p-4">
+    <section className="rounded-lg border border-border/60 bg-background/60 p-4">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-sm font-medium text-foreground/70">
           Журнал попыток скачивания
@@ -724,6 +864,21 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(false);
   const [days, setDays] = useState<number>(30);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [tab, setTab] = useState<DashboardTab>("overview");
+
+  // Вкладку из адреса читаем после монтирования: на сервере window нет, а
+  // разная разметка сервера и клиента сломала бы гидратацию.
+  useEffect(() => {
+    setTab(tabFromHash());
+    const onHashChange = () => setTab(tabFromHash());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  const changeTab = (id: DashboardTab) => {
+    setTab(id);
+    window.history.replaceState(null, "", id === "overview" ? window.location.pathname : `#${id}`);
+  };
   // Зависимость эффекта — только «вышли или нет», а не сам authenticated:
   // иначе переход undefined → true после первой удачной загрузки запускал
   // эффект повторно, и каждое открытие страницы грузило все графики дважды.
@@ -822,7 +977,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-8">
-      <div className="mx-auto max-w-6xl space-y-8">
+      <div className="mx-auto max-w-6xl space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-xl font-semibold">Videoner Analytics</h1>
           <div className="flex items-center gap-2">
@@ -855,341 +1010,443 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {/* Четыре счётчика ниже — за выбранный период и только бот с
-              сайтом: запросы напрямую в API — это проверки при разработке. */}
-          <StatCard label="Попыток" value={overview.totalDownloads} hint={`За ${days} дн., бот и сайт`} />
-          <StatCard
-            label="Успешных"
-            value={overview.completedDownloads}
-            hint={`За ${days} дн., включая файлы, уже удалённые с диска`}
-          />
-          <StatCard label="Ошибок" value={overview.failedDownloads} hint={`За ${days} дн., бот и сайт`} />
-          <StatCard
-            label="Успешность"
-            value={
-              overview.successRate !== null
-                ? `${Math.round(overview.successRate * 100)}%`
-                : "—"
-            }
-            hint="Успешные из завершённых"
-          />
-          <StatCard label="Пользователей бота" value={overview.totalBotUsers} />
-          <StatCard label="Входили на сайт через Telegram" value={overview.webLoginUsers} />
-        </section>
+        <nav className="-mx-4 flex gap-1 overflow-x-auto border-b border-border/60 px-4 sm:mx-0 sm:px-0">
+          {DASHBOARD_TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => changeTab(t.id)}
+              className={`-mb-px whitespace-nowrap border-b-2 px-3 py-2 text-sm ${
+                tab === t.id
+                  ? "border-foreground font-medium text-foreground"
+                  : "border-transparent text-foreground/60 hover:text-foreground"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
 
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-5">
-          <StatCard label="DAU" value={activity.dau} hint="Активных пользователей за последние сутки" />
-          <StatCard label="WAU" value={activity.wau} hint="Активных пользователей за последние 7 дней" />
-          <StatCard label="MAU" value={activity.mau} hint="Активных пользователей за последние 30 дней" />
-          <StatCard
-            label="Новые / вернувшиеся за 30 дн."
-            value={`${activity.newUsersLast30Days} / ${activity.returningUsersLast30Days}`}
-          />
-          <StatCard
-            label="Заблокировали бота"
-            value={`${blocked.blocked} (${blocked.total ? ((blocked.blocked / blocked.total) * 100).toFixed(1) : 0}%)`}
-            hint={`Из ${blocked.total} пользователей бота, включая удаливших аккаунт. Учёт по дням — с 29.10.2026`}
-          />
-        </section>
-
-        {/* Дни до 27.10.2026 восстановлены из скачиваний и дат визитов (см.
-            миграцию user_activity_days) и чуть ниже настоящих. */}
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <ActiveDailyChart
-            data={activeDaily}
-            dataKey="dau"
-            title={`DAU по дням, ${days} дней`}
-            hint="Активных за календарный день (UTC); сегодняшний ещё растёт"
-          />
-          <ActiveDailyChart
-            data={activeDaily}
-            dataKey="wau"
-            title={`WAU по дням, ${days} дней`}
-            hint="Активных за 7 дней на каждую дату"
-          />
-          <ActiveDailyChart
-            data={activeDaily}
-            dataKey="mau"
-            title={`MAU по дням, ${days} дней`}
-            hint="Активных за 30 дней на каждую дату"
-          />
-          <ActivePeriodChart
-            data={activeWeekly}
-            xKey="week"
-            title="Активные пользователи по неделям"
-            hint="Разных пользователей за неделю с понедельника, полгода; текущая ещё растёт"
-          />
-          <ActivePeriodChart
-            data={activeMonthly}
-            xKey="month"
-            title="Активные пользователи по месяцам"
-            hint="Разных пользователей за календарный месяц; текущий ещё растёт"
-          />
-        </section>
-
-        {/* Новые пользователи — за всё время; учёт блокировок — с 29.10.2026:
-            заблокировавшие раньше входят в карточку «Заблокировали бота», но
-            не в графики (дата их блокировки неизвестна). */}
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <BlockedChart
-            data={blockedDaily}
-            title={`Новые пользователи и блокировки по дням, ${days} дней`}
-            hint="Сколько человек впервые пришли в бот или на сайт, заблокировали и разблокировали бота за день (UTC); блокировки — с 29.10.2026"
-          />
-          <BlockedChart
-            data={blockedWeekly}
-            title="Новые пользователи и блокировки по неделям"
-            hint="За неделю с понедельника, полгода; текущая ещё растёт"
-          />
-          <BlockedChart
-            data={blockedMonthly}
-            title="Новые пользователи и блокировки по месяцам"
-            hint="За календарный месяц, год; текущий ещё растёт"
-          />
-        </section>
-
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Скачивания и новые пользователи, {days} дней
-            </h2>
-            <ResponsiveContainer width="100%" height={280}>
-              <LineChart data={timeseries}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                <XAxis dataKey="day" fontSize={12} />
-                <YAxis fontSize={12} allowDecimals={false} />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="downloads"
-                  name="Скачивания"
-                  stroke="#ef4444"
-                  strokeWidth={2}
-                  dot={false}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="newUsers"
-                  name="Новые пользователи"
-                  stroke="#3b82f6"
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Платформы
-            </h2>
-            <ResponsiveContainer width="100%" height={280}>
-              <PieChart>
-                <Pie
-                  data={platforms}
-                  dataKey="count"
-                  nameKey="platform"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  label={(entry) => `${entry.platform}: ${entry.count}`}
-                >
-                  {platforms.map((p) => (
-                    <Cell
-                      key={p.platform}
-                      fill={PLATFORM_COLORS[p.platform] ?? "#9ca3af"}
+        {tab === "overview" && (
+          <>
+            <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {/* Счётчики скачиваний — за выбранный период и только бот с
+                  сайтом: запросы напрямую в API — это проверки при разработке. */}
+              <StatCard label="Попыток" value={overview.totalDownloads} hint={`За ${days} дн., бот и сайт`} />
+              <StatCard
+                label="Успешных"
+                value={overview.completedDownloads}
+                hint={`За ${days} дн., включая файлы, уже удалённые с диска`}
+              />
+              <StatCard label="Ошибок" value={overview.failedDownloads} hint={`За ${days} дн., бот и сайт`} />
+              <StatCard
+                label="Успешность"
+                value={
+                  overview.successRate !== null
+                    ? `${Math.round(overview.successRate * 100)}%`
+                    : "—"
+                }
+                hint="Успешные из завершённых"
+              />
+            </section>
+            <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <StatCard label="Пользователей бота" value={overview.totalBotUsers} />
+              <StatCard label="DAU" value={activity.dau} hint="Активных пользователей за последние сутки" />
+              <StatCard label="MAU" value={activity.mau} hint="Активных пользователей за последние 30 дней" />
+              <StatCard
+                label="Заблокировали бота"
+                value={`${blocked.blocked} (${blocked.total ? ((blocked.blocked / blocked.total) * 100).toFixed(1) : 0}%)`}
+                hint={`Из ${blocked.total} пользователей бота, включая удаливших аккаунт. Учёт по дням — с 29.10.2026`}
+              />
+            </section>
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Скачивания и новые пользователи, {days} дней
+                </h2>
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart data={timeseries}>
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                    <XAxis dataKey="day" fontSize={12} />
+                    <YAxis fontSize={12} allowDecimals={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="downloads"
+                      name="Скачивания"
+                      stroke="#ef4444"
+                      strokeWidth={2}
+                      dot={false}
                     />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                    <Line
+                      type="monotone"
+                      dataKey="newUsers"
+                      name="Новые пользователи"
+                      stroke="#3b82f6"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              <BlockedChart
+                data={blockedDaily}
+                title={`Новые пользователи и блокировки по дням, ${days} дней`}
+                hint="Сколько человек впервые пришли в бот или на сайт, заблокировали и разблокировали бота за день (UTC); блокировки — с 29.10.2026"
+              />
+            </section>
+          </>
+        )}
 
-          <TrafficChart
-            title={`Объём скачанного по дням, ${days} дней`}
-            rows={snapshot.trafficDaily}
-            periodKeys={dayKeys}
-            keyOf={(row) => row.day ?? ""}
-            formatKey={formatDay}
-          />
+        {tab === "users" && (
+          <>
+            <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <StatCard label="Пользователей бота" value={overview.totalBotUsers} />
+              <StatCard label="DAU" value={activity.dau} hint="Активных пользователей за последние сутки" />
+              <StatCard label="WAU" value={activity.wau} hint="Активных пользователей за последние 7 дней" />
+              <StatCard label="MAU" value={activity.mau} hint="Активных пользователей за последние 30 дней" />
+              <StatCard
+                label="Новые / вернувшиеся за 30 дн."
+                value={`${activity.newUsersLast30Days} / ${activity.returningUsersLast30Days}`}
+              />
+              <StatCard label="Входили на сайт через Telegram" value={overview.webLoginUsers} />
+              <StatCard
+                label="Заблокировали бота"
+                value={`${blocked.blocked} (${blocked.total ? ((blocked.blocked / blocked.total) * 100).toFixed(1) : 0}%)`}
+                hint={`Из ${blocked.total} пользователей бота, включая удаливших аккаунт. Учёт по дням — с 29.10.2026`}
+              />
+            </section>
+            <h2 className="text-base font-semibold">Активность</h2>
+            {/* Дни до 27.10.2026 восстановлены из скачиваний и дат визитов (см.
+                миграцию user_activity_days) и чуть ниже настоящих. */}
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <ActiveDailyChart
+                data={activeDaily}
+                dataKey="dau"
+                wide
+                title={`DAU по дням, ${days} дней`}
+                hint="Активных за календарный день (UTC); сегодняшний ещё растёт"
+              />
+              <ActiveDailyChart
+                data={activeDaily}
+                dataKey="wau"
+                title={`WAU по дням, ${days} дней`}
+                hint="Активных за 7 дней на каждую дату"
+              />
+              <ActiveDailyChart
+                data={activeDaily}
+                dataKey="mau"
+                title={`MAU по дням, ${days} дней`}
+                hint="Активных за 30 дней на каждую дату"
+              />
+              <ActivePeriodChart
+                data={activeWeekly}
+                xKey="week"
+                title="Активные пользователи по неделям"
+                hint="Разных пользователей за неделю с понедельника, полгода; текущая ещё растёт"
+              />
+              <ActivePeriodChart
+                data={activeMonthly}
+                xKey="month"
+                title="Активные пользователи по месяцам"
+                hint="Разных пользователей за календарный месяц; текущий ещё растёт"
+              />
+            </section>
+            <h2 className="text-base font-semibold">Приток и отток</h2>
+            {/* Новые пользователи — за всё время; учёт блокировок — с 29.10.2026:
+                заблокировавшие раньше входят в карточку «Заблокировали бота», но
+                не в графики (дата их блокировки неизвестна). */}
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <BlockedChart
+                data={blockedDaily}
+                wide
+                title={`Новые пользователи и блокировки по дням, ${days} дней`}
+                hint="Сколько человек впервые пришли в бот или на сайт, заблокировали и разблокировали бота за день (UTC); блокировки — с 29.10.2026"
+              />
+              <BlockedChart
+                data={blockedWeekly}
+                title="Новые пользователи и блокировки по неделям"
+                hint="За неделю с понедельника, полгода; текущая ещё растёт"
+              />
+              <BlockedChart
+                data={blockedMonthly}
+                title="Новые пользователи и блокировки по месяцам"
+                hint="За календарный месяц, год; текущий ещё растёт"
+              />
+              <BlockedUsersTable users={blocked.users} />
+            </section>
+            <h2 className="text-base font-semibold">Самые активные</h2>
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Топ пользователей
+                </h2>
+                <div className="max-h-[280px] overflow-y-auto">
+                  <table className="w-full text-sm">
+                    <thead className="sticky top-0 bg-background text-left text-foreground/60">
+                      <tr>
+                        <th className="pb-2 font-medium">Пользователь</th>
+                        <th className="pb-2 font-medium">Язык</th>
+                        <th className="pb-2 text-right font-medium">Скачиваний</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {topUsers.map((u) => (
+                        <tr key={u.id} className="border-t border-border/40">
+                          <td className="py-2">
+                            {u.username ? (
+                              <a
+                                href={`https://t.me/${u.username}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:underline"
+                              >
+                                @{u.username}
+                              </a>
+                            ) : (
+                              u.telegramId
+                            )}
+                          </td>
+                          <td className="py-2 text-foreground/60">
+                            {u.languageCode ?? "—"}
+                          </td>
+                          <td className="py-2 text-right">{u.downloadCount}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
-          <TrafficChart
-            title="Объём скачанного по месяцам"
-            rows={snapshot.trafficMonthly}
-            keyOf={(row) => row.month ?? ""}
-            formatKey={formatMonth}
-          />
-
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Успешные скачивания по платформам, {days} дней
-            </h2>
-            <ResponsiveContainer width="100%" height={280}>
-              <LineChart data={platformCountsData}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                <XAxis dataKey="day" fontSize={12} />
-                <YAxis fontSize={12} allowDecimals={false} />
-                <Tooltip />
-                <Legend />
-                {countedPlatforms.map((platform) => (
-                  <Line
-                    key={platform}
-                    type="monotone"
-                    dataKey={platform}
-                    name={platform}
-                    stroke={PLATFORM_COLORS[platform] ?? "#9ca3af"}
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                ))}
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Объём по платформам, {days} дней
-            </h2>
-            {volume.length ? (
-              <ResponsiveContainer width="100%" height={280}>
-                <PieChart>
-                  <Pie
-                    data={volume}
-                    dataKey="bytes"
-                    nameKey="platform"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    label={(entry) => `${entry.platform}: ${formatBytes(entry.bytes)}`}
-                  >
-                    {volume.map((v) => (
-                      <Cell key={v.platform} fill={PLATFORM_COLORS[v.platform] ?? "#9ca3af"} />
+        {tab === "downloads" && (
+          <>
+            <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {/* Счётчики скачиваний — за выбранный период и только бот с
+                  сайтом: запросы напрямую в API — это проверки при разработке. */}
+              <StatCard label="Попыток" value={overview.totalDownloads} hint={`За ${days} дн., бот и сайт`} />
+              <StatCard
+                label="Успешных"
+                value={overview.completedDownloads}
+                hint={`За ${days} дн., включая файлы, уже удалённые с диска`}
+              />
+              <StatCard label="Ошибок" value={overview.failedDownloads} hint={`За ${days} дн., бот и сайт`} />
+              <StatCard
+                label="Успешность"
+                value={
+                  overview.successRate !== null
+                    ? `${Math.round(overview.successRate * 100)}%`
+                    : "—"
+                }
+                hint="Успешные из завершённых"
+              />
+            </section>
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Скачивания и новые пользователи, {days} дней
+                </h2>
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart data={timeseries}>
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                    <XAxis dataKey="day" fontSize={12} />
+                    <YAxis fontSize={12} allowDecimals={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="downloads"
+                      name="Скачивания"
+                      stroke="#ef4444"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="newUsers"
+                      name="Новые пользователи"
+                      stroke="#3b82f6"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Успешные скачивания по платформам, {days} дней
+                </h2>
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart data={platformCountsData}>
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                    <XAxis dataKey="day" fontSize={12} />
+                    <YAxis fontSize={12} allowDecimals={false} />
+                    <Tooltip />
+                    <Legend />
+                    {countedPlatforms.map((platform) => (
+                      <Line
+                        key={platform}
+                        type="monotone"
+                        dataKey={platform}
+                        name={platform}
+                        stroke={PLATFORM_COLORS[platform] ?? "#9ca3af"}
+                        strokeWidth={2}
+                        dot={false}
+                      />
                     ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => formatBytes(Number(value))} />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <p className="py-24 text-center text-sm text-foreground/40">За период нет данных о размере файлов</p>
-            )}
-          </div>
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Платформы
+                </h2>
+                <ResponsiveContainer width="100%" height={280}>
+                  <PieChart>
+                    <Pie
+                      data={platforms}
+                      dataKey="count"
+                      nameKey="platform"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      label={(entry) => `${entry.platform}: ${entry.count}`}
+                    >
+                      {platforms.map((p) => (
+                        <Cell
+                          key={p.platform}
+                          fill={PLATFORM_COLORS[p.platform] ?? "#9ca3af"}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Бот vs сайт
+                </h2>
+                <ResponsiveContainer width="100%" height={280}>
+                  <PieChart>
+                    <Pie
+                      data={sources}
+                      dataKey="count"
+                      nameKey="source"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      label={(entry) => `${SOURCE_LABELS[entry.source] ?? entry.source}: ${entry.count}`}
+                    >
+                      {sources.map((s) => (
+                        <Cell key={s.source} fill={SOURCE_COLORS[s.source] ?? "#9ca3af"} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value, _name, props) => [value, SOURCE_LABELS[props.payload.source] ?? props.payload.source]} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </section>
+            <h2 className="text-base font-semibold">Объём</h2>
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <TrafficChart
+                title={`Объём скачанного по дням, ${days} дней`}
+                rows={snapshot.trafficDaily}
+                periodKeys={dayKeys}
+                keyOf={(row) => row.day ?? ""}
+                formatKey={formatDay}
+              />
+              <TrafficChart
+                title="Объём скачанного по месяцам"
+                rows={snapshot.trafficMonthly}
+                keyOf={(row) => row.month ?? ""}
+                formatKey={formatMonth}
+              />
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Объём по платформам, {days} дней
+                </h2>
+                {volume.length ? (
+                  <ResponsiveContainer width="100%" height={280}>
+                    <PieChart>
+                      <Pie
+                        data={volume}
+                        dataKey="bytes"
+                        nameKey="platform"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        label={(entry) => `${entry.platform}: ${formatBytes(entry.bytes)}`}
+                      >
+                        {volume.map((v) => (
+                          <Cell key={v.platform} fill={PLATFORM_COLORS[v.platform] ?? "#9ca3af"} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => formatBytes(Number(value))} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <p className="py-24 text-center text-sm text-foreground/40">За период нет данных о размере файлов</p>
+                )}
+              </div>
+            </section>
+          </>
+        )}
 
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Бот vs сайт
-            </h2>
-            <ResponsiveContainer width="100%" height={280}>
-              <PieChart>
-                <Pie
-                  data={sources}
-                  dataKey="count"
-                  nameKey="source"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  label={(entry) => `${SOURCE_LABELS[entry.source] ?? entry.source}: ${entry.count}`}
-                >
-                  {sources.map((s) => (
-                    <Cell key={s.source} fill={SOURCE_COLORS[s.source] ?? "#9ca3af"} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value, _name, props) => [value, SOURCE_LABELS[props.payload.source] ?? props.payload.source]} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+        {tab === "errors" && (
+          <>
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Ошибки по категориям
+                </h2>
+                <ResponsiveContainer width="100%" height={280}>
+                  <BarChart data={errors}>
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                    <XAxis dataKey="category" fontSize={11} interval={0} angle={-20} textAnchor="end" height={70} />
+                    <YAxis fontSize={12} allowDecimals={false} />
+                    <Tooltip />
+                    <Bar dataKey="count" name="Ошибок">
+                      {errors.map((e) => (
+                        <Cell key={e.category} fill={ERROR_COLORS[e.category] ?? "#9ca3af"} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="rounded-lg border border-border/60 bg-background/60 p-4 lg:col-span-2">
+                <h2 className="mb-4 text-sm font-medium text-foreground/70">
+                  Ошибки по дням — динамика по категориям
+                </h2>
+                <ResponsiveContainer width="100%" height={280}>
+                  <AreaChart data={errorsTimeseriesData}>
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                    <XAxis dataKey="day" fontSize={12} />
+                    <YAxis fontSize={12} allowDecimals={false} />
+                    <Tooltip />
+                    <Legend />
+                    {errorCategories.map((category) => (
+                      <Area
+                        key={category}
+                        type="monotone"
+                        dataKey={category}
+                        name={category}
+                        stackId="errors"
+                        stroke={ERROR_COLORS[category] ?? "#9ca3af"}
+                        fill={ERROR_COLORS[category] ?? "#9ca3af"}
+                        fillOpacity={0.5}
+                      />
+                    ))}
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </section>
+          </>
+        )}
 
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Ошибки по категориям
-            </h2>
-            <ResponsiveContainer width="100%" height={280}>
-              <BarChart data={errors}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                <XAxis dataKey="category" fontSize={11} interval={0} angle={-20} textAnchor="end" height={70} />
-                <YAxis fontSize={12} allowDecimals={false} />
-                <Tooltip />
-                <Bar dataKey="count" name="Ошибок">
-                  {errors.map((e) => (
-                    <Cell key={e.category} fill={ERROR_COLORS[e.category] ?? "#9ca3af"} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4 lg:col-span-2">
-            <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Ошибки по дням — динамика по категориям
-            </h2>
-            <ResponsiveContainer width="100%" height={280}>
-              <AreaChart data={errorsTimeseriesData}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                <XAxis dataKey="day" fontSize={12} />
-                <YAxis fontSize={12} allowDecimals={false} />
-                <Tooltip />
-                <Legend />
-                {errorCategories.map((category) => (
-                  <Area
-                    key={category}
-                    type="monotone"
-                    dataKey={category}
-                    name={category}
-                    stackId="errors"
-                    stroke={ERROR_COLORS[category] ?? "#9ca3af"}
-                    fill={ERROR_COLORS[category] ?? "#9ca3af"}
-                    fillOpacity={0.5}
-                  />
-                ))}
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-            <h2 className="mb-4 text-sm font-medium text-foreground/70">
-              Топ пользователей
-            </h2>
-            <div className="max-h-[280px] overflow-y-auto">
-              <table className="w-full text-sm">
-                <thead className="sticky top-0 bg-background text-left text-foreground/60">
-                  <tr>
-                    <th className="pb-2 font-medium">Пользователь</th>
-                    <th className="pb-2 font-medium">Язык</th>
-                    <th className="pb-2 text-right font-medium">Скачиваний</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {topUsers.map((u) => (
-                    <tr key={u.id} className="border-t border-border/40">
-                      <td className="py-2">
-                        {u.username ? (
-                          <a
-                            href={`https://t.me/${u.username}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:underline"
-                          >
-                            @{u.username}
-                          </a>
-                        ) : (
-                          u.telegramId
-                        )}
-                      </td>
-                      <td className="py-2 text-foreground/60">
-                        {u.languageCode ?? "—"}
-                      </td>
-                      <td className="py-2 text-right">{u.downloadCount}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <AttemptsLog />
+        {tab === "log" && <AttemptsLog />}
       </div>
     </div>
   );

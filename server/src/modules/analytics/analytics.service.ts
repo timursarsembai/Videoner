@@ -247,15 +247,49 @@ export class AnalyticsService {
   // разблокировали бота. События baseline — те, кто заблокировал до начала
   // учёта (29.10.2026), дата неизвестна: в «сейчас» они входят, в разбивку по
   // периодам — нет.
+  //
+  // users — кто заблокировал бота сейчас или блокировал раньше и вернулся, с
+  // последним событием: его source говорит, насколько точно известно время
+  // (telegram — точное, check — время проверки, baseline — неизвестно).
   async blocked(days: number) {
-    const [total, blocked, daily, weekly, monthly] = await Promise.all([
+    const [total, blocked, daily, weekly, monthly, users] = await Promise.all([
       this.prisma.botUser.count(),
       this.prisma.botUser.count({ where: { blockedAt: { not: null } } }),
       this.usersByPeriod('day', days),
       this.usersByPeriod('week', 26),
       this.usersByPeriod('month', 12),
+      this.prisma.botUser.findMany({
+        where: {
+          OR: [{ blockedAt: { not: null } }, { blockEvents: { some: {} } }],
+        },
+        include: {
+          _count: { select: { downloads: true } },
+          blockEvents: { orderBy: { at: 'desc' }, take: 1 },
+        },
+      }),
     ]);
-    return { total, blocked, daily, weekly, monthly };
+    return {
+      total,
+      blocked,
+      daily,
+      weekly,
+      monthly,
+      users: users.map((user) => {
+        const last = user.blockEvents[0];
+        return {
+          telegramId: user.telegramId.toString(),
+          username: user.username,
+          firstName: user.firstName,
+          languageCode: user.languageCode,
+          firstSeenAt: user.firstSeenAt,
+          downloadCount: user._count.downloads,
+          blocked: user.blockedAt !== null,
+          lastEvent: last
+            ? { blocked: last.blocked, source: last.source, at: last.at }
+            : null,
+        };
+      }),
+    };
   }
 
   // Периоды без событий тоже нужны — иначе пустая неделя пропала бы с оси.

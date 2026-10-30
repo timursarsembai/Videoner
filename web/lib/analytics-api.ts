@@ -131,12 +131,27 @@ export interface BlockedPoint {
   unblocked: number;
 }
 
+// Кто заблокировал бота (blocked) или блокировал и вернулся. source
+// последнего события: telegram — время точное, check — время проверки после
+// рассылки (сама блокировка раньше), baseline — до начала учёта 29.10.2026.
+export interface BlockedUser {
+  telegramId: string;
+  username: string | null;
+  firstName: string | null;
+  languageCode: string | null;
+  firstSeenAt: string;
+  downloadCount: number;
+  blocked: boolean;
+  lastEvent: { blocked: boolean; source: string; at: string } | null;
+}
+
 export interface BlockedData {
   total: number;
   blocked: number;
   daily: BlockedPoint[];
   weekly: BlockedPoint[];
   monthly: BlockedPoint[];
+  users: BlockedUser[];
 }
 
 export interface AnalyticsSnapshot {

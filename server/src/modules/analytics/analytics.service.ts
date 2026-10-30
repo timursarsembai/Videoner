@@ -368,17 +368,25 @@ export class AnalyticsService {
     offset: number,
     platform?: string,
     status?: string,
+    source?: string,
   ) {
     // Значения фильтров приходят из строки запроса, то есть могут быть любыми.
     // Сверяем их с enum'ами и молча игнорируем нераспознанное: Prisma на
     // невалидном значении enum бросает исключение, и опечатка в адресной
     // строке превращалась бы в 500 вместо пустого фильтра.
-    const where: { downloader?: Downloaders; status?: DownloadStatus } = {};
+    const where: {
+      downloader?: Downloaders;
+      status?: DownloadStatus;
+      source?: DownloadSource;
+    } = {};
     if (platform && platform in Downloaders) {
       where.downloader = platform as Downloaders;
     }
     if (status && status in DownloadStatus) {
       where.status = status as DownloadStatus;
+    }
+    if (source && source in DownloadSource) {
+      where.source = source as DownloadSource;
     }
 
     // count идёт с тем же where, что и findMany. Иначе постраничная навигация

@@ -271,6 +271,7 @@ export async function fetchAttempts(
   offset: number = 0,
   platform?: string,
   status?: string,
+  source?: string,
 ): Promise<AttemptsPage> {
   // Пустой фильтр не отправляем вовсе: "platform=" сервер обязан был бы
   // отличать от отсутствия параметра, а так этот случай просто не возникает.
@@ -280,5 +281,6 @@ export async function fetchAttempts(
   });
   if (platform) params.set("platform", platform);
   if (status) params.set("status", status);
+  if (source) params.set("source", source);
   return get<AttemptsPage>(`/attempts?${params.toString()}`);
 }

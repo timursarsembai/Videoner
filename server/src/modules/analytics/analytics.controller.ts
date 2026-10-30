@@ -118,6 +118,7 @@ export class AnalyticsController {
     @Query('offset') offset?: string,
     @Query('platform') platform?: string,
     @Query('status') status?: string,
+    @Query('source') source?: string,
   ) {
     const parsedLimit = parseInt(limit ?? '50', 10);
     const parsedOffset = parseInt(offset ?? '0', 10);
@@ -128,6 +129,7 @@ export class AnalyticsController {
       Number.isFinite(parsedOffset) && parsedOffset > 0 ? parsedOffset : 0,
       platform,
       status,
+      source,
     );
   }
 

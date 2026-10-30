@@ -605,20 +605,21 @@ function AttemptsLog() {
   const [offset, setOffset] = useState(0);
   const [platform, setPlatform] = useState("");
   const [status, setStatus] = useState("");
+  const [source, setSource] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
     setLoading(true);
     setError(undefined);
-    fetchAttempts(ATTEMPTS_PAGE_SIZE, offset, platform, status)
+    fetchAttempts(ATTEMPTS_PAGE_SIZE, offset, platform, status, source)
       .then((data) => {
         setPage(data.rows);
         setTotal(data.total);
       })
       .catch((e) => setError(e.message || "Не удалось загрузить журнал"))
       .finally(() => setLoading(false));
-  }, [offset, platform, status]);
+  }, [offset, platform, status, source]);
 
   // Смена фильтра всегда возвращает на первую страницу. Иначе, стоя на
   // 3-й странице общего списка и выбрав платформу с десятком записей,
@@ -630,6 +631,10 @@ function AttemptsLog() {
   };
   const changeStatus = (value: string) => {
     setStatus(value);
+    setOffset(0);
+  };
+  const changeSource = (value: string) => {
+    setSource(value);
     setOffset(0);
   };
 
@@ -664,6 +669,18 @@ function AttemptsLog() {
             {STATUS_OPTIONS.map((option) => (
               <option key={option} value={option}>
                 {STATUS_LABELS[option]}
+              </option>
+            ))}
+          </select>
+          <select
+            value={source}
+            onChange={(e) => changeSource(e.target.value)}
+            className="h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          >
+            <option value="">Все источники</option>
+            {Object.entries(SOURCE_LABELS).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
               </option>
             ))}
           </select>
@@ -769,7 +786,7 @@ function AttemptsLog() {
             {!loading && page.length === 0 && !error && (
               <tr>
                 <td colSpan={6} className="py-6 text-center text-foreground/40">
-                  {platform || status
+                  {platform || status || source
                     ? "По выбранному фильтру ничего нет"
                     : "Пока ни одной попытки"}
                 </td>

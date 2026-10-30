@@ -78,3 +78,9 @@ test("кеш настроек живёт заданное время", () => {
   assert.equal(cache.get(1, 1000), undefined);
   assert.equal(cache.get(2, 0), undefined);
 });
+
+test("максимальное качество без известных размеров — не выше 1080p", () => {
+  assert.equal(pickGroupQuality(["2160p", "1440p", "1080p", "720p"], {}, 50, "max"), "1080p");
+  assert.equal(pickGroupQuality(["2160p", "1080p"], { "1080p": 40 }, 50, "max"), "1080p");
+  assert.equal(pickGroupQuality(["2160p", "1440p"], {}, 50, "max"), "1440p");
+});

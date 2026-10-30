@@ -7,7 +7,7 @@
 // которые умеет сервер (список — как в server/src/validate/url.ts), а что
 // сервер всё же не разобрал, бот пропускает молча.
 
-const VIDEO_HOSTS = [
+export const VIDEO_HOSTS = [
   "youtube.com",
   "youtu.be",
   "tiktok.com",
@@ -57,7 +57,14 @@ export function pickGroupQuality(
   if (available.includes("original")) return "original";
   const fits = available.filter((q) => !(sizes[q] > fileLimit));
   if (!fits.length) return null;
-  if (mode === "max") return fits[0];
+  if (mode === "max") {
+    // Размер известен — берём лучшее из того, что точно влезает. Не известен
+    // ни у одного — не выше 1080p: иначе бот мог бы скачать 4K и только потом
+    // узнать, что Telegram такой файл не примет.
+    const known = fits.find((q) => sizes[q] !== undefined);
+    if (known) return known;
+    return fits.find((q) => !(parseInt(q, 10) > 1080)) ?? fits[fits.length - 1];
+  }
   return fits.find((q) => q === "720p") ?? fits[0];
 }
 

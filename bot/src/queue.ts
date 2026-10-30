@@ -15,6 +15,7 @@
 // бот предупреждает перед остановкой (notifyQueuesBeforeShutdown в download.ts).
 
 import type { SubtitleTrack } from "./subtitles.js";
+import { VIDEO_HOSTS } from "./group.js";
 
 // Сколько ссылок держим на человека, считая текущую. Очередь — не склад:
 // суточный лимит всё равно 20 скачиваний, и десятка хватает с запасом.
@@ -159,7 +160,18 @@ export class LinkQueues {
 // Хвостовую пунктуацию срезаем: ссылку часто вставляют в фразу («вот:
 // https://…, и ещё https://…»), и запятая, точка или скобка не должны уехать
 // на сервер частью адреса.
+//
+// Ссылки без https:// («tiktok.com/@user/video/1», «youtu.be/abc») тоже
+// берём, но только с видеоплощадок и только с путём: иначе любое «file.txt»
+// или «сайт.рф» в тексте стало бы ссылкой. Перед адресом не должно быть
+// буквы, точки, «/» или «@» — так не ловятся куски полных адресов и почта.
+const BARE_HOST = VIDEO_HOSTS.map((h) => h.replace(/\./g, "\\.")).join("|");
+const URL_RE = new RegExp(`https?:\\/\\/\\S+|(?<![\\w./@-])(?:[a-z0-9-]+\\.)*(?:${BARE_HOST})\\/\\S*`, "gi");
+
 export function extractUrls(text: string): string[] {
-  const found = text.match(/https?:\/\/\S+/gi) ?? [];
-  return found.map((u) => u.replace(/[.,;:!?)\]}»"'>]+$/, "")).filter((u) => u.length > "https://".length);
+  const found = text.match(URL_RE) ?? [];
+  return found
+    .map((u) => u.replace(/[.,;:!?)\]}»"'>]+$/, ""))
+    .map((u) => (/^https?:\/\//i.test(u) ? u : `https://${u}`))
+    .filter((u) => u.length > "https://".length);
 }

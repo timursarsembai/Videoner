@@ -91,3 +91,22 @@ test("ссылки достаются из любого текста, без х�
   // Параметры ссылки не режем — только хвост.
   assert.deepEqual(extractUrls("https://www.youtube.com/watch?v=abc&t=10"), ["https://www.youtube.com/watch?v=abc&t=10"]);
 });
+
+test("ссылки без https:// с видеоплощадок тоже находятся", () => {
+  assert.deepEqual(extractUrls("tiktok.com/@user/video/1"), ["https://tiktok.com/@user/video/1"]);
+  assert.deepEqual(extractUrls("глянь vm.tiktok.com/ZMabc/ и youtu.be/xyz."), [
+    "https://vm.tiktok.com/ZMabc/",
+    "https://youtu.be/xyz",
+  ]);
+  assert.deepEqual(extractUrls("(www.instagram.com/reel/abc)"), ["https://www.instagram.com/reel/abc"]);
+});
+
+test("без https:// не ловим лишнего", () => {
+  // Полный адрес не дробится на второй, «голый».
+  assert.deepEqual(extractUrls("https://www.tiktok.com/@x/video/1"), ["https://www.tiktok.com/@x/video/1"]);
+  // Без пути, чужие домены, почта и похожие имена — не ссылки на видео.
+  assert.deepEqual(extractUrls("пишите на tiktok.com"), []);
+  assert.deepEqual(extractUrls("файл report.txt и сайт example.com/page"), []);
+  assert.deepEqual(extractUrls("me@youtube.com/x"), []);
+  assert.deepEqual(extractUrls("netflix.com/title/1 box.com/s/1"), []);
+});

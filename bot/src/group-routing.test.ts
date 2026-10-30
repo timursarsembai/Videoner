@@ -1,0 +1,67 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { Bot } from "grammy";
+import type { Update } from "grammy/types";
+import { registerGroupHandlers } from "./handlers/group.js";
+
+// Порядок обработчиков в grammY проверяется только живой цепочкой: групповой
+// блок (bot.chatType) встаёт в неё в момент создания, и команда, объявленная
+// на bot позже, до своего обработчика не доходит — так /settings в группе
+// молча терялась. Здесь бот настоящий, а Telegram и сервер подменены.
+
+// Сервера Videoner в тесте нет: запрос настроек падает, и бот берёт настройки
+// по умолчанию (так он и должен вести себя при недоступном сервере).
+
+function makeBot() {
+  const bot = new Bot("1:test", {
+    botInfo: {
+      id: 1,
+      is_bot: true,
+      first_name: "Videoner",
+      username: "VideonerBot",
+      can_join_groups: true,
+      can_read_all_group_messages: true,
+      supports_inline_queries: true,
+      can_connect_to_business: false,
+      has_main_web_app: false,
+    } as any,
+  });
+  const sent: { method: string; payload: any }[] = [];
+  bot.api.config.use(async (_prev, method, payload) => {
+    sent.push({ method, payload });
+    if (method === "getChatMember") {
+      return { ok: true, result: { status: "creator", user: { id: 42, is_bot: false, first_name: "A" } } } as any;
+    }
+    return { ok: true, result: { message_id: 100, date: 0, chat: { id: -100, type: "supergroup" } } } as any;
+  });
+  registerGroupHandlers(bot);
+  return { bot, sent };
+}
+
+function groupText(text: string): Update {
+  return {
+    update_id: 1,
+    message: {
+      message_id: 5,
+      date: 0,
+      chat: { id: -100, type: "supergroup", title: "Тест" },
+      from: { id: 42, is_bot: false, first_name: "A", language_code: "ru" },
+      text,
+      entities: text.startsWith("/") ? [{ type: "bot_command", offset: 0, length: text.split(" ")[0].length }] : [],
+    },
+  } as Update;
+}
+
+test("/settings в группе доходит до своего обработчика", async () => {
+  const { bot, sent } = makeBot();
+  await bot.handleUpdate(groupText("/settings@VideonerBot"));
+  const reply = sent.find((s) => s.method === "sendMessage");
+  assert.ok(reply, "бот должен ответить на /settings");
+  assert.match(reply.payload.text, /Настройки бота в этой группе/);
+});
+
+test("обычная фраза в группе остаётся без ответа", async () => {
+  const { bot, sent } = makeBot();
+  await bot.handleUpdate(groupText("всем привет"));
+  assert.equal(sent.filter((s) => s.method === "sendMessage").length, 0);
+});

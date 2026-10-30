@@ -33,7 +33,9 @@ setInterval(() => {
   for (const [url, at] of published.entries()) {
     if (at < cutoff) published.delete(url);
   }
-}, 60 * 60 * 1000);
+  // unref — как в helpers.ts: уборка не должна держать процесс (иначе не
+  // завершаются тесты, импортирующие обработчики).
+}, 60 * 60 * 1000).unref();
 
 export async function publishLink(
   api: Api,

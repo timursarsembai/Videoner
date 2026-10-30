@@ -248,17 +248,10 @@ async function downloadInGroup(
 }
 
 export function registerGroupHandlers(bot: Bot) {
-  const groups = bot.chatType(["group", "supergroup"]);
-
-  // Бота добавили в группу — коротко объясняем, как он работает.
-  groups.on("my_chat_member", async (ctx) => {
-    const { old_chat_member: before, new_chat_member: after } = ctx.myChatMember;
-    const wasIn = ["member", "administrator"].includes(before.status);
-    const isIn = ["member", "administrator"].includes(after.status);
-    if (wasIn || !isIn) return;
-    await sendGroupWelcome(ctx);
-  });
-
+  // /settings — ДО bot.chatType(...): grammY ставит групповой блок в цепочку
+  // в момент его создания, и всё, что объявлено на bot после, идёт уже за ним.
+  // Групповой обработчик текста дальше ничего не передаёт, и команда до
+  // своего обработчика не доходила.
   bot.command("settings", async (ctx) => {
     const m = messages[detectLang(ctx.from?.language_code)];
     if (ctx.chat.type === "private" || ctx.chat.type === "channel") {
@@ -273,6 +266,17 @@ export function registerGroupHandlers(bot: Bot) {
     await ctx.reply(m.groupSettings(s, await botCanDelete(ctx, { fresh: true })), {
       reply_markup: settingsKeyboard(m, s),
     });
+  });
+
+  const groups = bot.chatType(["group", "supergroup"]);
+
+  // Бота добавили в группу — коротко объясняем, как он работает.
+  groups.on("my_chat_member", async (ctx) => {
+    const { old_chat_member: before, new_chat_member: after } = ctx.myChatMember;
+    const wasIn = ["member", "administrator"].includes(before.status);
+    const isIn = ["member", "administrator"].includes(after.status);
+    if (wasIn || !isIn) return;
+    await sendGroupWelcome(ctx);
   });
 
   // Кнопки /settings. Регистрируются до общего обработчика кнопок лички

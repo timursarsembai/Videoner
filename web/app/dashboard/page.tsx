@@ -366,14 +366,14 @@ function ActivePeriodChart({
   );
 }
 
-// Блокировки и разблокировки бота за период — две серии в одних единицах
-// (люди), поэтому одна ось.
+// Приток и отток за период: новые пользователи, блокировки и разблокировки
+// бота — три серии в одних единицах (люди), поэтому одна ось.
 function BlockedChart({
   data,
   title,
   hint,
 }: {
-  data: { label: string; blocked: number; unblocked: number }[];
+  data: { label: string; newUsers: number; blocked: number; unblocked: number }[];
   title: string;
   hint: string;
 }) {
@@ -388,6 +388,7 @@ function BlockedChart({
           <YAxis fontSize={12} allowDecimals={false} />
           <Tooltip />
           <Legend />
+          <Bar dataKey="newUsers" name="Новые пользователи" fill="#3b82f6" radius={[4, 4, 0, 0]} />
           <Bar dataKey="blocked" name="Заблокировали" fill="#ef4444" radius={[4, 4, 0, 0]} />
           <Bar dataKey="unblocked" name="Разблокировали" fill="#22c55e" radius={[4, 4, 0, 0]} />
         </BarChart>
@@ -927,23 +928,23 @@ export default function AnalyticsPage() {
           />
         </section>
 
-        {/* Учёт блокировок — с 29.10.2026: заблокировавшие раньше входят в
-            карточку «Заблокировали бота», но не в графики (дата их блокировки
-            неизвестна). */}
+        {/* Новые пользователи — за всё время; учёт блокировок — с 29.10.2026:
+            заблокировавшие раньше входят в карточку «Заблокировали бота», но
+            не в графики (дата их блокировки неизвестна). */}
         <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <BlockedChart
             data={blockedDaily}
-            title={`Блокировки бота по дням, ${days} дней`}
-            hint="Сколько человек заблокировали и разблокировали бота за день (UTC)"
+            title={`Новые пользователи и блокировки по дням, ${days} дней`}
+            hint="Сколько человек впервые пришли в бот или на сайт, заблокировали и разблокировали бота за день (UTC); блокировки — с 29.10.2026"
           />
           <BlockedChart
             data={blockedWeekly}
-            title="Блокировки бота по неделям"
+            title="Новые пользователи и блокировки по неделям"
             hint="За неделю с понедельника, полгода; текущая ещё растёт"
           />
           <BlockedChart
             data={blockedMonthly}
-            title="Блокировки бота по месяцам"
+            title="Новые пользователи и блокировки по месяцам"
             hint="За календарный месяц, год; текущий ещё растёт"
           />
         </section>

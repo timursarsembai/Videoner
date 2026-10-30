@@ -122,9 +122,11 @@ export interface AttemptsPage {
   rows: AttemptRow[];
 }
 
-// Блокировки бота за период (день, неделя с понедельника или месяц, UTC).
+// Новые пользователи и блокировки бота за период (день, неделя с
+// понедельника или месяц, UTC).
 export interface BlockedPoint {
   period: string;
+  newUsers: number;
   blocked: number;
   unblocked: number;
 }

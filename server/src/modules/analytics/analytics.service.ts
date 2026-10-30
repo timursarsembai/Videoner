@@ -241,39 +241,33 @@ export class AnalyticsService {
     `;
   }
 
-  // Блокировки бота: сколько заблокировали сейчас и сколько блокировали и
-  // разблокировали по дням (days дней), неделям (полгода) и месяцам (год). События
-  // baseline — те, кто заблокировал до начала учёта (29.10.2026), дата
-  // неизвестна: в «сейчас» они входят, в разбивку по периодам — нет.
+  // Приток и отток пользователей бота: сколько заблокировали сейчас, а по
+  // дням (days дней), неделям (полгода) и месяцам (год) — сколько пришло
+  // новых (первое появление в боте или на сайте) и сколько заблокировали и
+  // разблокировали бота. События baseline — те, кто заблокировал до начала
+  // учёта (29.10.2026), дата неизвестна: в «сейчас» они входят, в разбивку по
+  // периодам — нет.
   async blocked(days: number) {
     const [total, blocked, daily, weekly, monthly] = await Promise.all([
       this.prisma.botUser.count(),
       this.prisma.botUser.count({ where: { blockedAt: { not: null } } }),
-      this.prisma.$queryRaw<{ period: Date; blocked: number; unblocked: number }[]>`
-        SELECT d::timestamp AS period,
-               COUNT(e.id) FILTER (WHERE e.blocked)::int AS blocked,
-               COUNT(e.id) FILTER (WHERE NOT e.blocked)::int AS unblocked
-        FROM generate_series(
-               (NOW() AT TIME ZONE 'UTC')::date - (${days}::int - 1),
-               (NOW() AT TIME ZONE 'UTC')::date,
-               interval '1 day'
-             ) AS d
-        LEFT JOIN "BotBlockEvent" e
-               ON e.at >= d::timestamp AND e.at < d::timestamp + interval '1 day' AND e.source <> 'baseline'
-        GROUP BY d
-        ORDER BY d ASC
-      `,
-      this.blockedByPeriod('week', 26),
-      this.blockedByPeriod('month', 12),
+      this.usersByPeriod('day', days),
+      this.usersByPeriod('week', 26),
+      this.usersByPeriod('month', 12),
     ]);
     return { total, blocked, daily, weekly, monthly };
   }
 
   // Периоды без событий тоже нужны — иначе пустая неделя пропала бы с оси.
-  private blockedByPeriod(unit: 'week' | 'month', count: number) {
-    const step = unit === 'week' ? '1 week' : '1 month';
-    return this.prisma.$queryRaw<{ period: Date; blocked: number; unblocked: number }[]>`
+  // Время в базе — UTC без пояса, периоды считаются так же.
+  private usersByPeriod(unit: 'day' | 'week' | 'month', count: number) {
+    const step = `1 ${unit}`;
+    return this.prisma.$queryRaw<
+      { period: Date; newUsers: number; blocked: number; unblocked: number }[]
+    >`
       SELECT p AS period,
+             (SELECT COUNT(*) FROM "BotUser" u
+               WHERE u."firstSeenAt" >= p AND u."firstSeenAt" < p + ${step}::interval)::int AS "newUsers",
              COUNT(e.id) FILTER (WHERE e.blocked)::int AS blocked,
              COUNT(e.id) FILTER (WHERE NOT e.blocked)::int AS unblocked
       FROM generate_series(

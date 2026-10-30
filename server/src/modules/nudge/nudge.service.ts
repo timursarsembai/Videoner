@@ -110,9 +110,24 @@ export class NudgeService {
   // музыки и религиозного содержания (требование владельца), и при этом
   // ролик исторический — он не будет удалён и не сломает пример со временем.
   private textFor(languageCode: string | null): string {
-    const isRu = languageCode?.toLowerCase().startsWith('ru') ?? false;
+    const code = languageCode?.toLowerCase() ?? '';
 
-    if (isRu) {
+    if (code.startsWith('uk')) {
+      return (
+        'Вітаю! Ви запускали цього бота, але поки нічого не завантажили — ' +
+        'можливо, було незрозуміло, з чого почати.\n\n' +
+        'Усе робиться за одну дію: надішліть сюди посилання на відео, ' +
+        'наприклад https://youtube.com/watch?v=jNQXAC9IVRw — і я поверну готовий ' +
+        'файл приблизно за пів хвилини.\n\n' +
+        'Працюють YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest і Threads. Повністю безкоштовно й у будь-якій ' +
+        'якості — аж до 4K, доплачувати за HD не потрібно.\n\n' +
+        'Якщо щось не спрацює, просто напишіть про це у відповідь. Це ' +
+        'єдине нагадування, більше не потурбую.'
+      );
+    }
+
+    if (code.startsWith('ru')) {
       return (
         'Здравствуйте! Вы запускали этого бота, но пока ничего не скачали — ' +
         'возможно, было непонятно, с чего начать.\n\n' +

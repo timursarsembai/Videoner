@@ -2,10 +2,12 @@
 const DOMAIN = "https://videoner.download";
 
 // en рендерится без префикса в URL (миддлварь делает internal rewrite /vimeo -> /en/vimeo),
-// поэтому в статической выдаче билда все страницы физически лежат под /en, /ru, /es —
+// поэтому в статической выдаче билда все страницы физически лежат под /en, /ru, /es, /uk —
 // здесь превращаем /en/* обратно в каноничный путь без префикса и добавляем hreflang-алтернативы.
+const PREFIXED = ["ru", "es", "uk"];
+
 function stripLocalePrefix(path) {
-  const m = path.match(/^\/(en|ru|es)(\/.*)?$/);
+  const m = path.match(/^\/(en|ru|es|uk)(\/.*)?$/);
   if (m) return m[2] || "/";
   return path;
 }
@@ -46,7 +48,7 @@ module.exports = {
   autoLastmod: true,
   transform: async (config, path) => {
     const base = stripLocalePrefix(path);
-    const isEnglish = !path.startsWith("/ru") && !path.startsWith("/es");
+    const isEnglish = !PREFIXED.some((l) => path === `/${l}` || path.startsWith(`/${l}/`));
     const loc = isEnglish ? base : path;
 
     return {
@@ -58,8 +60,7 @@ module.exports = {
       // этому href — сюда передаём только корень домена/локали, без пути страницы.
       alternateRefs: [
         { href: DOMAIN, hreflang: "en" },
-        { href: `${DOMAIN}/ru`, hreflang: "ru" },
-        { href: `${DOMAIN}/es`, hreflang: "es" },
+        ...PREFIXED.map((l) => ({ href: `${DOMAIN}/${l}`, hreflang: l })),
         { href: DOMAIN, hreflang: "x-default" },
       ],
     };

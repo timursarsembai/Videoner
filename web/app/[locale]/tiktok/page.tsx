@@ -3,11 +3,9 @@ import { Metadata } from "next";
 import Page from "@/components/common/Page";
 import JsonLd from "@/components/common/JsonLd";
 import { LANGUAGES, Language, translations } from "@/lib/i18n/translations";
-import { localizedHref } from "@/lib/i18n/routing";
+import { languageAlternates, localizedHref, OG_LOCALE } from "@/lib/i18n/routing";
 
 const NAME = "TikTok";
-const OG_LOCALE: Record<Language, string> = { en: "en_US", ru: "ru_RU", es: "es_ES" };
-
 export function generateStaticParams() {
   return LANGUAGES.map((locale) => ({ locale }));
 }
@@ -48,12 +46,7 @@ export async function generateMetadata({
     },
     alternates: {
       canonical,
-      languages: {
-        en: "https://videoner.download/tiktok",
-        ru: "https://videoner.download/ru/tiktok",
-        es: "https://videoner.download/es/tiktok",
-        "x-default": "https://videoner.download/tiktok",
-      },
+      languages: languageAlternates("/tiktok"),
     },
   };
 }

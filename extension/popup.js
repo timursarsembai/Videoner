@@ -12,7 +12,7 @@ import {
   getJob,
   isPlatformUrl,
   jobKey,
-  lang,
+  sitePath,
   session,
   setJob,
   t,
@@ -424,7 +424,7 @@ async function main() {
     box.replaceChildren(
       document.createTextNode(`${t.updateAvailable(version)} `),
       Object.assign(document.createElement("a"), {
-        href: `${SITE}/${lang === "ru" ? "ru/" : ""}extension#update`,
+        href: `${SITE}${sitePath("/extension")}#update`,
         target: "_blank",
         textContent: t.updateHow,
       })

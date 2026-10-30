@@ -9,7 +9,7 @@ import { ChromeLogo, FirefoxLogo } from "@/components/common/browser-logos";
 import { extensionPage } from "@/lib/extension-page";
 import { FIREFOX_EXTENSION_VERSION } from "@/lib/extension-firefox-version";
 import { EXTENSION_VERSION } from "@/lib/extension-version";
-import { localizedHref } from "@/lib/i18n/routing";
+import { languageAlternates, localizedHref } from "@/lib/i18n/routing";
 import { resolveLocale } from "@/lib/legal/page";
 import { detectPlatform } from "@/lib/validations/url";
 
@@ -39,12 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: text.summary,
     alternates: {
       canonical,
-      languages: {
-        en: "https://videoner.download/extension",
-        ru: "https://videoner.download/ru/extension",
-        es: "https://videoner.download/es/extension",
-        "x-default": "https://videoner.download/extension",
-      },
+      languages: languageAlternates("/extension"),
     },
   };
 }

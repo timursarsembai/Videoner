@@ -353,12 +353,20 @@ export class UserCookiesService {
   private async notifyOwner(ownerId: bigint, lang: string | null, platform: string, scope: string) {
     const token = process.env.BOT_TOKEN;
     if (!token) return;
-    const ru = (lang ?? '').toLowerCase().startsWith('ru');
+    const code = (lang ?? '').toLowerCase();
+    const l = code.startsWith('uk') ? 'uk' : code.startsWith('ru') ? 'ru' : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
-    const where = scope.startsWith('chat:') ? (ru ? 'для группы' : 'for a group') : ru ? 'для вас' : 'for you';
-    const text = ru
-      ? `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`
-      : `⚠️ Your connected ${name} login (${where}) stopped working: the platform no longer accepts it. You may have signed out, or the account was restricted.\n\nTo keep downloading with it, connect the account again. Your connections: /accounts.`;
+    const forGroup = scope.startsWith('chat:');
+    const where = {
+      ru: forGroup ? 'для группы' : 'для вас',
+      uk: forGroup ? 'для групи' : 'для вас',
+      en: forGroup ? 'for a group' : 'for you',
+    }[l];
+    const text = {
+      ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
+      uk: `⚠️ Підключений вхід ${name} (${where}) перестав працювати: платформа його більше не приймає. Можливо, ви вийшли з акаунта або його обмежили.\n\nЩоб знову завантажувати з ним, підключіть акаунт заново. Список підключень — /accounts.`,
+      en: `⚠️ Your connected ${name} login (${where}) stopped working: the platform no longer accepts it. You may have signed out, or the account was restricted.\n\nTo keep downloading with it, connect the account again. Your connections: /accounts.`,
+    }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

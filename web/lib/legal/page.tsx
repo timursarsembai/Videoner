@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import { LegalDocument } from "@/components/legal/LegalDocument";
-import { localizedHref } from "@/lib/i18n/routing";
+import { languageAlternates, localizedHref, OG_LOCALE } from "@/lib/i18n/routing";
 import { LANGUAGES, Language } from "@/lib/i18n/translations";
 import { legal } from "@/lib/legal/documents";
 import { LegalSlug } from "@/lib/legal/types";
@@ -10,12 +10,6 @@ import { LegalSlug } from "@/lib/legal/types";
 // и рендер собираются здесь, а сами page.tsx остаются в три строки. Иначе
 // пришлось бы копировать один и тот же generateMetadata четыре раза и потом
 // ловить, в какой из копий забыли поправить canonical.
-
-const OG_LOCALE: Record<Language, string> = {
-  en: "en_US",
-  ru: "ru_RU",
-  es: "es_ES",
-};
 
 export function resolveLocale(locale: string): Language {
   return (LANGUAGES as readonly string[]).includes(locale) ? (locale as Language) : "en";
@@ -51,12 +45,7 @@ export function legalMetadata(slug: LegalSlug) {
       },
       alternates: {
         canonical,
-        languages: {
-          en: `https://videoner.download/${slug}`,
-          ru: `https://videoner.download/ru/${slug}`,
-          es: `https://videoner.download/es/${slug}`,
-          "x-default": `https://videoner.download/${slug}`,
-        },
+        languages: languageAlternates(`/${slug}`),
       },
     };
   };

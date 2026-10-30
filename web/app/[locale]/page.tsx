@@ -2,9 +2,7 @@ import { Metadata } from "next";
 import { Hero } from "@/components/pages/home/hero";
 import JsonLd from "@/components/common/JsonLd";
 import { LANGUAGES, Language, translations } from "@/lib/i18n/translations";
-import { localizedHref } from "@/lib/i18n/routing";
-
-const OG_LOCALE: Record<Language, string> = { en: "en_US", ru: "ru_RU", es: "es_ES" };
+import { languageAlternates, localizedHref, OG_LOCALE } from "@/lib/i18n/routing";
 
 export function generateStaticParams() {
   return LANGUAGES.map((locale) => ({ locale }));
@@ -46,12 +44,7 @@ export async function generateMetadata({
     },
     alternates: {
       canonical,
-      languages: {
-        en: "https://videoner.download",
-        ru: "https://videoner.download/ru",
-        es: "https://videoner.download/es",
-        "x-default": "https://videoner.download",
-      },
+      languages: languageAlternates("/"),
     },
   };
 }

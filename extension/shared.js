@@ -162,6 +162,73 @@ const TEXTS = {
     updateAvailable: (v) => `Вышла новая версия ${v}.`,
     updateHow: "Как обновить",
   },
+  uk: {
+    loading: "Отримую інформацію про відео…",
+    notVideoPage:
+      "Відкрийте сторінку з відео на YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads і натисніть на значок ще раз. Урок GetCourse: якщо сторінку уроку було відкрито до встановлення розширення, оновіть її.",
+    gcLesson: "Урок GetCourse",
+    gcPick: "В уроці кілька відео — оберіть потрібне",
+    gcVideo: (n) => `Відео ${n}`,
+    gcNote: "Завантажує й склеює ваш браузер. Віконце можна закрити, браузер — ні.",
+    gcNoStream: "Не вдалося отримати відео з плеєра. Оновіть сторінку уроку й спробуйте знову.",
+    video: "Відео",
+    photo: "Фото в оригінальному розмірі",
+    audioOnly: "Лише звук (mp3)",
+    subtitles: "Субтитри (.srt)",
+    subtitlesAuto: "автоматичні",
+    back: "Назад",
+    starting: "Запускаю завантаження…",
+    waiting: "Чекаю своєї черги на сервері…",
+    downloading: "Завантажую",
+    converting: "Обробляю",
+    left: (eta) => `залишилося ${eta}`,
+    saving: "Зберігаю в «Завантаження»…",
+    done: "Готово — файл у «Завантаженнях».",
+    again: "Завантажити ще",
+    directDownload: "Завантажити відео (mp4)",
+    directPhoto: "Завантажити фото (jpg)",
+    directNote: "Одразу з браузера — без черги на сервері",
+    moreOptions: "Інші якості та звук",
+    fallback: "З браузера не вийшло — завантажую через сервер.",
+    openSite: "Відкрити videoner.download",
+    retry: "Спробувати знову",
+    min: "хв",
+    sec: "с",
+    errNetwork: "Немає зв'язку з Videoner. Перевірте інтернет і спробуйте ще раз.",
+    errRateLimit: "Забагато запитів поспіль. Зачекайте хвилину й спробуйте знову.",
+    errUnsupported:
+      "На цій сторінці не знайшлося відео, яке вміє завантажувати Videoner. Відкрийте сторінку конкретного ролика чи допису.",
+    errYoutubeDaily: "Денний ліміт YouTube для вашої мережі вичерпано. Спробуйте завтра.",
+    errTooLarge: "Файл у цій якості завеликий. Оберіть якість нижчу.",
+    errLogin:
+      "Цей допис недоступний без входу в акаунт: платформа віддає його лише авторизованим. Публічні дописи завантажуються без проблем.",
+    errRegion: "Автор обмежив перегляд цього допису за країнами — завантажити його не вийде.",
+    errServerBlocked: "Платформа тимчасово обмежила доступ нашому серверу. Спробуйте пізніше.",
+    errFailed: "Не вдалося завантажити. Спробуйте ще раз або оберіть іншу якість.",
+    errGeneric: "Щось пішло не так. Спробуйте ще раз трохи пізніше.",
+    acctButton: (p) => `🔑 Підключити акаунт ${p} до бота`,
+    acctWarn: (p) =>
+      `Бот @VideonerBot зможе завантажувати від вашого акаунта ${p} те, що видно лише тим, хто увійшов: сторіс, закриті дописи. Платформи не люблять автоматичних завантажень і можуть обмежити акаунт — краще підключати не основний. Браузер запитає дозвіл на куки цього сайту; на сервер підуть лише куки ${p}, зашифровано.`,
+    acctConfirm: "Підключити",
+    acctCancel: "Скасувати",
+    acctSending: "Підключаю…",
+    acctDenied: "Без дозволу на куки підключити акаунт не вийде.",
+    acctNoLogin: (p) => `Ви не увійшли в ${p} у цьому браузері. Увійдіть на сайті й натисніть ще раз.`,
+    acctFailed: "Не вийшло. Спробуйте ще раз трохи пізніше.",
+    acctCodeTitle: (p) => `Код для підключення ${p}:`,
+    acctCodeHelp:
+      "Надішліть його боту @VideonerBot в особисті — для своїх завантажень. Для групи — надішліть у групі /connect КОД. Код діє 10 хвилин.",
+    acctCopy: "Скопіювати",
+    acctCopied: "Скопійовано",
+    acctOpenBot: "Відкрити бота",
+    acctNewCode: "Отримати новий код",
+    acctList: "Мої підключення в боті",
+    acctRevoke: "Відкликати доступ до куків",
+    acctRevoked:
+      "Доступ до куків знято — розширення більше їх не читає. Уже підключені акаунти лишаються в боті: вимкнути їх можна в «Мої підключення в боті».",
+    updateAvailable: (v) => `Вийшла нова версія ${v}.`,
+    updateHow: "Як оновити",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -231,7 +298,15 @@ const TEXTS = {
   },
 };
 
-export const lang = chrome.i18n.getUILanguage().toLowerCase().startsWith("ru") ? "ru" : "en";
+// Язык браузера: русский, украинский, остальным — английский. Тот же выбор
+// делают content.js и getcourse.js (им модули недоступны).
+export const lang = pickLang(chrome.i18n.getUILanguage());
+function pickLang(uiLanguage) {
+  const code = uiLanguage.toLowerCase();
+  return code.startsWith("uk") ? "uk" : code.startsWith("ru") ? "ru" : "en";
+}
+// Страница сайта на этом языке: английский — без префикса.
+export const sitePath = (path) => (lang === "en" ? path : `/${lang}${path}`);
 export const t = TEXTS[lang];
 
 // Ошибки сервера приходят по-английски и техническим языком (часто это
@@ -304,9 +379,10 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  const locale = lang === "ru" ? "ru-RU" : "en-US";
-  if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${lang === "ru" ? "ГБ" : "GB"}`;
-  return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${lang === "ru" ? "МБ" : "MB"}`;
+  const latin = lang === "en";
+  const locale = { ru: "ru-RU", uk: "uk-UA", en: "en-US" }[lang];
+  if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${latin ? "GB" : "ГБ"}`;
+  return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${latin ? "MB" : "МБ"}`;
 }
 
 export function formatDuration(seconds) {

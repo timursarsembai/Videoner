@@ -12,9 +12,14 @@
   if (window.top !== window || window.__videonerButton) return;
   window.__videonerButton = true;
 
-  const ru = chrome.i18n.getUILanguage().toLowerCase().startsWith("ru");
-  const LABEL = ru ? "Скачать" : "Download";
-  const HIDE = ru ? "Скрыть кнопку для этого видео" : "Hide the button for this video";
+  const ui = chrome.i18n.getUILanguage().toLowerCase();
+  const l = ui.startsWith("uk") ? "uk" : ui.startsWith("ru") ? "ru" : "en";
+  const LABEL = { ru: "Скачать", uk: "Завантажити", en: "Download" }[l];
+  const HIDE = {
+    ru: "Скрыть кнопку для этого видео",
+    uk: "Сховати кнопку для цього відео",
+    en: "Hide the button for this video",
+  }[l];
   const PANEL_WIDTH = 360;
 
   const host = document.createElement("div");

@@ -3,11 +3,9 @@ import { Metadata } from "next";
 import Page from "@/components/common/Page";
 import JsonLd from "@/components/common/JsonLd";
 import { LANGUAGES, Language, translations } from "@/lib/i18n/translations";
-import { localizedHref } from "@/lib/i18n/routing";
+import { languageAlternates, localizedHref, OG_LOCALE } from "@/lib/i18n/routing";
 
 const NAME = "YouTube";
-const OG_LOCALE: Record<Language, string> = { en: "en_US", ru: "ru_RU", es: "es_ES" };
-
 export function generateStaticParams() {
   return LANGUAGES.map((locale) => ({ locale }));
 }
@@ -48,12 +46,7 @@ export async function generateMetadata({
     },
     alternates: {
       canonical,
-      languages: {
-        en: "https://videoner.download/youtube",
-        ru: "https://videoner.download/ru/youtube",
-        es: "https://videoner.download/es/youtube",
-        "x-default": "https://videoner.download/youtube",
-      },
+      languages: languageAlternates("/youtube"),
     },
   };
 }

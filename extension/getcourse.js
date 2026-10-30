@@ -81,9 +81,10 @@
   // над плеером открывается то же окошко, что по значку расширения, в рамке.
   // Всё в закрытом Shadow DOM, как кнопка на страницах площадок (content.js).
   function addButton() {
-    const ru = chrome.i18n.getUILanguage().toLowerCase().startsWith("ru");
-    const LABEL = ru ? "Скачать" : "Download";
-    const HIDE = ru ? "Скрыть кнопку" : "Hide the button";
+    const ui = chrome.i18n.getUILanguage().toLowerCase();
+    const l = ui.startsWith("uk") ? "uk" : ui.startsWith("ru") ? "ru" : "en";
+    const LABEL = { ru: "Скачать", uk: "Завантажити", en: "Download" }[l];
+    const HIDE = { ru: "Скрыть кнопку", uk: "Сховати кнопку", en: "Hide the button" }[l];
     const PANEL_WIDTH = 340;
 
     const host = document.createElement("div");

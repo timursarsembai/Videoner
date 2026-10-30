@@ -1,5 +1,5 @@
 import { createHmac } from "node:crypto";
-import { messages, type Lang } from "./i18n.js";
+import { messages, sitePath, type Lang } from "./i18n.js";
 
 // Раньше весь bot.ts (494 строки) держал это на одном уровне вместе со всеми
 // хендлерами — вынесено в отдельный модуль без побочных эффектов при импорте
@@ -21,15 +21,21 @@ export const CLOUD_SIZE_LIMIT = 48 * 1024 * 1024;
 // ссылкой (см. fileTooBig), и вес до 2 ГБ этому не мешает.
 export const BOT_FILE_LIMIT = BOT_API_ROOT ? 2000 * 1024 * 1024 : Infinity;
 
+const SIZE_UNITS: Record<Lang, { locale: string; gb: string; mb: string }> = {
+  ru: { locale: "ru-RU", gb: "ГБ", mb: "МБ" },
+  uk: { locale: "uk-UA", gb: "ГБ", mb: "МБ" },
+  en: { locale: "en-US", gb: "GB", mb: "MB" },
+};
+
 // «850 МБ», «1,2 ГБ» — для подписи на кнопках качества.
 export function fmtSize(bytes: number, lang: Lang): string {
   const gb = bytes / 1024 ** 3;
   if (gb >= 1) {
-    const value = gb.toLocaleString(lang === "ru" ? "ru-RU" : "en-US", { maximumFractionDigits: 1 });
-    return `${value} ${lang === "ru" ? "ГБ" : "GB"}`;
+    const value = gb.toLocaleString(SIZE_UNITS[lang].locale, { maximumFractionDigits: 1 });
+    return `${value} ${SIZE_UNITS[lang].gb}`;
   }
   const mb = Math.max(1, Math.round(bytes / 1024 ** 2));
-  return `${mb} ${lang === "ru" ? "МБ" : "MB"}`;
+  return `${mb} ${SIZE_UNITS[lang].mb}`;
 }
 
 // Без таймаута зависший (не 5xx, а именно hang — например под нагрузкой)
@@ -292,6 +298,5 @@ export function extensionLinkFor(raw: string, url: string, lang: Lang): string |
   ) {
     return null;
   }
-  const page = lang === "ru" ? "/ru/extension" : "/extension";
-  return `${EXTENSION_PAGE_BASE}${page}?url=${encodeURIComponent(url)}`;
+  return `${EXTENSION_PAGE_BASE}${sitePath(lang, "/extension")}?url=${encodeURIComponent(url)}`;
 }

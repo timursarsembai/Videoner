@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Bot, InlineKeyboard } from "grammy";
-import { detectLang, messages } from "./i18n.js";
+import { detectLang, messages, sitePath } from "./i18n.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
 import { registerAdminHandlers } from "./handlers/admin.js";
 import { registerMembershipHandlers } from "./handlers/membership.js";
@@ -60,7 +60,7 @@ bot.command("start", async (ctx) => {
 // Страница расширения для браузера на сайте.
 bot.command("extension", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
-  const page = lang === "ru" ? "https://videoner.download/ru/extension" : "https://videoner.download/extension";
+  const page = `https://videoner.download${sitePath(lang, "/extension")}`;
   await ctx.reply(messages[lang].extensionCommand, {
     reply_markup: new InlineKeyboard().url(messages[lang].extensionPageButton, page),
   });
@@ -116,6 +116,12 @@ const COMMANDS = {
     { command: "accounts", description: "Свои аккаунты для сторис и закрытых записей" },
     { command: "connect", description: "Подключить аккаунт по коду из расширения" },
   ],
+  uk: [
+    { command: "start", description: "Як користуватися ботом" },
+    { command: "extension", description: "Розширення для браузера" },
+    { command: "accounts", description: "Свої акаунти для сторіс і закритих дописів" },
+    { command: "connect", description: "Підключити акаунт за кодом із розширення" },
+  ],
   en: [
     { command: "start", description: "How to use the bot" },
     { command: "extension", description: "Browser extension" },
@@ -124,9 +130,11 @@ const COMMANDS = {
   ],
 };
 void bot.api.setMyCommands(COMMANDS.en).catch((e) => console.error("setMyCommands:", e?.message ?? e));
-void bot.api
-  .setMyCommands(COMMANDS.ru, { language_code: "ru" })
-  .catch((e) => console.error("setMyCommands ru:", e?.message ?? e));
+for (const lang of ["ru", "uk"] as const) {
+  void bot.api
+    .setMyCommands(COMMANDS[lang], { language_code: lang })
+    .catch((e) => console.error(`setMyCommands ${lang}:`, e?.message ?? e));
+}
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
 // (handlers/group.ts).
 const GROUP_COMMANDS = {
@@ -135,6 +143,12 @@ const GROUP_COMMANDS = {
     { command: "accounts", description: "Аккаунты, подключённые к группе" },
     { command: "connect", description: "Подключить аккаунт к группе по коду" },
     { command: "start", description: "Как бот работает в группе" },
+  ],
+  uk: [
+    { command: "settings", description: "Налаштування бота в групі (для адмінів)" },
+    { command: "accounts", description: "Акаунти, підключені до групи" },
+    { command: "connect", description: "Підключити акаунт до групи за кодом" },
+    { command: "start", description: "Як бот працює в групі" },
   ],
   en: [
     { command: "settings", description: "Bot settings for this group (admins)" },
@@ -146,9 +160,11 @@ const GROUP_COMMANDS = {
 void bot.api
   .setMyCommands(GROUP_COMMANDS.en, { scope: { type: "all_group_chats" } })
   .catch((e) => console.error("setMyCommands groups:", e?.message ?? e));
-void bot.api
-  .setMyCommands(GROUP_COMMANDS.ru, { scope: { type: "all_group_chats" }, language_code: "ru" })
-  .catch((e) => console.error("setMyCommands groups ru:", e?.message ?? e));
+for (const lang of ["ru", "uk"] as const) {
+  void bot.api
+    .setMyCommands(GROUP_COMMANDS[lang], { scope: { type: "all_group_chats" }, language_code: lang })
+    .catch((e) => console.error(`setMyCommands groups ${lang}:`, e?.message ?? e));
+}
 
 bot.start({
   onStart: (me) => console.log(`Бот @${me.username} запущен${BOT_API_ROOT ? ` (локальный Bot API: ${BOT_API_ROOT})` : " (облачный Bot API, лимит 50 МБ)"}`),

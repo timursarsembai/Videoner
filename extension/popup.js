@@ -1,5 +1,6 @@
 import { fetchQualities } from "./getcourse-hls.js";
 import { mountAccountConnect } from "./account-connect.js";
+import { availableUpdate } from "./update-check.js";
 import {
   SITE,
   api,
@@ -11,6 +12,7 @@ import {
   getJob,
   isPlatformUrl,
   jobKey,
+  lang,
   session,
   setJob,
   t,
@@ -412,6 +414,22 @@ async function main() {
     }
     const change = url && changes[jobKey(url)];
     if (change) render(change.newValue ?? null);
+  });
+
+  // Вышла новая версия (только сборки для Chromium, см. update-check.js) —
+  // строка со ссылкой на инструкцию над основным содержимым.
+  void availableUpdate().then((version) => {
+    if (!version || embedded) return;
+    const box = document.getElementById("update");
+    box.replaceChildren(
+      document.createTextNode(`${t.updateAvailable(version)} `),
+      Object.assign(document.createElement("a"), {
+        href: `${SITE}/${lang === "ru" ? "ru/" : ""}extension#update`,
+        target: "_blank",
+        textContent: t.updateHow,
+      })
+    );
+    box.hidden = false;
   });
 
   url = await targetUrl();

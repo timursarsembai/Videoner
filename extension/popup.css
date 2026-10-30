@@ -288,3 +288,16 @@ button {
   background: var(--surface);
   user-select: all;
 }
+
+/* Новая версия на сайте (update-check.js): строка над основным содержимым. */
+.update {
+  padding: 8px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.update a {
+  color: var(--accent);
+  font-weight: 600;
+}

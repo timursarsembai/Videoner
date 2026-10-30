@@ -153,6 +153,9 @@ const TEXTS = {
     acctCopy: "Скопировать",
     acctCopied: "Скопировано",
     acctOpenBot: "Открыть бота",
+    acctNewCode: "Получить новый код",
+    updateAvailable: (v) => `Вышла новая версия ${v}.`,
+    updateHow: "Как обновить",
   },
   en: {
     loading: "Fetching video info…",
@@ -212,6 +215,9 @@ const TEXTS = {
     acctCopy: "Copy",
     acctCopied: "Copied",
     acctOpenBot: "Open the bot",
+    acctNewCode: "Get a new code",
+    updateAvailable: (v) => `Version ${v} is out.`,
+    updateHow: "How to update",
   },
 };
 

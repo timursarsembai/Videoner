@@ -96,6 +96,18 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
           </li>
         ))}
       </ol>
+      {/* Сюда ведёт уведомление о новой версии из самого расширения
+          (extension/update-check.js) — якорь #update. */}
+      <h3 id="update" className="mt-8 scroll-mt-28 text-lg font-semibold">
+        {text.updateTitle}
+      </h3>
+      <ol className="mt-3 list-decimal space-y-2 pl-5 text-foreground/80">
+        {text.updateSteps.map((step) => (
+          <li key={step} className="leading-relaxed">
+            {step}
+          </li>
+        ))}
+      </ol>
     </section>
   );
   const firefoxSteps = firefoxReady ? (

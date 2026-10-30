@@ -6,6 +6,8 @@
 # Chrome (и Яндекс Браузер, Edge, Opera):
 #   dist/videoner-extension-<версия>.zip — для раздачи из рук в руки (в git не
 #     кладём: dist/ в .gitignore).
+#   web/public/extension/latest.json — номер последней версии: по нему
+#     расширение показывает «вышла новая версия» (extension/update-check.js).
 #   web/public/extension/videoner-extension.zip и web/lib/extension-version.ts —
 #     архив на странице videoner.download/extension (сайт собирается из web/,
 #     достать архив из dist/ сборка не может, поэтому они в git). После
@@ -67,6 +69,9 @@ pathlib.Path("web/lib/extension-version.ts").write_text(
     f'export const EXTENSION_VERSION = "{version}";\n',
     encoding="utf-8",
 )
+# Последняя версия для сборок на Chromium: расширение раз в 12 часов сверяется
+# с этим файлом и показывает отметку NEW (extension/update-check.js).
+pathlib.Path("web/public/extension/latest.json").write_text(json.dumps({"version": version}) + "\n", encoding="utf-8")
 print(f"{chrome_zip}: {len(chrome_files)} файлов, {chrome_zip.stat().st_size // 1024} КБ; копия для сайта — {site}")
 
 # ---- Firefox ----

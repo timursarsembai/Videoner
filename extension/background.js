@@ -1,3 +1,4 @@
+import { checkForUpdate } from "./update-check.js";
 import { reportUrl } from "./getcourse-hls.js";
 import { remuxLesson } from "./gc-remux.js";
 import {
@@ -600,3 +601,8 @@ async function resumeJobs() {
 }
 
 resumeJobs();
+
+// Новая версия на сайте — отметка NEW на значке (update-check.js). При запуске
+// браузера и после установки или обновления самого расширения.
+chrome.runtime.onStartup.addListener(() => void checkForUpdate());
+chrome.runtime.onInstalled.addListener(() => void checkForUpdate({ force: true }));

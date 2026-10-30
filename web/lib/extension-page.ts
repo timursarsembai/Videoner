@@ -32,6 +32,10 @@ export interface ExtensionPageText {
   soon: string;
   firefoxStepsTitle: string;
   firefoxSteps: string[];
+  // Обновление в Chrome: автообновления вне магазина Chrome нет, расширение
+  // само сообщает о новой версии и ведёт сюда (#update).
+  updateTitle: string;
+  updateSteps: string[];
   back: string;
 }
 
@@ -55,7 +59,7 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "Откройте урок в школе на GetCourse под своим входом: в правом верхнем углу плеера появится кнопка «Скачать», а значок Videoner покажет все видео урока. Браузер сам скачивает урок и собирает его в mp4 — файл не проходит через наш сервер. Если в браузере не получилось, урок в том же качестве скачает наш сервер: тогда ему уходит ссылка на видео из плеера.",
     privacyTitle: "Ваш вход остаётся у вас",
     privacy:
-      "Расширение не спрашивает пароль и не передаёт куки: запрос к площадке делает ваш собственный браузер. Нашему серверу уходит только короткий отчёт для статистики — ссылка, размер файла и название.",
+      "Расширение не спрашивает пароль: запрос к площадке делает ваш собственный браузер, а нашему серверу уходит только короткий отчёт для статистики — ссылка, размер файла и название. Куки уходят на сервер только если вы сами нажмёте «Подключить аккаунт к боту» — и только куки этой площадки, зашифрованно.",
     stepsTitle: "Как установить в Chrome, Яндекс Браузер, Edge и Opera",
     steps: [
       "Скачайте архив и распакуйте его — появится папка videoner-extension.",
@@ -80,6 +84,12 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "В окошке «Добавить Videoner?» нажмите «Добавить».",
       "Готово: на странице видео появится кнопка «Скачать», а значок Videoner — на панели браузера. Обновления Firefox будет ставить сам.",
     ],
+    updateTitle: "Как обновить в Chrome, Яндекс Браузере, Edge и Opera",
+    updateSteps: [
+      "Когда выходит новая версия, на значке Videoner появляется отметка NEW, а в окошке — ссылка сюда.",
+      "Скачайте архив кнопкой Chrome вверху этой страницы и распакуйте его в ту же папку, куда распаковывали раньше, с заменой файлов.",
+      "Откройте страницу расширений (chrome://extensions, browser://extensions в Яндекс Браузере, edge://extensions) и нажмите «Обновить» — круговую стрелку на карточке Videoner.",
+    ],
     back: "На главную",
   },
   en: {
@@ -101,7 +111,7 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "Open a lesson in a GetCourse school while signed in: a Download button appears in the top-right corner of the player, and the Videoner icon lists every video in the lesson. Your browser downloads the lesson and assembles it into an mp4 itself — the file doesn’t pass through our server. If that fails, our server downloads the lesson in the same quality instead; in that case it receives the video link from the player.",
     privacyTitle: "Your sign-in stays with you",
     privacy:
-      "The extension never asks for a password and never sends cookies: your own browser makes the request to the platform. Our server only gets a short report for statistics — the link, file size and title.",
+      "The extension never asks for a password: your own browser makes the request to the platform, and our server only gets a short report for statistics — the link, file size and title. Cookies go to the server only if you press \"Connect account to the bot\" yourself — and only that platform's cookies, encrypted.",
     stepsTitle: "How to install in Chrome, Yandex Browser, Edge and Opera",
     steps: [
       "Download the archive and unzip it — you'll get a videoner-extension folder.",
@@ -126,6 +136,12 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "In the “Add Videoner?” prompt, click “Add”.",
       "Done: video pages get a Download button, and the Videoner icon appears in the toolbar. Firefox installs updates by itself.",
     ],
+    updateTitle: "How to update in Chrome, Yandex Browser, Edge and Opera",
+    updateSteps: [
+      "When a new version is out, the Videoner icon shows a NEW badge and the popup links here.",
+      "Download the archive with the Chrome button at the top of this page and unpack it into the same folder as before, replacing the files.",
+      "Open the extensions page (chrome://extensions, browser://extensions in Yandex Browser, edge://extensions) and press Reload — the circular arrow on the Videoner card.",
+    ],
     back: "Home",
   },
   es: {
@@ -147,7 +163,7 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "Abre una lección de una escuela en GetCourse con tu sesión iniciada: aparecerá un botón Descargar en la esquina superior derecha del reproductor, y el icono de Videoner mostrará todos los videos de la lección. Tu navegador descarga la lección y la convierte en mp4 por sí mismo: el archivo no pasa por nuestro servidor. Si no lo consigue, nuestro servidor descarga la lección en la misma calidad; en ese caso recibe el enlace del video del reproductor.",
     privacyTitle: "Tu sesión se queda contigo",
     privacy:
-      "La extensión nunca pide contraseñas ni envía cookies: la solicitud a la plataforma la hace tu propio navegador. Nuestro servidor solo recibe un breve informe para estadísticas: el enlace, el tamaño del archivo y el título.",
+      "La extensión nunca pide contraseñas: la solicitud a la plataforma la hace tu propio navegador, y nuestro servidor solo recibe un breve informe para estadísticas: el enlace, el tamaño del archivo y el título. Las cookies llegan al servidor solo si pulsas tú mismo «Conectar cuenta al bot», y solo las de esa plataforma, cifradas.",
     stepsTitle: "Cómo instalarla en Chrome, Yandex Browser, Edge y Opera",
     steps: [
       "Descarga el archivo y descomprímelo: obtendrás la carpeta videoner-extension.",
@@ -171,6 +187,12 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
       "Firefox preguntará si permites que videoner.download instale un complemento: pulsa «Continuar con la instalación».",
       "En la ventana «¿Añadir Videoner?», pulsa «Añadir».",
       "Listo: las páginas de video tendrán un botón Descargar y el icono de Videoner aparecerá en la barra. Firefox instalará las actualizaciones por sí mismo.",
+    ],
+    updateTitle: "Cómo actualizar en Chrome, Yandex Browser, Edge y Opera",
+    updateSteps: [
+      "Cuando sale una versión nueva, el icono de Videoner muestra la marca NEW y la ventana enlaza aquí.",
+      "Descarga el archivo con el botón de Chrome arriba en esta página y descomprímelo en la misma carpeta que antes, reemplazando los archivos.",
+      "Abre la página de extensiones (chrome://extensions, browser://extensions en Yandex Browser, edge://extensions) y pulsa Recargar, la flecha circular de la tarjeta de Videoner.",
     ],
     back: "Inicio",
   },

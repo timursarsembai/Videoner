@@ -78,7 +78,32 @@ async function collectCookies(platform) {
   }));
 }
 
-export function mountAccountConnect(container, tabUrl) {
+// Chrome закрывает окошко, когда показывает запрос разрешения, — всё
+// начатое в нём пропадает, и после «Разрешить» человек снова видел исходную
+// кнопку. Поэтому помним в storage.local: «начали подключать» (PENDING) — при
+// следующем открытии сразу продолжаем; «код готов» (CODE) — показываем его
+// снова, пока он жив, даже если окошко закрылось.
+const PENDING = "acctPending";
+const CODE = "acctCode";
+const PENDING_TTL_MS = 5 * 60_000;
+
+async function stored(key) {
+  try {
+    return (await chrome.storage.local.get(key))[key] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function store(key, value) {
+  return chrome.storage.local.set({ [key]: value }).catch(() => {});
+}
+
+function forget(key) {
+  return chrome.storage.local.remove(key).catch(() => {});
+}
+
+export async function mountAccountConnect(container, tabUrl) {
   const platform = platformOfUrl(tabUrl);
   if (!platform || !available()) return;
   const { label, domains } = PLATFORMS[platform];
@@ -105,15 +130,25 @@ export function mountAccountConnect(container, tabUrl) {
     show(el("p", { class: "message error" }, text), el("button", { class: "secondary", type: "button", onclick: start }, t.back));
 
   // permissions.request — первым же вызовом в обработчике нажатия: браузер
-  // разрешает его только как прямой ответ на действие человека.
+  // разрешает его только как прямой ответ на действие человека. Отметку
+  // «начали» ставим без await перед ним — запрос должен уйти сразу.
   async function connect() {
+    void store(PENDING, { platform, at: Date.now() });
     let granted;
     try {
       granted = await chrome.permissions.request({ permissions: ["cookies"], origins });
     } catch {
       granted = false;
     }
-    if (!granted) return fail(t.acctDenied);
+    if (!granted) {
+      await forget(PENDING);
+      return fail(t.acctDenied);
+    }
+    await createCode();
+  }
+
+  async function createCode() {
+    await forget(PENDING);
     show(el("p", { class: "muted" }, t.acctSending));
     let cookies;
     try {
@@ -129,10 +164,15 @@ export function mountAccountConnect(container, tabUrl) {
       // Сервер проверил: куки есть, а входа среди них нет.
       return fail(/no-session|rejected/i.test(e?.message ?? "") ? t.acctNoLogin(label) : t.acctFailed);
     }
-    const code = el("div", { class: "code" }, res.code);
+    await store(CODE, { platform, code: res.code, expiresAt: new Date(res.expiresAt).getTime() });
+    showCode(res.code);
+  }
+
+  function showCode(value) {
+    const code = el("div", { class: "code" }, value);
     const copy = el("button", { class: "secondary", type: "button" }, t.acctCopy);
     copy.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(res.code).catch(() => {});
+      await navigator.clipboard.writeText(value).catch(() => {});
       copy.textContent = t.acctCopied;
     });
     show(
@@ -144,9 +184,20 @@ export function mountAccountConnect(container, tabUrl) {
         { class: "row" },
         copy,
         el("button", { class: "primary", type: "button", onclick: () => chrome.tabs.create({ url: BOT_URL }) }, t.acctOpenBot)
-      )
+      ),
+      el("button", { class: "link", type: "button", onclick: confirm }, t.acctNewCode)
     );
   }
 
+  // Код ещё жив — показываем его. Только что разрешили доступ (окошко
+  // закрылось на запросе) — продолжаем сами, без повторных нажатий.
+  const code = await stored(CODE);
+  if (code?.platform === platform && code.expiresAt > Date.now()) return showCode(code.code);
+  const pending = await stored(PENDING);
+  if (pending?.platform === platform && Date.now() - pending.at < PENDING_TTL_MS) {
+    const granted = await chrome.permissions.contains({ permissions: ["cookies"], origins }).catch(() => false);
+    if (granted) return createCode();
+    await forget(PENDING);
+  }
   start();
 }

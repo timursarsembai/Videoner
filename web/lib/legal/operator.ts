@@ -7,7 +7,7 @@
 // Данные совпадают со страницей реквизитов sarsembai.dev того же ИП: сайты
 // разные, лицо одно, и расходиться им незачем.
 
-export const LEGAL_UPDATED = "2026-08-10";
+export const LEGAL_UPDATED = "2026-10-30";
 
 export const operator = {
   nameRu: "ИП САРСЕМБАЕВ",

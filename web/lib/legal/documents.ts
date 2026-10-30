@@ -62,6 +62,7 @@ export const legal: LegalByLanguage = {
               "Защитить сервис от автоматизированных злоупотреблений: проверка Cloudflare Turnstile перед отправкой ссылки.",
               "Понимать, как используется сайт, и устранять ошибки — обезличенная и агрегированная статистика.",
               "Отвечать на ваши обращения и обращения правообладателей.",
+              "Изредка написать вам в Telegram, чтобы узнать ваше мнение о сервисе — например, если вы перестали им пользоваться. Отвечать необязательно; если такие сообщения вам не нужны, просто скажите об этом, и мы больше не напишем.",
             ],
           },
           {
@@ -70,6 +71,7 @@ export const legal: LegalByLanguage = {
               "Данные учётной записи Telegram и сведения о скачиваниях обрабатываются для исполнения Пользовательского соглашения, которое вы принимаете, начиная пользоваться сервисом.",
               "Файлы cookie аналитики и запись действий на сайте обрабатываются на основании вашего согласия, которое вы можете отозвать в любой момент — способы описаны в Политике cookie.",
               "Журналы сервера и защита от ботов обрабатываются в рамках нашего законного интереса поддерживать сервис работоспособным и защищённым.",
+              "Вопросы о вашем мнении о сервисе — в рамках нашего законного интереса улучшать сервис; вы можете отказаться от них в любой момент.",
             ],
           },
           {
@@ -347,6 +349,7 @@ export const legal: LegalByLanguage = {
               "To protect the service from automated abuse through the Cloudflare Turnstile check before a link is submitted.",
               "To understand how the site is used and to fix errors, using anonymised and aggregated statistics.",
               "To answer your enquiries and those of rights holders.",
+              "To occasionally message you on Telegram to ask what you think of the service — for example, if you have stopped using it. Replying is optional; if you would rather not receive such messages, just say so and we will not write again.",
             ],
           },
           {
@@ -355,6 +358,7 @@ export const legal: LegalByLanguage = {
               "Telegram account data and download records are processed to perform the Terms of Use, which you accept when you start using the service.",
               "Analytics cookies and on-site session recording are processed on the basis of your consent, which you may withdraw at any time — see the Cookie Policy.",
               "Server logs and bot protection rest on our legitimate interest in keeping the service running and secure.",
+              "Asking for your opinion of the service rests on our legitimate interest in improving it; you can opt out at any time.",
             ],
           },
           {
@@ -630,6 +634,7 @@ export const legal: LegalByLanguage = {
               "Para proteger el servicio frente a abusos automatizados mediante la verificación Cloudflare Turnstile antes de enviar un enlace.",
               "Para entender cómo se usa el sitio y corregir errores, mediante estadísticas anonimizadas y agregadas.",
               "Para responder a sus consultas y a las de los titulares de derechos.",
+              "Para escribirle ocasionalmente por Telegram y preguntarle su opinión sobre el servicio, por ejemplo, si ha dejado de usarlo. Responder es opcional; si prefiere no recibir estos mensajes, basta con decírnoslo y no volveremos a escribirle.",
             ],
           },
           {
@@ -638,6 +643,7 @@ export const legal: LegalByLanguage = {
               "Los datos de la cuenta de Telegram y el registro de descargas se tratan para ejecutar las Condiciones de uso, que usted acepta al comenzar a utilizar el servicio.",
               "Las cookies de analítica y la grabación de la actividad en el sitio se tratan con su consentimiento, que puede retirar en cualquier momento según se indica en la Política de cookies.",
               "Los registros del servidor y la protección antibots se amparan en nuestro interés legítimo de mantener el servicio operativo y seguro.",
+              "Las preguntas sobre su opinión del servicio se amparan en nuestro interés legítimo de mejorarlo; puede oponerse a ellas en cualquier momento.",
             ],
           },
           {

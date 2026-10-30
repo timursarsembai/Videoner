@@ -1342,7 +1342,11 @@ export class DownloadService {
             },
           } as any,
           // Метаданные уже есть — yt-dlp не будет открывать ролик заново.
-          { infoJson: JSON.stringify(info), cookiesContent: userCookies },
+          {
+            infoJson: JSON.stringify(info),
+            cookiesContent: userCookies,
+            forceInfoJson: info.extractor === 'instagram:story',
+          },
         )
         .then((progress$) => {
           this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
@@ -1519,7 +1523,11 @@ export class DownloadService {
           outDir: downloadDir,
           fileName: fileName,
         },
-      } as any, { infoJson: JSON.stringify(info), cookiesContent: userCookies });
+      } as any, {
+        infoJson: JSON.stringify(info),
+        cookiesContent: userCookies,
+        forceInfoJson: info.extractor === 'instagram:story',
+      });
 
       this.subscribeToDownloadProgress(progress$, download.id, progressSubject, async () => {
         console.log('Download complete');

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PlaylistVideoInfo, YtdlpVideoInfo } from '../../types/youtube';
 import { YtdlpProcessService } from './ytdlp-process.service';
+import { fetchInstagramStoryInfo, instagramStoryId } from 'src/lib/instagram-story';
 
 // Сколько живут метаданные в кеше и сколько записей держим. Одно скачивание
 // запрашивает их дважды подряд: /info, чтобы показать выбор качества, и
@@ -40,6 +41,8 @@ export class YtdlpFormatService {
     // по одной лишь ссылке; а из кеша ему не нужно — туда попадает только
     // то, что видно и без входа.
     if (options?.cookiesContent) {
+      // Сторис — мимо yt-dlp: его разбор сторис сломан (lib/instagram-story.ts).
+      if (instagramStoryId(url)) return fetchInstagramStoryInfo(url, options.cookiesContent);
       return JSON.parse(await this.fetchInfoJson(url, options));
     }
 

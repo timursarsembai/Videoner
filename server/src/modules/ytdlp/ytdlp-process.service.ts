@@ -798,7 +798,10 @@ export class YtdlpProcessService implements OnModuleInit {
     platform: Platform,
     options?: DownloadOptions<T>,
     // cookiesContent — см. ytdlp(): куки человека вместо файлов cookies/.
-    extras?: { infoJson?: string; cookiesContent?: string },
+    // forceInfoJson — качать по готовым метаданным и на других площадках:
+    // сторис Instagram, метаданные которых собраны мимо yt-dlp
+    // (lib/instagram-story.ts) — сам он их разобрать не может.
+    extras?: { infoJson?: string; cookiesContent?: string; forceInfoJson?: boolean },
   ): Promise<Observable<ProgressType | Error>> {
     const subject = new Subject<ProgressType | Error>();
     const parseUrl = parseAndValidateUrl(url, platform);
@@ -837,7 +840,7 @@ export class YtdlpProcessService implements OnModuleInit {
     // карусели других площадок своя логика пропуска элементов, которую с
     // готовыми метаданными никто не проверял.
     let infoFile: string | null = null;
-    if (extras?.infoJson && platform === 'youtube' && !isPlaylistDownload) {
+    if (extras?.infoJson && (platform === 'youtube' || extras.forceInfoJson) && !isPlaylistDownload) {
       try {
         infoFile = path.join(
           os.tmpdir(),

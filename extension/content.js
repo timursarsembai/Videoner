@@ -50,9 +50,12 @@
   `;
   const wrap = document.createElement("div");
   wrap.className = "wrap";
-  const panel = document.createElement("iframe");
-  panel.className = "panel";
-  panel.title = "Videoner";
+  // Рамка окошка создаётся только на время, пока окошко открыто (openPanel).
+  // Вставленная заранее рамка заставляла Chrome проверять политику
+  // безопасности страницы при каждом появлении кнопки, и на сайтах с
+  // report-only CSP (Threads) в «Ошибки» расширения сыпалось
+  // «upgrade-insecure-requests is ignored…» — не наша ошибка, но шум.
+  let panel = null;
   const button = document.createElement("button");
   button.className = "btn";
   button.type = "button";
@@ -61,7 +64,7 @@
   hideButton.className = "hide";
   hideButton.type = "button";
   hideButton.textContent = "×";
-  wrap.append(panel, button, hideButton);
+  wrap.append(button, hideButton);
   root.append(style, wrap);
 
   button.querySelector("img").alt = "";
@@ -74,21 +77,23 @@
   // Видео, для которого человек скрыл кнопку крестиком: до перехода к другому.
   let hiddenFor = null;
 
-  // about:blank, а не просто скрыть: закрытое окошко не должно оставаться
+  // Удаляем рамку целиком, а не прячем: закрытое окошко не должно оставаться
   // загруженным и присылать сообщения.
   function closePanel() {
-    panel.classList.remove("open");
-    panel.src = "about:blank";
+    panel?.remove();
+    panel = null;
   }
 
   function openPanel() {
-    const src = chrome.runtime.getURL(`popup.html?embed=1&url=${encodeURIComponent(location.href)}`);
-    panel.src = src;
-    panel.classList.add("open");
+    panel = document.createElement("iframe");
+    panel.className = "panel open";
+    panel.title = "Videoner";
+    panel.src = chrome.runtime.getURL(`popup.html?embed=1&url=${encodeURIComponent(location.href)}`);
+    wrap.prepend(panel);
   }
 
   button.addEventListener("click", () => {
-    if (panel.classList.contains("open")) closePanel();
+    if (panel) closePanel();
     else openPanel();
   });
 
@@ -101,7 +106,7 @@
   // Окошко в рамке сообщает свою высоту и просьбу закрыться (см. popup.js).
   // Принимаем только от своей рамки: остальные сообщения страницы не наши.
   window.addEventListener("message", (event) => {
-    if (event.source !== panel.contentWindow || !event.data || event.data.videoner === undefined) return;
+    if (!panel || event.source !== panel.contentWindow || !event.data || event.data.videoner === undefined) return;
     if (event.data.videoner === "height" && Number.isFinite(event.data.height)) {
       panel.style.height = `${Math.ceil(event.data.height)}px`;
     } else if (event.data.videoner === "close") {
@@ -110,7 +115,7 @@
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && panel.classList.contains("open")) closePanel();
+    if (event.key === "Escape" && panel) closePanel();
   });
 
   function update() {

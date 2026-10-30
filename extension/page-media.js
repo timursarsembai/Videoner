@@ -76,8 +76,12 @@ function threadsMedia() {
 }
 
 async function instagramMedia() {
-  const storyId = location.pathname.match(/^\/stories\/[^/]+\/(\d+)/)?.[1];
-  if (storyId) return storyMedia(await instagramApiItem(storyId));
+  const story = location.pathname.match(/^\/stories\/([^/]+)(?:\/(\d+))?/);
+  if (story?.[2]) return storyMedia(await instagramApiItem(story[2]));
+  // Адрес вида /stories/<ник>/ без номера — так Instagram открывает все
+  // текущие сторис человека. Какая из них на экране, по адресу не понять:
+  // берём их все и ищем ту, чья картинка или видео сейчас на странице.
+  if (story && story[1] !== "highlights") return storyMedia(await currentStoryOf(story[1]));
   const code = location.pathname.match(/^\/(?:p|reels?|tv)\/([\w-]+)/)?.[1];
   if (!code) return null;
   return metaPostMedia(postFromScripts(code) ?? (await instagramApiPost(code)));
@@ -100,6 +104,48 @@ function storyMedia(item) {
   }
   if (!thumbnail) return null;
   return { pageUrl: location.href, url: thumbnail, method: "download", ext: "jpg", title, thumbnail, duration: null };
+}
+
+async function instagramApi(path) {
+  const res = await fetch(path, {
+    credentials: "include",
+    headers: { "X-IG-App-ID": INSTAGRAM_APP_ID },
+    signal: AbortSignal.timeout(5_000),
+  });
+  return res.ok ? res.json() : null;
+}
+
+// Файл в CDN Instagram узнаётся по имени без параметров: ссылки на один и тот
+// же снимок отличаются подписью в query, а путь у них общий.
+function mediaFileName(url) {
+  try {
+    return new URL(url, location.href).pathname.split("/").pop() || null;
+  } catch {
+    return null;
+  }
+}
+
+async function currentStoryOf(username) {
+  const profile = await instagramApi(`/api/v1/users/web_profile_info/?username=${encodeURIComponent(username)}`);
+  const userId = profile?.data?.user?.id;
+  if (!userId) return null;
+  const reels = await instagramApi(`/api/v1/feed/reels_media/?reel_ids=${encodeURIComponent(userId)}`);
+  const items = reels?.reels?.[userId]?.items ?? reels?.reels_media?.[0]?.items ?? [];
+  if (items.length <= 1) return items[0] ?? null;
+  // Что сейчас показывает страница: видео и картинки крупнее превью.
+  const onScreen = new Set(
+    [...document.querySelectorAll("video, img")]
+      .filter((node) => node.tagName === "VIDEO" || node.naturalWidth >= 300)
+      .flatMap((node) => [node.currentSrc, node.src, node.poster])
+      .filter(Boolean)
+      .map(mediaFileName)
+      .filter(Boolean)
+  );
+  const urlsOf = (item) => [
+    ...(item.video_versions ?? []).map((v) => v.url),
+    ...(item.image_versions2?.candidates ?? []).map((c) => c.url),
+  ];
+  return items.find((item) => urlsOf(item).some((u) => onScreen.has(mediaFileName(u)))) ?? null;
 }
 
 // Пост Threads/Instagram → что качать. Карусель (несколько файлов) и пост

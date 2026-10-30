@@ -230,7 +230,7 @@ function startDirectDownload() {
 function showDirect() {
   show(
     videoCard(),
-    el("button", { class: "primary", onclick: startDirectDownload }, t.directDownload),
+    el("button", { class: "primary", onclick: startDirectDownload }, media?.ext === "jpg" ? t.directPhoto : t.directDownload),
     el("div", { class: "note" }, t.directNote),
     el("button", { class: "secondary", onclick: showServerChoices }, t.moreOptions)
   );

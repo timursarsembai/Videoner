@@ -140,6 +140,7 @@ export interface BlockedUser {
   firstName: string | null;
   languageCode: string | null;
   firstSeenAt: string;
+  lastSeenAt: string;
   downloadCount: number;
   blocked: boolean;
   lastEvent: { blocked: boolean; source: string; at: string } | null;

@@ -282,6 +282,7 @@ export class AnalyticsService {
           firstName: user.firstName,
           languageCode: user.languageCode,
           firstSeenAt: user.firstSeenAt,
+          lastSeenAt: user.lastSeenAt,
           downloadCount: user._count.downloads,
           blocked: user.blockedAt !== null,
           lastEvent: last

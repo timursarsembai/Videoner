@@ -458,6 +458,12 @@ function blockEventTime(event: BlockedUser["lastEvent"]): { text: string; hint?:
   return { text: formatShortTime(event.at) };
 }
 
+// Заблокировал, но пользуется дальше: блокировка запрещает боту писать в
+// личку, а инлайн-режим и группы работают и без неё.
+function activeAfterBlock(u: BlockedUser): boolean {
+  return u.blocked && !!u.lastEvent && new Date(u.lastSeenAt) > new Date(u.lastEvent.at);
+}
+
 // Сначала свежие события; те, чья дата неизвестна (baseline), — в конце.
 function sortBlockedUsers(users: BlockedUser[]): BlockedUser[] {
   const time = (u: BlockedUser) =>
@@ -471,7 +477,8 @@ function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
     <div className="rounded-lg border border-border/60 bg-background/60 p-4 lg:col-span-2">
       <h2 className="mb-1 text-sm font-medium text-foreground/70">Заблокировали бота</h2>
       <p className="mb-4 text-xs text-foreground/50">
-        Кто заблокировал бота или удалил аккаунт, и кто потом вернулся. Время — по Алматы.
+        Кто заблокировал бота или удалил аккаунт, и кто потом вернулся. «Но пользуется» — заблокировал
+        личку с ботом, но качает через инлайн-режим или в группах. Время — по Алматы.
       </p>
       <div className="max-h-[420px] overflow-auto">
         <table className="w-full min-w-[640px] text-sm">
@@ -519,6 +526,14 @@ function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
                     >
                       {u.blocked ? "Заблокирован" : "Вернулся"}
                     </span>
+                    {activeAfterBlock(u) && (
+                      <div
+                        className="mt-1 text-xs text-foreground/50"
+                        title="Бот не может писать ему в личку, но он качает через инлайн-режим или в группах"
+                      >
+                        но пользуется · {formatShortDate(u.lastSeenAt)}
+                      </div>
+                    )}
                   </td>
                 </tr>
               );

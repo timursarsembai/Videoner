@@ -80,9 +80,15 @@ services:
       # Фиксированный API-ключ, чтобы совпадал с web и bot (seed создаёт его идемпотентно)
       SEED_API_KEY: ${API_KEY}
       SEED_ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@localhost}
-      # Алерт в Telegram админу, когда YouTube требует обновить cookies
+      # Алерт в Telegram админу, когда YouTube требует обновить cookies. Он же —
+      # проверка подписи запросов бота (server/src/lib/bot-auth.ts) и сообщения
+      # владельцам подключённых аккаунтов.
       BOT_TOKEN: ${BOT_TOKEN}
       ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
+      # Ключ шифрования кук, которые люди подключили боту (UserCookie,
+      # server/src/lib/cookie-crypto.ts). Хранится в Infisical (prod). Не задан —
+      # подключение аккаунтов выключено. Сменить = потерять все подключения.
+      USER_COOKIES_KEY: ${USER_COOKIES_KEY:-}
       # Статический ISP-прокси (IPRoyal) для YouTube — обходит блокировку по IP дата-центра VPS
       YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
       # Экономия трафика прокси (оплата за гигабайты), см. server/src/lib/youtube-budget.ts:

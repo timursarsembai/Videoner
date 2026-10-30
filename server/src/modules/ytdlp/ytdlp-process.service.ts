@@ -840,7 +840,9 @@ export class YtdlpProcessService implements OnModuleInit {
     // карусели других площадок своя логика пропуска элементов, которую с
     // готовыми метаданными никто не проверял.
     let infoFile: string | null = null;
-    if (extras?.infoJson && (platform === 'youtube' || extras.forceInfoJson) && !isPlaylistDownload) {
+    // Сторис по готовым метаданным — и одиночная, и «все сторис человека»
+    // (плейлист): yt-dlp сам их разобрать не может (lib/instagram-story.ts).
+    if (extras?.infoJson && ((platform === 'youtube' && !isPlaylistDownload) || extras.forceInfoJson)) {
       try {
         infoFile = path.join(
           os.tmpdir(),

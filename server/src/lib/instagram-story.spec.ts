@@ -1,4 +1,4 @@
-import { instagramStoryId, storyInfoFromItem } from './instagram-story';
+import { instagramStoryId, isInstagramStoryUrl, storyInfoFromItem } from './instagram-story';
 import { entryKind, photoTargets } from './playlist';
 
 describe('instagram story', () => {
@@ -6,6 +6,14 @@ describe('instagram story', () => {
     expect(instagramStoryId('https://instagram.com/stories/raykov_nikita/4019148598951912741/')).toBe('4019148598951912741');
     expect(instagramStoryId('https://www.instagram.com/stories/a.b.c/123?utm_source=x')).toBe('123');
     expect(instagramStoryId('https://www.instagram.com/p/ABC/')).toBeNull();
+    expect(instagramStoryId('https://www.instagram.com/stories/auto.01kk/')).toBeNull();
+  });
+
+  it('treats a stories link without an id as a story link, but not highlights', () => {
+    expect(isInstagramStoryUrl('https://www.instagram.com/stories/auto.01kk/')).toBe(true);
+    expect(isInstagramStoryUrl('https://www.instagram.com/stories/auto.01kk/123/')).toBe(true);
+    expect(isInstagramStoryUrl('https://www.instagram.com/stories/highlights/1789/')).toBe(false);
+    expect(isInstagramStoryUrl('https://www.instagram.com/reel/ABC/')).toBe(false);
   });
 
   it('maps a video story to a yt-dlp-like info with formats', () => {

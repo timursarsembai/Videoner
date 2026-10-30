@@ -1,4 +1,5 @@
 import { fetchQualities } from "./getcourse-hls.js";
+import { mountAccountConnect } from "./account-connect.js";
 import {
   SITE,
   api,
@@ -414,6 +415,9 @@ async function main() {
   });
 
   url = await targetUrl();
+  // Кнопка «Подключить аккаунт к боту» — на любой странице площадки, не
+  // только на странице видео (account-connect.js).
+  if (!embedded && url) mountAccountConnect(document.getElementById("account"), url);
   // Урок GetCourse: школа на своём домене, видео — в плеере GetCourse внутри
   // страницы. Кнопка на самом плеере присылает хеш своего видео (?gc=).
   const gcHash = params.get("gc");

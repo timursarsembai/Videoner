@@ -27,7 +27,14 @@ const allowInfo = createVisitorRateLimiter(EXTENSION_INFO_RATE_LIMIT);
 const EXTENSION_PROXY: ProxyOptions = {
   // report — отчёт о файле, который браузер скачал сам (TikTok, Threads), для
   // статистики; сайту этот путь не нужен и не открыт.
-  allowedPaths: [...DOWNLOAD_PROXY_PATHS, { method: "POST", path: "download/report" }],
+  allowedPaths: [
+    ...DOWNLOAD_PROXY_PATHS,
+    { method: "POST", path: "download/report" },
+    // Кнопка «Подключить аккаунт к боту» (extension/account-connect.js): куки
+    // площадки → одноразовый код. Остальные пути /user-cookies (список,
+    // удаление, подключение по коду) — только для бота, сюда не открыты.
+    { method: "POST", path: "user-cookies/codes" },
+  ],
   allowVisitor: (ip, request, path) =>
     allowRequest(ip) && (!isInfoRequest(request, path) || allowInfo(ip)),
   requireCaptcha: false,

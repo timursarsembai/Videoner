@@ -252,3 +252,39 @@ button {
     transform: translateX(300%);
   }
 }
+
+/* Подключение аккаунта к боту (account-connect.js) — внизу окошка, отдельно
+   от основного содержимого: главное действие окошка — скачать. */
+.account {
+  padding: 10px 16px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.account p {
+  margin: 0 0 8px;
+}
+
+.account .link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.account .link:hover {
+  text-decoration: underline;
+}
+
+.account .code {
+  margin: 4px 0 8px;
+  font: 600 22px/1.2 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 2px;
+  text-align: center;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--surface);
+  user-select: all;
+}

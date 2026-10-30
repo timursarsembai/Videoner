@@ -260,7 +260,11 @@ export async function proxyApiRequest(
       headers,
     });
   } catch (error) {
-    console.error("API proxy error:", error);
+    // Только сообщение и статус, не сам объект: в ошибке axios лежит и тело
+    // запроса (config.data), а через прокси расширения идут куки человека
+    // (кнопка «Подключить аккаунт», POST user-cookies/codes).
+    const e = error as { message?: string; response?: { status?: number } };
+    console.error("API proxy error:", e?.message ?? "unknown", e?.response?.status ?? "");
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

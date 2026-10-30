@@ -75,6 +75,15 @@ export const legal: LegalByLanguage = {
             ],
           },
           {
+            heading: "Подключённые аккаунты",
+            body: [
+              "По желанию вы можете подключить к боту свой аккаунт на площадке (Instagram, Facebook, YouTube, X, VK, TikTok), чтобы бот скачивал записи, видные только вошедшим: сторис, закрытые публикации. Для этого бот получает куки этого аккаунта — от расширения Videoner по одноразовому коду или из файла, который вы прислали.",
+              "Мы сохраняем куки только выбранной площадки, остальные отбрасываем сразу. Хранятся они в зашифрованном виде и используются только для скачиваний там, куда вы их подключили: в вашей личке с ботом или в конкретной группе. В других группах и для других людей они не используются.",
+              "Основание — ваше согласие: вы подключаете аккаунт сами и можете удалить его в любой момент командой /accounts. При удалении куки стираются безвозвратно. Если площадка перестаёт принимать вход, бот сообщает вам об этом.",
+              "Записи, скачанные через подключённый аккаунт, не публикуются в нашем канале и не выдаются другим пользователям из общего кеша.",
+            ],
+          },
+          {
             heading: "Сторонние сервисы",
             body: [
               "Мы не продаём и не передаём ваши данные третьим лицам для их собственных целей. Для работы сервиса задействованы следующие поставщики, каждый из которых обрабатывает данные по своим правилам:",
@@ -175,7 +184,16 @@ export const legal: LegalByLanguage = {
             body: [
               "Скачивая видео через бот, вы соглашаетесь с тем, что ссылка на исходный пост будет опубликована в нашем Telegram-канале. Предупреждение об этом показывается в боте до выбора качества — то есть до того, как вы примете решение скачивать.",
               "Публикация анонимна: в канал уходят ссылка на общедоступную страницу, название ролика и его обложка — тот самый кадр, который площадка показывает в превью поста. Кто скачал видео, не указывается. Сам видеофайл не публикуется нигде и никогда: распространяется ссылка, которую площадки и сами предлагают распространять кнопкой «Поделиться» под каждым постом.",
-              "Одна и та же ссылка публикуется не более одного раза. Если вы не хотите, чтобы ссылка попала в канал, не скачивайте это видео через наш сервис."
+              "Одна и та же ссылка публикуется не более одного раза. Если вы не хотите, чтобы ссылка попала в канал, не скачивайте это видео через наш сервис.",
+              "Ссылки из групп и записи, скачанные через подключённый аккаунт, в канале не публикуются."
+            ],
+          },
+          {
+            heading: "Подключение своего аккаунта",
+            body: [
+              "Подключая к боту свой аккаунт на площадке, вы подтверждаете, что это ваш аккаунт и вы вправе им распоряжаться.",
+              "Площадки не одобряют автоматические скачивания и могут ограничить или заблокировать подключённый аккаунт. Этот риск вы принимаете на себя; мы советуем подключать отдельный, не основной аккаунт. Мы не отвечаем за ограничения, которые площадка наложит на ваш аккаунт.",
+              "Подключённый к группе аккаунт используется для скачиваний всех её участников. Администраторы группы решают, кто может подключать аккаунты, и могут удалить любой из них.",
             ],
           },
           {
@@ -362,6 +380,15 @@ export const legal: LegalByLanguage = {
             ],
           },
           {
+            heading: "Connected accounts",
+            body: [
+              "If you choose to, you can connect your account on a platform (Instagram, Facebook, YouTube, X, VK, TikTok) to the bot so that it downloads posts only signed-in users can see: stories, private posts. To do this the bot receives that account's cookies — from the Videoner extension via a one-time code, or from a file you send.",
+              "We keep only the chosen platform's cookies and discard the rest immediately. They are stored encrypted and used only for downloads where you connected them: your private chat with the bot or one specific group. They are never used in other groups or for other people.",
+              "The legal ground is your consent: you connect the account yourself and can remove it at any time with /accounts. Removed cookies are erased permanently. If the platform stops accepting the login, the bot tells you.",
+              "Posts downloaded through a connected account are not published in our channel and are not served to other users from the shared cache.",
+            ],
+          },
+          {
             heading: "Third-party services",
             body: [
               "We do not sell your data and do not pass it to third parties for their own purposes. The service relies on the following providers, each processing data under its own rules:",
@@ -462,7 +489,16 @@ export const legal: LegalByLanguage = {
             body: [
               "By downloading a video through the bot you agree that the link to the original post will be published in our Telegram channel. A notice about this is shown in the bot before you choose a quality — that is, before you decide to download.",
               "Publication is anonymous: the channel receives the link to a publicly accessible page, the title and the cover frame — the same still the platform shows in its own post preview. Who downloaded it is not stated. The video file itself is never published anywhere: what is passed on is the link, which the platforms themselves invite people to pass on through the Share button under every post.",
-              "The same link is published no more than once. If you would rather a link did not reach the channel, do not download that video through our service."
+              "The same link is published no more than once. If you would rather a link did not reach the channel, do not download that video through our service.",
+              "Links from groups and posts downloaded through a connected account are never published in the channel."
+            ],
+          },
+          {
+            heading: "Connecting your account",
+            body: [
+              "By connecting your account on a platform to the bot, you confirm that it is your account and that you are entitled to use it this way.",
+              "Platforms do not approve of automated downloads and may restrict or ban a connected account. You accept this risk; we recommend connecting a secondary account rather than your main one. We are not responsible for restrictions a platform places on your account.",
+              "An account connected to a group is used for downloads by all of its members. Group admins decide who may connect accounts and can remove any of them.",
             ],
           },
           {
@@ -647,6 +683,15 @@ export const legal: LegalByLanguage = {
             ],
           },
           {
+            heading: "Cuentas conectadas",
+            body: [
+              "Si lo desea, puede conectar al bot su cuenta en una plataforma (Instagram, Facebook, YouTube, X, VK, TikTok) para que descargue publicaciones visibles solo para usuarios que han iniciado sesión: historias, publicaciones privadas. Para ello el bot recibe las cookies de esa cuenta, desde la extensión de Videoner mediante un código de un solo uso o desde un archivo que usted envíe.",
+              "Conservamos solo las cookies de la plataforma elegida y descartamos el resto de inmediato. Se guardan cifradas y se usan solo para descargas allí donde las conectó: su chat privado con el bot o un grupo concreto. Nunca se usan en otros grupos ni para otras personas.",
+              "La base jurídica es su consentimiento: usted conecta la cuenta y puede eliminarla en cualquier momento con /accounts. Las cookies eliminadas se borran de forma definitiva. Si la plataforma deja de aceptar el inicio de sesión, el bot se lo comunica.",
+              "Las publicaciones descargadas mediante una cuenta conectada no se publican en nuestro canal ni se entregan a otros usuarios desde la caché común.",
+            ],
+          },
+          {
             heading: "Servicios de terceros",
             body: [
               "No vendemos sus datos ni los cedemos a terceros para sus propios fines. El servicio se apoya en los siguientes proveedores, cada uno con sus propias normas de tratamiento:",
@@ -747,7 +792,16 @@ export const legal: LegalByLanguage = {
             body: [
               "Al descargar un vídeo mediante el bot, usted acepta que el enlace a la publicación original se publique en nuestro canal de Telegram. El aviso correspondiente se muestra en el bot antes de elegir la calidad, es decir, antes de que decida descargar.",
               "La publicación es anónima: al canal llegan el enlace a una página de acceso público, el título y la imagen de portada, el mismo fotograma que la plataforma muestra en la vista previa de la publicación. No se indica quién lo descargó. El archivo de vídeo no se publica en ningún sitio: se difunde el enlace, que las propias plataformas invitan a difundir con el botón Compartir de cada publicación.",
-              "Un mismo enlace se publica como máximo una vez. Si prefiere que un enlace no llegue al canal, no descargue ese vídeo a través de nuestro servicio."
+              "Un mismo enlace se publica como máximo una vez. Si prefiere que un enlace no llegue al canal, no descargue ese vídeo a través de nuestro servicio.",
+              "Los enlaces de grupos y las publicaciones descargadas mediante una cuenta conectada nunca se publican en el canal."
+            ],
+          },
+          {
+            heading: "Conectar su cuenta",
+            body: [
+              "Al conectar al bot su cuenta en una plataforma, confirma que la cuenta es suya y que tiene derecho a usarla de este modo.",
+              "Las plataformas no aprueban las descargas automatizadas y pueden restringir o bloquear una cuenta conectada. Usted asume este riesgo; le recomendamos conectar una cuenta secundaria y no la principal. No respondemos de las restricciones que una plataforma imponga a su cuenta.",
+              "Una cuenta conectada a un grupo se usa para las descargas de todos sus miembros. Los administradores del grupo deciden quién puede conectar cuentas y pueden eliminar cualquiera de ellas.",
             ],
           },
           {

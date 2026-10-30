@@ -138,6 +138,21 @@ const TEXTS = {
     errServerBlocked: "Площадка временно ограничила доступ нашему серверу. Попробуйте позже.",
     errFailed: "Не получилось скачать. Попробуйте ещё раз или выберите другое качество.",
     errGeneric: "Что-то пошло не так. Попробуйте ещё раз чуть позже.",
+    acctButton: (p) => `🔑 Подключить аккаунт ${p} к боту`,
+    acctWarn: (p) =>
+      `Бот @VideonerBot сможет скачивать от вашего аккаунта ${p} то, что видно только вошедшим: сторис, закрытые записи. Площадки не любят автоматические скачивания и могут ограничить аккаунт — лучше подключать не основной. Браузер спросит разрешение на куки этого сайта; на сервер уйдут только куки ${p}, зашифрованно.`,
+    acctConfirm: "Подключить",
+    acctCancel: "Отмена",
+    acctSending: "Подключаю…",
+    acctDenied: "Без разрешения на куки подключить аккаунт не получится.",
+    acctNoLogin: (p) => `Вы не вошли в ${p} в этом браузере. Войдите на сайте и нажмите ещё раз.`,
+    acctFailed: "Не получилось. Попробуйте ещё раз чуть позже.",
+    acctCodeTitle: (p) => `Код для подключения ${p}:`,
+    acctCodeHelp:
+      "Отправьте его боту @VideonerBot в личку — для своих скачиваний. Для группы — отправьте в группе /connect КОД. Код действует 10 минут.",
+    acctCopy: "Скопировать",
+    acctCopied: "Скопировано",
+    acctOpenBot: "Открыть бота",
   },
   en: {
     loading: "Fetching video info…",
@@ -182,6 +197,21 @@ const TEXTS = {
     errServerBlocked: "The platform is temporarily limiting our server. Please try again later.",
     errFailed: "The download failed. Try again or pick another quality.",
     errGeneric: "Something went wrong. Please try again a bit later.",
+    acctButton: (p) => `🔑 Connect your ${p} account to the bot`,
+    acctWarn: (p) =>
+      `@VideonerBot will be able to download what only signed-in people see on ${p} using your account: stories, private posts. Platforms dislike automated downloads and may restrict the account — better connect a secondary one. The browser will ask for permission to read this site's cookies; only ${p} cookies go to the server, encrypted.`,
+    acctConfirm: "Connect",
+    acctCancel: "Cancel",
+    acctSending: "Connecting…",
+    acctDenied: "The account can't be connected without the cookies permission.",
+    acctNoLogin: (p) => `You're not signed in to ${p} in this browser. Sign in on the site and try again.`,
+    acctFailed: "That didn't work. Try again a bit later.",
+    acctCodeTitle: (p) => `Code to connect ${p}:`,
+    acctCodeHelp:
+      "Send it to @VideonerBot in a private chat — for your own downloads. For a group, send /connect CODE in the group. The code is valid for 10 minutes.",
+    acctCopy: "Copy",
+    acctCopied: "Copied",
+    acctOpenBot: "Open the bot",
   },
 };
 

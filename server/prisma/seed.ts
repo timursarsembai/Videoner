@@ -30,12 +30,15 @@ async function main() {
           maxDuration: 14400, // 240 минут (4 часа)
         },
       });
+      // Сам ключ не печатаем: в проде этот вывод попадает в журнал
+      // контейнера при каждом старте, а журналы читают и пересылают. Ключ и
+      // так известен — он пришёл в SEED_API_KEY.
       console.log('Admin user:', user.email);
-      console.log('API key:', apiKey.key);
+      console.log(`API key created (${apiKey.key.slice(0, 6)}…)`);
       return;
     }
     console.log('Admin user:', user.email);
-    console.log('API key already present:', existing.key);
+    console.log(`API key already present (${existing.key.slice(0, 6)}…)`);
     return;
   }
 
@@ -55,6 +58,8 @@ async function main() {
     });
   }
 
+  // Локальный запуск без SEED_API_KEY: ключ сгенерирован здесь, и узнать его
+  // больше негде — печатаем целиком (README, «Локальный запуск»).
   console.log('Admin user:', user.email);
   console.log('API key:', apiKey.key);
 }

@@ -197,7 +197,8 @@ async function startDirect({ url, tabId, media }) {
     const title = media.title;
     await updateJob(url, () => ({ url, title, kind: "video", direct: true, state: "downloading", progress: null, startedAt: Date.now() }));
 
-    const filename = `${safeFileName(title)}.mp4`;
+    // ext — фото-сторис Instagram (page-media.js), остальное — mp4.
+    const filename = `${safeFileName(title)}.${media.ext === "jpg" ? "jpg" : "mp4"}`;
     let size;
     try {
       size = media.method === "page-fetch"

@@ -1,6 +1,14 @@
 import { Bot, Context, InlineKeyboard } from "grammy";
 import { detectLang, messages, type Lang } from "../i18n.js";
-import { ADMIN_TELEGRAM_ID, BOT_FILE_LIMIT, api, checkUserRateLimit, getQuotaInfo } from "../helpers.js";
+import {
+  ADMIN_TELEGRAM_ID,
+  BOT_FILE_LIMIT,
+  api,
+  checkUserRateLimit,
+  extensionLinkFor,
+  friendlyError,
+  getQuotaInfo,
+} from "../helpers.js";
 import { extractUrls } from "../queue.js";
 import {
   DEFAULT_GROUP_SETTINGS,
@@ -201,8 +209,22 @@ async function downloadInGroup(
   try {
     info = await api("/info", { url, ...meta });
   } catch (e: any) {
+    const raw = e?.message ?? String(e);
+    // Сторис Instagram — исключение из молчания: человек явно хотел её
+    // скачать, и без ответа решил бы, что бот сломался. Отвечаем одной
+    // строкой и кнопкой на расширение, которое сторис скачает.
+    if (friendlyError(raw, lang) === m.errorInstagramStory) {
+      const link = extensionLinkFor(raw, url, lang);
+      await ctx
+        .reply(`${m.failedPrefix}${m.errorInstagramStory}`, {
+          ...(replyTo ? { reply_parameters: { message_id: replyTo, allow_sending_without_reply: true } } : {}),
+          ...(link ? { reply_markup: new InlineKeyboard().url(m.extensionButton, link) } : {}),
+        })
+        .catch((err) => console.error(`Группа ${chatId}: не удалось ответить про сторис:`, err?.message ?? err));
+      return false;
+    }
     // Не видео, закрытый пост, профиль вместо ролика — в чате молчим.
-    console.log(`Группа ${chatId}: ссылка пропущена (${e?.message ?? e}): ${url}`);
+    console.log(`Группа ${chatId}: ссылка пропущена (${raw}): ${url}`);
     return false;
   }
   if (!settings.longVideos && info.duration && info.duration > GROUP_MAX_DURATION_SEC) return false;

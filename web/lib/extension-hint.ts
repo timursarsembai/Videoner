@@ -37,6 +37,9 @@ const BROWSER_HELPS_SIGNALS = [
   "cannot parse data",
   // Threads: медиа поста видно только вошедшим.
   "no video or photo is visible in this threads post",
+  // Сторис Instagram: без входа их не отдают вовсе, расширение берёт их под
+  // входом человека (extension/page-media.js).
+  "this content is unreachable",
 ];
 
 export function browserCanHelp(url: string, message: string): boolean {

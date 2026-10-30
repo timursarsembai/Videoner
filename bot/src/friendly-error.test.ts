@@ -59,3 +59,12 @@ test("расширение предлагаем, только где оно ка
   // Чужой домен, похожий на площадку.
   assert.equal(extensionLinkFor("This video is private", "https://notinstagram.com/reel/x", "ru"), null);
 });
+
+test("сторис Instagram — честно: бот их не качает, расширение — да", () => {
+  // Дословно из лога 30.10.2026 (ссылка на сторис из группы).
+  const raw =
+    "[instagram:story] 4019154360952804279: This content is unreachable. Use --cookies-from-browser or --cookies for the authentication.";
+  assert.equal(friendlyError(raw, "ru"), messages.ru.errorInstagramStory);
+  const url = "https://www.instagram.com/stories/someone/4019154360952804279";
+  assert.match(extensionLinkFor(raw, url, "ru") ?? "", /\/ru\/extension\?url=/);
+});

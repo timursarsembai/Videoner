@@ -168,6 +168,13 @@ export function friendlyError(raw: string, lang: Lang): string {
     return m.errorThreadsNoMedia;
   }
 
+  // Сторис Instagram без входа не отдаёт вовсе (yt-dlp: «[instagram:story] …
+  // This content is unreachable. Use --cookies…»). Совет войти тут не годится —
+  // входить негде; честно говорим, что бот их не качает, а расширение — да.
+  if (msg.includes("[instagram:story]") || msg.includes("this content is unreachable")) {
+    return m.errorInstagramStory;
+  }
+
   // Площадка отказала нашему серверу, а не человеку. Instagram пишет «empty
   // media response ... check if this post is accessible without being
   // logged-in» и по публичным роликам, когда временно ограничивает доступ с
@@ -264,7 +271,12 @@ export function extensionLinkFor(raw: string, url: string, lang: Lang): string |
   if (!BROWSER_HOSTS.test(host)) return null;
   const m = messages[lang];
   const text = friendlyError(raw, lang);
-  if (text !== m.errorLoginRequired && text !== m.errorPlatformRefused && text !== m.errorThreadsNoMedia) {
+  if (
+    text !== m.errorLoginRequired &&
+    text !== m.errorPlatformRefused &&
+    text !== m.errorThreadsNoMedia &&
+    text !== m.errorInstagramStory
+  ) {
     return null;
   }
   const page = lang === "ru" ? "/ru/extension" : "/extension";

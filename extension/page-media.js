@@ -13,6 +13,11 @@
 //             кодом и video_versions[0]. Перешёл к посту внутри сайта (без
 //             перезагрузки) — в скриптах страницы поста нет, тогда
 //             спрашиваем API сайта, как сама страница.
+//             Сторис (/stories/<ник>/<id>) — только через API сайта: Instagram
+//             показывает их лишь вошедшим, и сервер Videoner их не получит
+//             вовсе (yt-dlp: «This content is unreachable»). Видео — mp4,
+//             фото-сторис — jpg (поле ext). Вживую не проверено: на сервере
+//             нет аккаунта Instagram (30.10.2026).
 //   Facebook  — JSON-скрипты страницы: объект видео с этим id и
 //             browser_native_hd_url / _sd_url.
 //   Оба CDN отдают mp4 со звуком без Referer — качает chrome.downloads.
@@ -71,9 +76,30 @@ function threadsMedia() {
 }
 
 async function instagramMedia() {
+  const storyId = location.pathname.match(/^\/stories\/[^/]+\/(\d+)/)?.[1];
+  if (storyId) return storyMedia(await instagramApiItem(storyId));
   const code = location.pathname.match(/^\/(?:p|reels?|tv)\/([\w-]+)/)?.[1];
   if (!code) return null;
   return metaPostMedia(postFromScripts(code) ?? (await instagramApiPost(code)));
+}
+
+// Сторис → что качать: видео или, если его нет, снимок в лучшем размере.
+function storyMedia(item) {
+  if (!item) return null;
+  const title = item.user?.username ? `${item.user.username} story` : "Instagram story";
+  const thumbnail = item.image_versions2?.candidates?.[0]?.url || "";
+  if (item.video_versions?.[0]?.url) {
+    return {
+      pageUrl: location.href,
+      url: item.video_versions[0].url,
+      method: "download",
+      title,
+      thumbnail,
+      duration: item.video_duration || null,
+    };
+  }
+  if (!thumbnail) return null;
+  return { pageUrl: location.href, url: thumbnail, method: "download", ext: "jpg", title, thumbnail, duration: null };
 }
 
 // Пост Threads/Instagram → что качать. Карусель (несколько файлов) и пост
@@ -129,6 +155,13 @@ function instagramMediaId(code) {
 async function instagramApiPost(code) {
   const id = instagramMediaId(code);
   if (!id) return null;
+  const item = await instagramApiItem(id);
+  return item && sameCode(item.code, code) ? item : null;
+}
+
+// Запись по числовому id. У сторис id прямо в адресе; ответ сверяем с ним
+// (pk — тот же id, у id ещё хвост «_<id автора>»).
+async function instagramApiItem(id) {
   const res = await fetch(`/api/v1/media/${id}/info/`, {
     credentials: "include",
     headers: { "X-IG-App-ID": INSTAGRAM_APP_ID },
@@ -137,7 +170,7 @@ async function instagramApiPost(code) {
   });
   if (!res.ok) return null;
   const item = (await res.json())?.items?.[0];
-  return item && sameCode(item.code, code) ? item : null;
+  return item && (String(item.pk) === id || String(item.id ?? "").startsWith(`${id}_`)) ? item : null;
 }
 
 function facebookVideoId() {

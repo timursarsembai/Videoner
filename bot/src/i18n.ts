@@ -53,6 +53,8 @@ interface Messages {
   qualitiesHiddenBySize: (limit: string) => string;
   videoTooBigForTelegram: (smallest: string) => string;
   errorLoginRequired: string;
+  // Сторис Instagram: их видно только вошедшим, сервер их не получит.
+  errorInstagramStory: string;
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
   errorNoVideoContent: string;
@@ -171,6 +173,8 @@ const ru: Messages = {
     `${url}\n\n` +
     "Скачать это и любое другое видео бесплатно: @VideonerBot",
   dailyLimitReached: "📅 На сегодня всё: достигнут суточный лимит в 20 скачиваний. Он обновится в течение суток — приходи позже, скачивать снова можно будет бесплатно.",
+  errorInstagramStory:
+    "сторис Instagram бот пока не скачивает: Instagram показывает их только тем, кто вошёл в аккаунт.",
   errorLoginRequired:
     "Эта запись недоступна без входа в аккаунт: площадка отдаёт её только " +
     "авторизованным. Так бывает с приватными записями, возрастными ограничениями " +
@@ -315,6 +319,8 @@ const en: Messages = {
     `${url}\n\n` +
     "Download this and any other video for free: @VideonerBot",
   dailyLimitReached: "📅 That is it for today: you have reached the daily limit of 20 downloads. It refreshes within 24 hours — come back later and download again, free.",
+  errorInstagramStory:
+    "the bot can't download Instagram stories yet: Instagram shows them only to people who are signed in.",
   errorLoginRequired:
     "This post is not available without signing in: the platform serves it only to " +
     "logged-in users. That happens with private posts, age-restricted content and " +

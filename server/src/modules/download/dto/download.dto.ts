@@ -89,6 +89,14 @@ class RequestMetaDto {
   @IsOptional()
   @IsString()
   cookieScope?: string;
+
+  @ApiProperty({
+    description: "In a group: the sender's own private login scope, user:<telegramId> (bot only)",
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  cookieFallbackScope?: string;
 }
 
 export class TelegramFileDto {

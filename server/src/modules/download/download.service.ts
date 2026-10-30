@@ -33,7 +33,7 @@ import { isAutoTrack, SUBTITLE_LANG_RE } from 'src/lib/subtitles';
 import { getPlatform } from 'src/validate/url';
 import { BotUserService } from '../analytics/bot-user.service';
 import { UserCookiesService } from '../user-cookies/user-cookies.service';
-import { userCookieScope } from 'src/lib/cookie-scope';
+import { userCookieScopes } from 'src/lib/cookie-scope';
 import { userCookiesMayHelp } from 'src/lib/user-cookies';
 import { categorizeError } from 'src/lib/error-category';
 import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
@@ -73,6 +73,8 @@ export interface DownloadRequestMeta {
   clientIp?: string;
   // Где человек подключил свои куки (только бот, см. lib/cookie-scope.ts).
   cookieScope?: string;
+  // В группе — личный вход того, кто прислал ссылку, если у группы своего нет.
+  cookieFallbackScope?: string;
 }
 
 // Пределы для отчёта расширения (reportClientDownload). Длина ссылки — как у
@@ -186,9 +188,9 @@ export class DownloadService {
       // когда площадка ответила «нужен вход».
       if (error instanceof BadRequestException) throw error;
       if (!userCookiesMayHelp(error instanceof Error ? error.message : String(error))) throw error;
-      const scope = userCookieScope(meta);
       const platform: string = (req as any).platform;
-      if (!scope || !(await this.userCookies.hasActive(scope, platform))) throw error;
+      const scope = await this.userCookies.pickScope(userCookieScopes(meta), platform);
+      if (!scope) throw error;
       const { result } = await this.userCookies.withScopeCookies(scope, platform, async (cookies) => ({
         info: await this.checkDurationLimit(url, req, cookies),
         cookies,

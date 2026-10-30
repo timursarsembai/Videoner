@@ -36,7 +36,10 @@ export class InfoController {
   })
   async getVideoInfo(@Body() dto: GetVideoInfoDto, @Req() req: Request) {
     // Подключённые людьми куки — только для бота (lib/bot-auth.ts).
-    if (!isBotRequest(req)) delete dto.cookieScope;
+    if (!isBotRequest(req)) {
+      delete dto.cookieScope;
+      delete dto.cookieFallbackScope;
+    }
     return this.infoService.getVideoInfo(dto);
   }
 }

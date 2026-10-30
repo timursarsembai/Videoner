@@ -172,7 +172,10 @@ export async function proxyApiRequest(
     // Область подключённых кук (вход человека на площадке) задаёт только бот.
     // Сервер и сам не верит ей в запросах сайта и расширения
     // (server/src/lib/cookie-scope.ts) — вырезаем и здесь, на входе.
-    if (body && typeof body === "object") delete body.cookieScope;
+    if (body && typeof body === "object") {
+      delete body.cookieScope;
+      delete body.cookieFallbackScope;
+    }
 
     if (isInfoRequest(request, path)) {
       if (options.requireCaptcha) {

@@ -114,11 +114,13 @@ const COMMANDS = {
     { command: "start", description: "Как пользоваться ботом" },
     { command: "extension", description: "Расширение для браузера" },
     { command: "accounts", description: "Свои аккаунты для сторис и закрытых записей" },
+    { command: "connect", description: "Подключить аккаунт по коду из расширения" },
   ],
   en: [
     { command: "start", description: "How to use the bot" },
     { command: "extension", description: "Browser extension" },
     { command: "accounts", description: "Your accounts for stories and private posts" },
+    { command: "connect", description: "Connect an account with a code from the extension" },
   ],
 };
 void bot.api.setMyCommands(COMMANDS.en).catch((e) => console.error("setMyCommands:", e?.message ?? e));
@@ -131,11 +133,13 @@ const GROUP_COMMANDS = {
   ru: [
     { command: "settings", description: "Настройки бота в группе (для админов)" },
     { command: "accounts", description: "Аккаунты, подключённые к группе" },
+    { command: "connect", description: "Подключить аккаунт к группе по коду" },
     { command: "start", description: "Как бот работает в группе" },
   ],
   en: [
     { command: "settings", description: "Bot settings for this group (admins)" },
     { command: "accounts", description: "Accounts connected to this group" },
+    { command: "connect", description: "Connect an account to this group with a code" },
     { command: "start", description: "How the bot works in a group" },
   ],
 };

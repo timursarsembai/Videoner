@@ -78,7 +78,7 @@ export const legal: LegalByLanguage = {
             heading: "Подключённые аккаунты",
             body: [
               "По желанию вы можете подключить к боту свой аккаунт на площадке (Instagram, Facebook, YouTube, X, VK, TikTok), чтобы бот скачивал записи, видные только вошедшим: сторис, закрытые публикации. Для этого бот получает куки этого аккаунта — от расширения Videoner по одноразовому коду или из файла, который вы прислали.",
-              "Мы сохраняем куки только выбранной площадки, остальные отбрасываем сразу. Хранятся они в зашифрованном виде и используются только для скачиваний там, куда вы их подключили: в вашей личке с ботом или в конкретной группе. В других группах и для других людей они не используются.",
+              "Мы сохраняем куки только выбранной площадки, остальные отбрасываем сразу. Хранятся они в зашифрованном виде и используются только для скачиваний там, куда вы их подключили. Подключённые в личке — для ваших скачиваний, в том числе ваших собственных ссылок в группах, где свой аккаунт не подключён; для чужих ссылок они не используются. Подключённые к группе — для скачиваний её участников и больше нигде.",
               "Основание — ваше согласие: вы подключаете аккаунт сами и можете удалить его в любой момент командой /accounts. При удалении куки стираются безвозвратно. Если площадка перестаёт принимать вход, бот сообщает вам об этом.",
               "Записи, скачанные через подключённый аккаунт, не публикуются в нашем канале и не выдаются другим пользователям из общего кеша.",
             ],
@@ -383,7 +383,7 @@ export const legal: LegalByLanguage = {
             heading: "Connected accounts",
             body: [
               "If you choose to, you can connect your account on a platform (Instagram, Facebook, YouTube, X, VK, TikTok) to the bot so that it downloads posts only signed-in users can see: stories, private posts. To do this the bot receives that account's cookies — from the Videoner extension via a one-time code, or from a file you send.",
-              "We keep only the chosen platform's cookies and discard the rest immediately. They are stored encrypted and used only for downloads where you connected them: your private chat with the bot or one specific group. They are never used in other groups or for other people.",
+              "We keep only the chosen platform's cookies and discard the rest immediately. They are stored encrypted and used only for downloads where you connected them. Cookies connected in your private chat serve your downloads, including your own links in groups that have no account of their own; they are never used for other people's links. Cookies connected to a group serve its members' downloads and nothing else.",
               "The legal ground is your consent: you connect the account yourself and can remove it at any time with /accounts. Removed cookies are erased permanently. If the platform stops accepting the login, the bot tells you.",
               "Posts downloaded through a connected account are not published in our channel and are not served to other users from the shared cache.",
             ],
@@ -686,7 +686,7 @@ export const legal: LegalByLanguage = {
             heading: "Cuentas conectadas",
             body: [
               "Si lo desea, puede conectar al bot su cuenta en una plataforma (Instagram, Facebook, YouTube, X, VK, TikTok) para que descargue publicaciones visibles solo para usuarios que han iniciado sesión: historias, publicaciones privadas. Para ello el bot recibe las cookies de esa cuenta, desde la extensión de Videoner mediante un código de un solo uso o desde un archivo que usted envíe.",
-              "Conservamos solo las cookies de la plataforma elegida y descartamos el resto de inmediato. Se guardan cifradas y se usan solo para descargas allí donde las conectó: su chat privado con el bot o un grupo concreto. Nunca se usan en otros grupos ni para otras personas.",
+              "Conservamos solo las cookies de la plataforma elegida y descartamos el resto de inmediato. Se guardan cifradas y se usan solo para descargas allí donde las conectó. Las conectadas en su chat privado sirven para sus descargas, incluidos sus propios enlaces en grupos que no tienen una cuenta propia; nunca se usan para enlaces de otras personas. Las conectadas a un grupo sirven para las descargas de sus miembros y nada más.",
               "La base jurídica es su consentimiento: usted conecta la cuenta y puede eliminarla en cualquier momento con /accounts. Las cookies eliminadas se borran de forma definitiva. Si la plataforma deja de aceptar el inicio de sesión, el bot se lo comunica.",
               "Las publicaciones descargadas mediante una cuenta conectada no se publican en nuestro canal ni se entregan a otros usuarios desde la caché común.",
             ],

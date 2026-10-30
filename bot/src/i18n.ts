@@ -268,7 +268,7 @@ const ru: Messages = {
   settingsFailed: "Не получилось сохранить настройки, попробуйте ещё раз.",
   settingsCookiesButton: (by) => `🔑 Подключать аккаунты: ${by === "all" ? "все" : "админы"}`,
   accountsIntro:
-    "🔑 Подключённые аккаунты\n\nБот может скачивать то, что видно только вошедшим (сторис Instagram, закрытые записи), — от вашего аккаунта. Вход работает только там, куда вы его подключили: здесь, в личке, или в конкретной группе.",
+    "🔑 Подключённые аккаунты\n\nБот может скачивать то, что видно только вошедшим (сторис Instagram, закрытые записи), — от вашего аккаунта. Вход работает там, куда вы его подключили: в личке — для ваших скачиваний, и в группах — для ваших собственных ссылок, если к группе свой аккаунт не подключён. Подключённый к группе — для всех её участников.",
   accountsHowTo:
     "Как подключить:\n1. Проще всего — расширение Videoner на компьютере: войдите на сайт площадки, откройте окошко Videoner, нажмите «Подключить аккаунт» и пришлите мне код. Для группы — отправьте в группе /connect КОД.\n2. Или пришлите мне файл cookies.txt (экспорт кук из браузера) — или вставьте его текст сообщением.",
   accountsWarning:
@@ -276,7 +276,7 @@ const ru: Messages = {
   accountsNone: "Пока ничего не подключено.",
   accountsGroupTitle: "🔑 Аккаунты, подключённые к этой группе",
   accountsGroupHowTo:
-    "Подключить свой: получите код кнопкой «Подключить аккаунт» в расширении Videoner и отправьте здесь /connect КОД. Подробнее и свои подключения — в личке у @VideonerBot: /accounts.",
+    "Подключить для всей группы: получите код кнопкой «Подключить аккаунт» в расширении Videoner и отправьте здесь /connect КОД. Если аккаунт подключён только у вас в личке, бот скачает им ваши собственные ссылки и здесь. Свои подключения — в личке у @VideonerBot: /accounts.",
   accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ вход не работает)"}`,
   accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ вход не работает)"}`,
   accountsWhereHere: "в личке",
@@ -452,7 +452,7 @@ const en: Messages = {
   settingsFailed: "Couldn't save the settings, please try again.",
   settingsCookiesButton: (by) => `🔑 Connecting accounts: ${by === "all" ? "everyone" : "admins"}`,
   accountsIntro:
-    "🔑 Connected accounts\n\nThe bot can download what only signed-in people see (Instagram stories, private posts) — using your account. A login works only where you connected it: here in the private chat, or in one specific group.",
+    "🔑 Connected accounts\n\nThe bot can download what only signed-in people see (Instagram stories, private posts) — using your account. A login works where you connected it: one in the private chat serves your downloads, including your own links in groups that have no account of their own; one connected to a group serves all its members.",
   accountsHowTo:
     "How to connect:\n1. Easiest: the Videoner extension on a computer — sign in on the platform's site, open the Videoner popup, press \"Connect account\" and send me the code. For a group, send /connect CODE in that group.\n2. Or send me a cookies.txt file (cookies exported from the browser), or paste its text as a message.",
   accountsWarning:
@@ -460,7 +460,7 @@ const en: Messages = {
   accountsNone: "Nothing is connected yet.",
   accountsGroupTitle: "🔑 Accounts connected to this group",
   accountsGroupHowTo:
-    "To connect yours: get a code with the \"Connect account\" button in the Videoner extension and send /connect CODE here. Details and your own connections are in a private chat with @VideonerBot: /accounts.",
+    "To connect one for the whole group: get a code with the \"Connect account\" button in the Videoner extension and send /connect CODE here. If you connected an account only in your private chat, the bot uses it here for your own links. Your connections: /accounts in a private chat with @VideonerBot.",
   accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ login not working)"}`,
   accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ login not working)"}`,
   accountsWhereHere: "private chat",

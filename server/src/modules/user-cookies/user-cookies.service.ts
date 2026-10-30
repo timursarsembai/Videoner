@@ -260,6 +260,15 @@ export class UserCookiesService {
     return { moved };
   }
 
+  // Первая из областей (по порядку важности), где для площадки есть рабочий
+  // вход, — или undefined. См. lib/cookie-scope.ts.
+  async pickScope(scopes: string[], platform: string | null): Promise<string | undefined> {
+    for (const scope of scopes) {
+      if (await this.hasActive(scope, platform)) return scope;
+    }
+    return undefined;
+  }
+
   async hasActive(scope: string | undefined, platform: string | null): Promise<boolean> {
     const p = cookiePlatformFor(platform);
     if (!scope || !p || !this.enabled() || !SCOPE_RE.test(scope)) return false;

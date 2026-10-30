@@ -214,7 +214,10 @@ export class DownloadController {
     @Req() req: Request,
   ) {
     // Подключённые людьми куки — только для бота (lib/bot-auth.ts).
-    if (!isBotRequest(req)) delete downloadDto.cookieScope;
+    if (!isBotRequest(req)) {
+      delete downloadDto.cookieScope;
+      delete downloadDto.cookieFallbackScope;
+    }
     return this.downloadService.downloadVideo(
       downloadDto.url,
       downloadDto.quality,
@@ -248,7 +251,10 @@ export class DownloadController {
     @Req() req: Request,
   ) {
     // Подключённые людьми куки — только для бота (lib/bot-auth.ts).
-    if (!isBotRequest(req)) delete downloadDto.cookieScope;
+    if (!isBotRequest(req)) {
+      delete downloadDto.cookieScope;
+      delete downloadDto.cookieFallbackScope;
+    }
     return this.downloadService.downloadAudio(
       downloadDto.url,
       downloadDto.quality,

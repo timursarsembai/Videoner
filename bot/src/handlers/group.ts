@@ -202,6 +202,9 @@ async function downloadInGroup(
     telegramLanguageCode: from.language_code,
     // Куки, подключённые к этой группе (handlers/accounts.ts), — только её.
     cookieScope: `chat:${chatId}`,
+    // У группы своего входа нет — ссылку того, кто её прислал, можно скачать
+    // его личным входом (сервер проверит, что вход именно его).
+    cookieFallbackScope: `user:${from.id}`,
   };
 
   let info: {

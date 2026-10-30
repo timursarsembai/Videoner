@@ -13,7 +13,7 @@ import { getVideoFormats } from 'src/lib/helper';
 import { AlertService } from '../alert/alert.service';
 import { BotUserService } from '../analytics/bot-user.service';
 import { UserCookiesService } from '../user-cookies/user-cookies.service';
-import { userCookieScope } from 'src/lib/cookie-scope';
+import { userCookieScopes } from 'src/lib/cookie-scope';
 import { userCookiesMayHelp } from 'src/lib/user-cookies';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
 import { listSubtitles } from 'src/lib/subtitles';
@@ -81,7 +81,7 @@ export class InfoService {
     }
 
     try {
-      const info = await this.fetchInfoWithUserCookies(url, platform, alerts, userCookieScope(dto));
+      const info = await this.fetchInfoWithUserCookies(url, platform, alerts, userCookieScopes(dto));
 
       const { allFormats, allExtensions } = this.getPlatformFormats(
         info,
@@ -144,13 +144,14 @@ export class InfoService {
     url: string,
     platform: string,
     alerts: boolean,
-    scope: string | undefined,
+    scopes: string[],
   ) {
     try {
       return await this.fetchInfoWithCookieFallback(url, platform, alerts);
     } catch (error) {
-      if (!scope || !userCookiesMayHelp(error instanceof Error ? error.message : String(error))) throw error;
-      if (!(await this.userCookies.hasActive(scope, platform))) throw error;
+      if (!scopes.length || !userCookiesMayHelp(error instanceof Error ? error.message : String(error))) throw error;
+      const scope = await this.userCookies.pickScope(scopes, platform);
+      if (!scope) throw error;
       const allowPhotos = PHOTO_PLATFORMS.includes(platform);
       const { result } = await this.userCookies.withScopeCookies(scope, platform, (cookies) =>
         this.ytdlp.getYtdlpVideoInfo(url, { allowPhotos, cookiesContent: cookies }),

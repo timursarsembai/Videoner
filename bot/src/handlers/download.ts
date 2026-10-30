@@ -139,6 +139,8 @@ type DownloadMeta = {
   // Где искать подключённые людьми куки (handlers/accounts.ts): user:<id>
   // или chat:<id>. Сервер берёт их, только если обычный путь не сработал.
   cookieScope?: string;
+  // В группе: личный вход отправителя, если у группы своего нет.
+  cookieFallbackScope?: string;
 };
 
 // Раньше рестарт/редеплой бота (docker-compose rm -sf bot, шлёт SIGTERM) молча

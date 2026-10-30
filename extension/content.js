@@ -12,14 +12,17 @@
   if (window.top !== window || window.__videonerButton) return;
   window.__videonerButton = true;
 
+  // Язык — как в окошке (shared.js): выбранный вручную (storage.local,
+  // uiLang) или язык браузера. Выбор читается асинхронно, поэтому сначала
+  // подпись по браузеру, потом — по выбору.
   const ui = chrome.i18n.getUILanguage().toLowerCase();
   const l = ui.startsWith("uk") ? "uk" : ui.startsWith("ru") ? "ru" : "en";
-  const LABEL = { ru: "Скачать", uk: "Завантажити", en: "Download" }[l];
-  const HIDE = {
+  const LABELS = { ru: "Скачать", uk: "Завантажити", en: "Download" };
+  const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
     en: "Hide the button for this video",
-  }[l];
+  };
   const PANEL_WIDTH = 360;
 
   const host = document.createElement("div");
@@ -74,9 +77,16 @@
 
   button.querySelector("img").alt = "";
   button.querySelector("img").src = chrome.runtime.getURL("icons/icon-48.png");
-  button.querySelector("span").textContent = LABEL;
-  hideButton.title = HIDE;
-  hideButton.setAttribute("aria-label", HIDE);
+  function applyLang(code) {
+    button.querySelector("span").textContent = LABELS[code];
+    hideButton.title = HIDES[code];
+    hideButton.setAttribute("aria-label", HIDES[code]);
+  }
+  applyLang(l);
+  chrome.storage.local
+    .get("uiLang")
+    .then(({ uiLang }) => uiLang in LABELS && applyLang(uiLang))
+    .catch(() => {});
 
   let currentHref = null;
   // Видео, для которого человек скрыл кнопку крестиком: до перехода к другому.

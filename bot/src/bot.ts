@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { Bot, InlineKeyboard } from "grammy";
-import { detectLang, messages, sitePath } from "./i18n.js";
+import { LANGS, messages, sitePath } from "./i18n.js";
+import { langOf } from "./language.js";
+import { COMMANDS, GROUP_COMMANDS } from "./commands.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
 import { registerAdminHandlers } from "./handlers/admin.js";
 import { registerMembershipHandlers } from "./handlers/membership.js";
@@ -10,6 +12,7 @@ import { openInvite } from "./handlers/invite.js";
 import { registerBlockedHandlers } from "./handlers/blocked.js";
 import { registerGroupHandlers, sendGroupWelcome } from "./handlers/group.js";
 import { registerAccountHandlers, showAccounts } from "./handlers/accounts.js";
+import { registerLanguageHandlers } from "./handlers/language.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -33,7 +36,7 @@ if (!API_KEY) {
 const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT } } : undefined);
 
 bot.command("start", async (ctx) => {
-  const lang = detectLang(ctx.from?.language_code);
+  const lang = await langOf(ctx);
   // В группе — как бот работает там (handlers/group.ts), а не инструкция для лички.
   if (ctx.chat.type !== "private") {
     await sendGroupWelcome(ctx);
@@ -59,7 +62,7 @@ bot.command("start", async (ctx) => {
 
 // Страница расширения для браузера на сайте.
 bot.command("extension", async (ctx) => {
-  const lang = detectLang(ctx.from?.language_code);
+  const lang = await langOf(ctx);
   const page = `https://videoner.download${sitePath(lang, "/extension")}`;
   await ctx.reply(messages[lang].extensionCommand, {
     reply_markup: new InlineKeyboard().url(messages[lang].extensionPageButton, page),
@@ -71,6 +74,9 @@ registerAdminHandlers(bot);
 // проглотил бы групповой обработчик текста (см. handlers/group.ts про
 // порядок), а код или куки, присланные в личку, — обработчик ссылок.
 registerAccountHandlers(bot);
+// /language и кнопки выбора языка — по той же причине до групп; кнопка
+// «Язык» из /settings (gs|lang) — раньше остальных кнопок настроек.
+registerLanguageHandlers(bot);
 // Группы — ДО обработчика блокировок и обработчика лички: оба слушают те же
 // типы обновлений (my_chat_member, message:text), а grammY останавливается на
 // первом совпадении. Групповой ловит только сообщения групп и дальше их не
@@ -109,58 +115,16 @@ process.on("SIGINT", () => void shutdownGracefully("SIGINT"));
 
 // Меню команд (кнопка «Меню» в чате). Ставим при каждом запуске — так оно
 // всегда совпадает с кодом; сбой не мешает боту работать.
-const COMMANDS = {
-  ru: [
-    { command: "start", description: "Как пользоваться ботом" },
-    { command: "extension", description: "Расширение для браузера" },
-    { command: "accounts", description: "Свои аккаунты для сторис и закрытых записей" },
-    { command: "connect", description: "Подключить аккаунт по коду из расширения" },
-  ],
-  uk: [
-    { command: "start", description: "Як користуватися ботом" },
-    { command: "extension", description: "Розширення для браузера" },
-    { command: "accounts", description: "Свої акаунти для сторіс і закритих дописів" },
-    { command: "connect", description: "Підключити акаунт за кодом із розширення" },
-  ],
-  en: [
-    { command: "start", description: "How to use the bot" },
-    { command: "extension", description: "Browser extension" },
-    { command: "accounts", description: "Your accounts for stories and private posts" },
-    { command: "connect", description: "Connect an account with a code from the extension" },
-  ],
-};
 void bot.api.setMyCommands(COMMANDS.en).catch((e) => console.error("setMyCommands:", e?.message ?? e));
-for (const lang of ["ru", "uk"] as const) {
+for (const lang of LANGS.filter((l) => l !== "en")) {
   void bot.api
     .setMyCommands(COMMANDS[lang], { language_code: lang })
     .catch((e) => console.error(`setMyCommands ${lang}:`, e?.message ?? e));
 }
-// В группах — своё меню: там бот работает сам, а админам нужна /settings
-// (handlers/group.ts).
-const GROUP_COMMANDS = {
-  ru: [
-    { command: "settings", description: "Настройки бота в группе (для админов)" },
-    { command: "accounts", description: "Аккаунты, подключённые к группе" },
-    { command: "connect", description: "Подключить аккаунт к группе по коду" },
-    { command: "start", description: "Как бот работает в группе" },
-  ],
-  uk: [
-    { command: "settings", description: "Налаштування бота в групі (для адмінів)" },
-    { command: "accounts", description: "Акаунти, підключені до групи" },
-    { command: "connect", description: "Підключити акаунт до групи за кодом" },
-    { command: "start", description: "Як бот працює в групі" },
-  ],
-  en: [
-    { command: "settings", description: "Bot settings for this group (admins)" },
-    { command: "accounts", description: "Accounts connected to this group" },
-    { command: "connect", description: "Connect an account to this group with a code" },
-    { command: "start", description: "How the bot works in a group" },
-  ],
-};
 void bot.api
   .setMyCommands(GROUP_COMMANDS.en, { scope: { type: "all_group_chats" } })
   .catch((e) => console.error("setMyCommands groups:", e?.message ?? e));
-for (const lang of ["ru", "uk"] as const) {
+for (const lang of LANGS.filter((l) => l !== "en")) {
   void bot.api
     .setMyCommands(GROUP_COMMANDS[lang], { scope: { type: "all_group_chats" }, language_code: lang })
     .catch((e) => console.error(`setMyCommands groups ${lang}:`, e?.message ?? e));

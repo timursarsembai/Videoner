@@ -4,6 +4,9 @@ import { PrismaService } from '../prisma/prisma.service';
 export const CAPTION_STYLES = ['full', 'short', 'none'] as const;
 export const QUALITY_MODES = ['standard', 'max'] as const;
 export const COOKIES_BY = ['admins', 'all'] as const;
+// Код языка бота ("uk", "kk"…). Какие языки есть, знает бот: сервер только
+// хранит код.
+export const LANGUAGE_CODE = /^[a-z]{2,3}$/;
 
 export type GroupSettingsView = {
   chatId: string;
@@ -12,6 +15,8 @@ export type GroupSettingsView = {
   quality: (typeof QUALITY_MODES)[number];
   longVideos: boolean;
   cookiesBy: (typeof COOKIES_BY)[number];
+  // null — каждому на его языке.
+  language: string | null;
 };
 
 export type GroupSettingsPatch = Partial<Omit<GroupSettingsView, 'chatId'>>;
@@ -22,6 +27,7 @@ const DEFAULTS: Omit<GroupSettingsView, 'chatId'> = {
   quality: 'standard',
   longVideos: false,
   cookiesBy: 'admins',
+  language: null,
 };
 
 @Injectable()
@@ -46,7 +52,14 @@ export class GroupSettingsService {
 
   private view(
     chatId: bigint,
-    s: { deleteLinks: boolean; caption: string; quality: string; longVideos: boolean; cookiesBy: string },
+    s: {
+      deleteLinks: boolean;
+      caption: string;
+      quality: string;
+      longVideos: boolean;
+      cookiesBy: string;
+      language: string | null;
+    },
   ): GroupSettingsView {
     return {
       // BigInt в JSON не сериализуется — отдаём строкой, как telegramId.
@@ -56,6 +69,7 @@ export class GroupSettingsService {
       quality: (QUALITY_MODES as readonly string[]).includes(s.quality) ? (s.quality as GroupSettingsView['quality']) : DEFAULTS.quality,
       longVideos: s.longVideos,
       cookiesBy: (COOKIES_BY as readonly string[]).includes(s.cookiesBy) ? (s.cookiesBy as GroupSettingsView['cookiesBy']) : DEFAULTS.cookiesBy,
+      language: s.language && LANGUAGE_CODE.test(s.language) ? s.language : null,
     };
   }
 }

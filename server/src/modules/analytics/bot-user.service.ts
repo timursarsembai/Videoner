@@ -54,6 +54,24 @@ export class BotUserService {
     return botUser;
   }
 
+  async getLanguage(telegramId: number): Promise<string | null> {
+    const row = await this.prisma.botUser.findUnique({
+      where: { telegramId: BigInt(telegramId) },
+      select: { language: true },
+    });
+    return row?.language ?? null;
+  }
+
+  // Выбор языка приходит из бота, когда человек ему уже писал, но запись
+  // могла ещё не появиться (её создаёт первое скачивание) — поэтому upsert.
+  async setLanguage(telegramId: number, language: string | null) {
+    await this.prisma.botUser.upsert({
+      where: { telegramId: BigInt(telegramId) },
+      create: { telegramId: BigInt(telegramId), language },
+      update: { language },
+    });
+  }
+
   // Человек заблокировал бота или разблокировал его. Событие для графиков
   // пишется только при смене состояния: Telegram может прислать то же самое
   // повторно. Смена и проверка — одним условным update, чтобы два

@@ -128,6 +128,9 @@ model BotUser {
   username          String?
   firstName         String?
   languageCode      String?
+  // Язык бота, выбранный человеком вручную (/language): код вроде "uk".
+  // null — по языку Telegram (languageCode).
+  language          String?
   // Безлимит выдаётся ТОЛЬКО вручную админом через /grant и срока не имеет.
   // Купить его нельзя: платных функций в сервисе нет.
   isUnlimited       Boolean           @default(false)
@@ -257,6 +260,9 @@ model GroupSettings {
   // Кто может подключать к группе свой вход на площадках (UserCookie):
   // admins — только администраторы, all — любой участник.
   cookiesBy   String   @default("admins")
+  // Язык ответов бота в группе. null — каждому на языке его Telegram (или
+  // выбранном им в /language).
+  language    String?
   updatedAt   DateTime @updatedAt
 }
 

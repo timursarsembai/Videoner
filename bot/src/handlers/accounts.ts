@@ -1,6 +1,7 @@
 import { readFile, unlink } from "node:fs/promises";
 import { Bot, Context, InlineKeyboard } from "grammy";
-import { detectLang, messages, type Lang } from "../i18n.js";
+import { messages, type Lang } from "../i18n.js";
+import { langOf, userLang } from "../language.js";
 import { api, BOT_API_ROOT } from "../helpers.js";
 import { cookieScopeFor, looksLikeCookiesText, parseConnectCode, platformLabel, rejectionReason } from "../accounts.js";
 import { isGroupAdmin, loadSettings } from "./group.js";
@@ -29,12 +30,14 @@ interface CookieView {
   active: boolean;
 }
 
-function owner(ctx: Context) {
+// lang — для уведомления «вход перестал работать», которое сервер пришлёт
+// владельцу в личку: на его языке, а не на языке группы.
+async function owner(ctx: Context) {
   const from = ctx.from!;
   return {
     telegramId: from.id,
     name: [from.first_name, from.last_name].filter(Boolean).join(" ") || (from.username ? `@${from.username}` : undefined),
-    lang: from.language_code,
+    lang: await userLang(from),
   };
 }
 
@@ -114,8 +117,8 @@ async function connect(
   try {
     const res =
       "code" in how
-        ? await api<{ platform: string }>("/user-cookies/claim", { code: how.code, scope, owner: owner(ctx) })
-        : await api<{ platform: string }>("/user-cookies/file", { raw: how.raw, scope, owner: owner(ctx) });
+        ? await api<{ platform: string }>("/user-cookies/claim", { code: how.code, scope, owner: await owner(ctx) })
+        : await api<{ platform: string }>("/user-cookies/file", { raw: how.raw, scope, owner: await owner(ctx) });
     await ctx.reply(m.connectDone(platformLabel(res.platform), where));
   } catch (e: any) {
     await ctx.reply(errorText(m, e));
@@ -148,7 +151,7 @@ async function readDocument(ctx: Context): Promise<string> {
 // Список подключений. Его же показывает /start accounts — ссылка «Мои
 // подключения» в окошке расширения (t.me/<бот>?start=accounts).
 export async function showAccounts(ctx: Context) {
-  const m = messages[detectLang(ctx.from?.language_code)];
+  const m = messages[await langOf(ctx)];
   if (ctx.chat?.type === "channel") return;
   try {
     const { text, keyboard } = await listFor(ctx, m);
@@ -162,7 +165,7 @@ export function registerAccountHandlers(bot: Bot) {
   bot.command("accounts", showAccounts);
 
   bot.command("connect", async (ctx) => {
-    const m = messages[detectLang(ctx.from?.language_code)];
+    const m = messages[await langOf(ctx)];
     if (ctx.chat.type === "channel" || !ctx.from) return;
     // Регистр не важен: команду с кодом человек набрал сознательно.
     const code = parseConnectCode(ctx.match.toUpperCase());
@@ -194,7 +197,7 @@ export function registerAccountHandlers(bot: Bot) {
   });
 
   bot.callbackQuery(/^ac\|/, async (ctx) => {
-    const m = messages[detectLang(ctx.from.language_code)];
+    const m = messages[await langOf(ctx)];
     const chat = ctx.chat;
     if (!chat) {
       await ctx.answerCallbackQuery();
@@ -234,7 +237,7 @@ export function registerAccountHandlers(bot: Bot) {
     const name = (doc.file_name ?? "").toLowerCase();
     // Не файл кук — не наше: пусть его увидят остальные обработчики.
     if (!name.endsWith(".txt") && !name.endsWith(".json") && doc.mime_type !== "text/plain") return next();
-    const m = messages[detectLang(ctx.from.language_code)];
+    const m = messages[await langOf(ctx)];
     if ((doc.file_size ?? 0) > MAX_COOKIES_FILE) {
       await ctx.reply(m.connectFileTooBig);
       return;
@@ -263,7 +266,7 @@ export function registerAccountHandlers(bot: Bot) {
     const text = ctx.message.text;
     const code = parseConnectCode(text, { strict: true });
     if (!code && !looksLikeCookiesText(text)) return next();
-    const m = messages[detectLang(ctx.from.language_code)];
+    const m = messages[await langOf(ctx)];
     if (code) {
       await connect(ctx, m, { code });
       return;

@@ -1,3 +1,4 @@
+import type { Lang } from "./i18n.js";
 // Очередь ссылок одного человека в одном чате.
 //
 // Зачем. Человек присылает несколько ссылок — одним сообщением или несколькими
@@ -53,7 +54,10 @@ export type Sender = {
   chatId: number;
   userId: number;
   username?: string;
+  // Как есть от Telegram — для статистики на сервере.
   languageCode?: string;
+  // Язык сообщений (language.ts: выбранный вручную или по Telegram).
+  lang: Lang;
 };
 
 export type OwnerState = Sender & {
@@ -99,6 +103,7 @@ export class LinkQueues {
       // Имя и язык берём свежие: человек мог сменить их между сообщениями.
       state.username = sender.username;
       state.languageCode = sender.languageCode;
+      state.lang = sender.lang;
     }
 
     const result: EnqueueResult = { startNow: null, queued: 0, waiting: 0, duplicates: 0, overLimit: 0 };

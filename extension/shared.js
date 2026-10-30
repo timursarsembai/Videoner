@@ -161,6 +161,8 @@ const TEXTS = {
       "Доступ к куки снят — расширение больше их не читает. Уже подключённые аккаунты остаются в боте: отключить их можно в «Мои подключения в боте».",
     updateAvailable: (v) => `Вышла новая версия ${v}.`,
     updateHow: "Как обновить",
+    langAuto: "Авто",
+    langLabel: "Язык",
   },
   uk: {
     loading: "Отримую інформацію про відео…",
@@ -228,6 +230,8 @@ const TEXTS = {
       "Доступ до куків знято — розширення більше їх не читає. Уже підключені акаунти лишаються в боті: вимкнути їх можна в «Мої підключення в боті».",
     updateAvailable: (v) => `Вийшла нова версія ${v}.`,
     updateHow: "Як оновити",
+    langAuto: "Авто",
+    langLabel: "Мова",
   },
   en: {
     loading: "Fetching video info…",
@@ -295,19 +299,50 @@ const TEXTS = {
       "Cookie access is revoked — the extension no longer reads them. Accounts you already connected stay in the bot: remove them in “My connections in the bot”.",
     updateAvailable: (v) => `Version ${v} is out.`,
     updateHow: "How to update",
+    langAuto: "Auto",
+    langLabel: "Language",
   },
 };
 
-// Язык браузера: русский, украинский, остальным — английский. Тот же выбор
-// делают content.js и getcourse.js (им модули недоступны).
-export const lang = pickLang(chrome.i18n.getUILanguage());
+// Язык окошка: выбранный вручную (список вверху окошка, хранится в
+// storage.local под LANG_KEY) или язык браузера — русский, украинский,
+// остальным английский. Тот же выбор делают content.js и getcourse.js (им
+// модули недоступны). lang и t — живые привязки: loadLang() меняет их до
+// первой отрисовки окошка.
+export const LANG_KEY = "uiLang";
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", en: "English" };
+export const browserLang = pickLang(chrome.i18n.getUILanguage());
+export let lang = browserLang;
+export let t = TEXTS[lang];
+
+// Страница сайта на текущем языке: английский — без префикса.
+export const sitePath = (path) => (lang === "en" ? path : `/${lang}${path}`);
+
 function pickLang(uiLanguage) {
   const code = uiLanguage.toLowerCase();
   return code.startsWith("uk") ? "uk" : code.startsWith("ru") ? "ru" : "en";
 }
-// Страница сайта на этом языке: английский — без префикса.
-export const sitePath = (path) => (lang === "en" ? path : `/${lang}${path}`);
-export const t = TEXTS[lang];
+
+export async function loadLang() {
+  const chosen = await chosenLang();
+  lang = chosen ?? browserLang;
+  t = TEXTS[lang];
+}
+
+// null — по языку браузера.
+export async function chosenLang() {
+  try {
+    const value = (await chrome.storage.local.get(LANG_KEY))[LANG_KEY];
+    return value in TEXTS ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function saveLang(value) {
+  if (value) await chrome.storage.local.set({ [LANG_KEY]: value });
+  else await chrome.storage.local.remove(LANG_KEY);
+}
 
 // Ошибки сервера приходят по-английски и техническим языком (часто это
 // текст yt-dlp). Порядок проверок повторяет friendlyError бота

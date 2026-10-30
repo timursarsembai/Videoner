@@ -79,7 +79,7 @@ export class NudgeService {
 
     let sent = 0;
     for (const user of users) {
-      const text = this.textFor(user.languageCode);
+      const text = this.textFor(user.language ?? user.languageCode);
       const result = await this.send(user.telegramId, text);
 
       if (result === 'retry') {

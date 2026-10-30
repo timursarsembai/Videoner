@@ -103,6 +103,8 @@ export type GroupSettings = {
   longVideos: boolean;
   // Кто может подключать к группе свой вход на площадках (handlers/accounts.ts).
   cookiesBy: "admins" | "all";
+  // Язык ответов в группе; null — каждому на его языке (language.ts).
+  language: string | null;
 };
 
 export const DEFAULT_GROUP_SETTINGS: GroupSettings = {
@@ -111,6 +113,7 @@ export const DEFAULT_GROUP_SETTINGS: GroupSettings = {
   quality: "standard",
   longVideos: false,
   cookiesBy: "admins",
+  language: null,
 };
 
 // Кнопка подписи перебирает варианты по кругу — так все настройки помещаются

@@ -4,6 +4,7 @@ import { Bot } from "grammy";
 import type { Update } from "grammy/types";
 import { registerGroupHandlers } from "./handlers/group.js";
 import { registerAccountHandlers } from "./handlers/accounts.js";
+import { registerLanguageHandlers } from "./handlers/language.js";
 
 // Порядок обработчиков в grammY проверяется только живой цепочкой: групповой
 // блок (bot.chatType) встаёт в неё в момент создания, и команда, объявленная
@@ -37,6 +38,7 @@ function makeBot() {
   });
   // Порядок — как в bot.ts.
   registerAccountHandlers(bot);
+  registerLanguageHandlers(bot);
   registerGroupHandlers(bot);
   return { bot, sent };
 }
@@ -86,6 +88,7 @@ function privateText(text: string): Update {
       chat: { id: 42, type: "private", first_name: "A" },
       from: { id: 42, is_bot: false, first_name: "A", language_code: "ru" },
       text,
+      entities: text.startsWith("/") ? [{ type: "bot_command", offset: 0, length: text.split(" ")[0].length }] : [],
     },
   } as Update;
 }
@@ -101,4 +104,38 @@ test("в личке код подключения перехватывается
   assert.ok(sent.some((s) => s.method === "sendMessage"));
   await bot.handleUpdate(privateText("просто текст"));
   assert.equal(passed, true, "обычный текст должен дойти до обработчика ссылок");
+});
+
+test("/language: в группе — язык группы, в личке — свой", async () => {
+  {
+    const { bot, sent } = makeBot();
+    await bot.handleUpdate(groupText("/language@VideonerBot"));
+    const reply = sent.find((s) => s.method === "sendMessage");
+    assert.match(reply?.payload.text ?? "", /в этой группе/);
+    const buttons = reply!.payload.reply_markup.inline_keyboard.flat().map((b: any) => b.callback_data);
+    assert.ok(buttons.includes("lg|g|uk") && buttons.includes("lg|g|auto"));
+  }
+  {
+    const { bot, sent } = makeBot();
+    await bot.handleUpdate(privateText("/language"));
+    const reply = sent.find((s) => s.method === "sendMessage");
+    const buttons = reply?.payload.reply_markup.inline_keyboard.flat().map((b: any) => b.callback_data) ?? [];
+    assert.ok(buttons.includes("lg|u|uk") && buttons.includes("lg|u|auto"));
+  }
+});
+
+test("кнопка «Язык» в /settings открывает выбор языка", async () => {
+  const { bot, sent } = makeBot();
+  await bot.handleUpdate({
+    update_id: 3,
+    callback_query: {
+      id: "c1",
+      chat_instance: "x",
+      data: "gs|lang",
+      from: { id: 42, is_bot: false, first_name: "A", language_code: "ru" },
+      message: { message_id: 7, date: 0, chat: { id: -100, type: "supergroup", title: "Тест" }, text: "⚙️" },
+    },
+  } as Update);
+  const edit = sent.find((s) => s.method === "editMessageText");
+  assert.match(edit?.payload.text ?? "", /в этой группе/);
 });

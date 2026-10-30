@@ -6,6 +6,15 @@ export function detectLang(languageCode?: string): Lang {
   return code.startsWith("ru") ? "ru" : "en";
 }
 
+// Языки, которые можно выбрать вручную (/language), в порядке кнопок.
+export const LANGS: Lang[] = ["ru", "uk", "en"];
+// Название языка на нём самом — так его узнает и тот, кто других не читает.
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", en: "English" };
+
+export function isLang(value: unknown): value is Lang {
+  return typeof value === "string" && (LANGS as string[]).includes(value);
+}
+
 // Путь страниц сайта на этом языке: английский — без префикса.
 export function sitePath(lang: Lang, path: string): string {
   return lang === "en" ? path : `/${lang}${path}`;
@@ -86,7 +95,14 @@ interface Messages {
   fileCaptionShort: (title: string, sourceUrl: string) => string;
   sentBy: (name: string) => string;
   groupSettings: (
-    s: { deleteLinks: boolean; caption: string; quality: string; longVideos: boolean; cookiesBy: string },
+    s: {
+      deleteLinks: boolean;
+      caption: string;
+      quality: string;
+      longVideos: boolean;
+      cookiesBy: string;
+      language: string | null;
+    },
     canDelete: boolean,
   ) => string;
   settingsDeleteButton: (on: boolean) => string;
@@ -148,6 +164,19 @@ interface Messages {
   subtitlesPreparing: string;
   subtitlesFailed: string;
   subtitlesBusy: string;
+  // Выбор языка (handlers/language.ts).
+  languageChoose: string;
+  languageChooseGroup: string;
+  languageAuto: string;
+  languageAutoGroup: string;
+  languageSaved: (name: string) => string;
+  languageSavedAuto: string;
+  settingsLanguageButton: (name: string | null) => string;
+  settingsBack: string;
+}
+
+function langName(code: string): string {
+  return isLang(code) ? LANGUAGE_NAMES[code] : code;
 }
 
 // Строка «Поделиться» — только если влезает в лимит подписи Telegram (1024
@@ -161,7 +190,7 @@ function withShareLine(caption: string, shareLine: string | undefined): string {
 }
 
 const ru: Messages = {
-  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.\n\n🧩 Качаете на компьютере? Поставьте расширение для браузера — кнопка «Скачать» появится прямо на странице видео: videoner.download/ru/extension\n\n👥 Добавьте меня в группу — буду сам присылать видео по ссылкам, которые там публикуют.",
+  start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.\n\n🧩 Качаете на компьютере? Поставьте расширение для браузера — кнопка «Скачать» появится прямо на странице видео: videoner.download/ru/extension\n\n👥 Добавьте меня в группу — буду сам присылать видео по ссылкам, которые там публикуют.\n\n🌐 Язык бота: /language",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
   inviteGreeting: "Привет! Я Videoner — бесплатно скачиваю видео из YouTube, TikTok, Instagram и других площадок. Сейчас подготовлю видео, которым с тобой поделились 👇",
   inviteNotFound: "Не нашёл видео по этой ссылке-приглашению. Пришли мне ссылку на видео — и я его скачаю.",
@@ -263,6 +292,7 @@ const ru: Messages = {
     `\n🎞 Качество: ${s.quality === "max" ? "максимальное, которое пропускает Telegram" : "обычное (720p)"}\n` +
     `\n⏱ Длинные видео: ${s.longVideos ? "качаю любой длины" : "только до 15 минут"}\n` +
     `\n🔑 Подключать свои аккаунты (для сторис и закрытых записей): ${s.cookiesBy === "all" ? "любой участник" : "только администраторы"}\n` +
+    `\n🌐 Язык ответов: ${s.language ? langName(s.language) : "каждому — на его языке"}\n` +
     "\nМенять настройки могут только администраторы группы.",
   settingsDeleteButton: (on) => `🗑 Удалять ссылки: ${on ? "да" : "нет"}`,
   settingsCaptionButton: (style) =>
@@ -311,7 +341,7 @@ const ru: Messages = {
     "Код подключения в общем чате могут подсмотреть — я его уничтожил и убрал сообщение. Получите новый и отправьте командой /connect КОД: сообщение с командой я удаляю сразу.",
   groupWelcome:
     "👋 Привет! Присылайте в чат ссылки на видео из TikTok, Instagram, YouTube, VK и других площадок — я отвечу самим видео.\n\n" +
-    "Ролики до 15 минут скачиваю сам, без команд. На остальные сообщения не отвечаю.\n\n⚙️ Админы группы могут настроить меня командой /settings: удалять сообщения со ссылками, вид подписи, качество и длинные видео.",
+    "Ролики до 15 минут скачиваю сам, без команд. На остальные сообщения не отвечаю.\n\n⚙️ Админы группы могут настроить меня командой /settings: удалять сообщения со ссылками, вид подписи, качество, длинные видео и язык.",
   errorTooLong: "видео слишком длинное — такие мы пока не скачиваем.",
   errorUnknown: "не удалось скачать это видео. Попробуй ещё раз чуть позже или пришли другую ссылку.",
   inlineHintButton: "Отправьте ссылку боту",
@@ -348,10 +378,18 @@ const ru: Messages = {
   subtitlesPreparing: "📝 Готовлю субтитры...",
   subtitlesFailed: "Не получилось скачать субтитры на этом языке. Попробуйте другой язык.",
   subtitlesBusy: "YouTube сейчас не отдаёт субтитры — попробуйте через несколько минут.",
+  languageChoose: "🌐 Выберите язык бота. «Авто» — как в вашем Telegram.",
+  languageChooseGroup: "🌐 Язык ответов бота в этой группе. «Авто» — каждому на языке его Telegram.",
+  languageAuto: "Авто — как в Telegram",
+  languageAutoGroup: "Авто — каждому на его языке",
+  languageSaved: (name) => `✅ Язык бота: ${name}. Сменить — /language.`,
+  languageSavedAuto: "✅ Язык бота — как в вашем Telegram. Сменить — /language.",
+  settingsLanguageButton: (name) => `🌐 Язык: ${name ?? "авто"}`,
+  settingsBack: "⬅️ Назад к настройкам",
 };
 
 const en: Messages = {
-  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ No quality limits: you get whatever the platform offers, up to 4K — as long as the file fits in 2 GB, Telegram's limit for bots. There are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.\n\n🧩 Downloading on a computer? Install the browser extension — a Download button appears right on the video page: videoner.download/extension\n\n👥 Add me to a group and I'll post the videos for the links people share there.",
+  start: "Hi! Send me a link to a video from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads — I'll help you download it.\n\n✨ No quality limits: you get whatever the platform offers, up to 4K — as long as the file fits in 2 GB, Telegram's limit for bots. There are no paid features here.\n\nCompletely free: no subscriptions, no ads, no in-app purchases.\n\n🧩 Downloading on a computer? Install the browser extension — a Download button appears right on the video page: videoner.download/extension\n\n👥 Add me to a group and I'll post the videos for the links people share there.\n\n🌐 Bot language: /language",
   notLink: "That doesn't look like a link. Send me a video link.",
   inviteGreeting: "Hi! I'm Videoner — I download videos from YouTube, TikTok, Instagram and other platforms for free. Getting the video someone shared with you ready 👇",
   inviteNotFound: "I couldn't find a video for this invite link. Send me a video link and I'll download it.",
@@ -448,6 +486,7 @@ const en: Messages = {
     `\n🎞 Quality: ${s.quality === "max" ? "the highest Telegram accepts" : "standard (720p)"}\n` +
     `\n⏱ Long videos: ${s.longVideos ? "any length" : "up to 15 minutes only"}\n` +
     `\n🔑 Who can connect their accounts (for stories and private posts): ${s.cookiesBy === "all" ? "any member" : "admins only"}\n` +
+    `\n🌐 Reply language: ${s.language ? langName(s.language) : "each member's own"}\n` +
     "\nOnly group admins can change the settings.",
   settingsDeleteButton: (on) => `🗑 Delete links: ${on ? "yes" : "no"}`,
   settingsCaptionButton: (style) => `✍️ Caption: ${{ full: "full", short: "short", none: "none" }[style] ?? style}`,
@@ -495,7 +534,7 @@ const en: Messages = {
     "A connection code posted in the group chat can be seen by others — I destroyed it and removed the message. Get a new one and send it with /connect CODE: I delete that command message right away.",
   groupWelcome:
     "👋 Hi! Post links to videos from TikTok, Instagram, YouTube, VK and other platforms in this chat — I'll reply with the video itself.\n\n" +
-    "I download clips up to 15 minutes on my own, no commands needed, and stay quiet otherwise.\n\n⚙️ Group admins can tune me with /settings: delete link messages, caption style, quality and long videos.",
+    "I download clips up to 15 minutes on my own, no commands needed, and stay quiet otherwise.\n\n⚙️ Group admins can tune me with /settings: delete link messages, caption style, quality, long videos and language.",
   errorTooLong: "the video is too long — we can't download videos that long yet.",
   errorUnknown: "couldn't download this video. Try again a bit later or send another link.",
   inlineHintButton: "Send a link to the bot",
@@ -532,10 +571,18 @@ const en: Messages = {
   subtitlesPreparing: "📝 Preparing subtitles...",
   subtitlesFailed: "Couldn't download subtitles in this language. Try another language.",
   subtitlesBusy: "YouTube is not serving subtitles right now — try again in a few minutes.",
+  languageChoose: "🌐 Choose the bot's language. \"Auto\" follows your Telegram.",
+  languageChooseGroup: "🌐 The bot's reply language in this group. \"Auto\" — each member's Telegram language.",
+  languageAuto: "Auto — as in Telegram",
+  languageAutoGroup: "Auto — each member's own",
+  languageSaved: (name) => `✅ Bot language: ${name}. Change it with /language.`,
+  languageSavedAuto: "✅ The bot follows your Telegram language. Change it with /language.",
+  settingsLanguageButton: (name) => `🌐 Language: ${name ?? "auto"}`,
+  settingsBack: "⬅️ Back to settings",
 };
 
 const uk: Messages = {
-  start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.",
+  start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
   inviteGreeting: "Привіт! Я Videoner — безкоштовно завантажую відео з YouTube, TikTok, Instagram та інших платформ. Зараз підготую відео, яким із тобою поділилися 👇",
   inviteNotFound: "Не знайшов відео за цим посиланням-запрошенням. Надішли мені посилання на відео — і я його завантажу.",
@@ -632,6 +679,7 @@ const uk: Messages = {
     `\n🎞 Якість: ${s.quality === "max" ? "максимальна, яку пропускає Telegram" : "звичайна (720p)"}\n` +
     `\n⏱ Довгі відео: ${s.longVideos ? "завантажую будь-якої тривалості" : "лише до 15 хвилин"}\n` +
     `\n🔑 Підключати свої акаунти (для сторіс і закритих дописів): ${s.cookiesBy === "all" ? "будь-який учасник" : "лише адміністратори"}\n` +
+    `\n🌐 Мова відповідей: ${s.language ? langName(s.language) : "кожному — його мовою"}\n` +
     "\nЗмінювати налаштування можуть лише адміністратори групи.",
   settingsDeleteButton: (on) => `🗑 Видаляти посилання: ${on ? "так" : "ні"}`,
   settingsCaptionButton: (style) =>
@@ -680,7 +728,7 @@ const uk: Messages = {
     "Код підключення в загальному чаті можуть підгледіти — я його знищив і прибрав повідомлення. Отримайте новий і надішліть командою /connect КОД: повідомлення з командою я видаляю одразу.",
   groupWelcome:
     "👋 Привіт! Надсилайте в чат посилання на відео з TikTok, Instagram, YouTube, VK та інших платформ — я відповім самим відео.\n\n" +
-    "Ролики до 15 хвилин завантажую сам, без команд. На інші повідомлення не відповідаю.\n\n⚙️ Адміни групи можуть налаштувати мене командою /settings: видаляти повідомлення з посиланнями, вигляд підпису, якість і довгі відео.",
+    "Ролики до 15 хвилин завантажую сам, без команд. На інші повідомлення не відповідаю.\n\n⚙️ Адміни групи можуть налаштувати мене командою /settings: видаляти повідомлення з посиланнями, вигляд підпису, якість, довгі відео й мову.",
   errorTooLong: "відео задовге — такі ми поки не завантажуємо.",
   errorUnknown: "не вдалося завантажити це відео. Спробуй ще раз трохи пізніше або надішли інше посилання.",
   inlineHintButton: "Надішліть посилання боту",
@@ -717,6 +765,14 @@ const uk: Messages = {
   subtitlesPreparing: "📝 Готую субтитри...",
   subtitlesFailed: "Не вдалося завантажити субтитри цією мовою. Спробуйте іншу мову.",
   subtitlesBusy: "YouTube зараз не віддає субтитри — спробуйте за кілька хвилин.",
+  languageChoose: "🌐 Оберіть мову бота. «Авто» — як у вашому Telegram.",
+  languageChooseGroup: "🌐 Мова відповідей бота в цій групі. «Авто» — кожному мовою його Telegram.",
+  languageAuto: "Авто — як у Telegram",
+  languageAutoGroup: "Авто — кожному його мовою",
+  languageSaved: (name) => `✅ Мова бота: ${name}. Змінити — /language.`,
+  languageSavedAuto: "✅ Мова бота — як у вашому Telegram. Змінити — /language.",
+  settingsLanguageButton: (name) => `🌐 Мова: ${name ?? "авто"}`,
+  settingsBack: "⬅️ Назад до налаштувань",
 };
 
 export const messages: Record<Lang, Messages> = { ru, uk, en };

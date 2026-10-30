@@ -83,8 +83,9 @@
   function addButton() {
     const ui = chrome.i18n.getUILanguage().toLowerCase();
     const l = ui.startsWith("uk") ? "uk" : ui.startsWith("ru") ? "ru" : "en";
-    const LABEL = { ru: "Скачать", uk: "Завантажити", en: "Download" }[l];
-    const HIDE = { ru: "Скрыть кнопку", uk: "Сховати кнопку", en: "Hide the button" }[l];
+    // Язык — как в content.js: сначала по браузеру, потом по выбору в окошке.
+    const LABELS = { ru: "Скачать", uk: "Завантажити", en: "Download" };
+    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", en: "Hide the button" };
     const PANEL_WIDTH = 340;
 
     const host = document.createElement("div");
@@ -125,14 +126,25 @@
     icon.alt = "";
     icon.src = chrome.runtime.getURL("icons/icon-32.png");
     const label = document.createElement("span");
-    label.textContent = LABEL;
+    label.textContent = LABELS[l];
     button.append(icon, label);
     const hideButton = document.createElement("button");
     hideButton.className = "hide";
     hideButton.type = "button";
     hideButton.textContent = "×";
-    hideButton.title = HIDE;
-    hideButton.setAttribute("aria-label", HIDE);
+    const applyHide = (code) => {
+      hideButton.title = HIDES[code];
+      hideButton.setAttribute("aria-label", HIDES[code]);
+    };
+    applyHide(l);
+    chrome.storage.local
+      .get("uiLang")
+      .then(({ uiLang }) => {
+        if (!(uiLang in LABELS)) return;
+        label.textContent = LABELS[uiLang];
+        applyHide(uiLang);
+      })
+      .catch(() => {});
     const panel = document.createElement("iframe");
     panel.className = "panel";
     panel.title = "Videoner";

@@ -62,8 +62,19 @@ body.embed {
   font-weight: 600;
 }
 
-.close {
+/* Выбор языка окошка (popup.js mountLanguagePicker). */
+.lang {
   margin-left: auto;
+  padding: 2px 4px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+}
+
+.close {
   width: 28px;
   height: 28px;
   border: none;

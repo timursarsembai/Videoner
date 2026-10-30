@@ -13,6 +13,12 @@ import {
   isPlatformUrl,
   jobKey,
   sitePath,
+  lang,
+  loadLang,
+  chosenLang,
+  saveLang,
+  browserLang,
+  LANG_NAMES,
   session,
   setJob,
   t,
@@ -403,7 +409,28 @@ function render(job) {
   }
 }
 
+// Список языков вверху окошка: «Авто» — по языку браузера. После выбора
+// окошко перерисовывается заново — так проще, чем менять тексты на месте.
+async function mountLanguagePicker() {
+  const select = document.getElementById("lang");
+  select.setAttribute("aria-label", t.langLabel);
+  const current = await chosenLang();
+  const options = [["", `${t.langAuto} (${LANG_NAMES[browserLang]})`], ...Object.entries(LANG_NAMES)];
+  select.replaceChildren(
+    ...options.map(([value, name]) =>
+      Object.assign(document.createElement("option"), { value, textContent: name, selected: value === (current ?? "") })
+    )
+  );
+  select.addEventListener("change", async () => {
+    await saveLang(select.value || null).catch(() => {});
+    location.reload();
+  });
+}
+
 async function main() {
+  await loadLang();
+  document.documentElement.lang = lang;
+  void mountLanguagePicker();
   // Ход скачивания пишет background.js — окошко просто перерисовывается.
   session.onChanged(async (changes) => {
     // null — связь с фоновой частью восстановлена (Firefox, см. shared.js):

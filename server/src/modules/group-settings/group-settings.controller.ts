@@ -5,6 +5,7 @@ import {
   COOKIES_BY,
   GroupSettingsPatch,
   GroupSettingsService,
+  LANGUAGE_CODE,
   QUALITY_MODES,
 } from './group-settings.service';
 
@@ -49,6 +50,12 @@ export class GroupSettingsController {
     if (body?.cookiesBy !== undefined) {
       if (!(COOKIES_BY as readonly unknown[]).includes(body.cookiesBy)) throw new BadRequestException('Invalid cookiesBy');
       patch.cookiesBy = body.cookiesBy as GroupSettingsPatch['cookiesBy'];
+    }
+    if (body?.language !== undefined) {
+      if (body.language !== null && !(typeof body.language === 'string' && LANGUAGE_CODE.test(body.language))) {
+        throw new BadRequestException('Invalid language');
+      }
+      patch.language = body.language as string | null;
     }
     if (body?.caption !== undefined) {
       if (!(CAPTION_STYLES as readonly unknown[]).includes(body.caption)) throw new BadRequestException('Invalid caption');

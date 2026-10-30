@@ -1,5 +1,6 @@
 import { Bot, InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
-import { detectLang, messages, type Lang } from "../i18n.js";
+import { messages, type Lang } from "../i18n.js";
+import { userLang } from "../language.js";
 import {
   ADMIN_TELEGRAM_ID,
   API_URL,
@@ -50,7 +51,7 @@ function pickQuality(available: string[], sizes: Record<string, number> = {}): s
 
 export function registerInlineHandlers(bot: Bot) {
   bot.on("inline_query", async (ctx) => {
-    const lang = detectLang(ctx.from?.language_code);
+    const lang = await userLang(ctx.from);
     const m = messages[lang];
     const url = ctx.inlineQuery.query.trim();
 
@@ -93,7 +94,7 @@ export function registerInlineHandlers(bot: Bot) {
     const chosen = ctx.chosenInlineResult;
     const inlineMessageId = chosen.inline_message_id;
     const url = chosen.query.trim();
-    const lang = detectLang(ctx.from?.language_code);
+    const lang = await userLang(ctx.from);
     const m = messages[lang];
 
     if (!inlineMessageId) {

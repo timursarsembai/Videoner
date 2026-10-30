@@ -1,5 +1,6 @@
 import { Api, Bot, Context, InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
-import { detectLang, messages, type Lang } from "../i18n.js";
+import { messages, type Lang } from "../i18n.js";
+import { langOf } from "../language.js";
 import {
   api,
   getQuotaInfo,
@@ -167,7 +168,7 @@ export async function notifyActiveDownloadsBeforeShutdown(bot: Bot) {
   for (const [, state] of queues.entries()) {
     const lost = state.pending.length + (state.current && state.current.phase !== "downloading" ? 1 : 0);
     if (!lost) continue;
-    const lang = detectLang(state.languageCode);
+    const lang = state.lang;
     notices.push(
       bot.api
         .sendMessage(state.chatId, messages[lang].queueLostOnRestart(lost))
@@ -594,7 +595,7 @@ async function sendSubtitles(ctx: Context, key: string, current: Current, track:
 
 // true — клавиатура показана, ждём нажатия. false — ссылку надо пропустить.
 async function showChoice(tg: Api, key: string, state: OwnerState, current: Current): Promise<boolean> {
-  const lang = detectLang(state.languageCode);
+  const lang = state.lang;
   const m = messages[lang];
   let messageId: number | undefined;
   try {
@@ -678,7 +679,7 @@ async function skipByTimeout(tg: Api, key: string, token: number) {
   if (messageId) {
     // Новый текст без reply_markup заодно убирает клавиатуру.
     await tg
-      .editMessageText(state.chatId, messageId, messages[detectLang(state.languageCode)].chooseTimedOut)
+      .editMessageText(state.chatId, messageId, messages[state.lang].chooseTimedOut)
       .catch((e) => console.error("Не удалось отметить пропуск:", e?.message ?? e));
   }
   await showNextChoice(tg, key);
@@ -695,7 +696,7 @@ async function skipByTimeout(tg: Api, key: string, token: number) {
 // повторить не может.
 export async function handleLinks(ctx: Context, urls: string[], { resumed = false } = {}) {
   if (!ctx.from || !ctx.chat) return;
-  const lang = detectLang(ctx.from.language_code);
+  const lang = await langOf(ctx);
   const m = messages[lang];
 
   if (!resumed && ctx.from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(ctx.from.id)) {
@@ -715,6 +716,7 @@ export async function handleLinks(ctx: Context, urls: string[], { resumed = fals
       userId: ctx.from.id,
       username: ctx.from.username,
       languageCode: ctx.from.language_code,
+      lang,
     },
     urls,
   );
@@ -734,7 +736,7 @@ export async function handleLinks(ctx: Context, urls: string[], { resumed = fals
 
 export function registerDownloadHandlers(bot: Bot) {
   bot.on("message:text", async (ctx) => {
-    const lang = detectLang(ctx.from?.language_code);
+    const lang = await langOf(ctx);
     const m = messages[lang];
     // Без отправителя очередь не к кому привязать (служебные сообщения групп).
     if (!ctx.from) return;
@@ -747,7 +749,7 @@ export function registerDownloadHandlers(bot: Bot) {
   });
 
   bot.on("callback_query:data", async (ctx) => {
-    const lang = detectLang(ctx.from?.language_code);
+    const lang = await langOf(ctx);
     const m = messages[lang];
     const chatId = ctx.chat?.id;
     const messageId = ctx.callbackQuery.message?.message_id;

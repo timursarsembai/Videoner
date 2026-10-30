@@ -4,7 +4,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { LinkQueues, QUEUE_LIMIT, extractUrls } from "./queue.js";
 
-const me = { chatId: 1, userId: 7 };
+const me = { chatId: 1, userId: 7, lang: "en" as const };
 const key = LinkQueues.key(1, 7);
 
 test("первая ссылка начинается сразу, остальные ждут своей очереди", () => {
@@ -70,7 +70,7 @@ test("у разных людей очереди свои", () => {
   const q = new LinkQueues();
   q.enqueue(key, me, ["https://a"]);
   const other = LinkQueues.key(1, 8);
-  const r = q.enqueue(other, { chatId: 1, userId: 8 }, ["https://a"]);
+  const r = q.enqueue(other, { chatId: 1, userId: 8, lang: "en" as const }, ["https://a"]);
   assert.equal(r.startNow, "https://a");
   assert.equal(r.duplicates, 0);
 });

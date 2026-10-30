@@ -1,5 +1,7 @@
 import { Bot, Context, InlineKeyboard } from "grammy";
-import { detectLang, messages, type Lang } from "../i18n.js";
+import { LANGUAGE_NAMES, isLang, messages, type Lang } from "../i18n.js";
+import { langOf } from "../language.js";
+import { loadSettings, saveSettings } from "../settings-store.js";
 import {
   ADMIN_TELEGRAM_ID,
   BOT_FILE_LIMIT,
@@ -14,7 +16,6 @@ import {
   DEFAULT_GROUP_SETTINGS,
   GROUP_LINKS_PER_MESSAGE,
   GroupLimiter,
-  SettingsCache,
   isVideoHostUrl,
   nextCaption,
   onlyLinks,
@@ -55,29 +56,8 @@ const limiter = new GroupLimiter(GROUP_HOURLY_LIMIT);
 // этого служебного бота, а настоящий отправитель — сама группа в sender_chat.
 const ANONYMOUS_ADMIN_ID = 1087968824;
 
-const settingsCache = new SettingsCache();
-
-export async function loadSettings(chatId: number): Promise<GroupSettings> {
-  const cached = settingsCache.get(chatId);
-  if (cached) return cached;
-  try {
-    const s = await api<GroupSettings>(`/group-settings/${chatId}`);
-    const value = { ...DEFAULT_GROUP_SETTINGS, ...s };
-    settingsCache.set(chatId, value);
-    return value;
-  } catch (e: any) {
-    // Сервер недоступен — работаем по умолчанию, а не молчим в группе.
-    console.error(`Группа ${chatId}: настройки не загрузились:`, e?.message ?? e);
-    return DEFAULT_GROUP_SETTINGS;
-  }
-}
-
-async function saveSettings(chatId: number, patch: Partial<GroupSettings>): Promise<GroupSettings> {
-  const s = await api<GroupSettings>(`/group-settings/${chatId}`, patch);
-  const value = { ...DEFAULT_GROUP_SETTINGS, ...s };
-  settingsCache.set(chatId, value);
-  return value;
-}
+// Хранилище настроек — settings-store.ts: им пользуется и выбор языка.
+export { loadSettings };
 
 export async function isGroupAdmin(ctx: Context): Promise<boolean> {
   const chat = ctx.chat;
@@ -157,7 +137,7 @@ export async function sendGroupWelcome(ctx: Context) {
   lastWelcome.set(chatId, now);
   if (lastWelcome.size > 10_000) lastWelcome.clear();
   await ctx
-    .reply(messages[detectLang(ctx.from?.language_code)].groupWelcome)
+    .reply(messages[await langOf(ctx)].groupWelcome)
     .catch((e) => console.error(`Не удалось поздороваться в группе ${chatId}:`, e?.message ?? e));
 }
 
@@ -176,7 +156,18 @@ function settingsKeyboard(m: (typeof messages)[Lang], s: GroupSettings): InlineK
     .row()
     .text(m.settingsCookiesButton(s.cookiesBy), "gs|ck")
     .row()
+    .text(m.settingsLanguageButton(isLang(s.language) ? LANGUAGE_NAMES[s.language] : null), "gs|lang")
+    .row()
     .text(m.settingsDoneButton, "gs|done");
+}
+
+// Текст и кнопки /settings — и для возврата из выбора языка (handlers/language.ts).
+export async function settingsMessage(ctx: Context, s: GroupSettings) {
+  const m = messages[await langOf(ctx)];
+  return {
+    text: m.groupSettings(s, await botCanDelete(ctx, { fresh: true })),
+    reply_markup: settingsKeyboard(m, s),
+  };
 }
 
 function senderName(ctx: Context): string {
@@ -194,7 +185,7 @@ async function downloadInGroup(
 ): Promise<boolean> {
   const from = ctx.from!;
   const chatId = ctx.chat!.id;
-  const lang = detectLang(from.language_code);
+  const lang = await langOf(ctx);
   const m = messages[lang];
   const meta = {
     telegramId: from.id,
@@ -284,7 +275,7 @@ export function registerGroupHandlers(bot: Bot) {
   // Групповой обработчик текста дальше ничего не передаёт, и команда до
   // своего обработчика не доходила.
   bot.command("settings", async (ctx) => {
-    const m = messages[detectLang(ctx.from?.language_code)];
+    const m = messages[await langOf(ctx)];
     if (ctx.chat.type === "private" || ctx.chat.type === "channel") {
       await ctx.reply(m.settingsGroupsOnly);
       return;
@@ -320,7 +311,7 @@ export function registerGroupHandlers(bot: Bot) {
   // Кнопки /settings. Регистрируются до общего обработчика кнопок лички
   // (handlers/download.ts) — тот ответил бы «сессия устарела».
   groups.callbackQuery(/^gs\|/, async (ctx) => {
-    const m = messages[detectLang(ctx.from.language_code)];
+    const m = messages[await langOf(ctx)];
     if (!(await isGroupAdmin(ctx))) {
       await ctx.answerCallbackQuery({ text: m.settingsAdminsOnly, show_alert: true });
       return;
@@ -379,7 +370,7 @@ export function registerGroupHandlers(bot: Bot) {
       void (async () => {
         await api("/user-cookies/burn", { code: leakedCode }).catch(() => {});
         await ctx.deleteMessage().catch(() => {});
-        await ctx.reply(messages[detectLang(from.language_code)].connectCodeInGroup).catch(() => {});
+        await ctx.reply(messages[await langOf(ctx)].connectCodeInGroup).catch(() => {});
       })();
       return;
     }
@@ -401,7 +392,7 @@ export function registerGroupHandlers(bot: Bot) {
       if (!quota.unlimited && quota.remaining <= 0) {
         if (firstLimitNoticeToday(chatId, from.id)) {
           await ctx
-            .reply(messages[detectLang(from.language_code)].dailyLimitReached, {
+            .reply(messages[await langOf(ctx)].dailyLimitReached, {
               reply_parameters: { message_id: messageId, allow_sending_without_reply: true },
             })
             .catch((e) => console.error(`Группа ${chatId}: не удалось сообщить о лимите:`, e?.message ?? e));
@@ -442,8 +433,8 @@ export function registerGroupHandlers(bot: Bot) {
     const newChatId = ctx.message.migrate_to_chat_id;
     try {
       const old = await api<GroupSettings>(`/group-settings/${ctx.chat.id}`);
-      const { deleteLinks, caption, quality, longVideos, cookiesBy } = { ...DEFAULT_GROUP_SETTINGS, ...old };
-      await saveSettings(newChatId, { deleteLinks, caption, quality, longVideos, cookiesBy });
+      const { deleteLinks, caption, quality, longVideos, cookiesBy, language } = { ...DEFAULT_GROUP_SETTINGS, ...old };
+      await saveSettings(newChatId, { deleteLinks, caption, quality, longVideos, cookiesBy, language });
     } catch (e: any) {
       console.error(`Группа ${ctx.chat.id} → ${newChatId}: настройки не перенесены:`, e?.message ?? e);
     }

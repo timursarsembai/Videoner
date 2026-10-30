@@ -1,5 +1,6 @@
 import { Bot, Context, InlineKeyboard } from "grammy";
-import { detectLang, messages, type Lang } from "../i18n.js";
+import { messages, type Lang } from "../i18n.js";
+import { langOf } from "../language.js";
 import { ADMIN_TELEGRAM_ID } from "../helpers.js";
 import { SHARE_CHANNEL } from "./share.js";
 
@@ -98,7 +99,7 @@ export function registerMembershipHandlers(
   resumeLinks: (ctx: Context, urls: string[]) => Promise<void>,
 ) {
   bot.callbackQuery("sub|check", async (ctx) => {
-    const lang = detectLang(ctx.from?.language_code);
+    const lang = await langOf(ctx);
     const m = messages[lang];
     if (await isChannelMember(ctx, ctx.from?.id)) {
       await ctx.answerCallbackQuery();

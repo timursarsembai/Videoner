@@ -7,7 +7,10 @@ import {
   Param,
   Post,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
+import { BotOnlyGuard } from 'src/lib/bot-auth';
+import { LANGUAGE_CODE } from '../group-settings/group-settings.service';
 import { ApiTags } from '@nestjs/swagger';
 import { createHash, createHmac, timingSafeEqual } from 'crypto';
 import { BotUserService } from './bot-user.service';
@@ -20,6 +23,12 @@ const MAX_AUTH_AGE_SECONDS = 24 * 60 * 60;
 // Отдельно от AnalyticsController: тот целиком @AdminOnly(), а сюда ходит веб
 // от лица любого пользователя — доверенная граница та же, что и у /download/*:
 // валидный shared API-ключ.
+function parseTelegramId(raw: string): number {
+  const id = Number(raw);
+  if (!/^\d{1,16}$/.test(raw) || !Number.isSafeInteger(id)) throw new BadRequestException('Invalid telegramId');
+  return id;
+}
+
 @ApiTags('BotUsers')
 @Controller('bot-users')
 export class BotUserController {
@@ -67,6 +76,26 @@ export class BotUserController {
     }
     await this.botUserService.setBlocked(body.telegramId as number, body.blocked, 'telegram');
     return { ok: true };
+  }
+
+  // Язык бота, выбранный вручную (/language в боте). Только для бота: иначе
+  // любой с API-ключом сайта переключал бы язык чужим людям.
+  @Get(':telegramId/language')
+  @UseGuards(BotOnlyGuard)
+  async getLanguage(@Param('telegramId') telegramId: string) {
+    return { language: await this.botUserService.getLanguage(parseTelegramId(telegramId)) };
+  }
+
+  // language: код ("uk") или null — снова по языку Telegram.
+  @Post(':telegramId/language')
+  @UseGuards(BotOnlyGuard)
+  async setLanguage(@Param('telegramId') telegramId: string, @Body() body: { language?: unknown }) {
+    const language = body?.language ?? null;
+    if (language !== null && !(typeof language === 'string' && LANGUAGE_CODE.test(language))) {
+      throw new BadRequestException('Invalid language');
+    }
+    await this.botUserService.setLanguage(parseTelegramId(telegramId), language as string | null);
+    return { language };
   }
 
   // Для обновления профиля на сайте (GET /api/auth/me) без повторной проверки

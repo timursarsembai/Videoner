@@ -9,7 +9,7 @@ import { legal } from "@/lib/legal/documents";
 import { LEGAL_SLUGS } from "@/lib/legal/types";
 
 // Раньше был захардкожен буквально "VideonerBot" — рассинхрон с остальным
-// сайтом (UserMenu.tsx, VideoInfo.tsx), которые читают из env: при смене
+// сайтом (VideoInfo.tsx), который читает из env: при смене
 // бота (staging, ребрендинг) футер тихо продолжал бы указывать на старого.
 const TELEGRAM_BOT = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "VideonerBot";
 const DEVELOPER = "sarsembai.dev";

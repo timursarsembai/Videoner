@@ -34,8 +34,8 @@ import { showDownloadError } from "./DownloadErrorToast";
 interface VideoInfoSectionProps {
   videoInfo: VideoInfo;
   url: string;
-  // Восстановление выбора после редиректа на Telegram-логин и обратно —
-  // см. TelegramLoginWidget.tsx (preserveParams) и Page.tsx (UrlFromQueryParams).
+  // Восстановление выбора из адреса страницы — см. Page.tsx
+  // (UrlFromQueryParams).
   initialQuality?: string;
   initialTab?: FormatType;
   initialExtension?: string;

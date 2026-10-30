@@ -2,7 +2,7 @@
 # Пересобирает и передеплоивает один или несколько сервисов прод-compose.
 #
 # Зачем этот скрипт: `web` берёт NEXT_PUBLIC_* значения (Turnstile site key,
-# Telegram bot id/username) как build-args и Next.js вшивает их в клиентский
+# Telegram bot username) как build-args и Next.js вшивает их в клиентский
 # бандл на этапе СБОРКИ — не в рантайме. Ручной `docker buildx build ./web`
 # без этих --build-arg молча собирает рабочий на вид образ, где виджеты,
 # зависящие от этих ключей, просто не рендерятся (без единой ошибки в логах
@@ -106,7 +106,11 @@ for service in "$@"; do
         # код возврата теряется, если вывод уходит в пайп (| tail и т.п.).
         # Ровно эту дыру скрипт и должен был закрывать: молча собранный без
         # build-args web (инцидент с Turnstile 23.07.2026).
-        value="${!var:-$(grep -m1 "^${var}=" .env 2>/dev/null | cut -d= -f2 || true)}"
+        value="${!var:-$(grep -m1 "^${var}=" .env 2>/dev/null | cut -d= -f2- || true)}"
+        # fetch_secrets пишет значения в кавычках ('…'). Раньше они «съедались»
+        # лишь случайно — при вклейке в sh -c '…$value…' ниже; снимаем явно.
+        value="${value#[\"\']}"
+        value="${value%[\"\']}"
         if [ -z "$value" ]; then
           continue
         fi
@@ -118,7 +122,9 @@ for service in "$@"; do
         # на месте: два ложных ✗ подряд 10.08.2026. Ложная тревога тут хуже
         # молчания — на неё быстро перестают смотреть, и настоящий пропуск
         # build-arg (инцидент с Turnstile 23.07.2026) снова уедет в прод.
-        if ! docker exec "$container" sh -c "grep -rlF -- '$value' .next/static" >/dev/null 2>&1; then
+        # Значение — через переменную окружения, а не вклейкой в текст команды:
+        # кавычка или $ внутри значения иначе ломали бы команду.
+        if ! docker exec -e CHECK_VALUE="$value" "$container" sh -c 'grep -rlF -- "$CHECK_VALUE" .next/static' >/dev/null 2>&1; then
           echo "    ✗ ${var} не найден в собранном бандле — соответствующая фича будет молча отключена"
           missing=1
         fi

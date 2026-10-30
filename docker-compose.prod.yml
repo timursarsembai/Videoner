@@ -182,7 +182,6 @@ services:
         NEXT_PUBLIC_API_URL: https://${PUBLIC_DOMAIN}
         NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
         NEXT_PUBLIC_TELEGRAM_BOT_USERNAME: ${NEXT_PUBLIC_TELEGRAM_BOT_USERNAME}
-        NEXT_PUBLIC_TELEGRAM_BOT_ID: ${NEXT_PUBLIC_TELEGRAM_BOT_ID}
         # Счётчик Яндекс.Метрики. Задан ТОЛЬКО здесь и намеренно отсутствует
         # в docker-compose.staging.yml: staging собирается из того же кода, и
         # без этого его трафик попадал бы в статистику боевого сайта, а

@@ -10,7 +10,8 @@ import { isSameOriginRequest } from "@/lib/auth/request-origin";
 const API_URL = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL!;
 const API_KEY = process.env.API_KEY!;
 
-// Принимает сырой payload от Telegram Login Widget (см. TelegramLoginWidget.tsx),
+// Принимает сырой payload от Telegram Login Widget (кнопку входа на сайте
+// убрали вместе со входом, когда сайт открыли всем, — коммит 54ff21e),
 // пересылает на NestJS /bot-users/telegram-login для проверки подписи Telegram
 // (бот-токен есть только у server-контейнера — веб его не хранит и не видит).
 // При успехе ставит httpOnly session-cookie на этот домен.

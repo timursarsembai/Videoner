@@ -1,3 +1,4 @@
+import { isBotRequest } from 'src/lib/bot-auth';
 import {
   Controller,
   Get,
@@ -212,6 +213,8 @@ export class DownloadController {
     @Body() downloadDto: DownloadVideoDto,
     @Req() req: Request,
   ) {
+    // Подключённые людьми куки — только для бота (lib/bot-auth.ts).
+    if (!isBotRequest(req)) delete downloadDto.cookieScope;
     return this.downloadService.downloadVideo(
       downloadDto.url,
       downloadDto.quality,
@@ -244,6 +247,8 @@ export class DownloadController {
     @Body() downloadDto: DownloadAudioDto,
     @Req() req: Request,
   ) {
+    // Подключённые людьми куки — только для бота (lib/bot-auth.ts).
+    if (!isBotRequest(req)) delete downloadDto.cookieScope;
     return this.downloadService.downloadAudio(
       downloadDto.url,
       downloadDto.quality,

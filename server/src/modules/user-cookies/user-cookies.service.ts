@@ -8,7 +8,8 @@ import {
   ExtractResult,
   cookiePlatformFor,
   extractPlatformCookies,
-  looksLikeDeadSession,
+  scrubCookieLines,
+  sessionFailureKind,
 } from 'src/lib/user-cookies';
 
 // Подключённые людьми куки (см. модель UserCookie в schema.prisma).
@@ -135,13 +136,33 @@ export class UserCookiesService {
     throw new ServiceUnavailableException('Could not create a code');
   }
 
+  private normalizeCode(rawCode: string): string | null {
+    const letters = String(rawCode ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    return letters.length === 6 ? `${letters.slice(0, 3)}-${letters.slice(3)}` : null;
+  }
+
+  // Код засветился там, где его могли подсмотреть (в группе отказали, код
+  // прислали в общий чат без команды), — уничтожаем, не подключая.
+  async burnCode(rawCode: string) {
+    const code = this.normalizeCode(rawCode);
+    if (code) await this.prisma.cookieConnectCode.delete({ where: { code } }).catch(() => null);
+    return { ok: true };
+  }
+
+  // Бота удалили из группы — её подключения больше незачем хранить.
+  async removeScope(scope: string) {
+    assertScope(scope);
+    if (!scope.startsWith('chat:')) throw new BadRequestException('Only group scopes');
+    const { count } = await this.prisma.userCookie.deleteMany({ where: { scope } });
+    return { removed: count };
+  }
+
   // Код из чата: «ABC-123», «abc123», с пробелами — человек мог переписать
   // его руками.
   async claim(rawCode: string, scope: string, owner: Owner) {
     this.requireEnabled();
-    const letters = String(rawCode ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-    if (letters.length !== 6) throw new NotFoundException('Code not found');
-    const code = `${letters.slice(0, 3)}-${letters.slice(3)}`;
+    const code = this.normalizeCode(rawCode);
+    if (!code) throw new NotFoundException('Code not found');
     // Удаляем сразу при чтении: второй раз тот же код не сработает, даже если
     // его подсмотрели в группе.
     const row = await this.prisma.cookieConnectCode.delete({ where: { code } }).catch(() => null);
@@ -219,6 +240,26 @@ export class UserCookiesService {
     return { removed: count };
   }
 
+  // Группа стала супергруппой — у неё новый id, подключения едут следом
+  // (бот ловит migrate_to_chat_id). По одной записи: если в новой области у
+  // того же человека уже есть та же площадка, старая просто удаляется.
+  async migrateScope(from: string, to: string) {
+    assertScope(from);
+    assertScope(to);
+    if (!from.startsWith('chat:') || !to.startsWith('chat:')) throw new BadRequestException('Only group scopes move');
+    const rows = await this.prisma.userCookie.findMany({ where: { scope: from }, select: { id: true } });
+    let moved = 0;
+    for (const { id } of rows) {
+      try {
+        await this.prisma.userCookie.update({ where: { id }, data: { scope: to } });
+        moved++;
+      } catch {
+        await this.prisma.userCookie.delete({ where: { id } }).catch(() => undefined);
+      }
+    }
+    return { moved };
+  }
+
   async hasActive(scope: string | undefined, platform: string | null): Promise<boolean> {
     const p = cookiePlatformFor(platform);
     if (!scope || !p || !this.enabled() || !SCOPE_RE.test(scope)) return false;
@@ -230,9 +271,11 @@ export class UserCookiesService {
    * Выполнить fn с куками из пула области: по очереди, начиная с давно не
    * использованных (так нагрузка ложится на все аккаунты ровно и ни один не
    * выглядит для площадки ботом). Удача — запись помечается использованной.
-   * Отказ «вход не действует» — счётчик отказов, на третьем подряд запись
-   * выключается и владелец получает сообщение; пробуем следующую.
-   * Остальные ошибки (ролик удалён и т.п.) куки не касаются — пробрасываем.
+   * Отказ «вход точно не действует» засчитывается сразу; неоднозначный —
+   * только если следующий аккаунт тот же ролик получил (см.
+   * sessionFailureKind). Третий засчитанный отказ подряд выключает запись и
+   * пишет владельцу. Остальные ошибки куки не касаются — пробрасываем.
+   * Текст ошибки чистим от строк, где могли оказаться сами куки.
    */
   async withScopeCookies<T>(
     scope: string,
@@ -249,29 +292,34 @@ export class UserCookiesService {
     if (!rows.length) throw new Error('No user cookies for this request');
 
     let lastError: unknown;
+    const ambiguous: { id: string; message: string }[] = [];
     for (const row of rows) {
       let netscape: string;
       try {
         netscape = decryptCookies(row.data);
-      } catch (e) {
-        // Не расшифровалось (сменили ключ) — запись бесполезна навсегда.
-        console.error(`[user-cookies] ${row.id}: не расшифровывается, выключаю`);
-        await this.disable(row.id, 'decrypt');
-        lastError = e;
+      } catch {
+        // Не расшифровалось — почти наверняка не тот USER_COOKIES_KEY на
+        // сервере, а не мёртвый вход. Выключать записи нельзя: при неверном
+        // ключе это выключило бы всех и разослало сообщения всем владельцам.
+        console.error(`[user-cookies] ${row.id}: не расшифровывается — проверьте USER_COOKIES_KEY`);
         continue;
       }
       try {
         const result = await fn(netscape);
         await this.prisma.userCookie.update({ where: { id: row.id }, data: { lastUsedAt: new Date(), failures: 0 } });
+        // Этот аккаунт ролик получил — значит, у предыдущих дело было в них.
+        for (const a of ambiguous) await this.recordFailure(a.id, a.message);
         return { result, cookieId: row.id };
       } catch (e) {
-        lastError = e;
-        const message = e instanceof Error ? e.message : String(e);
-        if (!looksLikeDeadSession(message)) throw e;
-        await this.recordFailure(row.id, message);
+        const message = scrubCookieLines(e instanceof Error ? e.message : String(e));
+        lastError = new Error(message);
+        const kind = sessionFailureKind(message);
+        if (kind === 'dead') await this.recordFailure(row.id, message);
+        else if (kind === 'ambiguous') ambiguous.push({ id: row.id, message });
+        else throw lastError;
       }
     }
-    throw lastError;
+    throw lastError ?? new Error('No usable user cookies');
   }
 
   private async recordFailure(id: string, message: string) {

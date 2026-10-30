@@ -14,6 +14,7 @@ import { AlertService } from '../alert/alert.service';
 import { BotUserService } from '../analytics/bot-user.service';
 import { UserCookiesService } from '../user-cookies/user-cookies.service';
 import { userCookieScope } from 'src/lib/cookie-scope';
+import { userCookiesMayHelp } from 'src/lib/user-cookies';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
 import { listSubtitles } from 'src/lib/subtitles';
 import { capYoutubeQualities } from 'src/lib/youtube-budget';
@@ -148,7 +149,8 @@ export class InfoService {
     try {
       return await this.fetchInfoWithCookieFallback(url, platform, alerts);
     } catch (error) {
-      if (!scope || !(await this.userCookies.hasActive(scope, platform))) throw error;
+      if (!scope || !userCookiesMayHelp(error instanceof Error ? error.message : String(error))) throw error;
+      if (!(await this.userCookies.hasActive(scope, platform))) throw error;
       const allowPhotos = PHOTO_PLATFORMS.includes(platform);
       const { result } = await this.userCookies.withScopeCookies(scope, platform, (cookies) =>
         this.ytdlp.getYtdlpVideoInfo(url, { allowPhotos, cookiesContent: cookies }),

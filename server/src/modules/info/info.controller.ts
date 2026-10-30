@@ -1,4 +1,6 @@
-import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
+import { isBotRequest } from 'src/lib/bot-auth';
 import {
   ApiOperation,
   ApiResponse,
@@ -32,7 +34,9 @@ export class InfoController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Invalid or missing API key',
   })
-  async getVideoInfo(@Body() dto: GetVideoInfoDto) {
+  async getVideoInfo(@Body() dto: GetVideoInfoDto, @Req() req: Request) {
+    // Подключённые людьми куки — только для бота (lib/bot-auth.ts).
+    if (!isBotRequest(req)) delete dto.cookieScope;
     return this.infoService.getVideoInfo(dto);
   }
 }

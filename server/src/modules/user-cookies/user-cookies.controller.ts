@@ -1,4 +1,5 @@
-import { BadRequestException, Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
+import { BotOnlyGuard } from 'src/lib/bot-auth';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { Owner, UserCookiesService } from './user-cookies.service';
 
@@ -25,12 +26,14 @@ function telegramIdParam(raw: string): number {
   return id;
 }
 
-// Куки, подключённые людьми (см. UserCookiesService). Все пути — под общим
-// ApiKeyGuard. Зовёт их бот; сайт сюда не пускает вовсе, а расширение — только
-// к POST /user-cookies/codes (web/app/api/ext/[...path]/route.ts).
+// Куки, подключённые людьми (см. UserCookiesService). Все пути — только для
+// бота (BotOnlyGuard, lib/bot-auth.ts), кроме POST /user-cookies/codes: туда
+// куки шлёт расширение через прокси сайта (web/app/api/ext/[...path]/route.ts),
+// и код сам по себе ничего не даёт — подключает его бот.
 @ApiTags('User Cookies')
 @Controller('user-cookies')
 @ApiSecurity('X-API-Key')
+@UseGuards(BotOnlyGuard)
 export class UserCookiesController {
   constructor(private readonly cookies: UserCookiesService) {}
 
@@ -41,18 +44,32 @@ export class UserCookiesController {
     return this.cookies.addFromFile(str(body?.scope, 'scope'), str(body?.raw, 'raw'), owner(body), body?.platform);
   }
 
-  @Post('codes')
-  @HttpCode(200)
-  @ApiOperation({ summary: 'Store cookies from the extension and return a one-time code' })
-  createCode(@Body() body: any) {
-    return this.cookies.createCode(str(body?.raw, 'raw'), body?.platform);
-  }
-
   @Post('claim')
   @HttpCode(200)
   @ApiOperation({ summary: 'Attach cookies behind a one-time code to a scope' })
   claim(@Body() body: any) {
     return this.cookies.claim(str(body?.code, 'code'), str(body?.scope, 'scope'), owner(body));
+  }
+
+  @Post('burn')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Destroy a one-time code without using it' })
+  burn(@Body() body: any) {
+    return this.cookies.burnCode(str(body?.code, 'code'));
+  }
+
+  @Post('scope-delete')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Delete every connection of a group (the bot left it)' })
+  removeScope(@Body() body: any) {
+    return this.cookies.removeScope(str(body?.scope, 'scope'));
+  }
+
+  @Post('migrate')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Move a group\'s connections after it became a supergroup' })
+  migrate(@Body() body: any) {
+    return this.cookies.migrateScope(str(body?.from, 'from'), str(body?.to, 'to'));
   }
 
   @Get('scope/:scope')
@@ -83,5 +100,20 @@ export class UserCookiesController {
     if (!Number.isSafeInteger(by) || by <= 0) throw new BadRequestException('Invalid telegramId');
     const adminOfScope = typeof body?.adminOfScope === 'string' ? body.adminOfScope : undefined;
     return this.cookies.remove(id, by, adminOfScope);
+  }
+}
+
+// Отдельный контроллер без BotOnlyGuard: сюда приходит расширение.
+@ApiTags('User Cookies')
+@Controller('user-cookies')
+@ApiSecurity('X-API-Key')
+export class UserCookieCodesController {
+  constructor(private readonly cookies: UserCookiesService) {}
+
+  @Post('codes')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Store cookies from the extension and return a one-time code' })
+  createCode(@Body() body: any) {
+    return this.cookies.createCode(str(body?.raw, 'raw'), body?.platform);
   }
 }

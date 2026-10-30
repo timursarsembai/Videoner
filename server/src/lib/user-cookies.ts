@@ -149,21 +149,52 @@ export function extractPlatformCookies(text: string, platform?: CookiePlatform):
   return { ok: false, reason: sawPlatformCookies ? 'no-session' : platform ? 'empty' : 'unknown-platform' };
 }
 
-// Ответы, по которым видно, что подключённый вход больше не действует: сессию
-// разлогинили, аккаунт ограничили. Тогда запись помечается нерабочей, а
-// владелец получает сообщение. Узкий список: обычная ошибка ролика (удалён,
-// формат) не повод выключать чужой аккаунт.
-const INVALID_SESSION_PATTERNS = [
-  /login required/i,
-  /requires authentication/i,
-  /http error 401/i,
-  /401:?\s*unauthorized/i,
-  /this content is unreachable/i,
-  /checkpoint_required/i,
-  /challenge_required/i,
-  /please wait a few minutes/i,
-];
+// Что значит отказ площадки для подключённого входа.
+//   dead      — вход точно не действует (сессию разлогинили, аккаунт требует
+//               проверку): засчитываем сразу.
+//   ambiguous — «нужен вход» / «недоступно»: так же отвечают про удалённый
+//               пост, истёкшую сторис или закрытый профиль, на который
+//               аккаунт не подписан. Засчитываем, только если другой аккаунт
+//               пула тот же ролик получил (UserCookiesService) — иначе любой
+//               участник группы выключил бы весь пул парой мёртвых ссылок.
+//   null      — к входу отношения не имеет (ограничение по частоте, ролик
+//               удалён, сбой сети).
+const DEAD_SESSION_PATTERNS = [/checkpoint_required/i, /challenge_required/i, /http error 401/i, /401:?\s*unauthorized/i];
+const AMBIGUOUS_PATTERNS = [/login required/i, /requires authentication/i, /this content is unreachable/i];
+const RATE_LIMIT_PATTERNS = [/rate-?limit/i, /please wait a few minutes/i, /too many requests/i, /http error 429/i];
 
-export function looksLikeDeadSession(message: string): boolean {
-  return INVALID_SESSION_PATTERNS.some((re) => re.test(message));
+export function sessionFailureKind(message: string): 'dead' | 'ambiguous' | null {
+  if (DEAD_SESSION_PATTERNS.some((re) => re.test(message))) return 'dead';
+  if (RATE_LIMIT_PATTERNS.some((re) => re.test(message))) return null;
+  if (AMBIGUOUS_PATTERNS.some((re) => re.test(message))) return 'ambiguous';
+  return null;
+}
+
+// Стоит ли вообще пробовать подключённые куки после неудачи обычного пути:
+// только если отказ похож на «нужен вход». Антибот-проверка YouTube, сбой
+// прокси или сети — не повод гонять запрос от личного аккаунта человека.
+export function userCookiesMayHelp(message: string): boolean {
+  if (/confirm you.?re not a bot/i.test(message)) return false;
+  return [
+    /login required/i,
+    /requires authentication/i,
+    /this content is unreachable/i,
+    /only available for registered users/i,
+    /private/i,
+    /cannot parse data/i,
+    /empty media response/i,
+    /without being logged-in/i,
+    /sign in/i,
+    /log in/i,
+  ].some((re) => re.test(message));
+}
+
+// Ошибка, полученная с куками человека, уходит дальше — в ответ API и в чат.
+// yt-dlp пишет «skipping cookie file entry …» со строкой файла целиком;
+// убираем такие строки и всё, что похоже на строку Netscape (табуляции).
+export function scrubCookieLines(message: string): string {
+  return message
+    .split('\n')
+    .filter((line) => !/cookie file entry/i.test(line) && !line.includes('\t'))
+    .join('\n');
 }

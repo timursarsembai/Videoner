@@ -34,13 +34,14 @@ import { getPlatform } from 'src/validate/url';
 import { BotUserService } from '../analytics/bot-user.service';
 import { UserCookiesService } from '../user-cookies/user-cookies.service';
 import { userCookieScope } from 'src/lib/cookie-scope';
+import { userCookiesMayHelp } from 'src/lib/user-cookies';
 import { categorizeError } from 'src/lib/error-category';
 import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
 import {
   capYoutubeQuality,
   youtubeDailyLimitPerIpBytes,
 } from 'src/lib/youtube-budget';
-import { createHash } from 'crypto';
+import { createHash, randomUUID } from 'crypto';
 import {
   estimateAudioSize,
   estimateVideoSize,
@@ -180,8 +181,11 @@ export class DownloadService {
     try {
       return { info: await this.checkDurationLimit(url, req) };
     } catch (error) {
-      // Отказ по длительности — не про вход, куки его не изменят.
+      // Отказ по длительности — не про вход, куки его не изменят. Как и
+      // антибот-проверка или сбой сети: личный аккаунт человека — только
+      // когда площадка ответила «нужен вход».
       if (error instanceof BadRequestException) throw error;
+      if (!userCookiesMayHelp(error instanceof Error ? error.message : String(error))) throw error;
       const scope = userCookieScope(meta);
       const platform: string = (req as any).platform;
       if (!scope || !(await this.userCookies.hasActive(scope, platform))) throw error;
@@ -1227,7 +1231,11 @@ export class DownloadService {
       // проходом значит удвоить время ради выбора контейнера, которого для поста
       // из нескольких роликов на сайте всё равно не предлагают.
       const initialExtension = 'mp4';
-      const baseFileName = getFileName(info.title, quality, initialExtension);
+      // Файлы отдаются по публичной ссылке /download/<имя>. Имя из названия и
+      // времени угадать можно («Story by <ник>» + миллисекунды), поэтому
+      // скачанное по чужому входу получает случайное имя.
+      const nameTitle = userCookies ? randomUUID() : info.title;
+      const baseFileName = getFileName(nameTitle, quality, initialExtension);
       const tempFileName = multi
         ? this.playlistTemplate(baseFileName)
         : baseFileName;
@@ -1239,7 +1247,7 @@ export class DownloadService {
       // находился никогда — запись Download.filename была фантомной.
       const finalFileName =
         !multi && extension && extension !== 'mp4'
-          ? getFileName(info.title, quality, extension)
+          ? getFileName(nameTitle, quality, extension)
           : baseFileName;
 
       // Проверка дневного лимита и создание записи Download должны быть
@@ -1309,6 +1317,9 @@ export class DownloadService {
 
         return {
           message: 'Download started',
+          // Скачано от подключённого входа (см. infoForDownload): бот такое не
+          // публикует в канале — это может быть чужое закрытое.
+          ...(userCookies ? { viaUserCookies: true } : {}),
           downloadId: download.id,
           fileName: baseFileName,
           itemCount: playlistEntries(info).length,
@@ -1379,6 +1390,9 @@ export class DownloadService {
 
       return {
         message: 'Download started',
+        // Скачано от подключённого входа (см. infoForDownload): бот такое не
+        // публикует в канале — это может быть чужое закрытое.
+        ...(userCookies ? { viaUserCookies: true } : {}),
         downloadId: download.id,
         // У карусели настоящие имена файлов известны только после скачивания
         // (номер подставляет yt-dlp) — потребитель берёт их из items в
@@ -1445,7 +1459,8 @@ export class DownloadService {
       });
       if (cached) return cached;
 
-      const baseFileName = getFileName(info.title, quality, audioExtension);
+      // Случайное имя — как в downloadVideo.
+      const baseFileName = getFileName(userCookies ? randomUUID() : info.title, quality, audioExtension);
       const fileName = multi
         ? this.playlistTemplate(baseFileName)
         : baseFileName;
@@ -1532,6 +1547,9 @@ export class DownloadService {
 
       return {
         message: 'Download started',
+        // Скачано от подключённого входа (см. infoForDownload): бот такое не
+        // публикует в канале — это может быть чужое закрытое.
+        ...(userCookies ? { viaUserCookies: true } : {}),
         downloadId: download.id,
         // Базовое имя, а не шаблон: настоящие имена файлов карусели
         // потребитель берёт из items в /download/:id/status.

@@ -1,4 +1,11 @@
-import { cookiePlatformFor, extractPlatformCookies, looksLikeDeadSession, parseCookies } from './user-cookies';
+import {
+  cookiePlatformFor,
+  extractPlatformCookies,
+  parseCookies,
+  scrubCookieLines,
+  sessionFailureKind,
+  userCookiesMayHelp,
+} from './user-cookies';
 
 const FUTURE = Math.floor(Date.now() / 1000) + 3600 * 24 * 30;
 const PAST = Math.floor(Date.now() / 1000) - 3600;
@@ -66,8 +73,27 @@ describe('user cookies', () => {
     expect(cookiePlatformFor('rutube')).toBeNull();
   });
 
-  it('recognises a dead session', () => {
-    expect(looksLikeDeadSession('[instagram:story] 1: This content is unreachable. Use --cookies')).toBe(true);
-    expect(looksLikeDeadSession('Video unavailable')).toBe(false);
+  it('tells a dead session from an ambiguous answer and a rate limit', () => {
+    expect(sessionFailureKind('ERROR: checkpoint_required')).toBe('dead');
+    expect(sessionFailureKind('HTTP Error 401: Unauthorized')).toBe('dead');
+    expect(sessionFailureKind('[instagram:story] 1: This content is unreachable. Use --cookies')).toBe('ambiguous');
+    expect(sessionFailureKind('Requested content is not available, rate-limit reached or login required')).toBeNull();
+    expect(sessionFailureKind('Please wait a few minutes before you try again')).toBeNull();
+    expect(sessionFailureKind('Video unavailable')).toBeNull();
+  });
+
+  it('tries user cookies only for login-like failures', () => {
+    expect(userCookiesMayHelp('This content is unreachable')).toBe(true);
+    expect(userCookiesMayHelp('This video is private')).toBe(true);
+    expect(userCookiesMayHelp("Sign in to confirm you're not a bot")).toBe(false);
+    expect(userCookiesMayHelp('Read timed out')).toBe(false);
+  });
+
+  it('scrubs lines that may carry cookie values', () => {
+    const msg = 'ERROR: boom\nWARNING: skipping cookie file entry due to invalid length: x\n.instagram.com\tTRUE\t/\tTRUE\t0\tsessionid\tsecret';
+    expect(scrubCookieLines(msg)).toBe('ERROR: boom');
+    // Обычная ошибка про вход остаётся целиком: по ней бот объясняет сторис.
+    const story = 'ERROR: [instagram:story] 1: This content is unreachable. Use --cookies-from-browser or --cookies';
+    expect(scrubCookieLines(story)).toBe(story);
   });
 });

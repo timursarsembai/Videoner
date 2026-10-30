@@ -156,6 +156,9 @@ const TEXTS = {
     acctOpenBot: "Открыть бота",
     acctNewCode: "Получить новый код",
     acctList: "Мои подключения в боте",
+    acctRevoke: "Отозвать доступ к куки",
+    acctRevoked:
+      "Доступ к куки снят — расширение больше их не читает. Уже подключённые аккаунты остаются в боте: отключить их можно в «Мои подключения в боте».",
     updateAvailable: (v) => `Вышла новая версия ${v}.`,
     updateHow: "Как обновить",
   },
@@ -220,6 +223,9 @@ const TEXTS = {
     acctOpenBot: "Open the bot",
     acctNewCode: "Get a new code",
     acctList: "My connections in the bot",
+    acctRevoke: "Revoke cookie access",
+    acctRevoked:
+      "Cookie access is revoked — the extension no longer reads them. Accounts you already connected stay in the bot: remove them in “My connections in the bot”.",
     updateAvailable: (v) => `Version ${v} is out.`,
     updateHow: "How to update",
   },

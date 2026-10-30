@@ -113,17 +113,47 @@ export async function mountAccountConnect(container, tabUrl) {
   const origins = domains.map((d) => `https://*.${d}/*`);
   container.hidden = false;
 
-  const show = (...nodes) => container.replaceChildren(...nodes);
+  const show = (...nodes) => container.replaceChildren(...nodes.filter(Boolean));
 
   const accountsLink = () =>
     el("button", { class: "link muted-link", type: "button", onclick: () => chrome.tabs.create({ url: ACCOUNTS_URL }) }, t.acctList);
 
-  const start = () =>
+  // Доступ к кукам браузер помнит и после подключения. Даём снять его одной
+  // кнопкой — без захода в настройки расширений.
+  const hasCookieAccess = () => chrome.permissions.contains({ permissions: ["cookies"] }).catch(() => false);
+
+  async function start() {
+    const granted = await hasCookieAccess();
     show(
       el("button", { class: "link", type: "button", onclick: confirm }, t.acctButton(label)),
       el("br"),
-      accountsLink()
+      accountsLink(),
+      granted && el("br"),
+      granted && el("button", { class: "link muted-link", type: "button", onclick: revoke }, t.acctRevoke)
     );
+  }
+
+  // Снимаем разрешение cookies и сайты, выданные только под него (google.com
+  // для YouTube). Сайты, где расширение работает всегда (content_scripts), не
+  // трогаем: Chrome отклонил бы весь вызов, а Firefox снял бы их и отключил
+  // кнопку скачивания на странице. Без cookies расширение куки уже не
+  // прочитает. Вход, который уже подключён, хранится в боте — отвязывается
+  // там (/accounts), об этом и говорим.
+  async function revoke() {
+    const manifest = chrome.runtime.getManifest();
+    const pageSites = new Set((manifest.content_scripts ?? []).flatMap((c) => c.matches ?? []));
+    const origins = (manifest.optional_host_permissions ?? []).filter((o) => !pageSites.has(o));
+    let removed = await chrome.permissions.remove({ permissions: ["cookies"], origins }).catch(() => false);
+    if (!removed) removed = await chrome.permissions.remove({ permissions: ["cookies"] }).catch(() => false);
+    if (!removed || (await hasCookieAccess())) return fail(t.acctFailed);
+    await Promise.all([forget(CODE), forget(PENDING)]);
+    show(
+      el("p", { class: "note" }, t.acctRevoked),
+      accountsLink(),
+      el("br"),
+      el("button", { class: "secondary", type: "button", onclick: start }, t.back)
+    );
+  }
 
   const confirm = () =>
     show(

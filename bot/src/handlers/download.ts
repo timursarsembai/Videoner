@@ -172,7 +172,7 @@ export async function notifyActiveDownloadsBeforeShutdown(bot: Bot) {
   await Promise.allSettled(notices);
 }
 
-async function performDownload(
+export async function performDownload(
   chatId: number,
   kind: "v" | "a",
   quality: string,
@@ -380,20 +380,33 @@ function failureMessage(raw: string, url: string, lang: Lang): { text: string; k
 
 // Как отправлять файлы в чат, где нажата кнопка. Вынесено из обработчика
 // кнопки, чтобы тот читался как последовательность шагов очереди.
-function sendersFor(ctx: Context, chatId: number) {
+//
+// Для групп (handlers/group.ts): replyTo — всё отправленное становится ответом
+// на сообщение со ссылкой, чтобы в общем чате было видно, к чему файл; publish
+// false — ссылки из групп в канал не публикуем, группы бывают закрытыми.
+export function sendersFor(ctx: Context, chatId: number, { replyTo, publish = true }: { replyTo?: number; publish?: boolean } = {}) {
+  // allow_sending_without_reply: сообщение со ссылкой могли удалить, пока шло
+  // скачивание, — файл всё равно нужен.
+  //
+  // В группе с темами (форум) тему указываем явно у каждой отправки: ответ без
+  // reply_parameters (вторая часть длинного альбома) иначе ушёл бы в «Общий».
+  const thread = ctx.message?.is_topic_message ? { message_thread_id: ctx.message.message_thread_id } : {};
+  const asReply = replyTo
+    ? { ...thread, reply_parameters: { message_id: replyTo, allow_sending_without_reply: true } }
+    : thread;
   return {
-    reply: (text: string) => ctx.reply(text),
+    reply: (text: string) => ctx.reply(text, asReply),
     editMessageText: (messageId: number, text: string, keyboard?: InlineKeyboard) =>
       ctx.api.editMessageText(chatId, messageId, text, keyboard ? { reply_markup: keyboard } : undefined),
     // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
     // ссылка на первоисточник и упоминание бота остаются с видео у любого,
     // кому его переслали.
     replyWithVideo: async (file: InputFile | string, caption: string, dims?: VideoDimensions) =>
-      (await ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims })).video?.file_id,
+      (await ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims, ...asReply })).video?.file_id,
     replyWithAudio: async (file: InputFile | string, caption: string) =>
-      (await ctx.replyWithAudio(file, { caption })).audio?.file_id,
+      (await ctx.replyWithAudio(file, { caption, ...asReply })).audio?.file_id,
     replyWithPhoto: async (file: InputFile, caption: string) => {
-      const sent = await ctx.replyWithPhoto(file, { caption });
+      const sent = await ctx.replyWithPhoto(file, { caption, ...asReply });
       return previewFileId(sent.photo);
     },
     deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
@@ -403,7 +416,7 @@ function sendersFor(ctx: Context, chatId: number) {
       th: string | undefined,
       l: Lang,
       cover?: string,
-    ) => publishLink(ctx.api, u, t, th, l, cover),
+    ) => (publish ? publishLink(ctx.api, u, t, th, l, cover) : Promise.resolve()),
     replyWithAlbum: async (
       items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
       caption: string,
@@ -431,7 +444,7 @@ function sendersFor(ctx: Context, chatId: number) {
                 supports_streaming: true,
               });
         });
-        const sent = await ctx.replyWithMediaGroup(media);
+        const sent = await ctx.replyWithMediaGroup(media, start === 0 ? asReply : thread);
         // Обложку для канала берём у первого снимка первого альбома — и
         // именно у той, что вернул Telegram, а не у исходника (см. ниже).
         // Альбом возвращает сообщения разных видов, и photo есть только у

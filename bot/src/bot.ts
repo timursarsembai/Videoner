@@ -8,6 +8,7 @@ import { registerDownloadHandlers, notifyActiveDownloadsBeforeShutdown, handleLi
 import { registerInlineHandlers } from "./handlers/inline.js";
 import { openInvite } from "./handlers/invite.js";
 import { registerBlockedHandlers } from "./handlers/blocked.js";
+import { registerGroupHandlers } from "./handlers/group.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
 // handlers/*.ts. Раньше это был один файл на 494 строки со всеми командами и
@@ -32,13 +33,22 @@ const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT 
 
 bot.command("start", async (ctx) => {
   const lang = detectLang(ctx.from?.language_code);
+  // В группе — как бот работает там (handlers/group.ts), а не инструкция для лички.
+  if (ctx.chat.type !== "private") {
+    await ctx.reply(messages[lang].groupWelcome);
+    return;
+  }
   // t.me/<бот>?start=<код> — человек пришёл по ссылке-приглашению на видео.
   const code = ctx.match.trim();
   if (code) {
     await openInvite(ctx, code, lang);
     return;
   }
-  await ctx.reply(messages[lang].start);
+  // Кнопка открывает в Telegram выбор группы, куда добавить бота (режим для
+  // групп — handlers/group.ts).
+  await ctx.reply(messages[lang].start, {
+    reply_markup: new InlineKeyboard().url(messages[lang].addToGroupButton, `https://t.me/${ctx.me.username}?startgroup=true`),
+  });
 });
 
 // Страница расширения для браузера на сайте.
@@ -51,7 +61,12 @@ bot.command("extension", async (ctx) => {
 });
 
 registerAdminHandlers(bot);
-// Свой тип обновлений (my_chat_member) — порядок не важен.
+// Группы — ДО обработчика блокировок и обработчика лички: оба слушают те же
+// типы обновлений (my_chat_member, message:text), а grammY останавливается на
+// первом совпадении. Групповой ловит только сообщения групп и дальше их не
+// передаёт.
+registerGroupHandlers(bot);
+// Свой тип обновлений (my_chat_member) в личке.
 registerBlockedHandlers(bot);
 // Инлайн-режим («@бот <ссылка>» в любом чате). Слушает СВОИ типы обновлений
 // (inline_query, chosen_inline_result), с обработчиками сообщений и коллбэков

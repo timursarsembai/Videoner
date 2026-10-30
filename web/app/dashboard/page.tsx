@@ -861,7 +861,7 @@ export default function AnalyticsPage() {
           <StatCard
             label="Успешных"
             value={overview.completedDownloads}
-            hint="Включая файлы, уже удалённые с диска"
+            hint={`За ${days} дн., включая файлы, уже удалённые с диска`}
           />
           <StatCard label="Ошибок" value={overview.failedDownloads} hint={`За ${days} дн., бот и сайт`} />
           <StatCard

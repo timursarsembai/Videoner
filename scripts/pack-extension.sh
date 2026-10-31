@@ -12,8 +12,10 @@
 #     архив на странице videoner.download/extension (сайт собирается из web/,
 #     достать архив из dist/ сборка не может, поэтому они в git). После
 #     запуска закоммитьте их и задеплойте web.
-#   Внутри архива — папка videoner-extension/: после распаковки её и выбирают
-#   в «Загрузить распакованное расширение» (см. extension/README.md).
+#   Файлы в архиве лежат прямо в корне, без вложенной папки: Windows при
+#   «Извлечь всё» сама создаёт папку по имени архива, и с вложенной папкой
+#   внутри люди выбирали внешнюю — «Файл манифеста отсутствует» (31.10.2026).
+#   Теперь подходит та папка, которая получилась после распаковки.
 #
 # Firefox:
 #   dist/firefox/ — распакованное расширение: его ставят для проверки
@@ -59,7 +61,7 @@ def pack(out, members, root, manifest_text):
 # ---- Chrome ----
 chrome_files = [p for p in files if p.relative_to(src).as_posix() not in FIREFOX_ONLY]
 chrome_zip = dist / f"videoner-extension-{version}.zip"
-pack(chrome_zip, chrome_files, "videoner-extension", (src / "manifest.json").read_text(encoding="utf-8"))
+pack(chrome_zip, chrome_files, None, (src / "manifest.json").read_text(encoding="utf-8"))
 
 site = pathlib.Path("web/public/extension/videoner-extension.zip")
 site.parent.mkdir(exist_ok=True)

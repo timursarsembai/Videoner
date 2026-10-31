@@ -86,6 +86,10 @@ interface Messages {
   errorNoVideoContent: string;
   errorRegionBlocked: string;
   errorRateLimited: string;
+  // Суточный лимит трафика YouTube на человека (server enforceYoutubeTrafficForBotUser).
+  errorYoutubeDailyLimit: (gb: number) => string;
+  // Плейлист остановлен из-за этого лимита; dropped — сколько видео не скачано.
+  playlistStoppedByLimit: (dropped: number) => string;
   errorPlatformRefused: string;
   errorThreadsNoMedia: string;
   // Площадка не отдала ролик серверу, а расширение для браузера скачает его
@@ -320,6 +324,8 @@ const ru: Messages = {
     "отдаёт его нашему серверу. Обойти это нельзя: ограничение стоит на стороне " +
     "площадки.\n\nОстальные ссылки скачиваются как обычно.",
   errorRateLimited: "Слишком много ссылок подряд — подожди немного и пришли снова.",
+  errorYoutubeDailyLimit: (gb) => `за последние сутки вы скачали с YouTube больше ${gb} ГБ — это суточный лимит бота на человека. Лимит считается за последние 24 часа: новые видео с YouTube можно будет скачать позже. Другие площадки работают как обычно.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Плейлист остановлен: достигнут суточный лимит YouTube. Не скачано видео: ${dropped}. Пришлите ссылку на плейлист позже.`,
   errorPlatformRefused:
     "площадка не отдала это видео нашему серверу. Так бывает с закрытыми и " +
     "возрастными публикациями, а иногда площадка просто временно ограничивает " +
@@ -533,6 +539,8 @@ const en: Messages = {
     "it to our server. There's no way around it: the restriction is on their side." +
     "\n\nOther links download as usual.",
   errorRateLimited: "Too many links in a row — wait a bit and send it again.",
+  errorYoutubeDailyLimit: (gb) => `you downloaded more than ${gb} GB from YouTube in the last 24 hours — that is the bot's daily limit per person. It counts the last 24 hours, so you can download new YouTube videos a bit later. Other platforms work as usual.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Playlist stopped: the daily YouTube limit is reached. Videos not downloaded: ${dropped}. Send the playlist link again later.`,
   errorPlatformRefused:
     "the platform didn't give this video to our server. This happens with private " +
     "or age-restricted posts, and sometimes the platform just limits access for a " +
@@ -745,6 +753,8 @@ const uk: Messages = {
     "віддає його нашому серверу. Обійти це не можна: обмеження стоїть на боці " +
     "платформи.\n\nІнші посилання завантажуються як зазвичай.",
   errorRateLimited: "Забагато посилань поспіль — зачекай трохи й надішли знову.",
+  errorYoutubeDailyLimit: (gb) => `за останню добу ви завантажили з YouTube понад ${gb} ГБ — це добовий ліміт бота на людину. Ліміт рахується за останні 24 години: нові відео з YouTube можна буде завантажити пізніше. Інші платформи працюють як завжди.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Плейлист зупинено: досягнуто добового ліміту YouTube. Не завантажено відео: ${dropped}. Надішліть посилання на плейлист пізніше.`,
   errorPlatformRefused:
     "платформа не віддала це відео нашому серверу. Так буває із закритими й " +
     "віковими публікаціями, а іноді платформа просто тимчасово обмежує " +
@@ -963,6 +973,8 @@ const kk: Messages = {
     "біздің серверге бермейді. Мұны айналып өту мүмкін емес: шектеу " +
     "платформа тарапында қойылған.\n\nБасқа сілтемелер әдеттегідей жүктеледі.",
   errorRateLimited: "Қатарынан тым көп сілтеме — сәл күтіп, қайта жібер.",
+  errorYoutubeDailyLimit: (gb) => `соңғы тәулікте YouTube-тан ${gb} ГБ-тан көп жүктеп алдыңыз — бұл боттың бір адамға арналған тәуліктік лимиті. Лимит соңғы 24 сағат бойынша есептеледі: YouTube-тан жаңа видеоларды кейінірек жүктеуге болады. Басқа платформалар әдеттегідей жұмыс істейді.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Плейлист тоқтатылды: YouTube тәуліктік лимитіне жеттіңіз. Жүктелмеген видео: ${dropped}. Плейлист сілтемесін кейінірек қайта жіберіңіз.`,
   errorPlatformRefused:
     "платформа бұл видеоны біздің серверге бермеді. Бұл жабық және " +
     "жас шектеуі бар жарияланымдарда болады, ал кейде платформа жай ғана уақытша " +

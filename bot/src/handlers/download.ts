@@ -9,6 +9,7 @@ import {
   fmtDuration,
   extensionLinkFor,
   extensionPageFor,
+  isYoutubeDailyLimitError,
   siteLinkFor,
   friendlyError,
   checkUserRateLimit,
@@ -221,6 +222,9 @@ export async function performDownload(
     // true — человек остановил скачивание (/stop, кнопка плейлиста): файл
     // больше не ждём и не отправляем.
     isCancelled?: () => boolean;
+    // Скачивание не удалось — сырой текст ошибки (startDownload по нему
+    // останавливает плейлист, когда кончился суточный лимит YouTube).
+    onError?: (raw: string) => void;
     // Группа: не скачалось — молча убрать «Скачиваю», а не оставлять в общем
     // чате сообщение об ошибке (handlers/group.ts).
     quiet?: boolean;
@@ -413,6 +417,7 @@ export async function performDownload(
       console.error(`Файл ${url} отправлен, но дальше сбой:`, e?.message ?? e);
       return true;
     }
+    send.onError?.(e?.message ?? String(e));
     if (send.quiet) {
       console.log(`Не скачалось (в группе — молча): ${url}:`, e?.message ?? e);
       await clearServiceMessages();
@@ -962,6 +967,9 @@ async function startDownload(
       description: current.description,
       // Остановлено (/stop) — ссылки больше нет в очереди.
       isCancelled: () => queues.get(key)?.current?.token !== token,
+      onError: (raw) => {
+        if (isYoutubeDailyLimitError(raw)) inBackground("Плейлист по лимиту", stopPlaylistByLimit(tg, key, state));
+      },
     },
     {
       telegramId: state.userId,
@@ -1131,6 +1139,21 @@ async function startPlaylist(ctx: Context, playlist: PlaylistInfo, flag: LinkFla
     reply_markup: new InlineKeyboard().text(m.stopButton, "q|stop"),
   });
   if (added.startNow) inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
+}
+
+// Кончился суточный лимит YouTube (server enforceYoutubeTrafficForBotUser):
+// остальные видео плейлиста получили бы тот же отказ одно за другим. Убираем
+// их из очереди одним сообщением; прочие ссылки человека остаются.
+async function stopPlaylistByLimit(tg: Api, key: string, state: OwnerState) {
+  if (queues.get(key) !== state || !state.playlistUrls?.size) return;
+  const before = state.pending.length;
+  state.pending = state.pending.filter((url) => !state.playlistUrls!.has(url));
+  const dropped = before - state.pending.length;
+  state.playlistUrls.clear();
+  if (!dropped) return;
+  await tg
+    .sendMessage(state.chatId, messages[state.lang].playlistStoppedByLimit(dropped))
+    .catch((e) => console.error("Не удалось сообщить об остановке плейлиста:", e?.message ?? e));
 }
 
 // Всё, что этот человек ждёт в этом чате: текущее скачивание (его файл не

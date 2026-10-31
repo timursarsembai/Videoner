@@ -129,6 +129,12 @@ export function fmtDuration(sec?: number): string {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
+// Сервер отказал по суточному лимиту YouTube на человека — дальше по
+// плейлисту качать бессмысленно (handlers/download.ts startDownload).
+export function isYoutubeDailyLimitError(raw: string): boolean {
+  return (raw || "").toLowerCase().includes("daily youtube limit for your account");
+}
+
 // Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
 // Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
 // только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.
@@ -236,6 +242,13 @@ export function friendlyError(raw: string, lang: Lang): string {
   // Предел длительности ролика у API-ключа (DownloadService.checkDurationLimit).
   if (msg.includes("exceeds the allowed limit")) {
     return m.errorTooLong;
+  }
+
+  // Суточный лимит трафика YouTube на человека
+  // (server download.service.ts enforceYoutubeTrafficForBotUser).
+  const daily = /daily youtube limit for your account reached \((\d+) gb/.exec(msg);
+  if (daily) {
+    return m.errorYoutubeDailyLimit(Number(daily[1]));
   }
 
   if (msg.includes("rate limit exceeded") || msg.includes("too many requests")) {

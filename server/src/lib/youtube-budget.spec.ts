@@ -3,6 +3,7 @@ import {
   capYoutubeQuality,
   qualityHeight,
   youtubeDailyLimitPerIpBytes,
+  youtubeDailyLimitPerTelegramUserBytes,
   youtubeMaxHeight,
 } from './youtube-budget';
 
@@ -124,5 +125,15 @@ describe('youtubeDailyLimitPerIpBytes', () => {
     expect(youtubeDailyLimitPerIpBytes()).toBe(0);
     process.env.YOUTUBE_DAILY_GB_PER_IP = '1.5';
     expect(youtubeDailyLimitPerIpBytes()).toBe(Math.round(1.5 * 1024 ** 3));
+  });
+});
+
+describe('youtubeDailyLimitPerTelegramUserBytes', () => {
+  it('по умолчанию 25 ГБ, 0 — без лимита', () => {
+    delete process.env.YOUTUBE_DAILY_GB_PER_TG_USER;
+    expect(youtubeDailyLimitPerTelegramUserBytes()).toBe(25 * 1024 ** 3);
+    process.env.YOUTUBE_DAILY_GB_PER_TG_USER = '0';
+    expect(youtubeDailyLimitPerTelegramUserBytes()).toBe(0);
+    delete process.env.YOUTUBE_DAILY_GB_PER_TG_USER;
   });
 });

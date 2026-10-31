@@ -40,6 +40,7 @@ import { categorizeError } from 'src/lib/error-category';
 import {
   capYoutubeQuality,
   youtubeDailyLimitPerIpBytes,
+  youtubeDailyLimitPerTelegramUserBytes,
 } from 'src/lib/youtube-budget';
 import { createHash, randomUUID } from 'crypto';
 import {
@@ -210,10 +211,12 @@ export class DownloadService {
     meta: DownloadRequestMeta,
     platform: string,
   ) {
-    if (
-      platform !== 'youtube' ||
-      (meta.source !== DownloadSource.WEB && meta.source !== DownloadSource.EXTENSION)
-    ) {
+    if (platform !== 'youtube') return;
+    if (meta.source === DownloadSource.BOT) {
+      await this.enforceYoutubeTrafficForBotUser(meta);
+      return;
+    }
+    if (meta.source !== DownloadSource.WEB && meta.source !== DownloadSource.EXTENSION) {
       return;
     }
     const ipHash = hashClientIp(meta.clientIp);
@@ -235,6 +238,37 @@ export class DownloadService {
     if (Number(result._sum.fileSize ?? 0) >= limit) {
       throw new ForbiddenException(
         `Daily YouTube limit for your network reached (${Math.round(limit / 1024 ** 3)} GB per day) — try again tomorrow`,
+      );
+    }
+  }
+
+  // То же для бота, но по Telegram-аккаунту: у бота все запросы с одного
+  // адреса (lib/youtube-budget.ts youtubeDailyLimitPerTelegramUserBytes).
+  // Текст отказа бот узнаёт по «Daily YouTube limit for your account» и
+  // переводит (bot/src/helpers.ts friendlyError) — не менять без него.
+  private async enforceYoutubeTrafficForBotUser(meta: DownloadRequestMeta) {
+    const limit = youtubeDailyLimitPerTelegramUserBytes();
+    if (!limit || !meta.telegramId) return;
+    if (String(meta.telegramId) === process.env.ADMIN_TELEGRAM_ID) return;
+    const botUser = await this.prisma.botUser.findUnique({
+      where: { telegramId: BigInt(meta.telegramId) },
+      select: { id: true, isUnlimited: true },
+    });
+    if (!botUser || botUser.isUnlimited) return;
+
+    const result = await this.prisma.download.aggregate({
+      _sum: { fileSize: true },
+      where: {
+        botUserId: botUser.id,
+        downloader: Downloaders.YOUTUBE,
+        fromCache: false,
+        status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
+        createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+      },
+    });
+    if (Number(result._sum.fileSize ?? 0) >= limit) {
+      throw new ForbiddenException(
+        `Daily YouTube limit for your account reached (${Math.round(limit / 1024 ** 3)} GB per day) — try again later`,
       );
     }
   }

@@ -6,7 +6,8 @@ import { LegalByLanguage } from "./types";
 // они превратились бы в файл, в котором ничего не найти.
 //
 // Содержание описывает сервис таким, какой он есть: бесплатный, без рекламы и
-// подписок, на сайте скачивание без входа, суточного лимита скачиваний нет,
+// подписок, на сайте скачивание без входа, суточного лимита скачиваний нет
+// (есть только лимит трафика YouTube — 10 ГБ на сеть, 25 ГБ на аккаунт в боте),
 // подписка на канал не требуется. Меняется поведение сервиса — правится и здесь,
 // иначе документы начнут расходиться с действительностью, а это хуже, чем их
 // отсутствие.
@@ -153,6 +154,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Для скачивания на сайте не нужны ни учётная запись, ни вход. Бот различает пользователей по их аккаунту Telegram.",
               "От перегрузки и автоматизированных злоупотреблений сервис защищают технические ограничения на частоту запросов.",
+              "Для YouTube действует суточный лимит трафика: 10 ГБ за 24 часа с одной сети на сайте и в расширении и 25 ГБ за 24 часа на один аккаунт Telegram в боте. Остальные площадки он не затрагивает.",
               "Подписка на наш канал для скачивания через бот не требуется. В подписи к файлам бот добавляет ссылку на новостной канал проекта; подписываться на него необязательно.",
             ],
           },
@@ -455,6 +457,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Downloading on the website requires no account and no sign-in. The bot tells users apart by their Telegram account.",
               "Technical limits on request frequency protect the service from overload and automated abuse.",
+              "YouTube downloads have a daily traffic limit: 10 GB per 24 hours per network on the website and in the extension, and 25 GB per 24 hours per Telegram account in the bot. Other platforms are not affected.",
               "No subscription to our channel is required to download through the bot. The bot adds a link to the project's news channel in file captions; subscribing to it is optional.",
             ],
           },
@@ -755,6 +758,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Para descargar en el sitio web no se necesita cuenta ni iniciar sesión. El bot distingue a los usuarios por su cuenta de Telegram.",
               "Los límites técnicos de frecuencia de solicitudes protegen el servicio frente a la sobrecarga y los abusos automatizados.",
+              "Las descargas de YouTube tienen un límite diario de tráfico: 10 GB cada 24 horas por red en el sitio web y en la extensión, y 25 GB cada 24 horas por cuenta de Telegram en el bot. Las demás plataformas no se ven afectadas.",
               "No es necesario suscribirse a nuestro canal para descargar mediante el bot. El bot añade en el texto que acompaña a los archivos un enlace al canal de noticias del proyecto; suscribirse a él es opcional.",
             ],
           },
@@ -1054,6 +1058,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Для завантаження на сайті не потрібні ні обліковий запис, ні вхід. Бот розрізняє користувачів за їхнім акаунтом Telegram.",
               "Від перевантаження та автоматизованих зловживань сервіс захищають технічні обмеження частоти запитів.",
+              "Для YouTube діє добовий ліміт трафіку: 10 ГБ за 24 години з однієї мережі на сайті та в розширенні і 25 ГБ за 24 години на один акаунт Telegram у боті. Інших платформ він не стосується.",
               "Підписка на наш канал для завантаження через бот не потрібна. У підписі до файлів бот додає посилання на канал новин проєкту; підписуватися на нього необов'язково.",
             ],
           },
@@ -1355,6 +1360,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Сайтта жүктеп алу үшін есептік жазба да, кіру де қажет емес. Бот пайдаланушыларды олардың Telegram аккаунты бойынша ажыратады.",
               "Сервисті шамадан тыс жүктемеден және автоматтандырылған теріс пайдаланудан сұраныстар жиілігіне қойылған техникалық шектеулер қорғайды.",
+              "YouTube үшін тәуліктік трафик лимиті бар: сайтта және кеңейтімде бір желіден 24 сағатта 10 ГБ, ал ботта бір Telegram аккаунтына 24 сағатта 25 ГБ. Басқа платформаларға ол қатысты емес.",
               "Бот арқылы жүктеп алу үшін біздің арнаға жазылу талап етілмейді. Бот файлдардың сипаттамасына жобаның жаңалықтар арнасына сілтеме қосады; оған жазылу міндетті емес.",
             ],
           },

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { extensionLinkFor, extensionPageFor, friendlyError, siteLinkFor } from "./helpers.js";
+import { extensionLinkFor, extensionPageFor, friendlyError, isYoutubeDailyLimitError, siteLinkFor } from "./helpers.js";
 import { messages } from "./i18n.js";
 
 test("Instagram: пустой ответ — понятный текст, а не сырой yt-dlp", () => {
@@ -83,4 +83,12 @@ test("ссылки для файлов больше 2 ГБ ведут к это�
     `https://videoner.download/ru/extension?url=${encodeURIComponent(url)}`,
   );
   assert.equal(extensionPageFor(url, "en"), `https://videoner.download/extension?url=${encodeURIComponent(url)}`);
+});
+
+test("отказ по суточному лимиту YouTube переводится и узнаётся", () => {
+  const raw = "Daily YouTube limit for your account reached (25 GB per day) — try again later";
+  assert.ok(isYoutubeDailyLimitError(raw));
+  assert.ok(!isYoutubeDailyLimitError("Daily YouTube limit for your network reached (10 GB per day)"));
+  assert.equal(friendlyError(raw, "ru"), messages.ru.errorYoutubeDailyLimit(25));
+  assert.ok(friendlyError(raw, "en").includes("25 GB"));
 });

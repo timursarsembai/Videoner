@@ -118,8 +118,8 @@ describe('capYoutubeQuality', () => {
 });
 
 describe('youtubeDailyLimitPerIpBytes', () => {
-  it('по умолчанию 5 ГБ, 0 — без лимита', () => {
-    expect(youtubeDailyLimitPerIpBytes()).toBe(5 * 1024 ** 3);
+  it('по умолчанию 10 ГБ, 0 — без лимита', () => {
+    expect(youtubeDailyLimitPerIpBytes()).toBe(10 * 1024 ** 3);
     process.env.YOUTUBE_DAILY_GB_PER_IP = '0';
     expect(youtubeDailyLimitPerIpBytes()).toBe(0);
     process.env.YOUTUBE_DAILY_GB_PER_IP = '1.5';

@@ -3,7 +3,7 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar"] as const;
+export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -18,6 +18,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   uk: "Українська",
   kk: "Қазақша",
   ar: "العربية",
+  zh: "中文",
 };
 
 type PlatformStrings = {
@@ -2193,4 +2194,364 @@ const ar: Translations = {
   },
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar };
+const zh: Translations = {
+  nav: {
+    home: "首页",
+    downloaders: "下载工具",
+    extension: "浏览器扩展",
+    blog: "博客",
+    switchTheme: "切换主题",
+    language: "语言",
+    comingSoon: "即将推出",
+  },
+  theme: {
+    light: "浅色",
+    dark: "深色",
+    system: "跟随系统",
+  },
+  playlist: {
+    title: `播放列表“{title}”：{count} 个视频`,
+    hint: "视频会逐个下载。请保持此页面打开；浏览器可能会询问是否允许下载多个文件。",
+    std: "720p",
+    hd: "最佳画质",
+    audio: "仅音频（mp3）",
+    progress: "第 {index} 个，共 {count} 个",
+    stats: "已下载：{done} · 失败：{failed}",
+    stop: "停止",
+    stopped: "已停止。已下载 {done} 个，共 {count} 个。",
+    finished: "播放列表下载完成：{done} / {count}。",
+    again: "重新选择",
+  },
+  footer: {
+    news: "项目动态",
+    botCta: "也可以使用我们的 Telegram 机器人：",
+    extension: "浏览器扩展",
+    developedBy: "开发者",
+    rights: "保留所有权利。",
+  },
+  content: {
+    howToTitle: "如何下载 {platform} 视频",
+    faqTitle: "常见问题",
+  },
+  auth: {
+    loginButton: "通过 Telegram 登录",
+    signIn: "登录",
+    logout: "退出登录",
+    switchAccountHint: "不是你的账号？",
+    switchAccountLink: "退出 Telegram 网页版",
+  },
+  home: {
+    new: "新功能",
+    manyFeatures: "大量新功能",
+    titleLine1: "下载视频",
+    titleLine2: "快速又简单",
+    subtitle:
+      "通用视频下载工具，支持 YouTube、Instagram、TikTok 等平台。画质任选，从高清到适合手机的小文件。",
+    subtitleExtra: "没有限制，没有麻烦，只管下载。",
+    placeholder: "粘贴任意平台的视频链接……",
+    download: "下载",
+  },
+  video: {
+    description: "简介",
+    format: "格式",
+    selected: "已选择：{quality}",
+    videoTab: "视频",
+    audioTab: "音频",
+    converting: "正在转换",
+    downloading: "正在下载",
+    downloadAgain: "重新下载",
+    startDownload: "开始下载",
+    convertingBtn: "正在转换……",
+    downloadingBtn: "正在下载……",
+    loginRequiredHint: "通过 Telegram 登录后即可下载",
+    quotaExceededHint: "已达到每天 20 次下载的上限，请明天再来",
+    postFiles: "此帖子包含 {count} 个文件",
+    photoQuality: "原图",
+    slideshowQuality: "幻灯片（视频）",
+    galleryQuality: "图片 + 幻灯片",
+    downloadAll: "全部下载",
+    downloadOne: "保存",
+    subtitlesTab: "字幕",
+    subtitlesHint: "选择一种语言，即可获得任何播放器都能打开的 .srt 文件。",
+    subtitlesAuto: "自动",
+    subtitlesDownload: "下载字幕",
+    subtitlesDownloading: "正在准备字幕……",
+  },
+  toast: {
+    enterUrl: "请输入链接",
+    enterValidUrl: "请输入有效的链接",
+    platformNotSupported: "暂不支持此平台",
+    urlNotSupported: "暂不支持此链接",
+    enterValidPlatformUrl: "请输入有效的 {platform} 链接",
+    captchaNotReady: "请稍候，等安全验证完成后再试一次",
+    comingSoon: "即将推出！暂不支持 {name}",
+    selectQuality: "请选择画质",
+    downloadStarted: "已开始下载！",
+    downloadCompleted: "下载完成！",
+    newsChannel: "项目动态请关注 Telegram：",
+    downloadUrlNotReceived: "未获取到下载链接",
+    needsBrowser:
+      "该平台没有向我们的服务器提供这个视频：它仅对已登录用户可见，或访问暂时受限。你可以在电脑上用 Videoner 浏览器扩展下载，扩展会使用你自己的登录状态进行下载。",
+    needsBrowserLink: "获取扩展 →",
+  },
+  platforms: {
+    youtube: {
+      description: "高清下载 YouTube 视频",
+      news: "现已支持视频和 Shorts",
+      titleLine1: "下载 YouTube",
+      titleLine2: "视频和 Shorts",
+      pageDescription:
+        "YouTube 视频下载工具：免费下载 YouTube 视频、Shorts 和音频，支持高画质格式。快速、免费、简单易用。支持 8K、4K、高清画质及 MP3 音频。",
+      placeholder: "在此粘贴 YouTube 链接……",
+      howTo: [
+        "从浏览器地址栏复制视频链接，或在 YouTube 应用中点击“分享”。",
+        "把链接粘贴到上方输入框，然后点击“下载”。",
+        "选择画质：视频最高可达 4K/8K，也可以选择仅下载 MP3 音频。",
+        "文件会立即开始下载，无需登录。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 YouTube 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "Videoner 提供 YouTube 为该视频提供的所有分辨率，从 360p 到 4K/8K（如有），还可以提取 MP3 音频。" },
+        { q: "可以下载私享视频或有年龄限制的视频吗？", a: "仅支持公开的 YouTube 视频；私享视频、你无权观看的不公开视频以及需要登录才能观看的内容都无法下载。" },
+        { q: "从 YouTube 下载视频合法吗？", a: "请只下载你有权保存的视频，例如你自己的内容、采用知识共享（Creative Commons）许可的视频，或创作者允许下载的内容。请遵守 YouTube 服务条款和版权法。" },
+        { q: "下载的文件能保留多久？", a: "转换后的文件会在服务器上保留约一小时，下载后请立即保存到你的设备。" },
+      ],
+    },
+    facebook: {
+      description: "保存 Facebook 帖子中的视频和 Reels",
+      news: "现已支持 Reels",
+      titleLine1: "下载 Facebook",
+      titleLine2: "视频和 Reels",
+      pageDescription:
+        "Facebook 视频下载工具：高画质下载 Facebook 视频和 Reels。快速、免费、简单易用。",
+      placeholder: "在此粘贴 Facebook 链接……",
+      howTo: [
+        "在 Facebook 上打开视频或 Reels，复制链接（点击右上角三个点 → 复制链接）。",
+        "把链接粘贴到上方，然后点击“下载”。",
+        "选择 MP4 画质，或提取 MP3 音频。",
+        "文件直接下载到你的设备，无需 Facebook 账号。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 Facebook 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "Videoner 会获取 Facebook 为该视频或 Reels 提供的最高画质，格式为 MP4，也可以选择 MP3 音频。" },
+        { q: "可以下载私密视频吗？", a: "仅支持公开的帖子、视频和 Reels；私密内容或仅好友可见的内容无法访问。" },
+        { q: "从 Facebook 下载视频合法吗？", a: "请只下载你获准保存的视频，尊重创作者的权利，并遵守 Facebook 服务条款。" },
+        { q: "下载的文件能保留多久？", a: "文件在转换后保留约一小时，之后自动删除，请及时下载。" },
+      ],
+    },
+    instagram: {
+      description: "下载 Instagram Reels、快拍和帖子",
+      news: "现已支持 Reels 和快拍",
+      titleLine1: "下载 Instagram",
+      titleLine2: "Reels 和快拍",
+      pageDescription:
+        "Instagram 视频下载工具：高画质下载 Instagram Reels、快拍和帖子。快速、免费、简单易用。",
+      placeholder: "在此粘贴 Instagram 链接……",
+      howTo: [
+        "在 Instagram 上打开 Reels、帖子或快拍，点击纸飞机图标 → 复制链接。",
+        "把链接粘贴到上方输入框。",
+        "选择你需要的画质和格式。",
+        "下载立即开始，无需登录，也无需安装应用。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 Instagram 内容免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "Reels、帖子和快拍均可按原有最高画质下载，格式为 MP4 或 MP3。" },
+        { q: "可以下载私密账号的内容吗？", a: "仅支持公开的 Instagram 账号和帖子；私密账号的内容无法下载。" },
+        { q: "从 Instagram 下载视频合法吗？", a: "请只下载你被允许保存的内容，尊重创作者，并遵守 Instagram 服务条款。" },
+        { q: "下载的文件能保留多久？", a: "文件在服务器上保留约一小时，之后自动删除。" },
+      ],
+    },
+    tiktok: {
+      description: "下载无水印 TikTok 视频",
+      news: "现已支持无水印下载",
+      titleLine1: "下载 TikTok",
+      titleLine2: "无水印视频",
+      pageDescription:
+        "TikTok 视频下载工具：免费下载 TikTok 无水印视频，高画质。快速、免费、简单易用。",
+      placeholder: "在此粘贴 TikTok 链接……",
+      howTo: [
+        "在 TikTok 视频上点击“分享”，然后选择“复制链接”。",
+        "把链接粘贴到上方，然后点击“下载”。",
+        "获取不带 TikTok 水印的 MP4 视频，或 MP3 音频。",
+        "直接保存到你的设备。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 TikTok 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "TikTok 为该视频提供的最佳画质，不带 TikTok 水印，另有 MP3 音频。" },
+        { q: "可以下载私密账号的视频吗？", a: "仅支持下载公开 TikTok 账号的视频。" },
+        { q: "从 TikTok 下载视频合法吗？", a: "请下载你有权保存的视频，注明创作者，并遵守 TikTok 服务条款。" },
+        { q: "下载的文件能保留多久？", a: "下载的文件会在服务器上保留约一小时，之后自动删除。" },
+      ],
+    },
+    twitter: {
+      description: "下载 Twitter 视频",
+      news: "现已支持 Twitter 视频",
+      titleLine1: "下载 Twitter",
+      titleLine2: "视频",
+      pageDescription:
+        "Twitter 视频下载工具：高画质下载 Twitter 视频。快速、免费、简单易用。",
+      placeholder: "在此粘贴 Twitter 链接……",
+      howTo: [
+        "点击推文下方的“分享”，选择“复制链接”（或从浏览器复制网址）。",
+        "把链接粘贴到上方输入框。",
+        "选择你需要的视频画质。",
+        "下载立即开始，无需 X/Twitter 账号。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 Twitter/X 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "X/Twitter 为该视频提供的所有画质，格式为 MP4，另有 MP3。" },
+        { q: "可以下载私密账号的视频吗？", a: "仅支持公开账号的推文；受保护的私密账号不受支持。" },
+        { q: "从 Twitter/X 下载视频合法吗？", a: "请下载你有权保存的内容，尊重发布者的权利，并遵守平台服务条款。" },
+        { q: "下载的文件能保留多久？", a: "文件生成约一小时后会自动删除。" },
+      ],
+    },
+    vimeo: {
+      description: "高画质下载 Vimeo 视频",
+      news: "现已支持 Vimeo",
+      titleLine1: "下载 Vimeo",
+      titleLine2: "视频",
+      pageDescription:
+        "Vimeo 视频下载工具：高画质下载 Vimeo 视频。快速、免费、简单易用。",
+      placeholder: "在此粘贴 Vimeo 链接……",
+      howTo: [
+        "打开 Vimeo 并复制视频链接（手机上可点击“分享”→“复制链接”）。",
+        "把链接粘贴到上方输入框，然后点击“下载”。",
+        "选择画质和格式：视频选 MP4，只要音频选 MP3。",
+        "下载立即开始，无需账号，也无需安装软件。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 Vimeo 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "Videoner 提供 Vimeo 为该视频开放的所有画质，最高可达原始上传分辨率，如创作者提供了高清和 4K，也可下载。" },
+        { q: "可以下载私密或有密码保护的 Vimeo 视频吗？", a: "不可以。Videoner 仅支持公开的 Vimeo 链接；私密、有密码保护或访问受限的视频无法下载。" },
+        { q: "从 Vimeo 下载视频合法吗？", a: "下载功能仅适用于你有权保存的视频，例如你自己的内容、采用知识共享（Creative Commons）许可的视频，或创作者明确允许下载的内容。请尊重原创者的版权，并遵守 Vimeo 服务条款。" },
+        { q: "下载的文件能保留多久？", a: "文件按需生成，在服务器上保留约一小时后自动删除，下载完成后请立即保存到你的设备。" },
+      ],
+    },
+    vk: {
+      description: "下载 VK 视频和短片",
+      news: "现已支持 VK",
+      titleLine1: "下载 VK",
+      titleLine2: "视频和短片",
+      pageDescription:
+        "VK 视频下载工具：高画质下载 VK 视频和短片。快速、免费、简单易用。",
+      placeholder: "在此粘贴 VK 链接……",
+      howTo: [
+        "在 VK（vk.com 或 VK Video）上打开视频或短片，从地址栏或“分享”按钮复制链接。",
+        "把链接粘贴到上方，然后点击“下载”。",
+        "选择可用的画质和格式。",
+        "文件直接下载，无需登录 VK。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 VK 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "VK 为该视频或短片提供的所有画质，另有 MP3 音频。" },
+        { q: "需要登录 VK 吗？", a: "不需要，但视频必须是公开的。Videoner 不会登录 VK，因此私密视频、仅好友可见或需要登录才能观看的视频无法下载。" },
+        { q: "从 VK 下载视频合法吗？", a: "请只下载你有权保存的视频，遵守 VK 服务条款，并尊重上传者的权利。" },
+        { q: "下载的文件能保留多久？", a: "文件在服务器上保留约一小时，之后自动删除。" },
+      ],
+    },
+    rutube: {
+      description: "下载 Rutube 视频",
+      news: "现已支持 Rutube",
+      titleLine1: "下载 Rutube",
+      titleLine2: "视频",
+      pageDescription:
+        "Rutube 视频下载工具：高画质下载 Rutube 视频。快速、免费、简单易用。",
+      placeholder: "在此粘贴 Rutube 链接……",
+      howTo: [
+        "在 Rutube 上打开视频，从地址栏或“分享”按钮复制链接。",
+        "把链接粘贴到上方输入框。",
+        "选择画质和格式（视频或音频）。",
+        "下载立即开始，无需 Rutube 账号。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 Rutube 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "Rutube 提供的所有画质，格式为 MP4，另有 MP3 音频。" },
+        { q: "需要登录 Rutube 吗？", a: "不需要。Videoner 仅支持公开的 Rutube 视频，不使用也不需要登录。" },
+        { q: "从 Rutube 下载视频合法吗？", a: "请只下载你被允许保存的内容，遵守 Rutube 服务条款，并尊重创作者的权利。" },
+        { q: "下载的文件能保留多久？", a: "文件在服务器上保留约一小时，之后自动删除。" },
+      ],
+    },
+    okru: {
+      description: "下载 OK.ru（Odnoklassniki）视频",
+      news: "现已支持 OK.ru",
+      titleLine1: "下载 OK.ru",
+      titleLine2: "视频",
+      pageDescription:
+        "OK.ru 视频下载工具：高画质下载 OK.ru（Odnoklassniki）视频。快速、免费、简单易用。",
+      placeholder: "在此粘贴 OK.ru 链接……",
+      howTo: [
+        "在 OK.ru（Odnoklassniki）上打开视频，从地址栏复制链接。",
+        "把链接粘贴到上方输入框，然后点击“下载”。",
+        "选择画质和格式。",
+        "下载立即开始，无需登录 OK.ru。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 OK.ru 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质的视频？", a: "OK.ru 为该视频提供的全部画质，另有 MP3。" },
+        { q: "需要登录 OK.ru 吗？", a: "不需要，仅支持公开的 OK.ru（Odnoklassniki）视频。Videoner 从不登录任何账号，因此无法访问私密视频。" },
+        { q: "从 OK.ru 下载视频合法吗？", a: "请只下载你有权保存的视频，遵守 OK.ru 服务条款，并尊重上传者的权利。" },
+        { q: "下载的文件能保留多久？", a: "文件生成约一小时后会自动删除。" },
+      ],
+    },
+    pinterest: {
+      description: "下载 Pinterest Pin 中的视频",
+      news: "现已支持 Pinterest",
+      titleLine1: "下载 Pinterest",
+      titleLine2: "视频和 Pin",
+      pageDescription:
+        "Pinterest 视频下载工具：高画质下载 Pinterest Pin 中的视频。快速、免费、简单易用。注意：只能下载视频 Pin，不支持纯图片 Pin。",
+      placeholder: "在此粘贴 Pinterest 链接……",
+      howTo: [
+        "在 Pinterest 上打开 Pin，点击“分享”→“复制链接”（或从浏览器复制网址）。",
+        "把链接粘贴到上方输入框，然后点击“下载”。",
+        "选择你需要的画质和格式。",
+        "文件立即下载，无需账号。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 Pinterest 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面和查看可用画质无需登录。" },
+        { q: "可以下载什么画质？", a: "Videoner 提供 Pinterest 为该 Pin 视频提供的所有画质，还可以提取 MP3 音频。" },
+        { q: "可以下载 Pinterest 上的照片或图片吗？", a: "不可以，只能下载视频 Pin。如果 Pin 只有图片，就没有可提取的视频文件。" },
+        { q: "可以下载私密或受限图板中的 Pin 吗？", a: "仅支持公开的 Pin；私密图板和需要登录才能查看的内容无法下载。" },
+        { q: "从 Pinterest 下载视频合法吗？", a: "请只下载你有权保存的 Pin，例如你自己的内容或创作者允许下载的内容。请遵守 Pinterest 服务条款和版权法。" },
+        { q: "下载的文件能保留多久？", a: "转换后的文件会在服务器上保留约一小时，下载后请立即保存到你的设备。" },
+      ],
+    },
+    threads: {
+      description: "下载 Threads 帖子中的视频",
+      news: "现已支持 Threads",
+      titleLine1: "下载 Threads",
+      titleLine2: "视频",
+      pageDescription:
+        "Threads 视频下载工具：下载 Threads 帖子中的视频。快速、免费，无需 Threads 账号。Threads 每个视频只提供一种版本，最高 720p，这就是该平台提供的最高画质。",
+      placeholder: "在此粘贴 Threads 链接……",
+      howTo: [
+        "在 Threads 中打开帖子，点击分享图标，然后选择“复制链接”。",
+        "把链接粘贴到上方输入框，然后点击“下载”。",
+        "选择所需格式：视频或 MP3 音频。",
+        "文件立即下载，无需账号。",
+      ],
+      faq: [
+        { q: "用 Videoner 下载 Threads 视频免费吗？", a: "免费，但需要先通过 Telegram 登录（一键完成，无需密码）。每天可下载 20 次，与我们的 Telegram 机器人共用额度。服务完全免费：没有订阅，也没有广告。" },
+        { q: "下载需要账号吗？", a: "开始下载前需要用 Telegram 账号登录，一键完成，不需要邮箱或密码。浏览页面无需登录。" },
+        { q: "可以下载什么画质？", a: "Threads 每个帖子只发布一种视频版本，短边最高 720p，即使作者上传的是 4K 也是如此。Videoner 原样提供该文件，还可以提取 MP3 音频。任何下载工具都无法提供更高画质，因为平台根本不提供更高的分辨率。" },
+        { q: "threads.com 和 threads.net 链接都能用吗？", a: "都能用。完整链接（如 threads.com/@user/post/CODE）和短链接（如 threads.net/t/CODE）均受支持。" },
+        { q: "可以下载 Threads 帖子中的照片吗？", a: "不可以，只能下载视频。如果帖子只有照片，就没有可提取的视频文件。" },
+        { q: "帖子里有多个视频怎么办？", a: "只会下载帖子中的第一个视频。Threads 轮播帖可以包含多个视频，但只保存第一个。" },
+        { q: "可以下载私密帖子吗？", a: "不可以。只能下载公开可见的帖子；私密账号或需要登录才能查看的内容无法访问。" },
+        { q: "从 Threads 下载视频合法吗？", a: "请只下载你有权保存的内容，例如你自己的内容或作者允许下载的内容。请遵守 Threads 使用条款和版权法。" },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh };

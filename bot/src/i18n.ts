@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh";
 
 export function detectLang(languageCode?: string): Lang {
   const base = languageCode?.toLowerCase().split("-")[0];
@@ -12,9 +12,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -917,6 +917,226 @@ const ar: Messages = {
   settingsBack: "⬅️ العودة إلى الإعدادات",
 };
 
+const zh: Messages = {
+  start: "你好！把 YouTube、TikTok、Instagram、Facebook、Twitter/X、Vimeo、VK、Rutube、OK.ru、Pinterest 或 Threads 的视频链接发给我，我来帮你下载。\n\n✨ 画质不设限：平台提供什么画质，你就能拿到什么画质，最高 4K——只要文件不超过 2 GB（这是 Telegram 对机器人的限制）。这里没有任何付费功能。\n\n完全免费：没有订阅，没有广告，也没有应用内购买。\n\n🧩 在电脑上下载？安装浏览器扩展，视频页面上会直接出现下载按钮：videoner.download/zh/extension\n\n👥 把我加进群组，群成员分享的链接我都会把视频发出来。\n\n⚡ 跳过画质选择：在链接后加上 -audio 只下载音频（mp3），加上 -hd 下载最佳画质。\n\n📣 项目动态：@videonerdownload\n\n🌐 机器人语言：/language",
+  notLink: "这看起来不像链接。请发送视频链接。",
+  inviteGreeting: "你好！我是 Videoner，可以免费下载 YouTube、TikTok、Instagram 等平台的视频。正在准备别人分享给你的视频 👇",
+  inviteNotFound: "没有找到这个邀请链接对应的视频。把视频链接发给我，我来下载。",
+  inviteUnavailable: "无法打开这个链接中的视频——服务暂时没有响应。请过一分钟再打开同一个链接。",
+  fetchingInfo: "🔍 正在获取视频信息……",
+  audioOnlyButton: "🎵 仅音频（mp3）",
+  photoButton: "📷 下载图片",
+  slideshowButton: "🎞 幻灯片（视频）",
+  galleryButton: "📷+🎞 图片和幻灯片",
+  chooseQuality: (title, duration) => `「${title}」${duration ? `\n⏱ ${duration}` : ""}\n\n请选择画质：`,
+  sessionExpired: "会话已过期，请重新发送链接",
+  downloading: "⏬ 正在下载，可能需要几分钟……",
+  downloadFailed: "下载失败",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ 正在下载：${percent}%${eta ? ` · 剩余 ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ 马上就好，正在合成文件……",
+  converting: (percent) => `⚙️ 正在转换：${percent}%`,
+  etaUnderMinute: "不到一分钟",
+  etaMinutes: (minutes) => `约 ${minutes} 分钟`,
+  etaHours: (hours, minutes) => `约 ${hours} 小时${minutes ? ` ${minutes} 分钟` : ""}`,
+  downloadTimeout: "下载耗时太长——这个视频似乎非常大。请试试更低的画质。",
+  downloadInterrupted: "⚠️ 机器人正在重启更新，你的下载被中断了。请过一分钟重新发送链接。",
+  fileTooBig: (mb, url) =>
+    `文件比较大（${mb} MB），Telegram 不允许机器人发送。\n请在这里下载：${url}`,
+  sendingFile: "📤 正在发送文件……",
+  sendingAlbum: (count) => `📤 这条帖子包含多个文件（${count} 个），将以相册形式发送……`,
+  failedPrefix: "❌ 失败：",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `来源：${sourceUrl}\n` +
+        "视频的所有权利归原作者所有。\n" +
+        "通过 @VideonerBot 免费下载",
+      `📣 项目动态：${NEWS_CHANNEL}`,
+      shareUrl && `🔗 分享：${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `下载前请先关注我们的频道 ${channel}——这是唯一的条件，服务依然免费。\n\n` +
+    "关注后请点击「我已关注」。",
+  openChannelButton: "📣 打开频道",
+  checkSubscriptionButton: "我已关注",
+  subscribeThanks: "谢谢！现在把视频链接发给我吧。",
+  subscribeThanksResuming: "谢谢！正在处理你的链接。",
+  subscribeStillMissing: "暂时还没看到你的关注。请先关注，然后再点一次。",
+  channelNotice: (channel) => `\n\n这条帖子的链接会出现在 ${channel} 中——匿名发布，不显示你的名字。`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "免费下载这个视频和其他任何视频：@VideonerBot",
+  errorStoryNeedsId:
+    "请发送某一条快拍的链接：在 Instagram 应用中打开它，点击「分享」→「复制链接」。",
+  errorInstagramStory:
+    "Instagram 快拍只有登录用户才能看到。",
+  errorLoginRequired:
+    "这条帖子需要登录才能查看：平台只向已登录的用户提供它。" +
+    "私密帖子、有年龄限制的内容" +
+    "以及仅限部分人可见的帖子都会这样。\n\n" +
+    "公开帖子可以正常下载——请换一个链接试试。",
+  errorUnsupportedPlatform:
+    "无法识别这个链接——请确认它是来自 YouTube、TikTok、Instagram、Facebook、Twitter/X、Vimeo、VK、Rutube、OK.ru、Pinterest 或 Threads 的视频直链。",
+  errorFileTooLarge: "文件超过 2 GB——Telegram 不允许机器人发送更大的文件。请在网站上或用浏览器扩展下载（按钮在下方），或者重新发送链接并选择更低的画质。",
+  siteButton: "🌐 在网站上下载",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ 超过 ${limit} 的画质已隐藏：Telegram 不允许机器人发送更大的文件。你可以在网站上或用浏览器扩展下载它们（按钮在下方）。`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ 这个视频即使选最低画质（约 ${smallest}）对 Telegram 来说也太大了：Telegram 不允许机器人发送超过 2 GB 的文件。这里可以只下载音频；视频请在网站上或用浏览器扩展下载（按钮在下方）。`,
+  errorFormatUnavailable: "这个视频没有该画质。请重新发送链接，我会显示最新的画质列表。",
+  errorNoVideoContent: "这个链接里没有可下载的视频——这条帖子似乎只有图片。",
+  errorRegionBlocked:
+    "这个视频在作者所在国家/地区以外被屏蔽——平台不向我们的服务器提供" +
+    "它。这无法绕过：限制来自平台方。" +
+    "\n\n其他链接可以照常下载。",
+  errorRateLimited: "连续发送的链接太多了——请稍等一下再发送。",
+  errorYoutubeDailyLimit: (gb) => `你在过去 24 小时内从 YouTube 下载了超过 ${gb} GB——这是机器人对每个人的每日限额。限额按最近 24 小时计算，稍后就可以继续下载新的 YouTube 视频。其他平台照常可用。`,
+  playlistStoppedByLimit: (dropped) => `⏹ 播放列表已停止：已达到 YouTube 每日限额。未下载的视频：${dropped} 个。请稍后重新发送播放列表链接。`,
+  errorPlatformRefused:
+    "平台没有把这个视频提供给我们的服务器。私密帖子或有年龄限制的帖子" +
+    "会出现这种情况，有时平台也只是暂时限制访问。" +
+    "请过几分钟再试。",
+  errorThreadsNoMedia:
+    "这条 Threads 帖子里看不到视频或图片。可能是纯文字帖子，" +
+    "也可能 Threads 只向已登录用户显示其中的媒体——这类帖子不登录就无法下载。",
+  extensionHint:
+    "\n\n💻 你可以在电脑上用 Videoner 浏览器扩展下载：" +
+    "它使用你自己在平台上的登录状态下载，密码和 cookies 都不会离开你的浏览器。",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 要下载这类帖子，请把你的 ${platform} 账号连接到机器人——只需一次。之后机器人就能下载你能看到的一切：私密帖子、Reels 和快拍，在手机上也可以。点击下方按钮查看操作方法。${withExtension ? "\n\n💻 也可以在电脑上用 Videoner 浏览器扩展下载。" : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ 你连接的 ${platform} 账号无法打开这条帖子。可能是登录已失效——请重新连接账号。也可能这个账号没有查看该帖子的权限。${withExtension ? "\n\n💻 你也可以在电脑上用 Videoner 浏览器扩展下载。" : ""}`,
+  connectAccountButton: "🔑 连接账号",
+  reconnectAccountButton: "🔑 重新连接",
+  extensionButton: "🧩 用扩展下载",
+  extensionCommand:
+    "🧩 Videoner 浏览器扩展：在视频页面上直接显示下载按钮——支持 YouTube、Instagram、TikTok、VK、你账号中的私密视频以及 GetCourse 课程。\n\n适用于电脑上的 Chrome、Edge、Opera、Yandex Browser 和 Firefox。",
+  extensionPageButton: "🧩 安装扩展",
+  addToGroupButton: "👥 添加到群组",
+  newsButton: "📣 项目动态",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 项目动态：${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ 本群的机器人设置\n\n" +
+    `🗑 删除包含链接的消息：${s.deleteLinks ? "是" : "否"}\n` +
+    "视频发送后，只包含链接的消息会被删除——聊天中只保留视频和分享者的名字。\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ 我目前无法删除消息：请把我设为管理员，并授予「删除消息」权限。\n"
+      : "") +
+    `\n✍️ 视频说明文字：${{ full: "完整", short: "标题和来源", none: "无说明" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 画质：${s.quality === "max" ? "Telegram 可接受的最高画质" : "标准（720p）"}\n` +
+    `\n⏱ 长视频：${s.longVideos ? "不限时长" : "仅限 15 分钟以内"}\n` +
+    `\n🔑 谁可以连接自己的账号（用于快拍和私密帖子）：${s.cookiesBy === "all" ? "任何成员" : "仅管理员"}\n` +
+    `\n🌐 回复语言：${s.language ? langName(s.language) : "跟随每位成员自己的语言"}\n` +
+    "\n只有群管理员可以修改设置。",
+  settingsDeleteButton: (on) => `🗑 删除链接：${on ? "是" : "否"}`,
+  settingsCaptionButton: (style) => `✍️ 说明文字：${{ full: "完整", short: "简短", none: "无" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 画质：${mode === "max" ? "最高" : "720p"}`,
+  settingsLongButton: (on) => `⏱ 长视频：${on ? "是" : "15 分钟以内"}`,
+  settingsDoneButton: "✅ 完成",
+  settingsAdminsOnly: "只有群管理员可以修改设置。",
+  settingsGroupsOnly: "设置仅适用于群组：把我加进群组，然后在群里发送 /settings。",
+  settingsFailed: "设置保存失败，请重试。",
+  settingsCookiesButton: (by) => `🔑 连接账号：${by === "all" ? "所有人" : "管理员"}`,
+  accountsIntro:
+    "🔑 已连接的账号\n\n机器人可以借助你的账号下载只有登录用户才能看到的内容（Instagram 快拍、私密帖子）。登录在哪里连接就在哪里生效：在私聊中连接的账号用于你自己的下载，包括你在没有连接账号的群组里发的链接；连接到群组的账号则供该群所有成员使用。",
+  accountsHowTo:
+    "连接方法：\n1. 最简单：在电脑上使用 Videoner 扩展——先在平台网站上登录，打开 Videoner 弹窗，点击「🔑 将你的 … 账号连接到机器人」，然后把代码发给我。如果是群组，请在该群中发送 /connect CODE。\n2. 或者把 cookies.txt 文件（从浏览器导出的 cookies）发给我，也可以把文件内容作为消息粘贴发送。\n3. 在 Android 手机上——使用 Firefox 和 Cookie-Editor 附加组件：https://videoner.download/zh/blog/android-firefox",
+  accountsWarning:
+    "⚠️ 平台不喜欢自动下载，可能会限制或封禁账号。建议连接小号，而不是主账号。Cookies 加密存储，仅用于下载，可通过下方按钮删除。",
+  accountsNone: "还没有连接任何账号。",
+  accountsGroupTitle: "🔑 已连接到本群的账号",
+  accountsGroupHowTo:
+    "为整个群组连接账号：在 Videoner 扩展中点击「🔑 将你的 … 账号连接到机器人」获取代码，然后在这里发送 /connect CODE。如果你只在私聊中连接了账号，机器人会在这里用它处理你自己发的链接。查看你的连接：在与 @VideonerBot 的私聊中发送 /accounts。",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : "（⚠️ 登录已失效）"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : "（⚠️ 登录已失效）"}`,
+  accountsWhereHere: "私聊",
+  accountsWhereGroup: (title) => `群组「${title}」`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 删除我的所有连接",
+  accountsDeleted: "已删除。",
+  accountsDeletedAll: (n) => `已删除的连接：${n} 个。`,
+  accountsNotAllowed: "只有连接者本人或群管理员可以删除。",
+  connectUsage:
+    "请发送 /connect CODE。代码可以在电脑上的 Videoner 扩展中点击「🔑 将你的 … 账号连接到机器人」获取。查看你的连接：/accounts。",
+  connectOnlyAdmins: "只有管理员可以为本群连接账号（见 /settings）。",
+  connectDone: (platform, where) =>
+    `✅ ${platform} 已连接${where}。现在机器人也能下载只有登录用户才能看到的内容了。查看或删除：/accounts。\n\n⚠️ 平台可能会因自动下载而限制账号——建议使用小号。`,
+  connectWhereGroup: "到本群",
+  connectWhereHere: "，用于你在私聊和内联模式中的下载",
+  connectCodeNotFound: "代码不存在或已过期（代码有效期为 10 分钟）。请在 Videoner 扩展中获取新代码。",
+  connectRejectedNoSession: "这些 cookies 中没有登录信息。请在平台网站上登录，然后重新导出 cookies。",
+  connectRejectedUnknown: "没有找到受支持平台的 cookies：Instagram、Facebook、YouTube、X、VK、TikTok。",
+  connectUnavailable: "暂时还不能连接账号。",
+  connectFailed: "连接失败，请重试。",
+  connectFileTooBig: "文件太大——请只导出所需网站的 cookies。",
+  connectNotAnonymous: "请以你本人身份连接账号，不要以群组身份匿名连接，否则管理员们的连接会混在一起。我已作废这个代码，请重新获取。",
+  connectCodeInGroup:
+    "发在群聊里的连接代码其他人也能看到——我已作废该代码并删除了这条消息。请获取新代码并用 /connect CODE 发送：我会立即删除这条命令消息。",
+  groupWelcome:
+    "👋 你好！在这个聊天里发送 TikTok、Instagram、YouTube、VK 等平台的视频链接，我会直接回复视频。\n\n" +
+    "15 分钟以内的视频我会自动下载，无需任何命令；其他时候我不会打扰大家。\n\n⚙️ 群管理员可以用 /settings 调整我：删除链接消息、说明文字样式、画质、长视频和语言。\n\n⚡ 在链接后加上 -audio 获取音频，加上 -hd 获取最佳画质。\n\n📣 项目动态：@videonerdownload",
+  errorTooLong: "视频太长了——暂时还无法下载这么长的视频。",
+  errorUnknown: "无法下载这个视频。请稍后再试，或发送其他链接。",
+  inlineHintButton: "把链接发给机器人",
+  inlineResultTitle: "⬇️ 下载视频",
+  inlineResultDescription: "视频会直接发到这个聊天中",
+  inlinePlaceholder: "⏬ 正在下载，可能需要几分钟……",
+  inlineOpenBot: "打开机器人",
+  inlineOnlySingleVideo:
+    "此模式只能发送单个视频。如果帖子包含多个文件或图片，请在私聊中把链接发给机器人。",
+  inlineSubscribeRequired: (channel: string) =>
+    `下载前请先关注 ${channel}，然后再试一次。`,
+  inlineRateLimited: "连续请求太多了。请等一分钟再试。",
+  queueRest: (count) => `\n\n📋 队列中还有链接：${count} 个。这个完成后我会逐个显示。`,
+  queuedOne: (position) =>
+    `📋 链接已加入队列，第 ${position} 位。先完成当前这个，然后我会为它显示画质选择。`,
+  queuedMany: (added, waiting) =>
+    `📋 已加入队列的链接：${added} 个。共有 ${waiting} 个在等待。当前这个完成后我会逐个显示。`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "这个链接已经在队列中了，不会重复添加。"
+      : `已在队列中的链接不会重复添加（重复：${count} 个）。`,
+  queueFull: (limit, rejected) =>
+    `队列最多容纳 ${limit} 个链接，多出的没有添加（${rejected} 个）。等队列往前走后再发送它们。`,
+  skipButton: "✖️ 不下载",
+  skipped: "⏭ 已跳过这个链接。",
+  chooseTimedOut: "⌛ 30 分钟内没有选择画质，已跳过这个链接。",
+  queueLostOnRestart: (count) =>
+    `⚠️ 机器人正在重启更新，队列已被清空（链接：${count} 个）。请过一分钟重新发送。`,
+  subtitlesButton: "📝 字幕",
+  subtitlesBack: "⬅️ 返回画质选择",
+  subtitlesAuto: "自动",
+  subtitlesChoose: "请选择字幕语言",
+  subtitlesPreparing: "📝 正在准备字幕……",
+  subtitlesFailed: "无法下载该语言的字幕。请换一种语言试试。",
+  subtitlesBusy: "YouTube 暂时不提供字幕——请过几分钟再试。",
+  playlistFound: (title, count) =>
+    `📃 播放列表${title ? `「${title.slice(0, 150)}」` : ""}：${count} 个视频。\n我会逐个下载。选择哪种格式？`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 最佳画质",
+  playlistAudioButton: "🎵 仅音频（mp3）",
+  playlistNoButton: "✖️ 不用了，谢谢",
+  playlistQueued: (count) =>
+    `📃 已从播放列表加入队列的视频：${count} 个。我会逐个发送。可用下方按钮或 /stop 停止。`,
+  playlistFailed: "无法打开播放列表——它可能是私密的。请发送单个视频的链接。",
+  stopButton: "⏹ 停止",
+  stopped: (dropped) => `⏹ 已停止。${dropped ? `已从队列中移除的链接：${dropped} 个。` : ""}`,
+  nothingToStop: "当前没有正在进行的下载。",
+  languageChoose: "🌐 请选择机器人语言。「自动」将跟随你的 Telegram 语言。",
+  languageChooseGroup: "🌐 机器人在本群的回复语言。「自动」即使用每位成员的 Telegram 语言。",
+  languageAuto: "自动——跟随 Telegram",
+  languageAutoGroup: "自动——跟随每位成员",
+  languageSaved: (name) => `✅ 机器人语言：${name}。可用 /language 更改。`,
+  languageSavedAuto: "✅ 机器人将跟随你的 Telegram 语言。可用 /language 更改。",
+  settingsLanguageButton: (name) => `🌐 语言：${name ?? "自动"}`,
+  settingsBack: "⬅️ 返回设置",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -1364,4 +1584,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh };

@@ -463,6 +463,93 @@ const TEXTS = {
     langAuto: "تلقائي",
     langLabel: "اللغة",
   },
+  // Упрощённый китайский. Полноширинная пунктуация в предложениях; латиница
+  // (названия площадок, @VideonerBot, /connect) — как есть.
+  zh: {
+    loading: "正在获取视频信息…",
+    notVideoPage:
+      "请打开 YouTube、TikTok、Instagram、Facebook、X、Vimeo、VK、Rutube、OK.ru、Pinterest 或 Threads 上的视频页面，然后再次点击图标。GetCourse 课程：如果课程页面是在安装扩展之前打开的，请刷新该页面。",
+    gcLesson: "GetCourse 课程",
+    gcPick: "本课程包含多个视频，请选择一个",
+    gcVideo: (n) => `视频 ${n}`,
+    gcNote: "由你的浏览器下载并合并视频。可以关闭此窗口，但不要关闭浏览器。",
+    gcNoStream: "无法从播放器获取视频。请刷新课程页面后重试。",
+    video: "视频",
+    photo: "原始尺寸图片",
+    slideshow: "幻灯片（视频）",
+    gallery: "图片 + 幻灯片",
+    audioOnly: "仅音频（mp3）",
+    subtitles: "字幕（.srt）",
+    subtitlesAuto: "自动生成",
+    back: "返回",
+    starting: "正在开始下载…",
+    waiting: "正在服务器上排队等候…",
+    downloading: "正在下载",
+    converting: "正在处理",
+    left: (eta) => `剩余 ${eta}`,
+    saving: "正在保存到“下载”…",
+    done: "完成，文件已保存到“下载”。",
+    news: "📣 项目动态：@videonerdownload",
+    again: "继续下载",
+    directDownload: "下载视频（mp4）",
+    directPhoto: "下载图片（jpg）",
+    directNote: "直接通过浏览器下载，无需服务器排队",
+    moreOptions: "其他画质和音频",
+    fallback: "浏览器下载失败，正在通过服务器下载。",
+    openSite: "打开 videoner.download",
+    retry: "重试",
+    min: "分钟",
+    sec: "秒",
+    errNetwork: "无法连接 Videoner。请检查网络连接后重试。",
+    errRateLimit: "连续请求过多。请等待一分钟后重试。",
+    errUnsupported:
+      "此页面上没有 Videoner 可以下载的视频。请打开具体视频或帖子的页面。",
+    errYoutubeDaily: "你所在网络的 YouTube 每日限额已用完。请明天再试。",
+    errTooLarge: "该画质的文件太大。请选择较低的画质。",
+    errLogin:
+      "此帖子仅对已登录用户可见。公开帖子可以正常下载。",
+    errRegion: "作者按国家/地区限制了此帖子的观看，因此无法下载。",
+    errServerBlocked: "该平台暂时限制了我们服务器的访问。请稍后重试。",
+    errFailed: "下载失败。请重试或选择其他画质。",
+    errGeneric: "出了点问题。请稍后重试。",
+    acctButton: (p) => `🔑 将你的 ${p} 账号连接到机器人`,
+    acctWarn: (p) =>
+      `@VideonerBot 将能使用你的账号下载 ${p} 上仅登录用户可见的内容：快拍（Stories）、私密帖子。各平台不喜欢自动下载，可能会限制账号，建议连接一个非主要账号。浏览器会请求读取此网站 Cookie 的权限；只有 ${p} 的 Cookie 会以加密方式发送到服务器。`,
+    acctConfirm: "连接",
+    acctCancel: "取消",
+    acctSending: "正在连接…",
+    acctDenied: "没有 Cookie 权限，无法连接账号。",
+    acctNoLogin: (p) => `你尚未在此浏览器中登录 ${p}。请在该网站登录后重试。`,
+    acctFailed: "操作未成功。请稍后重试。",
+    acctCodeTitle: (p) => `连接 ${p} 的验证码：`,
+    acctCodeHelp:
+      "在私聊中将其发送给 @VideonerBot，用于你自己的下载。如需用于群组，请在群组中发送 /connect 验证码。验证码 10 分钟内有效。",
+    acctCopy: "复制",
+    acctCopied: "已复制",
+    acctOpenBot: "打开机器人",
+    acctNewCode: "获取新验证码",
+    acctList: "我在机器人中的连接",
+    acctRevoke: "撤销 Cookie 访问权限",
+    acctRevoked:
+      "已撤销 Cookie 访问权限，扩展不再读取 Cookie。已连接的账号仍保留在机器人中：可在“我在机器人中的连接”中移除。",
+    playlistOffer: "📃 下载整个播放列表",
+    playlistTitle: (title, n) => `📃 播放列表${title ? `“${title}”` : ""}：${n} 个视频`,
+    playlistHint: "将逐个依次下载。可以关闭此窗口。",
+    playlist720: "播放列表（720p）",
+    playlistBest: "播放列表（最佳画质）",
+    playlistAudio: "播放列表 — 仅音频（mp3）",
+    playlistProgress: (i, n) => `第 ${i} 个视频，共 ${n} 个`,
+    playlistStats: (done, failed) => `已下载：${done}${failed ? ` · 失败：${failed}` : ""}`,
+    playlistStop: "⏹ 停止",
+    playlistDone: (done, n) => `播放列表下载完成：${done}/${n}。`,
+    playlistStopped: (done, n) => `已停止。已下载 ${done}/${n}。`,
+    playlistLoading: "正在获取视频列表…",
+    close: "关闭",
+    updateAvailable: (v) => `新版本 ${v} 已发布。`,
+    updateHow: "如何更新",
+    langAuto: "自动",
+    langLabel: "语言",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -552,12 +639,13 @@ const TEXTS = {
 
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
-// казахский, арабский, остальным английский. Тот же выбор делают content.js
-// и getcourse.js (им модули недоступны). lang и t — живые привязки:
+// казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
+// коду), остальным английский. Тот же выбор делают content.js и getcourse.js
+// (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -663,9 +751,9 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому — латинские GB/MB, как и цифры (ar-u-nu-latn).
-  const latin = lang === "en" || lang === "ar";
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", en: "en-US" }[lang];
+  // Арабскому и китайскому — латинские GB/MB, как и цифры (ar-u-nu-latn).
+  const latin = lang === "en" || lang === "ar" || lang === "zh";
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${latin ? "GB" : "ГБ"}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${latin ? "MB" : "МБ"}`;
 }

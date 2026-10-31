@@ -45,6 +45,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "إيقاف التنزيل وقائمة الانتظار" },
     { command: "language", description: "لغة البوت" },
   ],
+  zh: [
+    { command: "start", description: "如何使用机器人" },
+    { command: "extension", description: "浏览器扩展" },
+    { command: "accounts", description: "用于快拍和私密帖子的个人账号" },
+    { command: "connect", description: "用扩展中的代码连接账号" },
+    { command: "stop", description: "停止下载和队列" },
+    { command: "language", description: "机器人语言" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -84,6 +92,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "ربط حساب بالمجموعة برمز" },
     { command: "language", description: "لغة البوت في المجموعة (للمشرفين)" },
     { command: "start", description: "كيف يعمل البوت في المجموعة" },
+  ],
+  zh: [
+    { command: "settings", description: "本群的机器人设置（管理员）" },
+    { command: "accounts", description: "已连接到本群的账号" },
+    { command: "connect", description: "用代码为本群连接账号" },
+    { command: "language", description: "机器人在本群的语言（管理员）" },
+    { command: "start", description: "机器人在群组中如何工作" },
   ],
 };
 

@@ -352,4 +352,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "الرئيسية",
   },
+  zh: {
+    metaTitle: "Videoner 浏览器扩展",
+    title: "Videoner 浏览器版",
+    summary:
+      "扩展会在视频页面上添加“下载”按钮，直接在浏览器中下载。Instagram、Facebook、TikTok 和 Threads 的视频会使用你自己的登录状态下载，因此你在自己账号里能看到的私密帖子也能下载，平台没有提供给我们服务器的视频同样可以下载。",
+    failedVideo: "在网站或机器人中未能下载的视频：",
+    failedVideoHint:
+      "安装扩展，在同一个浏览器中登录该平台，打开视频，然后点击右下角的“下载”。",
+    openVideo: "打开视频",
+    version: "版本",
+    browsersTitle: "支持的浏览器",
+    browsers:
+      "Google Chrome、Yandex Browser、Microsoft Edge、Opera、Brave、Vivaldi 以及其他基于 Chromium 的浏览器（电脑端）。",
+    mobile: "手机和平板不支持扩展，请在这些设备上使用网站或 Telegram 机器人下载。",
+    getcourseTitle: "GetCourse 课程",
+    getcourse:
+      "登录后在 GetCourse 学校中打开一节课：播放器右上角会出现“下载”按钮，点击 Videoner 图标可以看到这节课的所有视频。浏览器会自行下载课程并合成为 mp4 文件，文件不经过我们的服务器。如果在浏览器中下载失败，则改由我们的服务器以相同画质下载这节课，此时服务器会收到播放器中的视频链接。",
+    privacyTitle: "你的登录信息只留在你这里",
+    privacy:
+      "扩展从不索要密码：向平台发出请求的是你自己的浏览器，我们的服务器只会收到一份用于统计的简短报告，包括链接、文件大小和标题。只有当你自己点击“将账号连接到机器人”时，Cookie 才会发送到服务器，而且只发送该平台的 Cookie，并经过加密。",
+    stepsTitle: "如何在 Chrome、Yandex Browser、Edge 和 Opera 中安装",
+    steps: [
+      "下载压缩包并解压，会出现一个名称中带有版本号的 videoner-extension 文件夹。",
+      "打开扩展程序页面：在地址栏输入 chrome://extensions（Edge 中为 edge://extensions，Opera 中为 opera://extensions）。",
+      "打开页面顶部的“开发者模式”开关。",
+      "点击“加载已解压的扩展程序”，选择该文件夹，即包含 manifest.json 文件的那个文件夹。",
+      "完成：视频页面上会出现“下载”按钮，浏览器工具栏上会出现 Videoner 图标。",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 及以上版本（同样是电脑端）。",
+    firefoxSoon:
+      "Firefox 版即将推出。目前扩展可在 Chrome、Yandex Browser、Edge、Opera 及其他基于 Chromium 的浏览器中使用。",
+    chromeTitle: "Chrome、Yandex Browser、Edge、Opera",
+    chromeHint: ".zip 压缩包，几分钟即可装好",
+    firefoxTitle: "Firefox",
+    firefoxHint: "一键安装",
+    yourBrowser: "你的浏览器",
+    soon: "即将推出",
+    firefoxStepsTitle: "如何在 Firefox 中安装",
+    firefoxSteps: [
+      "点击本页顶部的 Firefox 按钮。",
+      "Firefox 会询问是否允许 videoner.download 安装附加组件，点击“继续安装”。",
+      "在“添加 Videoner？”提示中点击“添加”。",
+      "完成：视频页面上会出现“下载”按钮，工具栏上会出现 Videoner 图标。Firefox 会自动安装更新。",
+    ],
+    updateTitle: "如何在 Chrome、Yandex Browser、Edge 和 Opera 中更新",
+    updateSteps: [
+      "有新版本发布时，Videoner 图标上会显示 NEW 标记，弹出窗口中会有指向本页的链接。",
+      "用本页顶部的 Chrome 按钮下载压缩包，解压到之前解压的同一个文件夹中，并替换原有文件。",
+      "打开扩展程序页面（chrome://extensions，Yandex Browser 中为 browser://extensions，edge://extensions），然后点击“重新加载”，即 Videoner 卡片上的圆形箭头。",
+    ],
+    back: "返回首页",
+  },
 };

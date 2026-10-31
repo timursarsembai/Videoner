@@ -91,6 +91,18 @@ export const blogUi: Record<
     readFull: "اقرأ المقال كاملًا على الموقع",
     dateLocale: "ar-u-nu-latn",
   },
+  zh: {
+    title: "Videoner 博客",
+    description: "项目动态：机器人、网站和浏览器扩展有哪些新功能，以及如何使用。",
+    readMore: "阅读",
+    back: "全部文章",
+    allPosts: "博客",
+    channel: "Telegram 上的动态",
+    channelCta: "项目动态请关注 Telegram 频道 @videonerdownload。",
+    readOnSite: "在网站上阅读",
+    readFull: "在网站上阅读全文",
+    dateLocale: "zh-CN",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('zh')) {
+      return (
+        '你好！你启动了这个机器人，但还没有下载任何内容——' +
+        '也许是不清楚从哪里开始。\n\n' +
+        '只需一步：把视频链接发到这里，' +
+        '例如 https://youtube.com/watch?v=jNQXAC9IVRw ——大约半分钟后' +
+        '我就会把文件发回给你。\n\n' +
+        '支持 YouTube、TikTok、Instagram、Facebook、Twitter/X、Vimeo、VK、' +
+        'Rutube、OK.ru、Pinterest 和 Threads。完全免费，任意画质——' +
+        '最高 4K，HD 无需额外付费。\n\n' +
+        '如果遇到问题，直接回复这条消息告诉我即可。这是' +
+        '唯一一次提醒，之后不会再打扰你。'
+      );
+    }
+
     if (code.startsWith('ar')) {
       return (
         'مرحبًا! لقد شغّلت هذا البوت لكنك لم تحمّل شيئًا بعد — ' +

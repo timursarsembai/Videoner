@@ -108,7 +108,7 @@ export function Hero() {
                   </span>
                 </div>
                 <p className="text-sm font-medium">
-                  {t("home.manyFeatures")} →
+                  {t("home.manyFeatures")} <span className="inline-block rtl:-scale-x-100">→</span>
                 </p>
               </motion.div>
             </div>
@@ -191,7 +191,7 @@ export function Hero() {
                     ) : (
                       <>
                         {t("home.download")}
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1" />
                       </>
                     )}
                   </Button>

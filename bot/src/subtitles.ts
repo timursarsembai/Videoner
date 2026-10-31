@@ -14,9 +14,9 @@ export type SubtitleTrack = {
 export const SUBTITLE_BUTTONS = 8;
 
 // Кого ставим первыми: аудитория бота говорит по-русски, по-английски,
-// по-украински и по-казахски. Остальные — в том порядке, в каком их отдала
+// по-украински, по-казахски и по-арабски. Остальные — в том порядке, в каком их отдала
 // площадка.
-const PREFERRED = ["ru", "en", "uk", "kk"];
+const PREFERRED = ["ru", "en", "uk", "kk", "ar"];
 
 function rank(track: SubtitleTrack): number {
   const base = track.lang.replace(/-orig$/, "").split("-")[0].toLowerCase();

@@ -79,6 +79,18 @@ export const blogUi: Record<
     readFull: "Read the full post on the site",
     dateLocale: "en-US",
   },
+  ar: {
+    title: "مدونة Videoner",
+    description: "أخبار المشروع: ما الجديد في البوت والموقع والإضافة، وكيفية استخدامه.",
+    readMore: "اقرأ",
+    back: "كل المقالات",
+    allPosts: "المدونة",
+    channel: "الأخبار على Telegram",
+    channelCta: "أخبار المشروع على قناة Telegram @videonerdownload.",
+    readOnSite: "اقرأ على الموقع",
+    readFull: "اقرأ المقال كاملًا على الموقع",
+    dateLocale: "ar-u-nu-latn",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

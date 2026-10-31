@@ -375,6 +375,94 @@ const TEXTS = {
     langAuto: "Авто",
     langLabel: "Тіл",
   },
+  // Арабский (MSA). ⁦…⁩ (LRI…PDI) и ⁨…⁩ (FSI…PDI) —
+  // невидимые изоляты направления: без них в RTL-тексте «@VideonerBot» и
+  // «/connect» показались бы как «VideonerBot@» и «connect/».
+  ar: {
+    loading: "جارٍ جلب معلومات الفيديو…",
+    notVideoPage:
+      "افتح صفحة فيديو على YouTube أو TikTok أو Instagram أو Facebook أو X أو Vimeo أو VK أو Rutube أو OK.ru أو Pinterest أو Threads، ثم انقر على الأيقونة مرة أخرى. درس GetCourse: إذا كانت صفحة الدرس مفتوحة قبل تثبيت الإضافة، فأعد تحميلها.",
+    gcLesson: "درس GetCourse",
+    gcPick: "يحتوي هذا الدرس على عدة مقاطع فيديو — اختر واحدًا",
+    gcVideo: (n) => `فيديو ${n}`,
+    gcNote: "يتولى متصفحك تنزيل الفيديو ودمجه. يمكنك إغلاق هذه النافذة، لكن لا تغلق المتصفح.",
+    gcNoStream: "تعذّر الحصول على الفيديو من المشغّل. أعد تحميل صفحة الدرس وحاول مرة أخرى.",
+    video: "فيديو",
+    photo: "الصور بحجمها الأصلي",
+    slideshow: "عرض شرائح (فيديو)",
+    gallery: "الصور + عرض الشرائح",
+    audioOnly: "الصوت فقط (mp3)",
+    subtitles: "الترجمة (⁦.srt⁩)",
+    subtitlesAuto: "مُنشأة تلقائيًا",
+    back: "رجوع",
+    starting: "جارٍ بدء التنزيل…",
+    waiting: "في انتظار دورك على الخادم…",
+    downloading: "جارٍ التنزيل",
+    converting: "جارٍ المعالجة",
+    left: (eta) => `المتبقي ${eta}`,
+    saving: "جارٍ الحفظ في «التنزيلات»…",
+    done: "تم — الملف في «التنزيلات».",
+    news: "📣 أخبار المشروع: ⁦@videonerdownload⁩",
+    again: "تنزيل فيديو آخر",
+    directDownload: "تنزيل الفيديو (mp4)",
+    directPhoto: "تنزيل الصورة (jpg)",
+    directNote: "مباشرةً من متصفحك — دون انتظار على الخادم",
+    moreOptions: "جودات أخرى والصوت",
+    fallback: "تعذّر التنزيل من المتصفح — جارٍ التنزيل عبر الخادم.",
+    openSite: "فتح videoner.download",
+    retry: "حاول مرة أخرى",
+    min: "د",
+    sec: "ث",
+    errNetwork: "تعذّر الاتصال بـ Videoner. تحقّق من اتصالك بالإنترنت وحاول مرة أخرى.",
+    errRateLimit: "طلبات كثيرة متتالية. انتظر دقيقة وحاول مرة أخرى.",
+    errUnsupported:
+      "لا يوجد في هذه الصفحة فيديو يستطيع Videoner تنزيله. افتح صفحة فيديو أو منشور محدّد.",
+    errYoutubeDaily: "استُنفد الحد اليومي لـ YouTube على شبكتك. حاول مرة أخرى غدًا.",
+    errTooLarge: "الملف كبير جدًا بهذه الجودة. اختر جودة أقل.",
+    errLogin:
+      "هذا المنشور متاح فقط للمستخدمين الذين سجّلوا الدخول. أما المنشورات العامة فتُنزَّل دون أي مشكلة.",
+    errRegion: "قيّد صاحب المنشور مشاهدته حسب الدولة، لذا لا يمكن تنزيله.",
+    errServerBlocked: "تقيّد المنصة وصول خادمنا مؤقتًا. يُرجى المحاولة لاحقًا.",
+    errFailed: "فشل التنزيل. حاول مرة أخرى أو اختر جودة أخرى.",
+    errGeneric: "حدث خطأ ما. يُرجى المحاولة مرة أخرى بعد قليل.",
+    acctButton: (p) => `🔑 ربط حسابك على ${p} بالبوت`,
+    acctWarn: (p) =>
+      `سيتمكّن ⁦@VideonerBot⁩ من تنزيل ما لا يراه إلا المسجّلون على ${p} باستخدام حسابك: القصص والمنشورات الخاصة. لا تحب المنصات التنزيل الآلي وقد تقيّد الحساب — يُفضَّل ربط حساب ثانوي. سيطلب المتصفح إذنًا بقراءة ملفات تعريف الارتباط (الكوكيز) لهذا الموقع؛ ولن يُرسَل إلى الخادم سوى كوكيز ${p}، وهي مشفّرة.`,
+    acctConfirm: "ربط",
+    acctCancel: "إلغاء",
+    acctSending: "جارٍ الربط…",
+    acctDenied: "لا يمكن ربط الحساب دون إذن الوصول إلى الكوكيز.",
+    acctNoLogin: (p) => `لم تسجّل الدخول إلى ${p} في هذا المتصفح. سجّل الدخول في الموقع ثم حاول مرة أخرى.`,
+    acctFailed: "لم ينجح ذلك. حاول مرة أخرى بعد قليل.",
+    acctCodeTitle: (p) => `رمز ربط ${p}:`,
+    acctCodeHelp:
+      "أرسله إلى ⁦@VideonerBot⁩ في محادثة خاصة — لتنزيلاتك الشخصية. أما للمجموعة، فأرسل ⁦/connect الرمز⁩ في المجموعة. الرمز صالح لمدة 10 دقائق.",
+    acctCopy: "نسخ",
+    acctCopied: "تم النسخ",
+    acctOpenBot: "فتح البوت",
+    acctNewCode: "الحصول على رمز جديد",
+    acctList: "حساباتي المرتبطة في البوت",
+    acctRevoke: "إلغاء إذن الوصول إلى الكوكيز",
+    acctRevoked:
+      "أُلغي إذن الوصول إلى الكوكيز — لم تعد الإضافة تقرؤها. أما الحسابات التي ربطتها من قبل فتبقى في البوت: يمكنك فصلها من «حساباتي المرتبطة في البوت».",
+    playlistOffer: "📃 تنزيل قائمة التشغيل كاملة",
+    playlistTitle: (title, n) => `📃 قائمة التشغيل${title ? ` «⁨${title}⁩»` : ""}: ${n} فيديو`,
+    playlistHint: "سأنزّلها واحدًا تلو الآخر. يمكنك إغلاق هذه النافذة.",
+    playlist720: "قائمة التشغيل بدقة 720p",
+    playlistBest: "قائمة التشغيل بأفضل جودة",
+    playlistAudio: "قائمة التشغيل — الصوت فقط (mp3)",
+    playlistProgress: (i, n) => `الفيديو ${i} من ${n}`,
+    playlistStats: (done, failed) => `تم التنزيل: ${done}${failed ? ` · فشل: ${failed}` : ""}`,
+    playlistStop: "⏹ إيقاف",
+    playlistDone: (done, n) => `اكتمل تنزيل قائمة التشغيل: ${done} من ${n}.`,
+    playlistStopped: (done, n) => `تم الإيقاف. تم تنزيل ${done} من ${n}.`,
+    playlistLoading: "جارٍ جلب قائمة الفيديوهات…",
+    close: "إغلاق",
+    updateAvailable: (v) => `صدر الإصدار الجديد ${v}.`,
+    updateHow: "كيفية التحديث",
+    langAuto: "تلقائي",
+    langLabel: "اللغة",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -464,14 +552,17 @@ const TEXTS = {
 
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
-// остальным английский. Тот же выбор делают content.js и getcourse.js (им
-// модули недоступны). lang и t — живые привязки: loadLang() меняет их до
-// первой отрисовки окошка.
+// казахский, арабский, остальным английский. Тот же выбор делают content.js
+// и getcourse.js (им модули недоступны). lang и t — живые привязки:
+// loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
+// налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
+
+export const isRtl = () => lang === "ar";
 
 // Страница сайта на текущем языке: английский — без префикса.
 export const sitePath = (path) => (lang === "en" ? path : `/${lang}${path}`);
@@ -572,8 +663,9 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  const latin = lang === "en";
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", en: "en-US" }[lang];
+  // Арабскому — латинские GB/MB, как и цифры (ar-u-nu-latn).
+  const latin = lang === "en" || lang === "ar";
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${latin ? "GB" : "ГБ"}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${latin ? "MB" : "МБ"}`;
 }

@@ -37,6 +37,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Stop the download and the queue" },
     { command: "language", description: "Bot language" },
   ],
+  ar: [
+    { command: "start", description: "طريقة استخدام البوت" },
+    { command: "extension", description: "إضافة المتصفح" },
+    { command: "accounts", description: "حساباتك للقصص والمنشورات الخاصة" },
+    { command: "connect", description: "ربط حساب برمز من الإضافة" },
+    { command: "stop", description: "إيقاف التنزيل وقائمة الانتظار" },
+    { command: "language", description: "لغة البوت" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -69,6 +77,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Connect an account to this group with a code" },
     { command: "language", description: "Bot language in this group (admins)" },
     { command: "start", description: "How the bot works in a group" },
+  ],
+  ar: [
+    { command: "settings", description: "إعدادات البوت في المجموعة (للمشرفين)" },
+    { command: "accounts", description: "الحسابات المرتبطة بالمجموعة" },
+    { command: "connect", description: "ربط حساب بالمجموعة برمز" },
+    { command: "language", description: "لغة البوت في المجموعة (للمشرفين)" },
+    { command: "start", description: "كيف يعمل البوت في المجموعة" },
   ],
 };
 

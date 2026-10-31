@@ -111,3 +111,9 @@
     @apply bg-background text-foreground font-sans;
   }
 }
+/* Арабский (dir="rtl"): команды и код — латиница, их читают слева направо.
+   Без этого «/language» внутри арабской строки показывалось как «language/». */
+[dir="rtl"] code {
+  direction: ltr;
+  unicode-bidi: isolate;
+}

@@ -8,6 +8,7 @@ test("picks the language from Telegram's language_code", () => {
   assert.equal(detectLang("UK-ua"), "uk");
   assert.equal(detectLang("ru"), "ru");
   assert.equal(detectLang("kk"), "kk");
+  assert.equal(detectLang("ar-SA"), "ar");
   assert.equal(detectLang("de"), "en");
   assert.equal(detectLang(undefined), "en");
 });
@@ -17,4 +18,5 @@ test("builds site paths and sizes per language", () => {
   assert.equal(sitePath("uk", "/extension"), "/uk/extension");
   assert.equal(fmtSize(1.5 * 1024 ** 3, "uk"), "1,5 ГБ");
   assert.equal(fmtSize(10 * 1024 ** 2, "en"), "10 MB");
+  assert.equal(fmtSize(10 * 1024 ** 2, "ar"), "10 MB");
 });

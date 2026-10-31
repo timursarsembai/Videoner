@@ -58,7 +58,7 @@ export function Navbar() {
               )}
             />
           </button>
-          <div className="absolute left-0 top-full hidden w-[380px] pt-2 group-hover:block">
+          <div className="absolute start-0 top-full hidden w-[380px] pt-2 group-hover:block">
             <div className="max-h-[75vh] overflow-y-auto rounded-lg border bg-background p-3 shadow-lg backdrop-blur-sm">
               <div className="grid gap-2">
                 {item.subMenu.map((subItem) => (
@@ -160,7 +160,7 @@ export function Navbar() {
             )}
           >
             <div className="overflow-hidden">
-              <div className="space-y-4 py-4 pl-8">
+              <div className="space-y-4 py-4 ps-8">
                 {item.subMenu.map((subItem, index) => (
                   <motion.div
                     key={subItem.href}

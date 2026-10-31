@@ -16,19 +16,21 @@ const localeTag: Record<Language, string> = {
   es: "es-ES",
   uk: "uk-UA",
   kk: "kk-KZ",
+  ar: "ar",
 };
 
 function operatorLines(lang: Language) {
-  const name = { en: operator.nameEn, ru: operator.nameRu, es: operator.nameEs, uk: operator.nameUk, kk: operator.nameKk }[lang];
+  const name = { en: operator.nameEn, ru: operator.nameRu, es: operator.nameEs, uk: operator.nameUk, kk: operator.nameKk, ar: operator.nameAr }[lang];
   const address = {
     en: operator.addressEn,
     ru: operator.addressRu,
     es: operator.addressEs,
     uk: operator.addressUk,
     kk: operator.addressKk,
+    ar: operator.addressAr,
   }[lang];
-  const basis = { en: operator.basisEn, ru: operator.basisRu, es: operator.basisEs, uk: operator.basisUk, kk: operator.basisKk }[lang];
-  const binLabel = { en: "BIN/IIN", ru: "БИН/ИИН", es: "BIN/IIN", uk: "БІН/ІІН", kk: "БСН/ЖСН" }[lang];
+  const basis = { en: operator.basisEn, ru: operator.basisRu, es: operator.basisEs, uk: operator.basisUk, kk: operator.basisKk, ar: operator.basisAr }[lang];
+  const binLabel = { en: "BIN/IIN", ru: "БИН/ИИН", es: "BIN/IIN", uk: "БІН/ІІН", kk: "БСН/ЖСН", ar: "BIN/IIN" }[lang];
   return [name, `${binLabel}: ${operator.bin}`, basis, address];
 }
 
@@ -54,7 +56,7 @@ export function LegalDocument({
         href={localizedHref(lang, "/")}
         className="inline-flex items-center gap-1.5 text-sm text-foreground/60 transition-colors hover:text-primary"
       >
-        <ArrowLeft className="h-4 w-4" />
+        <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
         {content.ui.back}
       </Link>
 
@@ -76,7 +78,7 @@ export function LegalDocument({
               </p>
             ))}
             {section.bullets && (
-              <ul className="mt-3 list-disc space-y-1.5 pl-5 text-foreground/80">
+              <ul className="mt-3 list-disc space-y-1.5 ps-5 text-foreground/80">
                 {section.bullets.map((bullet) => (
                   <li key={bullet} className="leading-relaxed">
                     {bullet}

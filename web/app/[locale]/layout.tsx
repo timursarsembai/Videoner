@@ -2,7 +2,7 @@ import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { LanguageProvider } from "@/lib/i18n/context";
 import { AuthProvider } from "@/lib/auth/context";
-import { LANGUAGES, Language } from "@/lib/i18n/translations";
+import { LANGUAGES, Language, isRtl } from "@/lib/i18n/translations";
 import { notFound } from "next/navigation";
 import React from "react";
 
@@ -25,7 +25,10 @@ const Layout = async ({
   return (
     <LanguageProvider initialLanguage={locale as Language}>
       <AuthProvider>
-        <main>
+        {/* Арабский пишется справа налево: dir здесь, чтобы SSR сразу отдал
+            зеркальную вёрстку (на <html> его ставит LanguageProvider уже в
+            браузере — корневой layout общий для всех локалей). */}
+        <main dir={isRtl(locale as Language) ? "rtl" : "ltr"}>
           <Navbar />
           {children}
           <Footer />

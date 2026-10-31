@@ -22,6 +22,7 @@ import {
   saveLang,
   browserLang,
   LANG_NAMES,
+  isRtl,
   session,
   setJob,
   t,
@@ -553,6 +554,7 @@ async function mountLanguagePicker() {
 async function main() {
   await loadLang();
   document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl() ? "rtl" : "ltr";
   void mountLanguagePicker();
   // Ход скачивания пишет background.js — окошко просто перерисовывается.
   session.onChanged(async (changes) => {

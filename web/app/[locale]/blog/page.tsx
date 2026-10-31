@@ -58,7 +58,7 @@ export default async function BlogIndex({ params }: Props) {
             </time>
             <h2 className="mt-1 text-lg font-semibold">{post.title}</h2>
             <p className="mt-1.5 text-foreground/70">{post.summary}</p>
-            <span className="mt-2 inline-block text-sm font-medium text-primary">{ui.readMore} →</span>
+            <span className="mt-2 inline-block text-sm font-medium text-primary">{ui.readMore} <span className="inline-block rtl:-scale-x-100">→</span></span>
           </Link>
         ))}
       </div>

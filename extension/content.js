@@ -16,11 +16,12 @@
   // uiLang) или язык браузера. Выбор читается асинхронно, поэтому сначала
   // подпись по браузеру, потом — по выбору.
   const ui = chrome.i18n.getUILanguage().toLowerCase();
-  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
     kk: "Осы видео үшін батырманы жасыру",
+    ar: "إخفاء الزر لهذا الفيديو",
     en: "Hide the button for this video",
   };
   const base = ui.split("-")[0];
@@ -80,7 +81,10 @@
   button.querySelector("img").alt = "";
   button.querySelector("img").src = chrome.runtime.getURL("icons/icon-48.png");
   function applyLang(code) {
-    button.querySelector("span").textContent = LABELS[code];
+    const label = button.querySelector("span");
+    label.textContent = LABELS[code];
+    // Направление — только у подписи кнопки (арабский справа налево).
+    label.dir = code === "ar" ? "rtl" : "";
     hideButton.title = HIDES[code];
     hideButton.setAttribute("aria-label", HIDES[code]);
   }

@@ -36,7 +36,7 @@ export function Footer() {
           </Link>
         ))}
       </div>
-      <div className="container flex flex-col items-center gap-4 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
+      <div className="container flex flex-col items-center gap-4 py-8 text-center sm:flex-row sm:justify-between sm:text-start">
         <div className="flex items-center gap-2">
           <Image
             src="/images/videoner-website-logo.webp"

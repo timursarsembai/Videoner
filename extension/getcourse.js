@@ -83,8 +83,8 @@
   function addButton() {
     const ui = chrome.i18n.getUILanguage().toLowerCase();
     // Язык — как в content.js: сначала по браузеру, потом по выбору в окошке.
-    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", en: "Download" };
-    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", en: "Hide the button" };
+    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", en: "Download" };
+    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", ar: "إخفاء الزر", en: "Hide the button" };
     const base = ui.split("-")[0];
     const l = base in LABELS ? base : "en";
     const PANEL_WIDTH = 340;
@@ -128,6 +128,8 @@
     icon.src = chrome.runtime.getURL("icons/icon-32.png");
     const label = document.createElement("span");
     label.textContent = LABELS[l];
+    // Направление — только у подписи кнопки (арабский справа налево).
+    label.dir = l === "ar" ? "rtl" : "";
     button.append(icon, label);
     const hideButton = document.createElement("button");
     hideButton.className = "hide";
@@ -143,6 +145,7 @@
       .then(({ uiLang }) => {
         if (!(uiLang in LABELS)) return;
         label.textContent = LABELS[uiLang];
+        label.dir = uiLang === "ar" ? "rtl" : "";
         applyHide(uiLang);
       })
       .catch(() => {});

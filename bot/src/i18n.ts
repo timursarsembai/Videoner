@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar";
 
 export function detectLang(languageCode?: string): Lang {
   const base = languageCode?.toLowerCase().split("-")[0];
@@ -12,9 +12,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -677,6 +677,220 @@ const en: Messages = {
   settingsBack: "⬅️ Back to settings",
 };
 
+const ar: Messages = {
+  start: "مرحبًا! أرسل لي رابط فيديو من YouTube أو TikTok أو Instagram أو Facebook أو Twitter/X أو Vimeo أو VK أو Rutube أو OK.ru أو Pinterest أو Threads — وسأساعدك على تنزيله.\n\n✨ بلا قيود على الجودة: تحصل على ما تتيحه المنصة، حتى 4K — ما دام الملف لا يتجاوز 2 GB، وهو حد Telegram للبوتات. لا توجد هنا ميزات مدفوعة.\n\nمجاني تمامًا: بلا اشتراكات ولا إعلانات ولا مشتريات داخل التطبيق.\n\n🧩 تنزّل على الكمبيوتر؟ ثبّت إضافة المتصفح — سيظهر زر التنزيل مباشرة في صفحة الفيديو: videoner.download/ar/extension\n\n👥 أضفني إلى مجموعة وسأنشر مقاطع الفيديو من الروابط التي يشاركها الأعضاء هناك.\n\n⚡ تخطَّ اختيار الجودة: أضف -audio بعد الرابط للصوت فقط (mp3)، أو -hd لأفضل جودة.\n\n📣 أخبار المشروع: ‎@videonerdownload\n\n🌐 لغة البوت: ‎/language",
+  notLink: "لا يبدو هذا رابطًا. أرسل لي رابط فيديو.",
+  inviteGreeting: "مرحبًا! أنا Videoner — أنزّل مقاطع الفيديو من YouTube وTikTok وInstagram ومنصات أخرى مجانًا. أجهّز لك الفيديو الذي شاركه أحدهم معك 👇",
+  inviteNotFound: "لم أجد فيديو لرابط الدعوة هذا. أرسل لي رابط فيديو وسأنزّله.",
+  inviteUnavailable: "تعذّر فتح الفيديو من هذا الرابط — الخدمة لا تستجيب الآن. افتح الرابط نفسه مرة أخرى بعد دقيقة.",
+  fetchingInfo: "🔍 جارٍ جلب معلومات الفيديو...",
+  audioOnlyButton: "🎵 الصوت فقط (mp3)",
+  photoButton: "📷 تنزيل الصور",
+  slideshowButton: "🎞 عرض شرائح (فيديو)",
+  galleryButton: "📷+🎞 الصور وعرض الشرائح",
+  chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\nاختر الجودة:`,
+  sessionExpired: "انتهت الجلسة — أرسل الرابط مرة أخرى",
+  downloading: "⏬ جارٍ التنزيل، قد يستغرق ذلك دقيقتين...",
+  downloadFailed: "فشل التنزيل",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ جارٍ التنزيل: ${percent}%${eta ? ` · متبقٍّ ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ أوشكنا على الانتهاء — جارٍ تجميع الملف...",
+  converting: (percent) => `⚙️ جارٍ التحويل: ${percent}%`,
+  etaUnderMinute: "أقل من دقيقة",
+  etaMinutes: (minutes) => `~${minutes} د`,
+  etaHours: (hours, minutes) => `~${hours} س${minutes ? ` ${minutes} د` : ""}`,
+  downloadTimeout: "التنزيل يستغرق وقتًا طويلًا جدًا — يبدو أن الفيديو ثقيل جدًا. جرّب جودة أقل.",
+  downloadInterrupted: "⚠️ يُعاد تشغيل البوت للتحديث — انقطع تنزيلك. يُرجى إرسال الرابط مرة أخرى بعد دقيقة.",
+  fileTooBig: (mb, url) =>
+    `تبيّن أن الملف كبير (${mb} MB) — لا يسمح Telegram للبوت بإرساله.\nنزّله من هنا: ${url}`,
+  sendingFile: "📤 جارٍ إرسال الملف...",
+  sendingAlbum: (count) => `📤 يحتوي هذا المنشور على عدة ملفات (${count}) — أرسلها كألبوم...`,
+  failedPrefix: "❌ فشل: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `المصدر: ${sourceUrl}\n` +
+        "جميع حقوق الفيديو محفوظة لصاحبه.\n" +
+        "نُزّل مجانًا عبر ‎@VideonerBot",
+      `📣 أخبار المشروع: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 مشاركة: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `للتنزيل، يُرجى الاشتراك في قناتنا ${channel} — هذا هو الشرط الوحيد، والخدمة تبقى مجانية.\n\n` +
+    "اشترك ثم اضغط «اشتركت».",
+  openChannelButton: "📣 فتح القناة",
+  checkSubscriptionButton: "اشتركت",
+  subscribeThanks: "شكرًا لك! أرسل لي الآن رابط فيديو.",
+  subscribeThanksResuming: "شكرًا لك! أعالج رابطك الآن.",
+  subscribeStillMissing: "لا أرى الاشتراك بعد. اشترك ثم اضغط مرة أخرى.",
+  channelNotice: (channel) => `\n\nسيظهر رابط هذا المنشور في ${channel} — بشكل مجهول، دون اسمك.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "نزّل هذا الفيديو وأي فيديو آخر مجانًا: ‎@VideonerBot",
+  errorStoryNeedsId:
+    "أرسل رابط قصة محددة: افتحها في تطبيق Instagram واضغط مشاركة ← نسخ الرابط.",
+  errorInstagramStory:
+    "لا يستطيع البوت تنزيل قصص Instagram بعد: يعرضها Instagram فقط لمن سجّلوا الدخول.",
+  errorLoginRequired:
+    "هذا المنشور غير متاح دون تسجيل الدخول: تعرضه المنصة فقط " +
+    "للمستخدمين المسجّلين. يحدث ذلك مع المنشورات الخاصة والمحتوى المقيّد بالعمر " +
+    "والمنشورات المشاركة مع جمهور محدود.\n\n" +
+    "المنشورات العامة تُنزَّل دون مشكلة — جرّب رابطًا آخر.",
+  errorUnsupportedPlatform:
+    "تعذّر التعرّف على هذا الرابط — تأكد أنه رابط فيديو مباشر من YouTube أو TikTok أو Instagram أو Facebook أو Twitter/X أو Vimeo أو VK أو Rutube أو OK.ru أو Pinterest أو Threads.",
+  errorFileTooLarge: "الملف أكبر من 2 GB — لا يسمح Telegram للبوتات بإرسال ملفات أكبر. نزّله من الموقع أو بإضافة المتصفح — الأزرار بالأسفل. أو أرسل الرابط مرة أخرى واختر جودة أقل.",
+  siteButton: "🌐 التنزيل من الموقع",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ أُخفيت الجودات الأثقل من ${limit}: لا يسمح Telegram للبوتات بإرسال ملفات أكبر. يمكنك تنزيلها من الموقع أو بإضافة المتصفح — الأزرار بالأسفل.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ هذا الفيديو ثقيل جدًا على Telegram حتى بأقل جودة (~${smallest}): لا يسمح Telegram للبوتات بإرسال ملفات أكبر من 2 GB. يمكنك هنا الحصول على الصوت فقط؛ أما الفيديو — فمن الموقع أو بإضافة المتصفح (الأزرار بالأسفل).`,
+  errorFormatUnavailable: "هذه الجودة غير متاحة لهذا الفيديو. أرسل الرابط مرة أخرى — سأعرض القائمة الحالية.",
+  errorNoVideoContent: "لا يحتوي هذا الرابط على فيديو للتنزيل — يبدو أن المنشور صور فقط.",
+  errorRegionBlocked:
+    "هذا الفيديو محجوب خارج بلد صاحبه — المنصة لا تعطيه " +
+    "لخادمنا. لا سبيل للالتفاف على ذلك: القيد من جهتها." +
+    "\n\nالروابط الأخرى تُنزَّل كالمعتاد.",
+  errorRateLimited: "روابط كثيرة متتالية — انتظر قليلًا ثم أرسله مرة أخرى.",
+  errorYoutubeDailyLimit: (gb) => `لقد نزّلت أكثر من ${gb} GB من YouTube خلال آخر 24 ساعة — وهذا هو الحد اليومي للبوت لكل شخص. يُحسب على آخر 24 ساعة، لذا يمكنك تنزيل مقاطع YouTube جديدة بعد قليل. المنصات الأخرى تعمل كالمعتاد.`,
+  playlistStoppedByLimit: (dropped) => `⏹ توقفت قائمة التشغيل: بلغت الحد اليومي لـ YouTube. مقاطع لم تُنزَّل: ${dropped}. أرسل رابط قائمة التشغيل مرة أخرى لاحقًا.`,
+  errorPlatformRefused:
+    "لم تعطِ المنصة هذا الفيديو لخادمنا. يحدث ذلك مع المنشورات الخاصة " +
+    "أو المقيّدة بالعمر، وأحيانًا تقيّد المنصة الوصول ببساطة " +
+    "لبعض الوقت. حاول مرة أخرى بعد بضع دقائق.",
+  errorThreadsNoMedia:
+    "لا يظهر فيديو أو صورة في منشور Threads هذا. إما أنه منشور نصي فقط، أو " +
+    "أن Threads يعرض وسائطه فقط للمسجّلين — ولا يمكن تنزيل مثل هذه المنشورات دون تسجيل الدخول.",
+  extensionHint:
+    "\n\n💻 يمكنك تنزيله بإضافة Videoner للمتصفح على الكمبيوتر: " +
+    "فهي تنزّل باستخدام تسجيل دخولك أنت على المنصة، ولا تغادر أي كلمة مرور أو ملفات cookies متصفحك.",
+  extensionButton: "🧩 التنزيل بالإضافة",
+  extensionCommand:
+    "🧩 Videoner لمتصفحك: زر تنزيل مباشرة في صفحة الفيديو — YouTube وInstagram وTikTok وVK، ومقاطع خاصة من حسابك، ودروس GetCourse.\n\nلـ Chrome وEdge وOpera وYandex Browser وFirefox على الكمبيوتر.",
+  extensionPageButton: "🧩 تثبيت الإضافة",
+  addToGroupButton: "👥 إضافة إلى مجموعة",
+  newsButton: "📣 أخبار المشروع",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 أخبار المشروع: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ إعدادات البوت لهذه المجموعة\n\n" +
+    `🗑 حذف الرسالة التي تحتوي الرابط: ${s.deleteLinks ? "نعم" : "لا"}\n` +
+    "بعد إرسال الفيديو، تُحذف الرسالة التي احتوت الرابط فقط — ويبقى في الدردشة الفيديو مع اسم من شاركه.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ لا أستطيع حذف الرسائل الآن: اجعلني مشرفًا بصلاحية \"حذف الرسائل\".\n"
+      : "") +
+    `\n✍️ التعليق تحت الفيديو: ${{ full: "كامل", short: "العنوان والمصدر", none: "بلا تعليق" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 الجودة: ${s.quality === "max" ? "أعلى ما يقبله Telegram" : "قياسية (720p)"}\n` +
+    `\n⏱ المقاطع الطويلة: ${s.longVideos ? "بأي طول" : "حتى 15 دقيقة فقط"}\n` +
+    `\n🔑 من يمكنه ربط حساباته (للقصص والمنشورات الخاصة): ${s.cookiesBy === "all" ? "أي عضو" : "المشرفون فقط"}\n` +
+    `\n🌐 لغة الردود: ${s.language ? langName(s.language) : "لغة كل عضو"}\n` +
+    "\nلا يمكن تغيير الإعدادات إلا لمشرفي المجموعة.",
+  settingsDeleteButton: (on) => `🗑 حذف الروابط: ${on ? "نعم" : "لا"}`,
+  settingsCaptionButton: (style) => `✍️ التعليق: ${{ full: "كامل", short: "مختصر", none: "بلا" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 الجودة: ${mode === "max" ? "الأعلى" : "720p"}`,
+  settingsLongButton: (on) => `⏱ المقاطع الطويلة: ${on ? "نعم" : "حتى 15 د"}`,
+  settingsDoneButton: "✅ تم",
+  settingsAdminsOnly: "لا يمكن تغيير الإعدادات إلا لمشرفي المجموعة.",
+  settingsGroupsOnly: "الإعدادات خاصة بالمجموعات: أضفني إلى مجموعة وأرسل ‎/settings هناك.",
+  settingsFailed: "تعذّر حفظ الإعدادات، يُرجى المحاولة مرة أخرى.",
+  settingsCookiesButton: (by) => `🔑 ربط الحسابات: ${by === "all" ? "الجميع" : "المشرفون"}`,
+  accountsIntro:
+    "🔑 الحسابات المرتبطة\n\nيستطيع البوت تنزيل ما لا يراه إلا المسجّلون (قصص Instagram، المنشورات الخاصة) — باستخدام حسابك. يعمل تسجيل الدخول حيث ربطته: المرتبط في الدردشة الخاصة يخدم تنزيلاتك، بما فيها روابطك أنت في المجموعات التي ليس لها حساب خاص بها؛ والمرتبط بمجموعة يخدم جميع أعضائها.",
+  accountsHowTo:
+    "طريقة الربط:\n1. الأسهل: إضافة Videoner على الكمبيوتر — سجّل الدخول في موقع المنصة، وافتح نافذة Videoner، واضغط \"ربط الحساب\" وأرسل لي الرمز. للمجموعة، أرسل ‎/connect CODE في تلك المجموعة.\n2. أو أرسل لي ملف cookies.txt (ملفات cookies مصدّرة من المتصفح)، أو الصق نصه في رسالة.",
+  accountsWarning:
+    "⚠️ لا تحب المنصات التنزيل الآلي وقد تقيّد الحساب أو تحظره. الأفضل ربط حساب ثانوي، لا حسابك الرئيسي. تُخزَّن ملفات cookies مشفّرة، وتُستخدم للتنزيل فقط، وتُحذف بالأزرار أدناه.",
+  accountsNone: "لا يوجد شيء مرتبط بعد.",
+  accountsGroupTitle: "🔑 الحسابات المرتبطة بهذه المجموعة",
+  accountsGroupHowTo:
+    "لربط حساب للمجموعة كلها: احصل على رمز بزر \"ربط الحساب\" في إضافة Videoner وأرسل ‎/connect CODE هنا. إذا ربطت حسابًا في دردشتك الخاصة فقط، يستخدمه البوت هنا لروابطك أنت. حساباتك المرتبطة: ‎/accounts في دردشة خاصة مع ‎@VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ تسجيل الدخول لا يعمل)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ تسجيل الدخول لا يعمل)"}`,
+  accountsWhereHere: "الدردشة الخاصة",
+  accountsWhereGroup: (title) => `المجموعة "${title}"`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 إزالة كل حساباتي المرتبطة",
+  accountsDeleted: "تمت الإزالة.",
+  accountsDeletedAll: (n) => `أُزيلت الحسابات المرتبطة: ${n}.`,
+  accountsNotAllowed: "لا يمكن الإزالة إلا لمن ربط الحساب أو لمشرف المجموعة.",
+  connectUsage:
+    "أرسل ‎/connect CODE. ستحصل على الرمز من زر \"ربط الحساب\" في إضافة Videoner على الكمبيوتر. حساباتك المرتبطة: ‎/accounts.",
+  connectOnlyAdmins: "لا يمكن ربط الحسابات بهذه المجموعة إلا للمشرفين (انظر ‎/settings).",
+  connectDone: (platform, where) =>
+    `✅ رُبط ${platform} ${where}. أصبح البوت ينزّل أيضًا ما لا يراه إلا المسجّلون. للعرض أو الإزالة: ‎/accounts.\n\n⚠️ قد تقيّد المنصة الحساب بسبب التنزيل الآلي — الأفضل استخدام حساب ثانوي.`,
+  connectWhereGroup: "بهذه المجموعة",
+  connectWhereHere: "لتنزيلاتك في الدردشة الخاصة والوضع المضمّن",
+  connectCodeNotFound: "الرمز غير موجود أو منتهي الصلاحية (الرموز صالحة 10 دقائق). احصل على رمز جديد من إضافة Videoner.",
+  connectRejectedNoSession: "ملفات cookies هذه لا تحتوي تسجيل دخول. سجّل الدخول في موقع المنصة وصدّر ملفات cookies مرة أخرى.",
+  connectRejectedUnknown: "لم يُعثر على ملفات cookies لمنصات مدعومة: Instagram وFacebook وYouTube وX وVK وTikTok.",
+  connectUnavailable: "ربط الحسابات غير متاح بعد.",
+  connectFailed: "تعذّر الربط، يُرجى المحاولة مرة أخرى.",
+  connectFileTooBig: "الملف كبير جدًا — صدّر ملفات cookies للموقع المطلوب فقط.",
+  connectNotAnonymous: "اربط الحساب باسمك أنت، لا بشكل مجهول باسم المجموعة: وإلا اختلطت حسابات المشرفين. أتلفتُ الرمز — احصل على رمز جديد.",
+  connectCodeInGroup:
+    "رمز الربط المنشور في دردشة المجموعة قد يراه الآخرون — أتلفتُه وحذفت الرسالة. احصل على رمز جديد وأرسله بـ ‎/connect CODE: أحذف رسالة هذا الأمر فورًا.",
+  groupWelcome:
+    "👋 مرحبًا! انشروا في هذه الدردشة روابط فيديو من TikTok وInstagram وYouTube وVK ومنصات أخرى — وسأرد بالفيديو نفسه.\n\n" +
+    "أنزّل المقاطع حتى 15 دقيقة تلقائيًا، دون أوامر، وألتزم الصمت فيما عدا ذلك.\n\n⚙️ يمكن لمشرفي المجموعة ضبطي عبر ‎/settings: حذف رسائل الروابط، ونمط التعليق، والجودة، والمقاطع الطويلة، واللغة.\n\n⚡ أضف -audio بعد الرابط للحصول على الصوت، أو -hd لأفضل جودة.\n\n📣 أخبار المشروع: ‎@videonerdownload",
+  errorTooLong: "الفيديو طويل جدًا — لا نستطيع تنزيل مقاطع بهذا الطول بعد.",
+  errorUnknown: "تعذّر تنزيل هذا الفيديو. حاول مرة أخرى لاحقًا أو أرسل رابطًا آخر.",
+  inlineHintButton: "أرسل رابطًا إلى البوت",
+  inlineResultTitle: "⬇️ تنزيل الفيديو",
+  inlineResultDescription: "سيُنشر الفيديو مباشرة في هذه الدردشة",
+  inlinePlaceholder: "⏬ جارٍ التنزيل، قد يستغرق ذلك دقيقتين...",
+  inlineOpenBot: "فتح البوت",
+  inlineOnlySingleVideo:
+    "يرسل هذا الوضع فيديو واحدًا. للمنشورات متعددة الملفات أو الصور، أرسل الرابط إلى البوت في دردشة خاصة.",
+  inlineSubscribeRequired: (channel: string) =>
+    `للتنزيل، اشترك في ${channel} ثم حاول مرة أخرى.`,
+  inlineRateLimited: "طلبات كثيرة متتالية. انتظر دقيقة ثم حاول مرة أخرى.",
+  queueRest: (count) => `\n\n📋 روابط لا تزال في قائمة الانتظار: ${count}. سأعرضها واحدًا تلو الآخر بعد هذا.`,
+  queuedOne: (position) =>
+    `📋 أُضيف الرابط إلى قائمة الانتظار، رقم ${position}. لننهِ الحالي أولًا — ثم أعرض لك اختيار الجودة له.`,
+  queuedMany: (added, waiting) =>
+    `📋 أُضيفت روابط إلى قائمة الانتظار: ${added}. المنتظرة إجمالًا: ${waiting}. سأعرضها واحدًا تلو الآخر بعد الحالي.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "هذا الرابط موجود بالفعل في قائمة الانتظار — لن أضيفه مرتين."
+      : `الروابط الموجودة بالفعل في قائمة الانتظار لا تُضاف مرتين (المكررة: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `تتسع قائمة الانتظار لـ ${limit} روابط كحد أقصى — لم تُضف الروابط الزائدة (${rejected}). أرسلها عندما تتقدم القائمة.`,
+  skipButton: "✖️ لا تنزّل",
+  skipped: "⏭ تم تخطي هذا الرابط.",
+  chooseTimedOut: "⌛ لم تُختر جودة خلال 30 دقيقة — تخطيت هذا الرابط.",
+  queueLostOnRestart: (count) =>
+    `⚠️ يُعاد تشغيل البوت للتحديث — أُعيد ضبط قائمة الانتظار (الروابط: ${count}). يُرجى إرسالها مرة أخرى بعد دقيقة.`,
+  subtitlesButton: "📝 الترجمة",
+  subtitlesBack: "⬅️ العودة إلى الجودة",
+  subtitlesAuto: "تلقائية",
+  subtitlesChoose: "اختر لغة الترجمة",
+  subtitlesPreparing: "📝 جارٍ تجهيز الترجمة...",
+  subtitlesFailed: "تعذّر تنزيل الترجمة بهذه اللغة. جرّب لغة أخرى.",
+  subtitlesBusy: "لا يقدّم YouTube الترجمة الآن — حاول مرة أخرى بعد بضع دقائق.",
+  playlistFound: (title, count) =>
+    `📃 قائمة تشغيل${title ? ` "${title.slice(0, 150)}"` : ""}: ${count} فيديو.\nسأنزّلها واحدًا تلو الآخر. بأي صيغة؟`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 أفضل جودة",
+  playlistAudioButton: "🎵 الصوت فقط (mp3)",
+  playlistNoButton: "✖️ لا، شكرًا",
+  playlistQueued: (count) =>
+    `📃 أُضيفت مقاطع من قائمة التشغيل إلى الانتظار: ${count}. سأرسلها واحدًا تلو الآخر. للإيقاف استخدم الزر أدناه أو ‎/stop.`,
+  playlistFailed: "تعذّر فتح قائمة التشغيل — ربما تكون خاصة. أرسل رابط فيديو واحد.",
+  stopButton: "⏹ إيقاف",
+  stopped: (dropped) => `⏹ تم الإيقاف.${dropped ? ` روابط أُزيلت من قائمة الانتظار: ${dropped}.` : ""}`,
+  nothingToStop: "لا يوجد تنزيل جارٍ الآن.",
+  languageChoose: "🌐 اختر لغة البوت. \"تلقائي\" يتبع لغة Telegram لديك.",
+  languageChooseGroup: "🌐 لغة ردود البوت في هذه المجموعة. \"تلقائي\" — لغة Telegram لكل عضو.",
+  languageAuto: "تلقائي — كما في Telegram",
+  languageAutoGroup: "تلقائي — لغة كل عضو",
+  languageSaved: (name) => `✅ لغة البوت: ${name}. يمكنك تغييرها عبر ‎/language.`,
+  languageSavedAuto: "✅ يتبع البوت لغة Telegram لديك. يمكنك تغييرها عبر ‎/language.",
+  settingsLanguageButton: (name) => `🌐 اللغة: ${name ?? "تلقائي"}`,
+  settingsBack: "⬅️ العودة إلى الإعدادات",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -1112,4 +1326,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar };

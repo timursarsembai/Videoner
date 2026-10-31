@@ -44,7 +44,7 @@ export function BlogBody({ blocks }: { blocks: Block[] }) {
           );
         if (b.type === "ul")
           return (
-            <ul key={i} className="list-disc space-y-1.5 pl-5">
+            <ul key={i} className="list-disc space-y-1.5 ps-5">
               {b.items.map((item, j) => (
                 <li key={j}>
                   <Inline text={item} />
@@ -54,7 +54,7 @@ export function BlogBody({ blocks }: { blocks: Block[] }) {
           );
         if (b.type === "ol")
           return (
-            <ol key={i} className="list-decimal space-y-1.5 pl-5">
+            <ol key={i} className="list-decimal space-y-1.5 ps-5">
               {b.items.map((item, j) => (
                 <li key={j}>
                   <Inline text={item} />

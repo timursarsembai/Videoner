@@ -127,15 +127,15 @@ export function PlaylistPanel({ playlist }: { playlist: Playlist }) {
             <p className="mt-2 text-sm text-foreground/70">{t("playlist.hint")}</p>
             <div className="mt-4 grid gap-2 sm:grid-cols-3">
               <Button variant="outline" onClick={() => start("std")}>
-                <Video className="mr-2 h-4 w-4" />
+                <Video className="me-2 h-4 w-4" />
                 {t("playlist.std")}
               </Button>
               <Button variant="outline" onClick={() => start("hd")}>
-                <Video className="mr-2 h-4 w-4" />
+                <Video className="me-2 h-4 w-4" />
                 {t("playlist.hd")}
               </Button>
               <Button variant="outline" onClick={() => start("audio")}>
-                <Music className="mr-2 h-4 w-4" />
+                <Music className="me-2 h-4 w-4" />
                 {t("playlist.audio")}
               </Button>
             </div>
@@ -164,7 +164,7 @@ export function PlaylistPanel({ playlist }: { playlist: Playlist }) {
             {run.error && <p className="text-sm text-destructive">{run.error}</p>}
             {running ? (
               <Button variant="destructive" onClick={() => (stopRef.current = true)}>
-                <Square className="mr-2 h-4 w-4" />
+                <Square className="me-2 h-4 w-4" />
                 {t("playlist.stop")}
               </Button>
             ) : (

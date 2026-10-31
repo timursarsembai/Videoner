@@ -64,7 +64,7 @@ body.embed {
 
 /* Выбор языка окошка (popup.js mountLanguagePicker). */
 .lang {
-  margin-left: auto;
+  margin-inline-start: auto;
   padding: 2px 4px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -189,7 +189,7 @@ button {
   border-radius: 8px;
   background: var(--surface);
   color: var(--text);
-  text-align: left;
+  text-align: start;
 }
 
 .choice:hover,
@@ -264,6 +264,20 @@ button {
   }
 }
 
+/* Справа налево (арабский, popup.js) полоса бежит в обратную сторону. */
+[dir="rtl"] .progress.indeterminate > div {
+  animation-name: slide-rtl;
+}
+
+@keyframes slide-rtl {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-300%);
+  }
+}
+
 /* Подключение аккаунта к боту (account-connect.js) — внизу окошка, отдельно
    от основного содержимого: главное действие окошка — скачать. */
 .account {
@@ -282,7 +296,7 @@ button {
   color: var(--accent);
   font: inherit;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
 }
 
 .account .muted-link {

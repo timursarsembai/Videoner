@@ -309,7 +309,7 @@ export const VideoInfoSection = ({
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-black/30 px-3 py-1.5 backdrop-blur-md">
+                <div className="absolute bottom-4 start-4 flex items-center gap-2 rounded-full bg-black/30 px-3 py-1.5 backdrop-blur-md">
                   <Clock className="h-4 w-4 text-white" />
                   <span className="text-sm font-medium text-white">
                     {formatDuration(videoInfo.duration)}
@@ -519,7 +519,7 @@ export const VideoInfoSection = ({
                     </div>
                     <div className="relative h-1 overflow-hidden rounded-full bg-muted">
                       <motion.div
-                        className="absolute inset-y-0 left-0 bg-primary"
+                        className="absolute inset-y-0 start-0 bg-primary"
                         initial={{ width: 0 }}
                         animate={{ width: `${downloadState.progress}%` }}
                         transition={{ type: "spring", bounce: 0 }}

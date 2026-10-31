@@ -10,6 +10,7 @@ import {
 } from "react";
 import {
   LANGUAGES,
+  isRtl,
   Language,
   Translations,
   translations,
@@ -80,6 +81,7 @@ export function LanguageProvider({
 
   useEffect(() => {
     document.documentElement.lang = language;
+    document.documentElement.dir = isRtl(language) ? "rtl" : "ltr";
   }, [language]);
 
   const setLanguage = useCallback((lang: Language) => {

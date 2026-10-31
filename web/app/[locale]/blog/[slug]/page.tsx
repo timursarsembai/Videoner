@@ -68,7 +68,7 @@ export default async function BlogPostPage({ params }: Props) {
         href={localizedHref(lang, "/blog")}
         className="inline-flex items-center gap-1.5 text-sm text-foreground/60 transition-colors hover:text-primary"
       >
-        <ArrowLeft className="h-4 w-4" />
+        <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
         {ui.back}
       </Link>
       <time dateTime={post.date} className="mt-6 block text-sm text-foreground/50">

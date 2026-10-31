@@ -65,7 +65,9 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
       logo={<ChromeLogo className="h-10 w-10 text-[#1a73e8]" />}
       title={text.chromeTitle}
       hint={text.chromeHint}
-      footer={`${text.version} ${EXTENSION_VERSION} · .zip`}
+      // \u2066…\u2069 — изоляция слева направо: в арабском (rtl) «.zip» иначе
+      // показывался как «zip.».
+      footer={`${text.version} ${EXTENSION_VERSION} · \u2066.zip\u2069`}
       badge={isFirefox || isMobile ? null : text.yourBrowser}
     />
   );
@@ -77,14 +79,14 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
       logo={<FirefoxLogo className="h-10 w-10 text-[#ff7139]" />}
       title={text.firefoxTitle}
       hint={firefoxReady ? text.firefoxHint : text.firefoxSoon}
-      footer={firefoxReady ? `${text.version} ${FIREFOX_EXTENSION_VERSION} · .xpi` : text.soon}
+      footer={firefoxReady ? `${text.version} ${FIREFOX_EXTENSION_VERSION} · \u2066.xpi\u2069` : text.soon}
       badge={isFirefox ? text.yourBrowser : null}
     />
   );
   const chromeSteps = (
     <section key="chrome" className="mt-10">
       <h2 className="text-xl font-semibold">{text.stepsTitle}</h2>
-      <ol className="mt-3 list-decimal space-y-2 pl-5 text-foreground/80">
+      <ol className="mt-3 list-decimal space-y-2 ps-5 text-foreground/80">
         {text.steps.map((step) => (
           <li key={step} className="leading-relaxed">
             {step}
@@ -96,7 +98,7 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
       <h3 id="update" className="mt-8 scroll-mt-28 text-lg font-semibold">
         {text.updateTitle}
       </h3>
-      <ol className="mt-3 list-decimal space-y-2 pl-5 text-foreground/80">
+      <ol className="mt-3 list-decimal space-y-2 ps-5 text-foreground/80">
         {text.updateSteps.map((step) => (
           <li key={step} className="leading-relaxed">
             {step}
@@ -108,7 +110,7 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
   const firefoxSteps = firefoxReady ? (
     <section key="firefox" id="firefox" className="mt-10">
       <h2 className="text-xl font-semibold">{text.firefoxStepsTitle}</h2>
-      <ol className="mt-3 list-decimal space-y-2 pl-5 text-foreground/80">
+      <ol className="mt-3 list-decimal space-y-2 ps-5 text-foreground/80">
         {text.firefoxSteps.map((step) => (
           <li key={step} className="leading-relaxed">
             {step}
@@ -124,7 +126,7 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
         href={localizedHref(lang, "/")}
         className="inline-flex items-center gap-1.5 text-sm text-foreground/60 transition-colors hover:text-primary"
       >
-        <ArrowLeft className="h-4 w-4" />
+        <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
         {text.back}
       </Link>
 
@@ -221,7 +223,7 @@ function BrowserButton({
       </span>
     </>
   );
-  const frame = `group flex flex-col rounded-2xl border p-5 text-left ${
+  const frame = `group flex flex-col rounded-2xl border p-5 text-start ${
     highlighted ? "border-primary/50 bg-primary/5 shadow-md" : "border-border bg-background"
   }`;
 

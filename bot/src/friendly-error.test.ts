@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { extensionLinkFor, friendlyError } from "./helpers.js";
+import { extensionLinkFor, extensionPageFor, friendlyError, siteLinkFor } from "./helpers.js";
 import { messages } from "./i18n.js";
 
 test("Instagram: пустой ответ — понятный текст, а не сырой yt-dlp", () => {
@@ -72,4 +72,15 @@ test("сторис Instagram — честно: бот их не качает, р
 test("сторис по ссылке без номера — просим ссылку на конкретную", () => {
   const raw = "[instagram:story] auto.01kk: story link without an id";
   assert.equal(friendlyError(raw, "ru"), messages.ru.errorStoryNeedsId);
+});
+
+test("ссылки для файлов больше 2 ГБ ведут к этому видео на сайте и в расширении", () => {
+  const url = "https://www.youtube.com/watch?v=abc&t=5";
+  assert.equal(siteLinkFor(url, "en"), `https://videoner.download/${url}`);
+  assert.equal(siteLinkFor(url, "ru"), `https://videoner.download/ru/${url}`);
+  assert.equal(
+    extensionPageFor(url, "ru"),
+    `https://videoner.download/ru/extension?url=${encodeURIComponent(url)}`,
+  );
+  assert.equal(extensionPageFor(url, "en"), `https://videoner.download/extension?url=${encodeURIComponent(url)}`);
 });

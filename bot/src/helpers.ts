@@ -258,12 +258,6 @@ const EXTENSION_PAGE_BASE = (process.env.EXTENSION_PAGE_BASE ?? "https://videone
 // предлагать его бессмысленно.
 const BROWSER_HOSTS = /(^|\.)(instagram\.com|facebook\.com|fb\.watch|tiktok\.com|threads\.(net|com))$/i;
 
-/**
- * Ссылка на страницу расширения для ошибки, которую расширение обойдёт:
- * площадка не отдала ролик нашему серверу (нужен вход, закрытая запись,
- * временный отказ нашему адресу). Иначе null. Та же логика на сайте —
- * web/lib/extension-hint.ts.
- */
 // Файл тяжелее предела Telegram (2 ГБ): у сайта и расширения такого предела
 // нет. Ссылки ведут сразу к этому видео: сайт — через ссылку-префикс
 // (videoner.download/<ссылка>, web/middleware.ts), расширение — страница
@@ -273,9 +267,15 @@ export function siteLinkFor(url: string, lang: Lang): string {
 }
 
 export function extensionPageFor(url: string, lang: Lang): string {
-  return extensionPageFor(url, lang);
+  return `${EXTENSION_PAGE_BASE}${sitePath(lang, "/extension")}?url=${encodeURIComponent(url)}`;
 }
 
+/**
+ * Ссылка на страницу расширения для ошибки, которую расширение обойдёт:
+ * площадка не отдала ролик нашему серверу (нужен вход, закрытая запись,
+ * временный отказ нашему адресу). Иначе null. Та же логика на сайте —
+ * web/lib/extension-hint.ts.
+ */
 export function extensionLinkFor(raw: string, url: string, lang: Lang): string | null {
   let host: string;
   try {
@@ -294,5 +294,5 @@ export function extensionLinkFor(raw: string, url: string, lang: Lang): string |
   ) {
     return null;
   }
-  return `${EXTENSION_PAGE_BASE}${sitePath(lang, "/extension")}?url=${encodeURIComponent(url)}`;
+  return extensionPageFor(url, lang);
 }

@@ -59,6 +59,34 @@ COMPOSE="docker compose -f docker-compose.prod.yml --env-file .env"
 echo "==> Собираю: $*"
 $COMPOSE build "$@"
 
+# Перезапуск сервера обрывает идущие скачивания (yt-dlp живёт внутри него),
+# а перезапуск бота — отправку готовых файлов. Поэтому перед ним ждём, пока
+# активных скачиваний не останется: так 31.10.2026 выкат оборвал человеку
+# двухчасовое видео на середине. Новые скачивания за время ожидания тоже
+# начинаются — ждём не дольше DRAIN_MAX_SEC и тогда выкатываем всё равно.
+# Сайт (web) скачиваний не держит — для него не ждём. DRAIN_MAX_SEC=0 —
+# не ждать вовсе (срочный выкат).
+DRAIN_MAX_SEC="${DRAIN_MAX_SEC:-1800}"
+active_downloads() {
+  docker exec videoner-postgres sh -c \
+    'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -At -c "select count(*) from \"Download\" where status in ('"'"'PENDING'"'"','"'"'DOWNLOADING'"'"') and \"updatedAt\" > now() - interval '"'"'3 hours'"'"'"' \
+    2>/dev/null || echo 0
+}
+if printf '%s\n' "$@" | grep -qx -e server -e bot && [ "$DRAIN_MAX_SEC" -gt 0 ]; then
+  waited=0
+  while :; do
+    n=$(active_downloads)
+    [ "${n:-0}" -eq 0 ] && break
+    if [ "$waited" -ge "$DRAIN_MAX_SEC" ]; then
+      echo "    ! скачиваний всё ещё $n — ждали ${DRAIN_MAX_SEC} с, выкатываю"
+      break
+    fi
+    [ $((waited % 60)) -eq 0 ] && echo "==> Жду окончания скачиваний: идёт $n"
+    sleep 10
+    waited=$((waited + 10))
+  done
+fi
+
 echo "==> Передеплоиваю: $*"
 $COMPOSE rm -sf "$@"
 $COMPOSE up -d "$@"

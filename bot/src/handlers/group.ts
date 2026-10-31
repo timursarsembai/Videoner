@@ -1,6 +1,7 @@
 import { Bot, Context, InlineKeyboard } from "grammy";
 import { LANGUAGE_NAMES, isLang, messages, type Lang } from "../i18n.js";
 import { langOf } from "../language.js";
+import { parseFlag, type LinkFlag } from "../flags.js";
 import { loadSettings, saveSettings } from "../settings-store.js";
 import { applyChatCommands } from "../commands.js";
 import {
@@ -183,6 +184,9 @@ async function downloadInGroup(
   // Сообщение со ссылкой будет удалено — тогда отвечать на него нельзя (ответ
   // повис бы на «удалённом сообщении»), а кто прислал видео, пишем в подписи.
   { replyTo, sender }: { replyTo?: number; sender?: string },
+  // «-audio» — звук вместо видео, «-hd» — лучшее качество вместо настройки
+  // группы (flags.ts).
+  flag: LinkFlag | null = null,
 ): Promise<boolean> {
   const from = ctx.from!;
   const chatId = ctx.chat!.id;
@@ -229,12 +233,18 @@ async function downloadInGroup(
     return false;
   }
   if (!settings.longVideos && info.duration && info.duration > GROUP_MAX_DURATION_SEC) return false;
-  const quality = pickGroupQuality(
-    info.qualities?.video ?? [],
-    info.sizes?.video ?? {},
-    BOT_FILE_LIMIT,
-    settings.quality,
-  );
+  const audio = info.qualities?.audio ?? [];
+  const asAudio = flag === "audio" && audio.length > 0;
+  const quality = asAudio
+    ? audio.includes("128Kbps")
+      ? "128Kbps"
+      : audio[0]
+    : pickGroupQuality(
+        info.qualities?.video ?? [],
+        info.sizes?.video ?? {},
+        BOT_FILE_LIMIT,
+        flag === "hd" ? "max" : settings.quality,
+      );
   if (!quality) return false;
 
   // Лимит группы тратим, только когда действительно качаем.
@@ -258,9 +268,9 @@ async function downloadInGroup(
 
   return performDownload(
     chatId,
-    "v",
+    asAudio ? "a" : "v",
     quality,
-    "mp4",
+    asAudio ? "mp3" : "mp4",
     url,
     lang,
     { ...sendersFor(ctx, chatId, { replyTo, publish: false }), formatCaption, quiet: true },
@@ -410,7 +420,7 @@ export function registerGroupHandlers(bot: Bot) {
 
       let allDelivered = true;
       for (const url of urls) {
-        const ok = await downloadInGroup(ctx, url, settings, target).catch((e) => {
+        const ok = await downloadInGroup(ctx, url, settings, target, parseFlag(text)).catch((e) => {
           console.error(`Группа ${chatId}: скачивание ${url} упало:`, e?.message ?? e);
           return false;
         });

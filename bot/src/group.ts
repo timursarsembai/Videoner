@@ -1,3 +1,4 @@
+import { stripFlags } from "./flags.js";
 // Режим для групп: чистая часть, без Telegram и сервера (проверяется
 // group.test.ts). Сетевая часть — handlers/group.ts.
 //
@@ -128,7 +129,8 @@ export function nextCaption(current: CaptionStyle): CaptionStyle {
 // Удалять можно, только если в сообщении нет ничего, кроме ссылок: подпись
 // или вопрос к ссылке — часть разговора, их удалять нельзя.
 export function onlyLinks(text: string, urls: string[]): boolean {
-  let rest = text;
+  // Флаги («-audio», «-hd») — не текст: это часть просьбы скачать.
+  let rest = stripFlags(text);
   // Сначала длинные: иначе ссылка-префикс другой оставила бы её хвост текстом.
   for (const url of [...urls].sort((a, b) => b.length - a.length)) rest = rest.split(url).join(" ");
   // Хвостовая пунктуация, которую extractUrls срезал с адреса, — тоже не текст.

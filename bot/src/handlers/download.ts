@@ -1,6 +1,8 @@
 import { Api, Bot, Context, InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
 import { messages, type Lang } from "../i18n.js";
 import { langOf } from "../language.js";
+import { parseFlag, type LinkFlag } from "../flags.js";
+import { pickGroupQuality } from "../group.js";
 import {
   api,
   getQuotaInfo,
@@ -428,39 +430,48 @@ function failureMessage(raw: string, url: string, lang: Lang): { text: string; k
 // Для групп (handlers/group.ts): replyTo — всё отправленное становится ответом
 // на сообщение со ссылкой, чтобы в общем чате было видно, к чему файл; publish
 // false — ссылки из групп в канал не публикуем, группы бывают закрытыми.
-export function sendersFor(ctx: Context, chatId: number, { replyTo, publish = true }: { replyTo?: number; publish?: boolean } = {}) {
-  // allow_sending_without_reply: сообщение со ссылкой могли удалить, пока шло
-  // скачивание, — файл всё равно нужен.
-  //
+export function sendersFor(ctx: Context, chatId: number, opts: { replyTo?: number; publish?: boolean } = {}) {
   // В группе с темами (форум) тему указываем явно у каждой отправки: ответ без
   // reply_parameters (вторая часть длинного альбома) иначе ушёл бы в «Общий».
   const thread = ctx.message?.is_topic_message ? { message_thread_id: ctx.message.message_thread_id } : {};
+  return sendersForApi(ctx.api, chatId, { ...opts, thread });
+}
+
+// То же без входящего обновления под рукой — для ссылки из очереди, которую
+// бот качает сам (флаги «-audio»/«-hd», flags.ts).
+export function sendersForApi(
+  tg: Api,
+  chatId: number,
+  { replyTo, publish = true, thread = {} }: { replyTo?: number; publish?: boolean; thread?: { message_thread_id?: number } } = {},
+) {
+  // allow_sending_without_reply: сообщение со ссылкой могли удалить, пока шло
+  // скачивание, — файл всё равно нужен.
   const asReply = replyTo
     ? { ...thread, reply_parameters: { message_id: replyTo, allow_sending_without_reply: true } }
     : thread;
   return {
-    reply: (text: string) => ctx.reply(text, asReply),
+    reply: (text: string) => tg.sendMessage(chatId, text, asReply),
     editMessageText: (messageId: number, text: string, keyboard?: InlineKeyboard) =>
-      ctx.api.editMessageText(chatId, messageId, text, keyboard ? { reply_markup: keyboard } : undefined),
+      tg.editMessageText(chatId, messageId, text, keyboard ? { reply_markup: keyboard } : undefined),
     // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
     // ссылка на первоисточник и упоминание бота остаются с видео у любого,
     // кому его переслали.
     replyWithVideo: async (file: InputFile | string, caption: string, dims?: VideoDimensions) =>
-      (await ctx.replyWithVideo(file, { caption, supports_streaming: true, ...dims, ...asReply })).video?.file_id,
+      (await tg.sendVideo(chatId, file, { caption, supports_streaming: true, ...dims, ...asReply })).video?.file_id,
     replyWithAudio: async (file: InputFile | string, caption: string) =>
-      (await ctx.replyWithAudio(file, { caption, ...asReply })).audio?.file_id,
+      (await tg.sendAudio(chatId, file, { caption, ...asReply })).audio?.file_id,
     replyWithPhoto: async (file: InputFile, caption: string) => {
-      const sent = await ctx.replyWithPhoto(file, { caption, ...asReply });
+      const sent = await tg.sendPhoto(chatId, file, { caption, ...asReply });
       return previewFileId(sent.photo);
     },
-    deleteMessage: (messageId: number) => ctx.api.deleteMessage(chatId, messageId),
+    deleteMessage: (messageId: number) => tg.deleteMessage(chatId, messageId),
     publishToChannel: (
       u: string,
       t: string,
       th: string | undefined,
       l: Lang,
       cover?: string,
-    ) => (publish ? publishLink(ctx.api, u, t, th, l, cover) : Promise.resolve()),
+    ) => (publish ? publishLink(tg, u, t, th, l, cover) : Promise.resolve()),
     replyWithAlbum: async (
       items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
       caption: string,
@@ -488,7 +499,7 @@ export function sendersFor(ctx: Context, chatId: number, { replyTo, publish = tr
                 supports_streaming: true,
               });
         });
-        const sent = await ctx.replyWithMediaGroup(media, start === 0 ? asReply : thread);
+        const sent = await tg.sendMediaGroup(chatId, media, start === 0 ? asReply : thread);
         // Обложку для канала берём у первого снимка первого альбома — и
         // именно у той, что вернул Telegram, а не у исходника (см. ниже).
         // Альбом возвращает сообщения разных видов, и photo есть только у
@@ -645,6 +656,15 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
     // Сервер отдаёт субтитры только для YouTube; у остальных поле пустое.
     current.subtitles = orderTracks(info.subtitles ?? []);
 
+    // Флаг у ссылки — качаем сразу, без кнопок.
+    const flag = state.flags?.get(current.url);
+    state.flags?.delete(current.url);
+    const auto = flagChoice(flag, current);
+    if (auto) {
+      await startDownload(tg, key, state, current, auto.kind, auto.quality, sendersForApi(tg, state.chatId));
+      return true;
+    }
+
     const kb = choiceKeyboard(m, current, lang);
 
     const dur = fmtDuration(info.duration);
@@ -703,7 +723,11 @@ async function skipByTimeout(tg: Api, key: string, token: number) {
 // membership.ts). Лимит они уже прошли тогда: второй раз их не считаем, иначе
 // отказ по лимиту потерял бы ссылку, которую пришедший по приглашению
 // повторить не может.
-export async function handleLinks(ctx: Context, urls: string[], { resumed = false } = {}) {
+export async function handleLinks(
+  ctx: Context,
+  urls: string[],
+  { resumed = false, flag = null }: { resumed?: boolean; flag?: LinkFlag | null } = {},
+) {
   if (!ctx.from || !ctx.chat) return;
   const lang = await langOf(ctx);
   const m = messages[lang];
@@ -729,6 +753,13 @@ export async function handleLinks(ctx: Context, urls: string[], { resumed = fals
     },
     urls,
   );
+  if (flag) {
+    const state = queues.get(key);
+    if (state) {
+      state.flags ??= new Map();
+      for (const url of urls) state.flags.set(url, flag);
+    }
+  }
 
   // Если начинаем прямо сейчас, про остальные ссылки скажет сообщение с
   // выбором качества («в очереди ещё …»). Отдельное сообщение пришло бы
@@ -754,7 +785,7 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.reply(m.notLink);
       return;
     }
-    await handleLinks(ctx, urls);
+    await handleLinks(ctx, urls, { flag: parseFlag(ctx.message.text) });
   });
 
   bot.on("callback_query:data", async (ctx) => {
@@ -819,7 +850,6 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.answerCallbackQuery({ text: m.sessionExpired });
       return;
     }
-    const extension = kind === "v" ? "mp4" : "mp3";
     await ctx.answerCallbackQuery();
 
     // Между присылкой ссылки и нажатием кнопки можно успеть отписаться.
@@ -840,34 +870,66 @@ export function registerDownloadHandlers(bot: Bot) {
     // второй раз.
     await ctx.editMessageReplyMarkup().catch((e) => console.error("Не удалось убрать клавиатуру:", e?.message ?? e));
 
-    const quota = await getQuotaInfo(ctx.from?.id);
-
-    // Единственное оставшееся ограничение — суточный лимит. Снять его деньгами
-    // нельзя: платных функций нет. unlimited остаётся только как ручной
-    // админский грант через /grant.
-    if (!quota.unlimited && quota.remaining <= 0) {
-      // Остальные ссылки сегодня тоже не скачать — держать их незачем.
-      const dropped = queues.clear(key);
-      await ctx.reply(m.dailyLimitReached + (dropped ? m.queueDroppedByLimit(dropped) : ""));
-      return;
-    }
-
-    const download = performDownload(
-      chatId, kind, quality, extension, current.url, lang, sendersFor(ctx, chatId),
-      {
-        telegramId: ctx.from?.id,
-        telegramUsername: ctx.from?.username,
-        telegramLanguageCode: ctx.from?.language_code,
-        cookieScope: chatId > 0 ? `user:${ctx.from.id}` : `chat:${chatId}`,
-      },
-      current.title ?? "",
-      current.thumbnail,
-      messageId,
-    ).finally(() => {
-      // Следующая ссылка получает выбор качества только после того, как файл
-      // этой отправлен (или скачивание не удалось) — так и задумано.
-      if (queues.finish(key, token)) inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
-    });
-    inBackground("Скачивание", download);
+    await startDownload(ctx.api, key, state, current, kind, quality, sendersFor(ctx, chatId));
   });
+}
+
+// Скачивание выбранного: по кнопке или сразу по флагу («-audio», «-hd»).
+async function startDownload(
+  tg: Api,
+  key: string,
+  state: OwnerState,
+  current: Current,
+  kind: "v" | "a",
+  quality: string,
+  senders: ReturnType<typeof sendersForApi>,
+) {
+  const m = messages[state.lang];
+  const token = current.token;
+  current.phase = "downloading";
+  clearChooseTimer(key);
+
+  const quota = await getQuotaInfo(state.userId);
+
+  // Единственное оставшееся ограничение — суточный лимит. Снять его деньгами
+  // нельзя: платных функций нет. unlimited остаётся только как ручной
+  // админский грант через /grant.
+  if (!quota.unlimited && quota.remaining <= 0) {
+    // Остальные ссылки сегодня тоже не скачать — держать их незачем.
+    const dropped = queues.clear(key);
+    await tg.sendMessage(state.chatId, m.dailyLimitReached + (dropped ? m.queueDroppedByLimit(dropped) : ""));
+    return;
+  }
+
+  const download = performDownload(
+    state.chatId, kind, quality, kind === "v" ? "mp4" : "mp3", current.url, state.lang, senders,
+    {
+      telegramId: state.userId,
+      telegramUsername: state.username,
+      telegramLanguageCode: state.languageCode,
+      cookieScope: state.chatId > 0 ? `user:${state.userId}` : `chat:${state.chatId}`,
+    },
+    current.title ?? "",
+    current.thumbnail,
+    current.messageId,
+  ).finally(() => {
+    // Следующая ссылка получает выбор качества только после того, как файл
+    // этой отправлен (или скачивание не удалось) — так и задумано.
+    if (queues.finish(key, token)) inBackground("Анализ ссылки", showNextChoice(tg, key));
+  });
+  inBackground("Скачивание", download);
+}
+
+// Что качать по флагу ссылки, без выбора. null — флага нет или он тут
+// неприменим (у фото-поста нет звука) — тогда обычный выбор кнопками.
+function flagChoice(flag: LinkFlag | undefined, current: Current): { kind: "v" | "a"; quality: string } | null {
+  if (flag === "audio") {
+    const audio = current.qualities?.audio ?? [];
+    return audio.length ? { kind: "a", quality: audio.includes("128Kbps") ? "128Kbps" : audio[0] } : null;
+  }
+  if (flag === "hd") {
+    const quality = pickGroupQuality(current.qualities?.video ?? [], current.sizes?.video ?? {}, BOT_FILE_LIMIT, "max");
+    return quality ? { kind: "v", quality } : null;
+  }
+  return null;
 }

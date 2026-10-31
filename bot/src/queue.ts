@@ -1,4 +1,5 @@
 import type { Lang } from "./i18n.js";
+import type { LinkFlag } from "./flags.js";
 // Очередь ссылок одного человека в одном чате.
 //
 // Зачем. Человек присылает несколько ссылок — одним сообщением или несколькими
@@ -63,6 +64,9 @@ export type Sender = {
 export type OwnerState = Sender & {
   current: Current | null;
   pending: string[];
+  // Флаги ссылок («-audio», «-hd», flags.ts): адрес → флаг. Выбор качества
+  // для такой ссылки не показываем — качаем сразу.
+  flags?: Map<string, LinkFlag>;
 };
 
 export type EnqueueResult = {

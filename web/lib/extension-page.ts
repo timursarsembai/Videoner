@@ -611,4 +611,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Startseite",
   },
+  fr: {
+    metaTitle: "Extension de navigateur Videoner",
+    title: "Videoner pour votre navigateur",
+    summary:
+      "L’extension ajoute un bouton Télécharger aux pages vidéo et télécharge directement dans votre navigateur. Instagram, Facebook, TikTok et Threads sont téléchargés avec votre propre connexion : cela fonctionne donc aussi pour les publications privées que vous voyez dans votre compte, et pour les vidéos que la plateforme n’a pas transmises à notre serveur.",
+    failedVideo: "La vidéo qui n’a pas pu être téléchargée sur le site ou dans le bot :",
+    failedVideoHint:
+      "Installez l’extension, connectez-vous à la plateforme dans ce navigateur, ouvrez la vidéo et cliquez sur « Télécharger » en bas à droite.",
+    openVideo: "Ouvrir la vidéo",
+    version: "Version",
+    browsersTitle: "Où elle fonctionne",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi et les autres navigateurs basés sur Chromium, sur ordinateur.",
+    mobile: "Les téléphones et tablettes ne prennent pas en charge les extensions : utilisez-y le site ou le bot Telegram.",
+    getcourseTitle: "Cours GetCourse",
+    getcourse:
+      "Ouvrez une leçon dans une école GetCourse en étant connecté : un bouton « Télécharger » apparaît en haut à droite du lecteur, et l’icône Videoner affiche toutes les vidéos de la leçon. Votre navigateur télécharge lui-même la leçon et l’assemble en mp4 : le fichier ne passe pas par notre serveur. Si cela échoue, notre serveur télécharge la leçon dans la même qualité ; il reçoit alors le lien de la vidéo depuis le lecteur.",
+    privacyTitle: "Votre connexion reste chez vous",
+    privacy:
+      "L’extension ne demande jamais de mot de passe : c’est votre propre navigateur qui envoie la requête à la plateforme, et notre serveur ne reçoit qu’un bref rapport pour les statistiques (lien, taille du fichier et titre). Les cookies ne sont envoyés au serveur que si vous cliquez vous-même sur « Connecter le compte au bot », et uniquement les cookies de cette plateforme, chiffrés.",
+    stepsTitle: "Installation dans Chrome, Yandex Browser, Edge et Opera",
+    steps: [
+      "Téléchargez l’archive et décompressez-la : un dossier videoner-extension portant le numéro de version dans son nom apparaît.",
+      "Ouvrez la page des extensions : saisissez chrome://extensions dans la barre d’adresse (edge://extensions dans Edge, opera://extensions dans Opera).",
+      "Activez le « Mode développeur » : l’interrupteur en haut de la page.",
+      "Cliquez sur « Charger l’extension non empaquetée » et choisissez ce dossier, celui qui contient le fichier manifest.json.",
+      "C’est fait : les pages vidéo affichent un bouton Télécharger, et l’icône Videoner apparaît dans la barre d’outils du navigateur.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 ou version ultérieure, également sur ordinateur.",
+    firefoxSoon:
+      "La version pour Firefox arrive bientôt. En attendant, l’extension fonctionne dans Chrome, Yandex Browser, Edge, Opera et les autres navigateurs basés sur Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Une archive .zip, installée en quelques minutes",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Installation en un clic",
+    yourBrowser: "Votre navigateur",
+    soon: "Bientôt",
+    firefoxStepsTitle: "Installation dans Firefox",
+    firefoxSteps: [
+      "Cliquez sur le bouton Firefox en haut de cette page.",
+      "Firefox vous demande s’il faut autoriser videoner.download à installer un module complémentaire : cliquez sur « Continuer l’installation ».",
+      "Dans la fenêtre « Ajouter Videoner ? », cliquez sur « Ajouter ».",
+      "C’est fait : les pages vidéo affichent un bouton Télécharger, et l’icône Videoner apparaît dans la barre d’outils. Firefox installe les mises à jour tout seul.",
+    ],
+    updateTitle: "Mise à jour dans Chrome, Yandex Browser, Edge et Opera",
+    updateSteps: [
+      "Quand une nouvelle version sort, l’icône Videoner affiche un badge NEW et la fenêtre de l’extension renvoie vers cette page.",
+      "Téléchargez l’archive avec le bouton Chrome en haut de cette page et décompressez-la dans le même dossier qu’avant, en remplaçant les fichiers.",
+      "Ouvrez la page des extensions (chrome://extensions, browser://extensions dans Yandex Browser, edge://extensions) et cliquez sur « Actualiser », la flèche circulaire sur la carte Videoner.",
+    ],
+    back: "Accueil",
+  },
 };

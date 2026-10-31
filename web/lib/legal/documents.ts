@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на одиннадцати языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на двенадцати языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -3328,6 +3328,308 @@ export const legal: LegalByLanguage = {
             heading: "Missbräuchliche Beschwerden",
             body: [
               "Eine Beschwerde mit wissentlich unwahren Angaben kann eine Haftung des Beschwerdeführers nach den geltenden Rechtsvorschriften nach sich ziehen. Wir sind berechtigt, die Prüfung einer Beschwerde abzulehnen, wenn sich aus ihr weder der Rechteinhaber noch das streitige Material ermitteln lässt.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  fr: {
+    ui: {
+      updated: "Version du",
+      back: "Retour à l’accueil",
+      operatorHeading: "Exploitant du service",
+      navHeading: "Autres documents",
+      labels: {
+        privacy: "Politique de confidentialité",
+        terms: "Conditions d’utilisation",
+        cookies: "Politique relative aux cookies",
+        copyright: "Titulaires de droits",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Politique de confidentialité",
+        summary: `Quelles données ${operator.site} collecte, pourquoi elles sont nécessaires, combien de temps elles sont conservées et comment en obtenir la suppression.`,
+        sections: [
+          {
+            heading: "Dispositions générales",
+            body: [
+              `La présente Politique décrit les données à caractère personnel traitées par le service ${operator.site} et les finalités de ce traitement. Le responsable du traitement est ${operator.nameFr}.`,
+              "En utilisant le service, vous acceptez les modalités de traitement décrites ici. Si vous ne les acceptez pas, veuillez ne pas utiliser le service.",
+              "Le traitement est effectué conformément à la loi de la République du Kazakhstan « sur les données personnelles et leur protection » et, à l’égard des visiteurs de l’Espace économique européen, en tenant compte des exigences du RGPD.",
+            ],
+          },
+          {
+            heading: "Données traitées",
+            body: [
+              "Nous ne collectons délibérément rien au-delà de ce qui est nécessaire au fonctionnement du service et ne demandons ni pièces d’identité, ni données de paiement, ni adresse.",
+            ],
+            bullets: [
+              "Les données du compte Telegram que le bot reçoit lorsque vous lui écrivez : identifiant numérique, nom d’utilisateur, prénom et code de langue.",
+              "Les liens que vous soumettez pour téléchargement et les informations relatives à la tentative elle-même : plateforme, date et heure, qualité choisie, résultat (succès ou erreur).",
+              "Les données techniques de connexion : adresse IP, type et version du navigateur, langue, page de provenance. Elles sont enregistrées dans les journaux du serveur et dans les outils d’analyse d’audience.",
+              "Les cookies et les identifiants d’analyse — pour plus de détails, voir la Politique relative aux cookies.",
+            ],
+          },
+          {
+            heading: "Finalités du traitement",
+            bullets: [
+              "Fournir le service lui-même : récupérer la vidéo à partir de votre lien et vous remettre le fichier.",
+              "Distinguer votre compte de celui d’autrui et prévenir les abus.",
+              "Protéger le service contre les abus automatisés : vérification Cloudflare Turnstile avant l’envoi d’un lien.",
+              "Comprendre l’utilisation du site et corriger les erreurs, au moyen de statistiques anonymisées et agrégées.",
+              "Répondre à vos demandes et à celles des titulaires de droits.",
+              "Vous écrire occasionnellement sur Telegram pour recueillir votre avis sur le service — par exemple si vous avez cessé de l’utiliser. Vous n’êtes pas tenu de répondre ; si vous ne souhaitez pas recevoir de tels messages, il vous suffit de nous le dire et nous ne vous écrirons plus.",
+            ],
+          },
+          {
+            heading: "Bases juridiques du traitement",
+            body: [
+              "Les données du compte Telegram et les informations relatives aux téléchargements sont traitées pour l’exécution des Conditions d’utilisation, que vous acceptez en commençant à utiliser le service.",
+              "Les cookies d’analyse et l’enregistrement des actions sur le site sont traités sur la base de votre consentement, que vous pouvez retirer à tout moment — les modalités sont décrites dans la Politique relative aux cookies.",
+              "Les journaux du serveur et la protection contre les bots reposent sur notre intérêt légitime à maintenir le service opérationnel et sécurisé.",
+              "Les demandes d’avis sur le service reposent sur notre intérêt légitime à améliorer le service ; vous pouvez vous y opposer à tout moment.",
+            ],
+          },
+          {
+            heading: "Comptes connectés",
+            body: [
+              "Si vous le souhaitez, vous pouvez connecter au bot votre compte sur une plateforme (Instagram, Facebook, YouTube, X, VK, TikTok) afin que le bot télécharge des publications visibles uniquement des utilisateurs connectés : stories, publications privées. Pour ce faire, le bot reçoit les cookies de ce compte — de l’extension Videoner au moyen d’un code à usage unique, ou à partir d’un fichier que vous avez envoyé.",
+              "Nous ne conservons que les cookies de la plateforme choisie et supprimons immédiatement les autres. Ils sont stockés sous forme chiffrée et utilisés uniquement pour les téléchargements là où vous les avez connectés. Les cookies connectés dans votre conversation privée servent à vos téléchargements, y compris à vos propres liens dans les groupes auxquels aucun compte n’est connecté ; ils ne sont jamais utilisés pour les liens d’autres personnes. Les cookies connectés à un groupe servent aux téléchargements de ses membres et à rien d’autre.",
+              "La base juridique est votre consentement : vous connectez le compte vous-même et pouvez le supprimer à tout moment avec la commande /accounts. Les cookies supprimés sont effacés de manière définitive. Si la plateforme cesse d’accepter la connexion, le bot vous en informe.",
+              "Les publications téléchargées au moyen d’un compte connecté ne sont pas publiées dans notre canal et ne sont pas fournies à d’autres utilisateurs à partir du cache commun.",
+            ],
+          },
+          {
+            heading: "Services tiers",
+            body: [
+              "Nous ne vendons pas vos données et ne les transmettons pas à des tiers pour leurs propres finalités. Le fonctionnement du service fait appel aux prestataires suivants, chacun traitant les données selon ses propres règles :",
+            ],
+            bullets: [
+              `Telegram — fonctionnement du bot ${BOT}.`,
+              "Cloudflare — protection contre les bots (Turnstile), diffusion du site et routage du courrier électronique.",
+              "Google Analytics et Google Tag Manager — statistiques de fréquentation.",
+              "Yandex Metrica — statistiques de fréquentation, carte des clics et Webvisor. Webvisor enregistre les actions effectuées sur la page : mouvements du pointeur, défilement et clics. Les enregistrements sont utilisés uniquement pour analyser l’ergonomie du site.",
+            ],
+          },
+          {
+            heading: "Durée de conservation",
+            bullets: [
+              "Les fichiers téléchargés sont supprimés automatiquement du serveur environ une heure après leur création. Nous ne conservons aucune archive de vos vidéos.",
+              "Les enregistrements des tentatives de téléchargement sont conservés aussi longtemps que nécessaire pour prévenir les abus et traiter les demandes.",
+              "Les données du compte sont conservées tant que vous utilisez le service et sont supprimées sur votre demande.",
+              "Les journaux du serveur sont conservés pendant une durée limitée et sont écrasés au fil de leur rotation.",
+            ],
+          },
+          {
+            heading: "Lieu de traitement des données",
+            body: [
+              "Les serveurs du service sont situés dans un centre de données sur le territoire de l’Union européenne. Certains des prestataires énumérés ci-dessus peuvent traiter des données en dehors de celle-ci conformément à leurs propres politiques.",
+            ],
+          },
+          {
+            heading: "Vos droits",
+            body: [
+              `Vous avez le droit d’obtenir des informations sur le traitement de vos données, d’en demander la rectification ou l’effacement, de retirer votre consentement et de vous opposer au traitement. Pour ce faire, écrivez à ${MAIL} depuis l’adresse électronique ou le compte Telegram concernés par la demande.`,
+              "Nous répondons dans un délai raisonnable, en règle générale dans les trente jours calendaires. La suppression d’un compte entraîne la suppression de l’historique des téléchargements qui y est associé.",
+            ],
+          },
+          {
+            heading: "Mineurs",
+            body: [
+              "Le service n’est pas destiné aux enfants de moins de 16 ans et ne s’adresse pas à eux. Nous ne collectons pas sciemment les données de ces utilisateurs ; si cela s’est produit par erreur, écrivez-nous et les données seront supprimées.",
+            ],
+          },
+          {
+            heading: "Modifications",
+            body: [
+              "Nous pouvons mettre à jour la présente Politique. La date de la version en vigueur est indiquée en haut de la page ; les modifications substantielles seront signalées dans le service.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Conditions d’utilisation",
+        summary: `Les règles d’utilisation de ${operator.site} : ce qui est permis, ce qui ne l’est pas et à quelles conditions le service fonctionne.`,
+        sections: [
+          {
+            heading: "Dispositions générales",
+            body: [
+              `Les présentes Conditions régissent l’utilisation du site ${operator.site} et du bot Telegram ${BOT}. Le propriétaire et l’exploitant du service est ${operator.nameFr}.`,
+              "En commençant à utiliser le service, vous confirmez avoir lu les présentes Conditions et les accepter. Si l’une des conditions ne vous convient pas, vous ne devez pas utiliser le service.",
+            ],
+          },
+          {
+            heading: "Un service gratuit",
+            body: [
+              "Toutes les fonctionnalités du service sont fournies gratuitement. Il n’existe ni abonnements, ni formules payantes, ni qualités vidéo payantes, ni achats intégrés.",
+              "Nous n’affichons pas de publicité et ne plaçons pas de liens d’affiliation.",
+            ],
+          },
+          {
+            heading: "Conditions d’accès",
+            bullets: [
+              "Le téléchargement sur le site ne nécessite ni compte ni connexion. Le bot distingue les utilisateurs par leur compte Telegram.",
+              "Des limites techniques de fréquence des requêtes protègent le service contre la surcharge et les abus automatisés.",
+              "Les téléchargements depuis YouTube sont soumis à une limite quotidienne de trafic : 10 Go par 24 heures par réseau sur le site et dans l’extension, et 25 Go par 24 heures par compte Telegram dans le bot. Les autres plateformes ne sont pas concernées.",
+              "L’abonnement à notre canal n’est pas requis pour télécharger via le bot. Le bot ajoute dans la légende des fichiers un lien vers le canal d’actualités du projet ; l’abonnement à celui-ci est facultatif.",
+            ],
+          },
+          {
+            heading: "Fonctionnement du service",
+            body: [
+              "Le service agit en tant qu’intermédiaire technique : à partir du lien que vous fournissez, il accède à une page publiquement accessible, récupère le fichier multimédia et vous le transmet.",
+              "Nous n’hébergeons aucun catalogue de vidéos, n’effectuons aucune recherche dans le contenu d’autrui et ne conservons pas les fichiers téléchargés au-delà du temps nécessaire à leur transmission, soit environ une heure.",
+              "La disponibilité d’une plateforme donnée dépend des choix techniques de celle-ci et peut changer sans préavis.",
+            ],
+          },
+          {
+            heading: "Obligations de l’utilisateur",
+            body: [
+              "Vous êtes seul responsable de l’usage que vous faites des fichiers obtenus et vous confirmez que vous êtes en droit d’en faire usage.",
+            ],
+            bullets: [
+              "Ne téléchargez que des contenus dont vous détenez les droits ou dont l’utilisation est autorisée par le titulaire des droits ou par la loi.",
+              "N’utilisez pas le service pour porter atteinte au droit d’auteur ou aux droits voisins, diffuser des contenus interdits ou porter atteinte aux droits de tiers.",
+              "Ne tentez pas de contourner les limites techniques du service, notamment les limites de fréquence des requêtes et la vérification anti-bots.",
+              "Ne générez pas de charge automatisée : les requêtes massives, les scripts et les outils d’extraction automatisée (scrapers) ne sont pas autorisés.",
+            ],
+          },
+          {
+            heading: "Publication des liens dans le canal",
+            body: [
+              "En téléchargeant une vidéo via le bot, vous acceptez que le lien vers la publication d’origine soit publié dans notre canal Telegram. Un avertissement à ce sujet est affiché dans le bot avant le choix de la qualité, c’est-à-dire avant que vous ne décidiez de télécharger.",
+              "La publication est anonyme : le canal reçoit le lien vers la page publiquement accessible, le titre de la vidéo et sa miniature — l’image même que la plateforme affiche dans l’aperçu de la publication. L’identité de la personne ayant téléchargé la vidéo n’est pas indiquée. Le fichier vidéo lui-même n’est jamais publié nulle part : ce qui est diffusé, c’est le lien, que les plateformes invitent elles-mêmes à diffuser au moyen du bouton « Partager » sous chaque publication.",
+              "Un même lien n’est publié qu’une seule fois. Si vous ne souhaitez pas qu’un lien apparaisse dans le canal, ne téléchargez pas cette vidéo via notre service.",
+              "Les liens provenant de groupes et les publications téléchargées au moyen d’un compte connecté ne sont jamais publiés dans le canal."
+            ],
+          },
+          {
+            heading: "Connexion de votre compte",
+            body: [
+              "En connectant au bot votre compte sur une plateforme, vous confirmez qu’il s’agit de votre compte et que vous êtes en droit d’en disposer ainsi.",
+              "Les plateformes n’approuvent pas les téléchargements automatisés et peuvent restreindre ou bloquer un compte connecté. Vous assumez ce risque ; nous vous recommandons de connecter un compte secondaire plutôt que votre compte principal. Nous ne sommes pas responsables des restrictions qu’une plateforme imposerait à votre compte.",
+              "Un compte connecté à un groupe est utilisé pour les téléchargements de tous ses membres. Les administrateurs du groupe décident qui peut connecter des comptes et peuvent supprimer n’importe lequel d’entre eux.",
+            ],
+          },
+          {
+            heading: "Limitation de responsabilité",
+            body: [
+              "Le service est fourni « en l’état ». Nous ne garantissons ni un fonctionnement ininterrompu, ni la disponibilité d’une plateforme donnée, ni l’adéquation d’un fichier à vos besoins.",
+              "Nous déclinons toute responsabilité quant à l’usage que vous faites des contenus téléchargés et quant aux conséquences de toute atteinte de votre part aux droits de tiers.",
+              "Nous nous réservons le droit de modifier les fonctionnalités proposées, de suspendre le service pour maintenance et d’en cesser l’exploitation.",
+            ],
+          },
+          {
+            heading: "Restriction de l’accès",
+            body: [
+              "Nous pouvons restreindre ou mettre fin à l’accès au service en cas de violation des présentes Conditions, de tentative de contournement des limites, ainsi qu’en cas de réclamation fondée d’un titulaire de droits.",
+            ],
+          },
+          {
+            heading: "Modifications et droit applicable",
+            body: [
+              "Nous pouvons modifier les présentes Conditions ; la date de la version en vigueur est indiquée en haut de la page. En continuant à utiliser le service après une modification, vous acceptez la nouvelle version.",
+              "Les relations entre les parties sont régies par le droit de la République du Kazakhstan. Les parties s’efforcent de régler leurs différends par voie de correspondance et, à défaut d’accord, selon les modalités prévues par la législation de la République du Kazakhstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Politique relative aux cookies",
+        summary: `Quels cookies ${operator.site} utilise, à quoi ils servent et comment les refuser.`,
+        sections: [
+          {
+            heading: "Qu’est-ce qu’un cookie",
+            body: [
+              "Les cookies sont de petits fichiers texte qu’un site enregistre dans votre navigateur. Ils permettent de mémoriser vos paramètres et de recueillir des statistiques de fréquentation anonymisées.",
+              "Outre les cookies, le présent document décrit également des technologies apparentées : le stockage local du navigateur et les pixels de suivi.",
+            ],
+          },
+          {
+            heading: "Strictement nécessaires",
+            body: [
+              "Sans eux, le service ne fonctionne pas ; ils sont donc toujours déposés.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — vérifie que le lien est soumis par une personne et non par un script.",
+              "Paramètres de l’interface — la langue et le thème de couleur choisis.",
+            ],
+          },
+          {
+            heading: "Cookies d’analyse",
+            body: [
+              "Ils nous aident à comprendre quelles pages sont utilisées et où surviennent les erreurs. Ils sont déposés avec votre consentement et ne sont pas nécessaires au fonctionnement du service.",
+            ],
+            bullets: [
+              "Google Analytics et Google Tag Manager — fréquentation et comportement sur le site, sous forme anonymisée.",
+              "Yandex Metrica — fréquentation, carte des clics et Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Le Webvisor de Yandex Metrica enregistre les actions effectuées sur la page : mouvements du pointeur, défilement, clics et saisie dans le champ du lien. Il nous permet de voir à quels endroits l’interface prête à confusion.",
+              "Nous n’utilisons pas ces enregistrements pour suivre des personnes déterminées. Ne saisissez pas dans les champs du site des informations que vous ne souhaiteriez pas voir enregistrées.",
+            ],
+          },
+          {
+            heading: "Comment les refuser",
+            bullets: [
+              "Configurez le blocage ou la suppression des cookies dans les paramètres de votre navigateur — cette méthode fonctionne pour tous les outils énumérés ici.",
+              "Google Analytics : le module complémentaire officiel pour navigateur qui désactive la collecte est disponible sur le site de Google.",
+              "Yandex Metrica : le refus est possible au moyen du module complémentaire officiel de Yandex.",
+              "La désactivation des cookies strictement nécessaires rendra le téléchargement impossible.",
+            ],
+          },
+          {
+            heading: "Durée de conservation",
+            body: [
+              "Les cookies de session sont supprimés à la fermeture du navigateur ou à l’expiration de la session. Les outils d’analyse conservent leurs identifiants pendant les durées fixées par leurs fournisseurs.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Titulaires de droits",
+        summary: "La position du service en matière de droit d’auteur et la procédure de signalement d’une atteinte.",
+        sections: [
+          {
+            heading: "Position du service",
+            body: [
+              "Le service n’héberge aucune vidéo et ne tient aucun catalogue. Il agit en tant qu’intermédiaire technique : à partir du lien saisi par l’utilisateur, il accède à une page publiquement accessible et transmet le fichier à cet utilisateur.",
+              "Les fichiers téléchargés sont conservés sur le serveur environ une heure, puis supprimés automatiquement. Aucune copie permanente du contenu d’autrui ne subsiste chez nous.",
+              "La responsabilité de l’utilisation des contenus téléchargés incombe à l’utilisateur, comme le prévoient expressément les Conditions d’utilisation.",
+            ],
+          },
+          {
+            heading: "Si vos droits sont enfreints",
+            body: [
+              `Si vous êtes titulaire de droits ou son représentant et estimez que le service est utilisé pour porter atteinte à vos droits, écrivez à ${MAIL}. Nous examinons ces réclamations et prenons les mesures qui s’imposent.`,
+            ],
+          },
+          {
+            heading: "Contenu de la réclamation",
+            bullets: [
+              "L’œuvre concernée et le fondement sur lequel vous en détenez les droits.",
+              "Le lien vers le contenu et, s’ils sont connus, les circonstances de l’atteinte.",
+              "Vos coordonnées : nom ou dénomination, adresse postale et adresse électronique.",
+              "Si vous agissez au nom du titulaire des droits, la justification de vos pouvoirs.",
+              "Une déclaration attestant que les informations contenues dans la réclamation sont exactes et que l’utilisation du contenu n’est autorisée ni par le titulaire des droits ni par la loi.",
+            ],
+          },
+          {
+            heading: "Suite donnée à la réclamation",
+            body: [
+              "Nous examinons la réclamation dans un délai raisonnable, en règle générale dans les trente jours calendaires, et, si l’atteinte est confirmée, nous restreignons l’accès au contenu via le service et, le cas échéant, l’accès de l’auteur de l’atteinte au service.",
+              "Nous vous communiquerons le résultat de l’examen à l’adresse électronique que vous aurez indiquée.",
+            ],
+          },
+          {
+            heading: "Réclamations de mauvaise foi",
+            body: [
+              "Une réclamation contenant des informations sciemment inexactes peut engager la responsabilité de son auteur conformément à la législation applicable. Nous nous réservons le droit de refuser d’examiner une réclamation qui ne permet d’identifier ni le titulaire des droits ni le contenu litigieux.",
             ],
           },
         ],

@@ -3,7 +3,7 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de"] as const;
+export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -23,6 +23,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   id: "Bahasa Indonesia",
   sw: "Kiswahili",
   de: "Deutsch",
+  fr: "Français",
 };
 
 type PlatformStrings = {
@@ -3998,4 +3999,364 @@ const de: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de };
+const fr: Translations = {
+  nav: {
+    home: "Accueil",
+    downloaders: "Téléchargeurs",
+    extension: "Extension",
+    blog: "Blog",
+    switchTheme: "Changer de thème",
+    language: "Langue",
+    comingSoon: "Bientôt disponible",
+  },
+  theme: {
+    light: "Clair",
+    dark: "Sombre",
+    system: "Système",
+  },
+  playlist: {
+    title: `Playlist « {title} » : {count} vidéos`,
+    hint: "Les vidéos sont téléchargées une par une. Gardez cette page ouverte ; votre navigateur peut vous demander d’autoriser plusieurs téléchargements.",
+    std: "720p",
+    hd: "Meilleure qualité",
+    audio: "Audio seul (mp3)",
+    progress: "Vidéo {index} sur {count}",
+    stats: "Téléchargées : {done} · échecs : {failed}",
+    stop: "Arrêter",
+    stopped: "Arrêté. {done} sur {count} téléchargées.",
+    finished: "Playlist terminée : {done} sur {count}.",
+    again: "Choisir à nouveau",
+  },
+  footer: {
+    news: "Actualités du projet",
+    botCta: "Aussi disponible en bot Telegram :",
+    extension: "Extension de navigateur",
+    developedBy: "Développé par",
+    rights: "Tous droits réservés.",
+  },
+  content: {
+    howToTitle: "Comment télécharger des vidéos {platform}",
+    faqTitle: "Questions fréquentes",
+  },
+  auth: {
+    loginButton: "Se connecter avec Telegram",
+    signIn: "Se connecter",
+    logout: "Se déconnecter",
+    switchAccountHint: "Ce n’est pas votre compte ?",
+    switchAccountLink: "Se déconnecter de Telegram Web",
+  },
+  home: {
+    new: "Nouveau",
+    manyFeatures: "Plein de nouveautés",
+    titleLine1: "Téléchargez des vidéos",
+    titleLine2: "vite et facilement",
+    subtitle:
+      "Votre téléchargeur vidéo universel pour YouTube, Instagram, TikTok et bien d’autres. Choisissez la qualité qui vous convient, de la HD au format mobile.",
+    subtitleExtra: "Sans limites, sans prise de tête : il suffit de télécharger.",
+    placeholder: "Collez le lien d’une vidéo de n’importe quelle plateforme…",
+    download: "Télécharger",
+  },
+  video: {
+    description: "Description",
+    format: "Format",
+    selected: "Sélection : {quality}",
+    videoTab: "vidéo",
+    audioTab: "audio",
+    converting: "Conversion",
+    downloading: "Téléchargement",
+    downloadAgain: "Télécharger à nouveau",
+    startDownload: "Télécharger",
+    convertingBtn: "Conversion…",
+    downloadingBtn: "Téléchargement…",
+    loginRequiredHint: "Connectez-vous avec Telegram pour télécharger",
+    quotaExceededHint: "Limite de 20 téléchargements par jour atteinte : revenez demain",
+    postFiles: "Cette publication contient {count} fichiers",
+    photoQuality: "Photos d’origine",
+    slideshowQuality: "Diaporama (vidéo)",
+    galleryQuality: "Photos + diaporama",
+    downloadAll: "Tout télécharger",
+    downloadOne: "Enregistrer",
+    subtitlesTab: "sous-titres",
+    subtitlesHint: "Choisissez une langue : vous obtiendrez un fichier .srt lisible par n’importe quel lecteur.",
+    subtitlesAuto: "auto",
+    subtitlesDownload: "Télécharger les sous-titres",
+    subtitlesDownloading: "Préparation des sous-titres…",
+  },
+  toast: {
+    enterUrl: "Veuillez saisir un lien",
+    enterValidUrl: "Veuillez saisir un lien valide",
+    platformNotSupported: "Cette plateforme n’est pas prise en charge",
+    urlNotSupported: "Ce lien n’est pas pris en charge",
+    enterValidPlatformUrl: "Veuillez saisir un lien {platform} valide",
+    captchaNotReady: "Patientez un instant, le temps que la vérification de sécurité se termine, puis réessayez",
+    comingSoon: "Bientôt disponible ! {name} n’est pas encore pris en charge",
+    selectQuality: "Veuillez choisir une qualité",
+    downloadStarted: "Téléchargement lancé !",
+    downloadCompleted: "Téléchargement terminé !",
+    newsChannel: "Les actualités du projet sont sur Telegram :",
+    downloadUrlNotReceived: "Lien de téléchargement non reçu",
+    needsBrowser:
+      "La plateforme n’a pas transmis cette vidéo à notre serveur : elle n’est accessible qu’aux utilisateurs connectés, ou l’accès est temporairement limité. Vous pouvez la télécharger avec l’extension de navigateur Videoner sur ordinateur : elle télécharge avec votre propre connexion.",
+    needsBrowserLink: "Obtenir l’extension →",
+  },
+  platforms: {
+    youtube: {
+      description: "Téléchargez des vidéos YouTube en HD",
+      news: "Vidéos et Shorts désormais pris en charge",
+      titleLine1: "Télécharger une vidéo YouTube",
+      titleLine2: "et des Shorts",
+      pageDescription:
+        "Téléchargez des vidéos YouTube, des Shorts et l’audio en haute qualité. Rapide, gratuit et simple. Qualités 8K, 4K, HD et audio MP3.",
+      placeholder: "Collez le lien YouTube ici…",
+      howTo: [
+        "Copiez le lien de la vidéo depuis la barre d’adresse de votre navigateur, ou appuyez sur Partager dans l’application YouTube.",
+        "Collez-le dans le champ ci-dessus et appuyez sur Télécharger.",
+        "Choisissez une qualité : jusqu’à 4K/8K pour la vidéo, ou MP3 pour l’audio seul.",
+        "Le téléchargement de votre fichier démarre aussitôt, sans inscription.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos YouTube avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "Videoner propose toutes les résolutions que YouTube fournit pour la vidéo, de 360p jusqu’à 4K/8K quand elles existent, ainsi que l’extraction de l’audio en MP3." },
+        { q: "Puis-je télécharger des vidéos privées ou soumises à une limite d’âge ?", a: "Seules les vidéos YouTube accessibles publiquement sont prises en charge ; les contenus privés, non répertoriés pour vous ou nécessitant une connexion ne peuvent pas être téléchargés." },
+        { q: "Est-il légal de télécharger des vidéos YouTube ?", a: "Ne téléchargez que les vidéos que vous avez le droit d’enregistrer : vos propres contenus, les vidéos sous licence Creative Commons ou tout ce que le créateur autorise. Respectez les conditions d’utilisation de YouTube et le droit d’auteur." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers convertis restent sur le serveur environ une heure : enregistrez-les sur votre appareil juste après le téléchargement." },
+      ],
+    },
+    facebook: {
+      description: "Enregistrez les vidéos des publications et reels Facebook",
+      news: "Reels désormais pris en charge",
+      titleLine1: "Télécharger une vidéo Facebook",
+      titleLine2: "et des Reels",
+      pageDescription:
+        "Téléchargez des vidéos et des reels Facebook en haute qualité. Rapide, gratuit et simple.",
+      placeholder: "Collez le lien Facebook ici…",
+      howTo: [
+        "Ouvrez la vidéo ou le reel sur Facebook et copiez son lien (appuyez sur les trois points → Copier le lien).",
+        "Collez le lien ci-dessus et appuyez sur Télécharger.",
+        "Choisissez la qualité MP4 ou extrayez l’audio en MP3.",
+        "Le fichier se télécharge directement sur votre appareil, sans compte Facebook.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos Facebook avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "Videoner récupère la meilleure qualité que Facebook fournit pour la vidéo ou le reel, en MP4, avec une option audio MP3." },
+        { q: "Puis-je télécharger des vidéos privées ?", a: "Seuls les publications, vidéos et reels publics fonctionnent ; les contenus privés ou réservés aux amis ne sont pas accessibles." },
+        { q: "Est-il légal de télécharger des vidéos Facebook ?", a: "Ne téléchargez que les vidéos que vous êtes autorisé à enregistrer ; respectez les droits du créateur et les conditions d’utilisation de Facebook." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers sont conservés environ une heure après la conversion, puis supprimés automatiquement : téléchargez-les sans attendre." },
+      ],
+    },
+    instagram: {
+      description: "Téléchargez reels, stories et publications Instagram",
+      news: "Reels et stories désormais pris en charge",
+      titleLine1: "Télécharger une vidéo Instagram",
+      titleLine2: "Reels et Stories",
+      pageDescription:
+        "Téléchargez des reels, stories et publications Instagram en haute qualité. Rapide, gratuit et simple.",
+      placeholder: "Collez le lien Instagram ici…",
+      howTo: [
+        "Ouvrez le reel, la publication ou la story sur Instagram et appuyez sur l’icône d’avion en papier → Copier le lien.",
+        "Collez le lien dans le champ ci-dessus.",
+        "Choisissez la qualité et le format souhaités.",
+        "Le téléchargement démarre aussitôt, sans connexion ni installation d’application.",
+      ],
+      faq: [
+        { q: "Le téléchargement de contenus Instagram avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "La qualité maximale disponible pour les reels, publications et stories, en MP4 ou en MP3." },
+        { q: "Puis-je télécharger depuis des comptes privés ?", a: "Seuls les comptes et publications Instagram publics sont pris en charge ; le contenu des comptes privés ne peut pas être téléchargé." },
+        { q: "Est-il légal de télécharger des vidéos Instagram ?", a: "Ne téléchargez que ce que vous êtes autorisé à enregistrer : respectez le créateur et les conditions d’utilisation d’Instagram." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers restent sur le serveur environ une heure avant d’être supprimés automatiquement." },
+      ],
+    },
+    tiktok: {
+      description: "Téléchargez des vidéos TikTok sans filigrane",
+      news: "Désormais sans filigrane",
+      titleLine1: "Télécharger une vidéo TikTok",
+      titleLine2: "sans filigrane",
+      pageDescription:
+        "Téléchargez des vidéos TikTok sans filigrane en haute qualité. Rapide, gratuit et simple.",
+      placeholder: "Collez le lien TikTok ici…",
+      howTo: [
+        "Appuyez sur Partager sous la vidéo TikTok, puis sur Copier le lien.",
+        "Collez le lien ci-dessus et appuyez sur Télécharger.",
+        "Récupérez le MP4 propre, sans filigrane TikTok, ou l’audio en MP3.",
+        "Enregistrez-le directement sur votre appareil.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos TikTok avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "La meilleure qualité que TikTok fournit pour la vidéo, sans le filigrane TikTok, ainsi que l’audio en MP3." },
+        { q: "Puis-je télécharger depuis des comptes privés ?", a: "Seules les vidéos des comptes TikTok publics peuvent être téléchargées." },
+        { q: "Est-il légal de télécharger des vidéos TikTok ?", a: "Téléchargez les vidéos que vous avez le droit d’enregistrer, citez le créateur et respectez les conditions d’utilisation de TikTok." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers téléchargés restent sur le serveur environ une heure, puis sont supprimés automatiquement." },
+      ],
+    },
+    twitter: {
+      description: "Téléchargez des vidéos Twitter",
+      news: "Vidéos Twitter désormais prises en charge",
+      titleLine1: "Télécharger une vidéo Twitter",
+      titleLine2: "(X)",
+      pageDescription:
+        "Téléchargez des vidéos Twitter en haute qualité. Rapide, gratuit et simple.",
+      placeholder: "Collez le lien Twitter ici…",
+      howTo: [
+        "Appuyez sur Partager sous le tweet et choisissez Copier le lien (ou copiez l’adresse depuis votre navigateur).",
+        "Collez-le dans le champ ci-dessus.",
+        "Choisissez la qualité vidéo souhaitée.",
+        "Le téléchargement démarre aussitôt, sans compte X/Twitter.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos Twitter/X avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "Toutes les qualités que X/Twitter propose pour la vidéo, en MP4, ainsi que le MP3." },
+        { q: "Puis-je télécharger depuis des comptes privés ?", a: "Seuls les tweets de comptes publics fonctionnent ; les comptes protégés ou privés ne sont pas pris en charge." },
+        { q: "Est-il légal de télécharger des vidéos Twitter/X ?", a: "Téléchargez les contenus que vous avez le droit d’enregistrer, en respectant les droits de l’auteur de la publication et les conditions d’utilisation de la plateforme." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers sont supprimés automatiquement environ une heure après leur création." },
+      ],
+    },
+    vimeo: {
+      description: "Téléchargez des vidéos Vimeo en haute qualité",
+      news: "Vimeo désormais pris en charge",
+      titleLine1: "Télécharger une vidéo",
+      titleLine2: "Vimeo",
+      pageDescription:
+        "Téléchargez des vidéos Vimeo en haute qualité. Rapide, gratuit et simple.",
+      placeholder: "Collez le lien Vimeo ici…",
+      howTo: [
+        "Ouvrez Vimeo et copiez le lien de la vidéo (ou appuyez sur Partager → Copier le lien sur mobile).",
+        "Collez le lien dans le champ ci-dessus et appuyez sur Télécharger.",
+        "Choisissez une qualité et un format : MP4 pour la vidéo, MP3 si vous voulez seulement l’audio.",
+        "Le téléchargement démarre aussitôt, sans compte ni logiciel à installer.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos Vimeo avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "Videoner propose toutes les qualités que Vimeo met à disposition pour la vidéo, jusqu’à la résolution d’origine, y compris la HD et la 4K lorsque le créateur les a fournies." },
+        { q: "Puis-je télécharger des vidéos Vimeo privées ou protégées par mot de passe ?", a: "Non : Videoner ne fonctionne qu’avec des liens Vimeo accessibles publiquement. Les vidéos privées, protégées par mot de passe ou à accès restreint ne peuvent pas être téléchargées." },
+        { q: "Est-il légal de télécharger des vidéos Vimeo ?", a: "Le téléchargement est destiné aux vidéos que vous avez le droit d’enregistrer : vos propres contenus, les vidéos sous licence Creative Commons ou tout ce que le créateur a explicitement autorisé au téléchargement. Respectez le droit d’auteur du créateur et les conditions d’utilisation de Vimeo." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers sont générés à la demande et conservés sur le serveur environ une heure avant d’être supprimés automatiquement : enregistrez-le sur votre appareil dès la fin du téléchargement." },
+      ],
+    },
+    vk: {
+      description: "Téléchargez des vidéos et des clips VK",
+      news: "VK désormais pris en charge",
+      titleLine1: "Télécharger une vidéo VK",
+      titleLine2: "et des clips",
+      pageDescription:
+        "Téléchargez des vidéos et des clips VK en haute qualité. Rapide, gratuit et simple.",
+      placeholder: "Collez le lien VK ici…",
+      howTo: [
+        "Ouvrez la vidéo ou le clip sur VK (vk.com ou VK Video) et copiez son lien depuis la barre d’adresse ou le bouton Partager.",
+        "Collez le lien ci-dessus et appuyez sur Télécharger.",
+        "Choisissez la qualité et le format disponibles.",
+        "Le fichier se télécharge directement, sans connexion à VK.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos VK avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "Toutes les qualités que VK fournit pour la vidéo ou le clip, ainsi que l’audio MP3." },
+        { q: "Faut-il se connecter à VK ?", a: "Non, mais la vidéo doit être publique. Videoner ne se connecte pas à VK : les vidéos privées, réservées aux amis ou nécessitant une connexion ne peuvent pas être téléchargées." },
+        { q: "Est-il légal de télécharger des vidéos VK ?", a: "Ne téléchargez que les vidéos que vous avez le droit d’enregistrer, en respectant les conditions d’utilisation de VK et les droits de l’auteur de la publication." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers sont conservés environ une heure sur le serveur, puis supprimés automatiquement." },
+      ],
+    },
+    rutube: {
+      description: "Téléchargez des vidéos Rutube",
+      news: "Rutube désormais pris en charge",
+      titleLine1: "Télécharger une vidéo",
+      titleLine2: "Rutube",
+      pageDescription:
+        "Téléchargez des vidéos Rutube en haute qualité. Rapide, gratuit et simple.",
+      placeholder: "Collez le lien Rutube ici…",
+      howTo: [
+        "Ouvrez la vidéo sur Rutube et copiez son lien depuis la barre d’adresse ou le bouton Partager.",
+        "Collez-le dans le champ ci-dessus.",
+        "Choisissez la qualité et le format (vidéo ou audio).",
+        "Le téléchargement démarre aussitôt, sans compte Rutube.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos Rutube avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "Toutes les qualités proposées par Rutube, en MP4, ainsi que l’audio MP3." },
+        { q: "Faut-il se connecter à Rutube ?", a: "Non : Videoner fonctionne uniquement avec les vidéos Rutube publiques ; aucune connexion n’est utilisée ni requise." },
+        { q: "Est-il légal de télécharger des vidéos Rutube ?", a: "Ne téléchargez que les contenus que vous êtes autorisé à enregistrer, en respectant les conditions d’utilisation de Rutube et les droits du créateur." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers restent sur le serveur environ une heure avant d’être supprimés automatiquement." },
+      ],
+    },
+    okru: {
+      description: "Téléchargez des vidéos OK.ru (Odnoklassniki)",
+      news: "OK.ru désormais pris en charge",
+      titleLine1: "Télécharger une vidéo",
+      titleLine2: "OK.ru",
+      pageDescription:
+        "Téléchargez des vidéos OK.ru (Odnoklassniki) en haute qualité. Rapide, gratuit et simple.",
+      placeholder: "Collez le lien OK.ru ici…",
+      howTo: [
+        "Ouvrez la vidéo sur OK.ru (Odnoklassniki) et copiez son lien depuis la barre d’adresse.",
+        "Collez le lien dans le champ ci-dessus et appuyez sur Télécharger.",
+        "Choisissez la qualité et le format.",
+        "Le téléchargement démarre aussitôt, sans connexion à OK.ru.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos OK.ru avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité vidéo puis-je télécharger ?", a: "Toute la gamme de qualités qu’OK.ru fournit pour la vidéo, ainsi que le MP3." },
+        { q: "Faut-il se connecter à OK.ru ?", a: "Non : seules les vidéos OK.ru (Odnoklassniki) publiques fonctionnent. Videoner ne se connecte jamais à un compte, les vidéos privées ne sont donc pas accessibles." },
+        { q: "Est-il légal de télécharger des vidéos OK.ru ?", a: "Ne téléchargez que les vidéos que vous avez le droit d’enregistrer, en respectant les conditions d’utilisation d’OK.ru et les droits de l’auteur de la publication." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers sont supprimés automatiquement environ une heure après leur création." },
+      ],
+    },
+    pinterest: {
+      description: "Téléchargez les vidéos des épingles Pinterest",
+      news: "Pinterest désormais pris en charge",
+      titleLine1: "Télécharger une vidéo Pinterest",
+      titleLine2: "et des épingles",
+      pageDescription:
+        "Téléchargez les vidéos des épingles Pinterest en haute qualité. Rapide, gratuit et simple. Remarque : seules les épingles vidéo peuvent être téléchargées ; les épingles contenant uniquement des photos ne sont pas prises en charge.",
+      placeholder: "Collez le lien Pinterest ici…",
+      howTo: [
+        "Ouvrez l’épingle sur Pinterest et appuyez sur Partager → Copier le lien (ou copiez l’adresse depuis votre navigateur).",
+        "Collez le lien dans le champ ci-dessus et appuyez sur Télécharger.",
+        "Choisissez la qualité et le format souhaités.",
+        "Votre fichier se télécharge aussitôt, sans compte.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos Pinterest avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page et voir les qualités disponibles ne nécessite pas de connexion." },
+        { q: "Quelle qualité puis-je télécharger ?", a: "Videoner propose toutes les qualités que Pinterest fournit pour la vidéo de l’épingle, ainsi que l’extraction de l’audio en MP3." },
+        { q: "Puis-je télécharger des photos ou des images Pinterest ?", a: "Non : seules les épingles vidéo peuvent être téléchargées. Si une épingle ne contient que des photos, il n’y a aucun fichier vidéo à extraire." },
+        { q: "Puis-je télécharger des épingles privées ou issues de tableaux restreints ?", a: "Seules les épingles accessibles publiquement sont prises en charge ; les tableaux privés et les contenus nécessitant une connexion ne peuvent pas être téléchargés." },
+        { q: "Est-il légal de télécharger des vidéos Pinterest ?", a: "Ne téléchargez que les épingles que vous avez le droit d’enregistrer : vos propres contenus ou tout ce que le créateur autorise. Respectez les conditions d’utilisation de Pinterest et le droit d’auteur." },
+        { q: "Combien de temps mon fichier reste-t-il disponible ?", a: "Les fichiers convertis restent sur le serveur environ une heure : enregistrez-les sur votre appareil juste après le téléchargement." },
+      ],
+    },
+    threads: {
+      description: "Téléchargez les vidéos des publications Threads",
+      news: "Threads désormais pris en charge",
+      titleLine1: "Télécharger une vidéo",
+      titleLine2: "Threads",
+      pageDescription:
+        "Téléchargez les vidéos des publications Threads. Rapide, gratuit et sans compte Threads. Threads ne diffuse qu’une seule version de chaque vidéo, jusqu’à 720p : c’est la meilleure qualité proposée par la plateforme.",
+      placeholder: "Collez le lien Threads ici…",
+      howTo: [
+        "Ouvrez la publication dans Threads, appuyez sur l’icône de partage, puis sur Copier le lien.",
+        "Collez le lien dans le champ ci-dessus et appuyez sur Télécharger.",
+        "Choisissez le format souhaité : vidéo ou audio MP3.",
+        "Votre fichier se télécharge aussitôt, sans compte.",
+      ],
+      faq: [
+        { q: "Le téléchargement de vidéos Threads avec Videoner est-il gratuit ?", a: "Oui, mais vous devez d’abord vous connecter avec Telegram (un clic, sans mot de passe). Vous avez droit à 20 téléchargements par jour, partagés avec notre bot Telegram. Le service est entièrement gratuit : sans abonnement et sans publicité." },
+        { q: "Faut-il un compte pour télécharger ?", a: "Vous devez vous connecter avec votre compte Telegram avant de lancer un téléchargement : un clic suffit, sans e-mail ni mot de passe. Consulter la page ne nécessite pas de connexion." },
+        { q: "Quelle qualité puis-je télécharger ?", a: "Threads publie une seule version vidéo par publication, limitée à 720p sur le petit côté, même si l’auteur a mis en ligne de la 4K. Videoner vous fournit ce fichier tel quel, ainsi que l’extraction de l’audio en MP3. Aucun téléchargeur ne peut faire mieux, car les résolutions supérieures ne sont tout simplement pas diffusées." },
+        { q: "Les liens threads.com et threads.net fonctionnent-ils tous les deux ?", a: "Oui. Les liens complets du type threads.com/@user/post/CODE et les liens courts threads.net/t/CODE sont tous deux pris en charge." },
+        { q: "Puis-je télécharger les photos d’une publication Threads ?", a: "Non, seulement les vidéos. Si une publication ne contient que des photos, il n’y a aucun fichier vidéo à extraire." },
+        { q: "Et une publication avec plusieurs vidéos ?", a: "C’est la première vidéo de la publication qui est téléchargée. Les carrousels Threads peuvent contenir plusieurs clips, et seul le premier est enregistré." },
+        { q: "Puis-je télécharger des publications privées ?", a: "Non. Seules les publications visibles publiquement peuvent être téléchargées ; tout ce qui se trouve derrière un compte privé ou une page de connexion est inaccessible." },
+        { q: "Est-il légal de télécharger des vidéos Threads ?", a: "Ne téléchargez que ce que vous avez le droit d’enregistrer : vos propres contenus ou tout ce que l’auteur autorise. Respectez les conditions d’utilisation de Threads et le droit d’auteur." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr };

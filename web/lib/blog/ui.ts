@@ -151,6 +151,18 @@ export const blogUi: Record<
     readFull: "Ganzen Beitrag auf der Website lesen",
     dateLocale: "de-DE",
   },
+  fr: {
+    title: "Blog Videoner",
+    description: "Actualités du projet : les nouveautés du bot, du site et de l’extension, et comment les utiliser.",
+    readMore: "Lire",
+    back: "Tous les articles",
+    allPosts: "Blog",
+    channel: "Actualités sur Telegram",
+    channelCta: "Les actualités du projet sont sur la chaîne Telegram @videonerdownload.",
+    readOnSite: "Lire sur le site",
+    readFull: "Lire l’article complet sur le site",
+    dateLocale: "fr-FR",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

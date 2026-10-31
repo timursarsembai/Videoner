@@ -63,8 +63,12 @@ function parseNetscape(text: string): ParsedCookie[] {
     // «#HttpOnly_» — так экспортёры помечают httpOnly-куки; это не комментарий.
     const line = rawLine.startsWith('#HttpOnly_') ? rawLine.slice('#HttpOnly_'.length) : rawLine;
     if (!line.trim() || line.startsWith('#')) continue;
-    const parts = line.split('\t');
-    if (parts.length < 7) continue;
+    let parts = line.split('\t');
+    // Вставка текста в Telegram с телефона может заменить табуляции
+    // пробелами. Значения кук пробелов не содержат, поэтому строку из 7
+    // полей через пробелы читаем так же.
+    if (parts.length < 7) parts = line.trim().split(/\s+/);
+    if (parts.length < 7 || !/^(TRUE|FALSE)$/i.test(parts[1])) continue;
     const [domain, flag, path, secure, expires, name, ...rest] = parts;
     out.push({
       domain,

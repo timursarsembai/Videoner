@@ -68,6 +68,13 @@ describe('user cookies', () => {
     expect(res.ok && res.netscape.includes('evil')).toBe(false);
   });
 
+  it('reads Netscape lines whose tabs became spaces (pasted from a phone)', () => {
+    const text = `# Netscape HTTP Cookie File\n.instagram.com TRUE / TRUE ${FUTURE} sessionid abc\n.instagram.com TRUE / TRUE ${FUTURE} csrftoken x`;
+    const res = extractPlatformCookies(text, 'instagram');
+    expect(res.ok && res.count).toBe(2);
+    expect(res.ok && res.netscape).toContain('sessionid\tabc');
+  });
+
   it('maps threads to instagram cookies', () => {
     expect(cookiePlatformFor('threads')).toBe('instagram');
     expect(cookiePlatformFor('rutube')).toBeNull();

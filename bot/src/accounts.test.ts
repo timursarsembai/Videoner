@@ -23,6 +23,7 @@ test("область: личка — по человеку, группа — п�
 test("вставленные куки узнаются, обычный текст — нет", () => {
   assert.equal(looksLikeCookiesText("# Netscape HTTP Cookie File\n.instagram.com\tTRUE\t/\tTRUE\t0\tsessionid\tx"), true);
   assert.equal(looksLikeCookiesText(".instagram.com\tTRUE\t/\tTRUE\t0\tsessionid\tx"), true);
+  assert.equal(looksLikeCookiesText(".instagram.com TRUE / TRUE 0 sessionid x"), true);
   assert.equal(looksLikeCookiesText('[{"domain":".x.com","name":"auth_token","value":"t"}]'), true);
   assert.equal(looksLikeCookiesText("https://www.instagram.com/stories/a/1"), false);
   assert.equal(looksLikeCookiesText("привет, как дела"), false);

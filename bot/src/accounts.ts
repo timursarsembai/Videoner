@@ -28,7 +28,8 @@ export function looksLikeCookiesText(text: string): boolean {
   const t = text.trim();
   if (t.startsWith("# Netscape HTTP Cookie File") || t.startsWith("# HTTP Cookie File")) return true;
   // Строки Netscape: 7 полей через табуляцию, первое — домен.
-  if (t.split("\n").some((line) => /^#?(HttpOnly_)?\.?[a-z0-9.-]+\.[a-z]{2,}\t(TRUE|FALSE)\t/i.test(line))) return true;
+  // Табуляции при вставке с телефона могут превратиться в пробелы.
+  if (t.split("\n").some((line) => /^#?(HttpOnly_)?\.?[a-z0-9.-]+\.[a-z]{2,}[\t ]+(TRUE|FALSE)[\t ]/i.test(line))) return true;
   return t.startsWith("[") && t.includes('"domain"') && t.includes('"value"');
 }
 

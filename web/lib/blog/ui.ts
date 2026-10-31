@@ -139,6 +139,18 @@ export const blogUi: Record<
     readFull: "Soma makala kamili kwenye tovuti",
     dateLocale: "sw-KE",
   },
+  de: {
+    title: "Videoner-Blog",
+    description: "Projekt-News: was es Neues im Bot, auf der Website und in der Erweiterung gibt – und wie du es nutzt.",
+    readMore: "Lesen",
+    back: "Alle Beiträge",
+    allPosts: "Blog",
+    channel: "News auf Telegram",
+    channelCta: "Projekt-News gibt’s im Telegram-Kanal @videonerdownload.",
+    readOnSite: "Auf der Website lesen",
+    readFull: "Ganzen Beitrag auf der Website lesen",
+    dateLocale: "de-DE",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

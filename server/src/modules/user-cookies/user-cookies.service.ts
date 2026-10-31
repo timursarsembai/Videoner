@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -369,6 +369,7 @@ export class UserCookiesService {
       hi: forGroup ? 'ग्रुप के लिए' : 'आपके लिए',
       id: forGroup ? 'untuk grup' : 'untuk Anda',
       sw: forGroup ? 'kwa kikundi' : 'kwako',
+      de: forGroup ? 'für eine Gruppe' : 'für dich',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -380,6 +381,7 @@ export class UserCookiesService {
       hi: `⚠️ कनेक्ट किया गया ${name} लॉगिन (${where}) अब काम नहीं कर रहा: प्लेटफ़ॉर्म इसे अब स्वीकार नहीं करता। हो सकता है आपने खाते से लॉग आउट कर दिया हो या खाते पर रोक लगी हो।\n\nइससे फिर से डाउनलोड करने के लिए खाता दोबारा कनेक्ट करें। कनेक्शन की सूची — /accounts।`,
       id: `⚠️ Login ${name} yang terhubung (${where}) berhenti berfungsi: platform tidak lagi menerimanya. Mungkin Anda keluar dari akun, atau akun tersebut dibatasi.\n\nUntuk terus mengunduh dengannya, hubungkan akun lagi. Daftar koneksi: /accounts.`,
       sw: `⚠️ Kuingia kwa ${name} ulikounganisha (${where}) kumeacha kufanya kazi: jukwaa haliukubali tena. Huenda umetoka kwenye akaunti, au akaunti imezuiliwa.\n\nIli kuendelea kupakua nayo, unganisha akaunti tena. Orodha ya miunganisho: /accounts.`,
+      de: `⚠️ Dein verbundener ${name}-Login (${where}) funktioniert nicht mehr: Die Plattform akzeptiert ihn nicht mehr. Vielleicht hast du dich abgemeldet oder das Konto wurde eingeschränkt.\n\nUm weiter damit herunterzuladen, verbinde das Konto erneut. Deine Verbindungen: /accounts.`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

@@ -3,7 +3,7 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw"] as const;
+export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -22,6 +22,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   hi: "हिन्दी",
   id: "Bahasa Indonesia",
   sw: "Kiswahili",
+  de: "Deutsch",
 };
 
 type PlatformStrings = {
@@ -3637,4 +3638,364 @@ const sw: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw };
+const de: Translations = {
+  nav: {
+    home: "Startseite",
+    downloaders: "Downloader",
+    extension: "Erweiterung",
+    blog: "Blog",
+    switchTheme: "Design wechseln",
+    language: "Sprache",
+    comingSoon: "Demnächst",
+  },
+  theme: {
+    light: "Hell",
+    dark: "Dunkel",
+    system: "System",
+  },
+  playlist: {
+    title: "Playlist „{title}“: {count} Videos",
+    hint: "Die Videos werden nacheinander heruntergeladen. Lass diese Seite geöffnet – dein Browser fragt eventuell, ob mehrere Downloads erlaubt sind.",
+    std: "720p",
+    hd: "Beste Qualität",
+    audio: "Nur Audio (mp3)",
+    progress: "Video {index} von {count}",
+    stats: "Heruntergeladen: {done} · fehlgeschlagen: {failed}",
+    stop: "Stopp",
+    stopped: "Gestoppt. {done} von {count} heruntergeladen.",
+    finished: "Playlist fertig: {done} von {count}.",
+    again: "Neu auswählen",
+  },
+  footer: {
+    news: "Projekt-News",
+    botCta: "Auch als Telegram-Bot verfügbar:",
+    extension: "Browser-Erweiterung",
+    developedBy: "Entwickelt von",
+    rights: "Alle Rechte vorbehalten.",
+  },
+  content: {
+    howToTitle: "So lädst du {platform}-Videos herunter",
+    faqTitle: "Häufige Fragen",
+  },
+  auth: {
+    loginButton: "Mit Telegram anmelden",
+    signIn: "Anmelden",
+    logout: "Abmelden",
+    switchAccountHint: "Nicht dein Konto?",
+    switchAccountLink: "Bei Telegram Web abmelden",
+  },
+  home: {
+    new: "Neu",
+    manyFeatures: "Viele neue Funktionen",
+    titleLine1: "Videos schnell & einfach",
+    titleLine2: "herunterladen",
+    subtitle:
+      "Dein universeller Video-Downloader für YouTube, Instagram, TikTok und mehr. Wähle jede Qualität – von HD bis handyfreundlich.",
+    subtitleExtra: "Keine Limits, kein Stress, einfach downloaden.",
+    placeholder: "Video-Link von beliebiger Plattform einfügen...",
+    download: "Download",
+  },
+  video: {
+    description: "Beschreibung",
+    format: "Format",
+    selected: "Ausgewählt: {quality}",
+    videoTab: "Video",
+    audioTab: "Audio",
+    converting: "Konvertiere",
+    downloading: "Lade herunter",
+    downloadAgain: "Erneut laden",
+    startDownload: "Download starten",
+    convertingBtn: "Konvertiere...",
+    downloadingBtn: "Lädt...",
+    loginRequiredHint: "Melde dich mit Telegram an, um herunterzuladen",
+    quotaExceededHint: "Tageslimit von 20 Downloads erreicht – komm morgen wieder",
+    postFiles: "Dieser Beitrag enthält {count} Dateien",
+    photoQuality: "Originalfotos",
+    slideshowQuality: "Diashow (Video)",
+    galleryQuality: "Fotos + Diashow",
+    downloadAll: "Alle laden",
+    downloadOne: "Speichern",
+    subtitlesTab: "Untertitel",
+    subtitlesHint: "Wähle eine Sprache – du bekommst eine .srt-Datei, die jeder Player öffnet.",
+    subtitlesAuto: "auto",
+    subtitlesDownload: "Untertitel laden",
+    subtitlesDownloading: "Untertitel werden vorbereitet...",
+  },
+  toast: {
+    enterUrl: "Bitte gib einen Link ein",
+    enterValidUrl: "Bitte gib einen gültigen Link ein",
+    platformNotSupported: "Diese Plattform wird nicht unterstützt",
+    urlNotSupported: "Dieser Link wird nicht unterstützt",
+    enterValidPlatformUrl: "Bitte gib einen gültigen {platform}-Link ein",
+    captchaNotReady: "Bitte warte einen Moment, bis die Sicherheitsprüfung abgeschlossen ist, und versuch es dann erneut",
+    comingSoon: "Demnächst! {name} wird noch nicht unterstützt",
+    selectQuality: "Bitte wähle eine Qualität",
+    downloadStarted: "Download gestartet!",
+    downloadCompleted: "Download abgeschlossen!",
+    newsChannel: "Projekt-News gibt’s auf Telegram:",
+    downloadUrlNotReceived: "Download-Link nicht erhalten",
+    needsBrowser:
+      "Die Plattform hat dieses Video nicht an unseren Server herausgegeben: Es ist nur für angemeldete Nutzer verfügbar oder der Zugriff ist vorübergehend eingeschränkt. Du kannst es am Computer mit der Videoner-Browsererweiterung herunterladen – sie lädt über deine eigene Anmeldung herunter.",
+    needsBrowserLink: "Erweiterung holen →",
+  },
+  platforms: {
+    youtube: {
+      description: "YouTube-Videos in HD-Qualität herunterladen",
+      news: "Jetzt mit Videos und Shorts",
+      titleLine1: "YouTube Video",
+      titleLine2: "& Shorts herunterladen",
+      pageDescription:
+        "YouTube Video herunterladen – auch Shorts und Audio in hoher Qualität. Schnell, kostenlos und einfach. Unterstützt 8K, 4K, HD und MP3-Audio.",
+      placeholder: "YouTube-Link hier einfügen...",
+      howTo: [
+        "Kopiere den Videolink aus der Adressleiste deines Browsers oder tippe in der YouTube-App auf „Teilen“.",
+        "Füge ihn oben ins Feld ein und klicke auf „Download“.",
+        "Wähle eine Qualität – bis zu 4K/8K für Video oder MP3 für reines Audio.",
+        "Deine Datei wird sofort heruntergeladen, ganz ohne Registrierung.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von YouTube-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "Videoner bietet jede Auflösung, die YouTube für das Video bereitstellt – von 360p bis 4K/8K, wo verfügbar – plus MP3-Audio." },
+        { q: "Kann ich private oder altersbeschränkte Videos herunterladen?", a: "Nur öffentlich zugängliche YouTube-Videos werden unterstützt; private, für dich nicht freigegebene oder anmeldepflichtige Inhalte lassen sich nicht herunterladen." },
+        { q: "Ist es legal, Videos von YouTube herunterzuladen?", a: "Lade nur Videos herunter, die du speichern darfst – eigene Inhalte, Videos unter Creative-Commons-Lizenz oder alles, was der Urheber erlaubt. Beachte die Nutzungsbedingungen von YouTube und das Urheberrecht." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Konvertierte Dateien bleiben etwa eine Stunde auf dem Server – speichere sie also direkt nach dem Download auf deinem Gerät." },
+      ],
+    },
+    facebook: {
+      description: "Videos aus Facebook-Beiträgen und Reels speichern",
+      news: "Jetzt mit Reels",
+      titleLine1: "Facebook Video",
+      titleLine2: "& Reels herunterladen",
+      pageDescription:
+        "Facebook Video und Reels in hoher Qualität herunterladen. Schnell, kostenlos und einfach.",
+      placeholder: "Facebook-Link hier einfügen...",
+      howTo: [
+        "Öffne das Video oder Reel auf Facebook und kopiere den Link (drei Punkte → „Link kopieren“).",
+        "Füge den Link oben ein und klicke auf „Download“.",
+        "Wähle die MP4-Qualität oder extrahiere den Ton als MP3.",
+        "Die Datei landet direkt auf deinem Gerät – kein Facebook-Konto nötig.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von Facebook-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "Videoner holt die höchste Qualität, die Facebook für das Video oder Reel bereitstellt, als MP4 – plus MP3-Audio als Option." },
+        { q: "Kann ich private Videos herunterladen?", a: "Nur öffentliche Beiträge, Videos und Reels funktionieren – private oder nur für Freunde sichtbare Inhalte sind nicht zugänglich." },
+        { q: "Ist es legal, Videos von Facebook herunterzuladen?", a: "Lade nur Videos herunter, die du speichern darfst; respektiere die Rechte des Urhebers und die Nutzungsbedingungen von Facebook." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Dateien werden nach der Konvertierung etwa eine Stunde aufbewahrt und dann automatisch gelöscht – lade sie also zügig herunter." },
+      ],
+    },
+    instagram: {
+      description: "Instagram Reels, Storys und Beiträge herunterladen",
+      news: "Jetzt mit Reels und Storys",
+      titleLine1: "Instagram Reels",
+      titleLine2: "& Storys herunterladen",
+      pageDescription:
+        "Instagram Reels, Storys und Beiträge in hoher Qualität herunterladen. Schnell, kostenlos und einfach.",
+      placeholder: "Instagram-Link hier einfügen...",
+      howTo: [
+        "Öffne das Reel, den Beitrag oder die Story auf Instagram und tippe auf das Papierflieger-Symbol → „Link kopieren“.",
+        "Füge den Link oben ins Feld ein.",
+        "Wähle die gewünschte Qualität und das Format.",
+        "Der Download startet sofort – ohne Anmeldung und ohne App.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von Instagram-Inhalten mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "In der vollen verfügbaren Qualität für Reels, Beiträge und Storys, als MP4 oder MP3." },
+        { q: "Kann ich von privaten Konten herunterladen?", a: "Nur öffentliche Instagram-Konten und Beiträge werden unterstützt; Inhalte privater Konten lassen sich nicht herunterladen." },
+        { q: "Ist es legal, Videos von Instagram herunterzuladen?", a: "Lade nur herunter, was du speichern darfst – respektiere den Urheber und die Nutzungsbedingungen von Instagram." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Dateien bleiben etwa eine Stunde auf dem Server und werden dann automatisch gelöscht." },
+      ],
+    },
+    tiktok: {
+      description: "TikTok-Videos ohne Wasserzeichen herunterladen",
+      news: "Jetzt ohne Wasserzeichen",
+      titleLine1: "TikTok Video",
+      titleLine2: "ohne Wasserzeichen herunterladen",
+      pageDescription:
+        "TikTok Video ohne Wasserzeichen herunterladen – in hoher Qualität. Schnell, kostenlos und einfach.",
+      placeholder: "TikTok-Link hier einfügen...",
+      howTo: [
+        "Tippe beim TikTok-Video auf „Teilen“ und dann auf „Link kopieren“.",
+        "Füge den Link oben ein und klicke auf „Download“.",
+        "Hol dir das saubere MP4 – ohne TikTok-Wasserzeichen – oder den Ton als MP3.",
+        "Speichere es direkt auf deinem Gerät.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von TikTok-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "In der besten Qualität, die TikTok für das Video bereitstellt, ohne TikTok-Wasserzeichen – plus MP3-Audio." },
+        { q: "Kann ich von privaten Konten herunterladen?", a: "Es lassen sich nur Videos von öffentlichen TikTok-Konten herunterladen." },
+        { q: "Ist es legal, Videos von TikTok herunterzuladen?", a: "Lade nur Videos herunter, die du speichern darfst, nenne den Urheber und beachte die Nutzungsbedingungen von TikTok." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Heruntergeladene Dateien bleiben etwa eine Stunde auf dem Server und werden dann automatisch gelöscht." },
+      ],
+    },
+    twitter: {
+      description: "Twitter-Videos herunterladen",
+      news: "Jetzt mit Twitter-Videos",
+      titleLine1: "Twitter Video",
+      titleLine2: "herunterladen",
+      pageDescription:
+        "Twitter Video in hoher Qualität herunterladen. Schnell, kostenlos und einfach.",
+      placeholder: "Twitter-Link hier einfügen...",
+      howTo: [
+        "Tippe unter dem Tweet auf „Teilen“ und wähle „Link kopieren“ (oder kopiere die URL aus dem Browser).",
+        "Füge ihn oben ins Feld ein.",
+        "Wähle die gewünschte Videoqualität.",
+        "Der Download startet sofort – kein X/Twitter-Konto nötig.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von Twitter/X-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "In jeder Qualität, die X/Twitter für das Video anbietet, als MP4 – plus MP3." },
+        { q: "Kann ich von privaten Konten herunterladen?", a: "Nur Tweets von öffentlichen Konten funktionieren; geschützte/private Konten werden nicht unterstützt." },
+        { q: "Ist es legal, Videos von Twitter/X herunterzuladen?", a: "Lade nur Inhalte herunter, die du speichern darfst, und respektiere die Rechte des Autors sowie die Nutzungsbedingungen der Plattform." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Dateien werden etwa eine Stunde nach ihrer Erstellung automatisch gelöscht." },
+      ],
+    },
+    vimeo: {
+      description: "Vimeo-Videos in hoher Qualität herunterladen",
+      news: "Jetzt mit Vimeo",
+      titleLine1: "Vimeo Video",
+      titleLine2: "herunterladen",
+      pageDescription:
+        "Vimeo Video in hoher Qualität herunterladen. Schnell, kostenlos und einfach.",
+      placeholder: "Vimeo-Link hier einfügen...",
+      howTo: [
+        "Öffne Vimeo und kopiere den Videolink (oder tippe am Handy auf „Teilen“ → „Link kopieren“).",
+        "Füge den Link oben ins Feld ein und klicke auf „Download“.",
+        "Wähle Qualität und Format – MP4 für Video, MP3, wenn du nur den Ton willst.",
+        "Der Download startet sofort; kein Konto und keine Software nötig.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von Vimeo-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "Videoner bietet jede Qualität, die Vimeo für das Video bereitstellt, bis zur Originalauflösung des Uploads – einschließlich HD und 4K, sofern der Urheber sie hochgeladen hat." },
+        { q: "Kann ich private oder passwortgeschützte Vimeo-Videos herunterladen?", a: "Nein – Videoner funktioniert nur mit öffentlich zugänglichen Vimeo-Links. Private, passwortgeschützte oder zugangsbeschränkte Videos lassen sich nicht herunterladen." },
+        { q: "Ist es legal, Videos von Vimeo herunterzuladen?", a: "Der Download ist für Videos gedacht, die du speichern darfst – eigene Inhalte, Videos unter Creative-Commons-Lizenz oder alles, was der Urheber ausdrücklich zum Download freigegeben hat. Respektiere das Urheberrecht und die Nutzungsbedingungen von Vimeo." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Dateien werden bei Bedarf erstellt und etwa eine Stunde auf dem Server aufbewahrt, bevor sie automatisch gelöscht werden – speichere sie also direkt nach dem Download auf deinem Gerät." },
+      ],
+    },
+    vk: {
+      description: "Videos und Clips von VK herunterladen",
+      news: "Jetzt mit VK",
+      titleLine1: "VK Videos",
+      titleLine2: "& Clips herunterladen",
+      pageDescription:
+        "VK Videos und Clips in hoher Qualität herunterladen. Schnell, kostenlos und einfach.",
+      placeholder: "VK-Link hier einfügen...",
+      howTo: [
+        "Öffne das Video oder den Clip auf VK (vk.com oder VK Video) und kopiere den Link aus der Adressleiste oder über „Teilen“.",
+        "Füge den Link oben ein und klicke auf „Download“.",
+        "Wähle die verfügbare Qualität und das Format.",
+        "Die Datei wird direkt heruntergeladen – du musst nicht bei VK angemeldet sein.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von VK-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "In allen Qualitäten, die VK für das Video oder den Clip bereitstellt – plus MP3-Audio." },
+        { q: "Muss ich bei VK angemeldet sein?", a: "Nein – das Video muss aber öffentlich sein. Videoner meldet sich nicht bei VK an, daher lassen sich private, nur für Freunde sichtbare oder anmeldepflichtige Videos nicht herunterladen." },
+        { q: "Ist es legal, Videos von VK herunterzuladen?", a: "Lade nur Videos herunter, die du speichern darfst, und beachte die Nutzungsbedingungen von VK sowie die Rechte des Uploaders." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Dateien bleiben etwa eine Stunde auf dem Server und werden dann automatisch gelöscht." },
+      ],
+    },
+    rutube: {
+      description: "Videos von Rutube herunterladen",
+      news: "Jetzt mit Rutube",
+      titleLine1: "Rutube Video",
+      titleLine2: "herunterladen",
+      pageDescription:
+        "Rutube Video in hoher Qualität herunterladen. Schnell, kostenlos und einfach.",
+      placeholder: "Rutube-Link hier einfügen...",
+      howTo: [
+        "Öffne das Video auf Rutube und kopiere den Link aus der Adressleiste oder über „Teilen“.",
+        "Füge ihn oben ins Feld ein.",
+        "Wähle Qualität und Format (Video oder Audio).",
+        "Der Download startet sofort, kein Rutube-Konto nötig.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von Rutube-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "In jeder Qualität, die Rutube anbietet, als MP4 – plus MP3-Audio." },
+        { q: "Muss ich bei Rutube angemeldet sein?", a: "Nein – Videoner funktioniert nur mit öffentlich verfügbaren Rutube-Videos; eine Anmeldung wird weder genutzt noch benötigt." },
+        { q: "Ist es legal, Videos von Rutube herunterzuladen?", a: "Lade nur Inhalte herunter, die du speichern darfst, und beachte die Nutzungsbedingungen von Rutube sowie die Rechte des Urhebers." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Dateien bleiben etwa eine Stunde auf dem Server, bevor sie automatisch gelöscht werden." },
+      ],
+    },
+    okru: {
+      description: "Videos von OK.ru (Odnoklassniki) herunterladen",
+      news: "Jetzt mit OK.ru",
+      titleLine1: "OK.ru Video",
+      titleLine2: "herunterladen",
+      pageDescription:
+        "OK.ru (Odnoklassniki) Video in hoher Qualität herunterladen. Schnell, kostenlos und einfach.",
+      placeholder: "OK.ru-Link hier einfügen...",
+      howTo: [
+        "Öffne das Video auf OK.ru (Odnoklassniki) und kopiere den Link aus der Adressleiste.",
+        "Füge den Link oben ins Feld ein und klicke auf „Download“.",
+        "Wähle Qualität und Format.",
+        "Der Download startet sofort – keine Anmeldung bei OK.ru nötig.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von OK.ru-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "In allen Qualitäten, die OK.ru für das Video bereitstellt – plus MP3." },
+        { q: "Muss ich bei OK.ru angemeldet sein?", a: "Nein – es funktionieren nur öffentliche Videos auf OK.ru (Odnoklassniki). Videoner meldet sich nie bei einem Konto an, daher sind private Videos nicht zugänglich." },
+        { q: "Ist es legal, Videos von OK.ru herunterzuladen?", a: "Lade nur Videos herunter, die du speichern darfst, und beachte die Nutzungsbedingungen von OK.ru sowie die Rechte des Uploaders." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Dateien werden etwa eine Stunde nach ihrer Erstellung automatisch gelöscht." },
+      ],
+    },
+    pinterest: {
+      description: "Videos aus Pinterest-Pins herunterladen",
+      news: "Jetzt mit Pinterest",
+      titleLine1: "Pinterest Video",
+      titleLine2: "herunterladen",
+      pageDescription:
+        "Pinterest Video aus Pins in hoher Qualität herunterladen. Schnell, kostenlos und einfach. Hinweis: Nur Video-Pins lassen sich herunterladen – reine Foto-Pins werden nicht unterstützt.",
+      placeholder: "Pinterest-Link hier einfügen...",
+      howTo: [
+        "Öffne den Pin auf Pinterest und tippe auf „Teilen“ → „Link kopieren“ (oder kopiere die URL aus dem Browser).",
+        "Füge den Link oben ins Feld ein und klicke auf „Download“.",
+        "Wähle die gewünschte Qualität und das Format.",
+        "Deine Datei wird sofort heruntergeladen – kein Konto nötig.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von Pinterest-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen und die verfügbaren Qualitäten zu prüfen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "Videoner bietet jede Qualität, die Pinterest für das Video des Pins bereitstellt – plus MP3-Audio." },
+        { q: "Kann ich Fotos oder Bilder von Pinterest herunterladen?", a: "Nein – nur Video-Pins lassen sich herunterladen. Ist ein Pin ein reines Foto, gibt es keine Videodatei zum Extrahieren." },
+        { q: "Kann ich private oder eingeschränkte Pins herunterladen?", a: "Nur öffentlich zugängliche Pins werden unterstützt; private Pinnwände und anmeldepflichtige Inhalte lassen sich nicht herunterladen." },
+        { q: "Ist es legal, Videos von Pinterest herunterzuladen?", a: "Lade nur Pins herunter, die du speichern darfst – eigene Inhalte oder alles, was der Urheber erlaubt. Beachte die Nutzungsbedingungen von Pinterest und das Urheberrecht." },
+        { q: "Wie lange ist meine Datei verfügbar?", a: "Konvertierte Dateien bleiben etwa eine Stunde auf dem Server – speichere sie also direkt nach dem Download auf deinem Gerät." },
+      ],
+    },
+    threads: {
+      description: "Videos aus Threads-Beiträgen herunterladen",
+      news: "Jetzt mit Threads",
+      titleLine1: "Threads Video",
+      titleLine2: "herunterladen",
+      pageDescription:
+        "Threads Video aus Beiträgen herunterladen. Schnell, kostenlos und ohne Threads-Konto. Threads liefert nur eine Videoversion mit bis zu 720p – das ist die höchste Qualität, die die Plattform bereitstellt.",
+      placeholder: "Threads-Link hier einfügen...",
+      howTo: [
+        "Öffne den Beitrag in Threads, tippe auf das Teilen-Symbol und dann auf „Link kopieren“.",
+        "Füge den Link oben ins Feld ein und klicke auf „Download“.",
+        "Wähle das gewünschte Format – Video oder MP3-Audio.",
+        "Deine Datei wird sofort heruntergeladen – kein Konto nötig.",
+      ],
+      faq: [
+        { q: "Ist das Herunterladen von Threads-Videos mit Videoner kostenlos?", a: "Ja – aber du musst dich zuerst mit Telegram anmelden (ein Klick, kein Passwort). Du hast 20 Downloads pro Tag, gemeinsam mit unserem Telegram-Bot. Der Service ist komplett kostenlos: keine Abos, keine Werbung." },
+        { q: "Brauche ich ein Konto zum Herunterladen?", a: "Bevor du einen Download startest, musst du dich mit deinem Telegram-Konto anmelden – ein Klick, ohne E-Mail oder Passwort. Um die Seite anzusehen, brauchst du keine Anmeldung." },
+        { q: "In welcher Qualität kann ich herunterladen?", a: "Threads veröffentlicht pro Beitrag genau eine Videoversion, begrenzt auf 720p an der kürzeren Seite – selbst wenn der Autor 4K hochgeladen hat. Videoner gibt dir genau diese Datei, plus MP3-Audio. Mehr kann kein Downloader bieten, weil höhere Auflösungen schlicht nicht ausgeliefert werden." },
+        { q: "Funktionieren Links von threads.com und threads.net?", a: "Ja. Sowohl vollständige Links wie threads.com/@user/post/CODE als auch kurze threads.net/t/CODE-Links werden unterstützt." },
+        { q: "Kann ich Fotos aus einem Threads-Beitrag herunterladen?", a: "Nein – nur Videos. Enthält ein Beitrag nur Fotos, gibt es keine Videodatei zum Extrahieren." },
+        { q: "Was ist mit Beiträgen mit mehreren Videos?", a: "Es wird das erste Video im Beitrag heruntergeladen. Threads-Karussells können mehrere Clips enthalten, gespeichert wird nur der erste." },
+        { q: "Kann ich private Beiträge herunterladen?", a: "Nein. Nur öffentlich sichtbare Beiträge lassen sich herunterladen; alles hinter einem privaten Konto oder einer Anmeldeschranke ist nicht zugänglich." },
+        { q: "Ist es legal, Videos von Threads herunterzuladen?", a: "Lade nur herunter, was du speichern darfst – eigene Inhalte oder alles, was der Autor erlaubt. Beachte die Nutzungsbedingungen von Threads und das Urheberrecht." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de };

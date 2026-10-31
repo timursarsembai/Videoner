@@ -559,4 +559,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Mwanzo",
   },
+  de: {
+    metaTitle: "Videoner Browser-Erweiterung",
+    title: "Videoner für deinen Browser",
+    summary:
+      "Die Erweiterung fügt Videoseiten einen Download-Button hinzu und lädt direkt in deinem Browser herunter. Instagram, Facebook, TikTok und Threads werden mit deiner eigenen Anmeldung heruntergeladen – so klappt es auch bei privaten Beiträgen, die du in deinem Konto siehst, und bei Videos, die die Plattform unserem Server nicht herausgegeben hat.",
+    failedVideo: "Das Video, das auf der Website oder im Bot nicht heruntergeladen werden konnte:",
+    failedVideoHint:
+      "Installiere die Erweiterung, melde dich in diesem Browser bei der Plattform an, öffne das Video und klicke unten rechts auf „Download“.",
+    openVideo: "Video öffnen",
+    version: "Version",
+    browsersTitle: "Wo sie funktioniert",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi und andere Chromium-basierte Browser – am Computer.",
+    mobile: "Handys und Tablets unterstützen keine Erweiterungen – nutze dort die Website oder den Telegram-Bot.",
+    getcourseTitle: "GetCourse-Lektionen",
+    getcourse:
+      "Öffne eine Lektion in einer GetCourse-Schule, während du angemeldet bist: Oben rechts im Player erscheint ein Download-Button, und das Videoner-Symbol listet alle Videos der Lektion auf. Dein Browser lädt die Lektion selbst herunter und setzt sie zu einer mp4 zusammen – die Datei läuft nicht über unseren Server. Klappt das nicht, lädt unser Server die Lektion in derselben Qualität herunter; dafür bekommt er den Videolink aus dem Player.",
+    privacyTitle: "Deine Anmeldung bleibt bei dir",
+    privacy:
+      "Die Erweiterung fragt nie nach einem Passwort: Die Anfrage an die Plattform stellt dein eigener Browser, und unser Server bekommt nur einen kurzen Bericht für die Statistik – Link, Dateigröße und Titel. Cookies gehen nur dann an den Server, wenn du selbst auf „Konto mit dem Bot verbinden“ klickst – und nur die Cookies dieser Plattform, verschlüsselt.",
+    stepsTitle: "Installation in Chrome, Yandex Browser, Edge und Opera",
+    steps: [
+      "Lade das Archiv herunter und entpacke es – es erscheint ein Ordner videoner-extension mit der Versionsnummer im Namen.",
+      "Öffne die Erweiterungsseite: Gib chrome://extensions in die Adressleiste ein (edge://extensions in Edge, opera://extensions in Opera).",
+      "Aktiviere den „Entwicklermodus“ – der Schalter oben auf der Seite.",
+      "Klicke auf „Entpackte Erweiterung laden“ und wähle diesen Ordner – den, in dem die Datei manifest.json liegt.",
+      "Fertig: Videoseiten bekommen einen Download-Button, und das Videoner-Symbol erscheint in der Browser-Symbolleiste.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 oder neuer – ebenfalls am Computer.",
+    firefoxSoon:
+      "Die Firefox-Version kommt bald. Bis dahin funktioniert die Erweiterung in Chrome, Yandex Browser, Edge, Opera und anderen Chromium-basierten Browsern.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Ein .zip-Archiv – in ein paar Minuten installiert",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Installation mit einem Klick",
+    yourBrowser: "Dein Browser",
+    soon: "Demnächst",
+    firefoxStepsTitle: "Installation in Firefox",
+    firefoxSteps: [
+      "Klicke oben auf dieser Seite auf den Firefox-Button.",
+      "Firefox fragt, ob videoner.download ein Add-on installieren darf – klicke auf „Weiter zur Installation“.",
+      "Klicke im Fenster „Videoner hinzufügen?“ auf „Hinzufügen“.",
+      "Fertig: Videoseiten bekommen einen Download-Button, und das Videoner-Symbol erscheint in der Symbolleiste. Updates installiert Firefox selbst.",
+    ],
+    updateTitle: "Update in Chrome, Yandex Browser, Edge und Opera",
+    updateSteps: [
+      "Sobald eine neue Version erscheint, zeigt das Videoner-Symbol ein NEW-Badge, und das Pop-up verlinkt hierher.",
+      "Lade das Archiv über den Chrome-Button oben auf dieser Seite herunter und entpacke es in denselben Ordner wie zuvor – die Dateien werden ersetzt.",
+      "Öffne die Erweiterungsseite (chrome://extensions, browser://extensions in Yandex Browser, edge://extensions) und klicke auf „Neu laden“ – den Kreispfeil auf der Videoner-Karte.",
+    ],
+    back: "Startseite",
+  },
 };

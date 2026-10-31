@@ -77,6 +77,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Simamisha upakuaji na foleni" },
     { command: "language", description: "Lugha ya bot" },
   ],
+  de: [
+    { command: "start", description: "So benutzt du den Bot" },
+    { command: "extension", description: "Browser-Erweiterung" },
+    { command: "accounts", description: "Deine Konten für Storys und private Beiträge" },
+    { command: "connect", description: "Konto mit einem Code aus der Erweiterung verbinden" },
+    { command: "stop", description: "Download und Warteschlange stoppen" },
+    { command: "language", description: "Sprache des Bots" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -144,6 +152,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Unganisha akaunti na kikundi hiki kwa msimbo" },
     { command: "language", description: "Lugha ya bot katika kikundi hiki (wasimamizi)" },
     { command: "start", description: "Jinsi bot inavyofanya kazi kwenye kikundi" },
+  ],
+  de: [
+    { command: "settings", description: "Bot-Einstellungen für diese Gruppe (Admins)" },
+    { command: "accounts", description: "Mit dieser Gruppe verbundene Konten" },
+    { command: "connect", description: "Konto per Code mit dieser Gruppe verbinden" },
+    { command: "language", description: "Sprache des Bots in dieser Gruppe (Admins)" },
+    { command: "start", description: "So funktioniert der Bot in einer Gruppe" },
   ],
 };
 

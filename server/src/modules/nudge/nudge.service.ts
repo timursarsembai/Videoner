@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('de')) {
+      return (
+        'Hallo! Du hast diesen Bot gestartet, aber noch nichts heruntergeladen — ' +
+        'vielleicht war nicht klar, wo man anfängt.\n\n' +
+        'Es ist nur ein Schritt: Schick mir einen Link zu einem Video, ' +
+        'zum Beispiel https://youtube.com/watch?v=jNQXAC9IVRw — und ich schicke dir ' +
+        'die Datei in etwa einer halben Minute zurück.\n\n' +
+        'Funktioniert mit YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest und Threads. Komplett kostenlos und in jeder ' +
+        'Qualität — bis 4K, HD kostet nichts extra.\n\n' +
+        'Wenn etwas nicht klappt, antworte einfach hier. Das ist ' +
+        'die einzige Erinnerung — ich melde mich nicht noch einmal.'
+      );
+    }
+
     if (code.startsWith('sw')) {
       return (
         'Habari! Uliwasha bot hii, lakini bado hujapakua chochote — ' +

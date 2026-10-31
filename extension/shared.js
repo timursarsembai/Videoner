@@ -808,6 +808,91 @@ const TEXTS = {
     langAuto: "Otomatiki",
     langLabel: "Lugha",
   },
+  de: {
+    loading: "Lade Video-Infos…",
+    notVideoPage:
+      "Öffne eine Videoseite auf YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest oder Threads und klick erneut auf das Symbol. GetCourse-Lektion: War die Seite schon vor der Installation der Erweiterung offen, lade sie neu.",
+    gcLesson: "GetCourse-Lektion",
+    gcPick: "Die Lektion hat mehrere Videos — wähl eins aus",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Dein Browser lädt und fügt es zusammen. Das Fenster darfst du schließen, den Browser nicht.",
+    gcNoStream: "Video konnte nicht aus dem Player geholt werden. Lade die Lektion neu und versuch es noch mal.",
+    video: "Video",
+    photo: "Fotos in Originalgröße",
+    slideshow: "Diashow (Video)",
+    gallery: "Fotos + Diashow",
+    audioOnly: "Nur Audio (mp3)",
+    subtitles: "Untertitel (.srt)",
+    subtitlesAuto: "automatisch",
+    back: "Zurück",
+    starting: "Starte den Download…",
+    waiting: "Warte auf einen freien Platz auf dem Server…",
+    downloading: "Lade herunter",
+    converting: "Verarbeite",
+    left: (eta) => `noch ${eta}`,
+    saving: "Speichere in „Downloads“…",
+    done: "Fertig — die Datei liegt in „Downloads“.",
+    news: "📣 Projekt-News: @videonerdownload",
+    again: "Noch eins laden",
+    directDownload: "Video laden (mp4)",
+    directPhoto: "Foto laden (jpg)",
+    directNote: "Direkt aus dem Browser — ohne Server-Warteschlange",
+    moreOptions: "Andere Qualitäten und Audio",
+    fallback: "Im Browser hat's nicht geklappt — lade über den Server.",
+    openSite: "videoner.download öffnen",
+    retry: "Noch mal versuchen",
+    min: "Min.",
+    sec: "s",
+    errNetwork: "Keine Verbindung zu Videoner. Prüf dein Internet und versuch es noch mal.",
+    errRateLimit: "Zu viele Anfragen hintereinander. Warte eine Minute und versuch es noch mal.",
+    errUnsupported:
+      "Auf dieser Seite gibt es kein Video, das Videoner laden kann. Öffne die Seite eines bestimmten Videos oder Posts.",
+    errYoutubeDaily: "Das tägliche YouTube-Limit für dein Netzwerk ist aufgebraucht. Versuch es morgen.",
+    errTooLarge: "Die Datei ist in dieser Qualität zu groß. Wähl eine niedrigere.",
+    errLogin:
+      "Dieser Beitrag ist nur für angemeldete Nutzer sichtbar. Öffentliche Beiträge lassen sich problemlos laden.",
+    errRegion: "Der Autor hat den Beitrag auf bestimmte Länder beschränkt — er lässt sich nicht laden.",
+    errServerBlocked: "Die Plattform schränkt unseren Server gerade ein. Versuch es später noch mal.",
+    errFailed: "Download fehlgeschlagen. Versuch es noch mal oder wähl eine andere Qualität.",
+    errGeneric: "Etwas ist schiefgelaufen. Versuch es etwas später noch mal.",
+    acctButton: (p) => `🔑 Dein ${p}-Konto mit dem Bot verbinden`,
+    acctWarn: (p) =>
+      `@VideonerBot kann dann über dein ${p}-Konto laden, was nur Angemeldete sehen: Storys, private Beiträge. Plattformen mögen keine automatischen Downloads und können das Konto einschränken — verbinde lieber ein Zweitkonto. Der Browser fragt nach der Erlaubnis für die Cookies dieser Seite; an den Server gehen nur die ${p}-Cookies, verschlüsselt.`,
+    acctConfirm: "Verbinden",
+    acctCancel: "Abbrechen",
+    acctSending: "Verbinde…",
+    acctDenied: "Ohne Cookie-Erlaubnis lässt sich das Konto nicht verbinden.",
+    acctNoLogin: (p) => `Du bist in diesem Browser nicht bei ${p} angemeldet. Melde dich auf der Seite an und versuch es noch mal.`,
+    acctFailed: "Hat nicht geklappt. Versuch es etwas später noch mal.",
+    acctCodeTitle: (p) => `Code zum Verbinden von ${p}:`,
+    acctCodeHelp:
+      "Schick ihn @VideonerBot im Privatchat — für deine eigenen Downloads. Für eine Gruppe schick dort /connect CODE. Der Code gilt 10 Minuten.",
+    acctCopy: "Kopieren",
+    acctCopied: "Kopiert",
+    acctOpenBot: "Bot öffnen",
+    acctNewCode: "Neuen Code holen",
+    acctList: "Meine Verbindungen im Bot",
+    acctRevoke: "Cookie-Zugriff entziehen",
+    acctRevoked:
+      "Cookie-Zugriff entzogen — die Erweiterung liest sie nicht mehr. Schon verbundene Konten bleiben im Bot: trennen kannst du sie unter „Meine Verbindungen im Bot“.",
+    playlistOffer: "📃 Ganze Playlist laden",
+    playlistTitle: (title, n) => `📃 Playlist${title ? ` „${title}“` : ""}: ${n} Videos`,
+    playlistHint: "Ich lade sie nacheinander. Das Fenster darfst du schließen.",
+    playlist720: "Playlist in 720p",
+    playlistBest: "Playlist in bester Qualität",
+    playlistAudio: "Playlist — nur Audio (mp3)",
+    playlistProgress: (i, n) => `Video ${i} von ${n}`,
+    playlistStats: (done, failed) => `Geladen: ${done}${failed ? ` · fehlgeschlagen: ${failed}` : ""}`,
+    playlistStop: "⏹ Stoppen",
+    playlistDone: (done, n) => `Playlist geladen: ${done} von ${n}.`,
+    playlistStopped: (done, n) => `Gestoppt. Geladen: ${done} von ${n}.`,
+    playlistLoading: "Hole die Videoliste…",
+    close: "Schließen",
+    updateAvailable: (v) => `Version ${v} ist da.`,
+    updateHow: "So aktualisierst du",
+    langAuto: "Auto",
+    langLabel: "Sprache",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -898,12 +983,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -1010,9 +1095,9 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому и суахили — латинские GB/MB, как и цифры (ar-u-nu-latn).
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw";
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", en: "en-US" }[lang];
+  // Арабскому, китайскому, хинди, индонезийскому, суахили и немецкому — латинские GB/MB, как и цифры (ar-u-nu-latn).
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de";
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${latin ? "GB" : "ГБ"}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${latin ? "MB" : "МБ"}`;
 }

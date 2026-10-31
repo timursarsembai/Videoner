@@ -527,8 +527,17 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
     // Замок с HD-качеств снят вместе с платными функциями: все качества
     // доступны всем без исключения.
     // "original" сервер присылает для поста, где нет ни одного видео —
-    // выбирать там нечего, снимки забираются в исходном размере.
-    kb.text(q === "original" ? m.photoButton : sized(`🎬 ${q}`, current.sizes?.video[q]), `v|${q}`).row();
+    // снимки в исходном размере; у поста из нескольких фото рядом ещё
+    // "slideshow" (видео из снимков) и "gallery" (видео и снимки).
+    const label =
+      q === "original"
+        ? m.photoButton
+        : q === "slideshow"
+          ? m.slideshowButton
+          : q === "gallery"
+            ? m.galleryButton
+            : sized(`🎬 ${q}`, current.sizes?.video[q]);
+    kb.text(label, `v|${q}`).row();
   }
   // У поста из одних фотографий звуковой дорожки нет — кнопку не рисуем,
   // иначе она вела бы в заведомую ошибку.

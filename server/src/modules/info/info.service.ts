@@ -1,3 +1,4 @@
+import { photoQualities } from 'src/lib/slideshow';
 import { DownloadSource } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
@@ -243,7 +244,8 @@ export class InfoService {
       videoFormats.length === 0 && playlistEntries(info).length > 0;
 
     const allFormats = {
-      video: photoOnly ? ['original'] : [...new Set(videoFormats)],
+      // У поста из нескольких фото — ещё слайдшоу (lib/slideshow.ts).
+      video: photoOnly ? photoQualities(playlistEntries(info).length) : [...new Set(videoFormats)],
       audio: photoOnly ? [] : [...new Set(audioFormats)],
     };
 

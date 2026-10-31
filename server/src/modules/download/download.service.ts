@@ -1,3 +1,4 @@
+import { GALLERY, SLIDESHOW, isSlideshowQuality, slideshowArgs } from 'src/lib/slideshow';
 import {
   BadRequestException,
   ForbiddenException,
@@ -896,6 +897,38 @@ export class DownloadService {
   }
 
   /**
+   * Слайдшоу из скачанных фото поста (lib/slideshow.ts): видео кладётся
+   * первым элементом поста (номер 00), фото — следом, если их оставляем.
+   * Снимки, которые ffmpeg не прочитает (не JPEG после неудачной
+   * перекодировки), в видео не берём.
+   */
+  private async buildSlideshow(downloadDir: string, fileName: string, { keepPhotos }: { keepPhotos: boolean }) {
+    const photos = this.collectPlaylistFiles(downloadDir, fileName).filter((f) => isPhotoExtension(f.ext));
+    const usable = photos.filter((f) => ['jpg', 'jpeg', 'png', 'webp'].includes(f.ext));
+    if (!usable.length) throw new Error('Не из чего собрать слайдшоу');
+    const dot = fileName.lastIndexOf('.');
+    const base = dot > 0 ? fileName.slice(0, dot) : fileName;
+    const output = join(downloadDir, `${base}-00.mp4`);
+    try {
+      await execFileAsync(
+        'ffmpeg',
+        slideshowArgs(
+          usable.map((f) => join(downloadDir, f.name)),
+          output,
+        ),
+        // Минута на десяток снимков с запасом; длиннее — что-то не так.
+        { timeout: 180_000 },
+      );
+    } catch (error) {
+      await fs.promises.unlink(output).catch(() => {});
+      throw error;
+    }
+    if (!keepPhotos) {
+      await Promise.all(photos.map((f) => fs.promises.unlink(join(downloadDir, f.name)).catch(() => {})));
+    }
+  }
+
+  /**
    * Сохранение снимка настоящим JPEG.
    *
    * CDN Meta отдаёт часть снимков в WebP, не спрашивая Accept, — а имя мы
@@ -1306,6 +1339,9 @@ export class DownloadService {
             if (!saved) {
               throw new Error('Ни одну фотографию поста скачать не удалось');
             }
+            if (isSlideshowQuality(quality)) {
+              await this.buildSlideshow(downloadDir, baseFileName, { keepPhotos: (quality as string) === GALLERY });
+            }
             await this.completePlaylistDownload(
               download.id,
               downloadDir,
@@ -1324,7 +1360,11 @@ export class DownloadService {
           ...(userCookies ? { viaUserCookies: true } : {}),
           downloadId: download.id,
           fileName: baseFileName,
-          itemCount: playlistEntries(info).length,
+          // Слайдшоу — одно видео; «галерея» — видео и все фото.
+          itemCount:
+            (quality as string) === SLIDESHOW
+              ? 1
+              : playlistEntries(info).length + ((quality as string) === GALLERY ? 1 : 0),
         };
       }
 

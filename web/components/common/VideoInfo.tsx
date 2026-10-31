@@ -442,11 +442,15 @@ export const VideoInfoSection = ({
                         )}
                         <span className="flex items-center gap-1.5 font-medium">
                           {/* "original" сервер присылает для поста, где нет ни
-                              одного видео: выбирать нечего, снимки берутся в
-                              исходном размере. */}
+                              одного видео: снимки в исходном размере; рядом —
+                              слайдшоу из них и «всё вместе». */}
                           {quality === "original"
                             ? t("video.photoQuality")
-                            : quality}
+                            : quality === "slideshow"
+                              ? t("video.slideshowQuality")
+                              : quality === "gallery"
+                                ? t("video.galleryQuality")
+                                : quality}
                         </span>
                         {/* Примерный вес — чтобы выбрать качество полегче
                             до скачивания, а не после долгого ожидания. */}

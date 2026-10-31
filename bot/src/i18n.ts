@@ -33,6 +33,9 @@ interface Messages {
   fetchingInfo: string;
   audioOnlyButton: string;
   photoButton: string;
+  // Пост из нескольких фото: видео-слайдшоу без звука и «всё вместе».
+  slideshowButton: string;
+  galleryButton: string;
   chooseQuality: (title: string, duration: string) => string;
   sessionExpired: string;
   downloading: string;
@@ -212,6 +215,8 @@ const ru: Messages = {
   fetchingInfo: "🔍 Получаю информацию о видео...",
   audioOnlyButton: "🎵 Только аудио (mp3)",
   photoButton: "📷 Скачать фото",
+  slideshowButton: "🎞 Слайдшоу (видео)",
+  galleryButton: "📷+🎞 Фото и слайдшоу",
   chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nВыбери качество:`,
   sessionExpired: "Сессия устарела — пришли ссылку ещё раз",
   downloading: "⏬ Скачиваю, это может занять пару минут...",
@@ -414,6 +419,8 @@ const en: Messages = {
   fetchingInfo: "🔍 Fetching video info...",
   audioOnlyButton: "🎵 Audio only (mp3)",
   photoButton: "📷 Download photos",
+  slideshowButton: "🎞 Slideshow (video)",
+  galleryButton: "📷+🎞 Photos and slideshow",
   chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\nChoose quality:`,
   sessionExpired: "Session expired — send the link again",
   downloading: "⏬ Downloading, this may take a couple of minutes...",
@@ -610,6 +617,8 @@ const uk: Messages = {
   fetchingInfo: "🔍 Отримую інформацію про відео...",
   audioOnlyButton: "🎵 Лише аудіо (mp3)",
   photoButton: "📷 Завантажити фото",
+  slideshowButton: "🎞 Слайдшоу (відео)",
+  galleryButton: "📷+🎞 Фото й слайдшоу",
   chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nОбери якість:`,
   sessionExpired: "Сесія застаріла — надішли посилання ще раз",
   downloading: "⏬ Завантажую, це може зайняти пару хвилин...",
@@ -807,6 +816,8 @@ const kk: Messages = {
   fetchingInfo: "🔍 Видео туралы ақпарат алып жатырмын...",
   audioOnlyButton: "🎵 Тек аудио (mp3)",
   photoButton: "📷 Фотоны жүктеп алу",
+  slideshowButton: "🎞 Слайдшоу (видео)",
+  galleryButton: "📷+🎞 Фото және слайдшоу",
   chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nСапаны таңда:`,
   sessionExpired: "Сессия ескірді — сілтемені қайта жібер",
   downloading: "⏬ Жүктеп алып жатырмын, бұл бірнеше минутқа созылуы мүмкін...",

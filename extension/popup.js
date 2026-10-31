@@ -175,21 +175,28 @@ function startDownload(kind, quality) {
 }
 
 function showChoices() {
-  const videoQualities = [...(info.qualities?.video ?? [])].reverse();
+  const qualities = info.qualities?.video ?? [];
+  // Качества видео — от меньшего к большему; варианты фото-поста — как прислал
+  // сервер (сначала сами фото).
+  const videoQualities = qualities.includes("original") ? [...qualities] : [...qualities].reverse();
   const audio = info.qualities?.audio ?? [];
   const nodes = [videoCard()];
 
   if (videoQualities.length) {
     // "original" сервер присылает для поста без единого видео: выбирать нечего,
     // снимки забираются в исходном размере.
-    const isPhoto = videoQualities.length === 1 && videoQualities[0] === "original";
+    // У поста из нескольких фото рядом ещё "slideshow" и "gallery" —
+    // видео-слайдшоу из снимков и всё вместе.
+    const isPhoto = videoQualities.includes("original");
+    const qualityLabel = (q) =>
+      q === "original" ? t.photo : q === "slideshow" ? t.slideshow : q === "gallery" ? t.gallery : q;
     nodes.push(el("div", { class: "section-label" }, isPhoto ? t.photo : t.video));
     nodes.push(
       el(
         "div",
         { class: "choices" },
         ...videoQualities.map((q) =>
-          choice(q === "original" ? t.photo : q, formatSize(info.sizes?.video?.[q]), () => startDownload("video", q))
+          choice(qualityLabel(q), formatSize(info.sizes?.video?.[q]), () => startDownload("video", q))
         )
       )
     );

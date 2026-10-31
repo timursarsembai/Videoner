@@ -550,6 +550,179 @@ const TEXTS = {
     langAuto: "自动",
     langLabel: "语言",
   },
+  // Хинди (деванагари), современный разговорный язык; устоявшиеся технические
+  // заимствования — как есть. Латиница (названия площадок, @VideonerBot,
+  // /connect), западные цифры и GB/MB — как в английском.
+  hi: {
+    loading: "वीडियो की जानकारी ली जा रही है…",
+    notVideoPage:
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest या Threads पर किसी वीडियो का पेज खोलें और फिर से आइकन पर क्लिक करें। GetCourse लेसन: अगर लेसन का पेज एक्सटेंशन इंस्टॉल होने से पहले खुला था, तो उसे रीलोड करें।",
+    gcLesson: "GetCourse लेसन",
+    gcPick: "इस लेसन में कई वीडियो हैं — एक चुनें",
+    gcVideo: (n) => `वीडियो ${n}`,
+    gcNote: "आपका ब्राउज़र इसे डाउनलोड करके जोड़ता है। आप यह विंडो बंद कर सकते हैं, लेकिन ब्राउज़र नहीं।",
+    gcNoStream: "प्लेयर से वीडियो नहीं मिल सका। लेसन का पेज रीलोड करें और फिर से कोशिश करें।",
+    video: "वीडियो",
+    photo: "ओरिजिनल साइज़ में फ़ोटो",
+    slideshow: "स्लाइडशो (वीडियो)",
+    gallery: "फ़ोटो + स्लाइडशो",
+    audioOnly: "सिर्फ़ ऑडियो (mp3)",
+    subtitles: "सबटाइटल (.srt)",
+    subtitlesAuto: "अपने-आप बने",
+    back: "वापस",
+    starting: "डाउनलोड शुरू हो रहा है…",
+    waiting: "सर्वर पर खाली जगह का इंतज़ार…",
+    downloading: "डाउनलोड हो रहा है",
+    converting: "प्रोसेस हो रहा है",
+    left: (eta) => `${eta} बाकी`,
+    saving: "डाउनलोड्स में सेव हो रहा है…",
+    done: "हो गया — फ़ाइल आपके डाउनलोड्स में है।",
+    news: "📣 प्रोजेक्ट की खबरें: @videonerdownload",
+    again: "एक और डाउनलोड करें",
+    directDownload: "वीडियो डाउनलोड करें (mp4)",
+    directPhoto: "फ़ोटो डाउनलोड करें (jpg)",
+    directNote: "सीधे आपके ब्राउज़र से — सर्वर की कतार के बिना",
+    moreOptions: "दूसरी क्वालिटी और ऑडियो",
+    fallback: "ब्राउज़र से डाउनलोड नहीं हो सका — सर्वर के ज़रिए डाउनलोड हो रहा है।",
+    openSite: "videoner.download खोलें",
+    retry: "फिर से कोशिश करें",
+    min: "मिनट",
+    sec: "सेकंड",
+    errNetwork: "Videoner से कनेक्ट नहीं हो पा रहा। अपना इंटरनेट कनेक्शन जाँचें और फिर से कोशिश करें।",
+    errRateLimit: "लगातार बहुत ज़्यादा रिक्वेस्ट। एक मिनट रुकें और फिर से कोशिश करें।",
+    errUnsupported:
+      "इस पेज पर ऐसा कोई वीडियो नहीं है जिसे Videoner डाउनलोड कर सके। किसी खास वीडियो या पोस्ट का पेज खोलें।",
+    errYoutubeDaily: "आपके नेटवर्क के लिए YouTube की आज की लिमिट खत्म हो गई है। कल फिर से कोशिश करें।",
+    errTooLarge: "इस क्वालिटी में फ़ाइल बहुत बड़ी है। कम क्वालिटी चुनें।",
+    errLogin:
+      "यह पोस्ट सिर्फ़ साइन-इन किए हुए यूज़र्स के लिए उपलब्ध है। पब्लिक पोस्ट बिना किसी दिक्कत के डाउनलोड होते हैं।",
+    errRegion: "लेखक ने इस पोस्ट को देश के हिसाब से सीमित किया है, इसलिए इसे डाउनलोड नहीं किया जा सकता।",
+    errServerBlocked: "प्लेटफ़ॉर्म फ़िलहाल हमारे सर्वर को सीमित कर रहा है। कृपया थोड़ी देर बाद फिर से कोशिश करें।",
+    errFailed: "डाउनलोड नहीं हो सका। फिर से कोशिश करें या कोई दूसरी क्वालिटी चुनें।",
+    errGeneric: "कुछ गड़बड़ हो गई। कृपया थोड़ी देर बाद फिर से कोशिश करें।",
+    acctButton: (p) => `🔑 अपना ${p} खाता बॉट से कनेक्ट करें`,
+    acctWarn: (p) =>
+      `@VideonerBot आपके खाते से ${p} पर वह कंटेंट डाउनलोड कर पाएगा जो सिर्फ़ साइन-इन किए हुए लोगों को दिखता है: स्टोरीज़, प्राइवेट पोस्ट। प्लेटफ़ॉर्म ऑटोमैटिक डाउनलोड पसंद नहीं करते और खाते पर रोक लगा सकते हैं — बेहतर है कोई दूसरा, अतिरिक्त खाता कनेक्ट करें। ब्राउज़र इस साइट की कुकीज़ पढ़ने की अनुमति माँगेगा; सर्वर पर सिर्फ़ ${p} की कुकीज़ एन्क्रिप्ट होकर जाती हैं।`,
+    acctConfirm: "कनेक्ट करें",
+    acctCancel: "रद्द करें",
+    acctSending: "कनेक्ट हो रहा है…",
+    acctDenied: "कुकीज़ की अनुमति के बिना खाता कनेक्ट नहीं किया जा सकता।",
+    acctNoLogin: (p) => `इस ब्राउज़र में आप ${p} पर साइन इन नहीं हैं। साइट पर साइन इन करें और फिर से कोशिश करें।`,
+    acctFailed: "यह नहीं हो सका। थोड़ी देर बाद फिर से कोशिश करें।",
+    acctCodeTitle: (p) => `${p} कनेक्ट करने का कोड:`,
+    acctCodeHelp:
+      "इसे प्राइवेट चैट में @VideonerBot को भेजें — अपने डाउनलोड के लिए। ग्रुप के लिए, ग्रुप में /connect कोड भेजें। कोड 10 मिनट तक मान्य है।",
+    acctCopy: "कॉपी करें",
+    acctCopied: "कॉपी हो गया",
+    acctOpenBot: "बॉट खोलें",
+    acctNewCode: "नया कोड पाएँ",
+    acctList: "बॉट में मेरे कनेक्शन",
+    acctRevoke: "कुकीज़ की अनुमति वापस लें",
+    acctRevoked:
+      "कुकीज़ की अनुमति वापस ले ली गई — एक्सटेंशन अब उन्हें नहीं पढ़ता। जो खाते आप पहले कनेक्ट कर चुके हैं, वे बॉट में बने रहेंगे: उन्हें “बॉट में मेरे कनेक्शन” में हटाएँ।",
+    playlistOffer: "📃 पूरी प्लेलिस्ट डाउनलोड करें",
+    playlistTitle: (title, n) => `📃 प्लेलिस्ट${title ? ` "${title}"` : ""}: ${n} वीडियो`,
+    playlistHint: "मैं इन्हें एक-एक करके डाउनलोड करूँगा। आप यह विंडो बंद कर सकते हैं।",
+    playlist720: "प्लेलिस्ट 720p में",
+    playlistBest: "प्लेलिस्ट सबसे अच्छी क्वालिटी में",
+    playlistAudio: "प्लेलिस्ट — सिर्फ़ ऑडियो (mp3)",
+    playlistProgress: (i, n) => `वीडियो ${i} / ${n}`,
+    playlistStats: (done, failed) => `डाउनलोड हुए: ${done}${failed ? ` · नहीं हो सके: ${failed}` : ""}`,
+    playlistStop: "⏹ रोकें",
+    playlistDone: (done, n) => `प्लेलिस्ट डाउनलोड हो गई: ${n} में से ${done}।`,
+    playlistStopped: (done, n) => `रोक दिया गया। ${n} में से ${done} डाउनलोड हुए।`,
+    playlistLoading: "वीडियो की सूची ली जा रही है…",
+    close: "बंद करें",
+    updateAvailable: (v) => `वर्शन ${v} आ गया है।`,
+    updateHow: "अपडेट कैसे करें",
+    langAuto: "ऑटो",
+    langLabel: "भाषा",
+  },
+  id: {
+    loading: "Mengambil info video…",
+    notVideoPage:
+      "Buka halaman video di YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest atau Threads, lalu klik ikonnya lagi. Pelajaran GetCourse: jika halaman pelajaran sudah terbuka sebelum ekstensi dipasang, muat ulang halaman tersebut.",
+    gcLesson: "Pelajaran GetCourse",
+    gcPick: "Pelajaran ini berisi beberapa video — pilih salah satu",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Browser Anda yang mengunduh dan menggabungkannya. Jendela ini boleh ditutup, tetapi browser jangan.",
+    gcNoStream: "Gagal mengambil video dari pemutar. Muat ulang halaman pelajaran dan coba lagi.",
+    video: "Video",
+    photo: "Foto ukuran asli",
+    slideshow: "Tayangan slide (video)",
+    gallery: "Foto + tayangan slide",
+    audioOnly: "Hanya audio (mp3)",
+    subtitles: "Subtitel (.srt)",
+    subtitlesAuto: "otomatis",
+    back: "Kembali",
+    starting: "Memulai unduhan…",
+    waiting: "Menunggu giliran di server…",
+    downloading: "Mengunduh",
+    converting: "Memproses",
+    left: (eta) => `sisa ${eta}`,
+    saving: "Menyimpan ke Unduhan…",
+    done: "Selesai — file ada di folder Unduhan Anda.",
+    news: "📣 Berita proyek: @videonerdownload",
+    again: "Unduh yang lain",
+    directDownload: "Unduh video (mp4)",
+    directPhoto: "Unduh foto (jpg)",
+    directNote: "Langsung dari browser Anda — tanpa antrean server",
+    moreOptions: "Kualitas lain dan audio",
+    fallback: "Unduhan lewat browser gagal — mengunduh lewat server.",
+    openSite: "Buka videoner.download",
+    retry: "Coba lagi",
+    min: "mnt",
+    sec: "dtk",
+    errNetwork: "Tidak dapat terhubung ke Videoner. Periksa koneksi internet Anda dan coba lagi.",
+    errRateLimit: "Terlalu banyak permintaan berturut-turut. Tunggu sebentar lalu coba lagi.",
+    errUnsupported:
+      "Tidak ada video di halaman ini yang bisa diunduh Videoner. Buka halaman video atau postingan tertentu.",
+    errYoutubeDaily: "Batas harian YouTube untuk jaringan Anda sudah habis. Coba lagi besok.",
+    errTooLarge: "File dalam kualitas ini terlalu besar. Pilih kualitas yang lebih rendah.",
+    errLogin:
+      "Postingan ini hanya tersedia bagi pengguna yang sudah masuk. Postingan publik bisa diunduh tanpa masalah.",
+    errRegion: "Pembuat membatasi postingan ini berdasarkan negara, jadi tidak bisa diunduh.",
+    errServerBlocked: "Platform untuk sementara membatasi akses server kami. Silakan coba lagi nanti.",
+    errFailed: "Unduhan gagal. Coba lagi atau pilih kualitas lain.",
+    errGeneric: "Terjadi kesalahan. Silakan coba lagi beberapa saat lagi.",
+    acctButton: (p) => `🔑 Hubungkan akun ${p} Anda ke bot`,
+    acctWarn: (p) =>
+      `@VideonerBot akan bisa mengunduh dengan akun ${p} Anda konten yang hanya terlihat oleh pengguna yang sudah masuk: story, postingan privat. Platform tidak menyukai unduhan otomatis dan bisa membatasi akun — sebaiknya hubungkan akun cadangan. Browser akan meminta izin untuk membaca cookie situs ini; hanya cookie ${p} yang dikirim ke server, dalam bentuk terenkripsi.`,
+    acctConfirm: "Hubungkan",
+    acctCancel: "Batal",
+    acctSending: "Menghubungkan…",
+    acctDenied: "Akun tidak bisa dihubungkan tanpa izin cookie.",
+    acctNoLogin: (p) => `Anda belum masuk ke ${p} di browser ini. Masuk di situsnya lalu coba lagi.`,
+    acctFailed: "Tidak berhasil. Coba lagi beberapa saat lagi.",
+    acctCodeTitle: (p) => `Kode untuk menghubungkan ${p}:`,
+    acctCodeHelp:
+      "Kirim kode ini ke @VideonerBot lewat chat pribadi — untuk unduhan Anda sendiri. Untuk grup, kirim /connect KODE di grup tersebut. Kode berlaku 10 menit.",
+    acctCopy: "Salin",
+    acctCopied: "Tersalin",
+    acctOpenBot: "Buka bot",
+    acctNewCode: "Dapatkan kode baru",
+    acctList: "Koneksi saya di bot",
+    acctRevoke: "Cabut akses cookie",
+    acctRevoked:
+      "Akses cookie sudah dicabut — ekstensi tidak lagi membacanya. Akun yang sudah terhubung tetap ada di bot: putuskan di “Koneksi saya di bot”.",
+    playlistOffer: "📃 Unduh seluruh playlist",
+    playlistTitle: (title, n) => `📃 Playlist${title ? ` "${title}"` : ""}: ${n} video`,
+    playlistHint: "Video akan diunduh satu per satu secara berurutan. Jendela ini boleh ditutup.",
+    playlist720: "Playlist dalam 720p",
+    playlistBest: "Playlist dalam kualitas terbaik",
+    playlistAudio: "Playlist — hanya audio (mp3)",
+    playlistProgress: (i, n) => `Video ${i} dari ${n}`,
+    playlistStats: (done, failed) => `Terunduh: ${done}${failed ? ` · gagal: ${failed}` : ""}`,
+    playlistStop: "⏹ Hentikan",
+    playlistDone: (done, n) => `Playlist terunduh: ${done} dari ${n}.`,
+    playlistStopped: (done, n) => `Dihentikan. Terunduh ${done} dari ${n}.`,
+    playlistLoading: "Mengambil daftar video…",
+    close: "Tutup",
+    updateAvailable: (v) => `Versi ${v} sudah tersedia.`,
+    updateHow: "Cara memperbarui",
+    langAuto: "Otomatis",
+    langLabel: "Bahasa",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -640,12 +813,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -656,7 +829,8 @@ export const isRtl = () => lang === "ar";
 export const sitePath = (path) => (lang === "en" ? path : `/${lang}${path}`);
 
 function pickLang(uiLanguage) {
-  const base = uiLanguage.toLowerCase().split("-")[0];
+  let base = uiLanguage.toLowerCase().split("-")[0];
+  if (base === "in") base = "id"; // старый код индонезийского
   return base in TEXTS ? base : "en";
 }
 
@@ -751,9 +925,9 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому и китайскому — латинские GB/MB, как и цифры (ar-u-nu-latn).
-  const latin = lang === "en" || lang === "ar" || lang === "zh";
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", en: "en-US" }[lang];
+  // Арабскому, китайскому, хинди и индонезийскому — латинские GB/MB, как и цифры (ar-u-nu-latn).
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id";
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${latin ? "GB" : "ГБ"}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${latin ? "MB" : "МБ"}`;
 }

@@ -53,6 +53,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "停止下载和队列" },
     { command: "language", description: "机器人语言" },
   ],
+  hi: [
+    { command: "start", description: "बॉट का इस्तेमाल कैसे करें" },
+    { command: "extension", description: "ब्राउज़र एक्सटेंशन" },
+    { command: "accounts", description: "स्टोरीज़ और प्राइवेट पोस्ट के लिए आपके खाते" },
+    { command: "connect", description: "एक्सटेंशन के कोड से खाता कनेक्ट करें" },
+    { command: "stop", description: "डाउनलोड और कतार रोकें" },
+    { command: "language", description: "बॉट की भाषा" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -99,6 +107,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "用代码为本群连接账号" },
     { command: "language", description: "机器人在本群的语言（管理员）" },
     { command: "start", description: "机器人在群组中如何工作" },
+  ],
+  hi: [
+    { command: "settings", description: "इस ग्रुप में बॉट की सेटिंग्स (एडमिन के लिए)" },
+    { command: "accounts", description: "इस ग्रुप से कनेक्ट किए गए खाते" },
+    { command: "connect", description: "कोड से इस ग्रुप में खाता कनेक्ट करें" },
+    { command: "language", description: "इस ग्रुप में बॉट की भाषा (एडमिन के लिए)" },
+    { command: "start", description: "ग्रुप में बॉट कैसे काम करता है" },
   ],
 };
 

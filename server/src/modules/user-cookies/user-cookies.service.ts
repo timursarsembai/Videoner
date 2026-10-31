@@ -355,7 +355,7 @@ export class UserCookiesService {
     if (!token) return;
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
-    const l = base === 'uk' || base === 'ru' || base === 'kk' || base === 'ar' || base === 'zh' ? base : 'en';
+    const l = base === 'uk' || base === 'ru' || base === 'kk' || base === 'ar' || base === 'zh' || base === 'hi' ? base : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -365,6 +365,7 @@ export class UserCookiesService {
       en: forGroup ? 'for a group' : 'for you',
       ar: forGroup ? 'لمجموعة' : 'لك',
       zh: forGroup ? '（群组）' : '（你的）',
+      hi: forGroup ? 'ग्रुप के लिए' : 'आपके लिए',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -373,6 +374,7 @@ export class UserCookiesService {
       en: `⚠️ Your connected ${name} login (${where}) stopped working: the platform no longer accepts it. You may have signed out, or the account was restricted.\n\nTo keep downloading with it, connect the account again. Your connections: /accounts.`,
       ar: `⚠️ توقّف تسجيل الدخول المرتبط بحساب ${name} (${where}) عن العمل: لم تعد المنصّة تقبله. ربما سجّلت الخروج من الحساب أو تم تقييده.\n\nلمواصلة التحميل به، اربط الحساب من جديد. قائمة الاتصالات: /accounts.`,
       zh: `⚠️ 已连接的 ${name} 登录${where}已失效：平台不再接受它。你可能已退出该账号，或账号受到了限制。\n\n如需继续用它下载，请重新连接账号。连接列表：/accounts。`,
+      hi: `⚠️ कनेक्ट किया गया ${name} लॉगिन (${where}) अब काम नहीं कर रहा: प्लेटफ़ॉर्म इसे अब स्वीकार नहीं करता। हो सकता है आपने खाते से लॉग आउट कर दिया हो या खाते पर रोक लगी हो।\n\nइससे फिर से डाउनलोड करने के लिए खाता दोबारा कनेक्ट करें। कनेक्शन की सूची — /accounts।`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

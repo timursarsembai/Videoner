@@ -16,16 +16,18 @@
   // uiLang) или язык браузера. Выбор читается асинхронно, поэтому сначала
   // подпись по браузеру, потом — по выбору.
   const ui = chrome.i18n.getUILanguage().toLowerCase();
-  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
     kk: "Осы видео үшін батырманы жасыру",
     ar: "إخفاء الزر لهذا الفيديو",
     zh: "隐藏此视频的按钮",
+    hi: "इस वीडियो के लिए बटन छिपाएँ",
+    id: "Sembunyikan tombol untuk video ini",
     en: "Hide the button for this video",
   };
-  const base = ui.split("-")[0];
+  const base = ui.split("-")[0] === "in" ? "id" : ui.split("-")[0];
   const l = base in LABELS ? base : "en";
   const PANEL_WIDTH = 360;
 

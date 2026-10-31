@@ -83,9 +83,9 @@
   function addButton() {
     const ui = chrome.i18n.getUILanguage().toLowerCase();
     // Язык — как в content.js: сначала по браузеру, потом по выбору в окошке.
-    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", en: "Download" };
-    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", ar: "إخفاء الزر", zh: "隐藏按钮", en: "Hide the button" };
-    const base = ui.split("-")[0];
+    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", en: "Download" };
+    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", ar: "إخفاء الزر", zh: "隐藏按钮", hi: "बटन छिपाएँ", id: "Sembunyikan tombol", en: "Hide the button" };
+    const base = ui.split("-")[0] === "in" ? "id" : ui.split("-")[0];
     const l = base in LABELS ? base : "en";
     const PANEL_WIDTH = 340;
 

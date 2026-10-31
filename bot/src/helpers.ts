@@ -29,6 +29,8 @@ const SIZE_UNITS: Record<Lang, { locale: string; gb: string; mb: string }> = {
   // Цифры латинские (0-9), а не арабские-индийские: так их пишет и Telegram.
   ar: { locale: "ar-u-nu-latn", gb: "GB", mb: "MB" },
   zh: { locale: "zh-CN", gb: "GB", mb: "MB" },
+  // Цифры латинские, а не деванагари: так их пишут в интерфейсах.
+  hi: { locale: "hi-IN-u-nu-latn", gb: "GB", mb: "MB" },
 };
 
 // «850 МБ», «1,2 ГБ» — для подписи на кнопках качества.

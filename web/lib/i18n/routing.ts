@@ -15,6 +15,7 @@ export const OG_LOCALE: Record<Language, string> = {
   kk: "kk_KZ",
   ar: "ar_AR",
   zh: "zh_CN",
+  hi: "hi_IN",
 };
 
 export function localizedHref(language: Language, href: string): string {

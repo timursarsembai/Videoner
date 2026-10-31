@@ -103,6 +103,18 @@ export const blogUi: Record<
     readFull: "在网站上阅读全文",
     dateLocale: "zh-CN",
   },
+  hi: {
+    title: "Videoner ब्लॉग",
+    description: "प्रोजेक्ट की खबरें: बॉट, वेबसाइट और एक्सटेंशन में क्या नया है और उसे कैसे इस्तेमाल करें।",
+    readMore: "पढ़ें",
+    back: "सभी लेख",
+    allPosts: "ब्लॉग",
+    channel: "Telegram पर खबरें",
+    channelCta: "प्रोजेक्ट की खबरें Telegram चैनल @videonerdownload पर मिलेंगी।",
+    readOnSite: "वेबसाइट पर पढ़ें",
+    readFull: "पूरा लेख वेबसाइट पर पढ़ें",
+    dateLocale: "hi-IN-u-nu-latn",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

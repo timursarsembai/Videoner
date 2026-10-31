@@ -2,6 +2,8 @@
 // тексты интерфейса и перевод ошибок сервера на человеческий язык.
 
 export const SITE = "https://videoner.download";
+// Канал новостей проекта — ссылка под «Готово» (popup.js).
+export const NEWS_URL = "https://t.me/videonerdownload";
 // Вход в API для расширения: тот же набор действий, что у сайта, но без капчи
 // (см. web/app/api/ext/[...path]/route.ts).
 const API = `${SITE}/api/ext`;
@@ -119,6 +121,7 @@ const TEXTS = {
     left: (eta) => `осталось ${eta}`,
     saving: "Сохраняю в «Загрузки»…",
     done: "Готово — файл в «Загрузках».",
+    news: "📣 Новости проекта: @videonerdownload",
     again: "Скачать ещё",
     directDownload: "Скачать видео (mp4)",
     directPhoto: "Скачать фото (jpg)",
@@ -190,6 +193,7 @@ const TEXTS = {
     left: (eta) => `залишилося ${eta}`,
     saving: "Зберігаю в «Завантаження»…",
     done: "Готово — файл у «Завантаженнях».",
+    news: "📣 Новини проєкту: @videonerdownload",
     again: "Завантажити ще",
     directDownload: "Завантажити відео (mp4)",
     directPhoto: "Завантажити фото (jpg)",
@@ -261,6 +265,7 @@ const TEXTS = {
     left: (eta) => `${eta} қалды`,
     saving: "«Жүктеулер» қалтасына сақталуда…",
     done: "Дайын — файл «Жүктеулер» қалтасында.",
+    news: "📣 Жоба жаңалықтары: @videonerdownload",
     again: "Тағы жүктеп алу",
     directDownload: "Видеоны жүктеп алу (mp4)",
     directPhoto: "Фотоны жүктеп алу (jpg)",
@@ -332,6 +337,7 @@ const TEXTS = {
     left: (eta) => `${eta} left`,
     saving: "Saving to Downloads…",
     done: "Done — the file is in your Downloads.",
+    news: "📣 Project news: @videonerdownload",
     again: "Download another",
     directDownload: "Download video (mp4)",
     directPhoto: "Download photo (jpg)",

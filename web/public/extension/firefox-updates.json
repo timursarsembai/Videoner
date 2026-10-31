@@ -3,9 +3,9 @@
     "videoner@videoner.download": {
       "updates": [
         {
-          "version": "1.5.8",
-          "update_link": "https://videoner.download/extension/videoner-firefox.xpi?v=1.5.8",
-          "update_hash": "sha256:a3fc2b4fe2aafb8bd89214a522d0b7ed1708132606a2ea4e29a0b3ccb7a3ae4f"
+          "version": "1.5.9",
+          "update_link": "https://videoner.download/extension/videoner-firefox.xpi?v=1.5.9",
+          "update_hash": "sha256:893616098d09ba06047ecd545cc20161465adcc71d24cb8e072301f3179145d0"
         }
       ]
     }

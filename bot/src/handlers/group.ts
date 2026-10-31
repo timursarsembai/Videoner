@@ -2,6 +2,7 @@ import { Bot, Context, InlineKeyboard } from "grammy";
 import { LANGUAGE_NAMES, isLang, messages, type Lang } from "../i18n.js";
 import { langOf } from "../language.js";
 import { parseFlag, type LinkFlag } from "../flags.js";
+import { postDescription } from "../caption.js";
 import { loadSettings, saveSettings } from "../settings-store.js";
 import { applyChatCommands } from "../commands.js";
 import {
@@ -207,6 +208,7 @@ async function downloadInGroup(
     title?: string;
     duration?: number;
     thumbnail?: string;
+    description?: string;
     qualities?: { video: string[]; audio: string[] };
     sizes?: { video: Record<string, number> };
   };
@@ -254,13 +256,13 @@ async function downloadInGroup(
   }
 
   const byline = sender ? m.sentBy(sender) : "";
-  const formatCaption = (title: string, sourceUrl: string, shareUrl?: string) => {
+  const formatCaption = (title: string, sourceUrl: string, shareUrl?: string, description?: string) => {
     const body =
       settings.caption === "none"
         ? ""
         : settings.caption === "short"
           ? m.fileCaptionShort(title, sourceUrl)
-          : m.fileCaption(title, sourceUrl, shareUrl);
+          : m.fileCaption(title, sourceUrl, shareUrl, description);
     // Имя отправителя добавляется к подписи, которая и так могла быть у самого
     // предела, — режем, иначе Telegram отверг бы файл уже после скачивания.
     return [byline, body].filter(Boolean).join("\n\n").slice(0, CAPTION_LIMIT);
@@ -273,7 +275,12 @@ async function downloadInGroup(
     asAudio ? "mp3" : "mp4",
     url,
     lang,
-    { ...sendersFor(ctx, chatId, { replyTo, publish: false }), formatCaption, quiet: true },
+    {
+      ...sendersFor(ctx, chatId, { replyTo, publish: false }),
+      formatCaption,
+      description: postDescription(url, info.description),
+      quiet: true,
+    },
     meta,
     info.title ?? "",
     info.thumbnail,

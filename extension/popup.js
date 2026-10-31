@@ -2,6 +2,7 @@ import { fetchQualities } from "./getcourse-hls.js";
 import { mountAccountConnect } from "./account-connect.js";
 import { availableUpdate } from "./update-check.js";
 import {
+  NEWS_URL,
   SITE,
   api,
   formatDuration,
@@ -405,7 +406,13 @@ function render(job) {
     case "saving":
       return showLoading(t.saving);
     case "done":
-      return showMessage(t.done, { actions: [videoCard(), el("button", { class: "primary", onclick: resetJob }, t.again)] });
+      return showMessage(t.done, {
+        actions: [
+          videoCard(),
+          el("button", { class: "primary", onclick: resetJob }, t.again),
+          el("button", { class: "link news-link", type: "button", onclick: () => openTab(NEWS_URL) }, t.news),
+        ],
+      });
     case "error":
       return showMessage(job.error || t.errGeneric, {
         error: true,

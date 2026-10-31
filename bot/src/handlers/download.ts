@@ -3,6 +3,7 @@ import { messages, type Lang } from "../i18n.js";
 import { langOf } from "../language.js";
 import { parseFlag, type LinkFlag } from "../flags.js";
 import { pickGroupQuality } from "../group.js";
+import { postDescription } from "../caption.js";
 import {
   api,
   getQuotaInfo,
@@ -213,7 +214,9 @@ export async function performDownload(
     ) => Promise<string | undefined>;
     // Своя подпись под файлом (настройки группы, handlers/group.ts). Нет —
     // обычная fileCaption.
-    formatCaption?: (title: string, sourceUrl: string, shareUrl?: string) => string;
+    formatCaption?: (title: string, sourceUrl: string, shareUrl?: string, description?: string) => string;
+    // Текст поста для подписи (caption.ts postDescription).
+    description?: string;
     // Группа: не скачалось — молча убрать «Скачиваю», а не оставлять в общем
     // чате сообщение об ошибке (handlers/group.ts).
     quiet?: boolean;
@@ -232,7 +235,7 @@ export async function performDownload(
   // Ссылку «Поделиться» запрашиваем сразу, параллельно со скачиванием: к
   // отправке файла она обычно уже готова. shareLinkFor не бросает.
   const shareLink = shareLinkFor(url);
-  const caption = async () => (send.formatCaption ?? m.fileCaption)(title, url, await shareLink);
+  const caption = async () => (send.formatCaption ?? m.fileCaption)(title, url, await shareLink, send.description);
   const msg = await send.reply(m.downloading);
   // Файл уже в чате. Сбой после этого (убрать «Скачиваю», опубликовать в
   // канал) — не повод писать человеку «не получилось» поверх его видео.
@@ -626,6 +629,7 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       title: string;
       duration?: number;
       thumbnail?: string;
+      description?: string;
       qualities: { video: string[]; audio: string[] };
       sizes?: { video: Record<string, number>; audio: Record<string, number> };
       subtitles?: SubtitleTrack[];
@@ -637,6 +641,7 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       cookieScope: state.chatId > 0 ? `user:${state.userId}` : `chat:${state.chatId}`,
     });
     current.title = info.title ?? "";
+    current.description = postDescription(current.url, info.description);
     current.thumbnail = info.thumbnail;
     // Качества, которые заведомо не пролезут в Telegram, не показываем вовсе:
     // иначе человек ждал бы загрузку, которую бот всё равно не сможет
@@ -902,7 +907,8 @@ async function startDownload(
   }
 
   const download = performDownload(
-    state.chatId, kind, quality, kind === "v" ? "mp4" : "mp3", current.url, state.lang, senders,
+    state.chatId, kind, quality, kind === "v" ? "mp4" : "mp3", current.url, state.lang,
+    { ...senders, description: current.description },
     {
       telegramId: state.userId,
       telegramUsername: state.username,

@@ -1,6 +1,7 @@
 import { Bot, InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
 import { messages, type Lang } from "../i18n.js";
 import { userLang } from "../language.js";
+import { postDescription } from "../caption.js";
 import {
   ADMIN_TELEGRAM_ID,
   API_URL,
@@ -129,6 +130,7 @@ export function registerInlineHandlers(bot: Bot) {
 
         const info = await api<{
           title: string;
+          description?: string;
           itemCount?: number;
           qualities: { video: string[]; audio: string[] };
           sizes?: { video: Record<string, number> };
@@ -166,7 +168,9 @@ export function registerInlineHandlers(bot: Bot) {
         const replaceStub = async (fileId: string) =>
           bot.api.editMessageMediaInline(
             inlineMessageId,
-            InputMediaBuilder.video(fileId, { caption: m.fileCaption(info.title ?? "", url, await shareLink) }),
+            InputMediaBuilder.video(fileId, {
+              caption: m.fileCaption(info.title ?? "", url, await shareLink, postDescription(url, info.description)),
+            }),
             {
               reply_markup: new InlineKeyboard().url(
                 m.inlineOpenBot,

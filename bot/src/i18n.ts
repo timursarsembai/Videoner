@@ -1,3 +1,5 @@
+import { clip, splitTitle } from "./caption.js";
+
 export type Lang = "ru" | "uk" | "kk" | "en";
 
 export function detectLang(languageCode?: string): Lang {
@@ -52,7 +54,7 @@ interface Messages {
   sendingFile: string;
   sendingAlbum: (count: number) => string;
   failedPrefix: string;
-  fileCaption: (title: string, sourceUrl: string, shareUrl?: string) => string;
+  fileCaption: (title: string, sourceUrl: string, shareUrl?: string, description?: string) => string;
   // Инлайн-режим: «@бот <ссылка>» в любом чате (см. handlers/inline.ts).
   inlineHintButton: string;
   inlineResultTitle: string;
@@ -206,6 +208,26 @@ function withOptionalLines(caption: string, newsLine: string, shareLine: string 
   return out;
 }
 
+// Подпись к файлу: 🎬 название, текст поста (caption.ts), основная часть
+// (источник, права, бот), затем необязательные строки. Текст поста — сколько
+// влезет, но не больше DESCRIPTION_MAX: подпись не должна превращаться в
+// простыню, а строка канала новостей — терять место.
+const DESCRIPTION_MAX = 600;
+function composeCaption(
+  title: string,
+  description: string | undefined,
+  body: string,
+  newsLine: string,
+  shareLine: string | undefined,
+): string {
+  const { head, extra } = splitTitle(title, description);
+  const headText = head ? `🎬 ${clip(head, 200)}` : "";
+  const base = [headText, body].filter(Boolean).join("\n\n");
+  const room = CAPTION_LIMIT - base.length - 2 - (newsLine.length + 1);
+  const desc = extra ? clip(extra, Math.min(room, DESCRIPTION_MAX)) : "";
+  return withOptionalLines([headText, desc, body].filter(Boolean).join("\n\n"), newsLine, shareLine);
+}
+
 const ru: Messages = {
   start: "Привет! Пришли мне ссылку на видео из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads — я помогу его скачать.\n\n✨ Качество ничем не ограничено: отдам всё, что есть у площадки, вплоть до 4K — лишь бы файл уложился в 2 ГБ, больше Telegram боту отправить не даёт. Платных функций тут нет вовсе.\n\nПолностью бесплатно: без подписок, без рекламы, без встроенных покупок.\n\n🧩 Качаете на компьютере? Поставьте расширение для браузера — кнопка «Скачать» появится прямо на странице видео: videoner.download/ru/extension\n\n👥 Добавьте меня в группу — буду сам присылать видео по ссылкам, которые там публикуют.\n\n⚡ Без выбора качества: допишите после ссылки -audio — пришлю звук (mp3), -hd — видео в лучшем качестве.\n\n📣 Новости проекта: @videonerdownload\n\n🌐 Язык бота: /language",
   notLink: "Это не похоже на ссылку. Пришли ссылку на видео.",
@@ -240,10 +262,11 @@ const ru: Messages = {
   // Telegram лимит 1024 символа, а название ролика бывает на пол-экрана.
   // shareUrl — ссылка-приглашение: кто её откроет, сразу получит этот же
   // ролик в боте (handlers/invite.ts).
-  fileCaption: (title, sourceUrl, shareUrl) =>
-    withOptionalLines(
-      (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
-        `Источник: ${sourceUrl}\n` +
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Источник: ${sourceUrl}\n` +
         "Права на видео принадлежат его автору.\n" +
         "Скачано бесплатно через @VideonerBot",
       `📣 Новости проекта: ${NEWS_CHANNEL}`,
@@ -439,10 +462,11 @@ const en: Messages = {
   sendingFile: "📤 Sending file...",
   sendingAlbum: (count) => `📤 This post has several files (${count}) — sending them as an album...`,
   failedPrefix: "❌ Failed: ",
-  fileCaption: (title, sourceUrl, shareUrl) =>
-    withOptionalLines(
-      (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
-        `Source: ${sourceUrl}\n` +
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Source: ${sourceUrl}\n` +
         "All rights to the video belong to its author.\n" +
         "Downloaded for free with @VideonerBot",
       `📣 Project news: ${NEWS_CHANNEL}`,
@@ -637,10 +661,11 @@ const uk: Messages = {
   sendingFile: "📤 Надсилаю файл...",
   sendingAlbum: (count) => `📤 У дописі кілька файлів (${count}) — надсилаю альбомом...`,
   failedPrefix: "❌ Не вдалося: ",
-  fileCaption: (title, sourceUrl, shareUrl) =>
-    withOptionalLines(
-      (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
-        `Джерело: ${sourceUrl}\n` +
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Джерело: ${sourceUrl}\n` +
         "Права на відео належать його автору.\n" +
         "Завантажено безкоштовно через @VideonerBot",
       `📣 Новини проєкту: ${NEWS_CHANNEL}`,
@@ -841,10 +866,11 @@ const kk: Messages = {
   // Telegram лимит 1024 символа, а название ролика бывает на пол-экрана.
   // shareUrl — ссылка-приглашение: кто её откроет, сразу получит этот же
   // ролик в боте (handlers/invite.ts).
-  fileCaption: (title, sourceUrl, shareUrl) =>
-    withOptionalLines(
-      (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
-        `Дереккөз: ${sourceUrl}\n` +
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Дереккөз: ${sourceUrl}\n` +
         "Видеоға құқық оның авторына тиесілі.\n" +
         "@VideonerBot арқылы тегін жүктеп алынды",
       `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`,

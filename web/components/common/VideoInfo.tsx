@@ -27,6 +27,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { NEWS_CHANNEL_URL } from "@/lib/blog/ui";
 import { SubtitlesPanel } from "./SubtitlesPanel";
 import { showDownloadError } from "./DownloadErrorToast";
 
@@ -121,7 +122,20 @@ export const VideoInfoSection = ({
             downloadUrl,
             isConverting: false,
           }));
-          toast.success(t("toast.downloadCompleted"));
+          // Вместе с «готово» — канал новостей проекта, как в подписи к
+          // файлам бота.
+          toast.success(
+            <span>
+              {t("toast.downloadCompleted")}{" "}
+              <span className="block text-sm opacity-80">
+                {t("toast.newsChannel")}{" "}
+                <a href={NEWS_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline-offset-4 hover:underline">
+                  @videonerdownload
+                </a>
+              </span>
+            </span>,
+            { duration: 8000 },
+          );
 
           // Пост из нескольких файлов не начинаем качать сам: браузер не даст
           // запустить несколько загрузок подряд без ведома человека, да и

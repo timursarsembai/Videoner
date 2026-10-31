@@ -106,6 +106,7 @@ const en = {
     selectQuality: "Please select a quality",
     downloadStarted: "Download started!",
     downloadCompleted: "Download completed!",
+    newsChannel: "Project news is on Telegram:",
     downloadUrlNotReceived: "Download URL not received",
     needsBrowser:
       "The platform didn't give this video to our server: it's only available to signed-in users, or access is temporarily limited. You can download it with the Videoner browser extension on a computer — it downloads using your own sign-in.",
@@ -454,6 +455,7 @@ const es: Translations = {
     selectQuality: "Por favor, selecciona una calidad",
     downloadStarted: "¡Descarga iniciada!",
     downloadCompleted: "¡Descarga completada!",
+    newsChannel: "Novedades del proyecto en Telegram:",
     downloadUrlNotReceived: "No se recibió la URL de descarga",
     needsBrowser:
       "La plataforma no entregó este video a nuestro servidor: solo está disponible para usuarios con sesión iniciada o el acceso está limitado temporalmente. Puedes descargarlo con la extensión de Videoner para el navegador en un ordenador: descarga con tu propia sesión.",
@@ -800,6 +802,7 @@ const ru: Translations = {
     selectQuality: "Пожалуйста, выберите качество",
     downloadStarted: "Загрузка началась!",
     downloadCompleted: "Загрузка завершена!",
+    newsChannel: "Новости проекта — в Telegram:",
     downloadUrlNotReceived: "Ссылка на загрузку не получена",
     needsBrowser:
       "Площадка не отдала это видео нашему серверу: оно доступно только после входа в аккаунт, или площадка временно ограничила доступ. Его можно скачать расширением Videoner для браузера на компьютере — оно качает под вашим входом.",
@@ -1146,6 +1149,7 @@ const uk: Translations = {
     selectQuality: "Будь ласка, оберіть якість",
     downloadStarted: "Завантаження почалося!",
     downloadCompleted: "Завантаження завершено!",
+    newsChannel: "Новини проєкту — у Telegram:",
     downloadUrlNotReceived: "Посилання для завантаження не отримано",
     needsBrowser:
       "Платформа не віддала це відео нашому серверу: воно доступне лише після входу в акаунт, або платформа тимчасово обмежила доступ. Його можна завантажити розширенням Videoner для браузера на комп'ютері — воно завантажує від вашого імені, з вашим входом.",
@@ -1492,6 +1496,7 @@ const kk: Translations = {
     selectQuality: "Сапаны таңдаңыз",
     downloadStarted: "Жүктеу басталды!",
     downloadCompleted: "Жүктеу аяқталды!",
+    newsChannel: "Жоба жаңалықтары — Telegram-да:",
     downloadUrlNotReceived: "Жүктеп алу сілтемесі алынбады",
     needsBrowser:
       "Платформа бұл видеоны біздің серверге бермеді: ол тек аккаунтқа кіргеннен кейін қолжетімді немесе платформа қолжетімділікті уақытша шектеді. Оны компьютердегі Videoner браузер кеңейтімі арқылы жүктеп алуға болады — ол Сіздің аккаунтыңыз арқылы жүктейді.",

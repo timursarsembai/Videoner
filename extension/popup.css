@@ -318,3 +318,19 @@ button {
   color: var(--accent);
   font-weight: 600;
 }
+
+/* Канал новостей под «Готово» (popup.js). */
+.news-link {
+  display: block;
+  margin: 12px auto 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.news-link:hover {
+  text-decoration: underline;
+}

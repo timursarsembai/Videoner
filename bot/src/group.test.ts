@@ -28,6 +28,8 @@ test("прочие ссылки в группе бот не трогает", () 
 test("качество: 720p, если влезает, иначе первое подходящее", () => {
   const limit = 50;
   assert.equal(pickGroupQuality(["1080p", "720p", "360p"], {}, limit), "720p");
+  assert.equal(pickGroupQuality(["original", "slideshow", "gallery"], {}, limit), "gallery");
+  assert.equal(pickGroupQuality(["original"], {}, limit), "original");
   assert.equal(pickGroupQuality(["1080p", "720p", "360p"], { "1080p": 90, "720p": 60 }, limit), "360p");
   assert.equal(pickGroupQuality(["1080p", "480p"], {}, limit), "1080p");
   assert.equal(pickGroupQuality(["1080p"], { "1080p": 90 }, limit), null);

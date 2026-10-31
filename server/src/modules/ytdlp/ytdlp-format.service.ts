@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PlaylistVideoInfo, YtdlpVideoInfo } from '../../types/youtube';
 import { YtdlpProcessService } from './ytdlp-process.service';
 import { fetchInstagramStoryInfo, isInstagramStoryUrl } from 'src/lib/instagram-story';
+import { fetchTiktokPhotoInfo, isTiktokPhotoUrl, tiktokPhotoUrlFromError } from 'src/lib/tiktok-photo';
 
 // Сколько живут метаданные в кеше и сколько записей держим. Одно скачивание
 // запрашивает их дважды подряд: /info, чтобы показать выбор качества, и
@@ -33,6 +34,23 @@ export class YtdlpFormatService {
   private readonly infoInFlight = new Map<string, Promise<string>>();
 
   async getYtdlpVideoInfo(
+    url: string,
+    options?: { skipCookies?: boolean; allowPhotos?: boolean; cookiesContent?: string },
+  ): Promise<YtdlpVideoInfo> {
+    // Фото-пост TikTok — мимо yt-dlp, он их не умеет (lib/tiktok-photo.ts).
+    if (isTiktokPhotoUrl(url)) return fetchTiktokPhotoInfo(url);
+    try {
+      return await this.getInfoViaYtdlp(url, options);
+    } catch (error: any) {
+      // Короткая ссылка (vt.tiktok.com/…) на фото-пост: yt-dlp развернул её и
+      // упал — адрес поста есть в тексте ошибки.
+      const photoUrl = tiktokPhotoUrlFromError(error?.message ?? '');
+      if (photoUrl) return fetchTiktokPhotoInfo(photoUrl);
+      throw error;
+    }
+  }
+
+  private async getInfoViaYtdlp(
     url: string,
     options?: { skipCookies?: boolean; allowPhotos?: boolean; cookiesContent?: string },
   ): Promise<YtdlpVideoInfo> {

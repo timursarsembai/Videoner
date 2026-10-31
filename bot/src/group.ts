@@ -43,8 +43,9 @@ export function isVideoHostUrl(url: string): boolean {
 export const GROUP_LINKS_PER_MESSAGE = 3;
 
 // Качество без выбора: в группе кнопок нет. 720p — как в инлайн-режиме;
-// тяжелее предела Telegram не берём. "original" — пост из одних фотографий,
-// другого качества у него нет.
+// тяжелее предела Telegram не берём. Пост из одних фотографий — фото и
+// видео-слайдшоу из них одним альбомом ("gallery"), а если снимок один —
+// просто фото ("original").
 //
 // max — лучшее из того, что влезает: сервер присылает качества от лучшего к
 // худшему, поэтому это первое подходящее.
@@ -54,6 +55,7 @@ export function pickGroupQuality(
   fileLimit: number,
   mode: "standard" | "max" = "standard",
 ): string | null {
+  if (available.includes("gallery")) return "gallery";
   if (available.includes("original")) return "original";
   const fits = available.filter((q) => !(sizes[q] > fileLimit));
   if (!fits.length) return null;

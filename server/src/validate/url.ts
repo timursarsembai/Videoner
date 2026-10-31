@@ -158,8 +158,9 @@ export const isTikTokUrl = (url: string) => {
       return /^\/[\w.-]+\/?$/.test(path) && path.length > 1;
     }
 
-    // TikTok video pattern: /@username/video/1234567890
-    if (path.match(/^\/@[\w.-]+\/video\/\d+/)) {
+    // TikTok video pattern: /@username/video/1234567890; фото-пост —
+    // /@username/photo/1234567890 (lib/tiktok-photo.ts).
+    if (path.match(/^\/@[\w.-]+\/(video|photo)\/\d+/)) {
       return true;
     }
 

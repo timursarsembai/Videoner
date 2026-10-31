@@ -95,6 +95,14 @@ interface Messages {
   // Площадка не отдала ролик серверу, а расширение для браузера скачает его
   // под входом человека (см. extensionLinkFor в helpers.ts).
   extensionHint: string;
+  // Закрытая запись, а к площадке можно подключить свой аккаунт
+  // (handlers/download.ts failureMessage). withExtension — есть ещё и кнопка
+  // расширения.
+  privateConnectHint: (platform: string, withExtension: boolean) => string;
+  // Аккаунт этой площадки уже подключён, а запись всё равно не открылась.
+  privateReconnectHint: (platform: string, withExtension: boolean) => string;
+  connectAccountButton: string;
+  reconnectAccountButton: string;
   extensionButton: string;
   // Команда /extension (меню бота).
   extensionCommand: string;
@@ -303,7 +311,7 @@ const ru: Messages = {
   errorStoryNeedsId:
     "пришлите ссылку на конкретную сторис: в приложении Instagram откройте её и нажмите «Поделиться» → «Копировать ссылку».",
   errorInstagramStory:
-    "сторис Instagram бот пока не скачивает: Instagram показывает их только тем, кто вошёл в аккаунт.",
+    "сторис Instagram видны только тем, кто вошёл в аккаунт.",
   errorLoginRequired:
     "Эта запись недоступна без входа в аккаунт: площадка отдаёт её только " +
     "авторизованным. Так бывает с приватными записями, возрастными ограничениями " +
@@ -336,6 +344,12 @@ const ru: Messages = {
   extensionHint:
     "\n\n💻 Такое видео можно скачать расширением Videoner для браузера на компьютере: " +
     "оно качает под вашим входом на площадке, пароль и куки никуда не передаются.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Чтобы скачать такую запись, подключите к боту свой аккаунт ${platform} — один раз. Дальше бот сам скачивает то, что видно вам: закрытые посты, рилсы и сторис, в том числе с телефона. Кнопка ниже покажет, как это сделать.${withExtension ? "\n\n💻 Или скачайте эту запись расширением Videoner для браузера на компьютере." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Ваш подключённый аккаунт ${platform} не открыл эту запись. Возможно, вход перестал работать — подключите аккаунт заново. Или у этого аккаунта нет доступа к записи.${withExtension ? "\n\n💻 Можно также скачать её расширением Videoner для браузера на компьютере." : ""}`,
+  connectAccountButton: "🔑 Подключить аккаунт",
+  reconnectAccountButton: "🔑 Подключить заново",
   extensionButton: "🧩 Скачать через расширение",
   extensionCommand:
     "🧩 Videoner для браузера: кнопка «Скачать» прямо на странице видео — YouTube, Instagram, TikTok, VK, закрытые видео из вашего аккаунта и уроки GetCourse.\n\nДля Chrome, Яндекс Браузера, Edge, Opera и Firefox на компьютере.",
@@ -371,7 +385,7 @@ const ru: Messages = {
   accountsIntro:
     "🔑 Подключённые аккаунты\n\nБот может скачивать то, что видно только вошедшим (сторис Instagram, закрытые записи), — от вашего аккаунта. Вход работает там, куда вы его подключили: в личке — для ваших скачиваний, и в группах — для ваших собственных ссылок, если к группе свой аккаунт не подключён. Подключённый к группе — для всех её участников.",
   accountsHowTo:
-    "Как подключить:\n1. Проще всего — расширение Videoner на компьютере: войдите на сайт площадки, откройте окошко Videoner, нажмите «Подключить аккаунт» и пришлите мне код. Для группы — отправьте в группе /connect КОД.\n2. Или пришлите мне файл cookies.txt (экспорт кук из браузера) — или вставьте его текст сообщением.",
+    "Как подключить:\n1. Проще всего — расширение Videoner на компьютере: войдите на сайт площадки, откройте окошко Videoner, нажмите «Подключить аккаунт» и пришлите мне код. Для группы — отправьте в группе /connect КОД.\n2. Или пришлите мне файл cookies.txt (экспорт кук из браузера) — или вставьте его текст сообщением.\n3. С телефона Android — через Firefox и дополнение Cookie-Editor: https://videoner.download/ru/blog/android-firefox",
   accountsWarning:
     "⚠️ Площадки не любят автоматические скачивания и могут ограничить или заблокировать аккаунт. Лучше подключать отдельный, не основной аккаунт. Куки хранятся зашифрованными, используются только для скачиваний и удаляются кнопкой ниже.",
   accountsNone: "Пока ничего не подключено.",
@@ -518,7 +532,7 @@ const en: Messages = {
   errorStoryNeedsId:
     "send a link to a specific story: open it in the Instagram app and tap Share → Copy link.",
   errorInstagramStory:
-    "the bot can't download Instagram stories yet: Instagram shows them only to people who are signed in.",
+    "Instagram stories are visible only to people who are signed in.",
   errorLoginRequired:
     "This post is not available without signing in: the platform serves it only to " +
     "logged-in users. That happens with private posts, age-restricted content and " +
@@ -551,6 +565,12 @@ const en: Messages = {
   extensionHint:
     "\n\n💻 You can download it with the Videoner browser extension on a computer: " +
     "it downloads using your own sign-in on the platform, and no password or cookies leave your browser.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 To download posts like this, connect your ${platform} account to the bot — once. After that the bot downloads whatever you can see: private posts, reels and stories, from your phone too. The button below shows how.${withExtension ? "\n\n💻 Or download it with the Videoner browser extension on a computer." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Your connected ${platform} account couldn't open this post. The login may have stopped working — connect the account again. Or this account has no access to the post.${withExtension ? "\n\n💻 You can also download it with the Videoner browser extension on a computer." : ""}`,
+  connectAccountButton: "🔑 Connect account",
+  reconnectAccountButton: "🔑 Reconnect",
   extensionButton: "🧩 Download with the extension",
   extensionCommand:
     "🧩 Videoner for your browser: a Download button right on the video page — YouTube, Instagram, TikTok, VK, private videos from your account and GetCourse lessons.\n\nFor Chrome, Edge, Opera, Yandex Browser and Firefox on a computer.",
@@ -585,7 +605,7 @@ const en: Messages = {
   accountsIntro:
     "🔑 Connected accounts\n\nThe bot can download what only signed-in people see (Instagram stories, private posts) — using your account. A login works where you connected it: one in the private chat serves your downloads, including your own links in groups that have no account of their own; one connected to a group serves all its members.",
   accountsHowTo:
-    "How to connect:\n1. Easiest: the Videoner extension on a computer — sign in on the platform's site, open the Videoner popup, press \"Connect account\" and send me the code. For a group, send /connect CODE in that group.\n2. Or send me a cookies.txt file (cookies exported from the browser), or paste its text as a message.",
+    "How to connect:\n1. Easiest: the Videoner extension on a computer — sign in on the platform's site, open the Videoner popup, press \"Connect account\" and send me the code. For a group, send /connect CODE in that group.\n2. Or send me a cookies.txt file (cookies exported from the browser), or paste its text as a message.\n3. From an Android phone — with Firefox and the Cookie-Editor add-on: https://videoner.download/blog/android-firefox",
   accountsWarning:
     "⚠️ Platforms dislike automated downloads and may restrict or ban the account. Better connect a secondary account, not your main one. Cookies are stored encrypted, used only for downloads, and removed with the buttons below.",
   accountsNone: "Nothing is connected yet.",
@@ -732,7 +752,7 @@ const ar: Messages = {
   errorStoryNeedsId:
     "أرسل رابط قصة محددة: افتحها في تطبيق Instagram واضغط مشاركة ← نسخ الرابط.",
   errorInstagramStory:
-    "لا يستطيع البوت تنزيل قصص Instagram بعد: يعرضها Instagram فقط لمن سجّلوا الدخول.",
+    "قصص Instagram مرئية فقط لمن سجّلوا الدخول إلى حساباتهم.",
   errorLoginRequired:
     "هذا المنشور غير متاح دون تسجيل الدخول: تعرضه المنصة فقط " +
     "للمستخدمين المسجّلين. يحدث ذلك مع المنشورات الخاصة والمحتوى المقيّد بالعمر " +
@@ -765,6 +785,12 @@ const ar: Messages = {
   extensionHint:
     "\n\n💻 يمكنك تنزيله بإضافة Videoner للمتصفح على الكمبيوتر: " +
     "فهي تنزّل باستخدام تسجيل دخولك أنت على المنصة، ولا تغادر أي كلمة مرور أو ملفات cookies متصفحك.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 لتنزيل منشورات كهذه، اربط حسابك على ${platform} بالبوت — مرة واحدة فقط. بعدها سيحمّل البوت كل ما تستطيع رؤيته: المنشورات الخاصة والريلز والقصص، ومن هاتفك أيضًا. الزر أدناه يشرح الطريقة.${withExtension ? "\n\n💻 أو حمّلها بإضافة Videoner للمتصفح على الكمبيوتر." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ لم يتمكن حسابك المرتبط على ${platform} من فتح هذا المنشور. ربما توقف تسجيل الدخول عن العمل — اربط الحساب من جديد. أو أن هذا الحساب لا يملك صلاحية الوصول إلى المنشور.${withExtension ? "\n\n💻 يمكنك أيضًا تحميله بإضافة Videoner للمتصفح على الكمبيوتر." : ""}`,
+  connectAccountButton: "🔑 ربط الحساب",
+  reconnectAccountButton: "🔑 إعادة الربط",
   extensionButton: "🧩 التنزيل بالإضافة",
   extensionCommand:
     "🧩 Videoner لمتصفحك: زر تنزيل مباشرة في صفحة الفيديو — YouTube وInstagram وTikTok وVK، ومقاطع خاصة من حسابك، ودروس GetCourse.\n\nلـ Chrome وEdge وOpera وYandex Browser وFirefox على الكمبيوتر.",
@@ -799,7 +825,7 @@ const ar: Messages = {
   accountsIntro:
     "🔑 الحسابات المرتبطة\n\nيستطيع البوت تنزيل ما لا يراه إلا المسجّلون (قصص Instagram، المنشورات الخاصة) — باستخدام حسابك. يعمل تسجيل الدخول حيث ربطته: المرتبط في الدردشة الخاصة يخدم تنزيلاتك، بما فيها روابطك أنت في المجموعات التي ليس لها حساب خاص بها؛ والمرتبط بمجموعة يخدم جميع أعضائها.",
   accountsHowTo:
-    "طريقة الربط:\n1. الأسهل: إضافة Videoner على الكمبيوتر — سجّل الدخول في موقع المنصة، وافتح نافذة Videoner، واضغط \"ربط الحساب\" وأرسل لي الرمز. للمجموعة، أرسل ‎/connect CODE في تلك المجموعة.\n2. أو أرسل لي ملف cookies.txt (ملفات cookies مصدّرة من المتصفح)، أو الصق نصه في رسالة.",
+    "طريقة الربط:\n1. الأسهل: إضافة Videoner على الكمبيوتر — سجّل الدخول في موقع المنصة، وافتح نافذة Videoner، واضغط \"ربط الحساب\" وأرسل لي الرمز. للمجموعة، أرسل ‎/connect CODE في تلك المجموعة.\n2. أو أرسل لي ملف cookies.txt (ملفات cookies مصدّرة من المتصفح)، أو الصق نصه في رسالة.\n3. من هاتف Android — عبر Firefox وإضافة Cookie-Editor: https://videoner.download/ar/blog/android-firefox",
   accountsWarning:
     "⚠️ لا تحب المنصات التنزيل الآلي وقد تقيّد الحساب أو تحظره. الأفضل ربط حساب ثانوي، لا حسابك الرئيسي. تُخزَّن ملفات cookies مشفّرة، وتُستخدم للتنزيل فقط، وتُحذف بالأزرار أدناه.",
   accountsNone: "لا يوجد شيء مرتبط بعد.",
@@ -946,7 +972,7 @@ const uk: Messages = {
   errorStoryNeedsId:
     "надішліть посилання на конкретну сторіс: у застосунку Instagram відкрийте її й натисніть «Поділитися» → «Копіювати посилання».",
   errorInstagramStory:
-    "сторіс Instagram бот поки не завантажує: Instagram показує їх лише тим, хто увійшов в акаунт.",
+    "сторіс Instagram видно лише тим, хто увійшов в акаунт.",
   errorLoginRequired:
     "Цей допис недоступний без входу в акаунт: платформа віддає його лише " +
     "авторизованим. Так буває з приватними дописами, віковими обмеженнями " +
@@ -979,6 +1005,12 @@ const uk: Messages = {
   extensionHint:
     "\n\n💻 Таке відео можна завантажити розширенням Videoner для браузера на комп'ютері: " +
     "воно завантажує під вашим входом на платформі, пароль і куки нікуди не передаються.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Щоб завантажити такий допис, підключіть до бота свій акаунт ${platform} — один раз. Далі бот сам завантажує те, що бачите ви: закриті дописи, рілси й сторіс, зокрема з телефона. Кнопка нижче покаже, як це зробити.${withExtension ? "\n\n💻 Або завантажте його розширенням Videoner для браузера на комп'ютері." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Ваш підключений акаунт ${platform} не відкрив цей допис. Можливо, вхід перестав працювати — підключіть акаунт заново. Або в цього акаунта немає доступу до допису.${withExtension ? "\n\n💻 Можна також завантажити його розширенням Videoner для браузера на комп'ютері." : ""}`,
+  connectAccountButton: "🔑 Підключити акаунт",
+  reconnectAccountButton: "🔑 Підключити заново",
   extensionButton: "🧩 Завантажити через розширення",
   extensionCommand:
     "🧩 Videoner для браузера: кнопка «Завантажити» прямо на сторінці відео — YouTube, Instagram, TikTok, VK, закриті відео з вашого акаунта й уроки GetCourse.\n\nДля Chrome, Edge, Opera й Firefox на комп'ютері.",
@@ -1014,7 +1046,7 @@ const uk: Messages = {
   accountsIntro:
     "🔑 Підключені акаунти\n\nБот може завантажувати те, що видно лише тим, хто увійшов (сторіс Instagram, закриті дописи), — від вашого акаунта. Вхід працює там, куди ви його підключили: в особистих повідомленнях — для ваших завантажень, і в групах — для ваших власних посилань, якщо до групи не підключено власний акаунт. Підключений до групи — для всіх її учасників.",
   accountsHowTo:
-    "Як підключити:\n1. Найпростіше — розширення Videoner на комп'ютері: увійдіть на сайт платформи, відкрийте віконце Videoner, натисніть «Підключити акаунт» і надішліть мені код. Для групи — надішліть у групі /connect КОД.\n2. Або надішліть мені файл cookies.txt (експорт куків із браузера) — чи вставте його текст повідомленням.",
+    "Як підключити:\n1. Найпростіше — розширення Videoner на комп'ютері: увійдіть на сайт платформи, відкрийте віконце Videoner, натисніть «Підключити акаунт» і надішліть мені код. Для групи — надішліть у групі /connect КОД.\n2. Або надішліть мені файл cookies.txt (експорт куків із браузера) — чи вставте його текст повідомленням.\n3. З телефона Android — через Firefox і доповнення Cookie-Editor: https://videoner.download/uk/blog/android-firefox",
   accountsWarning:
     "⚠️ Платформи не люблять автоматичних завантажень і можуть обмежити чи заблокувати акаунт. Краще підключати окремий, не основний акаунт. Куки зберігаються зашифрованими, використовуються лише для завантажень і видаляються кнопкою нижче.",
   accountsNone: "Поки нічого не підключено.",
@@ -1166,7 +1198,7 @@ const kk: Messages = {
   errorStoryNeedsId:
     "нақты сториске сілтеме жіберіңіз: Instagram қолданбасында оны ашып, «Бөлісу» → «Сілтемені көшіру» түймесін басыңыз.",
   errorInstagramStory:
-    "бот әзірге Instagram стористерін жүктеп ала алмайды: Instagram оларды тек аккаунтқа кіргендерге көрсетеді.",
+    "Instagram стористері тек аккаунтқа кіргендерге ғана көрінеді.",
   errorLoginRequired:
     "Бұл жазба аккаунтқа кірмейінше қолжетімсіз: платформа оны тек " +
     "авторизацияланған пайдаланушыларға береді. Бұл жабық жазбаларда, жас шектеуі бар " +
@@ -1199,6 +1231,12 @@ const kk: Messages = {
   extensionHint:
     "\n\n💻 Мұндай видеоны компьютердегі браузерге арналған Videoner кеңейтімімен жүктеп алуға болады: " +
     "ол платформадағы сіздің аккаунтыңыз арқылы жүктейді, құпиясөз бен куки ешқайда жіберілмейді.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Мұндай жазбаны жүктеп алу үшін ${platform} аккаунтыңызды ботқа бір рет қосыңыз. Содан кейін бот сізге көрінетіннің бәрін өзі жүктейді: жабық жазбаларды, рилстерді және стористерді, телефоннан да. Төмендегі батырма мұны қалай жасау керегін көрсетеді.${withExtension ? "\n\n💻 Немесе оны компьютердегі браузерге арналған Videoner кеңейтімімен жүктеп алыңыз." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Қосылған ${platform} аккаунтыңыз бұл жазбаны аша алмады. Мүмкін, кіру жұмысын тоқтатқан шығар — аккаунтты қайта қосыңыз. Немесе бұл аккаунттың жазбаға қолжетімділігі жоқ.${withExtension ? "\n\n💻 Оны компьютердегі браузерге арналған Videoner кеңейтімімен де жүктеп алуға болады." : ""}`,
+  connectAccountButton: "🔑 Аккаунтты қосу",
+  reconnectAccountButton: "🔑 Қайта қосу",
   extensionButton: "🧩 Кеңейтім арқылы жүктеп алу",
   extensionCommand:
     "🧩 Браузерге арналған Videoner: «Жүктеп алу» батырмасы тікелей видео бетінде — YouTube, Instagram, TikTok, VK, аккаунтыңыздағы жабық видеолар және GetCourse сабақтары.\n\nКомпьютердегі Chrome, Яндекс Браузер, Edge, Opera және Firefox үшін.",
@@ -1234,7 +1272,7 @@ const kk: Messages = {
   accountsIntro:
     "🔑 Қосылған аккаунттар\n\nБот тек аккаунтқа кіргендерге көрінетін нәрселерді (Instagram стористері, жабық жазбалар) сіздің аккаунтыңыз арқылы жүктеп ала алады. Кіру өзіңіз қосқан жерде жұмыс істейді: жеке чатта — сіздің жүктеп алуларыңыз үшін, ал топтарда — егер топқа өз аккаунты қосылмаған болса, сіздің өз сілтемелеріңіз үшін. Топқа қосылған аккаунт оның барлық қатысушыларына жұмыс істейді.",
   accountsHowTo:
-    "Қалай қосуға болады:\n1. Ең оңайы — компьютердегі Videoner кеңейтімі: платформа сайтына кіріп, Videoner терезесін ашыңыз, «Аккаунтты қосу» батырмасын басып, кодты маған жіберіңіз. Топ үшін — топта /connect КОД жіберіңіз.\n2. Немесе маған cookies.txt файлын (браузерден экспортталған куки) жіберіңіз — не оның мәтінін хабарлама етіп қойыңыз.",
+    "Қалай қосуға болады:\n1. Ең оңайы — компьютердегі Videoner кеңейтімі: платформа сайтына кіріп, Videoner терезесін ашыңыз, «Аккаунтты қосу» батырмасын басып, кодты маған жіберіңіз. Топ үшін — топта /connect КОД жіберіңіз.\n2. Немесе маған cookies.txt файлын (браузерден экспортталған куки) жіберіңіз — не оның мәтінін хабарлама етіп қойыңыз.\n3. Android телефонынан — Firefox және Cookie-Editor қосымшасы арқылы: https://videoner.download/kk/blog/android-firefox",
   accountsWarning:
     "⚠️ Платформалар автоматты жүктеп алуды ұнатпайды және аккаунтты шектеуі не бұғаттауы мүмкін. Негізгі емес, бөлек аккаунтты қосқан дұрыс. Куки шифрланған күйде сақталады, тек жүктеп алу үшін қолданылады және төмендегі батырма арқылы жойылады.",
   accountsNone: "Әзірге ештеңе қосылмаған.",

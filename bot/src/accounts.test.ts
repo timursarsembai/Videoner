@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { cookieScopeFor, looksLikeCookiesText, parseConnectCode, rejectionReason } from "./accounts.js";
+import { connectablePlatform, cookieScopeFor, looksLikeCookiesText, parseConnectCode, rejectionReason } from "./accounts.js";
 
 test("код подключения: с дефисом и без, обычные слова — не код", () => {
   assert.equal(parseConnectCode("ABC-234"), "ABC-234");
@@ -35,4 +35,16 @@ test("причины отказа сервера", () => {
   assert.equal(rejectionReason("User cookies are not configured"), "unavailable");
   assert.equal(rejectionReason("Code not found"), "not-found");
   assert.equal(rejectionReason("boom"), null);
+});
+
+test("площадка, к которой можно подключить аккаунт", () => {
+  assert.equal(connectablePlatform("https://www.instagram.com/stories/user/123/"), "instagram");
+  assert.equal(connectablePlatform("https://fb.watch/abc/"), "facebook");
+  assert.equal(connectablePlatform("https://vt.tiktok.com/ZSabc/"), "tiktok");
+  assert.equal(connectablePlatform("https://x.com/u/status/1"), "twitter");
+  assert.equal(connectablePlatform("https://vkvideo.ru/video-1_2"), "vk");
+  assert.equal(connectablePlatform("https://youtu.be/abc"), "youtube");
+  assert.equal(connectablePlatform("https://www.threads.com/@u/post/X"), null);
+  assert.equal(connectablePlatform("https://notinstagram.com/p/x"), null);
+  assert.equal(connectablePlatform("не ссылка"), null);
 });

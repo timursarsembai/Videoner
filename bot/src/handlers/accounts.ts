@@ -204,6 +204,13 @@ export function registerAccountHandlers(bot: Bot) {
       return;
     }
     const [, action, id] = ctx.callbackQuery.data.split("|");
+    // Кнопка «Подключить аккаунт» под ошибкой «нужен вход» (handlers/
+    // download.ts failureMessage): тот же список с инструкцией, что /accounts.
+    if (action === "show") {
+      await ctx.answerCallbackQuery();
+      await showAccounts(ctx);
+      return;
+    }
     try {
       if (action === "all" && chat.type === "private") {
         const { removed } = await api<{ removed: number }>(`/user-cookies/owner/${ctx.from.id}/delete-all`, {});

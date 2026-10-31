@@ -3,6 +3,7 @@ import { messages, type Lang } from "../i18n.js";
 import { langOf } from "../language.js";
 import { parseFlag, type LinkFlag } from "../flags.js";
 import { pickGroupQuality } from "../group.js";
+import { connectablePlatform, platformLabel } from "../accounts.js";
 import { postDescription } from "../caption.js";
 import {
   api,
@@ -423,7 +424,7 @@ export async function performDownload(
       await clearServiceMessages();
       return false;
     }
-    const failure = failureMessage(e?.message ?? String(e), url, lang);
+    const failure = await failureMessage(e?.message ?? String(e), url, lang, { chatId, userId: dlMeta.telegramId });
     await send
       .editMessageText(msg.message_id, failure.text, failure.keyboard)
       .catch((err) => console.error("Не удалось показать ошибку скачивания:", err?.message ?? err));
@@ -433,22 +434,66 @@ export async function performDownload(
   }
 }
 
-// Текст ошибки для человека. Если площадка не отдала ролик нашему серверу, а
-// расширение для браузера скачает его под входом человека, — ещё совет и
-// кнопка на страницу расширения.
 // Кнопки «на сайте» и «через расширение» — для файла тяжелее 2 ГБ.
 function bigFileButtons(kb: InlineKeyboard, m: (typeof messages)[Lang], url: string, lang: Lang): InlineKeyboard {
   return kb.url(m.siteButton, siteLinkFor(url, lang)).row().url(m.extensionButton, extensionPageFor(url, lang)).row();
 }
 
-function failureMessage(raw: string, url: string, lang: Lang): { text: string; keyboard?: InlineKeyboard } {
+// Текст ошибки для человека. Если площадка не отдала ролик нашему серверу, а
+// расширение для браузера скачает его под входом человека, — ещё совет и
+// кнопка на страницу расширения; если к площадке можно подключить свой
+// аккаунт — сначала совет подключить его.
+async function failureMessage(
+  raw: string,
+  url: string,
+  lang: Lang,
+  who: { chatId: number; userId?: number },
+): Promise<{ text: string; keyboard?: InlineKeyboard }> {
   const m = messages[lang];
   const friendly = friendlyError(raw, lang);
   const text = `${m.failedPrefix}${friendly}`;
   if (friendly === m.errorFileTooLarge) return { text, keyboard: bigFileButtons(new InlineKeyboard(), m, url, lang) };
   const link = extensionLinkFor(raw, url, lang);
+
+  // Запись видна только вошедшим, а к площадке можно подключить свой аккаунт:
+  // тогда бот сам скачает её с телефона — это предлагаем первым, расширение
+  // (если оно тут поможет) вторым. Только в личке: подключение к группе —
+  // дело её админов (/settings), а ошибки в группах бот не пишет вовсе.
+  const platform = connectablePlatform(url);
+  // «Площадка не отдала» у YouTube — почти всегда его антибот-защита против
+  // сервера, а не закрытая запись: аккаунт человека тут не поможет.
+  const needsLogin =
+    friendly === m.errorLoginRequired ||
+    friendly === m.errorInstagramStory ||
+    (friendly === m.errorPlatformRefused && platform !== "youtube");
+  if (platform && needsLogin && who.chatId > 0 && who.userId) {
+    const label = platformLabel(platform);
+    const connected = await hasConnectedAccount(who.userId, platform);
+    const keyboard = new InlineKeyboard()
+      .text(connected ? m.reconnectAccountButton : m.connectAccountButton, "ac|show")
+      .row();
+    if (link) keyboard.url(m.extensionButton, link);
+    const hint = connected ? m.privateReconnectHint(label, !!link) : m.privateConnectHint(label, !!link);
+    return { text: text + hint, keyboard };
+  }
+
   if (!link) return { text };
   return { text: text + m.extensionHint, keyboard: new InlineKeyboard().url(m.extensionButton, link) };
+}
+
+// Подключён ли у человека в личке аккаунт этой площадки (рабочий или уже
+// нет). Сервер, когда нужен вход, такой аккаунт уже попробовал — раз запись
+// всё равно не открылась, советуем подключить заново, а не впервые. Сбой
+// запроса — считаем, что не подключён: совет подключить тоже полезен.
+async function hasConnectedAccount(userId: number, platform: string): Promise<boolean> {
+  try {
+    const rows = await api<{ scope: string; platform: string }[]>(`/user-cookies/owner/${userId}`, undefined, {
+      timeoutMs: 5000,
+    });
+    return rows.some((r) => r.scope === `user:${userId}` && r.platform === platform);
+  } catch {
+    return false;
+  }
 }
 
 // Как отправлять файлы в чат, где нажата кнопка. Вынесено из обработчика
@@ -725,7 +770,10 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       if (messageId) await tg.deleteMessage(state.chatId, messageId).catch(() => {});
       return true;
     }
-    const { text, keyboard } = failureMessage(e?.message ?? String(e), current.url, lang);
+    const { text, keyboard } = await failureMessage(e?.message ?? String(e), current.url, lang, {
+      chatId: state.chatId,
+      userId: state.userId,
+    });
     if (messageId) {
       await tg.editMessageText(state.chatId, messageId, text, keyboard ? { reply_markup: keyboard } : undefined).catch((err) => console.error("Не удалось показать ошибку:", err?.message ?? err));
     } else {

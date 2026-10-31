@@ -42,6 +42,27 @@ export const PLATFORM_LABELS: Record<string, string> = {
   tiktok: "TikTok",
 };
 
+// Площадка ссылки, если к ней можно подключить свой аккаунт (PLATFORM_LABELS).
+// Нужна, чтобы на «нужен вход» предложить подключение (handlers/download.ts).
+const CONNECTABLE_HOSTS: [RegExp, string][] = [
+  [/(^|\.)instagram\.com$/, "instagram"],
+  [/(^|\.)(facebook\.com|fb\.watch)$/, "facebook"],
+  [/(^|\.)(youtube\.com|youtu\.be)$/, "youtube"],
+  [/(^|\.)(x\.com|twitter\.com)$/, "twitter"],
+  [/(^|\.)(vk\.com|vk\.ru|vkvideo\.ru)$/, "vk"],
+  [/(^|\.)tiktok\.com$/, "tiktok"],
+];
+
+export function connectablePlatform(url: string): string | null {
+  let host: string;
+  try {
+    host = new URL(url).hostname.toLowerCase();
+  } catch {
+    return null;
+  }
+  return CONNECTABLE_HOSTS.find(([re]) => re.test(host))?.[1] ?? null;
+}
+
 export function platformLabel(platform: string): string {
   return PLATFORM_LABELS[platform] ?? platform;
 }

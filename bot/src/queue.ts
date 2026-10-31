@@ -69,6 +69,9 @@ export type OwnerState = Sender & {
   // Флаги ссылок («-audio», «-hd», flags.ts): адрес → флаг. Выбор качества
   // для такой ссылки не показываем — качаем сразу.
   flags?: Map<string, LinkFlag>;
+  // Ссылки из плейлиста: если по флагу видео не скачать — пропускаем, а не
+  // ждём кнопку (handlers/download.ts showChoice).
+  playlistUrls?: Set<string>;
 };
 
 export type EnqueueResult = {
@@ -100,7 +103,9 @@ export class LinkQueues {
     return this.owners.entries();
   }
 
-  enqueue(key: string, sender: Sender, urls: string[]): EnqueueResult {
+  // limit — сколько ссылок может ждать. Плейлист ставится целиком
+  // (Infinity): он качается по одному видео и останавливается кнопкой.
+  enqueue(key: string, sender: Sender, urls: string[], limit = QUEUE_LIMIT): EnqueueResult {
     let state = this.owners.get(key);
     if (!state) {
       state = { ...sender, current: null, pending: [] };
@@ -120,7 +125,7 @@ export class LinkQueues {
         result.duplicates++;
         continue;
       }
-      if ((state.current ? 1 : 0) + state.pending.length >= QUEUE_LIMIT) {
+      if ((state.current ? 1 : 0) + state.pending.length >= limit) {
         result.overLimit++;
         continue;
       }
@@ -150,8 +155,8 @@ export class LinkQueues {
     return state.current;
   }
 
-  // Суточный лимит исчерпан — остальные ссылки всё равно не скачать. Возвращает,
-  // сколько ожидавших сброшено.
+  // Человек остановил скачивание (/stop, кнопка плейлиста): сбрасываем всё,
+  // включая текущую ссылку. Возвращает, сколько ожидавших сброшено.
   clear(key: string): number {
     const state = this.owners.get(key);
     if (!state) return 0;

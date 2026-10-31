@@ -16,6 +16,9 @@ import { ArrowRight, Download, Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { PlaylistPanel } from "@/components/common/PlaylistPanel";
+import type { Playlist } from "@/lib/api";
+import { isYoutubePlaylistPage } from "@/lib/youtube-playlist";
 import { PlatformContent } from "./PlatformContent";
 import { TurnstileWidget } from "./TurnstileWidget";
 import { VideoInfoSection } from "./VideoInfo";
@@ -69,6 +72,8 @@ const Page = ({ platform }: PageProps) => {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null);
+  // Ссылка на плейлист YouTube — вместо одного видео панель плейлиста.
+  const [playlist, setPlaylist] = useState<Playlist | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const videoSectionRef = useRef<HTMLDivElement>(null);
   const { t, language } = useLanguage();
@@ -118,6 +123,11 @@ const Page = ({ platform }: PageProps) => {
     setLoading(true);
     try {
       setVideoInfo(null);
+      setPlaylist(null);
+      if (isYoutubePlaylistPage(url)) {
+        setPlaylist(await api.getPlaylist(url, turnstileToken));
+        return;
+      }
       const info = await api.getVideoInfo(url, turnstileToken);
       setVideoInfo(info);
       // Smooth scroll to video section after a short delay
@@ -326,6 +336,8 @@ const Page = ({ platform }: PageProps) => {
           />
         </motion.div>
       )}
+
+      {playlist && <PlaylistPanel playlist={playlist} />}
 
       <PlatformContent platform={platform} />
     </div>

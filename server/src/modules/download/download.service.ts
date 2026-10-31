@@ -37,7 +37,6 @@ import { UserCookiesService } from '../user-cookies/user-cookies.service';
 import { userCookieScopes } from 'src/lib/cookie-scope';
 import { userCookiesMayHelp } from 'src/lib/user-cookies';
 import { categorizeError } from 'src/lib/error-category';
-import { DAILY_DOWNLOAD_LIMIT } from 'src/lib/config';
 import {
   capYoutubeQuality,
   youtubeDailyLimitPerIpBytes,
@@ -668,19 +667,11 @@ export class DownloadService {
     return botUser.id;
   }
 
+  // Дневного лимита скачиваний больше нет (с 31.10.2026) — ни у кого.
+  // Ответ оставлен в прежней форме для старых клиентов: бесконечный запас.
   async getQuota(telegramId: number) {
-    const [unlimited, usedToday] = await Promise.all([
-      this.botUser.isUnlimited(telegramId),
-      this.botUser.countDownloadsToday(telegramId),
-    ]);
-    return {
-      unlimited,
-      used: usedToday,
-      limit: DAILY_DOWNLOAD_LIMIT,
-      remaining: unlimited
-        ? DAILY_DOWNLOAD_LIMIT
-        : Math.max(0, DAILY_DOWNLOAD_LIMIT - usedToday),
-    };
+    const used = await this.botUser.countDownloadsToday(telegramId);
+    return { unlimited: true, used, limit: null, remaining: null };
   }
 
   async getDownloadStatus(downloadId: string) {

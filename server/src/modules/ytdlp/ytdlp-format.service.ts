@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PlaylistVideoInfo, YtdlpVideoInfo } from '../../types/youtube';
 import { YtdlpProcessService } from './ytdlp-process.service';
 import { fetchInstagramStoryInfo, isInstagramStoryUrl } from 'src/lib/instagram-story';
+import { PlaylistEntry, playlistEntriesFromFlat } from 'src/lib/youtube-playlist';
 import { fetchTiktokPhotoInfo, isTiktokPhotoUrl, tiktokPhotoUrlFromError } from 'src/lib/tiktok-photo';
 
 // Сколько живут метаданные в кеше и сколько записей держим. Одно скачивание
@@ -125,6 +126,26 @@ export class YtdlpFormatService {
     // Разбираем здесь, чтобы битый вывод упал ошибкой и не попал в кеш.
     JSON.parse(result.stdout);
     return result.stdout;
+  }
+
+  // Состав плейлиста YouTube без загрузки самих видео (--flat-playlist):
+  // секунды даже на сотнях роликов. Кеш на 10 минут — сайт и расширение
+  // спрашивают его при каждом открытии.
+  private readonly playlistCache = new Map<string, { at: number; value: { id: string; title: string; entries: PlaylistEntry[] } }>();
+
+  async getPlaylist(listId: string): Promise<{ id: string; title: string; entries: PlaylistEntry[] }> {
+    const hit = this.playlistCache.get(listId);
+    if (hit && Date.now() - hit.at < 10 * 60_000) return hit.value;
+    const result = await this.process.ytdlp([
+      '--flat-playlist',
+      '--dump-single-json',
+      `https://www.youtube.com/playlist?list=${listId}`,
+    ]);
+    const info = JSON.parse(result.stdout);
+    const value = { id: listId, title: info?.title ?? '', entries: playlistEntriesFromFlat(info) };
+    if (this.playlistCache.size > 500) this.playlistCache.clear();
+    this.playlistCache.set(listId, { at: Date.now(), value });
+    return value;
   }
 
   async getYoutubePlaylistInfo(url: string): Promise<PlaylistVideoInfo[]> {

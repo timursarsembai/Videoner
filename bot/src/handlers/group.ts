@@ -12,7 +12,6 @@ import {
   checkUserRateLimit,
   extensionLinkFor,
   friendlyError,
-  getQuotaInfo,
 } from "../helpers.js";
 import { extractUrls } from "../queue.js";
 import {
@@ -25,7 +24,7 @@ import {
   pickGroupQuality,
   type GroupSettings,
 } from "../group.js";
-import { performDownload, sendersFor } from "./download.js";
+import { isPlaylistPage, performDownload, sendersFor } from "./download.js";
 import { parseConnectCode } from "../accounts.js";
 
 // Режим для групп: бот добавлен в чат, видит ссылки на видео и отвечает на
@@ -113,18 +112,6 @@ function inChatOrder(chatId: number, job: () => Promise<void>) {
   void next.finally(() => {
     if (chatChains.get(chatId) === next) chatChains.delete(chatId);
   });
-}
-
-// О суточном лимите говорим человеку один раз в день в каждой группе: иначе
-// бот отвечал бы на каждую его ссылку до конца дня.
-const limitNoticeSent = new Set<string>();
-
-function firstLimitNoticeToday(chatId: number, userId: number): boolean {
-  const key = `${new Date().toISOString().slice(0, 10)}:${chatId}:${userId}`;
-  if (limitNoticeSent.has(key)) return false;
-  if (limitNoticeSent.size > 10_000) limitNoticeSent.clear();
-  limitNoticeSent.add(key);
-  return true;
 }
 
 // Приветствие в группе — не чаще раза в минуту. Бота, добавленного кнопкой
@@ -392,7 +379,12 @@ export function registerGroupHandlers(bot: Bot) {
       })();
       return;
     }
-    const urls = [...new Set(extractUrls(text).filter(isVideoHostUrl))].slice(0, GROUP_LINKS_PER_MESSAGE);
+    // Страница плейлиста YouTube в группе не качается: десятки видео завалили
+    // бы чат (в личке бот качает плейлист по одному, по кнопке).
+    const urls = [...new Set(extractUrls(text).filter((u) => isVideoHostUrl(u) && !isPlaylistPage(u)))].slice(
+      0,
+      GROUP_LINKS_PER_MESSAGE,
+    );
     if (!urls.length) return;
 
     if (from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(from.id)) return;
@@ -404,20 +396,6 @@ export function registerGroupHandlers(bot: Bot) {
     // иначе бот, пока ждёт сервер, не видит остальных обновлений (см.
     // inBackground в download.ts). Ссылки группы — по очереди (inChatOrder).
     inChatOrder(chatId, async () => {
-      // Суточный лимит человека кончился — тут уже ответим: иначе он не
-      // поймёт, почему бот молчит именно на его ссылки. Но раз в день.
-      const quota = await getQuotaInfo(from.id);
-      if (!quota.unlimited && quota.remaining <= 0) {
-        if (firstLimitNoticeToday(chatId, from.id)) {
-          await ctx
-            .reply(messages[await langOf(ctx)].dailyLimitReached, {
-              reply_parameters: { message_id: messageId, allow_sending_without_reply: true },
-            })
-            .catch((e) => console.error(`Группа ${chatId}: не удалось сообщить о лимите:`, e?.message ?? e));
-        }
-        return;
-      }
-
       const settings = await loadSettings(chatId);
       // Удаляем, только если в сообщении нет ничего, кроме этих ссылок, и
       // бот вправе удалять. Без права отвечаем на сообщение, как обычно, —

@@ -122,26 +122,6 @@ setInterval(() => {
   }
 }, 60_000).unref();
 
-// 20 скачиваний в сутки на пользователя (см. DAILY_DOWNLOAD_LIMIT на сервере).
-// Снять лимит деньгами нельзя — платных функций в сервисе нет; unlimited
-// выдаётся только вручную админом через /grant.
-// Падает открыто (не блокирует скачивание, remaining = Infinity), если сервер
-// недоступен, чтобы сбой проверки лимита не клал бота.
-export async function getQuotaInfo(telegramId?: number): Promise<{ remaining: number; unlimited: boolean }> {
-  if (!telegramId) return { remaining: Infinity, unlimited: false };
-  // Админ не должен зависеть от состояния БД (isUnlimited можно случайно
-  // сбросить /revoke, БД может быть недоступна и т.п.) — байпас чисто в коде бота.
-  if (ADMIN_TELEGRAM_ID && telegramId === ADMIN_TELEGRAM_ID) {
-    return { remaining: Infinity, unlimited: true };
-  }
-  try {
-    return await api<{ remaining: number; unlimited: boolean }>(`/download/quota?telegramId=${telegramId}`);
-  } catch (e) {
-    console.error("Quota check failed:", e);
-    return { remaining: Infinity, unlimited: false };
-  }
-}
-
 export function fmtDuration(sec?: number): string {
   if (!sec) return "";
   const m = Math.floor(sec / 60);

@@ -72,7 +72,6 @@ interface Messages {
   subscribeStillMissing: string;
   channelNotice: (channel: string) => string;
   channelPost: (title: string, url: string) => string;
-  dailyLimitReached: string;
   errorFileTooLarge: string;
   qualitiesHiddenBySize: (limit: string) => string;
   videoTooBigForTelegram: (smallest: string) => string;
@@ -164,7 +163,6 @@ interface Messages {
   skipButton: string;
   skipped: string;
   chooseTimedOut: string;
-  queueDroppedByLimit: (count: number) => string;
   queueLostOnRestart: (count: number) => string;
   // Субтитры YouTube (см. subtitles.ts).
   subtitlesButton: string;
@@ -174,6 +172,17 @@ interface Messages {
   subtitlesPreparing: string;
   subtitlesFailed: string;
   subtitlesBusy: string;
+  // Плейлисты YouTube и остановка (handlers/download.ts).
+  playlistFound: (title: string, count: number) => string;
+  playlistStdButton: string;
+  playlistHdButton: string;
+  playlistAudioButton: string;
+  playlistNoButton: string;
+  playlistQueued: (count: number) => string;
+  playlistFailed: string;
+  stopButton: string;
+  stopped: (dropped: number) => string;
+  nothingToStop: string;
   // Выбор языка (handlers/language.ts).
   languageChoose: string;
   languageChooseGroup: string;
@@ -285,7 +294,6 @@ const ru: Messages = {
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `${url}\n\n` +
     "Скачать это и любое другое видео бесплатно: @VideonerBot",
-  dailyLimitReached: "📅 На сегодня всё: достигнут суточный лимит в 20 скачиваний. Он обновится в течение суток — приходи позже, скачивать снова можно будет бесплатно.",
   errorStoryNeedsId:
     "пришлите ссылку на конкретную сторис: в приложении Instagram откройте её и нажмите «Поделиться» → «Копировать ссылку».",
   errorInstagramStory:
@@ -413,7 +421,6 @@ const ru: Messages = {
   skipButton: "✖️ Не скачивать",
   skipped: "⏭ Эту ссылку пропустил.",
   chooseTimedOut: "⌛ Качество не выбрано за 30 минут — эту ссылку пропускаю.",
-  queueDroppedByLimit: (count) => `\n\nСсылки из очереди (${count}) сегодня тоже не скачать — пришлите их завтра.`,
   queueLostOnRestart: (count) =>
     `⚠️ Бот перезапускается для обновления — очередь сброшена (ссылок: ${count}). Пришлите их снова через минуту.`,
   subtitlesButton: "📝 Субтитры",
@@ -423,6 +430,18 @@ const ru: Messages = {
   subtitlesPreparing: "📝 Готовлю субтитры...",
   subtitlesFailed: "Не получилось скачать субтитры на этом языке. Попробуйте другой язык.",
   subtitlesBusy: "YouTube сейчас не отдаёт субтитры — попробуйте через несколько минут.",
+  playlistFound: (title, count) =>
+    `📃 Плейлист${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} видео.\nСкачаю их по одному, по очереди. Как качать?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Лучшее качество",
+  playlistAudioButton: "🎵 Только звук (mp3)",
+  playlistNoButton: "✖️ Не надо",
+  playlistQueued: (count) =>
+    `📃 Поставил в очередь видео из плейлиста: ${count}. Пришлю по одному. Остановить — кнопкой ниже или командой /stop.`,
+  playlistFailed: "Не получилось открыть плейлист — возможно, он закрытый. Пришлите ссылку на отдельное видео.",
+  stopButton: "⏹ Остановить",
+  stopped: (dropped) => `⏹ Остановил.${dropped ? ` Отменено ссылок в очереди: ${dropped}.` : ""}`,
+  nothingToStop: "Сейчас ничего не скачивается.",
   languageChoose: "🌐 Выберите язык бота. «Авто» — как в вашем Telegram.",
   languageChooseGroup: "🌐 Язык ответов бота в этой группе. «Авто» — каждому на языке его Telegram.",
   languageAuto: "Авто — как в Telegram",
@@ -485,7 +504,6 @@ const en: Messages = {
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `${url}\n\n` +
     "Download this and any other video for free: @VideonerBot",
-  dailyLimitReached: "📅 That is it for today: you have reached the daily limit of 20 downloads. It refreshes within 24 hours — come back later and download again, free.",
   errorStoryNeedsId:
     "send a link to a specific story: open it in the Instagram app and tap Share → Copy link.",
   errorInstagramStory:
@@ -612,7 +630,6 @@ const en: Messages = {
   skipButton: "✖️ Don't download",
   skipped: "⏭ Skipped this link.",
   chooseTimedOut: "⌛ No quality chosen within 30 minutes — skipping this link.",
-  queueDroppedByLimit: (count) => `\n\nThe queued links (${count}) can't be downloaded today either — send them tomorrow.`,
   queueLostOnRestart: (count) =>
     `⚠️ The bot is restarting for an update — the queue was reset (links: ${count}). Please send them again in a minute.`,
   subtitlesButton: "📝 Subtitles",
@@ -622,6 +639,18 @@ const en: Messages = {
   subtitlesPreparing: "📝 Preparing subtitles...",
   subtitlesFailed: "Couldn't download subtitles in this language. Try another language.",
   subtitlesBusy: "YouTube is not serving subtitles right now — try again in a few minutes.",
+  playlistFound: (title, count) =>
+    `📃 Playlist${title ? ` "${title.slice(0, 150)}"` : ""}: ${count} videos.\nI'll download them one by one. Which format?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Best quality",
+  playlistAudioButton: "🎵 Audio only (mp3)",
+  playlistNoButton: "✖️ No, thanks",
+  playlistQueued: (count) =>
+    `📃 Queued videos from the playlist: ${count}. I'll send them one by one. Stop with the button below or /stop.`,
+  playlistFailed: "Couldn't open the playlist — it may be private. Send a link to a single video.",
+  stopButton: "⏹ Stop",
+  stopped: (dropped) => `⏹ Stopped.${dropped ? ` Links removed from the queue: ${dropped}.` : ""}`,
+  nothingToStop: "Nothing is downloading right now.",
   languageChoose: "🌐 Choose the bot's language. \"Auto\" follows your Telegram.",
   languageChooseGroup: "🌐 The bot's reply language in this group. \"Auto\" — each member's Telegram language.",
   languageAuto: "Auto — as in Telegram",
@@ -684,7 +713,6 @@ const uk: Messages = {
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `${url}\n\n` +
     "Завантажити це й будь-яке інше відео безкоштовно: @VideonerBot",
-  dailyLimitReached: "📅 На сьогодні все: досягнуто добового ліміту в 20 завантажень. Він оновиться протягом доби — повертайся пізніше, завантажувати знову можна буде безкоштовно.",
   errorStoryNeedsId:
     "надішліть посилання на конкретну сторіс: у застосунку Instagram відкрийте її й натисніть «Поділитися» → «Копіювати посилання».",
   errorInstagramStory:
@@ -812,7 +840,6 @@ const uk: Messages = {
   skipButton: "✖️ Не завантажувати",
   skipped: "⏭ Це посилання пропустив.",
   chooseTimedOut: "⌛ Якість не обрано за 30 хвилин — це посилання пропускаю.",
-  queueDroppedByLimit: (count) => `\n\nПосилання з черги (${count}) сьогодні теж не завантажити — надішліть їх завтра.`,
   queueLostOnRestart: (count) =>
     `⚠️ Бот перезапускається для оновлення — чергу скинуто (посилань: ${count}). Надішліть їх знову за хвилину.`,
   subtitlesButton: "📝 Субтитри",
@@ -822,6 +849,18 @@ const uk: Messages = {
   subtitlesPreparing: "📝 Готую субтитри...",
   subtitlesFailed: "Не вдалося завантажити субтитри цією мовою. Спробуйте іншу мову.",
   subtitlesBusy: "YouTube зараз не віддає субтитри — спробуйте за кілька хвилин.",
+  playlistFound: (title, count) =>
+    `📃 Плейлист${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} відео.\nЗавантажу їх по одному, по черзі. Як завантажувати?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Найкраща якість",
+  playlistAudioButton: "🎵 Лише звук (mp3)",
+  playlistNoButton: "✖️ Не треба",
+  playlistQueued: (count) =>
+    `📃 Поставив у чергу відео з плейлиста: ${count}. Надішлю по одному. Зупинити — кнопкою нижче або командою /stop.`,
+  playlistFailed: "Не вдалося відкрити плейлист — можливо, він закритий. Надішліть посилання на окреме відео.",
+  stopButton: "⏹ Зупинити",
+  stopped: (dropped) => `⏹ Зупинив.${dropped ? ` Скасовано посилань у черзі: ${dropped}.` : ""}`,
+  nothingToStop: "Зараз нічого не завантажується.",
   languageChoose: "🌐 Оберіть мову бота. «Авто» — як у вашому Telegram.",
   languageChooseGroup: "🌐 Мова відповідей бота в цій групі. «Авто» — кожному мовою його Telegram.",
   languageAuto: "Авто — як у Telegram",
@@ -889,7 +928,6 @@ const kk: Messages = {
     (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
     `${url}\n\n` +
     "Осы және кез келген басқа видеоны тегін жүктеп алу: @VideonerBot",
-  dailyLimitReached: "📅 Бүгінге осы жетеді: тәулігіне 20 жүктеп алу лимитіне жеттің. Ол бір тәулік ішінде жаңарады — кейінірек кел, қайтадан тегін жүктеп алуға болады.",
   errorStoryNeedsId:
     "нақты сториске сілтеме жіберіңіз: Instagram қолданбасында оны ашып, «Бөлісу» → «Сілтемені көшіру» түймесін басыңыз.",
   errorInstagramStory:
@@ -1017,7 +1055,6 @@ const kk: Messages = {
   skipButton: "✖️ Жүктеп алмау",
   skipped: "⏭ Бұл сілтемені өткізіп жібердім.",
   chooseTimedOut: "⌛ 30 минут ішінде сапа таңдалмады — бұл сілтемені өткізіп жіберемін.",
-  queueDroppedByLimit: (count) => `\n\nКезектегі сілтемелерді (${count}) де бүгін жүктеп алу мүмкін емес — оларды ертең жіберіңіз.`,
   queueLostOnRestart: (count) =>
     `⚠️ Бот жаңарту үшін қайта іске қосылуда — кезек тазартылды (сілтемелер: ${count}). Бір минуттан кейін оларды қайта жіберіңіз.`,
   subtitlesButton: "📝 Субтитрлер",
@@ -1027,6 +1064,18 @@ const kk: Messages = {
   subtitlesPreparing: "📝 Субтитрлерді дайындап жатырмын...",
   subtitlesFailed: "Бұл тілдегі субтитрлерді жүктеп алу мүмкін болмады. Басқа тілді таңдап көріңіз.",
   subtitlesBusy: "YouTube қазір субтитрлерді бермей тұр — бірнеше минуттан кейін байқап көріңіз.",
+  playlistFound: (title, count) =>
+    `📃 Плейлист${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} видео.\nОларды бір-бірлеп, кезекпен жүктеп аламын. Қалай жүктейміз?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Ең жақсы сапа",
+  playlistAudioButton: "🎵 Тек дыбыс (mp3)",
+  playlistNoButton: "✖️ Керек емес",
+  playlistQueued: (count) =>
+    `📃 Плейлисттен кезекке қойылған видео: ${count}. Бір-бірлеп жіберемін. Тоқтату — төмендегі батырмамен немесе /stop командасымен.`,
+  playlistFailed: "Плейлистті ашу мүмкін болмады — ол жабық болуы мүмкін. Жеке видеоның сілтемесін жіберіңіз.",
+  stopButton: "⏹ Тоқтату",
+  stopped: (dropped) => `⏹ Тоқтаттым.${dropped ? ` Кезектен алынған сілтемелер: ${dropped}.` : ""}`,
+  nothingToStop: "Қазір ештеңе жүктелмей жатыр.",
   languageChoose: "🌐 Бот тілін таңдаңыз. «Авто» — Telegram-дағы тіліңізбен бірдей.",
   languageChooseGroup: "🌐 Осы топтағы бот жауаптарының тілі. «Авто» — әркімге өз Telegram тілінде.",
   languageAuto: "Авто — Telegram-дағыдай",

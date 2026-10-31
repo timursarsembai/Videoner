@@ -75,6 +75,29 @@ const PLATFORM_HOSTS = [
   /(^|\.)threads\.(net|com)$/,
 ];
 
+// id плейлиста YouTube из ссылки (/playlist?list=… или ролик с &list=…).
+// Миксы (RD…) и личные списки (LL, WL) — не плейлисты. Та же логика, что
+// server/src/lib/youtube-playlist.ts.
+export function youtubePlaylistId(url) {
+  try {
+    const u = new URL(url);
+    if (!/(^|\.)(youtube\.com|youtu\.be)$/i.test(u.hostname)) return null;
+    const list = u.searchParams.get("list");
+    if (!list || !/^[\w-]{10,64}$/.test(list) || /^(RD|LL|WL|UL)/.test(list)) return null;
+    return list;
+  } catch {
+    return null;
+  }
+}
+
+export function isPlaylistPage(url) {
+  try {
+    return Boolean(youtubePlaylistId(url)) && new URL(url).pathname.replace(/\/$/, "") === "/playlist";
+  } catch {
+    return false;
+  }
+}
+
 export function isPlatformUrl(url) {
   try {
     const { protocol, hostname } = new URL(url);
@@ -164,6 +187,19 @@ const TEXTS = {
     acctRevoke: "Отозвать доступ к куки",
     acctRevoked:
       "Доступ к куки снят — расширение больше их не читает. Уже подключённые аккаунты остаются в боте: отключить их можно в «Мои подключения в боте».",
+    playlistOffer: "📃 Скачать весь плейлист",
+    playlistTitle: (title, n) => `📃 Плейлист${title ? ` «${title}»` : ""}: ${n} видео`,
+    playlistHint: "Скачаю по одному, по очереди. Окошко можно закрыть.",
+    playlist720: "Плейлист в 720p",
+    playlistBest: "Плейлист в лучшем качестве",
+    playlistAudio: "Плейлист — только звук (mp3)",
+    playlistProgress: (i, n) => `Видео ${i} из ${n}`,
+    playlistStats: (done, failed) => `Скачано: ${done}${failed ? ` · не вышло: ${failed}` : ""}`,
+    playlistStop: "⏹ Остановить",
+    playlistDone: (done, n) => `Плейлист скачан: ${done} из ${n}.`,
+    playlistStopped: (done, n) => `Остановлено. Скачано ${done} из ${n}.`,
+    playlistLoading: "Получаю список видео…",
+    close: "Закрыть",
     updateAvailable: (v) => `Вышла новая версия ${v}.`,
     updateHow: "Как обновить",
     langAuto: "Авто",
@@ -236,6 +272,19 @@ const TEXTS = {
     acctRevoke: "Відкликати доступ до куків",
     acctRevoked:
       "Доступ до куків знято — розширення більше їх не читає. Уже підключені акаунти лишаються в боті: вимкнути їх можна в «Мої підключення в боті».",
+    playlistOffer: "📃 Завантажити весь плейлист",
+    playlistTitle: (title, n) => `📃 Плейлист${title ? ` «${title}»` : ""}: ${n} відео`,
+    playlistHint: "Завантажу по одному, по черзі. Віконце можна закрити.",
+    playlist720: "Плейлист у 720p",
+    playlistBest: "Плейлист у найкращій якості",
+    playlistAudio: "Плейлист — лише звук (mp3)",
+    playlistProgress: (i, n) => `Відео ${i} з ${n}`,
+    playlistStats: (done, failed) => `Завантажено: ${done}${failed ? ` · не вийшло: ${failed}` : ""}`,
+    playlistStop: "⏹ Зупинити",
+    playlistDone: (done, n) => `Плейлист завантажено: ${done} з ${n}.`,
+    playlistStopped: (done, n) => `Зупинено. Завантажено ${done} з ${n}.`,
+    playlistLoading: "Отримую список відео…",
+    close: "Закрити",
     updateAvailable: (v) => `Вийшла нова версія ${v}.`,
     updateHow: "Як оновити",
     langAuto: "Авто",
@@ -308,6 +357,19 @@ const TEXTS = {
     acctRevoke: "Кукиге рұқсатты қайтарып алу",
     acctRevoked:
       "Кукиге рұқсат алынды — кеңейтім оларды енді оқымайды. Бұрын қосылған аккаунттар ботта қалады: оларды «Боттағы қосылымдарым» бөлімінде ажыратуға болады.",
+    playlistOffer: "📃 Бүкіл плейлистті жүктеп алу",
+    playlistTitle: (title, n) => `📃 Плейлист${title ? ` «${title}»` : ""}: ${n} видео`,
+    playlistHint: "Бір-бірлеп, кезекпен жүктеп аламын. Терезені жабуға болады.",
+    playlist720: "Плейлист 720p сапада",
+    playlistBest: "Плейлист ең жақсы сапада",
+    playlistAudio: "Плейлист — тек дыбыс (mp3)",
+    playlistProgress: (i, n) => `Видео ${i} / ${n}`,
+    playlistStats: (done, failed) => `Жүктелді: ${done}${failed ? ` · болмады: ${failed}` : ""}`,
+    playlistStop: "⏹ Тоқтату",
+    playlistDone: (done, n) => `Плейлист жүктелді: ${done} / ${n}.`,
+    playlistStopped: (done, n) => `Тоқтатылды. Жүктелді: ${done} / ${n}.`,
+    playlistLoading: "Видео тізімін аламын…",
+    close: "Жабу",
     updateAvailable: (v) => `Жаңа ${v} нұсқасы шықты.`,
     updateHow: "Қалай жаңартуға болады",
     langAuto: "Авто",
@@ -380,6 +442,19 @@ const TEXTS = {
     acctRevoke: "Revoke cookie access",
     acctRevoked:
       "Cookie access is revoked — the extension no longer reads them. Accounts you already connected stay in the bot: remove them in “My connections in the bot”.",
+    playlistOffer: "📃 Download the whole playlist",
+    playlistTitle: (title, n) => `📃 Playlist${title ? ` "${title}"` : ""}: ${n} videos`,
+    playlistHint: "I'll download them one by one. You can close this window.",
+    playlist720: "Playlist in 720p",
+    playlistBest: "Playlist in best quality",
+    playlistAudio: "Playlist — audio only (mp3)",
+    playlistProgress: (i, n) => `Video ${i} of ${n}`,
+    playlistStats: (done, failed) => `Downloaded: ${done}${failed ? ` · failed: ${failed}` : ""}`,
+    playlistStop: "⏹ Stop",
+    playlistDone: (done, n) => `Playlist downloaded: ${done} of ${n}.`,
+    playlistStopped: (done, n) => `Stopped. Downloaded ${done} of ${n}.`,
+    playlistLoading: "Getting the list of videos…",
+    close: "Close",
     updateAvailable: (v) => `Version ${v} is out.`,
     updateHow: "How to update",
     langAuto: "Auto",

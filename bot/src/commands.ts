@@ -10,6 +10,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "extension", description: "Расширение для браузера" },
     { command: "accounts", description: "Свои аккаунты для сторис и закрытых записей" },
     { command: "connect", description: "Подключить аккаунт по коду из расширения" },
+    { command: "stop", description: "Остановить скачивание и очередь" },
     { command: "language", description: "Язык бота" },
   ],
   uk: [
@@ -17,6 +18,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "extension", description: "Розширення для браузера" },
     { command: "accounts", description: "Свої акаунти для сторіс і закритих дописів" },
     { command: "connect", description: "Підключити акаунт за кодом із розширення" },
+    { command: "stop", description: "Зупинити завантаження й чергу" },
     { command: "language", description: "Мова бота" },
   ],
   kk: [
@@ -24,6 +26,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "extension", description: "Браузерге арналған кеңейтім" },
     { command: "accounts", description: "Сторис пен жабық жазбаларға арналған өз аккаунттарыңыз" },
     { command: "connect", description: "Кеңейтімдегі код арқылы аккаунт қосу" },
+    { command: "stop", description: "Жүктеу мен кезекті тоқтату" },
     { command: "language", description: "Бот тілі" },
   ],
   en: [
@@ -31,6 +34,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "extension", description: "Browser extension" },
     { command: "accounts", description: "Your accounts for stories and private posts" },
     { command: "connect", description: "Connect an account with a code from the extension" },
+    { command: "stop", description: "Stop the download and the queue" },
     { command: "language", description: "Bot language" },
   ],
 };

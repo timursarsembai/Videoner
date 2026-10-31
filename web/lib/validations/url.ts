@@ -43,6 +43,11 @@ export const isYoutubeUrl = (url: string) => {
         return urlObj.searchParams.has("v");
       }
 
+      // Плейлист: /playlist?list=… — без пути после /playlist.
+      if (path === "/playlist" || path === "/playlist/") {
+        return urlObj.searchParams.has("list");
+      }
+
       // For other valid paths, must have content after the path
       if (validPaths.some((p) => path.startsWith(p))) {
         return path.length > validPaths.find((p) => path.startsWith(p))!.length;

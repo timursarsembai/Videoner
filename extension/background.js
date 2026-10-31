@@ -119,6 +119,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     getCourseFailed(message.key).catch((e) => console.error("Videoner: getcourse fallback", e));
     return false;
   }
+  if (message?.type === "playlist") {
+    startPlaylist(message).catch((e) => console.error("Videoner: playlist", e));
+    sendResponse({ ok: true });
+    return false;
+  }
+  if (message?.type === "playlist-stop") {
+    updateJob(playlistKey(message.listId), (job) =>
+      job?.state === "playlist" ? { ...job, state: "playlist-stopped", item: null } : undefined,
+    );
+    sendResponse({ ok: true });
+    return false;
+  }
   if (message?.type === "subtitles") {
     // Субтитры сервер готовит за несколько секунд и отдаёт сразу, без
     // отслеживания хода — окошко ждёт ответа.
@@ -568,6 +580,143 @@ async function saveFiles(job, status) {
   }
 }
 
+// ---- Плейлисты YouTube ----
+//
+// Сервер отдаёт список видео (/info/playlist), дальше каждое качается
+// обычным серверным скачиванием и сохраняется в «Загрузки» — строго по
+// одному. Задача плейлиста живёт под своим ключом (playlist:<id>), отдельно
+// от задачи открытого видео. «Остановить» в окошке меняет её состояние, и
+// цикл выходит, не дожидаясь текущего файла.
+
+function playlistKey(listId) {
+  return `playlist:${listId}`;
+}
+
+const playlistRuns = new Set();
+
+async function startPlaylist({ listId, url, mode }) {
+  const key = playlistKey(listId);
+  if ((await getJob(key))?.state === "playlist") return;
+  await setJob(key, { url: key, state: "playlist-loading" });
+  let playlist;
+  try {
+    playlist = await api("/info/playlist", { url });
+  } catch (e) {
+    await setJob(key, { url: key, state: "error", error: friendlyError(e) });
+    return;
+  }
+  await setJob(key, {
+    url: key,
+    title: playlist.title,
+    state: "playlist",
+    // Номер запуска: остановили и тут же запустили снова — старый цикл,
+    // ещё ждущий свой файл, видит чужой номер и выходит.
+    runId: crypto.randomUUID(),
+    playlist: { mode, entries: playlist.entries, index: 0, done: 0, failed: 0 },
+    item: null,
+  });
+  await runPlaylist(key);
+}
+
+async function playlistRunning(key, runId) {
+  const job = await getJob(key);
+  return job?.state === "playlist" && job.runId === runId;
+}
+
+async function runPlaylist(key) {
+  const first = await getJob(key);
+  const runId = first?.runId;
+  // Один цикл на запуск: после перезапуска фоновой части resumeJobs зовёт
+  // его снова — второй с тем же номером не нужен.
+  if (!runId || playlistRuns.has(runId)) return;
+  playlistRuns.add(runId);
+  const mine = (j) => j?.state === "playlist" && j.runId === runId;
+  try {
+    for (;;) {
+      const job = await getJob(key);
+      if (!mine(job)) return;
+      const { entries, index } = job.playlist;
+      if (index >= entries.length) {
+        await updateJob(key, (j) => (mine(j) ? { ...j, state: "playlist-done", item: null } : undefined));
+        return;
+      }
+      const entry = entries[index];
+      await updateJob(key, (j) => (mine(j) ? { ...j, item: { title: entry.title, progress: null } } : undefined));
+      const result = await downloadPlaylistItem(key, runId, job.playlist.mode, entry).catch((e) => {
+        console.error("Videoner: playlist item", entry.url, e);
+        // Сервер отказывает всем скачиваниям (лимит трафика YouTube для сети,
+        // частота запросов) — следующие видео тоже не пойдут: стоп с причиной.
+        if (e?.status === 403 || e?.status === 429) return { fatal: friendlyError(e) };
+        return false;
+      });
+      if (result === "stopped") return;
+      if (result?.fatal) {
+        await updateJob(key, (j) => (mine(j) ? { ...j, state: "error", error: result.fatal, item: null } : undefined));
+        return;
+      }
+      await updateJob(key, (j) =>
+        mine(j)
+          ? {
+              ...j,
+              playlist: {
+                ...j.playlist,
+                index: index + 1,
+                done: j.playlist.done + (result ? 1 : 0),
+                failed: j.playlist.failed + (result ? 0 : 1),
+              },
+            }
+          : undefined,
+      );
+    }
+  } finally {
+    playlistRuns.delete(runId);
+  }
+}
+
+// true — сохранено, false — не вышло (идём дальше), "stopped" — остановлено.
+async function downloadPlaylistItem(key, runId, mode, entry) {
+  const audio = mode === "audio";
+  // Сведения о каждом видео не запрашиваем (/info дорогой и под строгим
+  // лимитом): качество передаём сразу, сервер возьмёт ближайшее не выше.
+  const quality = audio ? "128Kbps" : mode === "hd" ? "2160p" : "720p";
+  if (!(await playlistRunning(key, runId))) return "stopped";
+  const start = (q) =>
+    api(`/download/${audio ? "audio" : "video"}`, { url: entry.url, quality: q, extension: audio ? "mp3" : "mp4" });
+  let started;
+  try {
+    started = await start(quality);
+  } catch (e) {
+    // Лучшее качество тяжелее предела сервера — тогда 720p.
+    if (mode !== "hd" || !/too large/i.test(e?.message ?? "")) throw e;
+    started = await start("720p");
+  }
+  const startedAt = Date.now();
+  let failures = 0;
+  while (Date.now() - startedAt < MAX_WAIT_MS) {
+    await sleep(POLL_MS);
+    if (!(await playlistRunning(key, runId))) return "stopped";
+    let status;
+    try {
+      status = await downloadStatus(started.downloadId);
+      failures = 0;
+    } catch (e) {
+      if (++failures >= MAX_NETWORK_FAILURES) return false;
+      continue;
+    }
+    if (status.status === "COMPLETED") {
+      await saveFiles({ title: entry.title || "video" }, status);
+      return true;
+    }
+    if (status.status === "FAILED" || status.status === "EXPIRED") return false;
+    await updateJob(key, (j) =>
+      j?.state === "playlist" && j.runId === runId
+        ? { ...j, item: { title: entry.title, progress: status.progress ?? null } }
+        : undefined,
+    );
+  }
+  return false;
+}
+
 async function downloadSubtitles({ url, title, lang }) {
   const { fileName } = await api("/download/subtitles", { url, lang, title });
   await chrome.downloads.download({
@@ -586,6 +735,16 @@ async function downloadSubtitles({ url, title, lang }) {
 async function resumeJobs() {
   const offscreenAlive = await hasOffscreen();
   for (const job of await getAllJobs()) {
+    // Плейлист продолжаем с того видео, на котором остановились.
+    if (job.playlist && job.state === "playlist") {
+      void runPlaylist(job.url);
+      continue;
+    }
+    // Остановились посреди получения списка — список уже не придёт.
+    if (job.state === "playlist-loading") {
+      await setJob(job.url, { ...job, state: "error", error: friendlyError({ message: "failed" }) });
+      continue;
+    }
     if (active.has(job.url)) continue;
     // Урок GetCourse в Chrome качает скрытая страница, а не этот экземпляр:
     // жива она — её сообщения подхватит и новый. В Firefox урок жил в

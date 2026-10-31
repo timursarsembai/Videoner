@@ -6,7 +6,6 @@ import { pickGroupQuality } from "../group.js";
 import { postDescription } from "../caption.js";
 import {
   api,
-  getQuotaInfo,
   fmtDuration,
   extensionLinkFor,
   friendlyError,
@@ -217,6 +216,9 @@ export async function performDownload(
     formatCaption?: (title: string, sourceUrl: string, shareUrl?: string, description?: string) => string;
     // Текст поста для подписи (caption.ts postDescription).
     description?: string;
+    // true — человек остановил скачивание (/stop, кнопка плейлиста): файл
+    // больше не ждём и не отправляем.
+    isCancelled?: () => boolean;
     // Группа: не скачалось — молча убрать «Скачиваю», а не оставлять в общем
     // чате сообщение об ошибке (handlers/group.ts).
     quiet?: boolean;
@@ -312,6 +314,10 @@ export async function performDownload(
     let lastEditAt = 0;
     for (let i = 0; i < DOWNLOAD_WAIT_POLLS; i++) {
       await new Promise((r) => setTimeout(r, 3000));
+      if (send.isCancelled?.()) {
+        await clearServiceMessages();
+        return false;
+      }
       status = await api(`/download/${started.downloadId}/status`);
       if (status && (status.status === "COMPLETED" || status.status === "FAILED")) break;
       const text = progressText(status?.progress, m, lang);
@@ -327,6 +333,10 @@ export async function performDownload(
     }
     if (!status || status.status !== "COMPLETED") {
       throw new Error(status?.status === "FAILED" ? m.downloadFailed : m.downloadTimeout);
+    }
+    if (send.isCancelled?.()) {
+      await clearServiceMessages();
+      return false;
     }
 
     const items = status.items ?? [];
@@ -640,6 +650,12 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       telegramLanguageCode: state.languageCode,
       cookieScope: state.chatId > 0 ? `user:${state.userId}` : `chat:${state.chatId}`,
     });
+    // Пока шёл анализ, человек всё остановил (/stop): ссылки больше нет —
+    // убираем «Получаю информацию» и ничего не рисуем.
+    if (queues.get(key)?.current?.token !== current.token) {
+      await tg.deleteMessage(state.chatId, messageId).catch(() => {});
+      return true;
+    }
     current.title = info.title ?? "";
     current.description = postDescription(current.url, info.description);
     current.thumbnail = info.thumbnail;
@@ -669,6 +685,14 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       await startDownload(tg, key, state, current, auto.kind, auto.quality, sendersForApi(tg, state.chatId));
       return true;
     }
+    // Видео плейлиста, которое по флагу не скачать (нет звука, все качества
+    // тяжелее лимита Telegram): ждать кнопку нельзя — плейлист встал бы на
+    // полчаса. Пропускаем с пояснением и идём дальше. Одиночная ссылка с
+    // флагом в таком случае получает обычный выбор кнопками.
+    if (flag && state.playlistUrls?.has(current.url)) {
+      await tg.editMessageText(state.chatId, messageId, `${m.skipped} ${current.title ?? ""}${current.sizeNote ?? ""}`.trim());
+      return false;
+    }
 
     const kb = choiceKeyboard(m, current, lang);
 
@@ -680,6 +704,10 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       reply_markup: kb,
     });
   } catch (e: any) {
+    if (queues.get(key)?.current?.token !== current.token) {
+      if (messageId) await tg.deleteMessage(state.chatId, messageId).catch(() => {});
+      return true;
+    }
     const { text, keyboard } = failureMessage(e?.message ?? String(e), current.url, lang);
     if (messageId) {
       await tg.editMessageText(state.chatId, messageId, text, keyboard ? { reply_markup: keyboard } : undefined).catch((err) => console.error("Не удалось показать ошибку:", err?.message ?? err));
@@ -730,9 +758,10 @@ async function skipByTimeout(tg: Api, key: string, token: number) {
 // повторить не может.
 export async function handleLinks(
   ctx: Context,
-  urls: string[],
+  inputUrls: string[],
   { resumed = false, flag = null }: { resumed?: boolean; flag?: LinkFlag | null } = {},
 ) {
+  let urls = inputUrls;
   if (!ctx.from || !ctx.chat) return;
   const lang = await langOf(ctx);
   const m = messages[lang];
@@ -741,6 +770,14 @@ export async function handleLinks(
     await ctx.reply(m.errorRateLimited);
     return;
   }
+
+  // Плейлист YouTube: страница плейлиста — только плейлист; ролик из
+  // плейлиста (&list=…) — сам ролик, и отдельно предложим весь плейлист.
+  for (const url of urls) {
+    if (youtubePlaylistId(url)) inBackground("Плейлист", offerPlaylist(ctx, url, flag, lang));
+  }
+  urls = urls.filter((url) => !isPlaylistPage(url));
+  if (!urls.length) return;
 
   // Проверяем здесь, до запроса метаданных: незачем гонять сервер и
   // показывать выбор качества тому, кто всё равно не сможет скачать.
@@ -780,6 +817,10 @@ export async function handleLinks(
 }
 
 export function registerDownloadHandlers(bot: Bot) {
+  // Остановить всё: текущее скачивание и очередь (плейлист). До обработчика
+  // текста, иначе команда ушла бы туда как «не ссылка».
+  bot.command("stop", async (ctx) => stopDownloads(ctx, await langOf(ctx)));
+
   bot.on("message:text", async (ctx) => {
     const lang = await langOf(ctx);
     const m = messages[lang];
@@ -796,6 +837,13 @@ export function registerDownloadHandlers(bot: Bot) {
   bot.on("callback_query:data", async (ctx) => {
     const lang = await langOf(ctx);
     const m = messages[lang];
+    const data = ctx.callbackQuery.data;
+    if (data.startsWith("pl|")) return playlistChoice(ctx, data, lang);
+    if (data === "q|stop") {
+      await ctx.answerCallbackQuery();
+      await ctx.editMessageReplyMarkup().catch(() => {});
+      return stopDownloads(ctx, lang);
+    }
     const chatId = ctx.chat?.id;
     const messageId = ctx.callbackQuery.message?.message_id;
     const key = chatId ? LinkQueues.key(chatId, ctx.from.id) : "";
@@ -889,26 +937,20 @@ async function startDownload(
   quality: string,
   senders: ReturnType<typeof sendersForApi>,
 ) {
-  const m = messages[state.lang];
   const token = current.token;
+  // Пока шёл анализ, человек мог всё остановить (/stop).
+  if (queues.get(key)?.current?.token !== token) return;
   current.phase = "downloading";
   clearChooseTimer(key);
 
-  const quota = await getQuotaInfo(state.userId);
-
-  // Единственное оставшееся ограничение — суточный лимит. Снять его деньгами
-  // нельзя: платных функций нет. unlimited остаётся только как ручной
-  // админский грант через /grant.
-  if (!quota.unlimited && quota.remaining <= 0) {
-    // Остальные ссылки сегодня тоже не скачать — держать их незачем.
-    const dropped = queues.clear(key);
-    await tg.sendMessage(state.chatId, m.dailyLimitReached + (dropped ? m.queueDroppedByLimit(dropped) : ""));
-    return;
-  }
-
   const download = performDownload(
     state.chatId, kind, quality, kind === "v" ? "mp4" : "mp3", current.url, state.lang,
-    { ...senders, description: current.description },
+    {
+      ...senders,
+      description: current.description,
+      // Остановлено (/stop) — ссылки больше нет в очереди.
+      isCancelled: () => queues.get(key)?.current?.token !== token,
+    },
     {
       telegramId: state.userId,
       telegramUsername: state.username,
@@ -933,9 +975,163 @@ function flagChoice(flag: LinkFlag | undefined, current: Current): { kind: "v" |
     const audio = current.qualities?.audio ?? [];
     return audio.length ? { kind: "a", quality: audio.includes("128Kbps") ? "128Kbps" : audio[0] } : null;
   }
-  if (flag === "hd") {
-    const quality = pickGroupQuality(current.qualities?.video ?? [], current.sizes?.video ?? {}, BOT_FILE_LIMIT, "max");
+  if (flag === "hd" || flag === "std") {
+    const quality = pickGroupQuality(
+      current.qualities?.video ?? [],
+      current.sizes?.video ?? {},
+      BOT_FILE_LIMIT,
+      flag === "hd" ? "max" : "standard",
+    );
     return quality ? { kind: "v", quality } : null;
   }
   return null;
+}
+
+// ---- Плейлисты YouTube ----
+//
+// Ссылка на плейлист → сервер отдаёт список видео (/info/playlist) → бот
+// спрашивает, как качать, и ставит все видео в очередь с флагом качества:
+// дальше они идут по одному без нажатий (flagChoice). Остановить — кнопкой
+// под сообщением или /stop.
+
+const YT_HOSTS = /(^|\.)(youtube\.com|youtu\.be)$/i;
+
+// Та же логика, что server/src/lib/youtube-playlist.ts: миксы (RD…) и личные
+// списки (LL, WL) плейлистом не считаем.
+export function youtubePlaylistId(url: string): string | null {
+  try {
+    const u = new URL(url);
+    if (!YT_HOSTS.test(u.hostname)) return null;
+    const list = u.searchParams.get("list");
+    if (!list || !/^[\w-]{10,64}$/.test(list) || /^(RD|LL|WL|UL)/.test(list)) return null;
+    return list;
+  } catch {
+    return null;
+  }
+}
+
+export function youtubeVideoId(url: string): string | null {
+  try {
+    const u = new URL(url);
+    if (u.hostname === "youtu.be") return u.pathname.slice(1) || null;
+    return u.searchParams.get("v") ?? u.pathname.match(/^\/(shorts|live|embed)\/([\w-]+)/)?.[2] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function isPlaylistPage(url: string): boolean {
+  try {
+    return youtubePlaylistId(url) !== null && new URL(url).pathname.replace(/\/$/, "") === "/playlist";
+  } catch {
+    return false;
+  }
+}
+
+type PlaylistInfo = { id: string; title: string; entries: { url: string; title: string }[] };
+const PLAYLIST_TTL_MS = 30 * 60_000;
+// Предложенные плейлисты ждут выбора качества: кнопка несёт только id.
+const offeredPlaylists = new Map<string, { playlist: PlaylistInfo; at: number }>();
+
+function playlistKey(chatId: number, userId: number, listId: string) {
+  return `${chatId}:${userId}:${listId}`;
+}
+
+async function offerPlaylist(ctx: Context, url: string, flag: LinkFlag | null, lang: Lang) {
+  const m = messages[lang];
+  // Условие подписки (если оно включено) — как для обычных ссылок.
+  if (await blockUnlessSubscribed(ctx, lang)) return;
+  let playlist: PlaylistInfo;
+  try {
+    playlist = await api<PlaylistInfo>("/info/playlist", { url });
+  } catch (e: any) {
+    console.error(`Плейлист ${url}:`, e?.message ?? e);
+    if (isPlaylistPage(url)) await ctx.reply(m.playlistFailed).catch(() => {});
+    return;
+  }
+  if (!playlist.entries?.length) {
+    if (isPlaylistPage(url)) await ctx.reply(m.playlistFailed).catch(() => {});
+    return;
+  }
+  // Флаг в сообщении («-audio», «-hd») — качаем сразу, без вопроса.
+  if (flag && isPlaylistPage(url)) return startPlaylist(ctx, playlist, flag, lang);
+  const now = Date.now();
+  for (const [k, v] of offeredPlaylists) if (now - v.at > PLAYLIST_TTL_MS) offeredPlaylists.delete(k);
+  offeredPlaylists.set(playlistKey(ctx.chat!.id, ctx.from!.id, playlist.id), { playlist, at: now });
+  const kb = new InlineKeyboard()
+    .text(m.playlistStdButton, `pl|${playlist.id}|std`)
+    .row()
+    .text(m.playlistHdButton, `pl|${playlist.id}|hd`)
+    .row()
+    .text(m.playlistAudioButton, `pl|${playlist.id}|audio`)
+    .row()
+    .text(m.playlistNoButton, `pl|${playlist.id}|no`);
+  await ctx.reply(m.playlistFound(playlist.title, playlist.entries.length), { reply_markup: kb });
+}
+
+async function playlistChoice(ctx: Context, data: string, lang: Lang) {
+  const m = messages[lang];
+  const [, listId, mode] = data.split("|");
+  const offered = offeredPlaylists.get(playlistKey(ctx.chat!.id, ctx.from!.id, listId));
+  if (!offered) {
+    await ctx.answerCallbackQuery({ text: m.sessionExpired });
+    return;
+  }
+  await ctx.answerCallbackQuery();
+  if (await blockUnlessSubscribed(ctx, lang)) return;
+  offeredPlaylists.delete(playlistKey(ctx.chat!.id, ctx.from!.id, listId));
+  if (mode === "no") {
+    await ctx.editMessageText(m.skipped).catch(() => {});
+    return;
+  }
+  const flag: LinkFlag = mode === "audio" ? "audio" : mode === "hd" ? "hd" : "std";
+  await ctx.editMessageReplyMarkup().catch(() => {});
+  await startPlaylist(ctx, offered.playlist, flag, lang);
+}
+
+async function startPlaylist(ctx: Context, playlist: PlaylistInfo, flag: LinkFlag, lang: Lang) {
+  const m = messages[lang];
+  const key = LinkQueues.key(ctx.chat!.id, ctx.from!.id);
+  // Видео, которое человек уже прислал отдельной ссылкой (…watch?v=ID&list=…),
+  // второй раз не качаем: сравниваем по id ролика, а не по адресу.
+  const before = queues.get(key);
+  const queuedIds = new Set(
+    [before?.current?.url, ...(before?.pending ?? [])].map((u) => (u ? youtubeVideoId(u) : null)).filter(Boolean),
+  );
+  const urls = playlist.entries.map((e) => e.url).filter((u) => !queuedIds.has(youtubeVideoId(u)));
+  const added = queues.enqueue(
+    key,
+    { chatId: ctx.chat!.id, userId: ctx.from!.id, username: ctx.from!.username, languageCode: ctx.from!.language_code, lang },
+    urls,
+    Infinity,
+  );
+  const state = queues.get(key);
+  if (state) {
+    state.flags ??= new Map();
+    state.playlistUrls ??= new Set();
+    for (const url of urls) {
+      state.flags.set(url, flag);
+      state.playlistUrls.add(url);
+    }
+  }
+  const count = added.queued + (added.startNow ? 1 : 0);
+  await ctx.reply(m.playlistQueued(count), {
+    reply_markup: new InlineKeyboard().text(m.stopButton, "q|stop"),
+  });
+  if (added.startNow) inBackground("Анализ ссылки", showNextChoice(ctx.api, key));
+}
+
+// Всё, что этот человек ждёт в этом чате: текущее скачивание (его файл не
+// придёт — performDownload видит, что ссылки больше нет) и очередь.
+async function stopDownloads(ctx: Context, lang: Lang) {
+  const m = messages[lang];
+  if (!ctx.chat || !ctx.from) return;
+  const key = LinkQueues.key(ctx.chat.id, ctx.from.id);
+  if (!queues.get(key)) {
+    await ctx.reply(m.nothingToStop);
+    return;
+  }
+  clearChooseTimer(key);
+  const dropped = queues.clear(key);
+  await ctx.reply(m.stopped(dropped));
 }

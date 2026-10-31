@@ -23,8 +23,7 @@ export function membershipRequired(): boolean {
 
 export async function isChannelMember(ctx: Context, userId?: number): Promise<boolean> {
   if (!membershipRequired() || !userId) return true;
-  // Админ не должен зависеть от состояния канала и доступности API —
-  // тот же принцип, что и в getQuotaInfo.
+  // Админ не должен зависеть от состояния канала и доступности API.
   if (ADMIN_TELEGRAM_ID && userId === ADMIN_TELEGRAM_ID) return true;
   try {
     const member = await ctx.api.getChatMember(SHARE_CHANNEL, userId);

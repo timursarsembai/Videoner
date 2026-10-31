@@ -1,17 +1,16 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на трёх языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на пяти языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
 // Содержание описывает сервис таким, какой он есть: бесплатный, без рекламы и
-// подписок, скачивание только после входа через Telegram, не более
-// DAILY_LIMIT загрузок в сутки. Меняется поведение сервиса — правится и здесь,
+// подписок, на сайте скачивание без входа, суточного лимита скачиваний нет,
+// подписка на канал не требуется. Меняется поведение сервиса — правится и здесь,
 // иначе документы начнут расходиться с действительностью, а это хуже, чем их
 // отсутствие.
 
-const DAILY_LIMIT = 20;
 const MAIL = operator.email;
 const BOT = `@${operator.bot}`;
 
@@ -48,7 +47,7 @@ export const legal: LegalByLanguage = {
               "Мы сознательно не собираем ничего сверх необходимого для работы сервиса и не запрашиваем документы, платёжные данные или адрес.",
             ],
             bullets: [
-              "Данные учётной записи Telegram, которые передаёт виджет входа: числовой идентификатор, имя, при наличии — фамилия, имя пользователя, ссылка на фотографию профиля и код языка.",
+              "Данные учётной записи Telegram, которые бот получает, когда вы ему пишете: числовой идентификатор, имя пользователя, имя и код языка.",
               "Ссылки, которые вы отправляете на скачивание, и сведения о самой попытке: площадка, дата и время, выбранное качество, результат (успех или ошибка).",
               "Технические данные соединения: IP-адрес, тип и версия браузера, язык, страница перехода. Они попадают в журналы сервера и в системы веб-аналитики.",
               "Файлы cookie и идентификаторы аналитики — подробнее в Политике cookie.",
@@ -58,7 +57,7 @@ export const legal: LegalByLanguage = {
             heading: "Зачем эти данные нужны",
             bullets: [
               "Предоставить саму услугу: получить видео по вашей ссылке и отдать вам файл.",
-              "Отличить вашу учётную запись от чужой и соблюсти суточное ограничение — не более " + DAILY_LIMIT + " скачиваний в сутки.",
+              "Отличить вашу учётную запись от чужой и противодействовать злоупотреблениям.",
               "Защитить сервис от автоматизированных злоупотреблений: проверка Cloudflare Turnstile перед отправкой ссылки.",
               "Понимать, как используется сайт, и устранять ошибки — обезличенная и агрегированная статистика.",
               "Отвечать на ваши обращения и обращения правообладателей.",
@@ -89,7 +88,7 @@ export const legal: LegalByLanguage = {
               "Мы не продаём и не передаём ваши данные третьим лицам для их собственных целей. Для работы сервиса задействованы следующие поставщики, каждый из которых обрабатывает данные по своим правилам:",
             ],
             bullets: [
-              "Telegram — авторизация через виджет входа и работа бота " + BOT + ".",
+              "Telegram — работа бота " + BOT + ".",
               "Cloudflare — защита от ботов (Turnstile), доставка сайта и маршрутизация почты.",
               "Google Analytics и Google Tag Manager — статистика посещений.",
               "Яндекс.Метрика — статистика посещений, карта кликов и Вебвизор. Вебвизор записывает действия на странице: перемещения указателя, прокрутку и клики. Записи используются только для анализа удобства сайта.",
@@ -99,7 +98,7 @@ export const legal: LegalByLanguage = {
             heading: "Сколько мы храним данные",
             bullets: [
               "Скачанные файлы удаляются с сервера автоматически примерно через час после создания. Мы не храним архив ваших видео.",
-              "Записи о попытках скачивания хранятся, пока это нужно для соблюдения суточного лимита и разбора обращений.",
+              "Записи о попытках скачивания хранятся, пока это нужно для противодействия злоупотреблениям и разбора обращений.",
               "Данные учётной записи хранятся, пока вы пользуетесь сервисом, и удаляются по вашему запросу.",
               "Журналы сервера хранятся ограниченное время и перезаписываются по мере ротации.",
             ],
@@ -147,16 +146,14 @@ export const legal: LegalByLanguage = {
             body: [
               "Все возможности сервиса предоставляются бесплатно. У нас нет подписок, платных тарифов, платных качеств видео и внутренних покупок.",
               "Мы не показываем рекламу и не размещаем партнёрские ссылки.",
-              "Суточное ограничение на количество скачиваний существует ради устойчивости сервиса и не снимается за деньги ни при каких условиях.",
             ],
           },
           {
             heading: "Условия доступа",
             bullets: [
-              "Скачивание доступно только после авторизации через Telegram. Это нужно, чтобы соблюдать ограничение и противодействовать злоупотреблениям.",
-              `Одна учётная запись может скачать не более ${DAILY_LIMIT} файлов в сутки. Счётчик общий для сайта и бота.`,
-              "Просматривать сайт и список доступных качеств можно без авторизации.",
-              "Для скачивания через Telegram-бот требуется подписка на наш канал. Это единственное условие: сервис остаётся бесплатным, без рекламы и платных функций.",
+              "Для скачивания на сайте не нужны ни учётная запись, ни вход. Бот различает пользователей по их аккаунту Telegram.",
+              "От перегрузки и автоматизированных злоупотреблений сервис защищают технические ограничения на частоту запросов.",
+              "Подписка на наш канал для скачивания через бот не требуется. В подписи к файлам бот добавляет ссылку на новостной канал проекта; подписываться на него необязательно.",
             ],
           },
           {
@@ -175,7 +172,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Скачивайте только тот материал, права на который принадлежат вам, либо использование которого разрешено правообладателем или законом.",
               "Не используйте сервис для нарушения авторских и смежных прав, распространения запрещённого контента и нарушения прав третьих лиц.",
-              "Не пытайтесь обойти технические ограничения сервиса, включая суточный лимит, проверку на ботов и авторизацию.",
+              "Не пытайтесь обойти технические ограничения сервиса, включая ограничения частоты запросов и проверку на ботов.",
               "Не создавайте автоматизированную нагрузку: массовые запросы, скрипты и парсеры не допускаются.",
             ],
           },
@@ -226,7 +223,7 @@ export const legal: LegalByLanguage = {
           {
             heading: "Что такое cookie",
             body: [
-              "Cookie — небольшие текстовые файлы, которые сайт сохраняет в вашем браузере. Они позволяют запомнить, что вы вошли в сервис, и собрать обезличенную статистику посещений.",
+              "Cookie — небольшие текстовые файлы, которые сайт сохраняет в вашем браузере. Они позволяют запомнить ваши настройки и собрать обезличенную статистику посещений.",
               "Вместе с cookie в этом документе мы описываем и близкие технологии — локальное хранилище браузера и счётчики-пиксели.",
             ],
           },
@@ -236,7 +233,6 @@ export const legal: LegalByLanguage = {
               "Без них сервис не работает, поэтому они устанавливаются всегда.",
             ],
             bullets: [
-              "Сессия входа — подтверждает, что вы авторизованы через Telegram, и позволяет вести суточный счётчик скачиваний.",
               "Cloudflare Turnstile — проверка, что ссылку отправляет человек, а не скрипт.",
               "Настройки интерфейса — выбранный язык и тема оформления.",
             ],
@@ -264,7 +260,7 @@ export const legal: LegalByLanguage = {
               "Настройте блокировку или удаление cookie в вашем браузере — этот способ работает для всех перечисленных систем.",
               "Google Analytics: официальное дополнение для браузера, отключающее сбор, доступно на сайте Google.",
               "Яндекс.Метрика: отказ доступен через официальное дополнение Яндекса.",
-              "Отключение необходимых cookie сделает вход и скачивание невозможными.",
+              "Отключение необходимых cookie сделает скачивание невозможным.",
             ],
           },
           {
@@ -353,7 +349,7 @@ export const legal: LegalByLanguage = {
               "We deliberately collect nothing beyond what the service needs, and we never ask for identity documents, payment details or a postal address.",
             ],
             bullets: [
-              "Telegram account data passed by the login widget: numeric id, first name, last name where present, username, a link to the profile photo and a language code.",
+              "Telegram account data the bot receives when you message it: numeric id, username, first name and a language code.",
               "The links you submit for download and details of the attempt itself: platform, date and time, chosen quality, and the outcome (success or error).",
               "Technical connection data: IP address, browser type and version, language and referring page. These end up in server logs and in the web analytics tools.",
               "Cookies and analytics identifiers — see the Cookie Policy for details.",
@@ -363,7 +359,7 @@ export const legal: LegalByLanguage = {
             heading: "Why we need it",
             bullets: [
               "To provide the service itself: fetch the video at your link and hand you the file.",
-              `To tell your account from anyone else's and enforce the daily allowance of ${DAILY_LIMIT} downloads.`,
+              "To tell your account from anyone else's and prevent abuse.",
               "To protect the service from automated abuse through the Cloudflare Turnstile check before a link is submitted.",
               "To understand how the site is used and to fix errors, using anonymised and aggregated statistics.",
               "To answer your enquiries and those of rights holders.",
@@ -394,7 +390,7 @@ export const legal: LegalByLanguage = {
               "We do not sell your data and do not pass it to third parties for their own purposes. The service relies on the following providers, each processing data under its own rules:",
             ],
             bullets: [
-              `Telegram — login widget authentication and the ${BOT} bot.`,
+              `Telegram — operation of the ${BOT} bot.`,
               "Cloudflare — bot protection (Turnstile), site delivery and mail routing.",
               "Google Analytics and Google Tag Manager — visit statistics.",
               "Yandex Metrica — visit statistics, click map and Webvisor. Webvisor records on-page activity: pointer movement, scrolling and clicks. Recordings are used only to analyse usability.",
@@ -404,7 +400,7 @@ export const legal: LegalByLanguage = {
             heading: "How long we keep it",
             bullets: [
               "Downloaded files are removed from the server automatically about an hour after they are created. We keep no archive of your videos.",
-              "Records of download attempts are kept for as long as the daily allowance and enquiry handling require.",
+              "Records of download attempts are kept for as long as abuse prevention and enquiry handling require.",
               "Account data is kept while you use the service and is deleted on your request.",
               "Server logs are kept for a limited time and are overwritten as they rotate.",
             ],
@@ -452,16 +448,14 @@ export const legal: LegalByLanguage = {
             body: [
               "Everything the service offers is free of charge. There are no subscriptions, paid plans, paid video qualities or in-service purchases.",
               "We show no advertising and place no affiliate links.",
-              "The daily download allowance exists to keep the service stable and cannot be lifted by payment under any circumstances.",
             ],
           },
           {
             heading: "Access conditions",
             bullets: [
-              "Downloading requires signing in with Telegram. This is what makes the allowance enforceable and abuse harder.",
-              `One account may download up to ${DAILY_LIMIT} files per day. The counter is shared between the website and the bot.`,
-              "Browsing the site and checking available qualities requires no sign-in.",
-              "Downloading through the Telegram bot requires a subscription to our channel. That is the only condition: the service stays free, with no advertising and no paid features.",
+              "Downloading on the website requires no account and no sign-in. The bot tells users apart by their Telegram account.",
+              "Technical limits on request frequency protect the service from overload and automated abuse.",
+              "No subscription to our channel is required to download through the bot. The bot adds a link to the project's news channel in file captions; subscribing to it is optional.",
             ],
           },
           {
@@ -480,7 +474,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Download only material you own the rights to, or whose use the rights holder or the law permits.",
               "Do not use the service to infringe copyright or related rights, to distribute prohibited content or to violate the rights of others.",
-              "Do not attempt to circumvent the service's technical limits, including the daily allowance, the bot check and authentication.",
+              "Do not attempt to circumvent the service's technical limits, including request rate limits and the bot check.",
               "Do not generate automated load: bulk requests, scripts and scrapers are not permitted.",
             ],
           },
@@ -531,7 +525,7 @@ export const legal: LegalByLanguage = {
           {
             heading: "What cookies are",
             body: [
-              "Cookies are small text files a site stores in your browser. They let the service remember that you are signed in and allow anonymised visit statistics to be collected.",
+              "Cookies are small text files a site stores in your browser. They let the service remember your settings and allow anonymised visit statistics to be collected.",
               "Alongside cookies, this document also covers related technologies: browser local storage and tracking pixels.",
             ],
           },
@@ -539,7 +533,6 @@ export const legal: LegalByLanguage = {
             heading: "Strictly necessary",
             body: ["Without these the service does not work, so they are always set."],
             bullets: [
-              "Login session — confirms that you are signed in with Telegram and makes the daily counter possible.",
               "Cloudflare Turnstile — checks that a link is submitted by a person rather than a script.",
               "Interface settings — your chosen language and colour theme.",
             ],
@@ -567,7 +560,7 @@ export const legal: LegalByLanguage = {
               "Block or delete cookies in your browser settings — this works for every system listed here.",
               "Google Analytics: the official browser add-on that disables collection is available from Google.",
               "Yandex Metrica: opting out is possible through Yandex's official add-on.",
-              "Disabling strictly necessary cookies will make signing in and downloading impossible.",
+              "Disabling strictly necessary cookies will make downloading impossible.",
             ],
           },
           {
@@ -656,7 +649,7 @@ export const legal: LegalByLanguage = {
               "No recopilamos deliberadamente nada más allá de lo que el servicio necesita y nunca solicitamos documentos de identidad, datos de pago ni domicilio.",
             ],
             bullets: [
-              "Datos de la cuenta de Telegram que transmite el widget de inicio de sesión: identificador numérico, nombre, apellidos si constan, nombre de usuario, enlace a la foto de perfil y código de idioma.",
+              "Datos de la cuenta de Telegram que recibe el bot cuando usted le escribe: identificador numérico, nombre de usuario, nombre y código de idioma.",
               "Los enlaces que envía para descargar y los datos del propio intento: plataforma, fecha y hora, calidad elegida y resultado (éxito o error).",
               "Datos técnicos de la conexión: dirección IP, tipo y versión del navegador, idioma y página de procedencia. Quedan registrados en los registros del servidor y en las herramientas de analítica web.",
               "Cookies e identificadores de analítica: véase la Política de cookies.",
@@ -666,7 +659,7 @@ export const legal: LegalByLanguage = {
             heading: "Para qué se necesitan",
             bullets: [
               "Para prestar el servicio: obtener el vídeo de su enlace y entregarle el archivo.",
-              `Para distinguir su cuenta de las demás y respetar el límite diario de ${DAILY_LIMIT} descargas.`,
+              "Para distinguir su cuenta de las demás y prevenir abusos.",
               "Para proteger el servicio frente a abusos automatizados mediante la verificación Cloudflare Turnstile antes de enviar un enlace.",
               "Para entender cómo se usa el sitio y corregir errores, mediante estadísticas anonimizadas y agregadas.",
               "Para responder a sus consultas y a las de los titulares de derechos.",
@@ -697,7 +690,7 @@ export const legal: LegalByLanguage = {
               "No vendemos sus datos ni los cedemos a terceros para sus propios fines. El servicio se apoya en los siguientes proveedores, cada uno con sus propias normas de tratamiento:",
             ],
             bullets: [
-              `Telegram: autenticación mediante el widget de inicio de sesión y funcionamiento del bot ${BOT}.`,
+              `Telegram: funcionamiento del bot ${BOT}.`,
               "Cloudflare: protección antibots (Turnstile), entrega del sitio y enrutamiento del correo.",
               "Google Analytics y Google Tag Manager: estadísticas de visitas.",
               "Yandex Metrica: estadísticas de visitas, mapa de clics y Webvisor. Webvisor graba la actividad en la página: movimientos del puntero, desplazamiento y clics. Las grabaciones se usan únicamente para analizar la usabilidad.",
@@ -707,7 +700,7 @@ export const legal: LegalByLanguage = {
             heading: "Plazos de conservación",
             bullets: [
               "Los archivos descargados se eliminan del servidor automáticamente alrededor de una hora después de crearse. No conservamos ningún archivo histórico de sus vídeos.",
-              "Los registros de los intentos de descarga se conservan mientras sean necesarios para el límite diario y la atención de consultas.",
+              "Los registros de los intentos de descarga se conservan mientras sean necesarios para la prevención de abusos y la atención de consultas.",
               "Los datos de la cuenta se conservan mientras utilice el servicio y se eliminan a petición suya.",
               "Los registros del servidor se conservan un tiempo limitado y se sobrescriben con su rotación.",
             ],
@@ -755,16 +748,14 @@ export const legal: LegalByLanguage = {
             body: [
               "Todas las funciones del servicio se prestan de forma gratuita. No hay suscripciones, planes de pago, calidades de vídeo de pago ni compras internas.",
               "No mostramos publicidad ni incluimos enlaces de afiliación.",
-              "El límite diario de descargas existe para mantener el servicio estable y no puede levantarse mediante pago en ningún caso.",
             ],
           },
           {
             heading: "Condiciones de acceso",
             bullets: [
-              "La descarga requiere iniciar sesión con Telegram. Es lo que permite aplicar el límite y dificultar los abusos.",
-              `Una cuenta puede descargar hasta ${DAILY_LIMIT} archivos al día. El contador es común para el sitio web y el bot.`,
-              "Navegar por el sitio y consultar las calidades disponibles no requiere iniciar sesión.",
-              "Para descargar mediante el bot de Telegram es necesario estar suscrito a nuestro canal. Es la única condición: el servicio sigue siendo gratuito, sin publicidad ni funciones de pago.",
+              "Para descargar en el sitio web no se necesita cuenta ni iniciar sesión. El bot distingue a los usuarios por su cuenta de Telegram.",
+              "Los límites técnicos de frecuencia de solicitudes protegen el servicio frente a la sobrecarga y los abusos automatizados.",
+              "No es necesario suscribirse a nuestro canal para descargar mediante el bot. El bot añade en el texto que acompaña a los archivos un enlace al canal de noticias del proyecto; suscribirse a él es opcional.",
             ],
           },
           {
@@ -783,7 +774,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Descargue únicamente material cuyos derechos le pertenezcan o cuyo uso permitan el titular de los derechos o la ley.",
               "No utilice el servicio para infringir derechos de autor o conexos, difundir contenido prohibido o vulnerar derechos de terceros.",
-              "No intente eludir las limitaciones técnicas del servicio, incluidos el límite diario, la verificación antibots y la autenticación.",
+              "No intente eludir las limitaciones técnicas del servicio, incluidos los límites de frecuencia de solicitudes y la verificación antibots.",
               "No genere carga automatizada: no se admiten peticiones masivas, scripts ni rastreadores.",
             ],
           },
@@ -834,7 +825,7 @@ export const legal: LegalByLanguage = {
           {
             heading: "Qué son las cookies",
             body: [
-              "Las cookies son pequeños archivos de texto que un sitio guarda en su navegador. Permiten recordar que ha iniciado sesión y recopilar estadísticas de visitas anonimizadas.",
+              "Las cookies son pequeños archivos de texto que un sitio guarda en su navegador. Permiten recordar sus ajustes y recopilar estadísticas de visitas anonimizadas.",
               "Junto con las cookies, este documento cubre tecnologías afines: el almacenamiento local del navegador y los píxeles de seguimiento.",
             ],
           },
@@ -842,7 +833,6 @@ export const legal: LegalByLanguage = {
             heading: "Necesarias",
             body: ["Sin ellas el servicio no funciona, por lo que siempre se instalan."],
             bullets: [
-              "Sesión de acceso: confirma que ha iniciado sesión con Telegram y hace posible el contador diario.",
               "Cloudflare Turnstile: comprueba que el enlace lo envía una persona y no un script.",
               "Preferencias de interfaz: el idioma y el tema elegidos.",
             ],
@@ -870,7 +860,7 @@ export const legal: LegalByLanguage = {
               "Bloquee o elimine las cookies en la configuración de su navegador: sirve para todos los sistemas indicados.",
               "Google Analytics: el complemento oficial que desactiva la recopilación está disponible en Google.",
               "Yandex Metrica: puede oponerse mediante el complemento oficial de Yandex.",
-              "Desactivar las cookies necesarias hará imposible iniciar sesión y descargar.",
+              "Desactivar las cookies necesarias hará imposible descargar.",
             ],
           },
           {
@@ -958,7 +948,7 @@ export const legal: LegalByLanguage = {
               "Ми свідомо не збираємо нічого понад необхідне для роботи сервісу та не запитуємо документи, платіжні дані чи адресу.",
             ],
             bullets: [
-              "Дані облікового запису Telegram, які передає віджет входу: числовий ідентифікатор, ім'я, за наявності — прізвище, ім'я користувача, посилання на фотографію профілю та код мови.",
+              "Дані облікового запису Telegram, які бот отримує, коли ви йому пишете: числовий ідентифікатор, ім'я користувача, ім'я та код мови.",
               "Посилання, які ви надсилаєте на завантаження, і відомості про саму спробу: платформа, дата й час, обрана якість, результат (успіх або помилка).",
               "Технічні дані з'єднання: IP-адреса, тип і версія браузера, мова, сторінка переходу. Вони потрапляють до журналів сервера та до систем вебаналітики.",
               "Файли cookie та ідентифікатори аналітики — докладніше в Політиці cookie.",
@@ -968,7 +958,7 @@ export const legal: LegalByLanguage = {
             heading: "Навіщо потрібні ці дані",
             bullets: [
               "Надати саму послугу: отримати відео за вашим посиланням і передати вам файл.",
-              "Відрізнити ваш обліковий запис від чужого та дотриматися добового обмеження — не більше " + DAILY_LIMIT + " завантажень на добу.",
+              "Відрізнити ваш обліковий запис від чужого та протидіяти зловживанням.",
               "Захистити сервіс від автоматизованих зловживань: перевірка Cloudflare Turnstile перед надсиланням посилання.",
               "Розуміти, як використовується сайт, і усувати помилки — знеособлена та агрегована статистика.",
               "Відповідати на ваші звернення та звернення правовласників.",
@@ -999,7 +989,7 @@ export const legal: LegalByLanguage = {
               "Ми не продаємо й не передаємо ваші дані третім особам для їхніх власних цілей. Для роботи сервісу залучено таких постачальників, кожен з яких обробляє дані за своїми правилами:",
             ],
             bullets: [
-              "Telegram — авторизація через віджет входу та робота бота " + BOT + ".",
+              "Telegram — робота бота " + BOT + ".",
               "Cloudflare — захист від ботів (Turnstile), доставка сайту та маршрутизація пошти.",
               "Google Analytics і Google Tag Manager — статистика відвідувань.",
               "Яндекс.Метрика — статистика відвідувань, карта кліків і Вебвізор. Вебвізор записує дії на сторінці: переміщення вказівника, прокручування та кліки. Записи використовуються лише для аналізу зручності сайту.",
@@ -1009,7 +999,7 @@ export const legal: LegalByLanguage = {
             heading: "Скільки ми зберігаємо дані",
             bullets: [
               "Завантажені файли автоматично видаляються з сервера приблизно через годину після створення. Ми не зберігаємо архів ваших відео.",
-              "Записи про спроби завантаження зберігаються, доки це потрібно для дотримання добового ліміту та розгляду звернень.",
+              "Записи про спроби завантаження зберігаються, доки це потрібно для протидії зловживанням та розгляду звернень.",
               "Дані облікового запису зберігаються, доки ви користуєтеся сервісом, і видаляються на ваш запит.",
               "Журнали сервера зберігаються обмежений час і перезаписуються в міру ротації.",
             ],
@@ -1057,16 +1047,14 @@ export const legal: LegalByLanguage = {
             body: [
               "Усі можливості сервісу надаються безкоштовно. У нас немає підписок, платних тарифів, платних якостей відео та внутрішніх покупок.",
               "Ми не показуємо рекламу та не розміщуємо партнерські посилання.",
-              "Добове обмеження кількості завантажень існує заради стабільності сервісу й не знімається за гроші за жодних умов.",
             ],
           },
           {
             heading: "Умови доступу",
             bullets: [
-              "Завантаження доступне лише після авторизації через Telegram. Це потрібно, щоб дотримуватися обмеження та протидіяти зловживанням.",
-              `Один обліковий запис може завантажити не більше ${DAILY_LIMIT} файлів на добу. Лічильник спільний для сайту та бота.`,
-              "Переглядати сайт і перелік доступних якостей можна без авторизації.",
-              "Для завантаження через Telegram-бот потрібна підписка на наш канал. Це єдина умова: сервіс залишається безкоштовним, без реклами та платних функцій.",
+              "Для завантаження на сайті не потрібні ні обліковий запис, ні вхід. Бот розрізняє користувачів за їхнім акаунтом Telegram.",
+              "Від перевантаження та автоматизованих зловживань сервіс захищають технічні обмеження частоти запитів.",
+              "Підписка на наш канал для завантаження через бот не потрібна. У підписі до файлів бот додає посилання на канал новин проєкту; підписуватися на нього необов'язково.",
             ],
           },
           {
@@ -1085,7 +1073,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Завантажуйте лише той матеріал, права на який належать вам або використання якого дозволено правовласником чи законом.",
               "Не використовуйте сервіс для порушення авторських і суміжних прав, поширення забороненого контенту та порушення прав третіх осіб.",
-              "Не намагайтеся обійти технічні обмеження сервісу, зокрема добовий ліміт, перевірку на ботів і авторизацію.",
+              "Не намагайтеся обійти технічні обмеження сервісу, зокрема обмеження частоти запитів і перевірку на ботів.",
               "Не створюйте автоматизоване навантаження: масові запити, скрипти та парсери не допускаються.",
             ],
           },
@@ -1136,7 +1124,7 @@ export const legal: LegalByLanguage = {
           {
             heading: "Що таке cookie",
             body: [
-              "Cookie — невеликі текстові файли, які сайт зберігає у вашому браузері. Вони дають змогу запам'ятати, що ви увійшли в сервіс, і зібрати знеособлену статистику відвідувань.",
+              "Cookie — невеликі текстові файли, які сайт зберігає у вашому браузері. Вони дають змогу запам'ятати ваші налаштування та зібрати знеособлену статистику відвідувань.",
               "Разом із cookie в цьому документі ми описуємо й подібні технології — локальне сховище браузера та лічильники-пікселі.",
             ],
           },
@@ -1146,7 +1134,6 @@ export const legal: LegalByLanguage = {
               "Без них сервіс не працює, тому вони встановлюються завжди.",
             ],
             bullets: [
-              "Сесія входу — підтверджує, що ви авторизовані через Telegram, і дає змогу вести добовий лічильник завантажень.",
               "Cloudflare Turnstile — перевірка, що посилання надсилає людина, а не скрипт.",
               "Налаштування інтерфейсу — обрана мова та тема оформлення.",
             ],
@@ -1174,7 +1161,7 @@ export const legal: LegalByLanguage = {
               "Налаштуйте блокування або видалення cookie у вашому браузері — цей спосіб працює для всіх перелічених систем.",
               "Google Analytics: офіційне доповнення для браузера, що вимикає збір даних, доступне на сайті Google.",
               "Яндекс.Метрика: відмова доступна через офіційне доповнення Яндекса.",
-              "Вимкнення необхідних cookie унеможливить вхід і завантаження.",
+              "Вимкнення необхідних cookie унеможливить завантаження.",
             ],
           },
           {
@@ -1262,7 +1249,7 @@ export const legal: LegalByLanguage = {
               "Біз сервистің жұмысына қажетті деректерден артық ештеңені әдейі жинамаймыз және құжаттарды, төлем деректерін немесе мекенжайды сұратпаймыз.",
             ],
             bullets: [
-              "Кіру виджеті беретін Telegram есептік жазбасының деректері: сандық идентификатор, аты, бар болса — тегі, пайдаланушы аты, профиль фотосуретіне сілтеме және тіл коды.",
+              "Сіз ботқа жазған кезде ол алатын Telegram есептік жазбасының деректері: сандық идентификатор, пайдаланушы аты, аты және тіл коды.",
               "Сіз жүктеп алуға жіберетін сілтемелер және әрекеттің өзі туралы мәліметтер: платформа, күні мен уақыты, таңдалған сапа, нәтиже (сәтті немесе қате).",
               "Қосылымның техникалық деректері: IP-мекенжай, браузердің түрі мен нұсқасы, тіл, өтпелі бет. Олар сервер журналдарына және веб-аналитика жүйелеріне түседі.",
               "Cookie файлдары және аналитика идентификаторлары — толығырақ Cookie саясатында.",
@@ -1272,7 +1259,7 @@ export const legal: LegalByLanguage = {
             heading: "Бұл деректер не үшін қажет",
             bullets: [
               "Қызметтің өзін көрсету: сіздің сілтемеңіз бойынша бейнені алу және файлды сізге беру.",
-              "Сіздің есептік жазбаңызды басқа біреудікінен ажырату және тәуліктік шектеуді сақтау — тәулігіне " + DAILY_LIMIT + " жүктеп алудан аспайды.",
+              "Сіздің есептік жазбаңызды басқа біреудікінен ажырату және теріс пайдаланушылыққа қарсы әрекет ету.",
               "Сервисті автоматтандырылған теріс пайдаланудан қорғау: сілтемені жібермес бұрын Cloudflare Turnstile тексерісі.",
               "Сайттың қалай пайдаланылатынын түсіну және қателерді жою — иесіздендірілген және жинақталған статистика.",
               "Сіздің өтініштеріңізге және құқық иелерінің өтініштеріне жауап беру.",
@@ -1303,7 +1290,7 @@ export const legal: LegalByLanguage = {
               "Біз сіздің деректеріңізді үшінші тұлғаларға олардың өз мақсаттары үшін сатпаймыз және бермейміз. Сервистің жұмысына келесі жеткізушілер тартылған, олардың әрқайсысы деректерді өз ережелері бойынша өңдейді:",
             ],
             bullets: [
-              "Telegram — кіру виджеті арқылы авторизация және " + BOT + " ботының жұмысы.",
+              "Telegram — " + BOT + " ботының жұмысы.",
               "Cloudflare — боттардан қорғау (Turnstile), сайтты жеткізу және поштаны бағыттау.",
               "Google Analytics және Google Tag Manager — кірулер статистикасы.",
               "Яндекс.Метрика — кірулер статистикасы, басулар картасы және Вебвизор. Вебвизор беттегі әрекеттерді жазады: курсордың қозғалысын, айналдыруды және басуларды. Жазбалар тек сайттың ыңғайлылығын талдау үшін пайдаланылады.",
@@ -1313,7 +1300,7 @@ export const legal: LegalByLanguage = {
             heading: "Біз деректерді қанша уақыт сақтаймыз",
             bullets: [
               "Жүктеп алынған файлдар серверден жасалғаннан кейін шамамен бір сағаттан соң автоматты түрде жойылады. Біз сіздің бейнелеріңіздің мұрағатын сақтамаймыз.",
-              "Жүктеп алу әрекеттері туралы жазбалар тәуліктік лимитті сақтау және өтініштерді қарау үшін қажет болғанша сақталады.",
+              "Жүктеп алу әрекеттері туралы жазбалар теріс пайдаланушылыққа қарсы әрекет ету және өтініштерді қарау үшін қажет болғанша сақталады.",
               "Есептік жазба деректері сіз сервисті пайдаланып жүрген уақытта сақталады және сіздің сұрауыңыз бойынша жойылады.",
               "Сервер журналдары шектеулі уақыт сақталады және ротация барысында қайта жазылады.",
             ],
@@ -1361,16 +1348,14 @@ export const legal: LegalByLanguage = {
             body: [
               "Сервистің барлық мүмкіндіктері тегін ұсынылады. Бізде жазылымдар, ақылы тарифтер, бейненің ақылы сапалары және ішкі сатып алулар жоқ.",
               "Біз жарнама көрсетпейміз және серіктестік сілтемелерді орналастырмаймыз.",
-              "Жүктеп алулар санына тәуліктік шектеу сервистің тұрақтылығы үшін бар және ешбір жағдайда ақшаға алынбайды.",
             ],
           },
           {
             heading: "Қолжетімділік шарттары",
             bullets: [
-              "Жүктеп алу тек Telegram арқылы авторизациядан кейін қолжетімді. Бұл шектеуді сақтау және теріс пайдаланушылыққа қарсы әрекет ету үшін қажет.",
-              `Бір есептік жазба тәулігіне ${DAILY_LIMIT} файлдан артық жүктеп ала алмайды. Есептегіш сайт пен бот үшін ортақ.`,
-              "Сайтты және қолжетімді сапалар тізімін авторизациясыз қарауға болады.",
-              "Telegram-бот арқылы жүктеп алу үшін біздің арнаға жазылу талап етіледі. Бұл жалғыз шарт: сервис тегін, жарнамасыз және ақылы функцияларсыз болып қала береді.",
+              "Сайтта жүктеп алу үшін есептік жазба да, кіру де қажет емес. Бот пайдаланушыларды олардың Telegram аккаунты бойынша ажыратады.",
+              "Сервисті шамадан тыс жүктемеден және автоматтандырылған теріс пайдаланудан сұраныстар жиілігіне қойылған техникалық шектеулер қорғайды.",
+              "Бот арқылы жүктеп алу үшін біздің арнаға жазылу талап етілмейді. Бот файлдардың сипаттамасына жобаның жаңалықтар арнасына сілтеме қосады; оған жазылу міндетті емес.",
             ],
           },
           {
@@ -1389,7 +1374,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Құқықтары сізге тиесілі немесе пайдалануға құқық иесі не заң рұқсат еткен материалды ғана жүктеп алыңыз.",
               "Сервисті авторлық және сабақтас құқықтарды бұзу, тыйым салынған контентті тарату және үшінші тұлғалардың құқықтарын бұзу үшін пайдаланбаңыз.",
-              "Сервистің техникалық шектеулерін, оның ішінде тәуліктік лимитті, боттарға тексерісті және авторизацияны айналып өтуге әрекеттенбеңіз.",
+              "Сервистің техникалық шектеулерін, оның ішінде сұраныстар жиілігінің шектеулерін және боттарға тексерісті айналып өтуге әрекеттенбеңіз.",
               "Автоматтандырылған жүктеме жасамаңыз: жаппай сұраулар, скрипттер және парсерлер жол берілмейді.",
             ],
           },
@@ -1440,7 +1425,7 @@ export const legal: LegalByLanguage = {
           {
             heading: "Cookie деген не",
             body: [
-              "Cookie — сайт сіздің браузеріңізде сақтайтын шағын мәтіндік файлдар. Олар сіздің сервиске кіргеніңізді есте сақтауға және кірулердің иесіздендірілген статистикасын жинауға мүмкіндік береді.",
+              "Cookie — сайт сіздің браузеріңізде сақтайтын шағын мәтіндік файлдар. Олар сіздің баптауларыңызды есте сақтауға және кірулердің иесіздендірілген статистикасын жинауға мүмкіндік береді.",
               "Осы құжатта cookie-мен бірге ұқсас технологияларды да — браузердің жергілікті қоймасын және пиксель-есептегіштерді де сипаттаймыз.",
             ],
           },
@@ -1450,7 +1435,6 @@ export const legal: LegalByLanguage = {
               "Оларсыз сервис жұмыс істемейді, сондықтан олар әрдайым орнатылады.",
             ],
             bullets: [
-              "Кіру сессиясы — сіздің Telegram арқылы авторизацияланғаныңызды растайды және жүктеп алулардың тәуліктік есептегішін жүргізуге мүмкіндік береді.",
               "Cloudflare Turnstile — сілтемені скрипт емес, адам жіберіп жатқанын тексеру.",
               "Интерфейс баптаулары — таңдалған тіл және безендіру тақырыбы.",
             ],
@@ -1478,7 +1462,7 @@ export const legal: LegalByLanguage = {
               "Браузеріңізде cookie файлдарын бұғаттауды немесе жоюды баптаңыз — бұл тәсіл аталған барлық жүйелер үшін жұмыс істейді.",
               "Google Analytics: деректер жинауды өшіретін ресми браузер қосымшасы Google сайтында қолжетімді.",
               "Яндекс.Метрика: бас тарту Яндекстің ресми қосымшасы арқылы қолжетімді.",
-              "Қажетті cookie файлдарын өшіру кіруді және жүктеп алуды мүмкін етпейді.",
+              "Қажетті cookie файлдарын өшіру жүктеп алуды мүмкін етпейді.",
             ],
           },
           {

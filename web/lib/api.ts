@@ -16,6 +16,8 @@ interface ProgressData {
   status?: string;
 }
 
+export type Playlist = { id: string; title: string; count: number; entries: { url: string; title: string; duration?: number }[] };
+
 class ApiClient {
   private client: AxiosInstance;
 
@@ -51,6 +53,16 @@ class ApiClient {
         url,
         turnstileToken,
       });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  // Плейлист YouTube: только список видео (server info.controller getPlaylist).
+  async getPlaylist(url: string, turnstileToken: string): Promise<Playlist> {
+    try {
+      const response = await this.client.post<Playlist>("/info/playlist", { url, turnstileToken });
       return response.data;
     } catch (error) {
       throw this.handleError(error);

@@ -14,6 +14,8 @@ import {
   isPlatformUrl,
   jobKey,
   sitePath,
+  isPlaylistPage,
+  youtubePlaylistId,
   lang,
   loadLang,
   chosenLang,
@@ -425,6 +427,113 @@ function render(job) {
 
 // Список языков вверху окошка: «Авто» — по языку браузера. После выбора
 // окошко перерисовывается заново — так проще, чем менять тексты на месте.
+// ---- Плейлист YouTube ----
+//
+// Блок под основным окошком: предложение скачать весь плейлист и ход
+// скачивания. Качает фоновая часть (background.js runPlaylist) — по одному
+// видео; «Остановить» прерывает и текущее.
+let playlistUrl = null;
+let playlistId = null;
+let playlistInfo = null;
+const playlistBox = document.getElementById("playlist");
+const playlistJobKey = () => `playlist:${playlistId}`;
+
+function showPlaylist(...nodes) {
+  playlistBox.replaceChildren(...nodes);
+  playlistBox.hidden = nodes.length === 0;
+}
+
+function startPlaylist(mode) {
+  chrome.runtime.sendMessage({ type: "playlist", listId: playlistId, url: playlistUrl, mode });
+}
+
+async function closePlaylist() {
+  await setJob(playlistJobKey(), null);
+}
+
+function renderPlaylist(job) {
+  if (!playlistId) return;
+  if (!job) {
+    // Ролик из плейлиста: сначала только кнопка — список запрашиваем по
+    // нажатию (запросы к /info у расширения под строгим лимитом).
+    if (playlistInfo === null && !isPlaylistPage(playlistUrl)) {
+      return showPlaylist(
+        el("button", { class: "secondary", type: "button", onclick: loadPlaylistInfo }, t.playlistOffer)
+      );
+    }
+    if (!playlistInfo?.entries?.length) return showPlaylist();
+    return showPlaylist(
+      el("div", { class: "section-label" }, t.playlistTitle(playlistInfo.title, playlistInfo.entries.length)),
+      el("p", { class: "muted" }, t.playlistHint),
+      el(
+        "div",
+        { class: "choices" },
+        choice(t.playlist720, "", () => startPlaylist("std")),
+        choice(t.playlistBest, "", () => startPlaylist("hd")),
+        choice(t.playlistAudio, "", () => startPlaylist("audio"))
+      )
+    );
+  }
+  const n = job.playlist?.entries?.length ?? 0;
+  const done = job.playlist?.done ?? 0;
+  const failed = job.playlist?.failed ?? 0;
+  const close = el("button", { class: "secondary", type: "button", onclick: closePlaylist }, t.close);
+  switch (job.state) {
+    case "playlist-loading":
+      return showPlaylist(el("p", { class: "muted" }, t.playlistLoading), close);
+    case "playlist": {
+      const p = job.item?.progress;
+      const percent = Number.isFinite(p?.percentage) ? Math.max(0, Math.min(100, Math.round(p.percentage))) : null;
+      const bar = el("div", { class: `progress${percent === null ? " indeterminate" : ""}` }, el("div"));
+      if (percent !== null) bar.firstChild.style.width = `${percent}%`;
+      return showPlaylist(
+        el("div", { class: "section-label" }, t.playlistTitle(job.title, n)),
+        el("p", {}, `${t.playlistProgress(Math.min(job.playlist.index + 1, n), n)}${job.item?.title ? ` — ${job.item.title}` : ""}`),
+        bar,
+        el("p", { class: "muted" }, t.playlistStats(done, failed)),
+        el(
+          "button",
+          {
+            class: "secondary stop",
+            type: "button",
+            onclick: () => chrome.runtime.sendMessage({ type: "playlist-stop", listId: playlistId }),
+          },
+          t.playlistStop
+        )
+      );
+    }
+    case "playlist-done":
+      return showPlaylist(el("p", {}, t.playlistDone(done, n)), el("p", { class: "muted" }, t.playlistStats(done, failed)), close);
+    case "playlist-stopped":
+      return showPlaylist(el("p", {}, t.playlistStopped(done, n)), close);
+    case "error":
+      return showPlaylist(el("p", { class: "message error" }, job.error || t.errGeneric), close);
+    default:
+      return showPlaylist();
+  }
+}
+
+async function loadPlaylistInfo() {
+  showPlaylist(el("p", { class: "muted" }, t.playlistLoading));
+  try {
+    playlistInfo = await api("/info/playlist", { url: playlistUrl });
+  } catch (e) {
+    playlistInfo = { entries: [] };
+    return showPlaylist(el("p", { class: "message error" }, friendlyError(e)));
+  }
+  renderPlaylist(await getJob(playlistJobKey()));
+}
+
+async function mountPlaylist(pageUrl) {
+  playlistId = youtubePlaylistId(pageUrl);
+  if (!playlistId) return;
+  playlistUrl = pageUrl;
+  const job = await getJob(playlistJobKey());
+  if (job) return renderPlaylist(job);
+  if (isPlaylistPage(pageUrl)) return loadPlaylistInfo();
+  renderPlaylist(null);
+}
+
 async function mountLanguagePicker() {
   const select = document.getElementById("lang");
   select.setAttribute("aria-label", t.langLabel);
@@ -455,6 +564,8 @@ async function main() {
     }
     const change = url && changes[jobKey(url)];
     if (change) render(change.newValue ?? null);
+    const plChange = playlistId && changes[jobKey(playlistJobKey())];
+    if (plChange) renderPlaylist(plChange.newValue ?? null);
   });
 
   // Вышла новая версия (только сборки для Chromium, см. update-check.js) —
@@ -479,6 +590,13 @@ async function main() {
   if (!embedded && url) mountAccountConnect(document.getElementById("account"), url);
   // Урок GetCourse: школа на своём домене, видео — в плеере GetCourse внутри
   // страницы. Кнопка на самом плеере присылает хеш своего видео (?gc=).
+  // Плейлист YouTube: на странице плейлиста — только он, на ролике из
+  // плейлиста — ролик и под ним весь плейлист.
+  if (!embedded && url) void mountPlaylist(url);
+  if (url && isPlaylistPage(url)) {
+    show();
+    return;
+  }
   const gcHash = params.get("gc");
   if (gcHash || !url || !isPlatformUrl(url)) {
     const players = await findGetCoursePlayers();

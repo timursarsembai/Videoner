@@ -58,9 +58,5 @@ export type ExtensionType =
   | keyof typeof videoExtensionLabel
   | keyof typeof audioExtensionLabel;
 
-// Скачиваний на пользователя за скользящие 24 часа. Лимит существует только
-// ради устойчивости сервиса и снять его нельзя никакими деньгами: платных
-// функций в сервисе нет вовсе. Счётчик общий для сайта и бота.
-export const DAILY_DOWNLOAD_LIMIT = 20;
 
 

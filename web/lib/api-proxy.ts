@@ -65,6 +65,8 @@ export type ProxyPath = { method: string; path: string };
 
 export const DOWNLOAD_PROXY_PATHS: ProxyPath[] = [
   { method: "POST", path: "info" },
+  // Список видео плейлиста YouTube (дальше каждое — обычный download/video).
+  { method: "POST", path: "info/playlist" },
   { method: "POST", path: "download/video" },
   { method: "POST", path: "download/audio" },
   { method: "POST", path: "download/subtitles" },
@@ -88,8 +90,10 @@ function isAllowedPath(allowed: ProxyPath[], method: string, path: string[]): bo
   );
 }
 
+// /info и /info/playlist — оба гоняют yt-dlp: капча на сайте, строгий лимит
+// у расширения.
 export function isInfoRequest(request: NextRequest, path: string[]): boolean {
-  return path.length === 1 && path[0] === "info" && request.method === "POST";
+  return path[0] === "info" && path.length <= 2 && request.method === "POST";
 }
 
 // Cloudflare Turnstile: проверяем токен ТОЛЬКО на /info — это единственная

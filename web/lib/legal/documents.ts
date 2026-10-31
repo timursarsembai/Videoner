@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на девяти языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на десяти языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -2725,6 +2725,306 @@ export const legal: LegalByLanguage = {
             heading: "Pengaduan dengan iktikad tidak baik",
             body: [
               "Pengaduan yang memuat informasi yang diketahui tidak benar dapat menimbulkan tanggung jawab hukum bagi pengadu sesuai dengan peraturan perundang-undangan yang berlaku. Kami berhak menolak meninjau pengaduan apabila pengaduan tersebut tidak memungkinkan untuk mengidentifikasi pemegang hak maupun materi yang disengketakan.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  sw: {
+    ui: {
+      updated: "Imesasishwa mwisho",
+      back: "Rudi ukurasa wa mwanzo",
+      operatorHeading: "Mwendeshaji wa huduma",
+      navHeading: "Nyaraka nyingine",
+      labels: {
+        privacy: "Sera ya Faragha",
+        terms: "Masharti ya Matumizi",
+        cookies: "Sera ya Vidakuzi",
+        copyright: "Hakimiliki",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Sera ya Faragha",
+        summary: `Ni data gani ${operator.site} hukusanya, kwa nini zinahitajika, zinahifadhiwa kwa muda gani na jinsi ya kuzifuta.`,
+        sections: [
+          {
+            heading: "Masharti ya jumla",
+            body: [
+              `Sera hii inaeleza ni data binafsi zipi zinazochakatwa na huduma ya ${operator.site} na kwa madhumuni gani. Mdhibiti wa data (data controller) ni ${operator.nameSw}.`,
+              "Kwa kutumia huduma, unakubali utaratibu wa uchakataji ulioelezwa hapa. Ikiwa hukubaliani nao, tafadhali usitumie huduma.",
+              "Uchakataji unafanywa kwa mujibu wa Sheria ya Jamhuri ya Kazakhstan kuhusu Data Binafsi na Ulinzi Wake, na, kwa wageni kutoka Eneo la Kiuchumi la Ulaya (European Economic Area), kwa kuzingatia matakwa ya GDPR.",
+            ],
+          },
+          {
+            heading: "Data tunazochakata",
+            body: [
+              "Kwa makusudi hatukusanyi chochote zaidi ya kinachohitajika kwa uendeshaji wa huduma, na hatuombi nyaraka za utambulisho, taarifa za malipo wala anwani.",
+            ],
+            bullets: [
+              "Data za akaunti ya Telegram ambazo boti hupokea unapoiandikia: kitambulisho cha nambari, jina la mtumiaji (username), jina na msimbo wa lugha.",
+              "Viungo unavyotuma kwa ajili ya kupakua na taarifa kuhusu jaribio lenyewe: jukwaa, tarehe na saa, ubora uliouchagua, na matokeo (mafanikio au hitilafu).",
+              "Data za kiufundi za muunganisho: anwani ya IP, aina na toleo la kivinjari, lugha na ukurasa uliokuelekeza. Data hizi huingia kwenye kumbukumbu za seva (server logs) na kwenye mifumo ya takwimu za wavuti.",
+              "Vidakuzi (cookies) na vitambulisho vya takwimu — maelezo zaidi yamo katika Sera ya Vidakuzi.",
+            ],
+          },
+          {
+            heading: "Kwa nini tunahitaji data hizi",
+            bullets: [
+              "Kutoa huduma yenyewe: kupata video kupitia kiungo chako na kukupatia faili.",
+              "Kutofautisha akaunti yako na akaunti za watu wengine na kuzuia matumizi mabaya.",
+              "Kulinda huduma dhidi ya matumizi mabaya ya kiotomatiki kupitia ukaguzi wa Cloudflare Turnstile kabla ya kiungo kutumwa.",
+              "Kuelewa jinsi tovuti inavyotumiwa na kurekebisha hitilafu, kwa kutumia takwimu zisizomtambulisha mtu na zilizojumlishwa.",
+              "Kujibu maombi yako na maombi ya wamiliki wa haki.",
+              "Mara chache kukuandikia kwenye Telegram ili kujua maoni yako kuhusu huduma — kwa mfano, ikiwa umeacha kuitumia. Si lazima kujibu; ikiwa hutaki kupokea ujumbe kama huo, sema tu, nasi hatutakuandikia tena.",
+            ],
+          },
+          {
+            heading: "Misingi ya kisheria ya uchakataji",
+            body: [
+              "Data za akaunti ya Telegram na taarifa za upakuaji huchakatwa ili kutekeleza Masharti ya Matumizi, ambayo unayakubali unapoanza kutumia huduma.",
+              "Vidakuzi vya takwimu na urekodi wa vitendo kwenye tovuti huchakatwa kwa msingi wa idhini yako, ambayo unaweza kuiondoa wakati wowote — njia za kufanya hivyo zimeelezwa katika Sera ya Vidakuzi.",
+              "Kumbukumbu za seva na ulinzi dhidi ya boti huchakatwa kwa msingi wa maslahi yetu halali (legitimate interest) ya kuhakikisha kwamba huduma inafanya kazi na iko salama.",
+              "Kuuliza maoni yako kuhusu huduma kunategemea maslahi yetu halali ya kuboresha huduma; unaweza kukataa wakati wowote.",
+            ],
+          },
+          {
+            heading: "Akaunti zilizounganishwa",
+            body: [
+              "Ukipenda, unaweza kuunganisha akaunti yako ya jukwaa (Instagram, Facebook, YouTube, X, VK, TikTok) na boti ili boti ipakue machapisho yanayoonekana tu kwa watumiaji walioingia: stori (stories) na machapisho ya faragha. Kwa ajili hiyo boti hupokea vidakuzi vya akaunti hiyo — kutoka kwa kiendelezi cha Videoner kupitia msimbo wa matumizi ya mara moja, au kutoka kwa faili uliyotuma.",
+              "Tunahifadhi vidakuzi vya jukwaa lililochaguliwa pekee na kutupa vingine vyote mara moja. Vinahifadhiwa vikiwa vimesimbwa (encrypted) na hutumika tu kwa upakuaji pale ulipoviunganisha. Vidakuzi vilivyounganishwa kwenye gumzo lako la faragha hutumika kwa upakuaji wako, ikiwa ni pamoja na viungo vyako mwenyewe katika vikundi ambavyo havina akaunti yao iliyounganishwa; havitumiki kamwe kwa viungo vya watu wengine. Vidakuzi vilivyounganishwa kwenye kikundi hutumika kwa upakuaji wa wanachama wake pekee na si kwingineko.",
+              "Msingi wa kisheria ni idhini yako: unaunganisha akaunti mwenyewe na unaweza kuiondoa wakati wowote kwa amri /accounts. Vidakuzi vilivyoondolewa hufutwa kabisa bila uwezekano wa kurejeshwa. Ikiwa jukwaa litaacha kukubali kuingia, boti itakujulisha.",
+              "Machapisho yaliyopakuliwa kupitia akaunti iliyounganishwa hayachapishwi kwenye chaneli yetu na hayatolewi kwa watumiaji wengine kutoka kwenye akiba ya pamoja (cache).",
+            ],
+          },
+          {
+            heading: "Huduma za wahusika wengine",
+            body: [
+              "Hatuuzi data zako wala hatuzipitishi kwa wahusika wengine (third parties) kwa madhumuni yao wenyewe. Huduma inategemea watoa huduma wafuatao, ambao kila mmoja huchakata data kwa mujibu wa kanuni zake mwenyewe:",
+            ],
+            bullets: [
+              `Telegram — uendeshaji wa boti ${BOT}.`,
+              "Cloudflare — ulinzi dhidi ya boti (Turnstile), uwasilishaji wa tovuti na uelekezaji wa barua pepe.",
+              "Google Analytics na Google Tag Manager — takwimu za ziara.",
+              "Yandex Metrica — takwimu za ziara, ramani ya mibofyo na Webvisor. Webvisor hurekodi vitendo kwenye ukurasa: mwendo wa kiashiria, usogezaji (scrolling) na mibofyo. Rekodi hizo hutumika tu kuchambua urahisi wa matumizi ya tovuti.",
+            ],
+          },
+          {
+            heading: "Muda wa kuhifadhi data",
+            bullets: [
+              "Faili zilizopakuliwa hufutwa kiotomatiki kutoka kwenye seva takriban saa moja baada ya kuundwa. Hatuhifadhi kumbukumbu (archive) ya video zako.",
+              "Rekodi za majaribio ya upakuaji huhifadhiwa kwa muda unaohitajika kuzuia matumizi mabaya na kushughulikia maombi.",
+              "Data za akaunti huhifadhiwa kwa muda wote unaotumia huduma na hufutwa kwa ombi lako.",
+              "Kumbukumbu za seva huhifadhiwa kwa muda maalum na huandikwa upya kadiri zinavyozungushwa (log rotation).",
+            ],
+          },
+          {
+            heading: "Mahali data zinapochakatwa",
+            body: [
+              "Seva za huduma ziko katika kituo cha data ndani ya Umoja wa Ulaya. Baadhi ya watoa huduma waliotajwa hapo juu wanaweza kuchakata data nje yake kwa mujibu wa sera zao wenyewe.",
+            ],
+          },
+          {
+            heading: "Haki zako",
+            body: [
+              `Una haki ya kupata taarifa kuhusu uchakataji wa data zako, kudai zirekebishwe au zifutwe, kuondoa idhini yako na kupinga uchakataji. Kwa ajili hiyo, tuandikie kupitia ${MAIL} kutoka kwa anwani ya barua pepe au akaunti ya Telegram inayohusiana na ombi hilo.`,
+              "Tunajibu ndani ya muda unaofaa, kwa kawaida ndani ya siku thelathini za kalenda. Kufutwa kwa akaunti kunajumuisha kufutwa kwa historia ya upakuaji inayohusiana nayo.",
+            ],
+          },
+          {
+            heading: "Watoto",
+            body: [
+              "Huduma haikusudiwi kwa watoto walio chini ya umri wa miaka 16 wala haielekezwi kwao. Kwa makusudi hatukusanyi data za watumiaji kama hao; ikiwa hilo limetokea kwa makosa, tuandikie na data hizo zitafutwa.",
+            ],
+          },
+          {
+            heading: "Mabadiliko",
+            body: [
+              "Tunaweza kusasisha Sera hii. Tarehe ya toleo linalotumika imeonyeshwa juu ya ukurasa; mabadiliko muhimu tutayaashiria ndani ya huduma.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Masharti ya Matumizi",
+        summary: `Kanuni za matumizi ya ${operator.site}: kinachoruhusiwa, kisichoruhusiwa, na masharti ambayo huduma inafanya kazi kwayo.`,
+        sections: [
+          {
+            heading: "Masharti ya jumla",
+            body: [
+              `Masharti haya yanasimamia matumizi ya tovuti ya ${operator.site} na boti ya Telegram ${BOT}. Mmiliki na msimamizi wa huduma ni ${operator.nameSw}.`,
+              "Kwa kuanza kutumia huduma, unathibitisha kwamba umesoma Masharti haya na unayakubali. Ikiwa sharti lolote halikufai, tafadhali usitumie huduma.",
+            ],
+          },
+          {
+            heading: "Huduma ni bure",
+            body: [
+              "Huduma zote zinazotolewa ni bure. Hakuna usajili wa kulipia (subscriptions), mipango ya kulipia, ubora wa video wa kulipia wala ununuzi ndani ya huduma.",
+              "Hatuonyeshi matangazo na hatuweki viungo vya ushirika (affiliate links).",
+            ],
+          },
+          {
+            heading: "Masharti ya ufikiaji",
+            bullets: [
+              "Kupakua kwenye tovuti hakuhitaji akaunti wala kuingia. Boti hutofautisha watumiaji kwa akaunti zao za Telegram.",
+              "Vikomo vya kiufundi vya marudio ya maombi hulinda huduma dhidi ya kuzidiwa na matumizi mabaya ya kiotomatiki.",
+              "Upakuaji kutoka YouTube una kikomo cha kila siku cha trafiki: 10 GB kwa saa 24 kwa kila mtandao kwenye tovuti na kwenye kiendelezi, na 25 GB kwa saa 24 kwa kila akaunti ya Telegram kwenye boti. Majukwaa mengine hayaathiriwi.",
+              "Si lazima kujiunga na chaneli yetu ili kupakua kupitia boti. Boti huongeza kiungo cha chaneli ya habari ya mradi katika maelezo ya faili; kujiunga nayo ni hiari.",
+            ],
+          },
+          {
+            heading: "Huduma inafanya nini",
+            body: [
+              "Huduma hufanya kazi kama mpatanishi wa kiufundi (technical intermediary): kupitia kiungo unachotoa, hufikia ukurasa unaopatikana kwa umma, hupata faili la midia na kukupatia.",
+              "Hatuhifadhi katalogi ya video, hatufanyi utafutaji katika maudhui ya watu wengine, na hatuhifadhi faili zilizopakuliwa kwa muda mrefu kuliko unaohitajika kwa uwasilishaji — takriban saa moja.",
+              "Upatikanaji wa jukwaa fulani hutegemea maamuzi ya kiufundi ya jukwaa hilo na unaweza kubadilika bila taarifa.",
+            ],
+          },
+          {
+            heading: "Wajibu wa mtumiaji",
+            body: [
+              "Wewe peke yako unawajibika kwa jinsi unavyotumia faili unazopata, na unathibitisha kwamba una haki ya kufanya hivyo.",
+            ],
+            bullets: [
+              "Pakua tu maudhui ambayo haki zake ni zako, au ambayo matumizi yake yameruhusiwa na mmiliki wa haki au na sheria.",
+              "Usitumie huduma kukiuka hakimiliki na haki shirikishi (related rights), kusambaza maudhui yaliyopigwa marufuku au kukiuka haki za wahusika wengine.",
+              "Usijaribu kukwepa vikomo vya kiufundi vya huduma, ikiwa ni pamoja na vikomo vya marudio ya maombi na ukaguzi dhidi ya boti.",
+              "Usisababishe mzigo wa kiotomatiki: maombi ya wingi, hati za programu (scripts) na zana za kuvuna data (scrapers) haziruhusiwi.",
+            ],
+          },
+          {
+            heading: "Uchapishaji wa viungo kwenye chaneli",
+            body: [
+              "Kwa kupakua video kupitia boti, unakubali kwamba kiungo cha chapisho asili kitachapishwa kwenye chaneli yetu ya Telegram. Tahadhari kuhusu hili huonyeshwa kwenye boti kabla ya kuchagua ubora — yaani, kabla hujafanya uamuzi wa kupakua.",
+              "Uchapishaji hufanywa bila kutaja utambulisho: chaneli hupokea kiungo cha ukurasa unaopatikana kwa umma, kichwa cha video na picha yake ya jalada — fremu ileile ambayo jukwaa huonyesha katika onyesho la awali la chapisho. Haielezwi ni nani aliyepakua video. Faili la video lenyewe halichapishwi popote wala wakati wowote: kinachosambazwa ni kiungo, ambacho majukwaa yenyewe yanaalika kisambazwe kupitia kitufe cha «Shiriki» (Share) chini ya kila chapisho.",
+              "Kiungo kilekile huchapishwa si zaidi ya mara moja. Ikiwa hutaki kiungo kifike kwenye chaneli, usipakue video hiyo kupitia huduma yetu.",
+              "Viungo kutoka kwenye vikundi, pamoja na machapisho yaliyopakuliwa kupitia akaunti iliyounganishwa, havichapishwi kwenye chaneli.",
+            ],
+          },
+          {
+            heading: "Kuunganisha akaunti yako",
+            body: [
+              "Kwa kuunganisha akaunti yako ya jukwaa na boti, unathibitisha kwamba akaunti hiyo ni yako na kwamba una haki ya kuitumia kwa njia hii.",
+              "Majukwaa hayaridhii upakuaji wa kiotomatiki na yanaweza kuwekea vikwazo au kufungia akaunti iliyounganishwa. Unakubali hatari hii; tunapendekeza kuunganisha akaunti ya ziada badala ya akaunti yako kuu. Hatuwajibiki kwa vikwazo ambavyo jukwaa litaweka kwenye akaunti yako.",
+              "Akaunti iliyounganishwa kwenye kikundi hutumika kwa upakuaji wa wanachama wake wote. Wasimamizi wa kikundi huamua nani anaweza kuunganisha akaunti na wanaweza kuondoa yoyote kati ya hizo.",
+            ],
+          },
+          {
+            heading: "Ukomo wa dhima",
+            body: [
+              "Huduma inatolewa «kama ilivyo» (as is). Hatutoi hakikisho la utendaji usiokatizwa, la upatikanaji wa jukwaa fulani, wala la kufaa kwa faili kwa madhumuni yako.",
+              "Hatuwajibiki kwa jinsi unavyotumia maudhui uliyopakua, wala kwa matokeo ya ukiukaji wako wa haki za wahusika wengine.",
+              "Tuna haki ya kubadilisha huduma zinazotolewa, kusimamisha huduma kwa muda kwa ajili ya matengenezo na kusitisha uendeshaji wake.",
+            ],
+          },
+          {
+            heading: "Kuzuia ufikiaji",
+            body: [
+              "Tunaweza kuzuia au kusitisha ufikiaji wa huduma pale Masharti haya yanapokiukwa, pale kunapokuwa na majaribio ya kukwepa vikomo, au tunapopokea malalamiko yenye msingi kutoka kwa mmiliki wa haki.",
+            ],
+          },
+          {
+            heading: "Mabadiliko na sheria inayotumika",
+            body: [
+              "Tunaweza kurekebisha Masharti haya; tarehe ya toleo linalotumika imeonyeshwa juu ya ukurasa. Kuendelea kutumia huduma baada ya mabadiliko kunamaanisha kwamba unakubali toleo jipya.",
+              "Mahusiano ya pande husika yanasimamiwa na sheria za Jamhuri ya Kazakhstan. Pande zitajitahidi kutatua migogoro kwa njia ya mawasiliano ya maandishi, na zisipofikia makubaliano — kwa utaratibu uliowekwa na sheria za Jamhuri ya Kazakhstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Sera ya Vidakuzi",
+        summary: `Ni vidakuzi gani ${operator.site} hutumia, ni vya nini na jinsi ya kuvikataa.`,
+        sections: [
+          {
+            heading: "Vidakuzi ni nini",
+            body: [
+              "Vidakuzi (cookies) ni faili ndogo za maandishi ambazo tovuti huhifadhi kwenye kivinjari chako. Huwezesha huduma kukumbuka mipangilio yako na kukusanya takwimu za ziara zisizomtambulisha mtu.",
+              "Pamoja na vidakuzi, hati hii pia inashughulikia teknolojia zinazohusiana: hifadhi ya ndani ya kivinjari (local storage) na pikseli za ufuatiliaji.",
+            ],
+          },
+          {
+            heading: "Vidakuzi vya lazima kabisa",
+            body: ["Bila hivi huduma haifanyi kazi, kwa hiyo huwekwa kila wakati."],
+            bullets: [
+              "Cloudflare Turnstile — hukagua kwamba kiungo kinatumwa na binadamu na si na hati ya programu (script).",
+              "Mipangilio ya kiolesura — lugha na mandhari ya rangi uliyochagua.",
+            ],
+          },
+          {
+            heading: "Vidakuzi vya takwimu",
+            body: [
+              "Hutusaidia kuona ni kurasa zipi zinatumika na wapi hitilafu hutokea. Huwekwa kwa idhini yako na havihitajiki ili huduma ifanye kazi.",
+            ],
+            bullets: [
+              "Google Analytics na Google Tag Manager — idadi ya ziara na tabia kwenye tovuti bila kumtambulisha mtu.",
+              "Yandex Metrica — idadi ya ziara, ramani ya mibofyo na Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor ya Yandex Metrica hurekodi vitendo kwenye ukurasa: mwendo wa kiashiria, usogezaji, mibofyo na uandishi katika sehemu ya kiungo. Hii inahitajika ili tuone mahali kiolesura kinapowachanganya watu.",
+              "Hatutumii rekodi hizi kufuatilia watu mahususi. Tafadhali usiingize katika sehemu za tovuti taarifa ambazo usingependa zihifadhiwe.",
+            ],
+          },
+          {
+            heading: "Jinsi ya kukataa",
+            bullets: [
+              "Zuia au futa vidakuzi katika mipangilio ya kivinjari chako — njia hii inafanya kazi kwa mifumo yote iliyotajwa hapa.",
+              "Google Analytics: kiongezi rasmi cha kivinjari kinachozima ukusanyaji kinapatikana kwenye tovuti ya Google.",
+              "Yandex Metrica: kujiondoa kunawezekana kupitia kiongezi rasmi cha Yandex.",
+              "Kuzima vidakuzi vya lazima kabisa kutafanya upakuaji usiwezekane.",
+            ],
+          },
+          {
+            heading: "Muda wa kuhifadhi",
+            body: [
+              "Vidakuzi vya kipindi (session cookies) hufutwa unapofunga kivinjari au muda wa kipindi unapoisha. Zana za takwimu huhifadhi vitambulisho vyao kwa muda uliowekwa na watoa huduma wao.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Hakimiliki",
+        summary: "Msimamo wa huduma kuhusu hakimiliki na utaratibu wa kuwasilisha malalamiko ya ukiukaji.",
+        sections: [
+          {
+            heading: "Msimamo wetu",
+            body: [
+              "Huduma haihifadhi video wala haina katalogi ya video. Hufanya kazi kama mpatanishi wa kiufundi: kupitia kiungo ambacho mtumiaji ameingiza, hufikia ukurasa unaopatikana kwa umma na kumpatia mtumiaji huyo faili.",
+              "Faili zilizopakuliwa hukaa kwenye seva kwa takriban saa moja kisha hufutwa kiotomatiki. Hakuna nakala ya kudumu ya maudhui ya watu wengine inayobaki kwetu.",
+              "Jukumu la matumizi ya maudhui yaliyopakuliwa ni la mtumiaji, kama ilivyoelezwa waziwazi katika Masharti ya Matumizi.",
+            ],
+          },
+          {
+            heading: "Ikiwa haki zako zimekiukwa",
+            body: [
+              `Ikiwa wewe ni mmiliki wa haki au mwakilishi wake na unaamini kwamba huduma inatumika kukiuka haki zako, tuandikie kupitia ${MAIL}. Tunashughulikia malalamiko kama hayo na kuchukua hatua.`,
+            ],
+          },
+          {
+            heading: "Mambo ya kujumuisha katika malalamiko",
+            bullets: [
+              "Ni kazi gani inahusika na kwa msingi gani una haki juu yake.",
+              "Kiungo cha maudhui na, ikiwa yanajulikana, mazingira ya ukiukaji.",
+              "Maelezo yako ya mawasiliano: jina au jina la taasisi, anwani na anwani ya barua pepe.",
+              "Ikiwa unatenda kwa niaba ya mmiliki wa haki — uthibitisho wa mamlaka yako.",
+              "Tamko kwamba taarifa zilizo katika malalamiko ni sahihi na kwamba matumizi ya maudhui hayajaruhusiwa na mmiliki wa haki wala na sheria.",
+            ],
+          },
+          {
+            heading: "Tutakachofanya",
+            body: [
+              "Tunapitia malalamiko ndani ya muda unaofaa, kwa kawaida ndani ya siku thelathini za kalenda, na ukiukaji ukithibitishwa tunaweka vikwazo kwenye ufikiaji wa maudhui hayo kupitia huduma na, inapobidi, kwenye ufikiaji wa mkiukaji kwenye huduma.",
+              "Tutakujulisha matokeo ya uchunguzi kupitia anwani ya barua pepe uliyotoa.",
+            ],
+          },
+          {
+            heading: "Malalamiko yenye nia mbaya",
+            body: [
+              "Malalamiko yenye taarifa ambazo zinajulikana kuwa si za kweli yanaweza kumsababishia mlalamikaji dhima ya kisheria kwa mujibu wa sheria inayotumika. Tuna haki ya kukataa kushughulikia malalamiko ambayo hayawezeshi kumtambua mmiliki wa haki wala maudhui yanayobishaniwa.",
             ],
           },
         ],

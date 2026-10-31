@@ -723,6 +723,91 @@ const TEXTS = {
     langAuto: "Otomatis",
     langLabel: "Bahasa",
   },
+  sw: {
+    loading: "Inapata maelezo ya video…",
+    notVideoPage:
+      "Fungua ukurasa wa video kwenye YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest au Threads, kisha bofya ikoni tena. Somo la GetCourse: ikiwa ukurasa wa somo ulikuwa wazi kabla kiendelezi hakijasakinishwa, upakie upya.",
+    gcLesson: "Somo la GetCourse",
+    gcPick: "Somo hili lina video kadhaa — chagua moja",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Kivinjari chako ndicho kinachoipakua na kuiunganisha. Unaweza kufunga dirisha hili, lakini si kivinjari.",
+    gcNoStream: "Imeshindwa kupata video kutoka kwenye kicheza. Pakia upya ukurasa wa somo kisha ujaribu tena.",
+    video: "Video",
+    photo: "Picha za ukubwa halisi",
+    slideshow: "Onyesho la slaidi (video)",
+    gallery: "Picha + onyesho la slaidi",
+    audioOnly: "Sauti pekee (mp3)",
+    subtitles: "Manukuu (.srt)",
+    subtitlesAuto: "ya kiotomatiki",
+    back: "Rudi",
+    starting: "Inaanza kupakua…",
+    waiting: "Inasubiri nafasi kwenye seva…",
+    downloading: "Inapakua",
+    converting: "Inachakata",
+    left: (eta) => `zimebaki ${eta}`,
+    saving: "Inahifadhi kwenye Vipakuliwa…",
+    done: "Imekamilika — faili iko kwenye Vipakuliwa vyako.",
+    news: "📣 Habari za mradi: @videonerdownload",
+    again: "Pakua nyingine",
+    directDownload: "Pakua video (mp4)",
+    directPhoto: "Pakua picha (jpg)",
+    directNote: "Moja kwa moja kutoka kwenye kivinjari chako — bila foleni ya seva",
+    moreOptions: "Ubora mwingine na sauti",
+    fallback: "Kupakua kupitia kivinjari kumeshindwa — inapakua kupitia seva.",
+    openSite: "Fungua videoner.download",
+    retry: "Jaribu tena",
+    min: "dak",
+    sec: "sek",
+    errNetwork: "Imeshindwa kuunganisha na Videoner. Angalia muunganisho wako wa intaneti kisha ujaribu tena.",
+    errRateLimit: "Maombi mengi mno mfululizo. Subiri kidogo kisha ujaribu tena.",
+    errUnsupported:
+      "Hakuna video kwenye ukurasa huu ambayo Videoner inaweza kupakua. Fungua ukurasa wa video au chapisho mahususi.",
+    errYoutubeDaily: "Kikomo cha kila siku cha YouTube kwa mtandao wako kimeisha. Jaribu tena kesho.",
+    errTooLarge: "Faili ni kubwa mno kwa ubora huu. Chagua ubora wa chini zaidi.",
+    errLogin:
+      "Chapisho hili linapatikana tu kwa watumiaji walioingia. Machapisho ya umma yanapakuliwa bila tatizo lolote.",
+    errRegion: "Mwandishi amezuia chapisho hili kulingana na nchi, kwa hiyo haliwezi kupakuliwa.",
+    errServerBlocked: "Jukwaa linazuia seva yetu kwa muda. Tafadhali jaribu tena baadaye.",
+    errFailed: "Kupakua kumeshindwa. Jaribu tena au chagua ubora mwingine.",
+    errGeneric: "Hitilafu imetokea. Tafadhali jaribu tena baada ya muda mfupi.",
+    acctButton: (p) => `🔑 Unganisha akaunti yako ya ${p} na bot`,
+    acctWarn: (p) =>
+      `@VideonerBot itaweza kupakua kwa kutumia akaunti yako ya ${p} maudhui yanayoonekana tu kwa watumiaji walioingia: stories, machapisho ya faragha. Majukwaa hayapendi upakuaji wa kiotomatiki na yanaweza kuzuia akaunti — ni bora kuunganisha akaunti ya ziada. Kivinjari kitaomba ruhusa ya kusoma cookies za tovuti hii; cookies za ${p} pekee ndizo hutumwa kwa seva, zikiwa zimesimbwa.`,
+    acctConfirm: "Unganisha",
+    acctCancel: "Ghairi",
+    acctSending: "Inaunganisha…",
+    acctDenied: "Akaunti haiwezi kuunganishwa bila ruhusa ya cookies.",
+    acctNoLogin: (p) => `Hujaingia kwenye ${p} katika kivinjari hiki. Ingia kwenye tovuti kisha ujaribu tena.`,
+    acctFailed: "Imeshindikana. Jaribu tena baada ya muda mfupi.",
+    acctCodeTitle: (p) => `Msimbo wa kuunganisha ${p}:`,
+    acctCodeHelp:
+      "Utume kwa @VideonerBot kwenye gumzo la faragha — kwa vipakuliwa vyako mwenyewe. Kwa kikundi, tuma /connect MSIMBO ndani ya kikundi hicho. Msimbo ni halali kwa dakika 10.",
+    acctCopy: "Nakili",
+    acctCopied: "Imenakiliwa",
+    acctOpenBot: "Fungua bot",
+    acctNewCode: "Pata msimbo mpya",
+    acctList: "Miunganisho yangu kwenye bot",
+    acctRevoke: "Ondoa ruhusa ya cookies",
+    acctRevoked:
+      "Ruhusa ya cookies imeondolewa — kiendelezi hakizisomi tena. Akaunti ulizokwisha kuunganisha zinabaki kwenye bot: ziondoe katika “Miunganisho yangu kwenye bot”.",
+    playlistOffer: "📃 Pakua orodha nzima ya kucheza",
+    playlistTitle: (title, n) => `📃 Orodha ya kucheza${title ? ` "${title}"` : ""}: video ${n}`,
+    playlistHint: "Nitazipakua moja baada ya nyingine. Unaweza kufunga dirisha hili.",
+    playlist720: "Orodha ya kucheza katika 720p",
+    playlistBest: "Orodha ya kucheza katika ubora bora zaidi",
+    playlistAudio: "Orodha ya kucheza — sauti pekee (mp3)",
+    playlistProgress: (i, n) => `Video ${i} kati ya ${n}`,
+    playlistStats: (done, failed) => `Zimepakuliwa: ${done}${failed ? ` · zimeshindwa: ${failed}` : ""}`,
+    playlistStop: "⏹ Simamisha",
+    playlistDone: (done, n) => `Orodha ya kucheza imepakuliwa: ${done} kati ya ${n}.`,
+    playlistStopped: (done, n) => `Imesimamishwa. Zimepakuliwa ${done} kati ya ${n}.`,
+    playlistLoading: "Inapata orodha ya video…",
+    close: "Funga",
+    updateAvailable: (v) => `Toleo ${v} limetoka.`,
+    updateHow: "Jinsi ya kusasisha",
+    langAuto: "Otomatiki",
+    langLabel: "Lugha",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -813,12 +898,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -925,9 +1010,9 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди и индонезийскому — латинские GB/MB, как и цифры (ar-u-nu-latn).
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id";
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", en: "en-US" }[lang];
+  // Арабскому, китайскому, хинди, индонезийскому и суахили — латинские GB/MB, как и цифры (ar-u-nu-latn).
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw";
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${latin ? "GB" : "ГБ"}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${latin ? "MB" : "МБ"}`;
 }

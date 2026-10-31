@@ -3,7 +3,7 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id"] as const;
+export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -21,6 +21,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   zh: "中文",
   hi: "हिन्दी",
   id: "Bahasa Indonesia",
+  sw: "Kiswahili",
 };
 
 type PlatformStrings = {
@@ -3276,4 +3277,364 @@ const indonesian: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian };
+const sw: Translations = {
+  nav: {
+    home: "Mwanzo",
+    downloaders: "Vipakuzi",
+    extension: "Kiendelezi",
+    blog: "Blogu",
+    switchTheme: "Badilisha mandhari",
+    language: "Lugha",
+    comingSoon: "Inakuja Hivi Karibuni",
+  },
+  theme: {
+    light: "Angavu",
+    dark: "Giza",
+    system: "Mfumo",
+  },
+  playlist: {
+    title: `Orodha ya kucheza "{title}": video {count}`,
+    hint: "Video zinapakuliwa moja baada ya nyingine. Acha ukurasa huu wazi; kivinjari chako kinaweza kuomba ruhusa ya kupakua faili nyingi.",
+    std: "720p",
+    hd: "Ubora bora zaidi",
+    audio: "Sauti pekee (mp3)",
+    progress: "Video {index} kati ya {count}",
+    stats: "Zimepakuliwa: {done} · zimeshindikana: {failed}",
+    stop: "Simamisha",
+    stopped: "Imesimamishwa. Zimepakuliwa {done} kati ya {count}.",
+    finished: "Orodha ya kucheza imekamilika: {done} kati ya {count}.",
+    again: "Chagua tena",
+  },
+  footer: {
+    news: "Habari za mradi",
+    botCta: "Inapatikana pia kama boti ya Telegram:",
+    extension: "Kiendelezi cha kivinjari",
+    developedBy: "Imetengenezwa na",
+    rights: "Haki zote zimehifadhiwa.",
+  },
+  content: {
+    howToTitle: "Jinsi ya Kupakua Video za {platform}",
+    faqTitle: "Maswali Yanayoulizwa Mara kwa Mara",
+  },
+  auth: {
+    loginButton: "Ingia kwa Telegram",
+    signIn: "Ingia",
+    logout: "Toka",
+    switchAccountHint: "Si akaunti yako?",
+    switchAccountLink: "Toka kwenye Telegram Web",
+  },
+  home: {
+    new: "Mpya",
+    manyFeatures: "Vipengele vingi vipya",
+    titleLine1: "Pakua Video",
+    titleLine2: "Haraka na kwa Urahisi",
+    subtitle:
+      "Kipakuzi chako cha video kwa YouTube, Instagram, TikTok na zaidi. Chagua ubora wowote, kuanzia HD hadi unaofaa simu.",
+    subtitleExtra: "Bila vikwazo, bila usumbufu — upakuaji tu.",
+    placeholder: "Bandika kiungo cha video kutoka jukwaa lolote...",
+    download: "Pakua",
+  },
+  video: {
+    description: "Maelezo",
+    format: "Muundo",
+    selected: "Umechagua: {quality}",
+    videoTab: "video",
+    audioTab: "sauti",
+    converting: "Inabadilisha",
+    downloading: "Inapakua",
+    downloadAgain: "Pakua Tena",
+    startDownload: "Anza Kupakua",
+    convertingBtn: "Inabadilisha...",
+    downloadingBtn: "Inapakua...",
+    loginRequiredHint: "Ingia kwa Telegram ili kupakua",
+    quotaExceededHint: "Umefikia kikomo cha upakuaji 20 kwa siku — rudi kesho",
+    postFiles: "Chapisho hili lina faili {count}",
+    photoQuality: "Picha asili",
+    slideshowQuality: "Onyesho la slaidi (video)",
+    galleryQuality: "Picha + onyesho la slaidi",
+    downloadAll: "Pakua zote",
+    downloadOne: "Hifadhi",
+    subtitlesTab: "manukuu",
+    subtitlesHint: "Chagua lugha — utapata faili ya .srt inayofunguka kwenye kicheza video chochote.",
+    subtitlesAuto: "otomatiki",
+    subtitlesDownload: "Pakua manukuu",
+    subtitlesDownloading: "Inaandaa manukuu...",
+  },
+  toast: {
+    enterUrl: "Tafadhali weka kiungo (URL)",
+    enterValidUrl: "Tafadhali weka kiungo (URL) sahihi",
+    platformNotSupported: "Jukwaa hili halitumiki",
+    urlNotSupported: "Kiungo hiki hakitumiki",
+    enterValidPlatformUrl: "Tafadhali weka kiungo sahihi cha {platform}",
+    captchaNotReady: "Tafadhali subiri kidogo ukaguzi wa usalama ukamilike, kisha ujaribu tena",
+    comingSoon: "Inakuja hivi karibuni! {name} bado haitumiki",
+    selectQuality: "Tafadhali chagua ubora",
+    downloadStarted: "Upakuaji umeanza!",
+    downloadCompleted: "Upakuaji umekamilika!",
+    newsChannel: "Habari za mradi ziko kwenye Telegram:",
+    downloadUrlNotReceived: "Kiungo cha kupakua hakijapokelewa",
+    needsBrowser:
+      "Jukwaa halikuipa seva yetu video hii: inapatikana kwa watumiaji walioingia pekee, au ufikiaji umezuiwa kwa muda. Unaweza kuipakua kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta — kinapakua kwa kutumia akaunti yako mwenyewe.",
+    needsBrowserLink: "Pata kiendelezi →",
+  },
+  platforms: {
+    youtube: {
+      description: "Pakua video za YouTube kwa ubora wa HD",
+      news: "Sasa inatumika na video na Shorts",
+      titleLine1: "Pakua Video za YouTube",
+      titleLine2: "na Shorts",
+      pageDescription:
+        "Pakua video za YouTube, Shorts na sauti kwa ubora wa juu. Haraka, bure na rahisi kutumia. Inatumika na ubora wa 8K, 4K, HD na sauti ya MP3.",
+      placeholder: "Bandika kiungo cha YouTube hapa...",
+      howTo: [
+        "Nakili kiungo cha video kutoka kwenye upau wa anwani wa kivinjari, au gusa Shiriki kwenye programu ya YouTube.",
+        "Kibandike kwenye kisanduku hapo juu na ubonyeze Pakua.",
+        "Chagua ubora — hadi 4K/8K kwa video, au MP3 kwa sauti pekee.",
+        "Faili yako inaanza kupakuliwa mara moja, bila kuhitaji kuingia.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za YouTube kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Videoner inatoa kila kiwango cha ubora ambacho YouTube inatoa kwa video hiyo — kuanzia 360p hadi 4K/8K inapopatikana — pamoja na kutoa sauti kama MP3." },
+        { q: "Je, ninaweza kupakua video za faragha au zenye kikomo cha umri?", a: "Video za YouTube zinazopatikana hadharani pekee ndizo zinazotumika; maudhui ya faragha, yasiyoorodheshwa kwako au yanayohitaji kuingia hayawezi kupakuliwa." },
+        { q: "Je, ni halali kupakua video kutoka YouTube?", a: "Pakua tu video ambazo una haki ya kuzihifadhi — maudhui yako mwenyewe, video zenye leseni ya Creative Commons, au chochote ambacho mtayarishaji anaruhusu. Heshimu Masharti ya Huduma ya YouTube na sheria ya hakimiliki." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili zilizobadilishwa hukaa kwenye seva kwa takriban saa moja, kwa hiyo zihifadhi kwenye kifaa chako mara baada ya kupakua." },
+      ],
+    },
+    facebook: {
+      description: "Hifadhi video kutoka machapisho na reels za Facebook",
+      news: "Sasa inatumika na reels",
+      titleLine1: "Pakua Video za Facebook",
+      titleLine2: "na Reels",
+      pageDescription:
+        "Pakua video na reels za Facebook kwa ubora wa juu. Haraka, bure na rahisi kutumia.",
+      placeholder: "Bandika kiungo cha Facebook hapa...",
+      howTo: [
+        "Fungua video au reel kwenye Facebook na unakili kiungo chake (gusa vitone vitatu → Nakili Kiungo).",
+        "Bandika kiungo hapo juu na ubonyeze Pakua.",
+        "Chagua ubora wa MP4 au toa sauti kama MP3.",
+        "Faili inapakuliwa moja kwa moja kwenye kifaa chako — huhitaji akaunti ya Facebook.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za Facebook kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Videoner inachukua ubora wa juu zaidi ambao Facebook inatoa kwa video au reel hiyo, katika MP4, pamoja na chaguo la sauti ya MP3." },
+        { q: "Je, ninaweza kupakua video za faragha?", a: "Machapisho, video na reels za umma pekee ndizo zinazofanya kazi — maudhui ya faragha au ya marafiki pekee hayafikiki." },
+        { q: "Je, ni halali kupakua video kutoka Facebook?", a: "Pakua tu video ambazo una ruhusa ya kuzihifadhi; heshimu haki za mtayarishaji na Masharti ya Huduma ya Facebook." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili huhifadhiwa kwa takriban saa moja baada ya kubadilishwa, kisha hufutwa kiotomatiki — pakua bila kuchelewa." },
+      ],
+    },
+    instagram: {
+      description: "Pakua reels, stories na machapisho ya Instagram",
+      news: "Sasa inatumika na reels na stories",
+      titleLine1: "Pakua Reels za Instagram",
+      titleLine2: "na Stories",
+      pageDescription:
+        "Pakua reels, stories na machapisho ya Instagram kwa ubora wa juu. Haraka, bure na rahisi kutumia.",
+      placeholder: "Bandika kiungo cha Instagram hapa...",
+      howTo: [
+        "Fungua Reel, chapisho au story kwenye Instagram na uguse aikoni ya ndege ya karatasi → Nakili Kiungo.",
+        "Bandika kiungo kwenye kisanduku hapo juu.",
+        "Chagua ubora na muundo unaopendelea.",
+        "Upakuaji unaanza papo hapo — huhitaji kuingia wala kusakinisha programu.",
+      ],
+      faq: [
+        { q: "Je, kupakua maudhui ya Instagram kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Ubora kamili unaopatikana kwa reels, machapisho na stories, katika MP4 au MP3." },
+        { q: "Je, ninaweza kupakua kutoka akaunti za faragha?", a: "Akaunti na machapisho ya Instagram ya umma pekee ndiyo yanayotumika; maudhui ya akaunti za faragha hayawezi kupakuliwa." },
+        { q: "Je, ni halali kupakua video kutoka Instagram?", a: "Pakua tu kile unachoruhusiwa kuhifadhi — heshimu mtayarishaji na Masharti ya Huduma ya Instagram." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili hukaa kwenye seva kwa takriban saa moja kabla ya kufutwa kiotomatiki." },
+      ],
+    },
+    tiktok: {
+      description: "Pakua video za TikTok bila watermark",
+      news: "Sasa bila watermark",
+      titleLine1: "Pakua Video za TikTok",
+      titleLine2: "Bila Watermark",
+      pageDescription:
+        "Pakua video za TikTok bila watermark kwa ubora wa juu. Haraka, bure na rahisi kutumia.",
+      placeholder: "Bandika kiungo cha TikTok hapa...",
+      howTo: [
+        "Gusa Shiriki kwenye video ya TikTok, kisha Nakili Kiungo.",
+        "Bandika kiungo hapo juu na ubonyeze Pakua.",
+        "Pata MP4 safi — bila watermark ya TikTok — au sauti ya MP3.",
+        "Ihifadhi moja kwa moja kwenye kifaa chako.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za TikTok kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Ubora bora zaidi ambao TikTok inatoa kwa video hiyo, bila watermark ya TikTok, pamoja na sauti ya MP3." },
+        { q: "Je, ninaweza kupakua kutoka akaunti za faragha?", a: "Video kutoka akaunti za TikTok za umma pekee ndizo zinazoweza kupakuliwa." },
+        { q: "Je, ni halali kupakua video kutoka TikTok?", a: "Pakua video ambazo una haki ya kuzihifadhi, mtaje mtayarishaji, na uheshimu Masharti ya Huduma ya TikTok." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili zilizopakuliwa hukaa kwenye seva kwa takriban saa moja, kisha hufutwa kiotomatiki." },
+      ],
+    },
+    twitter: {
+      description: "Pakua video za Twitter",
+      news: "Sasa inatumika na video za Twitter",
+      titleLine1: "Pakua Video",
+      titleLine2: "za Twitter",
+      pageDescription:
+        "Pakua video za Twitter kwa ubora wa juu. Haraka, bure na rahisi kutumia.",
+      placeholder: "Bandika kiungo cha Twitter hapa...",
+      howTo: [
+        "Gusa Shiriki chini ya tweet na uchague Nakili Kiungo (au nakili URL kutoka kwenye kivinjari chako).",
+        "Kibandike kwenye kisanduku hapo juu.",
+        "Chagua ubora wa video unaotaka.",
+        "Upakuaji unaanza mara moja — huhitaji akaunti ya X/Twitter.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za Twitter/X kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Kila kiwango cha ubora ambacho X/Twitter inatoa kwa video hiyo, katika MP4, pamoja na MP3." },
+        { q: "Je, ninaweza kupakua kutoka akaunti za faragha?", a: "Tweets kutoka akaunti za umma pekee ndizo zinazofanya kazi; akaunti zilizolindwa/za faragha hazitumiki." },
+        { q: "Je, ni halali kupakua video kutoka Twitter/X?", a: "Pakua maudhui ambayo una haki ya kuyahifadhi, ukiheshimu haki za aliyechapisha na Masharti ya Huduma ya jukwaa." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili hufutwa kiotomatiki takriban saa moja baada ya kutengenezwa." },
+      ],
+    },
+    vimeo: {
+      description: "Pakua video za Vimeo kwa ubora wa juu",
+      news: "Sasa inatumika na Vimeo",
+      titleLine1: "Pakua Video",
+      titleLine2: "za Vimeo",
+      pageDescription:
+        "Pakua video za Vimeo kwa ubora wa juu. Haraka, bure na rahisi kutumia.",
+      placeholder: "Bandika kiungo cha Vimeo hapa...",
+      howTo: [
+        "Fungua Vimeo na unakili kiungo cha video (au gusa Shiriki → Nakili Kiungo kwenye simu).",
+        "Bandika kiungo kwenye kisanduku hapo juu na ubonyeze Pakua.",
+        "Chagua ubora na muundo — MP4 kwa video, MP3 ikiwa unataka sauti tu.",
+        "Upakuaji wako unaanza mara moja; huhitaji akaunti wala kusakinisha programu.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za Vimeo kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Videoner inatoa kila kiwango cha ubora ambacho Vimeo inakitoa kwa video hiyo, hadi ubora wa asili wa upakiaji, ikiwemo HD na 4K pale mtayarishaji alipoutoa." },
+        { q: "Je, ninaweza kupakua video za Vimeo za faragha au zenye nenosiri?", a: "Hapana — Videoner inafanya kazi tu na viungo vya Vimeo vinavyopatikana hadharani. Video za faragha, zenye nenosiri au zenye ufikiaji uliozuiliwa haziwezi kupakuliwa." },
+        { q: "Je, ni halali kupakua video kutoka Vimeo?", a: "Upakuaji umekusudiwa kwa video ambazo una haki ya kuzihifadhi — maudhui yako mwenyewe, video zenye leseni ya Creative Commons, au chochote ambacho mtayarishaji ameruhusu waziwazi kupakuliwa. Heshimu hakimiliki ya mtayarishaji asili na masharti ya huduma ya Vimeo." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili hutengenezwa unapoziomba na huhifadhiwa kwenye seva kwa takriban saa moja kabla ya kufutwa kiotomatiki, kwa hiyo ihifadhi kwenye kifaa chako mara upakuaji unapokamilika." },
+      ],
+    },
+    vk: {
+      description: "Pakua video na klipu kutoka VK",
+      news: "Sasa inatumika na VK",
+      titleLine1: "Pakua Video za VK",
+      titleLine2: "na Klipu",
+      pageDescription:
+        "Pakua video na klipu za VK kwa ubora wa juu. Haraka, bure na rahisi kutumia.",
+      placeholder: "Bandika kiungo cha VK hapa...",
+      howTo: [
+        "Fungua video au klipu kwenye VK (vk.com au VK Video) na unakili kiungo chake kutoka kwenye upau wa anwani au kitufe cha Shiriki.",
+        "Bandika kiungo hapo juu na ubonyeze Pakua.",
+        "Chagua ubora na muundo unaopatikana.",
+        "Faili inapakuliwa moja kwa moja — huhitaji kuingia kwenye VK.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za VK kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Viwango vyote vya ubora ambavyo VK inatoa kwa video au klipu hiyo, pamoja na sauti ya MP3." },
+        { q: "Je, ninahitaji kuingia kwenye VK?", a: "Hapana — video lazima iwe ya umma. Videoner haiingii kwenye VK, kwa hiyo video za faragha, za marafiki pekee au zinazohitaji kuingia haziwezi kupakuliwa." },
+        { q: "Je, ni halali kupakua video kutoka VK?", a: "Pakua tu video ambazo una haki ya kuzihifadhi, ukiheshimu Masharti ya Huduma ya VK na haki za aliyepakia." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili huhifadhiwa kwenye seva kwa takriban saa moja, kisha hufutwa kiotomatiki." },
+      ],
+    },
+    rutube: {
+      description: "Pakua video kutoka Rutube",
+      news: "Sasa inatumika na Rutube",
+      titleLine1: "Pakua Video",
+      titleLine2: "za Rutube",
+      pageDescription:
+        "Pakua video za Rutube kwa ubora wa juu. Haraka, bure na rahisi kutumia.",
+      placeholder: "Bandika kiungo cha Rutube hapa...",
+      howTo: [
+        "Fungua video kwenye Rutube na unakili kiungo chake kutoka kwenye upau wa anwani au kitufe cha Shiriki.",
+        "Kibandike kwenye kisanduku hapo juu.",
+        "Chagua ubora na muundo (video au sauti).",
+        "Upakuaji unaanza mara moja, huhitaji akaunti ya Rutube.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za Rutube kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Kila kiwango cha ubora ambacho Rutube inatoa, katika MP4, pamoja na sauti ya MP3." },
+        { q: "Je, ninahitaji kuingia kwenye Rutube?", a: "Hapana — Videoner inafanya kazi tu na video za Rutube zinazopatikana hadharani; hakuna kuingia kunakotumika wala kuhitajika." },
+        { q: "Je, ni halali kupakua video kutoka Rutube?", a: "Pakua tu maudhui unayoruhusiwa kuhifadhi, ukiheshimu Masharti ya Huduma ya Rutube na haki za mtayarishaji." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili hukaa kwenye seva kwa takriban saa moja kabla ya kufutwa kiotomatiki." },
+      ],
+    },
+    okru: {
+      description: "Pakua video kutoka OK.ru (Odnoklassniki)",
+      news: "Sasa inatumika na OK.ru",
+      titleLine1: "Pakua Video",
+      titleLine2: "za OK.ru",
+      pageDescription:
+        "Pakua video za OK.ru (Odnoklassniki) kwa ubora wa juu. Haraka, bure na rahisi kutumia.",
+      placeholder: "Bandika kiungo cha OK.ru hapa...",
+      howTo: [
+        "Fungua video kwenye OK.ru (Odnoklassniki) na unakili kiungo chake kutoka kwenye upau wa anwani.",
+        "Bandika kiungo kwenye kisanduku hapo juu na ubonyeze Pakua.",
+        "Chagua ubora na muundo wako.",
+        "Upakuaji unaanza mara moja — huhitaji kuingia kwenye OK.ru.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za OK.ru kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani wa video ninaoweza kupakua?", a: "Viwango vyote vya ubora ambavyo OK.ru inatoa kwa video hiyo, pamoja na MP3." },
+        { q: "Je, ninahitaji kuingia kwenye OK.ru?", a: "Hapana — video za umma za OK.ru (Odnoklassniki) pekee ndizo zinazofanya kazi. Videoner haiingii kwenye akaunti yoyote, kwa hiyo video za faragha hazifikiki." },
+        { q: "Je, ni halali kupakua video kutoka OK.ru?", a: "Pakua tu video ambazo una haki ya kuzihifadhi, ukiheshimu Masharti ya Huduma ya OK.ru na haki za aliyepakia." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili hufutwa kiotomatiki takriban saa moja baada ya kutengenezwa." },
+      ],
+    },
+    pinterest: {
+      description: "Pakua video kutoka pini za Pinterest",
+      news: "Sasa inatumika na Pinterest",
+      titleLine1: "Pakua Video za Pinterest",
+      titleLine2: "na Pini",
+      pageDescription:
+        "Pakua video kutoka pini za Pinterest kwa ubora wa juu. Haraka, bure na rahisi kutumia. Kumbuka: pini za video pekee ndizo zinazoweza kupakuliwa — pini za picha pekee hazitumiki.",
+      placeholder: "Bandika kiungo cha Pinterest hapa...",
+      howTo: [
+        "Fungua pini kwenye Pinterest na uguse Shiriki → Nakili Kiungo (au nakili URL kutoka kwenye kivinjari chako).",
+        "Bandika kiungo kwenye kisanduku hapo juu na ubonyeze Pakua.",
+        "Chagua ubora na muundo unaopendelea.",
+        "Faili yako inapakuliwa mara moja — huhitaji akaunti.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za Pinterest kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa na kuangalia ubora unaopatikana hakuhitaji kuingia." },
+        { q: "Ni ubora gani ninaoweza kupakua?", a: "Videoner inatoa kila kiwango cha ubora ambacho Pinterest inatoa kwa video ya pini hiyo, pamoja na kutoa sauti kama MP3." },
+        { q: "Je, ninaweza kupakua picha kutoka Pinterest?", a: "Hapana — pini za video pekee ndizo zinazoweza kupakuliwa. Ikiwa pini ina picha tu, hakuna faili ya video ya kutoa." },
+        { q: "Je, ninaweza kupakua pini za faragha au za ubao uliozuiliwa?", a: "Pini zinazopatikana hadharani pekee ndizo zinazotumika; mbao za faragha na maudhui yanayohitaji kuingia hayawezi kupakuliwa." },
+        { q: "Je, ni halali kupakua video kutoka Pinterest?", a: "Pakua tu pini ambazo una haki ya kuzihifadhi — maudhui yako mwenyewe au chochote ambacho mtayarishaji anaruhusu. Heshimu Masharti ya Huduma ya Pinterest na sheria ya hakimiliki." },
+        { q: "Faili niliyopakua inapatikana kwa muda gani?", a: "Faili zilizobadilishwa hukaa kwenye seva kwa takriban saa moja, kwa hiyo zihifadhi kwenye kifaa chako mara baada ya kupakua." },
+      ],
+    },
+    threads: {
+      description: "Pakua video kutoka machapisho ya Threads",
+      news: "Sasa inatumika na Threads",
+      titleLine1: "Pakua Video",
+      titleLine2: "za Threads",
+      pageDescription:
+        "Pakua video kutoka machapisho ya Threads. Haraka, bure na bila kuhitaji akaunti ya Threads. Threads hutoa toleo moja tu la video, hadi 720p — huo ndio ubora wa juu zaidi ambao jukwaa linatoa.",
+      placeholder: "Bandika kiungo cha Threads hapa...",
+      howTo: [
+        "Fungua chapisho kwenye Threads na uguse aikoni ya kushiriki, kisha Nakili Kiungo.",
+        "Bandika kiungo kwenye kisanduku hapo juu na ubonyeze Pakua.",
+        "Chagua muundo unaotaka — video au sauti ya MP3.",
+        "Faili yako inapakuliwa mara moja — huhitaji akaunti.",
+      ],
+      faq: [
+        { q: "Je, kupakua video za Threads kwa Videoner ni bure?", a: "Ndiyo — lakini kwanza unahitaji kuingia kwa Telegram (bofya mara moja, bila nenosiri). Unapata upakuaji 20 kwa siku, unaoshirikiwa na boti yetu ya Telegram. Huduma ni bure kabisa: hakuna usajili wa malipo wala matangazo." },
+        { q: "Je, ninahitaji akaunti ili kupakua?", a: "Unahitaji kuingia kwa akaunti yako ya Telegram kabla ya kuanza kupakua — ni kubofya mara moja, bila barua pepe wala nenosiri. Kuvinjari ukurasa hakuhitaji kuingia." },
+        { q: "Ni ubora gani ninaoweza kupakua?", a: "Threads huchapisha toleo moja tu la video kwa kila chapisho, lenye kikomo cha 720p upande mfupi — hata kama mwandishi alipakia 4K. Videoner inakupa faili hiyo kama ilivyo, pamoja na kutoa sauti kama MP3. Hakuna kipakuzi kinachoweza kutoa zaidi, kwa sababu ubora wa juu zaidi hautolewi kabisa." },
+        { q: "Je, viungo vya threads.com na threads.net vyote vinafanya kazi?", a: "Ndiyo. Viungo kamili kama threads.com/@user/post/CODE na viungo vifupi vya threads.net/t/CODE vyote vinatumika." },
+        { q: "Je, ninaweza kupakua picha kutoka chapisho la Threads?", a: "Hapana — video pekee. Ikiwa chapisho lina picha tu, hakuna faili ya video ya kutoa." },
+        { q: "Vipi kuhusu chapisho lenye video kadhaa?", a: "Video ya kwanza katika chapisho ndiyo inayopakuliwa. Karuseli za Threads zinaweza kuwa na klipu kadhaa, na ya kwanza pekee ndiyo huhifadhiwa." },
+        { q: "Je, ninaweza kupakua machapisho ya faragha?", a: "Hapana. Machapisho yanayoonekana hadharani pekee ndiyo yanayoweza kupakuliwa; chochote kilicho nyuma ya akaunti ya faragha au kinachohitaji kuingia hakifikiki." },
+        { q: "Je, ni halali kupakua video kutoka Threads?", a: "Pakua tu kile ambacho una haki ya kuhifadhi — maudhui yako mwenyewe au chochote ambacho mwandishi anaruhusu. Heshimu Masharti ya Matumizi ya Threads na sheria ya hakimiliki." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw };

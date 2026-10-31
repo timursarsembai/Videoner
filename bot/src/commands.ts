@@ -69,6 +69,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Hentikan unduhan dan antrean" },
     { command: "language", description: "Bahasa bot" },
   ],
+  sw: [
+    { command: "start", description: "Jinsi ya kutumia bot" },
+    { command: "extension", description: "Kiendelezi cha kivinjari" },
+    { command: "accounts", description: "Akaunti zako kwa story na machapisho ya faragha" },
+    { command: "connect", description: "Unganisha akaunti kwa msimbo kutoka kwenye kiendelezi" },
+    { command: "stop", description: "Simamisha upakuaji na foleni" },
+    { command: "language", description: "Lugha ya bot" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -129,6 +137,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Hubungkan akun ke grup ini dengan kode" },
     { command: "language", description: "Bahasa bot di grup ini (admin)" },
     { command: "start", description: "Cara kerja bot di grup" },
+  ],
+  sw: [
+    { command: "settings", description: "Mipangilio ya bot kwa kikundi hiki (wasimamizi)" },
+    { command: "accounts", description: "Akaunti zilizounganishwa na kikundi hiki" },
+    { command: "connect", description: "Unganisha akaunti na kikundi hiki kwa msimbo" },
+    { command: "language", description: "Lugha ya bot katika kikundi hiki (wasimamizi)" },
+    { command: "start", description: "Jinsi bot inavyofanya kazi kwenye kikundi" },
   ],
 };
 

@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('sw')) {
+      return (
+        'Habari! Uliwasha bot hii, lakini bado hujapakua chochote — ' +
+        'huenda haikuwa wazi uanzie wapi.\n\n' +
+        'Ni hatua moja tu: tuma hapa kiungo cha video, ' +
+        'kwa mfano https://youtube.com/watch?v=jNQXAC9IVRw — nami nitakurudishia ' +
+        'faili ndani ya takriban nusu dakika.\n\n' +
+        'Inafanya kazi na YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest na Threads. Bure kabisa na kwa ubora ' +
+        'wowote — hadi 4K, hakuna malipo ya ziada kwa HD.\n\n' +
+        'Kama kitu hakifanyi kazi, nijibu tu hapa. Huu ndio ' +
+        'ukumbusho pekee, sitakusumbua tena.'
+      );
+    }
+
     if (code.startsWith('id') || code.startsWith('in')) {
       return (
         'Halo! Anda sudah memulai bot ini, tetapi belum mengunduh apa pun — ' +

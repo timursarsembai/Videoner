@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -14,9 +14,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -1579,6 +1579,226 @@ const indonesian: Messages = {
   settingsBack: "⬅️ Kembali ke pengaturan",
 };
 
+const sw: Messages = {
+  start: "Habari! Nitumie linki ya video kutoka YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest au Threads — nitakusaidia kuipakua.\n\n✨ Hakuna kikomo cha ubora: unapata chochote ambacho jukwaa linatoa, hadi 4K — mradi faili haizidi 2 GB, kikomo cha Telegram kwa bot. Hapa hakuna huduma za kulipia.\n\nNi bure kabisa: hakuna usajili wa kulipia, hakuna matangazo, hakuna ununuzi ndani ya programu.\n\n🧩 Unapakua kwenye kompyuta? Sakinisha kiendelezi cha kivinjari — kitufe cha Pakua kitaonekana moja kwa moja kwenye ukurasa wa video: videoner.download/sw/extension\n\n👥 Niongeze kwenye kikundi, nami nitatuma video za linki ambazo watu wanashiriki humo.\n\n⚡ Ruka uchaguzi wa ubora: ongeza -audio baada ya linki upate sauti pekee (mp3), au -hd upate ubora bora zaidi.\n\n📣 Habari za mradi: @videonerdownload\n\n🌐 Lugha ya bot: /language",
+  notLink: "Hii haionekani kuwa linki. Nitumie linki ya video.",
+  inviteGreeting: "Habari! Mimi ni Videoner — napakua video kutoka YouTube, TikTok, Instagram na majukwaa mengine bila malipo. Ninaandaa video uliyotumiwa 👇",
+  inviteNotFound: "Sikupata video ya linki hii ya mwaliko. Nitumie linki ya video nami nitaipakua.",
+  inviteUnavailable: "Sikuweza kufungua video kutoka linki hii — huduma haijibu kwa sasa. Fungua linki hiyo hiyo tena baada ya dakika moja.",
+  fetchingInfo: "🔍 Ninapata taarifa za video...",
+  audioOnlyButton: "🎵 Sauti pekee (mp3)",
+  photoButton: "📷 Pakua picha",
+  slideshowButton: "🎞 Onyesho la slaidi (video)",
+  galleryButton: "📷+🎞 Picha na onyesho la slaidi",
+  chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\nChagua ubora:`,
+  sessionExpired: "Muda wa kipindi umeisha — tuma linki tena",
+  downloading: "⏬ Ninapakua, huenda ikachukua dakika kadhaa...",
+  downloadFailed: "upakuaji umeshindikana",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Ninapakua: ${percent}%${eta ? ` · zimebaki ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Karibu kumaliza — ninaunganisha faili...",
+  converting: (percent) => `⚙️ Ninabadilisha: ${percent}%`,
+  etaUnderMinute: "chini ya dakika moja",
+  etaMinutes: (minutes) => `~dak ${minutes}`,
+  etaHours: (hours, minutes) => `~saa ${hours}${minutes ? ` dak ${minutes}` : ""}`,
+  downloadTimeout: "upakuaji unachukua muda mrefu mno — video inaonekana kuwa nzito sana. Jaribu ubora wa chini zaidi.",
+  downloadInterrupted: "⚠️ Bot inaanzishwa upya kwa ajili ya sasisho — upakuaji wako umekatizwa. Tafadhali tuma linki tena baada ya dakika moja.",
+  fileTooBig: (mb, url) =>
+    `Faili imekuwa kubwa (${mb} MB) — Telegram hairuhusu bot kuituma.\nIpakue hapa: ${url}`,
+  sendingFile: "📤 Ninatuma faili...",
+  sendingAlbum: (count) => `📤 Chapisho hili lina faili kadhaa (${count}) — ninazituma kama albamu...`,
+  failedPrefix: "❌ Imeshindikana: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Chanzo: ${sourceUrl}\n` +
+        "Haki zote za video ni za mwandishi wake.\n" +
+        "Imepakuliwa bila malipo kwa @VideonerBot",
+      `📣 Habari za mradi: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Shiriki: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Ili kupakua, tafadhali jiunge na chaneli yetu ${channel} — hilo ndilo sharti pekee, huduma inabaki bure.\n\n` +
+    "Jiunge kisha ubonyeze «Nimejiunga».",
+  openChannelButton: "📣 Fungua chaneli",
+  checkSubscriptionButton: "Nimejiunga",
+  subscribeThanks: "Asante! Sasa nitumie linki ya video.",
+  subscribeThanksResuming: "Asante! Ninashughulikia linki yako sasa.",
+  subscribeStillMissing: "Bado sioni kwamba umejiunga. Jiunge kisha ubonyeze tena.",
+  channelNotice: (channel) => `\n\nLinki ya chapisho hili itaonekana kwenye ${channel} — bila kutaja jina lako.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Pakua video hii na nyingine yoyote bila malipo: @VideonerBot",
+  errorStoryNeedsId:
+    "tuma linki ya story mahususi: ifungue kwenye programu ya Instagram kisha ugonge Shiriki → Nakili linki.",
+  errorInstagramStory:
+    "Story za Instagram zinaonekana tu kwa watu walioingia kwenye akaunti.",
+  errorLoginRequired:
+    "Chapisho hili halipatikani bila kuingia kwenye akaunti: jukwaa linalitoa tu kwa " +
+    "watumiaji walioingia. Hilo hutokea kwa machapisho ya faragha, maudhui yenye kikomo cha umri na " +
+    "machapisho yaliyoshirikiwa na hadhira finyu.\n\n" +
+    "Machapisho ya umma hupakuliwa bila shida — jaribu linki nyingine.",
+  errorUnsupportedPlatform:
+    "Sikuweza kutambua linki hii — hakikisha ni linki ya moja kwa moja ya video kutoka YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest au Threads.",
+  errorFileTooLarge: "faili ni kubwa kuliko 2 GB — Telegram hairuhusu bot kutuma faili kubwa zaidi. Ipakue kwenye tovuti au kwa kiendelezi cha kivinjari — vitufe viko hapa chini. Au tuma linki tena uchague ubora wa chini zaidi.",
+  siteButton: "🌐 Pakua kwenye tovuti",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Ubora mzito kuliko ${limit} umefichwa: Telegram hairuhusu bot kutuma faili kubwa zaidi. Unaweza kuupakua kwenye tovuti au kwa kiendelezi cha kivinjari — vitufe viko hapa chini.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Video hii ni nzito mno kwa Telegram hata kwa ubora wa chini kabisa (~${smallest}): Telegram hairuhusu bot kutuma faili zinazozidi 2 GB. Hapa unaweza kupata sauti pekee; video — kwenye tovuti au kwa kiendelezi cha kivinjari (vitufe viko hapa chini).`,
+  errorFormatUnavailable: "Ubora huo haupatikani kwa video hii. Tuma linki tena — nitakuonyesha orodha ya sasa.",
+  errorNoVideoContent: "Linki hii haina video ya kupakua — chapisho linaonekana kuwa na picha pekee.",
+  errorRegionBlocked:
+    "Video hii imezuiwa nje ya nchi ya mwandishi — jukwaa haliitoi " +
+    "kwa seva yetu. Hakuna njia ya kukwepa: kizuizi kiko upande wao." +
+    "\n\nLinki nyingine zinapakuliwa kama kawaida.",
+  errorRateLimited: "Linki nyingi mno mfululizo — subiri kidogo kisha uitume tena.",
+  errorYoutubeDailyLimit: (gb) => `umepakua zaidi ya ${gb} GB kutoka YouTube katika saa 24 zilizopita — hicho ndicho kikomo cha kila siku cha bot kwa kila mtu. Kinahesabu saa 24 zilizopita, kwa hivyo utaweza kupakua video mpya za YouTube baadaye kidogo. Majukwaa mengine yanafanya kazi kama kawaida.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Orodha ya kucheza imesimamishwa: kikomo cha kila siku cha YouTube kimefikiwa. Video ambazo hazijapakuliwa: ${dropped}. Tuma linki ya orodha ya kucheza tena baadaye.`,
+  errorPlatformRefused:
+    "jukwaa halikutoa video hii kwa seva yetu. Hili hutokea kwa machapisho ya faragha " +
+    "au yenye kikomo cha umri, na wakati mwingine jukwaa huzuia ufikiaji kwa " +
+    "muda tu. Jaribu tena baada ya dakika chache.",
+  errorThreadsNoMedia:
+    "hakuna video wala picha inayoonekana kwenye chapisho hili la Threads. Huenda ni chapisho la maandishi pekee, au " +
+    "Threads huonyesha maudhui yake kwa watumiaji walioingia tu — machapisho kama hayo hayawezi kupakuliwa bila kuingia.",
+  extensionHint:
+    "\n\n💻 Unaweza kuipakua kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta: " +
+    "kinapakua kwa kutumia akaunti yako mwenyewe kwenye jukwaa, na hakuna nenosiri wala cookies zinazotoka kwenye kivinjari chako.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Ili kupakua machapisho kama haya, unganisha akaunti yako ya ${platform} na bot — mara moja tu. Baada ya hapo bot itapakua chochote unachoweza kuona: machapisho ya faragha, reels na story, hata kutoka kwenye simu yako. Kitufe kilicho hapa chini kinaonyesha jinsi ya kufanya.${withExtension ? "\n\n💻 Au ipakue kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Akaunti yako ya ${platform} iliyounganishwa haikuweza kufungua chapisho hili. Huenda kuingia kumeacha kufanya kazi — unganisha akaunti tena. Au akaunti hii haina ruhusa ya kuona chapisho.${withExtension ? "\n\n💻 Unaweza pia kuipakua kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta." : ""}`,
+  connectAccountButton: "🔑 Unganisha akaunti",
+  reconnectAccountButton: "🔑 Unganisha upya",
+  extensionButton: "🧩 Pakua kwa kiendelezi",
+  extensionCommand:
+    "🧩 Videoner kwa kivinjari chako: kitufe cha Pakua moja kwa moja kwenye ukurasa wa video — YouTube, Instagram, TikTok, VK, video za faragha kutoka kwenye akaunti yako na masomo ya GetCourse.\n\nKwa Chrome, Edge, Opera, Yandex Browser na Firefox kwenye kompyuta.",
+  extensionPageButton: "🧩 Sakinisha kiendelezi",
+  addToGroupButton: "👥 Ongeza kwenye kikundi",
+  newsButton: "📣 Habari za mradi",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Habari za mradi: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Mipangilio ya bot kwa kikundi hiki\n\n" +
+    `🗑 Futa ujumbe wenye linki: ${s.deleteLinks ? "ndiyo" : "hapana"}\n` +
+    "Video ikishatumwa, ujumbe uliokuwa na linki pekee unafutwa — gumzo linabaki na video tu pamoja na jina la aliyeishiriki.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Siwezi kufuta ujumbe kwa sasa: nifanye msimamizi mwenye ruhusa ya \"Kufuta ujumbe\".\n"
+      : "") +
+    `\n✍️ Maelezo chini ya video: ${{ full: "kamili", short: "kichwa na chanzo", none: "bila maelezo" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Ubora: ${s.quality === "max" ? "wa juu kabisa ambao Telegram inakubali" : "wa kawaida (720p)"}\n` +
+    `\n⏱ Video ndefu: ${s.longVideos ? "urefu wowote" : "hadi dakika 15 tu"}\n` +
+    `\n🔑 Nani anaweza kuunganisha akaunti zao (kwa story na machapisho ya faragha): ${s.cookiesBy === "all" ? "mwanachama yeyote" : "wasimamizi tu"}\n` +
+    `\n🌐 Lugha ya majibu: ${s.language ? langName(s.language) : "ya kila mwanachama"}\n` +
+    "\nWasimamizi wa kikundi pekee ndio wanaoweza kubadilisha mipangilio.",
+  settingsDeleteButton: (on) => `🗑 Futa linki: ${on ? "ndiyo" : "hapana"}`,
+  settingsCaptionButton: (style) => `✍️ Maelezo: ${{ full: "kamili", short: "mafupi", none: "hakuna" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Ubora: ${mode === "max" ? "wa juu kabisa" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Video ndefu: ${on ? "ndiyo" : "hadi dak 15"}`,
+  settingsDoneButton: "✅ Imekamilika",
+  settingsAdminsOnly: "Wasimamizi wa kikundi pekee ndio wanaoweza kubadilisha mipangilio.",
+  settingsGroupsOnly: "Mipangilio ni ya vikundi: niongeze kwenye kikundi kisha utume /settings humo.",
+  settingsFailed: "Sikuweza kuhifadhi mipangilio, tafadhali jaribu tena.",
+  settingsCookiesButton: (by) => `🔑 Kuunganisha akaunti: ${by === "all" ? "kila mtu" : "wasimamizi"}`,
+  accountsIntro:
+    "🔑 Akaunti zilizounganishwa\n\nBot inaweza kupakua maudhui ambayo yanaonekana tu kwa watu walioingia (story za Instagram, machapisho ya faragha) — kwa kutumia akaunti yako. Kuingia kunafanya kazi pale ulipokiunganisha: kilichounganishwa kwenye gumzo la faragha kinahudumia upakuaji wako, pamoja na linki zako mwenyewe katika vikundi visivyo na akaunti yao; kilichounganishwa na kikundi kinahudumia wanachama wake wote.",
+  accountsHowTo:
+    "Jinsi ya kuunganisha:\n1. Rahisi zaidi: kiendelezi cha Videoner kwenye kompyuta — ingia kwenye tovuti ya jukwaa, fungua dirisha la Videoner, bonyeza «🔑 Unganisha akaunti yako ya … na bot» kisha unitumie msimbo. Kwa kikundi, tuma /connect MSIMBO katika kikundi hicho.\n2. Au nitumie faili ya cookies.txt (cookies zilizohamishwa kutoka kwenye kivinjari), au bandika maandishi yake kama ujumbe.\n3. Kutoka kwenye simu ya Android — kwa Firefox na kiongezi cha Cookie-Editor: https://videoner.download/sw/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Majukwaa hayapendi upakuaji wa kiotomatiki na yanaweza kuzuia au kufungia akaunti. Ni bora kuunganisha akaunti ya ziada, si akaunti yako kuu. Cookies huhifadhiwa zikiwa zimesimbwa, hutumika kwa upakuaji pekee, na huondolewa kwa vitufe vilivyo hapa chini.",
+  accountsNone: "Bado hakuna kilichounganishwa.",
+  accountsGroupTitle: "🔑 Akaunti zilizounganishwa na kikundi hiki",
+  accountsGroupHowTo:
+    "Ili kuunganisha akaunti kwa kikundi kizima: pata msimbo kwa kitufe cha «🔑 Unganisha akaunti yako ya … na bot» kwenye kiendelezi cha Videoner kisha utume /connect MSIMBO hapa. Ikiwa uliunganisha akaunti kwenye gumzo lako la faragha pekee, bot inaitumia hapa kwa linki zako mwenyewe. Miunganisho yako: /accounts kwenye gumzo la faragha na @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ kuingia hakufanyi kazi)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ kuingia hakufanyi kazi)"}`,
+  accountsWhereHere: "gumzo la faragha",
+  accountsWhereGroup: (title) => `kikundi "${title}"`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Ondoa miunganisho yangu yote",
+  accountsDeleted: "Imeondolewa.",
+  accountsDeletedAll: (n) => `Miunganisho iliyoondolewa: ${n}.`,
+  accountsNotAllowed: "Ni aliyeiunganisha tu au msimamizi wa kikundi anayeweza kuiondoa.",
+  connectUsage:
+    "Tuma /connect MSIMBO. Msimbo unaupata kwa kitufe cha «🔑 Unganisha akaunti yako ya … na bot» kwenye kiendelezi cha Videoner kwenye kompyuta. Miunganisho yako: /accounts.",
+  connectOnlyAdmins: "Wasimamizi pekee ndio wanaoweza kuunganisha akaunti na kikundi hiki (tazama /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} imeunganishwa ${where}. Sasa bot inapakua pia maudhui yanayoonekana tu kwa watu walioingia. Tazama au ondoa: /accounts.\n\n⚠️ Jukwaa linaweza kuzuia akaunti kwa sababu ya upakuaji wa kiotomatiki — ni bora kutumia akaunti ya ziada.`,
+  connectWhereGroup: "na kikundi hiki",
+  connectWhereHere: "kwa upakuaji wako kwenye gumzo la faragha na hali ya inline",
+  connectCodeNotFound: "Msimbo haukupatikana au muda wake umeisha (misimbo hudumu dakika 10). Pata mpya kwenye kiendelezi cha Videoner.",
+  connectRejectedNoSession: "Cookies hizi hazina kuingia. Ingia kwenye tovuti ya jukwaa kisha uhamishe cookies tena.",
+  connectRejectedUnknown: "Hakuna cookies za majukwaa yanayotumika zilizopatikana: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Kuunganisha akaunti bado hakupatikani.",
+  connectFailed: "Sikuweza kuunganisha, tafadhali jaribu tena.",
+  connectFileTooBig: "Faili ni kubwa mno — hamisha cookies za tovuti inayohitajika pekee.",
+  connectNotAnonymous: "Unganisha akaunti kama wewe mwenyewe, si bila kujitambulisha kama kikundi: vinginevyo miunganisho ya wasimamizi itachanganyika. Nimeuharibu msimbo — pata mpya.",
+  connectCodeInGroup:
+    "Msimbo wa kuunganisha uliotumwa kwenye gumzo la kikundi unaweza kuonwa na wengine — nimeuharibu na kuondoa ujumbe. Pata mpya kisha uutume kwa /connect MSIMBO: ninafuta ujumbe wa amri hiyo papo hapo.",
+  groupWelcome:
+    "👋 Habari! Tumeni linki za video kutoka TikTok, Instagram, YouTube, VK na majukwaa mengine kwenye gumzo hili — nitajibu kwa video yenyewe.\n\n" +
+    "Napakua klipu za hadi dakika 15 mwenyewe, bila amri yoyote, na vinginevyo nakaa kimya.\n\n⚙️ Wasimamizi wa kikundi wanaweza kunirekebisha kwa /settings: kufuta ujumbe wenye linki, mtindo wa maelezo, ubora, video ndefu na lugha.\n\n⚡ Ongeza -audio baada ya linki upate sauti, au -hd upate ubora bora zaidi.\n\n📣 Habari za mradi: @videonerdownload",
+  errorTooLong: "video ni ndefu mno — bado hatuwezi kupakua video ndefu kiasi hicho.",
+  errorUnknown: "sikuweza kupakua video hii. Jaribu tena baadaye kidogo au tuma linki nyingine.",
+  inlineHintButton: "Tuma linki kwa bot",
+  inlineResultTitle: "⬇️ Pakua video",
+  inlineResultDescription: "Video itatumwa moja kwa moja kwenye gumzo hili",
+  inlinePlaceholder: "⏬ Ninapakua, huenda ikachukua dakika kadhaa...",
+  inlineOpenBot: "Fungua bot",
+  inlineOnlySingleVideo:
+    "Hali hii inatuma video moja tu. Kwa machapisho yenye faili nyingi au picha, tuma linki kwa bot kwenye gumzo la faragha.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Ili kupakua, jiunge na ${channel} kisha ujaribu tena.`,
+  inlineRateLimited: "Maombi mengi mno mfululizo. Subiri dakika moja kisha ujaribu tena.",
+  queueRest: (count) => `\n\n📋 Linki zilizobaki kwenye foleni: ${count}. Nitazionyesha moja baada ya nyingine baada ya hii.`,
+  queuedOne: (position) =>
+    `📋 Linki imewekwa kwenye foleni, #${position}. Tumalize ya sasa kwanza — kisha nitakuonyesha uchaguzi wa ubora wake.`,
+  queuedMany: (added, waiting) =>
+    `📋 Linki zilizoongezwa kwenye foleni: ${added}. Zinazosubiri kwa jumla: ${waiting}. Nitazionyesha moja baada ya nyingine baada ya ya sasa.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Linki hii tayari iko kwenye foleni — siiongezi mara mbili."
+      : `Linki zilizo tayari kwenye foleni haziongezwi mara mbili (marudio: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Foleni inabeba linki ${limit} tu kwa juu — zilizozidi hazikuongezwa (${rejected}). Zitume foleni ikishasonga.`,
+  skipButton: "✖️ Usipakue",
+  skipped: "⏭ Nimeiruka linki hii.",
+  chooseTimedOut: "⌛ Hakuna ubora uliochaguliwa ndani ya dakika 30 — ninairuka linki hii.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot inaanzishwa upya kwa ajili ya sasisho — foleni imefutwa (linki: ${count}). Tafadhali zitume tena baada ya dakika moja.`,
+  subtitlesButton: "📝 Manukuu",
+  subtitlesBack: "⬅️ Rudi kwenye ubora",
+  subtitlesAuto: "otomatiki",
+  subtitlesChoose: "Chagua lugha ya manukuu",
+  subtitlesPreparing: "📝 Ninaandaa manukuu...",
+  subtitlesFailed: "Sikuweza kupakua manukuu kwa lugha hii. Jaribu lugha nyingine.",
+  subtitlesBusy: "YouTube haitoi manukuu kwa sasa — jaribu tena baada ya dakika chache.",
+  playlistFound: (title, count) =>
+    `📃 Orodha ya kucheza${title ? ` "${title.slice(0, 150)}"` : ""}: video ${count}.\nNitazipakua moja baada ya nyingine. Muundo gani?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Ubora bora zaidi",
+  playlistAudioButton: "🎵 Sauti pekee (mp3)",
+  playlistNoButton: "✖️ Hapana, asante",
+  playlistQueued: (count) =>
+    `📃 Video za orodha ya kucheza zilizowekwa kwenye foleni: ${count}. Nitazituma moja baada ya nyingine. Simamisha kwa kitufe kilicho hapa chini au /stop.`,
+  playlistFailed: "Sikuweza kufungua orodha ya kucheza — huenda ni ya faragha. Tuma linki ya video moja.",
+  stopButton: "⏹ Simamisha",
+  stopped: (dropped) => `⏹ Imesimamishwa.${dropped ? ` Linki zilizoondolewa kwenye foleni: ${dropped}.` : ""}`,
+  nothingToStop: "Hakuna kinachopakuliwa kwa sasa.",
+  languageChoose: "🌐 Chagua lugha ya bot. \"Otomatiki\" inafuata Telegram yako.",
+  languageChooseGroup: "🌐 Lugha ya majibu ya bot katika kikundi hiki. \"Otomatiki\" — lugha ya Telegram ya kila mwanachama.",
+  languageAuto: "Otomatiki — kama kwenye Telegram",
+  languageAutoGroup: "Otomatiki — ya kila mwanachama",
+  languageSaved: (name) => `✅ Lugha ya bot: ${name}. Ibadilishe kwa /language.`,
+  languageSavedAuto: "✅ Bot inafuata lugha yako ya Telegram. Ibadilishe kwa /language.",
+  settingsLanguageButton: (name) => `🌐 Lugha: ${name ?? "otomatiki"}`,
+  settingsBack: "⬅️ Rudi kwenye mipangilio",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -2026,4 +2246,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw };

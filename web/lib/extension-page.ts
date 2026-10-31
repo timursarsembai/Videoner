@@ -507,4 +507,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Beranda",
   },
+  sw: {
+    metaTitle: "Kiendelezi cha kivinjari cha Videoner",
+    title: "Videoner kwa kivinjari chako",
+    summary:
+      "Kiendelezi kinaongeza kitufe cha Pakua kwenye kurasa za video na kupakua moja kwa moja ndani ya kivinjari chako. Video za Instagram, Facebook, TikTok na Threads zinapakuliwa kwa kutumia akaunti yako mwenyewe — kwa hiyo machapisho ya faragha unayoyaona kwenye akaunti yako yanafanya kazi pia, vivyo hivyo video ambazo jukwaa halikuipa seva yetu.",
+    failedVideo: "Video ambayo haikuweza kupakuliwa kwenye tovuti au kwenye boti:",
+    failedVideoHint:
+      "Sakinisha kiendelezi, ingia kwenye jukwaa katika kivinjari hiki, fungua video na ubofye Pakua kwenye kona ya chini kulia.",
+    openVideo: "Fungua video",
+    version: "Toleo",
+    browsersTitle: "Kinafanya kazi wapi",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi na vivinjari vingine vinavyotegemea Chromium — kwenye kompyuta.",
+    mobile: "Simu na tableti hazitumii viendelezi — huko pakua kupitia tovuti au boti ya Telegram.",
+    getcourseTitle: "Masomo ya GetCourse",
+    getcourse:
+      "Fungua somo katika shule ya GetCourse ukiwa umeingia: kitufe cha Pakua kitaonekana kwenye kona ya juu kulia ya kicheza video, na aikoni ya Videoner itaonyesha video zote za somo hilo. Kivinjari chako chenyewe kinapakua somo na kuliunganisha kuwa mp4 — faili haipiti kwenye seva yetu. Ikishindikana kwenye kivinjari, seva yetu itapakua somo kwa ubora uleule badala yake; katika hali hiyo inapokea kiungo cha video kutoka kwenye kicheza video.",
+    privacyTitle: "Akaunti yako inabaki kwako",
+    privacy:
+      "Kiendelezi hakiombi nenosiri kamwe: ombi kwa jukwaa linatumwa na kivinjari chako mwenyewe, na seva yetu inapokea tu ripoti fupi kwa ajili ya takwimu — kiungo, ukubwa wa faili na kichwa. Vidakuzi (cookies) vinatumwa kwenye seva tu ikiwa wewe mwenyewe utabonyeza \"Unganisha akaunti na boti\" — na ni vidakuzi vya jukwaa hilo pekee, vikiwa vimesimbwa.",
+    stepsTitle: "Jinsi ya kusakinisha kwenye Chrome, Yandex Browser, Edge na Opera",
+    steps: [
+      "Pakua faili la kumbukumbu (archive) na ulifungue (unzip) — folda ya videoner-extension yenye nambari ya toleo katika jina lake itaonekana.",
+      "Fungua ukurasa wa viendelezi: andika chrome://extensions kwenye upau wa anwani (edge://extensions kwenye Edge, opera://extensions kwenye Opera).",
+      "Washa “Developer mode” (hali ya msanidi programu) — swichi iliyo juu ya ukurasa.",
+      "Bofya “Load unpacked” (pakia kiendelezi kilichofunguliwa) na uchague folda hiyo — ile iliyo na faili manifest.json.",
+      "Imekamilika: kurasa za video zinapata kitufe cha Pakua, na aikoni ya Videoner inaonekana kwenye upau wa zana wa kivinjari.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 au toleo jipya zaidi — pia kwenye kompyuta.",
+    firefoxSoon:
+      "Toleo la Firefox linakuja hivi karibuni. Kwa sasa kiendelezi kinafanya kazi kwenye Chrome, Yandex Browser, Edge, Opera na vivinjari vingine vinavyotegemea Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Faili la .zip — linasakinishwa kwa dakika chache",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Usakinishaji kwa kubofya mara moja",
+    yourBrowser: "Kivinjari chako",
+    soon: "Inakuja hivi karibuni",
+    firefoxStepsTitle: "Jinsi ya kusakinisha kwenye Firefox",
+    firefoxSteps: [
+      "Bofya kitufe cha Firefox kilicho juu ya ukurasa huu.",
+      "Firefox itauliza kama iruhusu videoner.download kusakinisha nyongeza (add-on) — bofya “Continue to Installation” (Endelea na Usakinishaji).",
+      "Kwenye dirisha la “Add Videoner?”, bofya “Add” (Ongeza).",
+      "Imekamilika: kurasa za video zinapata kitufe cha Pakua, na aikoni ya Videoner inaonekana kwenye upau wa zana. Firefox husakinisha masasisho yenyewe.",
+    ],
+    updateTitle: "Jinsi ya kusasisha kwenye Chrome, Yandex Browser, Edge na Opera",
+    updateSteps: [
+      "Toleo jipya linapotoka, aikoni ya Videoner inaonyesha alama ya NEW na dirisha lake linaleta kiungo cha ukurasa huu.",
+      "Pakua faili la kumbukumbu kwa kitufe cha Chrome kilicho juu ya ukurasa huu na ulifungue kwenye folda ileile kama awali, ukibadilisha faili za zamani.",
+      "Fungua ukurasa wa viendelezi (chrome://extensions, browser://extensions kwenye Yandex Browser, edge://extensions) na ubonyeze “Reload” (Pakia upya) — mshale wa duara kwenye kadi ya Videoner.",
+    ],
+    back: "Mwanzo",
+  },
 };

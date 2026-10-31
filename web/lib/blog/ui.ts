@@ -127,6 +127,18 @@ export const blogUi: Record<
     readFull: "Baca selengkapnya di situs",
     dateLocale: "id-ID",
   },
+  sw: {
+    title: "Blogu ya Videoner",
+    description: "Habari za mradi: kipi kipya kwenye boti, tovuti na kiendelezi, na jinsi ya kukitumia.",
+    readMore: "Soma",
+    back: "Makala zote",
+    allPosts: "Blogu",
+    channel: "Habari kwenye Telegram",
+    channelCta: "Habari za mradi ziko kwenye chaneli ya Telegram @videonerdownload.",
+    readOnSite: "Soma kwenye tovuti",
+    readFull: "Soma makala kamili kwenye tovuti",
+    dateLocale: "sw-KE",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

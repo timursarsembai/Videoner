@@ -190,8 +190,12 @@ export class InfoService {
           allowPhotos,
         });
         // Threads куки не нужны вовсе: удачный повтор там — просто повтор
-        // после случайного сбоя, а не признак протухших кук.
-        if (alerts && platform !== 'threads') {
+        // после случайного сбоя, а не признак протухших кук. То же, если
+        // своих кук для площадки у сервера нет (Instagram с 31.10.2026 —
+        // общий аккаунт отклонён): первая попытка и так была анонимной, и
+        // «куки протухли» приходило владельцу каждый раз, когда Instagram
+        // разово отказывал анонимному запросу.
+        if (alerts && platform !== 'threads' && this.ytdlp.hasServerCookies(platform)) {
           void this.alert.notifyCookiesExpired(platform, message);
         }
         return result;

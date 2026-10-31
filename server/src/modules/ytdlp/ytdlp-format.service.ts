@@ -24,6 +24,10 @@ const INFO_CACHE_MAX_ENTRIES = 100;
 export class YtdlpFormatService {
   constructor(private readonly process: YtdlpProcessService) {}
 
+  hasServerCookies(platform: string): boolean {
+    return this.process.hasServerCookies(platform);
+  }
+
   // Хранится сырой JSON, а не объект: каждый вызов получает свою копию, и
   // правка результата одним потребителем не может испортить его другому.
   private readonly infoCache = new Map<

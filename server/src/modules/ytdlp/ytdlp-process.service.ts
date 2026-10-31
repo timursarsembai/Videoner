@@ -718,6 +718,12 @@ export class YtdlpProcessService implements OnModuleInit {
     }
   }
 
+  // Есть ли у сервера свои куки для площадки (cookies/<площадка>.txt или
+  // общий cookies.txt). Нет — значит, сервер и так ходит туда анонимно.
+  hasServerCookies(platform: string): boolean {
+    return this.resolveCookiesSource(platform) !== null;
+  }
+
   // Куки конкретной площадки приоритетнее общего файла: cookies/youtube.txt
   // перекрывает cookies/cookies.txt. Так переэкспорт одной площадки не задевает
   // остальные, а отключить куки площадки можно просто удалив её файл.

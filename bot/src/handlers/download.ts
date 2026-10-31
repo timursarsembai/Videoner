@@ -8,6 +8,8 @@ import {
   api,
   fmtDuration,
   extensionLinkFor,
+  extensionPageFor,
+  siteLinkFor,
   friendlyError,
   checkUserRateLimit,
   API_URL,
@@ -429,9 +431,16 @@ export async function performDownload(
 // Текст ошибки для человека. Если площадка не отдала ролик нашему серверу, а
 // расширение для браузера скачает его под входом человека, — ещё совет и
 // кнопка на страницу расширения.
+// Кнопки «на сайте» и «через расширение» — для файла тяжелее 2 ГБ.
+function bigFileButtons(kb: InlineKeyboard, m: (typeof messages)[Lang], url: string, lang: Lang): InlineKeyboard {
+  return kb.url(m.siteButton, siteLinkFor(url, lang)).row().url(m.extensionButton, extensionPageFor(url, lang)).row();
+}
+
 function failureMessage(raw: string, url: string, lang: Lang): { text: string; keyboard?: InlineKeyboard } {
   const m = messages[lang];
-  const text = `${m.failedPrefix}${friendlyError(raw, lang)}`;
+  const friendly = friendlyError(raw, lang);
+  const text = `${m.failedPrefix}${friendly}`;
+  if (friendly === m.errorFileTooLarge) return { text, keyboard: bigFileButtons(new InlineKeyboard(), m, url, lang) };
   const link = extensionLinkFor(raw, url, lang);
   if (!link) return { text };
   return { text: text + m.extensionHint, keyboard: new InlineKeyboard().url(m.extensionButton, link) };
@@ -571,6 +580,9 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
   if (current.subtitles?.length) {
     kb.text(m.subtitlesButton, "s|list").row();
   }
+  // Часть качеств (или все) тяжелее 2 ГБ — их можно взять на сайте или
+  // расширением.
+  if (current.sizeNote) bigFileButtons(kb, m, current.url, lang);
   // Отказаться от ссылки, не дожидаясь получаса: иначе следующие в очереди
   // ждали бы, пока истечёт время выбора.
   kb.text(m.skipButton, "x|skip");

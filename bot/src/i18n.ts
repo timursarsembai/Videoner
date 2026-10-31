@@ -73,6 +73,8 @@ interface Messages {
   channelNotice: (channel: string) => string;
   channelPost: (title: string, url: string) => string;
   errorFileTooLarge: string;
+  // Файл тяжелее предела Telegram: кнопка на сайт (и extensionButton).
+  siteButton: string;
   qualitiesHiddenBySize: (limit: string) => string;
   videoTooBigForTelegram: (smallest: string) => string;
   errorLoginRequired: string;
@@ -305,9 +307,12 @@ const ru: Messages = {
     "Публичные записи скачиваются без проблем — попробуйте другую ссылку.",
   errorUnsupportedPlatform:
     "Не распознал ссылку — проверь, что это прямая ссылка на видео с YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads.",
-  errorFileTooLarge: "файл в этом качестве слишком большой. Пришли ссылку ещё раз и выбери качество пониже — примерный размер написан на кнопках.",
-  qualitiesHiddenBySize: (limit) => `\n\n⚖️ Качества тяжелее ${limit} не показаны: файлы больше Telegram не даёт боту отправить.`,
-  videoTooBigForTelegram: (smallest) => `\n\n⚖️ Видео слишком тяжёлое для Telegram даже в самом низком качестве (~${smallest}). Можно скачать только звук.`,
+  errorFileTooLarge: "файл получился тяжелее 2 ГБ — больше Telegram не даёт ботам отправлять. Скачайте его на сайте или через расширение для браузера — кнопки ниже. Или пришлите ссылку ещё раз и выберите качество пониже.",
+  siteButton: "🌐 Скачать на сайте",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Качества тяжелее ${limit} не показаны: файлы больше Telegram не даёт ботам отправлять. Их можно скачать на сайте или через расширение для браузера — кнопки ниже.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Видео слишком тяжёлое для Telegram даже в самом низком качестве (~${smallest}): больше 2 ГБ Telegram не даёт ботам отправлять. Здесь можно скачать только звук, а видео — на сайте или через расширение для браузера (кнопки ниже).`,
   errorFormatUnavailable: "Для этого видео нет такого качества. Пришли ссылку ещё раз — покажу актуальный список.",
   errorNoVideoContent: "По этой ссылке нет видео для скачивания — похоже, пост содержит только фото.",
   errorRegionBlocked:
@@ -515,9 +520,12 @@ const en: Messages = {
     "Public posts download without trouble — try another link.",
   errorUnsupportedPlatform:
     "Couldn't recognize that link — make sure it's a direct video link from YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, or Threads.",
-  errorFileTooLarge: "the file is too large in this quality. Send the link again and pick a lower quality — the approximate size is shown on the buttons.",
-  qualitiesHiddenBySize: (limit) => `\n\n⚖️ Qualities heavier than ${limit} are hidden: Telegram does not let bots send larger files.`,
-  videoTooBigForTelegram: (smallest) => `\n\n⚖️ This video is too heavy for Telegram even in the lowest quality (~${smallest}). Only the audio can be downloaded.`,
+  errorFileTooLarge: "the file is larger than 2 GB — Telegram doesn't let bots send bigger files. Download it on the website or with the browser extension — buttons below. Or send the link again and pick a lower quality.",
+  siteButton: "🌐 Download on the website",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Qualities heavier than ${limit} are hidden: Telegram doesn't let bots send larger files. You can download them on the website or with the browser extension — buttons below.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ This video is too heavy for Telegram even in the lowest quality (~${smallest}): Telegram doesn't let bots send files over 2 GB. Here you can get the audio only; the video — on the website or with the browser extension (buttons below).`,
   errorFormatUnavailable: "That quality isn't available for this video. Send the link again — I'll show the current list.",
   errorNoVideoContent: "This link doesn't have a video to download — the post appears to be photo-only.",
   errorRegionBlocked:
@@ -724,9 +732,12 @@ const uk: Messages = {
     "Публічні дописи завантажуються без проблем — спробуйте інше посилання.",
   errorUnsupportedPlatform:
     "Не розпізнав посилання — перевір, що це пряме посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads.",
-  errorFileTooLarge: "файл у цій якості завеликий. Надішли посилання ще раз і обери якість нижчу — приблизний розмір написано на кнопках.",
-  qualitiesHiddenBySize: (limit) => `\n\n⚖️ Якості важчі за ${limit} не показано: більші файли Telegram не дає боту надіслати.`,
-  videoTooBigForTelegram: (smallest) => `\n\n⚖️ Відео завелике для Telegram навіть у найнижчій якості (~${smallest}). Можна завантажити лише звук.`,
+  errorFileTooLarge: "файл вийшов важчим за 2 ГБ — більші Telegram не дає ботам надсилати. Завантажте його на сайті або через розширення для браузера — кнопки нижче. Або надішліть посилання ще раз і оберіть якість нижчу.",
+  siteButton: "🌐 Завантажити на сайті",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Якості важчі за ${limit} не показано: більші файли Telegram не дає ботам надсилати. Їх можна завантажити на сайті або через розширення для браузера — кнопки нижче.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Відео завелике для Telegram навіть у найнижчій якості (~${smallest}): понад 2 ГБ Telegram не дає ботам надсилати. Тут можна завантажити лише звук, а відео — на сайті або через розширення для браузера (кнопки нижче).`,
   errorFormatUnavailable: "Для цього відео немає такої якості. Надішли посилання ще раз — покажу актуальний список.",
   errorNoVideoContent: "За цим посиланням немає відео для завантаження — схоже, допис містить лише фото.",
   errorRegionBlocked:
@@ -939,9 +950,12 @@ const kk: Messages = {
     "Ашық жазбалар еш қиындықсыз жүктеледі — басқа сілтемені байқап көріңіз.",
   errorUnsupportedPlatform:
     "Сілтемені тани алмадым — бұл YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest немесе Threads видеосына тікелей сілтеме екенін тексер.",
-  errorFileTooLarge: "бұл сападағы файл тым үлкен. Сілтемені қайта жіберіп, төменірек сапаны таңда — шамамен өлшемі батырмаларда жазылған.",
-  qualitiesHiddenBySize: (limit) => `\n\n⚖️ ${limit} шегінен ауыр сапалар көрсетілмеді: одан үлкен файлдарды Telegram боттың жіберуіне мүмкіндік бермейді.`,
-  videoTooBigForTelegram: (smallest) => `\n\n⚖️ Видео ең төменгі сапада да Telegram үшін тым ауыр (~${smallest}). Тек дыбысын жүктеп алуға болады.`,
+  errorFileTooLarge: "файл 2 ГБ-тан ауыр болып шықты — одан үлкенін Telegram боттарға жіберуге рұқсат бермейді. Оны сайттан немесе браузер кеңейтімі арқылы жүктеп алыңыз — батырмалар төменде. Немесе сілтемені қайта жіберіп, төменірек сапаны таңдаңыз.",
+  siteButton: "🌐 Сайттан жүктеп алу",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ${limit} шегінен ауыр сапалар көрсетілмеді: одан үлкен файлдарды Telegram боттарға жіберуге рұқсат бермейді. Оларды сайттан немесе браузер кеңейтімі арқылы жүктеп алуға болады — батырмалар төменде.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Видео ең төменгі сапада да Telegram үшін тым ауыр (~${smallest}): 2 ГБ-тан асатын файлдарды Telegram боттарға жіберуге рұқсат бермейді. Мұнда тек дыбысты, ал видеоны сайттан немесе браузер кеңейтімі арқылы жүктеп алуға болады (батырмалар төменде).`,
   errorFormatUnavailable: "Бұл видеода мұндай сапа жоқ. Сілтемені қайта жібер — өзекті тізімді көрсетемін.",
   errorNoVideoContent: "Бұл сілтемеде жүктеп алатын видео жоқ — жазбада тек фото бар сияқты.",
   errorRegionBlocked:

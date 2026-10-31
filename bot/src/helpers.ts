@@ -264,6 +264,18 @@ const BROWSER_HOSTS = /(^|\.)(instagram\.com|facebook\.com|fb\.watch|tiktok\.com
  * временный отказ нашему адресу). Иначе null. Та же логика на сайте —
  * web/lib/extension-hint.ts.
  */
+// Файл тяжелее предела Telegram (2 ГБ): у сайта и расширения такого предела
+// нет. Ссылки ведут сразу к этому видео: сайт — через ссылку-префикс
+// (videoner.download/<ссылка>, web/middleware.ts), расширение — страница
+// установки с этим видео (?url=).
+export function siteLinkFor(url: string, lang: Lang): string {
+  return `${EXTENSION_PAGE_BASE}${lang === "en" ? "" : `/${lang}`}/${url}`;
+}
+
+export function extensionPageFor(url: string, lang: Lang): string {
+  return extensionPageFor(url, lang);
+}
+
 export function extensionLinkFor(raw: string, url: string, lang: Lang): string | null {
   let host: string;
   try {

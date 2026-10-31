@@ -23,10 +23,11 @@ const localeTag: Record<Language, string> = {
   sw: "sw-KE",
   de: "de-DE",
   fr: "fr-FR",
+  it: "it-IT",
 };
 
 function operatorLines(lang: Language) {
-  const name = { en: operator.nameEn, ru: operator.nameRu, es: operator.nameEs, uk: operator.nameUk, kk: operator.nameKk, ar: operator.nameAr, zh: operator.nameZh, hi: operator.nameHi, id: operator.nameId, sw: operator.nameSw, de: operator.nameDe, fr: operator.nameFr }[lang];
+  const name = { en: operator.nameEn, ru: operator.nameRu, es: operator.nameEs, uk: operator.nameUk, kk: operator.nameKk, ar: operator.nameAr, zh: operator.nameZh, hi: operator.nameHi, id: operator.nameId, sw: operator.nameSw, de: operator.nameDe, fr: operator.nameFr, it: operator.nameIt }[lang];
   const address = {
     en: operator.addressEn,
     ru: operator.addressRu,
@@ -40,9 +41,10 @@ function operatorLines(lang: Language) {
     sw: operator.addressSw,
     de: operator.addressDe,
     fr: operator.addressFr,
+    it: operator.addressIt,
   }[lang];
-  const basis = { en: operator.basisEn, ru: operator.basisRu, es: operator.basisEs, uk: operator.basisUk, kk: operator.basisKk, ar: operator.basisAr, zh: operator.basisZh, hi: operator.basisHi, id: operator.basisId, sw: operator.basisSw, de: operator.basisDe, fr: operator.basisFr }[lang];
-  const binLabel = { en: "BIN/IIN", ru: "БИН/ИИН", es: "BIN/IIN", uk: "БІН/ІІН", kk: "БСН/ЖСН", ar: "BIN/IIN", zh: "BIN/IIN", hi: "BIN/IIN", id: "BIN/IIN", sw: "BIN/IIN", de: "BIN/IIN", fr: "BIN/IIN" }[lang];
+  const basis = { en: operator.basisEn, ru: operator.basisRu, es: operator.basisEs, uk: operator.basisUk, kk: operator.basisKk, ar: operator.basisAr, zh: operator.basisZh, hi: operator.basisHi, id: operator.basisId, sw: operator.basisSw, de: operator.basisDe, fr: operator.basisFr, it: operator.basisIt }[lang];
+  const binLabel = { en: "BIN/IIN", ru: "БИН/ИИН", es: "BIN/IIN", uk: "БІН/ІІН", kk: "БСН/ЖСН", ar: "BIN/IIN", zh: "BIN/IIN", hi: "BIN/IIN", id: "BIN/IIN", sw: "BIN/IIN", de: "BIN/IIN", fr: "BIN/IIN", it: "BIN/IIN" }[lang];
   return [name, `${binLabel}: ${operator.bin}`, basis, address];
 }
 

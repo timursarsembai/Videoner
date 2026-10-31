@@ -93,6 +93,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Arrêter le téléchargement et la file d'attente" },
     { command: "language", description: "Langue du bot" },
   ],
+  it: [
+    { command: "start", description: "Come usare il bot" },
+    { command: "extension", description: "Estensione per il browser" },
+    { command: "accounts", description: "I tuoi account per storie e post privati" },
+    { command: "connect", description: "Collega un account con un codice dall'estensione" },
+    { command: "stop", description: "Ferma il download e la coda" },
+    { command: "language", description: "Lingua del bot" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -174,6 +182,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Connecter un compte à ce groupe avec un code" },
     { command: "language", description: "Langue du bot dans ce groupe (admins)" },
     { command: "start", description: "Comment le bot fonctionne dans un groupe" },
+  ],
+  it: [
+    { command: "settings", description: "Impostazioni del bot per questo gruppo (admin)" },
+    { command: "accounts", description: "Account collegati a questo gruppo" },
+    { command: "connect", description: "Collega un account a questo gruppo con un codice" },
+    { command: "language", description: "Lingua del bot in questo gruppo (admin)" },
+    { command: "start", description: "Come funziona il bot in un gruppo" },
   ],
 };
 

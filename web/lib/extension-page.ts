@@ -663,4 +663,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Accueil",
   },
+  it: {
+    metaTitle: "Estensione Videoner per browser",
+    title: "Videoner per il tuo browser",
+    summary:
+      "L’estensione aggiunge un pulsante Scarica alle pagine dei video e scarica direttamente nel browser. Instagram, Facebook, TikTok e Threads vengono scaricati con il tuo accesso: così funzionano anche i post privati che vedi nel tuo account e i video che la piattaforma non ha fornito al nostro server.",
+    failedVideo: "Il video che non è stato possibile scaricare sul sito o nel bot:",
+    failedVideoHint:
+      "Installa l’estensione, accedi alla piattaforma in questo browser, apri il video e clicca su «Scarica» in basso a destra.",
+    openVideo: "Apri il video",
+    version: "Versione",
+    browsersTitle: "Dove funziona",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi e gli altri browser basati su Chromium, da computer.",
+    mobile: "Smartphone e tablet non supportano le estensioni: lì usa il sito o il bot Telegram.",
+    getcourseTitle: "Lezioni GetCourse",
+    getcourse:
+      "Apri una lezione in una scuola GetCourse dopo aver effettuato l’accesso: nell’angolo in alto a destra del player compare il pulsante «Scarica», e l’icona di Videoner mostra tutti i video della lezione. È il tuo browser a scaricare la lezione e a unirla in un mp4: il file non passa dal nostro server. Se non ci riesce, la lezione viene scaricata nella stessa qualità dal nostro server, che in quel caso riceve il link del video dal player.",
+    privacyTitle: "Il tuo accesso resta tuo",
+    privacy:
+      "L’estensione non chiede mai la password: è il tuo browser a inviare la richiesta alla piattaforma, e il nostro server riceve solo un breve resoconto per le statistiche (link, dimensione del file e titolo). I cookie vengono inviati al server solo se premi tu «Collega l’account al bot», e solo quelli di quella piattaforma, cifrati.",
+    stepsTitle: "Come installarla su Chrome, Yandex Browser, Edge e Opera",
+    steps: [
+      "Scarica l’archivio ed estrailo: comparirà una cartella videoner-extension con il numero di versione nel nome.",
+      "Apri la pagina delle estensioni: digita chrome://extensions nella barra degli indirizzi (edge://extensions in Edge, opera://extensions in Opera).",
+      "Attiva la «Modalità sviluppatore»: l’interruttore in cima alla pagina.",
+      "Clicca su «Carica estensione non pacchettizzata» e scegli quella cartella, cioè quella che contiene il file manifest.json.",
+      "Fatto: le pagine dei video avranno il pulsante Scarica e l’icona di Videoner comparirà nella barra degli strumenti del browser.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 o successivo, sempre da computer.",
+    firefoxSoon:
+      "La versione per Firefox arriverà presto. Per ora l’estensione funziona su Chrome, Yandex Browser, Edge, Opera e gli altri browser basati su Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Archivio .zip: si installa in un paio di minuti",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Installazione con un clic",
+    yourBrowser: "Il tuo browser",
+    soon: "In arrivo",
+    firefoxStepsTitle: "Come installarla su Firefox",
+    firefoxSteps: [
+      "Clicca sul pulsante Firefox in cima a questa pagina.",
+      "Firefox ti chiede se consentire a videoner.download di installare un componente aggiuntivo: clicca su «Continua l’installazione».",
+      "Nella finestra «Aggiungere Videoner?» clicca su «Aggiungi».",
+      "Fatto: le pagine dei video avranno il pulsante Scarica e l’icona di Videoner comparirà nella barra degli strumenti. Gli aggiornamenti li installa Firefox da solo.",
+    ],
+    updateTitle: "Come aggiornarla su Chrome, Yandex Browser, Edge e Opera",
+    updateSteps: [
+      "Quando esce una nuova versione, l’icona di Videoner mostra il badge NEW e la finestra dell’estensione rimanda a questa pagina.",
+      "Scarica l’archivio con il pulsante Chrome in cima a questa pagina ed estrailo nella stessa cartella di prima, sostituendo i file.",
+      "Apri la pagina delle estensioni (chrome://extensions, browser://extensions in Yandex Browser, edge://extensions) e clicca su «Ricarica», la freccia circolare sulla scheda di Videoner.",
+    ],
+    back: "Home",
+  },
 };

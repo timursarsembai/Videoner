@@ -21,6 +21,7 @@ export const operator = {
   nameSw: "Mjasiriamali Binafsi SARSEMBAYEV",
   nameDe: "Einzelunternehmer SARSEMBAYEV",
   nameFr: "Entrepreneur individuel SARSEMBAYEV",
+  nameIt: "Imprenditore individuale SARSEMBAYEV",
   nameAr: "رائد الأعمال الفردي سارسيمباييف (SARSEMBAYEV)",
   directorRu: "Сарсембаев Тимур Сейпилович",
   directorEn: "Timur Sarsembayev",
@@ -44,6 +45,8 @@ export const operator = {
     "Mitteilung über die Aufnahme der Tätigkeit als Einzelunternehmer Nr. KZ45UUZ00498687 vom 22.07.2026",
   basisFr:
     "Notification de début d’activité d’entrepreneur individuel n° KZ45UUZ00498687 du 22.07.2026",
+  basisIt:
+    "Comunicazione di avvio dell’attività di imprenditore individuale n. KZ45UUZ00498687 del 22.07.2026",
   basisAr:
     "إشعار ببدء نشاط رائد الأعمال الفردي رقم KZ45UUZ00498687 بتاريخ 22.07.2026",
   basisUk:
@@ -69,6 +72,8 @@ export const operator = {
     "Republik Kasachstan, Gebiet Almaty, Bezirk Jenbekschikasach, Landbezirk Rachat, Dorf Asat, PKST «Almagul-2», Gebäude 117",
   addressFr:
     "République du Kazakhstan, région d’Almaty, district d’Enbekchikazakh, district rural de Rakhat, village d’Azat, PKST «Almagul-2», bâtiment 117",
+  addressIt:
+    "Repubblica del Kazakistan, regione di Almaty, distretto di Enbekshikazakh, distretto rurale di Rakhat, villaggio di Azat, PKST «Almagul-2», edificio 117",
   addressAr:
     "جمهورية كازاخستان، منطقة ألماتي، مقاطعة إنبيكشيكازاخ، الدائرة الريفية راخات، قرية آزات، PKST «Almagul-2»، المبنى 117",
   addressEs:

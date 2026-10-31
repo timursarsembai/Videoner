@@ -115,6 +115,18 @@ export const blogUi: Record<
     readFull: "पूरा लेख वेबसाइट पर पढ़ें",
     dateLocale: "hi-IN-u-nu-latn",
   },
+  id: {
+    title: "Blog Videoner",
+    description: "Berita proyek: apa yang baru di bot, situs, dan ekstensi, serta cara menggunakannya.",
+    readMore: "Baca",
+    back: "Semua artikel",
+    allPosts: "Blog",
+    channel: "Berita di Telegram",
+    channelCta: "Berita proyek ada di kanal Telegram @videonerdownload.",
+    readOnSite: "Baca di situs",
+    readFull: "Baca selengkapnya di situs",
+    dateLocale: "id-ID",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

@@ -31,6 +31,7 @@ const SIZE_UNITS: Record<Lang, { locale: string; gb: string; mb: string }> = {
   zh: { locale: "zh-CN", gb: "GB", mb: "MB" },
   // Цифры латинские, а не деванагари: так их пишут в интерфейсах.
   hi: { locale: "hi-IN-u-nu-latn", gb: "GB", mb: "MB" },
+  id: { locale: "id-ID", gb: "GB", mb: "MB" },
 };
 
 // «850 МБ», «1,2 ГБ» — для подписи на кнопках качества.

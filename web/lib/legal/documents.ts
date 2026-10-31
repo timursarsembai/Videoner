@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на восьми языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на девяти языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -2423,6 +2423,308 @@ export const legal: LegalByLanguage = {
             heading: "दुर्भावनापूर्ण शिकायतें",
             body: [
               "जान-बूझकर गलत जानकारी वाली शिकायत लागू कानून के अनुसार शिकायतकर्ता के दायित्व का कारण बन सकती है। यदि शिकायत से न तो कॉपीराइट धारक की पहचान हो पाती है और न ही विवादित सामग्री की, तो हम उस पर विचार करने से इनकार कर सकते हैं।",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  id: {
+    ui: {
+      updated: "Terakhir diperbarui",
+      back: "Kembali ke beranda",
+      operatorHeading: "Penyelenggara layanan",
+      navHeading: "Dokumen lainnya",
+      labels: {
+        privacy: "Kebijakan Privasi",
+        terms: "Ketentuan Penggunaan",
+        cookies: "Kebijakan Cookie",
+        copyright: "Untuk Pemegang Hak Cipta",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Kebijakan Privasi",
+        summary: `Data apa yang dikumpulkan oleh ${operator.site}, mengapa data tersebut diperlukan, berapa lama disimpan, dan bagaimana cara menghapusnya.`,
+        sections: [
+          {
+            heading: "Ketentuan Umum",
+            body: [
+              `Kebijakan ini menjelaskan data pribadi apa yang diproses oleh layanan ${operator.site} dan untuk tujuan apa. Pengendali data adalah ${operator.nameId}.`,
+              "Dengan menggunakan layanan, Anda menyetujui tata cara pemrosesan yang diuraikan di sini. Apabila Anda tidak menyetujuinya, mohon untuk tidak menggunakan layanan.",
+              "Pemrosesan dilakukan sesuai dengan Undang-Undang Republik Kazakhstan tentang Data Pribadi dan Pelindungannya, dan, bagi pengunjung dari Kawasan Ekonomi Eropa, dengan memperhatikan ketentuan GDPR.",
+            ],
+          },
+          {
+            heading: "Data yang kami proses",
+            body: [
+              "Kami dengan sengaja tidak mengumpulkan apa pun di luar yang diperlukan untuk berjalannya layanan, dan kami tidak pernah meminta dokumen identitas, data pembayaran, atau alamat.",
+            ],
+            bullets: [
+              "Data akun Telegram yang diterima bot ketika Anda mengirim pesan kepadanya: ID numerik, nama pengguna, nama depan, dan kode bahasa.",
+              "Tautan yang Anda kirimkan untuk diunduh beserta keterangan mengenai upaya pengunduhan itu sendiri: platform, tanggal dan waktu, kualitas yang dipilih, serta hasilnya (berhasil atau galat).",
+              "Data teknis koneksi: alamat IP, jenis dan versi peramban, bahasa, serta halaman perujuk. Data ini tercatat dalam log server dan dalam sistem analitik web.",
+              "Cookie dan pengenal analitik — selengkapnya lihat Kebijakan Cookie.",
+            ],
+          },
+          {
+            heading: "Mengapa data ini diperlukan",
+            bullets: [
+              "Untuk menyediakan layanan itu sendiri: mengambil video dari tautan Anda dan menyerahkan berkasnya kepada Anda.",
+              "Untuk membedakan akun Anda dari akun orang lain dan mencegah penyalahgunaan.",
+              "Untuk melindungi layanan dari penyalahgunaan otomatis melalui pemeriksaan Cloudflare Turnstile sebelum tautan dikirimkan.",
+              "Untuk memahami bagaimana situs digunakan dan memperbaiki galat, dengan menggunakan statistik yang dianonimkan dan diagregasi.",
+              "Untuk menanggapi permintaan Anda dan permintaan pemegang hak cipta.",
+              "Untuk sesekali mengirim pesan kepada Anda di Telegram guna menanyakan pendapat Anda tentang layanan — misalnya, apabila Anda berhenti menggunakannya. Anda tidak wajib membalas; apabila Anda tidak ingin menerima pesan semacam itu, cukup beri tahu kami dan kami tidak akan menghubungi Anda lagi.",
+            ],
+          },
+          {
+            heading: "Dasar hukum pemrosesan",
+            body: [
+              "Data akun Telegram dan catatan unduhan diproses untuk melaksanakan Ketentuan Penggunaan, yang Anda terima ketika mulai menggunakan layanan.",
+              "Cookie analitik dan perekaman aktivitas di situs diproses berdasarkan persetujuan Anda, yang dapat Anda tarik kembali sewaktu-waktu — caranya diuraikan dalam Kebijakan Cookie.",
+              "Log server dan perlindungan dari bot didasarkan pada kepentingan sah kami untuk menjaga layanan tetap berfungsi dan aman.",
+              "Permintaan pendapat Anda tentang layanan didasarkan pada kepentingan sah kami untuk meningkatkan layanan; Anda dapat menolaknya sewaktu-waktu.",
+            ],
+          },
+          {
+            heading: "Akun yang terhubung",
+            body: [
+              "Jika Anda menghendaki, Anda dapat menghubungkan akun Anda di suatu platform (Instagram, Facebook, YouTube, X, VK, TikTok) ke bot agar bot dapat mengunduh postingan yang hanya dapat dilihat oleh pengguna yang telah masuk: stories dan postingan privat. Untuk itu, bot menerima cookie akun tersebut — dari ekstensi Videoner melalui kode sekali pakai, atau dari berkas yang Anda kirimkan.",
+              "Kami hanya menyimpan cookie dari platform yang dipilih dan langsung membuang sisanya. Cookie tersebut disimpan dalam bentuk terenkripsi dan hanya digunakan untuk unduhan di tempat Anda menghubungkannya. Cookie yang dihubungkan dalam obrolan pribadi Anda digunakan untuk unduhan Anda, termasuk tautan Anda sendiri di grup yang tidak memiliki akun terhubung sendiri; cookie tersebut tidak pernah digunakan untuk tautan orang lain. Cookie yang dihubungkan ke suatu grup digunakan untuk unduhan para anggotanya dan tidak untuk keperluan lain.",
+              "Dasar hukumnya adalah persetujuan Anda: Anda sendiri yang menghubungkan akun dan dapat menghapusnya sewaktu-waktu dengan perintah /accounts. Cookie yang dihapus akan dimusnahkan secara permanen. Apabila platform tidak lagi menerima proses masuk tersebut, bot akan memberi tahu Anda.",
+              "Postingan yang diunduh melalui akun yang terhubung tidak dipublikasikan di kanal kami dan tidak diberikan kepada pengguna lain dari cache bersama.",
+            ],
+          },
+          {
+            heading: "Layanan pihak ketiga",
+            body: [
+              "Kami tidak menjual data Anda dan tidak menyerahkannya kepada pihak ketiga untuk tujuan mereka sendiri. Layanan ini menggunakan penyedia berikut, yang masing-masing memproses data sesuai dengan aturannya sendiri:",
+            ],
+            bullets: [
+              `Telegram — pengoperasian bot ${BOT}.`,
+              "Cloudflare — perlindungan dari bot (Turnstile), pengiriman situs, dan perutean surel.",
+              "Google Analytics dan Google Tag Manager — statistik kunjungan.",
+              "Yandex Metrica — statistik kunjungan, peta klik, dan Webvisor. Webvisor merekam aktivitas di halaman: pergerakan penunjuk, pengguliran, dan klik. Rekaman tersebut hanya digunakan untuk menganalisis kemudahan penggunaan situs.",
+            ],
+          },
+          {
+            heading: "Jangka waktu penyimpanan",
+            bullets: [
+              "Berkas yang diunduh dihapus dari server secara otomatis sekitar satu jam setelah dibuat. Kami tidak menyimpan arsip video Anda.",
+              "Catatan upaya pengunduhan disimpan selama diperlukan untuk mencegah penyalahgunaan dan menangani permintaan.",
+              "Data akun disimpan selama Anda menggunakan layanan dan dihapus atas permintaan Anda.",
+              "Log server disimpan untuk jangka waktu terbatas dan ditimpa seiring rotasinya.",
+            ],
+          },
+          {
+            heading: "Lokasi pemrosesan data",
+            body: [
+              "Server layanan berada di pusat data di wilayah Uni Eropa. Sebagian penyedia yang disebutkan di atas dapat memproses data di luar wilayah tersebut sesuai dengan kebijakan mereka sendiri.",
+            ],
+          },
+          {
+            heading: "Hak Anda",
+            body: [
+              `Anda berhak memperoleh informasi mengenai pemrosesan data Anda, meminta perbaikan atau penghapusannya, menarik kembali persetujuan, dan mengajukan keberatan atas pemrosesan. Untuk itu, kirimkan surel ke ${MAIL} dari alamat surel atau akun Telegram yang terkait dengan permintaan tersebut.`,
+              "Kami menanggapi dalam jangka waktu yang wajar, biasanya dalam tiga puluh hari kalender. Penghapusan akun juga mengakibatkan penghapusan riwayat unduhan yang terkait dengannya.",
+            ],
+          },
+          {
+            heading: "Anak-anak",
+            body: [
+              "Layanan ini tidak diperuntukkan dan tidak ditujukan bagi anak-anak di bawah usia 16 tahun. Kami tidak dengan sengaja mengumpulkan data mereka; apabila hal itu terjadi karena kekeliruan, hubungi kami dan data tersebut akan dihapus.",
+            ],
+          },
+          {
+            heading: "Perubahan",
+            body: [
+              "Kami dapat memperbarui Kebijakan ini. Tanggal versi yang berlaku tercantum di bagian atas halaman, dan perubahan yang material akan kami tandai di dalam layanan.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Ketentuan Penggunaan",
+        summary: `Aturan penggunaan ${operator.site}: apa yang diperbolehkan, apa yang tidak, dan dengan ketentuan apa layanan ini beroperasi.`,
+        sections: [
+          {
+            heading: "Ketentuan Umum",
+            body: [
+              `Ketentuan ini mengatur penggunaan situs web ${operator.site} dan bot Telegram ${BOT}. Pemilik dan pengelola layanan adalah ${operator.nameId}.`,
+              "Dengan mulai menggunakan layanan, Anda menyatakan bahwa Anda telah membaca Ketentuan ini dan menerimanya. Apabila ada ketentuan yang tidak sesuai bagi Anda, mohon untuk tidak menggunakan layanan.",
+            ],
+          },
+          {
+            heading: "Layanan ini gratis",
+            body: [
+              "Seluruh fitur layanan disediakan secara gratis. Tidak ada langganan, paket berbayar, kualitas video berbayar, maupun pembelian di dalam layanan.",
+              "Kami tidak menampilkan iklan dan tidak memasang tautan afiliasi.",
+            ],
+          },
+          {
+            heading: "Ketentuan akses",
+            bullets: [
+              "Mengunduh di situs web tidak memerlukan akun maupun proses masuk. Bot membedakan pengguna berdasarkan akun Telegram mereka.",
+              "Pembatasan teknis atas frekuensi permintaan melindungi layanan dari kelebihan beban dan penyalahgunaan otomatis.",
+              "Untuk YouTube berlaku batas lalu lintas harian: 10 GB per 24 jam per jaringan di situs web dan di ekstensi, serta 25 GB per 24 jam per akun Telegram di bot. Platform lain tidak terpengaruh.",
+              "Untuk mengunduh melalui bot tidak diperlukan langganan ke kanal kami. Bot menambahkan tautan ke kanal berita proyek pada keterangan berkas; berlangganan kanal tersebut bersifat opsional.",
+            ],
+          },
+          {
+            heading: "Apa yang dilakukan layanan",
+            body: [
+              "Layanan ini bertindak sebagai perantara teknis: layanan mengikuti tautan yang Anda berikan, mengakses halaman yang dapat diakses publik, mengambil berkas media, dan meneruskannya kepada Anda.",
+              "Kami tidak menempatkan katalog video, tidak melakukan pencarian atas konten milik orang lain, dan tidak menyimpan berkas yang diunduh lebih lama dari yang diperlukan untuk pengirimannya — sekitar satu jam.",
+              "Ketersediaan platform tertentu bergantung pada keputusan teknis platform tersebut dan dapat berubah tanpa pemberitahuan.",
+            ],
+          },
+          {
+            heading: "Kewajiban pengguna",
+            body: [
+              "Anda sendiri bertanggung jawab atas cara Anda menggunakan berkas yang Anda peroleh, dan Anda menyatakan bahwa Anda berhak untuk melakukannya.",
+            ],
+            bullets: [
+              "Unduh hanya materi yang hak atasnya Anda miliki, atau yang penggunaannya diizinkan oleh pemegang hak atau oleh hukum.",
+              "Jangan menggunakan layanan untuk melanggar hak cipta atau hak terkait, menyebarkan konten terlarang, atau melanggar hak pihak ketiga.",
+              "Jangan mencoba mengakali pembatasan teknis layanan, termasuk pembatasan frekuensi permintaan dan pemeriksaan bot.",
+              "Jangan menimbulkan beban otomatis: permintaan massal, skrip, dan scraper tidak diperbolehkan.",
+            ],
+          },
+          {
+            heading: "Publikasi tautan di kanal",
+            body: [
+              "Dengan mengunduh video melalui bot, Anda menyetujui bahwa tautan ke postingan asli akan dipublikasikan di kanal Telegram kami. Pemberitahuan mengenai hal ini ditampilkan di bot sebelum Anda memilih kualitas — yakni sebelum Anda memutuskan untuk mengunduh.",
+              "Publikasi dilakukan secara anonim: kanal menerima tautan ke halaman yang dapat diakses publik, judul video, dan sampulnya — bingkai yang sama dengan yang ditampilkan platform dalam pratinjau postingannya. Siapa yang mengunduh video tidak disebutkan. Berkas video itu sendiri tidak pernah dipublikasikan di mana pun: yang disebarkan adalah tautan, yang oleh platform itu sendiri dianjurkan untuk disebarkan melalui tombol «Bagikan» di bawah setiap postingan.",
+              "Tautan yang sama dipublikasikan tidak lebih dari satu kali. Apabila Anda tidak ingin suatu tautan masuk ke kanal, jangan unduh video tersebut melalui layanan kami.",
+              "Tautan dari grup dan postingan yang diunduh melalui akun yang terhubung tidak pernah dipublikasikan di kanal."
+            ],
+          },
+          {
+            heading: "Menghubungkan akun Anda",
+            body: [
+              "Dengan menghubungkan akun Anda di suatu platform ke bot, Anda menyatakan bahwa akun tersebut adalah milik Anda dan Anda berhak menggunakannya dengan cara ini.",
+              "Platform tidak menyetujui pengunduhan otomatis dan dapat membatasi atau memblokir akun yang terhubung. Anda menanggung risiko ini; kami menyarankan untuk menghubungkan akun cadangan, bukan akun utama Anda. Kami tidak bertanggung jawab atas pembatasan yang dikenakan platform terhadap akun Anda.",
+              "Akun yang dihubungkan ke suatu grup digunakan untuk unduhan semua anggotanya. Admin grup menentukan siapa yang boleh menghubungkan akun dan dapat menghapus akun mana pun.",
+            ],
+          },
+          {
+            heading: "Batasan tanggung jawab",
+            body: [
+              "Layanan disediakan «sebagaimana adanya». Kami tidak menjamin layanan beroperasi tanpa gangguan, ketersediaan platform tertentu, atau kesesuaian berkas untuk tujuan Anda.",
+              "Kami tidak bertanggung jawab atas apa yang Anda lakukan terhadap materi yang Anda unduh, maupun atas akibat pelanggaran hak pihak ketiga yang Anda lakukan.",
+              "Kami berhak mengubah fitur layanan, menghentikan sementara layanan untuk pemeliharaan, dan menghentikan pengoperasiannya.",
+            ],
+          },
+          {
+            heading: "Pembatasan akses",
+            body: [
+              "Kami dapat membatasi atau mengakhiri akses ke layanan apabila Ketentuan ini dilanggar, apabila ada upaya mengakali pembatasan, atau apabila diterima pengaduan yang berdasar dari pemegang hak.",
+            ],
+          },
+          {
+            heading: "Perubahan dan hukum yang berlaku",
+            body: [
+              "Kami dapat mengubah Ketentuan ini; tanggal versi yang berlaku tercantum di bagian atas halaman. Dengan tetap menggunakan layanan setelah perubahan, Anda menerima versi yang baru.",
+              "Hubungan para pihak tunduk pada hukum Republik Kazakhstan. Para pihak akan berupaya menyelesaikan sengketa melalui korespondensi dan, apabila tidak tercapai kesepakatan, sesuai dengan tata cara yang ditetapkan oleh peraturan perundang-undangan Republik Kazakhstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Kebijakan Cookie",
+        summary: `Cookie apa yang digunakan oleh ${operator.site}, untuk apa cookie tersebut, dan bagaimana cara menolaknya.`,
+        sections: [
+          {
+            heading: "Apa itu cookie",
+            body: [
+              "Cookie adalah berkas teks kecil yang disimpan situs di peramban Anda. Cookie memungkinkan layanan mengingat pengaturan Anda dan mengumpulkan statistik kunjungan yang dianonimkan.",
+              "Selain cookie, dokumen ini juga mencakup teknologi serupa: penyimpanan lokal peramban dan piksel pelacak.",
+            ],
+          },
+          {
+            heading: "Cookie yang mutlak diperlukan",
+            body: [
+              "Tanpa cookie ini layanan tidak dapat berfungsi, sehingga cookie ini selalu dipasang.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — memeriksa bahwa tautan dikirimkan oleh manusia, bukan oleh skrip.",
+              "Pengaturan antarmuka — bahasa dan tema tampilan yang Anda pilih.",
+            ],
+          },
+          {
+            heading: "Cookie analitik",
+            body: [
+              "Cookie ini membantu kami memahami halaman mana yang digunakan dan di mana galat terjadi. Cookie ini dipasang dengan persetujuan Anda dan tidak diperlukan untuk berfungsinya layanan.",
+            ],
+            bullets: [
+              "Google Analytics dan Google Tag Manager — lalu lintas dan perilaku di situs dalam bentuk yang dianonimkan.",
+              "Yandex Metrica — lalu lintas, peta klik, dan Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor dari Yandex Metrica merekam aktivitas di halaman: pergerakan penunjuk, pengguliran, klik, dan ketikan di kolom tautan. Hal ini diperlukan agar kami dapat melihat bagian antarmuka yang membingungkan pengguna.",
+              "Kami tidak menggunakan rekaman ini untuk melacak individu tertentu. Mohon untuk tidak memasukkan ke dalam kolom situs informasi apa pun yang tidak ingin Anda simpan.",
+            ],
+          },
+          {
+            heading: "Cara menolak",
+            bullets: [
+              "Blokir atau hapus cookie melalui pengaturan peramban Anda — cara ini berlaku untuk semua sistem yang disebutkan di sini.",
+              "Google Analytics: pengaya peramban resmi untuk menonaktifkan pengumpulan data tersedia di situs Google.",
+              "Yandex Metrica: penolakan dapat dilakukan melalui pengaya resmi dari Yandex.",
+              "Menonaktifkan cookie yang mutlak diperlukan akan membuat pengunduhan tidak dapat dilakukan.",
+            ],
+          },
+          {
+            heading: "Jangka waktu penyimpanan",
+            body: [
+              "Cookie sesi dihapus ketika Anda menutup peramban atau ketika sesi berakhir. Alat analitik menyimpan pengenalnya selama jangka waktu yang ditetapkan oleh penyedianya.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Untuk Pemegang Hak Cipta",
+        summary: "Sikap layanan terkait hak cipta dan tata cara pengajuan pengaduan atas pelanggaran.",
+        sections: [
+          {
+            heading: "Sikap layanan",
+            body: [
+              "Layanan ini tidak menempatkan video dan tidak mengelola katalog video. Layanan bertindak sebagai perantara teknis: mengikuti tautan yang dimasukkan pengguna, mengakses halaman yang dapat diakses publik, dan meneruskan berkas kepada pengguna tersebut.",
+              "Berkas yang diunduh tersimpan di server sekitar satu jam, lalu dihapus secara otomatis. Tidak ada salinan permanen atas konten milik orang lain yang tersisa pada kami.",
+              "Tanggung jawab atas penggunaan materi yang diunduh berada pada pengguna, sebagaimana dinyatakan secara tegas dalam Ketentuan Penggunaan.",
+            ],
+          },
+          {
+            heading: "Apabila hak Anda dilanggar",
+            body: [
+              `Apabila Anda adalah pemegang hak atau kuasanya dan berpendapat bahwa layanan digunakan untuk melanggar hak Anda, kirimkan surel ke ${MAIL}. Kami meninjau pengaduan semacam itu dan mengambil tindakan.`,
+            ],
+          },
+          {
+            heading: "Isi pengaduan",
+            bullets: [
+              "Ciptaan apa yang terdampak dan atas dasar apa Anda memegang hak atasnya.",
+              "Tautan ke materi tersebut dan, jika diketahui, keadaan terjadinya pelanggaran.",
+              "Data kontak Anda: nama orang atau nama badan usaha, alamat, dan alamat surel.",
+              "Apabila Anda bertindak atas nama pemegang hak, bukti kewenangan Anda.",
+              "Pernyataan bahwa informasi dalam pengaduan adalah benar dan bahwa penggunaan materi tersebut tidak diizinkan oleh pemegang hak atau oleh hukum.",
+            ],
+          },
+          {
+            heading: "Tindakan yang akan kami ambil",
+            body: [
+              "Kami meninjau pengaduan dalam jangka waktu yang wajar, biasanya dalam tiga puluh hari kalender, dan apabila pelanggaran terbukti, kami membatasi akses ke materi tersebut melalui layanan dan, apabila diperlukan, membatasi akses pelanggar ke layanan.",
+              "Kami akan memberitahukan hasil peninjauan ke alamat surel yang Anda berikan.",
+            ],
+          },
+          {
+            heading: "Pengaduan dengan iktikad tidak baik",
+            body: [
+              "Pengaduan yang memuat informasi yang diketahui tidak benar dapat menimbulkan tanggung jawab hukum bagi pengadu sesuai dengan peraturan perundang-undangan yang berlaku. Kami berhak menolak meninjau pengaduan apabila pengaduan tersebut tidak memungkinkan untuk mengidentifikasi pemegang hak maupun materi yang disengketakan.",
             ],
           },
         ],

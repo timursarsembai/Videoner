@@ -1,9 +1,11 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id";
 
 export function detectLang(languageCode?: string): Lang {
-  const base = languageCode?.toLowerCase().split("-")[0];
+  const code = languageCode?.toLowerCase().split("-")[0];
+  // «in» — старый код индонезийского, некоторые клиенты шлют его до сих пор.
+  const base = code === "in" ? "id" : code;
   return isLang(base) ? base : "en";
 }
 
@@ -12,9 +14,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -1357,6 +1359,226 @@ const hi: Messages = {
   settingsBack: "⬅️ सेटिंग्स पर वापस",
 };
 
+const indonesian: Messages = {
+  start: "Halo! Kirimkan tautan video dari YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, atau Threads — saya akan membantu Anda mengunduhnya.\n\n✨ Tanpa batasan kualitas: Anda mendapatkan apa pun yang disediakan platform, hingga 4K — selama ukuran file tidak melebihi 2 GB, batas Telegram untuk bot. Tidak ada fitur berbayar di sini.\n\nSepenuhnya gratis: tanpa langganan, tanpa iklan, tanpa pembelian dalam aplikasi.\n\n🧩 Mengunduh di komputer? Pasang ekstensi browser — tombol Unduh akan muncul langsung di halaman video: videoner.download/id/extension\n\n👥 Tambahkan saya ke grup, dan saya akan mengirimkan video dari tautan yang dibagikan di sana.\n\n⚡ Lewati pemilihan kualitas: tambahkan -audio setelah tautan untuk suara saja (mp3), atau -hd untuk kualitas terbaik.\n\n📣 Berita proyek: @videonerdownload\n\n🌐 Bahasa bot: /language",
+  notLink: "Sepertinya itu bukan tautan. Kirimkan tautan video.",
+  inviteGreeting: "Halo! Saya Videoner — saya mengunduh video dari YouTube, TikTok, Instagram, dan platform lain secara gratis. Sedang menyiapkan video yang dibagikan kepada Anda 👇",
+  inviteNotFound: "Saya tidak menemukan video untuk tautan undangan ini. Kirimkan tautan video, dan saya akan mengunduhnya.",
+  inviteUnavailable: "Saya tidak dapat membuka video dari tautan ini — layanan sedang tidak merespons. Buka lagi tautan yang sama dalam satu menit.",
+  fetchingInfo: "🔍 Mengambil info video...",
+  audioOnlyButton: "🎵 Audio saja (mp3)",
+  photoButton: "📷 Unduh foto",
+  slideshowButton: "🎞 Slideshow (video)",
+  galleryButton: "📷+🎞 Foto dan slideshow",
+  chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\nPilih kualitas:`,
+  sessionExpired: "Sesi berakhir — kirim tautannya lagi",
+  downloading: "⏬ Mengunduh, ini bisa memakan waktu beberapa menit...",
+  downloadFailed: "pengunduhan gagal",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Mengunduh: ${percent}%${eta ? ` · sisa ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Hampir selesai — sedang menyusun file...",
+  converting: (percent) => `⚙️ Mengonversi: ${percent}%`,
+  etaUnderMinute: "kurang dari satu menit",
+  etaMinutes: (minutes) => `~${minutes} mnt`,
+  etaHours: (hours, minutes) => `~${hours} jam${minutes ? ` ${minutes} mnt` : ""}`,
+  downloadTimeout: "pengunduhan terlalu lama — videonya tampaknya sangat besar. Coba kualitas yang lebih rendah.",
+  downloadInterrupted: "⚠️ Bot sedang dimulai ulang untuk pembaruan — pengunduhan Anda terputus. Silakan kirim tautannya lagi dalam satu menit.",
+  fileTooBig: (mb, url) =>
+    `Filenya ternyata besar (${mb} MB) — Telegram tidak mengizinkan bot mengirimnya.\nUnduh di sini: ${url}`,
+  sendingFile: "📤 Mengirim file...",
+  sendingAlbum: (count) => `📤 Postingan ini berisi beberapa file (${count}) — mengirimnya sebagai album...`,
+  failedPrefix: "❌ Gagal: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Sumber: ${sourceUrl}\n` +
+        "Semua hak atas video ini milik pembuatnya.\n" +
+        "Diunduh gratis dengan @VideonerBot",
+      `📣 Berita proyek: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Bagikan: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Untuk mengunduh, silakan berlangganan saluran kami ${channel} — hanya itu syaratnya, layanan tetap gratis.\n\n` +
+    "Berlangganan, lalu tekan «Saya sudah berlangganan».",
+  openChannelButton: "📣 Buka saluran",
+  checkSubscriptionButton: "Saya sudah berlangganan",
+  subscribeThanks: "Terima kasih! Sekarang kirimkan tautan video.",
+  subscribeThanksResuming: "Terima kasih! Sekarang saya proses tautan Anda.",
+  subscribeStillMissing: "Saya belum melihat langganan Anda. Berlangganan, lalu tekan lagi.",
+  channelNotice: (channel) => `\n\nTautan ke postingan ini akan muncul di ${channel} — secara anonim, tanpa nama Anda.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Unduh video ini dan video lainnya secara gratis: @VideonerBot",
+  errorStoryNeedsId:
+    "kirimkan tautan ke story tertentu: buka di aplikasi Instagram, lalu ketuk Bagikan → Salin tautan.",
+  errorInstagramStory:
+    "Story Instagram hanya dapat dilihat oleh orang yang sudah masuk.",
+  errorLoginRequired:
+    "Postingan ini tidak tersedia tanpa masuk: platform hanya menampilkannya kepada " +
+    "pengguna yang sudah login. Ini terjadi pada postingan privat, konten dengan batasan usia, dan " +
+    "postingan yang dibagikan ke audiens terbatas.\n\n" +
+    "Postingan publik bisa diunduh tanpa masalah — coba tautan lain.",
+  errorUnsupportedPlatform:
+    "Tautan tidak dikenali — pastikan itu tautan langsung ke video dari YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, atau Threads.",
+  errorFileTooLarge: "file lebih besar dari 2 GB — Telegram tidak mengizinkan bot mengirim file yang lebih besar. Unduh di situs web atau dengan ekstensi browser — tombolnya ada di bawah. Atau kirim tautannya lagi dan pilih kualitas yang lebih rendah.",
+  siteButton: "🌐 Unduh di situs web",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Kualitas yang lebih besar dari ${limit} disembunyikan: Telegram tidak mengizinkan bot mengirim file yang lebih besar. Anda bisa mengunduhnya di situs web atau dengan ekstensi browser — tombolnya ada di bawah.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Video ini terlalu besar untuk Telegram, bahkan dalam kualitas terendah (~${smallest}): Telegram tidak mengizinkan bot mengirim file lebih dari 2 GB. Di sini Anda hanya bisa mendapatkan audionya; videonya — di situs web atau dengan ekstensi browser (tombol di bawah).`,
+  errorFormatUnavailable: "Kualitas tersebut tidak tersedia untuk video ini. Kirim tautannya lagi — saya akan menampilkan daftar terbaru.",
+  errorNoVideoContent: "Tautan ini tidak berisi video untuk diunduh — sepertinya postingan ini hanya berisi foto.",
+  errorRegionBlocked:
+    "Video ini diblokir di luar negara pembuatnya — platform tidak memberikannya " +
+    "ke server kami. Tidak ada cara untuk mengatasinya: pembatasan ada di pihak mereka." +
+    "\n\nTautan lain tetap bisa diunduh seperti biasa.",
+  errorRateLimited: "Terlalu banyak tautan berturut-turut — tunggu sebentar, lalu kirim lagi.",
+  errorYoutubeDailyLimit: (gb) => `Anda telah mengunduh lebih dari ${gb} GB dari YouTube dalam 24 jam terakhir — itu batas harian bot per orang. Batas dihitung untuk 24 jam terakhir, jadi Anda bisa mengunduh video YouTube baru sedikit nanti. Platform lain berfungsi seperti biasa.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Playlist dihentikan: batas harian YouTube telah tercapai. Video yang tidak diunduh: ${dropped}. Kirim lagi tautan playlist nanti.`,
+  errorPlatformRefused:
+    "platform tidak memberikan video ini ke server kami. Ini terjadi pada postingan privat " +
+    "atau dengan batasan usia, dan terkadang platform membatasi akses untuk " +
+    "sementara. Coba lagi dalam beberapa menit.",
+  errorThreadsNoMedia:
+    "tidak ada video atau foto yang terlihat di postingan Threads ini. Mungkin ini postingan teks saja, atau " +
+    "Threads hanya menampilkan medianya kepada pengguna yang sudah masuk — postingan seperti itu tidak bisa diunduh tanpa login.",
+  extensionHint:
+    "\n\n💻 Anda bisa mengunduhnya dengan ekstensi browser Videoner di komputer: " +
+    "ekstensi mengunduh menggunakan login Anda sendiri di platform, dan tidak ada kata sandi atau cookies yang keluar dari browser Anda.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Untuk mengunduh postingan seperti ini, hubungkan akun ${platform} Anda ke bot — cukup sekali. Setelah itu bot mengunduh apa pun yang bisa Anda lihat: postingan privat, reels, dan story, juga dari ponsel Anda. Tombol di bawah menunjukkan caranya.${withExtension ? "\n\n💻 Atau unduh dengan ekstensi browser Videoner di komputer." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Akun ${platform} yang Anda hubungkan tidak dapat membuka postingan ini. Login mungkin sudah tidak berfungsi — hubungkan akun lagi. Atau akun ini tidak memiliki akses ke postingan tersebut.${withExtension ? "\n\n💻 Anda juga bisa mengunduhnya dengan ekstensi browser Videoner di komputer." : ""}`,
+  connectAccountButton: "🔑 Hubungkan akun",
+  reconnectAccountButton: "🔑 Hubungkan ulang",
+  extensionButton: "🧩 Unduh dengan ekstensi",
+  extensionCommand:
+    "🧩 Videoner untuk browser Anda: tombol Unduh langsung di halaman video — YouTube, Instagram, TikTok, VK, video privat dari akun Anda, dan pelajaran GetCourse.\n\nUntuk Chrome, Edge, Opera, Yandex Browser, dan Firefox di komputer.",
+  extensionPageButton: "🧩 Pasang ekstensi",
+  addToGroupButton: "👥 Tambahkan ke grup",
+  newsButton: "📣 Berita proyek",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Berita proyek: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Pengaturan bot untuk grup ini\n\n" +
+    `🗑 Hapus pesan berisi tautan: ${s.deleteLinks ? "ya" : "tidak"}\n` +
+    "Setelah video terkirim, pesan yang hanya berisi tautan akan dihapus — di obrolan hanya tersisa video dengan nama orang yang membagikannya.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Saat ini saya tidak bisa menghapus pesan: jadikan saya admin dengan hak \"Hapus pesan\".\n"
+      : "") +
+    `\n✍️ Keterangan di bawah video: ${{ full: "lengkap", short: "judul dan sumber", none: "tanpa keterangan" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Kualitas: ${s.quality === "max" ? "tertinggi yang diterima Telegram" : "standar (720p)"}\n` +
+    `\n⏱ Video panjang: ${s.longVideos ? "durasi berapa pun" : "hanya hingga 15 menit"}\n` +
+    `\n🔑 Siapa yang boleh menghubungkan akun (untuk story dan postingan privat): ${s.cookiesBy === "all" ? "semua anggota" : "hanya admin"}\n` +
+    `\n🌐 Bahasa balasan: ${s.language ? langName(s.language) : "bahasa masing-masing anggota"}\n` +
+    "\nHanya admin grup yang dapat mengubah pengaturan.",
+  settingsDeleteButton: (on) => `🗑 Hapus tautan: ${on ? "ya" : "tidak"}`,
+  settingsCaptionButton: (style) => `✍️ Keterangan: ${{ full: "lengkap", short: "singkat", none: "tidak ada" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Kualitas: ${mode === "max" ? "tertinggi" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Video panjang: ${on ? "ya" : "hingga 15 mnt"}`,
+  settingsDoneButton: "✅ Selesai",
+  settingsAdminsOnly: "Hanya admin grup yang dapat mengubah pengaturan.",
+  settingsGroupsOnly: "Pengaturan berlaku untuk grup: tambahkan saya ke grup dan kirim /settings di sana.",
+  settingsFailed: "Gagal menyimpan pengaturan, silakan coba lagi.",
+  settingsCookiesButton: (by) => `🔑 Menghubungkan akun: ${by === "all" ? "semua orang" : "admin"}`,
+  accountsIntro:
+    "🔑 Akun yang terhubung\n\nBot dapat mengunduh konten yang hanya terlihat oleh orang yang sudah masuk (story Instagram, postingan privat) — menggunakan akun Anda. Login berlaku di tempat Anda menghubungkannya: login di obrolan pribadi melayani unduhan Anda, termasuk tautan Anda sendiri di grup yang tidak memiliki akun sendiri; login yang dihubungkan ke grup melayani semua anggotanya.",
+  accountsHowTo:
+    "Cara menghubungkan:\n1. Paling mudah: ekstensi Videoner di komputer — masuk di situs platform, buka jendela Videoner, tekan «🔑 Hubungkan akun … Anda ke bot», lalu kirimkan kodenya kepada saya. Untuk grup, kirim /connect KODE di grup tersebut.\n2. Atau kirimkan file cookies.txt (cookies yang diekspor dari browser), atau tempelkan isinya sebagai pesan.\n3. Dari ponsel Android — dengan Firefox dan add-on Cookie-Editor: https://videoner.download/id/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platform tidak menyukai pengunduhan otomatis dan dapat membatasi atau memblokir akun. Sebaiknya hubungkan akun cadangan, bukan akun utama Anda. Cookies disimpan dalam bentuk terenkripsi, hanya digunakan untuk mengunduh, dan dapat dihapus dengan tombol di bawah.",
+  accountsNone: "Belum ada yang terhubung.",
+  accountsGroupTitle: "🔑 Akun yang terhubung ke grup ini",
+  accountsGroupHowTo:
+    "Untuk menghubungkan akun bagi seluruh grup: dapatkan kode dengan tombol «🔑 Hubungkan akun … Anda ke bot» di ekstensi Videoner, lalu kirim /connect KODE di sini. Jika Anda menghubungkan akun hanya di obrolan pribadi, bot menggunakannya di sini untuk tautan Anda sendiri. Koneksi Anda: /accounts di obrolan pribadi dengan @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ login tidak berfungsi)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ login tidak berfungsi)"}`,
+  accountsWhereHere: "obrolan pribadi",
+  accountsWhereGroup: (title) => `grup "${title}"`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Hapus semua koneksi saya",
+  accountsDeleted: "Dihapus.",
+  accountsDeletedAll: (n) => `Koneksi dihapus: ${n}.`,
+  accountsNotAllowed: "Hanya orang yang menghubungkannya atau admin grup yang dapat menghapusnya.",
+  connectUsage:
+    "Kirim /connect KODE. Kode didapat dari tombol «🔑 Hubungkan akun … Anda ke bot» di ekstensi Videoner di komputer. Koneksi Anda: /accounts.",
+  connectOnlyAdmins: "Hanya admin yang dapat menghubungkan akun ke grup ini (lihat /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} terhubung ${where}. Kini bot juga mengunduh konten yang hanya terlihat oleh orang yang sudah masuk. Lihat atau hapus: /accounts.\n\n⚠️ Platform dapat membatasi akun karena pengunduhan otomatis — sebaiknya gunakan akun cadangan.`,
+  connectWhereGroup: "ke grup ini",
+  connectWhereHere: "untuk unduhan Anda di obrolan pribadi dan mode inline",
+  connectCodeNotFound: "Kode tidak ditemukan atau sudah kedaluwarsa (kode berlaku 10 menit). Dapatkan kode baru di ekstensi Videoner.",
+  connectRejectedNoSession: "Cookies ini tidak berisi login. Masuk di situs platform, lalu ekspor cookies lagi.",
+  connectRejectedUnknown: "Tidak ditemukan cookies dari platform yang didukung: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Fitur menghubungkan akun belum tersedia.",
+  connectFailed: "Gagal menghubungkan, silakan coba lagi.",
+  connectFileTooBig: "File terlalu besar — ekspor cookies dari situs yang diperlukan saja.",
+  connectNotAnonymous: "Hubungkan akun atas nama Anda sendiri, bukan secara anonim sebagai grup: jika tidak, koneksi para admin akan tercampur. Kode sudah saya hapus — dapatkan kode baru.",
+  connectCodeInGroup:
+    "Kode koneksi yang diposting di obrolan grup dapat dilihat orang lain — kode sudah saya hapus beserta pesannya. Dapatkan kode baru dan kirim dengan /connect KODE: pesan perintah itu langsung saya hapus.",
+  groupWelcome:
+    "👋 Halo! Kirim tautan video dari TikTok, Instagram, YouTube, VK, dan platform lain di obrolan ini — saya akan membalas dengan videonya.\n\n" +
+    "Saya mengunduh klip hingga 15 menit secara otomatis, tanpa perintah, dan selain itu saya diam saja.\n\n⚙️ Admin grup dapat mengatur saya dengan /settings: menghapus pesan tautan, gaya keterangan, kualitas, video panjang, dan bahasa.\n\n⚡ Tambahkan -audio setelah tautan untuk mendapatkan suaranya, atau -hd untuk kualitas terbaik.\n\n📣 Berita proyek: @videonerdownload",
+  errorTooLong: "videonya terlalu panjang — kami belum bisa mengunduh video sepanjang itu.",
+  errorUnknown: "tidak dapat mengunduh video ini. Coba lagi nanti atau kirim tautan lain.",
+  inlineHintButton: "Kirim tautan ke bot",
+  inlineResultTitle: "⬇️ Unduh video",
+  inlineResultDescription: "Video akan dikirim langsung di obrolan ini",
+  inlinePlaceholder: "⏬ Mengunduh, ini bisa memakan waktu beberapa menit...",
+  inlineOpenBot: "Buka bot",
+  inlineOnlySingleVideo:
+    "Mode ini mengirim satu video. Untuk postingan berisi beberapa file atau foto, kirim tautannya ke bot di obrolan pribadi.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Untuk mengunduh, berlangganan ${channel}, lalu coba lagi.`,
+  inlineRateLimited: "Terlalu banyak permintaan berturut-turut. Tunggu sebentar, lalu coba lagi.",
+  queueRest: (count) => `\n\n📋 Tautan yang masih dalam antrean: ${count}. Saya akan menampilkannya satu per satu setelah yang ini.`,
+  queuedOne: (position) =>
+    `📋 Tautan masuk antrean, #${position}. Kita selesaikan yang sekarang dulu — lalu saya tampilkan pilihan kualitasnya.`,
+  queuedMany: (added, waiting) =>
+    `📋 Tautan yang ditambahkan ke antrean: ${added}. Total menunggu: ${waiting}. Saya akan menampilkannya satu per satu setelah yang sekarang.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Tautan ini sudah ada di antrean — tidak ditambahkan dua kali."
+      : `Tautan yang sudah ada di antrean tidak ditambahkan dua kali (duplikat: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Antrean menampung paling banyak ${limit} tautan — sisanya tidak ditambahkan (${rejected}). Kirim lagi setelah antrean berjalan.`,
+  skipButton: "✖️ Jangan unduh",
+  skipped: "⏭ Tautan ini dilewati.",
+  chooseTimedOut: "⌛ Tidak ada kualitas yang dipilih dalam 30 menit — tautan ini dilewati.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot sedang dimulai ulang untuk pembaruan — antrean diatur ulang (tautan: ${count}). Silakan kirim lagi dalam satu menit.`,
+  subtitlesButton: "📝 Subtitle",
+  subtitlesBack: "⬅️ Kembali ke kualitas",
+  subtitlesAuto: "otomatis",
+  subtitlesChoose: "Pilih bahasa subtitle",
+  subtitlesPreparing: "📝 Menyiapkan subtitle...",
+  subtitlesFailed: "Gagal mengunduh subtitle dalam bahasa ini. Coba bahasa lain.",
+  subtitlesBusy: "YouTube sedang tidak memberikan subtitle — coba lagi dalam beberapa menit.",
+  playlistFound: (title, count) =>
+    `📃 Playlist${title ? ` "${title.slice(0, 150)}"` : ""}: ${count} video.\nSaya akan mengunduhnya satu per satu. Format apa?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Kualitas terbaik",
+  playlistAudioButton: "🎵 Audio saja (mp3)",
+  playlistNoButton: "✖️ Tidak, terima kasih",
+  playlistQueued: (count) =>
+    `📃 Video dari playlist yang masuk antrean: ${count}. Saya akan mengirimnya satu per satu. Hentikan dengan tombol di bawah atau /stop.`,
+  playlistFailed: "Gagal membuka playlist — mungkin playlist ini privat. Kirim tautan ke satu video.",
+  stopButton: "⏹ Hentikan",
+  stopped: (dropped) => `⏹ Dihentikan.${dropped ? ` Tautan yang dihapus dari antrean: ${dropped}.` : ""}`,
+  nothingToStop: "Tidak ada yang sedang diunduh.",
+  languageChoose: "🌐 Pilih bahasa bot. \"Otomatis\" mengikuti Telegram Anda.",
+  languageChooseGroup: "🌐 Bahasa balasan bot di grup ini. \"Otomatis\" — bahasa Telegram masing-masing anggota.",
+  languageAuto: "Otomatis — sesuai Telegram",
+  languageAutoGroup: "Otomatis — bahasa masing-masing anggota",
+  languageSaved: (name) => `✅ Bahasa bot: ${name}. Ubah dengan /language.`,
+  languageSavedAuto: "✅ Bot mengikuti bahasa Telegram Anda. Ubah dengan /language.",
+  settingsLanguageButton: (name) => `🌐 Bahasa: ${name ?? "otomatis"}`,
+  settingsBack: "⬅️ Kembali ke pengaturan",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -1804,4 +2026,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian };

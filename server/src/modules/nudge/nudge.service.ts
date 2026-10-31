@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('id') || code.startsWith('in')) {
+      return (
+        'Halo! Anda sudah memulai bot ini, tetapi belum mengunduh apa pun — ' +
+        'mungkin belum jelas harus mulai dari mana.\n\n' +
+        'Cukup satu langkah: kirim tautan video ke sini, ' +
+        'misalnya https://youtube.com/watch?v=jNQXAC9IVRw — dan saya akan mengirim ' +
+        'filenya kembali dalam sekitar setengah menit.\n\n' +
+        'Mendukung YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest, dan Threads. Sepenuhnya gratis dan dalam kualitas ' +
+        'apa pun — hingga 4K, tanpa biaya tambahan untuk HD.\n\n' +
+        'Jika ada yang tidak berfungsi, cukup balas pesan ini. Ini ' +
+        'satu-satunya pengingat, saya tidak akan mengganggu lagi.'
+      );
+    }
+
     if (code.startsWith('hi')) {
       return (
         'नमस्ते! आपने यह बॉट शुरू किया था, लेकिन अभी तक कुछ भी डाउनलोड नहीं किया — ' +

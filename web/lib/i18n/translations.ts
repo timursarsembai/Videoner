@@ -3,7 +3,7 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi"] as const;
+export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -20,6 +20,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   ar: "العربية",
   zh: "中文",
   hi: "हिन्दी",
+  id: "Bahasa Indonesia",
 };
 
 type PlatformStrings = {
@@ -2915,4 +2916,364 @@ const hi: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi };
+const indonesian: Translations = {
+  nav: {
+    home: "Beranda",
+    downloaders: "Pengunduh",
+    extension: "Ekstensi",
+    blog: "Blog",
+    switchTheme: "Ganti tema",
+    language: "Bahasa",
+    comingSoon: "Segera Hadir",
+  },
+  theme: {
+    light: "Terang",
+    dark: "Gelap",
+    system: "Sistem",
+  },
+  playlist: {
+    title: `Playlist "{title}": {count} video`,
+    hint: "Video diunduh satu per satu. Biarkan halaman ini tetap terbuka; browser Anda mungkin meminta izin untuk mengunduh beberapa file sekaligus.",
+    std: "720p",
+    hd: "Kualitas terbaik",
+    audio: "Audio saja (mp3)",
+    progress: "Video {index} dari {count}",
+    stats: "Terunduh: {done} · gagal: {failed}",
+    stop: "Berhenti",
+    stopped: "Dihentikan. Terunduh {done} dari {count}.",
+    finished: "Playlist selesai: {done} dari {count}.",
+    again: "Pilih lagi",
+  },
+  footer: {
+    news: "Berita proyek",
+    botCta: "Juga tersedia sebagai bot Telegram:",
+    extension: "Ekstensi browser",
+    developedBy: "Dikembangkan oleh",
+    rights: "Hak cipta dilindungi undang-undang.",
+  },
+  content: {
+    howToTitle: "Cara Download Video {platform}",
+    faqTitle: "Pertanyaan yang Sering Diajukan",
+  },
+  auth: {
+    loginButton: "Masuk dengan Telegram",
+    signIn: "Masuk",
+    logout: "Keluar",
+    switchAccountHint: "Bukan akun Anda?",
+    switchAccountLink: "Keluar dari Telegram Web",
+  },
+  home: {
+    new: "Baru",
+    manyFeatures: "Banyak fitur baru",
+    titleLine1: "Download Video",
+    titleLine2: "Cepat & Mudah",
+    subtitle:
+      "Pengunduh video serbaguna untuk YouTube, Instagram, TikTok, dan lainnya. Pilih kualitas apa pun, dari HD hingga yang ringan untuk ponsel.",
+    subtitleExtra: "Tanpa batasan, tanpa ribet, langsung unduh.",
+    placeholder: "Tempel URL video dari platform mana pun...",
+    download: "Unduh",
+  },
+  video: {
+    description: "Deskripsi",
+    format: "Format",
+    selected: "Dipilih: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Mengonversi",
+    downloading: "Mengunduh",
+    downloadAgain: "Unduh Lagi",
+    startDownload: "Mulai Unduh",
+    convertingBtn: "Mengonversi...",
+    downloadingBtn: "Mengunduh...",
+    loginRequiredHint: "Masuk dengan Telegram untuk mengunduh",
+    quotaExceededHint: "Batas harian 20 unduhan sudah tercapai — kembali lagi besok",
+    postFiles: "Postingan ini berisi {count} file",
+    photoQuality: "Foto asli",
+    slideshowQuality: "Slideshow (video)",
+    galleryQuality: "Foto + slideshow",
+    downloadAll: "Unduh semua",
+    downloadOne: "Simpan",
+    subtitlesTab: "subtitle",
+    subtitlesHint: "Pilih bahasa — Anda akan mendapatkan file .srt yang bisa dibuka di pemutar mana pun.",
+    subtitlesAuto: "otomatis",
+    subtitlesDownload: "Unduh subtitle",
+    subtitlesDownloading: "Menyiapkan subtitle...",
+  },
+  toast: {
+    enterUrl: "Masukkan URL",
+    enterValidUrl: "Masukkan URL yang valid",
+    platformNotSupported: "Platform ini tidak didukung",
+    urlNotSupported: "URL ini tidak didukung",
+    enterValidPlatformUrl: "Masukkan URL {platform} yang valid",
+    captchaNotReady: "Tunggu sebentar hingga pemeriksaan keamanan selesai, lalu coba lagi",
+    comingSoon: "Segera hadir! {name} belum didukung",
+    selectQuality: "Pilih kualitas",
+    downloadStarted: "Unduhan dimulai!",
+    downloadCompleted: "Unduhan selesai!",
+    newsChannel: "Berita proyek ada di Telegram:",
+    downloadUrlNotReceived: "URL unduhan tidak diterima",
+    needsBrowser:
+      "Platform tidak memberikan video ini ke server kami: video hanya tersedia untuk pengguna yang sudah masuk, atau aksesnya sedang dibatasi sementara. Anda bisa mengunduhnya dengan ekstensi browser Videoner di komputer — ekstensi mengunduh menggunakan login Anda sendiri.",
+    needsBrowserLink: "Pasang ekstensi →",
+  },
+  platforms: {
+    youtube: {
+      description: "Download video YouTube dalam kualitas HD",
+      news: "Kini mendukung video dan Shorts",
+      titleLine1: "Download Video",
+      titleLine2: "YouTube & Shorts",
+      pageDescription:
+        "Download video YouTube, Shorts, dan audio dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan. Mendukung kualitas 8K, 4K, HD, dan audio MP3.",
+      placeholder: "Tempel URL YouTube di sini...",
+      howTo: [
+        "Salin link video dari bilah alamat browser, atau ketuk Bagikan di aplikasi YouTube.",
+        "Tempel di kolom di atas, lalu tekan Unduh.",
+        "Pilih kualitas — hingga 4K/8K untuk video, atau MP3 untuk audio saja.",
+        "File langsung mulai terunduh, tanpa perlu login.",
+      ],
+      faq: [
+        { q: "Apakah download video YouTube dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Videoner menyediakan semua resolusi yang diberikan YouTube untuk video tersebut — dari 360p hingga 4K/8K jika tersedia — plus ekstraksi audio MP3." },
+        { q: "Bisakah saya mengunduh video privat atau yang dibatasi usia?", a: "Hanya video YouTube yang dapat diakses publik yang didukung; konten privat, tidak publik bagi Anda, atau yang memerlukan login tidak bisa diunduh." },
+        { q: "Apakah legal mengunduh video dari YouTube?", a: "Unduh hanya video yang berhak Anda simpan — konten Anda sendiri, video berlisensi Creative Commons, atau apa pun yang diizinkan kreatornya. Patuhi Persyaratan Layanan YouTube dan hukum hak cipta." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File hasil konversi disimpan di server sekitar satu jam, jadi segera simpan ke perangkat Anda setelah mengunduh." },
+      ],
+    },
+    facebook: {
+      description: "Simpan video dari postingan dan reels Facebook",
+      news: "Kini mendukung reels",
+      titleLine1: "Download Video",
+      titleLine2: "Facebook & Reels",
+      pageDescription:
+        "Download video dan reels Facebook dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan.",
+      placeholder: "Tempel URL Facebook di sini...",
+      howTo: [
+        "Buka video atau reel di Facebook dan salin link-nya (ketuk ikon tiga titik → Salin Tautan).",
+        "Tempel link di atas, lalu tekan Unduh.",
+        "Pilih kualitas MP4 atau ambil audionya sebagai MP3.",
+        "File langsung terunduh ke perangkat Anda — tanpa perlu akun Facebook.",
+      ],
+      faq: [
+        { q: "Apakah download video Facebook dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Videoner mengambil kualitas tertinggi yang diberikan Facebook untuk video atau reel tersebut, dalam format MP4, plus opsi audio MP3." },
+        { q: "Bisakah saya mengunduh video privat?", a: "Hanya postingan, video, dan reels publik yang bisa diunduh — konten privat atau khusus teman tidak dapat diakses." },
+        { q: "Apakah legal mengunduh video dari Facebook?", a: "Unduh hanya video yang Anda punya izin untuk menyimpannya; hormati hak kreator dan Persyaratan Layanan Facebook." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File disimpan sekitar satu jam setelah konversi, lalu dihapus otomatis — segera unduh." },
+      ],
+    },
+    instagram: {
+      description: "Download reels, story, dan postingan Instagram",
+      news: "Kini mendukung reels dan story",
+      titleLine1: "Download Instagram",
+      titleLine2: "Reels & Story",
+      pageDescription:
+        "Download reels, story, dan postingan Instagram dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan.",
+      placeholder: "Tempel URL Instagram di sini...",
+      howTo: [
+        "Buka reel, postingan, atau story di Instagram, lalu ketuk ikon pesawat kertas → Salin Tautan.",
+        "Tempel link di kolom di atas.",
+        "Pilih kualitas dan format yang Anda inginkan.",
+        "Unduhan langsung dimulai — tanpa login atau instal aplikasi.",
+      ],
+      faq: [
+        { q: "Apakah download konten Instagram dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Kualitas penuh yang tersedia untuk reels, postingan, dan story, dalam format MP4 atau MP3." },
+        { q: "Bisakah saya mengunduh dari akun privat?", a: "Hanya akun dan postingan Instagram publik yang didukung; konten dari akun privat tidak bisa diunduh." },
+        { q: "Apakah legal mengunduh video dari Instagram?", a: "Unduh hanya yang boleh Anda simpan — hormati kreator dan Persyaratan Layanan Instagram." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File tersimpan di server sekitar satu jam sebelum dihapus otomatis." },
+      ],
+    },
+    tiktok: {
+      description: "Unduh video TikTok tanpa watermark",
+      news: "Kini tanpa watermark",
+      titleLine1: "Download TikTok",
+      titleLine2: "Tanpa Watermark",
+      pageDescription:
+        "Unduh video TikTok tanpa watermark dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan.",
+      placeholder: "Tempel URL TikTok di sini...",
+      howTo: [
+        "Ketuk Bagikan pada video TikTok, lalu Salin Tautan.",
+        "Tempel link di atas, lalu tekan Unduh.",
+        "Dapatkan MP4 bersih — tanpa watermark TikTok — atau audio MP3.",
+        "Simpan langsung ke perangkat Anda.",
+      ],
+      faq: [
+        { q: "Apakah download video TikTok dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Kualitas terbaik yang diberikan TikTok untuk video tersebut, tanpa watermark TikTok, plus audio MP3." },
+        { q: "Bisakah saya mengunduh dari akun privat?", a: "Hanya video dari akun TikTok publik yang bisa diunduh." },
+        { q: "Apakah legal mengunduh video dari TikTok?", a: "Unduh video yang berhak Anda simpan, cantumkan nama kreatornya, dan patuhi Persyaratan Layanan TikTok." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File yang diunduh tersimpan di server kira-kira satu jam, lalu dihapus otomatis." },
+      ],
+    },
+    twitter: {
+      description: "Download video Twitter",
+      news: "Kini mendukung video Twitter",
+      titleLine1: "Download Video",
+      titleLine2: "Twitter",
+      pageDescription:
+        "Download video Twitter dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan.",
+      placeholder: "Tempel URL Twitter di sini...",
+      howTo: [
+        "Ketuk Bagikan di bawah tweet dan pilih Salin Tautan (atau salin URL dari browser).",
+        "Tempel di kolom di atas.",
+        "Pilih kualitas video yang Anda inginkan.",
+        "Unduhan langsung dimulai — tanpa perlu akun X/Twitter.",
+      ],
+      faq: [
+        { q: "Apakah download video Twitter/X dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Semua kualitas yang ditawarkan X/Twitter untuk video tersebut, dalam MP4, plus MP3." },
+        { q: "Bisakah saya mengunduh dari akun privat?", a: "Hanya tweet dari akun publik yang bisa diunduh; akun yang dilindungi/privat tidak didukung." },
+        { q: "Apakah legal mengunduh video dari Twitter/X?", a: "Unduh konten yang berhak Anda simpan, dengan menghormati hak pengunggah dan Persyaratan Layanan platform." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File dihapus otomatis sekitar satu jam setelah dibuat." },
+      ],
+    },
+    vimeo: {
+      description: "Download video Vimeo dalam kualitas tinggi",
+      news: "Kini mendukung Vimeo",
+      titleLine1: "Download Video",
+      titleLine2: "Vimeo",
+      pageDescription:
+        "Download video Vimeo dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan.",
+      placeholder: "Tempel URL Vimeo di sini...",
+      howTo: [
+        "Buka Vimeo dan salin link video (atau ketuk Bagikan → Salin Tautan di ponsel).",
+        "Tempel link di kolom di atas, lalu tekan Unduh.",
+        "Pilih kualitas dan format — MP4 untuk video, MP3 jika Anda hanya butuh audionya.",
+        "Unduhan langsung dimulai; tanpa akun atau instal software.",
+      ],
+      faq: [
+        { q: "Apakah download video Vimeo dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Videoner menyediakan semua kualitas yang tersedia di Vimeo untuk video tersebut, hingga resolusi unggahan aslinya, termasuk HD dan 4K jika disediakan kreator." },
+        { q: "Bisakah saya mengunduh video Vimeo privat atau yang dilindungi kata sandi?", a: "Tidak — Videoner hanya bekerja dengan link Vimeo yang dapat diakses publik. Video privat, berkata sandi, atau dengan akses terbatas tidak bisa diunduh." },
+        { q: "Apakah legal mengunduh video dari Vimeo?", a: "Fitur unduh ditujukan untuk video yang berhak Anda simpan — konten Anda sendiri, video berlisensi Creative Commons, atau apa pun yang secara jelas diizinkan kreator untuk diunduh. Hormati hak cipta kreator asli dan persyaratan layanan Vimeo." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File dibuat sesuai permintaan dan disimpan di server sekitar satu jam sebelum dihapus otomatis, jadi segera simpan ke perangkat Anda setelah unduhan selesai." },
+      ],
+    },
+    vk: {
+      description: "Download video dan klip dari VK",
+      news: "Kini mendukung VK",
+      titleLine1: "Download VK",
+      titleLine2: "Video & Klip",
+      pageDescription:
+        "Download video dan klip VK dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan.",
+      placeholder: "Tempel URL VK di sini...",
+      howTo: [
+        "Buka video atau klip di VK (vk.com atau VK Video) dan salin link-nya dari bilah alamat atau tombol Bagikan.",
+        "Tempel link di atas, lalu tekan Unduh.",
+        "Pilih kualitas dan format yang tersedia.",
+        "File langsung terunduh — Anda tidak perlu login ke VK.",
+      ],
+      faq: [
+        { q: "Apakah download video VK dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Semua kualitas yang diberikan VK untuk video atau klip tersebut, plus audio MP3." },
+        { q: "Apakah saya perlu login ke VK?", a: "Tidak — videonya harus publik. Videoner tidak login ke VK, sehingga video privat, khusus teman, atau yang memerlukan login tidak bisa diunduh." },
+        { q: "Apakah legal mengunduh video dari VK?", a: "Unduh hanya video yang berhak Anda simpan, dengan mematuhi Persyaratan Layanan VK dan menghormati hak pengunggah." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File disimpan di server sekitar satu jam, lalu dihapus otomatis." },
+      ],
+    },
+    rutube: {
+      description: "Download video dari Rutube",
+      news: "Kini mendukung Rutube",
+      titleLine1: "Download Video",
+      titleLine2: "Rutube",
+      pageDescription:
+        "Download video Rutube dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan.",
+      placeholder: "Tempel URL Rutube di sini...",
+      howTo: [
+        "Buka video di Rutube dan salin link-nya dari bilah alamat atau tombol Bagikan.",
+        "Tempel di kolom di atas.",
+        "Pilih kualitas dan format (video atau audio).",
+        "Unduhan langsung dimulai, tanpa perlu akun Rutube.",
+      ],
+      faq: [
+        { q: "Apakah download video Rutube dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Semua kualitas yang ditawarkan Rutube, dalam MP4, plus audio MP3." },
+        { q: "Apakah saya perlu login ke Rutube?", a: "Tidak — Videoner hanya bekerja dengan video Rutube yang tersedia untuk publik; login tidak digunakan dan tidak diperlukan." },
+        { q: "Apakah legal mengunduh video dari Rutube?", a: "Unduh hanya konten yang boleh Anda simpan, dengan mematuhi Persyaratan Layanan Rutube dan menghormati hak kreator." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File tersimpan di server sekitar satu jam sebelum dihapus otomatis." },
+      ],
+    },
+    okru: {
+      description: "Download video dari OK.ru (Odnoklassniki)",
+      news: "Kini mendukung OK.ru",
+      titleLine1: "Download Video",
+      titleLine2: "OK.ru",
+      pageDescription:
+        "Download video OK.ru (Odnoklassniki) dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan.",
+      placeholder: "Tempel URL OK.ru di sini...",
+      howTo: [
+        "Buka video di OK.ru (Odnoklassniki) dan salin link-nya dari bilah alamat.",
+        "Tempel link di kolom di atas, lalu tekan Unduh.",
+        "Pilih kualitas dan format.",
+        "Unduhan langsung dimulai — tanpa perlu login ke OK.ru.",
+      ],
+      faq: [
+        { q: "Apakah download video OK.ru dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas video apa saja yang bisa saya unduh?", a: "Semua kualitas yang diberikan OK.ru untuk video tersebut, plus MP3." },
+        { q: "Apakah saya perlu login ke OK.ru?", a: "Tidak — hanya video OK.ru (Odnoklassniki) publik yang bisa diunduh. Videoner tidak pernah login ke akun, sehingga video privat tidak dapat diakses." },
+        { q: "Apakah legal mengunduh video dari OK.ru?", a: "Unduh hanya video yang berhak Anda simpan, dengan mematuhi Persyaratan Layanan OK.ru dan menghormati hak pengunggah." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File dihapus otomatis kira-kira satu jam setelah dibuat." },
+      ],
+    },
+    pinterest: {
+      description: "Download video dari pin Pinterest",
+      news: "Kini mendukung Pinterest",
+      titleLine1: "Download Pinterest",
+      titleLine2: "Video & Pin",
+      pageDescription:
+        "Download video dari pin Pinterest dalam kualitas tinggi. Cepat, gratis, dan mudah digunakan. Catatan: hanya pin video yang bisa diunduh — pin yang hanya berisi foto tidak didukung.",
+      placeholder: "Tempel URL Pinterest di sini...",
+      howTo: [
+        "Buka pin di Pinterest dan ketuk Bagikan → Salin Tautan (atau salin URL dari browser).",
+        "Tempel link di kolom di atas, lalu tekan Unduh.",
+        "Pilih kualitas dan format yang Anda inginkan.",
+        "File langsung terunduh — tanpa perlu akun.",
+      ],
+      faq: [
+        { q: "Apakah download video Pinterest dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman dan melihat kualitas yang tersedia tidak memerlukan login." },
+        { q: "Kualitas apa saja yang bisa saya unduh?", a: "Videoner menyediakan semua kualitas yang diberikan Pinterest untuk video pin tersebut, plus ekstraksi audio MP3." },
+        { q: "Bisakah saya mengunduh foto atau gambar dari Pinterest?", a: "Tidak — hanya pin video yang bisa diunduh. Jika pin hanya berisi foto, tidak ada file video yang bisa diambil." },
+        { q: "Bisakah saya mengunduh pin privat atau dari papan terbatas?", a: "Hanya pin yang dapat diakses publik yang didukung; papan privat dan konten yang memerlukan login tidak bisa diunduh." },
+        { q: "Apakah legal mengunduh video dari Pinterest?", a: "Unduh hanya pin yang berhak Anda simpan — konten Anda sendiri atau apa pun yang diizinkan kreatornya. Patuhi Persyaratan Layanan Pinterest dan hukum hak cipta." },
+        { q: "Berapa lama file yang diunduh tersedia?", a: "File hasil konversi disimpan di server sekitar satu jam, jadi segera simpan ke perangkat Anda setelah mengunduh." },
+      ],
+    },
+    threads: {
+      description: "Download video dari postingan Threads",
+      news: "Kini mendukung Threads",
+      titleLine1: "Download Video",
+      titleLine2: "Threads",
+      pageDescription:
+        "Download video dari postingan Threads. Cepat, gratis, dan tanpa perlu akun Threads. Threads hanya menyediakan satu versi video, hingga 720p — itulah kualitas tertinggi yang tersedia di platform tersebut.",
+      placeholder: "Tempel URL Threads di sini...",
+      howTo: [
+        "Buka postingan di Threads, ketuk ikon bagikan, lalu Salin Tautan.",
+        "Tempel link di kolom di atas, lalu tekan Unduh.",
+        "Pilih format yang Anda inginkan — video atau audio MP3.",
+        "File langsung terunduh — tanpa perlu akun.",
+      ],
+      faq: [
+        { q: "Apakah download video Threads dengan Videoner gratis?", a: "Ya — tetapi Anda perlu masuk dengan Telegram terlebih dahulu (satu klik, tanpa kata sandi). Anda mendapat 20 unduhan per hari, dibagi bersama bot Telegram kami. Layanan ini sepenuhnya gratis: tanpa langganan dan tanpa iklan." },
+        { q: "Apakah saya perlu akun untuk mengunduh?", a: "Anda perlu masuk dengan akun Telegram sebelum mulai mengunduh — cukup satu klik, tanpa email atau kata sandi. Membuka halaman tidak memerlukan login." },
+        { q: "Kualitas apa saja yang bisa saya unduh?", a: "Threads menerbitkan tepat satu versi video untuk setiap postingan, maksimal 720p pada sisi pendeknya — bahkan jika penulis mengunggah 4K. Videoner memberikan file tersebut apa adanya, plus ekstraksi audio MP3. Tidak ada pengunduh yang bisa memberi lebih, karena resolusi yang lebih tinggi memang tidak disediakan." },
+        { q: "Apakah link threads.com dan threads.net sama-sama berfungsi?", a: "Ya. Link lengkap seperti threads.com/@user/post/CODE dan link pendek threads.net/t/CODE sama-sama didukung." },
+        { q: "Bisakah saya mengunduh foto dari postingan Threads?", a: "Tidak — hanya video. Jika postingan hanya berisi foto, tidak ada file video yang bisa diambil." },
+        { q: "Bagaimana dengan postingan yang berisi beberapa video?", a: "Video pertama dalam postingan yang akan diunduh. Carousel Threads bisa berisi beberapa klip, dan hanya klip pertama yang disimpan." },
+        { q: "Bisakah saya mengunduh postingan privat?", a: "Tidak. Hanya postingan yang terlihat publik yang bisa diunduh; apa pun di balik akun privat atau yang memerlukan login tidak dapat diakses." },
+        { q: "Apakah legal mengunduh video dari Threads?", a: "Unduh hanya yang berhak Anda simpan — konten Anda sendiri atau apa pun yang diizinkan penulisnya. Patuhi Ketentuan Penggunaan Threads dan hukum hak cipta." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian };

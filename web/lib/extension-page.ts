@@ -455,4 +455,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "होम पेज",
   },
+  id: {
+    metaTitle: "Ekstensi browser Videoner",
+    title: "Videoner untuk browser Anda",
+    summary:
+      "Ekstensi ini menambahkan tombol Unduh di halaman video dan mengunduh langsung di browser Anda. Video dari Instagram, Facebook, TikTok, dan Threads diunduh dengan login Anda sendiri — jadi postingan privat yang bisa Anda lihat di akun Anda juga bisa diunduh, begitu pula video yang tidak diberikan platform ke server kami.",
+    failedVideo: "Video yang tidak berhasil diunduh di situs atau di bot:",
+    failedVideoHint:
+      "Pasang ekstensi, masuk ke platform di browser ini, buka videonya, lalu klik Unduh di pojok kanan bawah.",
+    openVideo: "Buka video",
+    version: "Versi",
+    browsersTitle: "Di mana ekstensi ini berfungsi",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi, dan browser berbasis Chromium lainnya — di komputer.",
+    mobile: "Ponsel dan tablet tidak mendukung ekstensi — di sana, unduh lewat situs atau bot Telegram.",
+    getcourseTitle: "Pelajaran GetCourse",
+    getcourse:
+      "Buka pelajaran di sekolah GetCourse dengan login Anda: tombol Unduh akan muncul di pojok kanan atas pemutar, dan ikon Videoner menampilkan semua video dalam pelajaran tersebut. Browser Anda sendiri yang mengunduh pelajaran dan menggabungkannya menjadi mp4 — file tidak melewati server kami. Jika gagal di browser, server kami akan mengunduh pelajaran dalam kualitas yang sama; dalam hal ini server menerima link video dari pemutar.",
+    privacyTitle: "Login Anda tetap milik Anda",
+    privacy:
+      "Ekstensi tidak pernah meminta kata sandi: permintaan ke platform dikirim oleh browser Anda sendiri, dan server kami hanya menerima laporan singkat untuk statistik — link, ukuran file, dan judul. Cookie dikirim ke server hanya jika Anda sendiri menekan \"Hubungkan akun ke bot\" — dan hanya cookie dari platform tersebut, dalam bentuk terenkripsi.",
+    stepsTitle: "Cara memasang di Chrome, Yandex Browser, Edge, dan Opera",
+    steps: [
+      "Unduh arsipnya dan ekstrak — akan muncul folder videoner-extension dengan nomor versi di namanya.",
+      "Buka halaman ekstensi: ketik chrome://extensions di bilah alamat (edge://extensions di Edge, opera://extensions di Opera).",
+      "Aktifkan «Mode developer» — tombol geser di bagian atas halaman.",
+      "Klik «Muat yang belum dibuka» lalu pilih folder tersebut — folder yang berisi file manifest.json.",
+      "Selesai: tombol Unduh muncul di halaman video, dan ikon Videoner muncul di toolbar browser.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 atau yang lebih baru — juga di komputer.",
+    firefoxSoon:
+      "Versi untuk Firefox segera hadir. Untuk saat ini ekstensi berfungsi di Chrome, Yandex Browser, Edge, Opera, dan browser berbasis Chromium lainnya.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Arsip .zip — terpasang dalam beberapa menit",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Pasang dengan satu klik",
+    yourBrowser: "Browser Anda",
+    soon: "Segera hadir",
+    firefoxStepsTitle: "Cara memasang di Firefox",
+    firefoxSteps: [
+      "Klik tombol Firefox di bagian atas halaman ini.",
+      "Firefox akan bertanya apakah videoner.download boleh memasang add-on — klik «Lanjutkan ke Pemasangan».",
+      "Di jendela «Tambahkan Videoner?», klik «Tambah».",
+      "Selesai: tombol Unduh muncul di halaman video, dan ikon Videoner muncul di toolbar. Firefox akan memasang pembaruan secara otomatis.",
+    ],
+    updateTitle: "Cara memperbarui di Chrome, Yandex Browser, Edge, dan Opera",
+    updateSteps: [
+      "Saat versi baru tersedia, ikon Videoner menampilkan label NEW dan jendela pop-up berisi link ke halaman ini.",
+      "Unduh arsip dengan tombol Chrome di bagian atas halaman ini dan ekstrak ke folder yang sama seperti sebelumnya, dengan menimpa file lama.",
+      "Buka halaman ekstensi (chrome://extensions, browser://extensions di Yandex Browser, edge://extensions) dan tekan Muat ulang — ikon panah melingkar di kartu Videoner.",
+    ],
+    back: "Beranda",
+  },
 };

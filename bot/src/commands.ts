@@ -61,6 +61,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "डाउनलोड और कतार रोकें" },
     { command: "language", description: "बॉट की भाषा" },
   ],
+  id: [
+    { command: "start", description: "Cara menggunakan bot" },
+    { command: "extension", description: "Ekstensi browser" },
+    { command: "accounts", description: "Akun Anda untuk story dan postingan privat" },
+    { command: "connect", description: "Hubungkan akun dengan kode dari ekstensi" },
+    { command: "stop", description: "Hentikan unduhan dan antrean" },
+    { command: "language", description: "Bahasa bot" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -114,6 +122,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "कोड से इस ग्रुप में खाता कनेक्ट करें" },
     { command: "language", description: "इस ग्रुप में बॉट की भाषा (एडमिन के लिए)" },
     { command: "start", description: "ग्रुप में बॉट कैसे काम करता है" },
+  ],
+  id: [
+    { command: "settings", description: "Pengaturan bot di grup ini (admin)" },
+    { command: "accounts", description: "Akun yang terhubung ke grup ini" },
+    { command: "connect", description: "Hubungkan akun ke grup ini dengan kode" },
+    { command: "language", description: "Bahasa bot di grup ini (admin)" },
+    { command: "start", description: "Cara kerja bot di grup" },
   ],
 };
 

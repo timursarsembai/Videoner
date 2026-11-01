@@ -211,6 +211,18 @@ export const blogUi: Record<
     readFull: "Yazının tamamını sitede okuyun",
     dateLocale: "tr-TR",
   },
+  fa: {
+    title: "وبلاگ Videoner",
+    description: "اخبار پروژه: چه چیزهای تازه‌ای در ربات، سایت و افزونه آمده و چطور از آن‌ها استفاده کنید.",
+    readMore: "خواندن",
+    back: "همه مطالب",
+    allPosts: "وبلاگ",
+    channel: "اخبار در Telegram",
+    channelCta: "اخبار پروژه در کانال Telegram ‎@videonerdownload.",
+    readOnSite: "خواندن در سایت",
+    readFull: "خواندن کامل مطلب در سایت",
+    dateLocale: "fa-IR-u-nu-latn-ca-gregory",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

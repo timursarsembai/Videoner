@@ -16,7 +16,7 @@
   // uiLang) или язык браузера. Выбор читается асинхронно, поэтому сначала
   // подпись по браузеру, потом — по выбору.
   const ui = chrome.i18n.getUILanguage().toLowerCase();
-  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
@@ -33,6 +33,7 @@
     es: "Ocultar el botón en este video",
     uz: "Bu video uchun tugmani yashirish",
     tr: "Bu videoda düğmeyi gizle",
+    fa: "پنهان کردن دکمه برای این ویدیو",
     en: "Hide the button for this video",
   };
   const base = ui.split("-")[0] === "in" ? "id" : ui.split("-")[0];
@@ -94,8 +95,8 @@
   function applyLang(code) {
     const label = button.querySelector("span");
     label.textContent = LABELS[code];
-    // Направление — только у подписи кнопки (арабский справа налево).
-    label.dir = code === "ar" ? "rtl" : "";
+    // Направление — только у подписи кнопки (арабский и персидский справа налево).
+    label.dir = code === "ar" || code === "fa" ? "rtl" : "";
     hideButton.title = HIDES[code];
     hideButton.setAttribute("aria-label", HIDES[code]);
   }

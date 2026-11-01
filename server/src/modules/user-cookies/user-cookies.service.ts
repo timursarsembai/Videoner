@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -376,6 +376,7 @@ export class UserCookiesService {
       es: forGroup ? 'para un grupo' : 'para ti',
       uz: forGroup ? 'guruh uchun' : 'siz uchun',
       tr: forGroup ? 'bir grup için' : 'sizin için',
+      fa: forGroup ? 'برای یک گروه' : 'برای شما',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -394,6 +395,7 @@ export class UserCookiesService {
       es: `⚠️ El inicio de sesión de ${name} conectado (${where}) dejó de funcionar: la plataforma ya no lo acepta. Puede que hayas cerrado sesión en la cuenta o que la cuenta haya sido restringida.\n\nPara seguir descargando con ella, vuelve a conectar la cuenta. Tus conexiones: /accounts.`,
       uz: `⚠️ ${name} akkauntiga ulangan kirish (${where}) ishlamay qoldi: platforma uni endi qabul qilmaydi. Ehtimol, siz akkauntdan chiqib ketgansiz yoki akkaunt cheklangan.\n\nU orqali yana yuklab olish uchun akkauntni qaytadan ulang. Ulanishlar roʻyxati: /accounts.`,
       tr: `⚠️ Bağlı ${name} oturumunuz (${where}) çalışmayı durdurdu: platform artık bunu kabul etmiyor. Hesaptan çıkış yapmış olabilirsiniz veya hesap kısıtlanmış olabilir.\n\nBu hesapla indirmeye devam etmek için hesabı yeniden bağlayın. Bağlantılarınız: /accounts.`,
+      fa: `⚠️ ورود متصل‌شدهٔ ${name} (${where}) دیگر کار نمی‌کند: پلتفرم دیگر آن را نمی‌پذیرد. شاید از حساب خارج شده‌اید یا حساب محدود شده است.\n\nبرای ادامهٔ دانلود با آن، حساب را دوباره متصل کنید. فهرست اتصال‌ها: \u200e/accounts`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

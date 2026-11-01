@@ -58,7 +58,7 @@ export function Footer() {
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
           >
             <Send className="h-4 w-4" />
-            {t("footer.botCta")} @{TELEGRAM_BOT}
+            {t("footer.botCta")} <bdi>@{TELEGRAM_BOT}</bdi>
           </a>
           <Link
             href={localizedHref(language, "/extension")}
@@ -74,7 +74,7 @@ export function Footer() {
             className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
           >
             <Newspaper className="h-4 w-4" />
-            {t("footer.news")} @videonerdownload
+            {t("footer.news")} <bdi>@videonerdownload</bdi>
           </a>
           <span className="text-sm text-foreground/60">
             {t("footer.developedBy")}{" "}

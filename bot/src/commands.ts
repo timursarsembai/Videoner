@@ -133,6 +133,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "İndirmeyi ve kuyruğu durdurun" },
     { command: "language", description: "Bot dili" },
   ],
+  fa: [
+    { command: "start", description: "نحوهٔ استفاده از ربات" },
+    { command: "extension", description: "افزونهٔ مرورگر" },
+    { command: "accounts", description: "حساب‌های شما برای استوری‌ها و پست‌های خصوصی" },
+    { command: "connect", description: "اتصال حساب با کد افزونه" },
+    { command: "stop", description: "توقف دانلود و صف" },
+    { command: "language", description: "زبان ربات" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -249,6 +257,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Kodla bu gruba hesap bağlayın" },
     { command: "language", description: "Bu gruptaki bot dili (yöneticiler)" },
     { command: "start", description: "Bot grupta nasıl çalışır" },
+  ],
+  fa: [
+    { command: "settings", description: "تنظیمات ربات در این گروه (ادمین‌ها)" },
+    { command: "accounts", description: "حساب‌های متصل به این گروه" },
+    { command: "connect", description: "اتصال حساب به این گروه با کد" },
+    { command: "language", description: "زبان ربات در این گروه (ادمین‌ها)" },
+    { command: "start", description: "ربات در گروه چطور کار می‌کند" },
   ],
 };
 

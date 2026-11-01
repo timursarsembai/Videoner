@@ -1403,6 +1403,94 @@ const TEXTS = {
     langAuto: "Otomatik",
     langLabel: "Dil",
   },
+  // Персидский (фарси), справа налево, как арабский: персидские ی/ک,
+  // полупробел (ZWNJ) в «می‌…», «…‌ها»; латиница (@VideonerBot, /connect,
+  // .srt) изолирована знаками направления, как в ar.
+  fa: {
+    loading: "در حال دریافت اطلاعات ویدیو…",
+    notVideoPage:
+      "یک صفحهٔ ویدیو در YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest یا Threads باز کنید و دوباره روی نماد کلیک کنید. درس GetCourse: اگر صفحهٔ درس پیش از نصب افزونه باز بوده، آن را دوباره بارگیری کنید.",
+    gcLesson: "درس GetCourse",
+    gcPick: "این درس چند ویدیو دارد — یکی را انتخاب کنید",
+    gcVideo: (n) => `ویدیو ${n}`,
+    gcNote: "مرورگر شما ویدیو را دانلود و یکپارچه می‌کند. می‌توانید این پنجره را ببندید، اما مرورگر را نه.",
+    gcNoStream: "دریافت ویدیو از پخش‌کننده ممکن نشد. صفحهٔ درس را دوباره بارگیری کنید و دوباره تلاش کنید.",
+    video: "ویدیو",
+    photo: "عکس‌ها در اندازهٔ اصلی",
+    slideshow: "اسلایدشو (ویدیو)",
+    gallery: "عکس‌ها + اسلایدشو",
+    audioOnly: "فقط صدا (mp3)",
+    subtitles: "زیرنویس (⁦.srt⁩)",
+    subtitlesAuto: "خودکار",
+    back: "بازگشت",
+    starting: "در حال شروع دانلود…",
+    waiting: "در انتظار نوبت روی سرور…",
+    downloading: "در حال دانلود",
+    converting: "در حال پردازش",
+    left: (eta) => `${eta} باقی مانده`,
+    saving: "در حال ذخیره در «دانلودها»…",
+    done: "انجام شد — فایل در «دانلودها» است.",
+    news: "📣 اخبار پروژه: ⁦@videonerdownload⁩",
+    again: "دانلود ویدیوی دیگر",
+    directDownload: "دانلود ویدیو (mp4)",
+    directPhoto: "دانلود عکس (jpg)",
+    directNote: "مستقیم از مرورگر شما — بدون صف سرور",
+    moreOptions: "کیفیت‌های دیگر و صدا",
+    fallback: "دانلود در مرورگر ممکن نشد — در حال دانلود از طریق سرور.",
+    openSite: "باز کردن videoner.download",
+    retry: "دوباره تلاش کنید",
+    min: "دقیقه",
+    sec: "ثانیه",
+    errNetwork: "اتصال به Videoner ممکن نیست. اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید.",
+    errRateLimit: "درخواست‌های پشت‌سرهم زیادی ارسال شده است. یک دقیقه صبر کنید و دوباره تلاش کنید.",
+    errUnsupported:
+      "در این صفحه ویدیویی نیست که Videoner بتواند دانلود کند. صفحهٔ یک ویدیو یا پست مشخص را باز کنید.",
+    errYoutubeDaily: "سهمیهٔ روزانهٔ YouTube برای شبکهٔ شما تمام شده است. فردا دوباره تلاش کنید.",
+    errTooLarge: "فایل در این کیفیت بیش از حد بزرگ است. کیفیت پایین‌تری انتخاب کنید.",
+    errLogin:
+      "این پست فقط برای کاربرانی که وارد حساب خود شده‌اند در دسترس است. پست‌های عمومی بدون مشکل دانلود می‌شوند.",
+    errRegion: "نویسنده این پست را بر اساس کشور محدود کرده است، به همین دلیل دانلود آن ممکن نیست.",
+    errServerBlocked: "پلتفرم موقتاً دسترسی سرور ما را محدود کرده است. لطفاً بعداً دوباره تلاش کنید.",
+    errFailed: "دانلود انجام نشد. دوباره تلاش کنید یا کیفیت دیگری انتخاب کنید.",
+    errGeneric: "مشکلی پیش آمد. لطفاً کمی بعد دوباره تلاش کنید.",
+    acctButton: (p) => `🔑 اتصال حساب ${p} شما به ربات`,
+    acctWarn: (p) =>
+      `⁦@VideonerBot⁩ با استفاده از حساب شما می‌تواند محتوایی را که در ${p} فقط کاربران واردشده می‌بینند دانلود کند: استوری‌ها و پست‌های خصوصی. پلتفرم‌ها دانلود خودکار را دوست ندارند و ممکن است حساب را محدود کنند — بهتر است یک حساب فرعی متصل کنید. مرورگر برای خواندن کوکی‌های این سایت اجازه می‌خواهد؛ فقط کوکی‌های ${p} به‌صورت رمزگذاری‌شده به سرور فرستاده می‌شوند.`,
+    acctConfirm: "اتصال",
+    acctCancel: "لغو",
+    acctSending: "در حال اتصال…",
+    acctDenied: "بدون اجازهٔ دسترسی به کوکی‌ها نمی‌توان حساب را متصل کرد.",
+    acctNoLogin: (p) => `در این مرورگر وارد حساب ${p} خود نشده‌اید. در سایت وارد شوید و دوباره تلاش کنید.`,
+    acctFailed: "انجام نشد. کمی بعد دوباره تلاش کنید.",
+    acctCodeTitle: (p) => `کد اتصال ${p}:`,
+    acctCodeHelp:
+      "آن را در گفت‌وگوی خصوصی به ⁦@VideonerBot⁩ بفرستید — برای دانلودهای خودتان. برای یک گروه، در همان گروه ⁦/connect کد⁩ را بفرستید. کد 10 دقیقه اعتبار دارد.",
+    acctCopy: "کپی",
+    acctCopied: "کپی شد",
+    acctOpenBot: "باز کردن ربات",
+    acctNewCode: "دریافت کد جدید",
+    acctList: "اتصال‌های من در ربات",
+    acctRevoke: "لغو دسترسی به کوکی‌ها",
+    acctRevoked:
+      "دسترسی به کوکی‌ها لغو شد — افزونه دیگر آن‌ها را نمی‌خواند. حساب‌هایی که قبلاً متصل کرده‌اید در ربات می‌مانند: آن‌ها را در «اتصال‌های من در ربات» حذف کنید.",
+    playlistOffer: "📃 دانلود کل فهرست پخش",
+    playlistTitle: (title, n) => `📃 فهرست پخش${title ? ` «⁨${title}⁩»` : ""}: ${n} ویدیو`,
+    playlistHint: "آن‌ها را یکی‌یکی دانلود می‌کنم. می‌توانید این پنجره را ببندید.",
+    playlist720: "فهرست پخش با کیفیت 720p",
+    playlistBest: "فهرست پخش با بهترین کیفیت",
+    playlistAudio: "فهرست پخش — فقط صدا (mp3)",
+    playlistProgress: (i, n) => `ویدیو ${i} از ${n}`,
+    playlistStats: (done, failed) => `دانلودشده: ${done}${failed ? ` · ناموفق: ${failed}` : ""}`,
+    playlistStop: "⏹ توقف",
+    playlistDone: (done, n) => `فهرست پخش دانلود شد: ${done} از ${n}.`,
+    playlistStopped: (done, n) => `متوقف شد. دانلودشده: ${done} از ${n}.`,
+    playlistLoading: "در حال دریافت فهرست ویدیوها…",
+    close: "بستن",
+    updateAvailable: (v) => `نسخهٔ ${v} منتشر شد.`,
+    updateHow: "نحوهٔ به‌روزرسانی",
+    langAuto: "خودکار",
+    langLabel: "زبان",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -1493,17 +1581,17 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
-// loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
+// loadLang() меняет их до первой отрисовки окошка. Арабский и персидский пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
 
-export const isRtl = () => lang === "ar";
+export const isRtl = () => lang === "ar" || lang === "fa";
 
 // Страница сайта на текущем языке: английский — без префикса.
 export const sitePath = (path) => (lang === "en" ? path : `/${lang}${path}`);
@@ -1605,11 +1693,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому и турецкому — латинские GB/MB, как и цифры (ar-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому и персидскому — латинские GB/MB, как и цифры (ar-u-nu-latn, fa-IR-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

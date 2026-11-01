@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('fa')) {
+      return (
+        'سلام! شما این ربات را راه‌اندازی کردید، اما هنوز چیزی دانلود نکرده‌اید — ' +
+        'شاید روشن نبود از کجا باید شروع کرد.\n\n' +
+        'فقط یک قدم لازم است: لینک یک ویدیو را اینجا بفرستید، ' +
+        'مثلاً https://youtube.com/watch?v=jNQXAC9IVRw — و من فایل آماده را ' +
+        'حدود نیم دقیقه بعد برایتان می‌فرستم.\n\n' +
+        'با YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، ' +
+        'Rutube، OK.ru، Pinterest و Threads کار می‌کند. کاملاً رایگان و با هر ' +
+        'کیفیتی — تا 4K، بدون هزینهٔ اضافه برای HD.\n\n' +
+        'اگر چیزی کار نکرد، همین‌جا جواب بدهید. این ' +
+        'تنها یادآوری است و دیگر مزاحمتان نمی‌شوم.'
+      );
+    }
+
     if (code.startsWith('tr')) {
       return (
         'Merhaba! Bu botu başlattınız ama henüz hiçbir şey indirmediniz — ' +

@@ -83,8 +83,8 @@
   function addButton() {
     const ui = chrome.i18n.getUILanguage().toLowerCase();
     // Язык — как в content.js: сначала по браузеру, потом по выбору в окошке.
-    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", en: "Download" };
-    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", ar: "إخفاء الزر", zh: "隐藏按钮", hi: "बटन छिपाएँ", id: "Sembunyikan tombol", sw: "Ficha kitufe", de: "Button ausblenden", fr: "Masquer le bouton", it: "Nascondi il pulsante", pt: "Ocultar o botão", es: "Ocultar el botón", uz: "Tugmani yashirish", tr: "Düğmeyi gizle", en: "Hide the button" };
+    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", en: "Download" };
+    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", ar: "إخفاء الزر", zh: "隐藏按钮", hi: "बटन छिपाएँ", id: "Sembunyikan tombol", sw: "Ficha kitufe", de: "Button ausblenden", fr: "Masquer le bouton", it: "Nascondi il pulsante", pt: "Ocultar o botão", es: "Ocultar el botón", uz: "Tugmani yashirish", tr: "Düğmeyi gizle", fa: "پنهان کردن دکمه", en: "Hide the button" };
     const base = ui.split("-")[0] === "in" ? "id" : ui.split("-")[0];
     const l = base in LABELS ? base : "en";
     const PANEL_WIDTH = 340;
@@ -128,8 +128,8 @@
     icon.src = chrome.runtime.getURL("icons/icon-32.png");
     const label = document.createElement("span");
     label.textContent = LABELS[l];
-    // Направление — только у подписи кнопки (арабский справа налево).
-    label.dir = l === "ar" ? "rtl" : "";
+    // Направление — только у подписи кнопки (арабский и персидский справа налево).
+    label.dir = l === "ar" || l === "fa" ? "rtl" : "";
     button.append(icon, label);
     const hideButton = document.createElement("button");
     hideButton.className = "hide";
@@ -145,7 +145,7 @@
       .then(({ uiLang }) => {
         if (!(uiLang in LABELS)) return;
         label.textContent = LABELS[uiLang];
-        label.dir = uiLang === "ar" ? "rtl" : "";
+        label.dir = uiLang === "ar" || uiLang === "fa" ? "rtl" : "";
         applyHide(uiLang);
       })
       .catch(() => {});

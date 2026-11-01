@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на тридцати двух языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на тридцати трёх языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -9367,6 +9367,306 @@ export const legal: LegalByLanguage = {
             heading: "Муроҷиатҳои беинсофона",
             body: [
               "Муроҷиате, ки маълумоти қасдан бардурӯғ дорад, метавонад мутобиқи қонунгузорӣ боиси ҷавобгарии аризадиҳанда гардад. Мо ҳуқуқ дорем аз баррасии муроҷиат даст кашем, агар он имкон надиҳад, ки на соҳиби ҳуқуқ ва на маводи баҳсталаб муайян карда шавад.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  ms: {
+    ui: {
+      updated: "Kemas kini terakhir",
+      back: "Kembali ke laman utama",
+      operatorHeading: "Pengendali perkhidmatan",
+      navHeading: "Dokumen lain",
+      labels: {
+        privacy: "Dasar Privasi",
+        terms: "Terma Penggunaan",
+        cookies: "Dasar Kuki",
+        copyright: "Hak Cipta",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Dasar Privasi",
+        summary: `Data yang dikumpulkan oleh ${operator.site}, sebab ia diperlukan, tempoh ia disimpan dan cara untuk memadamkannya.`,
+        sections: [
+          {
+            heading: "Peruntukan am",
+            body: [
+              `Dasar ini menerangkan data peribadi yang diproses oleh perkhidmatan ${operator.site} dan bagi tujuan apa. Pengawal data ialah ${operator.nameMs}.`,
+              "Dengan menggunakan perkhidmatan ini, anda bersetuju dengan pemprosesan yang diterangkan di sini. Jika anda tidak bersetuju, sila jangan gunakan perkhidmatan ini.",
+              "Pemprosesan dijalankan menurut Undang-undang Republik Kazakhstan “Mengenai Data Peribadi dan Perlindungannya” dan, bagi pelawat dari Kawasan Ekonomi Eropah, dengan mengambil kira keperluan GDPR.",
+            ],
+          },
+          {
+            heading: "Data yang kami proses",
+            body: [
+              "Kami dengan sengaja tidak mengumpul apa-apa melebihi yang diperlukan untuk perkhidmatan ini berfungsi, dan kami tidak sekali-kali meminta dokumen pengenalan diri, butiran pembayaran atau alamat.",
+            ],
+            bullets: [
+              "Data akaun Telegram yang diterima oleh bot apabila anda menghantar mesej kepadanya: ID berangka, nama pengguna, nama pertama dan kod bahasa.",
+              "Pautan yang anda hantar untuk dimuat turun dan butiran percubaan itu sendiri: platform, tarikh dan masa, kualiti yang dipilih serta hasilnya (berjaya atau ralat).",
+              "Data teknikal sambungan: alamat IP, jenis dan versi pelayar, bahasa dan halaman perujuk. Data ini direkodkan dalam log pelayan dan dalam alat analitik web.",
+              "Kuki dan pengecam analitik — butiran lanjut dalam Dasar Kuki.",
+            ],
+          },
+          {
+            heading: "Sebab data ini diperlukan",
+            bullets: [
+              "Untuk menyediakan perkhidmatan itu sendiri: mendapatkan video daripada pautan anda dan menyerahkan fail kepada anda.",
+              "Untuk membezakan akaun anda daripada akaun orang lain dan mencegah penyalahgunaan.",
+              "Untuk melindungi perkhidmatan daripada penyalahgunaan automatik melalui semakan Cloudflare Turnstile sebelum pautan dihantar.",
+              "Untuk memahami cara laman web digunakan dan membetulkan ralat, dengan menggunakan statistik yang dinyahnamakan dan diagregatkan.",
+              "Untuk menjawab pertanyaan anda dan pertanyaan pemegang hak.",
+              "Untuk sekali-sekala menghantar mesej kepada anda di Telegram bagi mengetahui pendapat anda tentang perkhidmatan ini — contohnya, jika anda telah berhenti menggunakannya. Membalas adalah tidak wajib; jika anda tidak mahu menerima mesej sedemikian, beritahu sahaja kami dan kami tidak akan menghubungi anda lagi.",
+            ],
+          },
+          {
+            heading: "Asas undang-undang",
+            body: [
+              "Data akaun Telegram dan rekod muat turun diproses untuk melaksanakan Terma Penggunaan, yang anda terima apabila anda mula menggunakan perkhidmatan ini.",
+              "Kuki analitik dan rakaman aktiviti di laman web diproses berdasarkan persetujuan anda, yang boleh anda tarik balik pada bila-bila masa — caranya diterangkan dalam Dasar Kuki.",
+              "Log pelayan dan perlindungan daripada bot berasaskan kepentingan sah kami untuk memastikan perkhidmatan terus berfungsi dan selamat.",
+              "Pertanyaan tentang pendapat anda mengenai perkhidmatan ini berasaskan kepentingan sah kami untuk menambah baik perkhidmatan; anda boleh menolaknya pada bila-bila masa.",
+            ],
+          },
+          {
+            heading: "Akaun yang disambungkan",
+            body: [
+              "Jika anda mahu, anda boleh menyambungkan akaun anda di sesuatu platform (Instagram, Facebook, YouTube, X, VK, TikTok) ke bot supaya bot dapat memuat turun hantaran yang hanya boleh dilihat oleh pengguna yang log masuk: stories dan hantaran peribadi. Untuk tujuan ini, bot menerima kuki akaun tersebut — daripada sambungan Videoner melalui kod sekali guna, atau daripada fail yang anda hantar.",
+              "Kami hanya menyimpan kuki platform yang dipilih dan membuang selebihnya dengan serta-merta. Kuki tersebut disimpan dalam bentuk yang disulitkan dan digunakan hanya untuk muat turun di tempat anda menyambungkannya. Kuki yang disambungkan dalam sembang peribadi anda digunakan untuk muat turun anda, termasuk pautan anda sendiri dalam kumpulan yang tidak mempunyai akaun tersendiri; kuki itu tidak sekali-kali digunakan untuk pautan orang lain. Kuki yang disambungkan ke sesuatu kumpulan digunakan untuk muat turun ahli kumpulan itu sahaja dan tidak di tempat lain.",
+              "Asas undang-undangnya ialah persetujuan anda: anda sendiri yang menyambungkan akaun dan boleh mengalih keluarnya pada bila-bila masa dengan arahan /accounts. Kuki yang dialih keluar dipadamkan secara kekal. Jika platform tidak lagi menerima log masuk tersebut, bot akan memaklumkan anda.",
+              "Hantaran yang dimuat turun melalui akaun yang disambungkan tidak diterbitkan dalam saluran kami dan tidak diberikan kepada pengguna lain daripada cache bersama.",
+            ],
+          },
+          {
+            heading: "Perkhidmatan pihak ketiga",
+            body: [
+              "Kami tidak menjual data anda dan tidak memindahkannya kepada pihak ketiga untuk tujuan mereka sendiri. Perkhidmatan ini bergantung pada penyedia berikut, yang masing-masing memproses data menurut peraturan mereka sendiri:",
+            ],
+            bullets: [
+              `Telegram — pengendalian bot ${BOT}.`,
+              "Cloudflare — perlindungan daripada bot (Turnstile), penyampaian laman web dan penghalaan e-mel.",
+              "Google Analytics dan Google Tag Manager — statistik lawatan.",
+              "Yandex Metrica — statistik lawatan, peta klik dan Webvisor. Webvisor merakam aktiviti di halaman: pergerakan penuding, penatalan dan klik. Rakaman digunakan hanya untuk menganalisis kebolehgunaan laman web.",
+            ],
+          },
+          {
+            heading: "Tempoh penyimpanan data",
+            bullets: [
+              "Fail yang dimuat turun dipadamkan secara automatik daripada pelayan kira-kira satu jam selepas ia dicipta. Kami tidak menyimpan arkib video anda.",
+              "Rekod percubaan muat turun disimpan selama yang diperlukan untuk mencegah penyalahgunaan dan mengendalikan pertanyaan.",
+              "Data akaun disimpan selagi anda menggunakan perkhidmatan ini dan dipadamkan atas permintaan anda.",
+              "Log pelayan disimpan untuk tempoh yang terhad dan ditulis ganti semasa putaran log.",
+            ],
+          },
+          {
+            heading: "Tempat data diproses",
+            body: [
+              "Pelayan perkhidmatan ini terletak di pusat data dalam wilayah Kesatuan Eropah. Sebahagian daripada penyedia yang disenaraikan di atas mungkin memproses data di luar wilayah itu menurut dasar mereka sendiri.",
+            ],
+          },
+          {
+            heading: "Hak anda",
+            body: [
+              `Anda berhak mendapatkan maklumat tentang pemprosesan data anda, meminta data itu dibetulkan atau dipadamkan, menarik balik persetujuan dan membantah pemprosesan. Untuk berbuat demikian, hantarkan e-mel ke ${MAIL} daripada alamat e-mel atau akaun Telegram yang berkaitan dengan permintaan tersebut.`,
+              "Kami akan membalas dalam tempoh yang munasabah, lazimnya dalam tempoh tiga puluh hari kalendar. Pemadaman akaun turut memadamkan sejarah muat turun yang berkaitan dengannya.",
+            ],
+          },
+          {
+            heading: "Kanak-kanak",
+            body: [
+              "Perkhidmatan ini tidak bertujuan untuk dan tidak ditujukan kepada kanak-kanak di bawah umur 16 tahun. Kami tidak mengumpul data mereka secara sedar; jika perkara ini berlaku secara tidak sengaja, hubungi kami dan data tersebut akan dipadamkan.",
+            ],
+          },
+          {
+            heading: "Perubahan",
+            body: [
+              "Kami boleh mengemas kini Dasar ini. Tarikh versi semasa dinyatakan di bahagian atas halaman, dan kami akan memaklumkan perubahan penting dalam perkhidmatan.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Terma Penggunaan",
+        summary: `Peraturan penggunaan ${operator.site}: apa yang dibenarkan, apa yang tidak dibenarkan dan syarat perkhidmatan ini beroperasi.`,
+        sections: [
+          {
+            heading: "Peruntukan am",
+            body: [
+              `Terma ini mengawal penggunaan laman web ${operator.site} dan bot Telegram ${BOT}. Pemilik dan pentadbir perkhidmatan ini ialah ${operator.nameMs}.`,
+              "Dengan mula menggunakan perkhidmatan ini, anda mengesahkan bahawa anda telah membaca Terma ini dan menerimanya. Jika mana-mana syarat tidak sesuai bagi anda, sila jangan gunakan perkhidmatan ini.",
+            ],
+          },
+          {
+            heading: "Perkhidmatan ini percuma",
+            body: [
+              "Semua ciri perkhidmatan ini disediakan secara percuma. Tiada langganan, pelan berbayar, kualiti video berbayar atau pembelian dalam perkhidmatan.",
+              "Kami tidak memaparkan iklan dan tidak meletakkan pautan afiliasi.",
+            ],
+          },
+          {
+            heading: "Syarat akses",
+            bullets: [
+              "Muat turun di laman web tidak memerlukan akaun atau log masuk. Bot membezakan pengguna melalui akaun Telegram mereka.",
+              "Had teknikal terhadap kekerapan permintaan melindungi perkhidmatan daripada beban berlebihan dan penyalahgunaan automatik.",
+              "Muat turun YouTube tertakluk pada had trafik harian: 10 GB setiap 24 jam bagi setiap rangkaian di laman web dan dalam sambungan, dan 25 GB setiap 24 jam bagi setiap akaun Telegram dalam bot. Platform lain tidak terjejas.",
+              "Langganan saluran kami tidak diperlukan untuk memuat turun melalui bot. Bot menambahkan pautan ke saluran berita projek dalam teks fail; melanggan saluran itu adalah tidak wajib.",
+            ],
+          },
+          {
+            heading: "Fungsi perkhidmatan",
+            body: [
+              "Perkhidmatan ini bertindak sebagai perantara teknikal: ia mengikuti pautan yang anda berikan, mendapatkan fail media daripada halaman yang boleh diakses secara umum dan menyerahkannya kepada anda.",
+              "Kami tidak menempatkan katalog video, tidak menjalankan carian ke atas kandungan orang lain dan tidak menyimpan fail yang dimuat turun lebih lama daripada yang diperlukan untuk penyerahan — kira-kira satu jam.",
+              "Ketersediaan sesuatu platform bergantung pada keputusan teknikal platform tersebut dan boleh berubah tanpa notis.",
+            ],
+          },
+          {
+            heading: "Kewajipan anda",
+            body: [
+              "Anda sendiri bertanggungjawab atas cara anda menggunakan fail yang anda peroleh, dan anda mengesahkan bahawa anda berhak berbuat demikian.",
+            ],
+            bullets: [
+              "Muat turun hanya bahan yang haknya dimiliki oleh anda, atau yang penggunaannya dibenarkan oleh pemegang hak atau oleh undang-undang.",
+              "Jangan gunakan perkhidmatan ini untuk melanggar hak cipta atau hak berkaitan, mengedarkan kandungan terlarang atau melanggar hak pihak ketiga.",
+              "Jangan cuba memintas had teknikal perkhidmatan ini, termasuk had kekerapan permintaan dan semakan bot.",
+              "Jangan menjana beban automatik: permintaan pukal, skrip dan pengikis data tidak dibenarkan.",
+            ],
+          },
+          {
+            heading: "Penerbitan pautan dalam saluran",
+            body: [
+              "Dengan memuat turun video melalui bot, anda bersetuju bahawa pautan ke hantaran asal akan diterbitkan dalam saluran Telegram kami. Notis mengenai perkara ini dipaparkan dalam bot sebelum anda memilih kualiti — iaitu sebelum anda memutuskan untuk memuat turun.",
+              "Penerbitan dibuat tanpa nama: saluran menerima pautan ke halaman yang boleh diakses secara umum, tajuk video dan bingkai kulitnya — imej pegun yang sama yang dipaparkan oleh platform dalam pratonton hantarannya sendiri. Identiti orang yang memuat turun tidak dinyatakan. Fail video itu sendiri tidak sekali-kali diterbitkan di mana-mana: yang diedarkan ialah pautan, yang platform sendiri menggalakkan orang ramai untuk mengedarkannya melalui butang “Kongsi” di bawah setiap hantaran.",
+              "Pautan yang sama diterbitkan tidak lebih daripada sekali. Jika anda tidak mahu sesuatu pautan masuk ke saluran, jangan muat turun video itu melalui perkhidmatan kami.",
+              "Pautan daripada kumpulan dan hantaran yang dimuat turun melalui akaun yang disambungkan tidak sekali-kali diterbitkan dalam saluran."
+            ],
+          },
+          {
+            heading: "Menyambungkan akaun anda",
+            body: [
+              "Dengan menyambungkan akaun anda di sesuatu platform ke bot, anda mengesahkan bahawa akaun itu milik anda dan anda berhak menggunakannya dengan cara ini.",
+              "Platform tidak merestui muat turun automatik dan boleh menyekat atau mengharamkan akaun yang disambungkan. Anda menanggung risiko ini; kami mengesyorkan agar anda menyambungkan akaun sampingan dan bukan akaun utama anda. Kami tidak bertanggungjawab atas sekatan yang dikenakan oleh platform ke atas akaun anda.",
+              "Akaun yang disambungkan ke sesuatu kumpulan digunakan untuk muat turun oleh semua ahlinya. Pentadbir kumpulan menentukan siapa yang boleh menyambungkan akaun dan boleh mengalih keluar mana-mana akaun tersebut.",
+            ],
+          },
+          {
+            heading: "Had liabiliti",
+            body: [
+              "Perkhidmatan ini disediakan “sebagaimana adanya”. Kami tidak menjamin operasi tanpa gangguan, ketersediaan mana-mana platform tertentu, atau kesesuaian sesuatu fail untuk tujuan anda.",
+              "Kami tidak bertanggungjawab atas apa yang anda lakukan dengan bahan yang anda muat turun, dan juga atas akibat pelanggaran hak pihak ketiga oleh anda.",
+              "Kami berhak mengubah ciri yang ditawarkan, menggantung perkhidmatan untuk penyelenggaraan dan menamatkannya.",
+            ],
+          },
+          {
+            heading: "Sekatan akses",
+            body: [
+              "Kami boleh menyekat atau menamatkan akses kepada perkhidmatan ini sekiranya Terma ini dilanggar, sekiranya terdapat percubaan untuk memintas had, atau apabila menerima aduan yang berasas daripada pemegang hak.",
+            ],
+          },
+          {
+            heading: "Perubahan dan undang-undang yang terpakai",
+            body: [
+              "Kami boleh meminda Terma ini; tarikh versi yang berkuat kuasa dinyatakan di bahagian atas halaman. Dengan terus menggunakan perkhidmatan ini selepas sesuatu perubahan, anda menerima versi baharu tersebut.",
+              "Hubungan antara pihak-pihak tertakluk pada undang-undang Republik Kazakhstan. Pihak-pihak akan berusaha menyelesaikan pertikaian melalui surat-menyurat dan, jika persetujuan tidak dicapai, mengikut tatacara yang ditetapkan oleh perundangan Republik Kazakhstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Dasar Kuki",
+        summary: `Kuki yang digunakan oleh ${operator.site}, kegunaannya dan cara untuk menolaknya.`,
+        sections: [
+          {
+            heading: "Apakah kuki",
+            body: [
+              "Kuki ialah fail teks kecil yang disimpan oleh laman web dalam pelayar anda. Kuki membolehkan perkhidmatan mengingati tetapan anda dan mengumpul statistik lawatan yang dinyahnamakan.",
+              "Selain kuki, dokumen ini turut meliputi teknologi berkaitan: storan setempat pelayar dan piksel penjejakan.",
+            ],
+          },
+          {
+            heading: "Kuki yang sangat diperlukan",
+            body: ["Tanpa kuki ini perkhidmatan tidak dapat berfungsi, oleh itu ia sentiasa ditetapkan."],
+            bullets: [
+              "Cloudflare Turnstile — menyemak bahawa pautan dihantar oleh manusia dan bukan oleh skrip.",
+              "Tetapan antara muka — bahasa dan tema warna yang anda pilih.",
+            ],
+          },
+          {
+            heading: "Kuki analitik",
+            body: [
+              "Kuki ini membantu kami melihat halaman yang digunakan dan tempat ralat berlaku. Ia ditetapkan dengan persetujuan anda dan tidak diperlukan untuk perkhidmatan ini berfungsi.",
+            ],
+            bullets: [
+              "Google Analytics dan Google Tag Manager — trafik dan tingkah laku di laman web dalam bentuk yang dinyahnamakan.",
+              "Yandex Metrica — trafik, peta klik dan Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor daripada Yandex Metrica merakam aktiviti di halaman: pergerakan penuding, penatalan, klik dan input dalam medan pautan. Tujuannya adalah supaya kami dapat melihat bahagian antara muka yang mengelirukan pengguna.",
+              "Kami tidak menggunakan rakaman ini untuk menjejaki individu tertentu. Sila jangan masukkan ke dalam medan laman web apa-apa maklumat yang anda tidak mahu disimpan.",
+            ],
+          },
+          {
+            heading: "Cara menolak",
+            bullets: [
+              "Sekat atau padamkan kuki dalam tetapan pelayar anda — cara ini berkesan untuk semua sistem yang disenaraikan di sini.",
+              "Google Analytics: alat tambah pelayar rasmi yang melumpuhkan pengumpulan data boleh didapati daripada Google.",
+              "Yandex Metrica: penolakan boleh dibuat melalui alat tambah rasmi Yandex.",
+              "Melumpuhkan kuki yang sangat diperlukan akan menyebabkan muat turun tidak dapat dilakukan.",
+            ],
+          },
+          {
+            heading: "Tempoh penyimpanan",
+            body: [
+              "Kuki sesi dipadamkan apabila anda menutup pelayar atau apabila sesi tamat tempoh. Alat analitik menyimpan pengecamnya untuk tempoh yang ditetapkan oleh penyedianya.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Hak Cipta",
+        summary: "Pendirian perkhidmatan ini terhadap hak cipta dan cara mengemukakan aduan pelanggaran.",
+        sections: [
+          {
+            heading: "Pendirian kami",
+            body: [
+              "Perkhidmatan ini tidak menempatkan video dan tidak menyimpan katalog video. Ia bertindak sebagai perantara teknikal: ia mengikuti pautan yang dimasukkan oleh pengguna, mengakses halaman yang boleh diakses secara umum dan menyerahkan fail kepada pengguna tersebut.",
+              "Fail yang dimuat turun disimpan di pelayan selama kira-kira satu jam dan kemudian dipadamkan secara automatik. Tiada salinan kekal kandungan orang lain yang kekal pada kami.",
+              "Tanggungjawab atas penggunaan bahan yang dimuat turun terletak pada pengguna, sebagaimana yang dinyatakan secara jelas dalam Terma Penggunaan.",
+            ],
+          },
+          {
+            heading: "Jika hak anda dilanggar",
+            body: [
+              `Jika anda pemegang hak atau wakilnya dan berpendapat bahawa perkhidmatan ini digunakan untuk melanggar hak anda, hantarkan e-mel ke ${MAIL}. Kami menyemak aduan sedemikian dan mengambil tindakan.`,
+            ],
+          },
+          {
+            heading: "Perkara yang perlu dinyatakan",
+            bullets: [
+              "Karya yang terjejas dan atas dasar apa anda memegang hak ke atasnya.",
+              "Pautan ke bahan tersebut dan, jika diketahui, keadaan pelanggaran.",
+              "Butiran hubungan anda: nama individu atau nama entiti, alamat dan alamat e-mel.",
+              "Jika anda bertindak bagi pihak pemegang hak, bukti kuasa anda.",
+              "Pernyataan bahawa maklumat dalam aduan adalah tepat dan bahawa penggunaan bahan tersebut tidak dibenarkan oleh pemegang hak atau oleh undang-undang.",
+            ],
+          },
+          {
+            heading: "Tindakan kami",
+            body: [
+              "Kami menyemak aduan dalam tempoh yang munasabah, lazimnya dalam tempoh tiga puluh hari kalendar, dan jika pelanggaran disahkan, kami menyekat akses kepada bahan tersebut melalui perkhidmatan ini dan, jika perlu, akses pelanggar kepada perkhidmatan ini.",
+              "Kami akan memaklumkan hasil semakan ke alamat e-mel yang anda berikan.",
+            ],
+          },
+          {
+            heading: "Aduan berniat jahat",
+            body: [
+              "Aduan yang mengandungi maklumat yang diketahui palsu boleh menyebabkan pengadu bertanggungjawab di bawah undang-undang yang terpakai. Kami berhak menolak untuk menimbangkan aduan yang tidak membolehkan pemegang hak mahupun bahan yang dipertikaikan dikenal pasti.",
             ],
           },
         ],

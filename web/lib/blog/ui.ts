@@ -403,6 +403,18 @@ export const blogUi: Record<
     readFull: "Basahin ang buong post sa website",
     dateLocale: "fil-PH",
   },
+  ms: {
+    title: "Blog Videoner",
+    description: "Berita projek: apa yang baharu dalam bot, di laman web dan dalam sambungan, serta cara menggunakannya.",
+    readMore: "Baca",
+    back: "Semua artikel",
+    allPosts: "Blog",
+    channel: "Berita di Telegram",
+    channelCta: "Berita projek ada di saluran Telegram @videonerdownload.",
+    readOnSite: "Baca di laman web",
+    readFull: "Baca hantaran penuh di laman web",
+    dateLocale: "ms-MY",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

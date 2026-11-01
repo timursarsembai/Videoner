@@ -261,6 +261,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Қатъ кардани боргирӣ ва навбат" },
     { command: "language", description: "Забони бот" },
   ],
+  ms: [
+    { command: "start", description: "Cara menggunakan bot" },
+    { command: "extension", description: "Sambungan pelayar" },
+    { command: "accounts", description: "Akaun anda untuk story dan hantaran peribadi" },
+    { command: "connect", description: "Sambungkan akaun dengan kod daripada sambungan" },
+    { command: "stop", description: "Hentikan muat turun dan baris gilir" },
+    { command: "language", description: "Bahasa bot" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -489,6 +497,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Пайваст кардани аккаунт ба ин гурӯҳ бо код" },
     { command: "language", description: "Забони бот дар ин гурӯҳ (барои админҳо)" },
     { command: "start", description: "Бот дар гурӯҳ чӣ тавр кор мекунад" },
+  ],
+  ms: [
+    { command: "settings", description: "Tetapan bot untuk kumpulan ini (pentadbir)" },
+    { command: "accounts", description: "Akaun yang disambungkan ke kumpulan ini" },
+    { command: "connect", description: "Sambungkan akaun ke kumpulan ini dengan kod" },
+    { command: "language", description: "Bahasa bot dalam kumpulan ini (pentadbir)" },
+    { command: "start", description: "Cara bot berfungsi dalam kumpulan" },
   ],
 };
 

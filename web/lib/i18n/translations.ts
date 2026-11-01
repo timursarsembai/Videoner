@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "az", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -46,6 +46,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   az: "Azərbaycanca",
   ky: "Кыргызча",
   tg: "Тоҷикӣ",
+  ms: "Bahasa Melayu",
   tl: "Tagalog",
 };
 
@@ -11222,6 +11223,366 @@ const tg: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const ms: Translations = {
+  nav: {
+    home: "Laman Utama",
+    downloaders: "Pemuat Turun",
+    extension: "Sambungan",
+    blog: "Blog",
+    switchTheme: "Tukar tema",
+    language: "Bahasa",
+    comingSoon: "Akan Datang",
+  },
+  theme: {
+    light: "Cerah",
+    dark: "Gelap",
+    system: "Sistem",
+  },
+  playlist: {
+    title: "Senarai main “{title}”: {count} video",
+    hint: "Video dimuat turun satu demi satu. Biarkan halaman ini terbuka; pelayar anda mungkin meminta kebenaran untuk membenarkan beberapa muat turun.",
+    std: "720p",
+    hd: "Kualiti terbaik",
+    audio: "Audio sahaja (mp3)",
+    progress: "Video {index} daripada {count}",
+    stats: "Dimuat turun: {done} · gagal: {failed}",
+    stop: "Hentikan",
+    stopped: "Dihentikan. {done} daripada {count} dimuat turun.",
+    finished: "Senarai main selesai: {done} daripada {count}.",
+    again: "Pilih semula",
+  },
+  footer: {
+    news: "Berita projek",
+    botCta: "Juga tersedia sebagai bot Telegram:",
+    extension: "Sambungan pelayar",
+    developedBy: "Dibangunkan oleh",
+    rights: "Hak cipta terpelihara.",
+  },
+  content: {
+    howToTitle: "Cara Muat Turun Video {platform}",
+    faqTitle: "Soalan Lazim",
+  },
+  auth: {
+    loginButton: "Log masuk dengan Telegram",
+    signIn: "Log Masuk",
+    logout: "Log keluar",
+    switchAccountHint: "Bukan akaun anda?",
+    switchAccountLink: "Log keluar daripada Telegram Web",
+  },
+  home: {
+    new: "Baharu",
+    manyFeatures: "Banyak ciri baharu",
+    titleLine1: "Muat Turun Video",
+    titleLine2: "Pantas & Mudah",
+    subtitle:
+      "Pemuat turun video serba guna anda untuk YouTube, Instagram, TikTok dan banyak lagi. Pilih sebarang kualiti, daripada HD hingga versi mesra mudah alih.",
+    subtitleExtra: "Tanpa had, tanpa leceh, muat turun sahaja.",
+    placeholder: "Tampal pautan video daripada mana-mana platform...",
+    download: "Muat turun",
+  },
+  video: {
+    description: "Penerangan",
+    format: "Format",
+    selected: "Dipilih: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Menukar",
+    downloading: "Sedang memuat turun",
+    downloadAgain: "Muat Turun Semula",
+    startDownload: "Mula Muat Turun",
+    convertingBtn: "Sedang menukar...",
+    downloadingBtn: "Sedang memuat turun...",
+    loginRequiredHint: "Log masuk dengan Telegram untuk muat turun",
+    quotaExceededHint: "Had harian 20 muat turun telah dicapai — sila kembali esok",
+    postFiles: "Hantaran ini mempunyai {count} fail",
+    photoQuality: "Foto asal",
+    slideshowQuality: "Tayangan slaid (video)",
+    galleryQuality: "Foto + tayangan slaid",
+    downloadAll: "Muat turun semua",
+    downloadOne: "Simpan",
+    subtitlesTab: "sari kata",
+    subtitlesHint: "Pilih bahasa — anda akan mendapat fail .srt yang boleh dibuka oleh mana-mana pemain.",
+    subtitlesAuto: "auto",
+    subtitlesDownload: "Muat turun sari kata",
+    subtitlesDownloading: "Menyediakan sari kata...",
+  },
+  toast: {
+    enterUrl: "Sila masukkan pautan",
+    enterValidUrl: "Sila masukkan pautan yang sah",
+    platformNotSupported: "Platform ini tidak disokong",
+    urlNotSupported: "Pautan ini tidak disokong",
+    enterValidPlatformUrl: "Sila masukkan pautan {platform} yang sah",
+    captchaNotReady: "Sila tunggu sebentar sehingga semakan keselamatan selesai, kemudian cuba lagi",
+    comingSoon: "Akan datang! {name} belum disokong lagi",
+    selectQuality: "Sila pilih kualiti",
+    downloadStarted: "Muat turun bermula!",
+    downloadCompleted: "Muat turun selesai!",
+    newsChannel: "Berita projek ada di Telegram:",
+    downloadUrlNotReceived: "Pautan muat turun tidak diterima",
+    needsBrowser:
+      "Platform tidak memberikan video ini kepada pelayan kami: video ini hanya tersedia untuk pengguna yang log masuk, atau akses dihadkan buat sementara. Anda boleh memuat turunnya dengan sambungan pelayar Videoner pada komputer — ia memuat turun menggunakan log masuk anda sendiri.",
+    needsBrowserLink: "Dapatkan sambungan →",
+  },
+  platforms: {
+    youtube: {
+      description: "Muat turun video daripada YouTube dalam kualiti HD",
+      news: "Kini menyokong video dan Shorts",
+      titleLine1: "Muat Turun Video",
+      titleLine2: "YouTube & Shorts",
+      pageDescription:
+        "Muat turun video YouTube, Shorts dan audio dalam format berkualiti tinggi. Pantas, percuma dan mudah digunakan. Menyokong kualiti 8K, 4K, HD dan audio MP3.",
+      placeholder: "Tampal pautan YouTube di sini...",
+      howTo: [
+        "Salin pautan video daripada bar alamat pelayar anda, atau ketik Kongsi dalam aplikasi YouTube.",
+        "Tampal pautan ke dalam kotak di atas dan tekan Muat turun.",
+        "Pilih kualiti — sehingga 4K/8K untuk video, atau MP3 untuk audio sahaja.",
+        "Fail anda mula dimuat turun serta-merta, tanpa perlu log masuk.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video YouTube dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Videoner menawarkan setiap resolusi yang disediakan oleh YouTube untuk video tersebut — daripada 360p hingga 4K/8K jika tersedia — serta pengekstrakan audio MP3." },
+        { q: "Bolehkah saya muat turun video peribadi atau video yang mempunyai sekatan umur?", a: "Hanya video YouTube yang boleh diakses oleh umum disokong; kandungan peribadi, tidak tersenarai untuk anda atau yang memerlukan log masuk tidak boleh dimuat turun." },
+        { q: "Adakah muat turun video daripada YouTube sah di sisi undang-undang?", a: "Muat turun hanya video yang anda berhak simpan — kandungan anda sendiri, video berlesen Creative Commons atau apa-apa yang dibenarkan oleh pencipta. Patuhi Syarat Perkhidmatan YouTube dan undang-undang hak cipta." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail yang ditukar kekal di pelayan selama kira-kira sejam, jadi simpan fail ke peranti anda sejurus selepas memuat turun." },
+      ],
+    },
+    facebook: {
+      description: "Simpan video daripada hantaran dan Reels Facebook",
+      news: "Kini menyokong Reels",
+      titleLine1: "Muat Turun Video",
+      titleLine2: "Facebook & Reels",
+      pageDescription:
+        "Muat turun video dan Reels Facebook dalam kualiti tinggi. Pantas, percuma dan mudah digunakan.",
+      placeholder: "Tampal pautan Facebook di sini...",
+      howTo: [
+        "Buka video atau Reel di Facebook dan salin pautannya (ketik tiga titik → Salin Pautan).",
+        "Tampal pautan di atas dan tekan Muat turun.",
+        "Pilih kualiti MP4 atau ekstrak audio sebagai MP3.",
+        "Fail dimuat turun terus ke peranti anda — tidak perlu akaun Facebook.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video Facebook dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Videoner mengambil kualiti tertinggi yang disediakan oleh Facebook untuk video atau Reel tersebut, dalam MP4, serta pilihan audio MP3." },
+        { q: "Bolehkah saya muat turun video peribadi?", a: "Hanya hantaran, video dan Reels awam yang berfungsi — kandungan peribadi atau untuk rakan sahaja tidak boleh diakses." },
+        { q: "Adakah muat turun video daripada Facebook sah di sisi undang-undang?", a: "Muat turun hanya video yang anda dibenarkan untuk simpan; hormati hak pencipta dan Syarat Perkhidmatan Facebook." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail disimpan selama kira-kira sejam selepas penukaran, kemudian dipadam secara automatik — muat turun dengan segera." },
+      ],
+    },
+    instagram: {
+      description: "Muat turun Reels, Stories dan hantaran Instagram",
+      news: "Kini menyokong Reels dan Stories",
+      titleLine1: "Muat Turun Instagram",
+      titleLine2: "Reels & Stories",
+      pageDescription:
+        "Muat turun Reels, Stories dan hantaran Instagram dalam kualiti tinggi. Pantas, percuma dan mudah digunakan.",
+      placeholder: "Tampal pautan Instagram di sini...",
+      howTo: [
+        "Buka Reel, hantaran atau Story di Instagram dan ketik ikon kapal terbang kertas → Salin Pautan.",
+        "Tampal pautan ke dalam kotak di atas.",
+        "Pilih kualiti dan format pilihan anda.",
+        "Muat turun bermula serta-merta — tidak perlu log masuk atau memasang aplikasi.",
+      ],
+      faq: [
+        { q: "Adakah muat turun kandungan Instagram dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Kualiti penuh yang tersedia untuk Reels, hantaran dan Stories, dalam MP4 atau MP3." },
+        { q: "Bolehkah saya muat turun daripada akaun peribadi?", a: "Hanya akaun dan hantaran Instagram awam yang disokong; kandungan akaun peribadi tidak boleh dimuat turun." },
+        { q: "Adakah muat turun video daripada Instagram sah di sisi undang-undang?", a: "Muat turun hanya apa yang anda dibenarkan untuk simpan — hormati pencipta dan Syarat Perkhidmatan Instagram." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail kekal di pelayan selama kira-kira sejam sebelum dipadam secara automatik." },
+      ],
+    },
+    tiktok: {
+      description: "Muat turun video TikTok tanpa tera air",
+      news: "Kini tanpa tera air",
+      titleLine1: "Muat Turun TikTok",
+      titleLine2: "Tanpa Tera Air",
+      pageDescription:
+        "Muat turun video TikTok tanpa tera air dalam kualiti tinggi. Pantas, percuma dan mudah digunakan.",
+      placeholder: "Tampal pautan TikTok di sini...",
+      howTo: [
+        "Ketik Kongsi pada video TikTok, kemudian Salin Pautan.",
+        "Tampal pautan di atas dan tekan Muat turun.",
+        "Dapatkan MP4 yang bersih — tanpa tera air TikTok — atau audio MP3.",
+        "Simpan terus ke peranti anda.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video TikTok dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Kualiti terbaik yang disediakan oleh TikTok untuk video tersebut, tanpa tera air TikTok, serta audio MP3." },
+        { q: "Bolehkah saya muat turun daripada akaun peribadi?", a: "Hanya video daripada akaun TikTok awam boleh dimuat turun." },
+        { q: "Adakah muat turun video daripada TikTok sah di sisi undang-undang?", a: "Muat turun video yang anda berhak simpan, nyatakan kredit kepada pencipta dan hormati Syarat Perkhidmatan TikTok." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail yang dimuat turun kekal di pelayan selama lebih kurang sejam, kemudian dipadam secara automatik." },
+      ],
+    },
+    twitter: {
+      description: "Muat turun video Twitter",
+      news: "Kini menyokong video Twitter",
+      titleLine1: "Muat Turun Video",
+      titleLine2: "Twitter",
+      pageDescription:
+        "Muat turun video Twitter dalam kualiti tinggi. Pantas, percuma dan mudah digunakan.",
+      placeholder: "Tampal pautan Twitter di sini...",
+      howTo: [
+        "Ketik Kongsi di bawah tweet dan pilih Salin Pautan (atau salin pautan daripada pelayar anda).",
+        "Tampal pautan ke dalam kotak di atas.",
+        "Pilih kualiti video yang anda mahu.",
+        "Muat turun bermula serta-merta — tidak perlu akaun X/Twitter.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video Twitter/X dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Setiap kualiti yang ditawarkan oleh X/Twitter untuk video tersebut, dalam MP4, serta MP3." },
+        { q: "Bolehkah saya muat turun daripada akaun peribadi?", a: "Hanya tweet daripada akaun awam yang berfungsi; akaun yang dilindungi/peribadi tidak disokong." },
+        { q: "Adakah muat turun video daripada Twitter/X sah di sisi undang-undang?", a: "Muat turun kandungan yang anda berhak simpan, dengan menghormati hak pemilik hantaran dan Syarat Perkhidmatan platform." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail dipadam secara automatik kira-kira sejam selepas dijana." },
+      ],
+    },
+    vimeo: {
+      description: "Muat turun video daripada Vimeo dalam kualiti tinggi",
+      news: "Kini menyokong Vimeo",
+      titleLine1: "Muat Turun Video",
+      titleLine2: "Vimeo",
+      pageDescription:
+        "Muat turun video Vimeo dalam kualiti tinggi. Pantas, percuma dan mudah digunakan.",
+      placeholder: "Tampal pautan Vimeo di sini...",
+      howTo: [
+        "Buka Vimeo dan salin pautan video (atau ketik Kongsi → Salin Pautan pada telefon).",
+        "Tampal pautan ke dalam kotak di atas dan tekan Muat turun.",
+        "Pilih kualiti dan format — MP4 untuk video, MP3 jika anda hanya mahukan audio.",
+        "Muat turun anda bermula serta-merta; tidak perlu akaun atau memasang perisian.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video Vimeo dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Videoner menawarkan setiap kualiti yang disediakan oleh Vimeo untuk video tersebut, sehingga resolusi muat naik asal, termasuk HD dan 4K jika disediakan oleh pencipta." },
+        { q: "Bolehkah saya muat turun video Vimeo peribadi atau yang dilindungi kata laluan?", a: "Tidak — Videoner hanya berfungsi dengan pautan Vimeo yang boleh diakses oleh umum. Video peribadi, dilindungi kata laluan atau yang aksesnya terhad tidak boleh dimuat turun." },
+        { q: "Adakah muat turun video daripada Vimeo sah di sisi undang-undang?", a: "Muat turun bertujuan untuk video yang anda berhak simpan — kandungan anda sendiri, video berlesen Creative Commons atau apa-apa yang dibenarkan secara jelas oleh pencipta untuk dimuat turun. Hormati hak cipta pencipta asal dan syarat perkhidmatan Vimeo." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail dijana atas permintaan dan disimpan di pelayan selama kira-kira sejam sebelum dipadam secara automatik, jadi simpan fail ke peranti anda sebaik sahaja muat turun selesai." },
+      ],
+    },
+    vk: {
+      description: "Muat turun video dan klip daripada VK",
+      news: "Kini menyokong VK",
+      titleLine1: "Muat Turun VK",
+      titleLine2: "Video & Klip",
+      pageDescription:
+        "Muat turun video dan klip VK dalam kualiti tinggi. Pantas, percuma dan mudah digunakan.",
+      placeholder: "Tampal pautan VK di sini...",
+      howTo: [
+        "Buka video atau klip di VK (vk.com atau VK Video) dan salin pautannya daripada bar alamat atau butang Kongsi.",
+        "Tampal pautan di atas dan tekan Muat turun.",
+        "Pilih kualiti dan format yang tersedia.",
+        "Fail dimuat turun terus — anda tidak perlu log masuk ke VK.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video VK dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Semua kualiti yang disediakan oleh VK untuk video atau klip tersebut, serta audio MP3." },
+        { q: "Adakah saya perlu log masuk ke VK?", a: "Tidak — video mestilah awam. Videoner tidak log masuk ke VK, jadi video peribadi, untuk rakan sahaja atau yang memerlukan log masuk tidak boleh dimuat turun." },
+        { q: "Adakah muat turun video daripada VK sah di sisi undang-undang?", a: "Muat turun hanya video yang anda berhak simpan, dengan menghormati Syarat Perkhidmatan VK dan hak pemuat naik." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail disimpan di pelayan selama kira-kira sejam, kemudian dipadam secara automatik." },
+      ],
+    },
+    rutube: {
+      description: "Muat turun video daripada Rutube",
+      news: "Kini menyokong Rutube",
+      titleLine1: "Muat Turun Video",
+      titleLine2: "Rutube",
+      pageDescription:
+        "Muat turun video Rutube dalam kualiti tinggi. Pantas, percuma dan mudah digunakan.",
+      placeholder: "Tampal pautan Rutube di sini...",
+      howTo: [
+        "Buka video di Rutube dan salin pautannya daripada bar alamat atau butang Kongsi.",
+        "Tampal pautan ke dalam kotak di atas.",
+        "Pilih kualiti dan format (video atau audio).",
+        "Muat turun bermula serta-merta, tidak perlu akaun Rutube.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video Rutube dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Setiap kualiti yang ditawarkan oleh Rutube, dalam MP4, serta audio MP3." },
+        { q: "Adakah saya perlu log masuk ke Rutube?", a: "Tidak — Videoner hanya berfungsi dengan video Rutube yang tersedia untuk umum; log masuk tidak digunakan dan tidak diperlukan." },
+        { q: "Adakah muat turun video daripada Rutube sah di sisi undang-undang?", a: "Muat turun hanya kandungan yang anda dibenarkan untuk simpan, dengan menghormati Syarat Perkhidmatan Rutube dan hak pencipta." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail kekal di pelayan selama kira-kira sejam sebelum dipadam secara automatik." },
+      ],
+    },
+    okru: {
+      description: "Muat turun video daripada OK.ru (Odnoklassniki)",
+      news: "Kini menyokong OK.ru",
+      titleLine1: "Muat Turun Video",
+      titleLine2: "OK.ru",
+      pageDescription:
+        "Muat turun video OK.ru (Odnoklassniki) dalam kualiti tinggi. Pantas, percuma dan mudah digunakan.",
+      placeholder: "Tampal pautan OK.ru di sini...",
+      howTo: [
+        "Buka video di OK.ru (Odnoklassniki) dan salin pautannya daripada bar alamat.",
+        "Tampal pautan ke dalam kotak di atas dan tekan Muat turun.",
+        "Pilih kualiti dan format anda.",
+        "Muat turun bermula serta-merta — tidak perlu log masuk ke OK.ru.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video OK.ru dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti video apakah yang boleh saya muat turun?", a: "Julat kualiti penuh yang disediakan oleh OK.ru untuk video tersebut, serta MP3." },
+        { q: "Adakah saya perlu log masuk ke OK.ru?", a: "Tidak — hanya video OK.ru (Odnoklassniki) awam yang berfungsi. Videoner tidak pernah log masuk ke mana-mana akaun, jadi video peribadi tidak boleh diakses." },
+        { q: "Adakah muat turun video daripada OK.ru sah di sisi undang-undang?", a: "Muat turun hanya video yang anda berhak simpan, dengan menghormati Syarat Perkhidmatan OK.ru dan hak pemuat naik." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail dipadam secara automatik kira-kira sejam selepas dijana." },
+      ],
+    },
+    pinterest: {
+      description: "Muat turun video daripada pin Pinterest",
+      news: "Kini menyokong Pinterest",
+      titleLine1: "Muat Turun Pinterest",
+      titleLine2: "Video & Pin",
+      pageDescription:
+        "Muat turun video daripada pin Pinterest dalam kualiti tinggi. Pantas, percuma dan mudah digunakan. Nota: hanya pin video boleh dimuat turun — pin foto sahaja tidak disokong.",
+      placeholder: "Tampal pautan Pinterest di sini...",
+      howTo: [
+        "Buka pin di Pinterest dan ketik Kongsi → Salin Pautan (atau salin pautan daripada pelayar anda).",
+        "Tampal pautan ke dalam kotak di atas dan tekan Muat turun.",
+        "Pilih kualiti dan format pilihan anda.",
+        "Fail anda dimuat turun serta-merta — tidak perlu akaun.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video Pinterest dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti apakah yang boleh saya muat turun?", a: "Videoner menawarkan setiap kualiti yang disediakan oleh Pinterest untuk video pin tersebut, serta pengekstrakan audio MP3." },
+        { q: "Bolehkah saya muat turun foto atau imej daripada Pinterest?", a: "Tidak — hanya pin video boleh dimuat turun. Jika pin mengandungi foto sahaja, tiada fail video untuk diekstrak." },
+        { q: "Bolehkah saya muat turun pin peribadi atau pin daripada papan terhad?", a: "Hanya pin yang boleh diakses oleh umum disokong; papan peribadi dan kandungan yang memerlukan log masuk tidak boleh dimuat turun." },
+        { q: "Adakah muat turun video daripada Pinterest sah di sisi undang-undang?", a: "Muat turun hanya pin yang anda berhak simpan — kandungan anda sendiri atau apa-apa yang dibenarkan oleh pencipta. Patuhi Syarat Perkhidmatan Pinterest dan undang-undang hak cipta." },
+        { q: "Berapa lama fail yang dimuat turun tersedia?", a: "Fail yang ditukar kekal di pelayan selama kira-kira sejam, jadi simpan fail ke peranti anda sejurus selepas memuat turun." },
+      ],
+    },
+    threads: {
+      description: "Muat turun video daripada hantaran Threads",
+      news: "Kini menyokong Threads",
+      titleLine1: "Muat Turun Video",
+      titleLine2: "Threads",
+      pageDescription:
+        "Muat turun video daripada hantaran Threads. Pantas, percuma dan tidak perlu akaun Threads. Threads hanya menyediakan satu versi video, sehingga 720p — itulah kualiti tertinggi yang disediakan oleh platform.",
+      placeholder: "Tampal pautan Threads di sini...",
+      howTo: [
+        "Buka hantaran di Threads dan ketik ikon kongsi, kemudian Salin Pautan.",
+        "Tampal pautan ke dalam kotak di atas dan tekan Muat turun.",
+        "Pilih format yang anda mahu — video atau audio MP3.",
+        "Fail anda dimuat turun serta-merta — tidak perlu akaun.",
+      ],
+      faq: [
+        { q: "Adakah muat turun video Threads dengan Videoner percuma?", a: "Ya, percuma sepenuhnya: tanpa log masuk, tanpa langganan, tanpa iklan dan tanpa had muat turun harian. Satu-satunya had ialah pada trafik YouTube — 10 GB sehari bagi setiap rangkaian — untuk melindungi perkhidmatan daripada penyalahgunaan." },
+        { q: "Adakah saya perlukan akaun untuk muat turun?", a: "Tidak. Muat turun tidak memerlukan akaun atau log masuk — hanya tampal pautan dan tekan Muat turun." },
+        { q: "Kualiti apakah yang boleh saya muat turun?", a: "Threads menerbitkan tepat satu versi video bagi setiap hantaran, dihadkan kepada 720p pada sisi yang lebih pendek — walaupun pengarang memuat naik dalam 4K. Videoner memberikan fail itu seadanya, serta pengekstrakan audio MP3. Tiada pemuat turun yang boleh menawarkan lebih, kerana resolusi yang lebih tinggi memang tidak disediakan." },
+        { q: "Adakah pautan threads.com dan threads.net kedua-duanya berfungsi?", a: "Ya. Pautan penuh seperti threads.com/@user/post/CODE dan pautan pendek threads.net/t/CODE kedua-duanya disokong." },
+        { q: "Bolehkah saya muat turun foto daripada hantaran Threads?", a: "Tidak — hanya video. Jika hantaran mengandungi foto sahaja, tiada fail video untuk diekstrak." },
+        { q: "Bagaimana dengan hantaran yang mempunyai beberapa video?", a: "Video pertama dalam hantaran akan dimuat turun. Karusel Threads boleh mengandungi beberapa klip, dan hanya klip pertama disimpan." },
+        { q: "Bolehkah saya muat turun hantaran peribadi?", a: "Tidak. Hanya hantaran yang boleh dilihat oleh umum boleh dimuat turun; apa-apa di sebalik akaun peribadi atau yang memerlukan log masuk tidak boleh diakses." },
+        { q: "Adakah muat turun video daripada Threads sah di sisi undang-undang?", a: "Muat turun hanya apa yang anda berhak simpan — kandungan anda sendiri atau apa-apa yang dibenarkan oleh pengarang. Patuhi Syarat Penggunaan Threads dan undang-undang hak cipta." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -11582,4 +11943,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms };

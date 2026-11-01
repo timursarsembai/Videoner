@@ -1703,4 +1703,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Home",
   },
+  ms: {
+    metaTitle: "Sambungan pelayar Videoner",
+    title: "Videoner untuk pelayar anda",
+    summary:
+      "Sambungan ini menambah butang Muat turun pada halaman video dan memuat turun terus dalam pelayar anda. Instagram, Facebook, TikTok dan Threads dimuat turun menggunakan log masuk anda sendiri — jadi hantaran peribadi yang anda boleh lihat dalam akaun anda juga berfungsi, begitu juga video yang tidak diberikan oleh platform kepada pelayan kami.",
+    failedVideo: "Video yang tidak dapat dimuat turun di laman web atau dalam bot:",
+    failedVideoHint:
+      "Pasang sambungan, log masuk ke platform dalam pelayar ini, buka video dan klik Muat turun di penjuru kanan bawah.",
+    openVideo: "Buka video",
+    version: "Versi",
+    browsersTitle: "Di mana ia berfungsi",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi dan pelayar lain berasaskan Chromium — pada komputer.",
+    mobile: "Telefon dan tablet tidak menyokong sambungan — gunakan laman web atau bot Telegram di sana.",
+    getcourseTitle: "Pelajaran GetCourse",
+    getcourse:
+      "Buka pelajaran di sekolah GetCourse semasa log masuk: butang Muat turun muncul di penjuru kanan atas pemain, dan ikon Videoner menyenaraikan setiap video dalam pelajaran. Pelayar anda sendiri memuat turun pelajaran dan menghimpunkannya menjadi mp4 — fail tidak melalui pelayan kami. Jika gagal, pelayan kami akan memuat turun pelajaran dalam kualiti yang sama; dalam kes itu, ia menerima pautan video daripada pemain.",
+    privacyTitle: "Log masuk anda kekal dengan anda",
+    privacy:
+      "Sambungan ini tidak pernah meminta kata laluan: pelayar anda sendiri membuat permintaan kepada platform, dan pelayan kami hanya menerima laporan ringkas untuk statistik — pautan, saiz fail dan tajuk. Kuki dihantar ke pelayan hanya jika anda sendiri menekan “Sambungkan akaun ke bot” — dan hanya kuki platform itu, dalam bentuk tersulit.",
+    stepsTitle: "Cara memasang dalam Chrome, Yandex Browser, Edge dan Opera",
+    steps: [
+      "Muat turun arkib dan nyahzipnya — anda akan mendapat folder videoner-extension dengan nombor versi pada namanya.",
+      "Buka halaman sambungan: taip chrome://extensions dalam bar alamat (edge://extensions dalam Edge, opera://extensions dalam Opera).",
+      "Hidupkan “Developer mode” — suis di bahagian atas halaman.",
+      "Klik “Load unpacked” dan pilih folder itu — folder yang mengandungi manifest.json.",
+      "Selesai: halaman video mendapat butang Muat turun, dan ikon Videoner muncul pada bar alat pelayar.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 atau lebih baharu — juga pada komputer.",
+    firefoxSoon:
+      "Versi Firefox akan datang tidak lama lagi. Buat masa ini, sambungan berfungsi dalam Chrome, Yandex Browser, Edge, Opera dan pelayar lain berasaskan Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Arkib .zip — dipasang dalam beberapa minit",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Pasang dengan satu klik",
+    yourBrowser: "Pelayar anda",
+    soon: "Akan datang",
+    firefoxStepsTitle: "Cara memasang dalam Firefox",
+    firefoxSteps: [
+      "Klik butang Firefox di bahagian atas halaman ini.",
+      "Firefox bertanya sama ada membenarkan videoner.download memasang alat tambah — klik “Continue to Installation”.",
+      "Dalam tetingkap “Add Videoner?”, klik “Add”.",
+      "Selesai: halaman video mendapat butang Muat turun, dan ikon Videoner muncul pada bar alat. Firefox memasang kemas kini dengan sendirinya.",
+    ],
+    updateTitle: "Cara mengemas kini dalam Chrome, Yandex Browser, Edge dan Opera",
+    updateSteps: [
+      "Apabila versi baharu dikeluarkan, ikon Videoner menunjukkan lencana NEW dan tetingkap timbul memaparkan pautan ke sini.",
+      "Muat turun arkib dengan butang Chrome di bahagian atas halaman ini dan nyahpeknya ke dalam folder yang sama seperti sebelum ini, menggantikan fail sedia ada.",
+      "Buka halaman sambungan (chrome://extensions, browser://extensions dalam Yandex Browser, edge://extensions) dan tekan “Reload” — anak panah bulat pada kad Videoner.",
+    ],
+    back: "Laman Utama",
+  },
 };

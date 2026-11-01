@@ -16,7 +16,7 @@
   // uiLang) или язык браузера. Выбор читается асинхронно, поэтому сначала
   // подпись по браузеру, потом — по выбору.
   const ui = chrome.i18n.getUILanguage().toLowerCase();
-  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ky: "Жүктөп алуу", tg: "Боргирӣ", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", tl: "I-download", am: "አውርድ", om: "Buusi", ha: "Sauke", so: "Soo deji", az: "Yüklə", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ky: "Жүктөп алуу", tg: "Боргирӣ", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", tl: "I-download", am: "አውርድ", om: "Buusi", ha: "Sauke", so: "Soo deji", az: "Yüklə", ms: "Muat turun", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
@@ -49,6 +49,7 @@
     ha: "Ɓoye maɓalli a wannan bidiyo",
     so: "Qari badhanka muuqaalkan",
     az: "Bu videoda düyməni gizlət",
+    ms: "Sembunyikan butang pada video ini",
     en: "Hide the button for this video",
   };
   const base = { in: "id", fil: "tl" }[ui.split("-")[0]] ?? ui.split("-")[0];

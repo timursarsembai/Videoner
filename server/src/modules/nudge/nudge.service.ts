@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ms')) {
+      return (
+        'Hai! Anda telah memulakan bot ini tetapi belum memuat turun apa-apa — ' +
+        'mungkin tidak jelas di mana hendak bermula.\n\n' +
+        'Hanya satu langkah: hantar pautan video ke sini, ' +
+        'contohnya https://youtube.com/watch?v=jNQXAC9IVRw — dan saya akan ' +
+        'menghantar semula fail dalam kira-kira setengah minit.\n\n' +
+        'Berfungsi dengan YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest dan Threads. Percuma sepenuhnya dan dalam apa-apa ' +
+        'kualiti — sehingga 4K, tiada bayaran tambahan untuk HD.\n\n' +
+        'Jika ada yang tidak berfungsi, balas sahaja di sini. Ini ' +
+        'satu-satunya peringatan, saya tidak akan mengganggu anda lagi.'
+      );
+    }
+
     if (code.startsWith('tg')) {
       return (
         'Салом! Шумо ин ботро оғоз кардед, вале то ҳол чизе боргирӣ накардаед — ' +

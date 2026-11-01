@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -6643,6 +6643,226 @@ const tg: Messages = {
   settingsBack: "⬅️ Бозгашт ба танзимот",
 };
 
+const ms: Messages = {
+  start: "Hai! Hantar kepada saya pautan video daripada YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest atau Threads — saya akan bantu anda memuat turunnya.\n\n✨ Tiada had kualiti: anda dapat apa sahaja yang ditawarkan oleh platform, sehingga 4K — asalkan fail tidak melebihi 2 GB, iaitu had Telegram untuk bot. Tiada ciri berbayar di sini.\n\nPercuma sepenuhnya: tanpa langganan, tanpa iklan, tanpa pembelian dalam aplikasi.\n\n🧩 Memuat turun di komputer? Pasang sambungan pelayar — butang “Muat turun” akan muncul terus pada halaman video: videoner.download/ms/extension\n\n👥 Tambah saya ke dalam kumpulan dan saya akan menghantar video bagi pautan yang dikongsi di sana.\n\n⚡ Langkau pilihan kualiti: tambah -audio selepas pautan untuk audio sahaja (mp3), atau -hd untuk kualiti terbaik.\n\n📣 Berita projek: @videonerdownload\n\n🌐 Bahasa bot: /language",
+  notLink: "Itu tidak kelihatan seperti pautan. Hantar pautan video kepada saya.",
+  inviteGreeting: "Hai! Saya Videoner — saya memuat turun video daripada YouTube, TikTok, Instagram dan platform lain secara percuma. Sedang menyediakan video yang dikongsi dengan anda 👇",
+  inviteNotFound: "Saya tidak menemui video untuk pautan jemputan ini. Hantar pautan video kepada saya dan saya akan memuat turunnya.",
+  inviteUnavailable: "Saya tidak dapat membuka video daripada pautan ini — perkhidmatan tidak bertindak balas buat masa ini. Buka pautan yang sama sekali lagi dalam seminit.",
+  fetchingInfo: "🔍 Sedang mendapatkan maklumat video...",
+  audioOnlyButton: "🎵 Audio sahaja (mp3)",
+  photoButton: "📷 Muat turun foto",
+  slideshowButton: "🎞 Tayangan slaid (video)",
+  galleryButton: "📷+🎞 Foto dan tayangan slaid",
+  chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\nPilih kualiti:`,
+  sessionExpired: "Sesi telah tamat — hantar pautan sekali lagi",
+  downloading: "⏬ Sedang memuat turun, ini mungkin mengambil masa beberapa minit...",
+  downloadFailed: "muat turun gagal",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Sedang memuat turun: ${percent}%${eta ? ` · tinggal ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Hampir siap — sedang menyusun fail...",
+  converting: (percent) => `⚙️ Sedang menukar: ${percent}%`,
+  etaUnderMinute: "kurang daripada seminit",
+  etaMinutes: (minutes) => `~${minutes} min`,
+  etaHours: (hours, minutes) => `~${hours} j${minutes ? ` ${minutes} min` : ""}`,
+  downloadTimeout: "muat turun mengambil masa terlalu lama — video ini nampaknya sangat besar. Cuba kualiti yang lebih rendah.",
+  downloadInterrupted: "⚠️ Bot sedang dimulakan semula untuk kemas kini — muat turun anda terganggu. Sila hantar pautan sekali lagi dalam seminit.",
+  fileTooBig: (mb, url) =>
+    `Fail ini ternyata besar (${mb} MB) — Telegram tidak membenarkan bot menghantarnya.\nMuat turun di sini: ${url}`,
+  sendingFile: "📤 Sedang menghantar fail...",
+  sendingAlbum: (count) => `📤 Hantaran ini mempunyai beberapa fail (${count}) — sedang menghantarnya sebagai album...`,
+  failedPrefix: "❌ Gagal: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Sumber: ${sourceUrl}\n` +
+        "Semua hak ke atas video ini milik penciptanya.\n" +
+        "Dimuat turun secara percuma dengan @VideonerBot",
+      `📣 Berita projek: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Kongsi: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Untuk memuat turun, sila langgan saluran kami ${channel} — itu sahaja syaratnya, perkhidmatan ini kekal percuma.\n\n` +
+    "Langgan dan tekan “Saya sudah melanggan”.",
+  openChannelButton: "📣 Buka saluran",
+  checkSubscriptionButton: "Saya sudah melanggan",
+  subscribeThanks: "Terima kasih! Sekarang hantar pautan video kepada saya.",
+  subscribeThanksResuming: "Terima kasih! Saya sedang memproses pautan anda sekarang.",
+  subscribeStillMissing: "Saya belum nampak langganan anda. Langgan dan tekan sekali lagi.",
+  channelNotice: (channel) => `\n\nPautan ke hantaran ini akan muncul dalam ${channel} — tanpa nama, nama anda tidak dipaparkan.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Muat turun video ini dan video lain secara percuma: @VideonerBot",
+  errorStoryNeedsId:
+    "hantar pautan ke story tertentu: bukanya dalam aplikasi Instagram dan ketik Share → Copy link.",
+  errorInstagramStory:
+    "Story Instagram hanya boleh dilihat oleh orang yang telah log masuk.",
+  errorLoginRequired:
+    "Hantaran ini tidak tersedia tanpa log masuk: platform hanya memaparkannya kepada " +
+    "pengguna yang telah log masuk. Ini berlaku pada hantaran peribadi, kandungan dengan had umur dan " +
+    "hantaran yang dikongsi dengan khalayak terhad.\n\n" +
+    "Hantaran awam boleh dimuat turun tanpa masalah — cuba pautan lain.",
+  errorUnsupportedPlatform:
+    "Pautan itu tidak dapat dikenali — pastikan ia pautan video terus daripada YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest atau Threads.",
+  errorFileTooLarge: "fail ini lebih besar daripada 2 GB — Telegram tidak membenarkan bot menghantar fail yang lebih besar. Muat turunnya di laman web atau dengan sambungan pelayar — butang di bawah. Atau hantar pautan sekali lagi dan pilih kualiti yang lebih rendah.",
+  siteButton: "🌐 Muat turun di laman web",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Kualiti yang lebih besar daripada ${limit} disembunyikan: Telegram tidak membenarkan bot menghantar fail yang lebih besar. Anda boleh memuat turunnya di laman web atau dengan sambungan pelayar — butang di bawah.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Video ini terlalu besar untuk Telegram walaupun dalam kualiti paling rendah (~${smallest}): Telegram tidak membenarkan bot menghantar fail melebihi 2 GB. Di sini anda boleh mendapatkan audio sahaja; videonya — di laman web atau dengan sambungan pelayar (butang di bawah).`,
+  errorFormatUnavailable: "Kualiti itu tidak tersedia untuk video ini. Hantar pautan sekali lagi — saya akan tunjukkan senarai terkini.",
+  errorNoVideoContent: "Pautan ini tiada video untuk dimuat turun — hantaran ini nampaknya hanya mengandungi foto.",
+  errorRegionBlocked:
+    "Video ini disekat di luar negara pencipta — platform tidak akan memberikannya " +
+    "kepada pelayan kami. Tiada cara untuk mengelaknya: sekatan itu dari pihak mereka." +
+    "\n\nPautan lain dimuat turun seperti biasa.",
+  errorRateLimited: "Terlalu banyak pautan berturut-turut — tunggu sebentar dan hantar sekali lagi.",
+  errorYoutubeDailyLimit: (gb) => `anda telah memuat turun lebih daripada ${gb} GB dari YouTube dalam 24 jam yang lalu — itu had harian bot bagi setiap orang. Had ini dikira untuk 24 jam yang lalu, jadi anda boleh memuat turun video YouTube baharu sedikit masa lagi. Platform lain berfungsi seperti biasa.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Senarai main dihentikan: had harian YouTube telah dicapai. Video yang tidak dimuat turun: ${dropped}. Hantar pautan senarai main sekali lagi kemudian.`,
+  errorPlatformRefused:
+    "platform tidak memberikan video ini kepada pelayan kami. Ini berlaku pada hantaran peribadi " +
+    "atau hantaran dengan had umur, dan kadangkala platform hanya mengehadkan akses untuk " +
+    "seketika. Cuba lagi dalam beberapa minit.",
+  errorThreadsNoMedia:
+    "tiada video atau foto kelihatan dalam hantaran Threads ini. Sama ada ia hantaran teks sahaja, atau " +
+    "Threads hanya memaparkan medianya kepada pengguna yang telah log masuk — hantaran sebegini tidak boleh dimuat turun tanpa log masuk.",
+  extensionHint:
+    "\n\n💻 Anda boleh memuat turunnya dengan sambungan pelayar Videoner di komputer: " +
+    "ia memuat turun menggunakan log masuk anda sendiri di platform, dan tiada kata laluan atau kuki yang keluar dari pelayar anda.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Untuk memuat turun hantaran seperti ini, sambungkan akaun ${platform} anda ke bot — sekali sahaja. Selepas itu bot akan memuat turun apa sahaja yang anda boleh lihat: hantaran peribadi, reels dan story, termasuk dari telefon anda. Butang di bawah menunjukkan caranya.${withExtension ? "\n\n💻 Atau muat turunnya dengan sambungan pelayar Videoner di komputer." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Akaun ${platform} anda yang disambungkan tidak dapat membuka hantaran ini. Log masuk mungkin sudah tidak berfungsi — sambungkan akaun itu sekali lagi. Atau akaun ini tiada akses ke hantaran tersebut.${withExtension ? "\n\n💻 Anda juga boleh memuat turunnya dengan sambungan pelayar Videoner di komputer." : ""}`,
+  connectAccountButton: "🔑 Sambungkan akaun",
+  reconnectAccountButton: "🔑 Sambungkan semula",
+  extensionButton: "🧩 Muat turun dengan sambungan",
+  extensionCommand:
+    "🧩 Videoner untuk pelayar anda: butang “Muat turun” terus pada halaman video — YouTube, Instagram, TikTok, VK, video peribadi daripada akaun anda dan pelajaran GetCourse.\n\nUntuk Chrome, Edge, Opera, Yandex Browser dan Firefox di komputer.",
+  extensionPageButton: "🧩 Pasang sambungan",
+  addToGroupButton: "👥 Tambah ke kumpulan",
+  newsButton: "📣 Berita projek",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Berita projek: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Tetapan bot untuk kumpulan ini\n\n" +
+    `🗑 Padam mesej yang mengandungi pautan: ${s.deleteLinks ? "ya" : "tidak"}\n` +
+    "Sebaik sahaja video dihantar, mesej yang hanya mengandungi pautan akan dipadam — sembang hanya menyimpan video dengan nama orang yang berkongsi.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Saya tidak dapat memadam mesej buat masa ini: jadikan saya pentadbir dengan hak \"Delete messages\".\n"
+      : "") +
+    `\n✍️ Teks di bawah video: ${{ full: "penuh", short: "tajuk dan sumber", none: "tiada teks" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Kualiti: ${s.quality === "max" ? "tertinggi yang diterima Telegram" : "standard (720p)"}\n` +
+    `\n⏱ Video panjang: ${s.longVideos ? "sebarang panjang" : "hanya sehingga 15 minit"}\n` +
+    `\n🔑 Siapa boleh menyambungkan akaun mereka (untuk story dan hantaran peribadi): ${s.cookiesBy === "all" ? "mana-mana ahli" : "pentadbir sahaja"}\n` +
+    `\n🌐 Bahasa balasan: ${s.language ? langName(s.language) : "bahasa setiap ahli sendiri"}\n` +
+    "\nHanya pentadbir kumpulan boleh menukar tetapan.",
+  settingsDeleteButton: (on) => `🗑 Padam pautan: ${on ? "ya" : "tidak"}`,
+  settingsCaptionButton: (style) => `✍️ Teks: ${{ full: "penuh", short: "ringkas", none: "tiada" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Kualiti: ${mode === "max" ? "tertinggi" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Video panjang: ${on ? "ya" : "sehingga 15 min"}`,
+  settingsDoneButton: "✅ Selesai",
+  settingsAdminsOnly: "Hanya pentadbir kumpulan boleh menukar tetapan.",
+  settingsGroupsOnly: "Tetapan adalah untuk kumpulan: tambah saya ke dalam kumpulan dan hantar /settings di sana.",
+  settingsFailed: "Tidak dapat menyimpan tetapan, sila cuba lagi.",
+  settingsCookiesButton: (by) => `🔑 Menyambungkan akaun: ${by === "all" ? "semua orang" : "pentadbir"}`,
+  accountsIntro:
+    "🔑 Akaun yang disambungkan\n\nBot boleh memuat turun apa yang hanya dapat dilihat oleh orang yang telah log masuk (story Instagram, hantaran peribadi) — menggunakan akaun anda. Log masuk berfungsi di tempat anda menyambungkannya: yang disambungkan dalam sembang peribadi digunakan untuk muat turun anda, termasuk pautan anda sendiri dalam kumpulan yang tiada akaun sendiri; yang disambungkan ke kumpulan digunakan untuk semua ahlinya.",
+  accountsHowTo:
+    "Cara menyambungkan:\n1. Paling mudah: sambungan Videoner di komputer — log masuk di laman platform, buka tetingkap timbul Videoner, tekan “🔑 Sambungkan akaun … anda ke bot” dan hantar kod itu kepada saya. Untuk kumpulan, hantar /connect KOD dalam kumpulan tersebut.\n2. Atau hantar kepada saya fail cookies.txt (kuki yang dieksport dari pelayar), atau tampal teksnya sebagai mesej.\n3. Dari telefon Android — dengan Firefox dan add-on Cookie-Editor: https://videoner.download/ms/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platform tidak suka muat turun automatik dan mungkin menyekat atau mengharamkan akaun. Lebih baik sambungkan akaun sampingan, bukan akaun utama anda. Kuki disimpan secara tersulit, hanya digunakan untuk muat turun, dan boleh dibuang dengan butang di bawah.",
+  accountsNone: "Belum ada apa-apa yang disambungkan.",
+  accountsGroupTitle: "🔑 Akaun yang disambungkan ke kumpulan ini",
+  accountsGroupHowTo:
+    "Untuk menyambungkan akaun bagi seluruh kumpulan: dapatkan kod dengan butang “🔑 Sambungkan akaun … anda ke bot” dalam sambungan Videoner dan hantar /connect KOD di sini. Jika anda menyambungkan akaun hanya dalam sembang peribadi anda, bot menggunakannya di sini untuk pautan anda sendiri. Sambungan anda: /accounts dalam sembang peribadi dengan @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ log masuk tidak berfungsi)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ log masuk tidak berfungsi)"}`,
+  accountsWhereHere: "sembang peribadi",
+  accountsWhereGroup: (title) => `kumpulan "${title}"`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Buang semua sambungan saya",
+  accountsDeleted: "Dibuang.",
+  accountsDeletedAll: (n) => `Sambungan dibuang: ${n}.`,
+  accountsNotAllowed: "Hanya orang yang menyambungkannya atau pentadbir kumpulan boleh membuangnya.",
+  connectUsage:
+    "Hantar /connect KOD. Butang “🔑 Sambungkan akaun … anda ke bot” dalam sambungan Videoner di komputer memberikan anda kod tersebut. Sambungan anda: /accounts.",
+  connectOnlyAdmins: "Hanya pentadbir boleh menyambungkan akaun ke kumpulan ini (lihat /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} disambungkan ${where}. Bot kini juga memuat turun apa yang hanya dapat dilihat oleh orang yang telah log masuk. Lihat atau buang: /accounts.\n\n⚠️ Platform mungkin menyekat akaun kerana muat turun automatik — lebih baik gunakan akaun sampingan.`,
+  connectWhereGroup: "ke kumpulan ini",
+  connectWhereHere: "untuk muat turun anda dalam sembang peribadi dan mod inline",
+  connectCodeNotFound: "Kod tidak ditemui atau telah tamat tempoh (kod sah selama 10 minit). Dapatkan kod baharu dalam sambungan Videoner.",
+  connectRejectedNoSession: "Kuki ini tiada log masuk. Log masuk di laman platform dan eksport kuki sekali lagi.",
+  connectRejectedUnknown: "Tiada kuki daripada platform yang disokong ditemui: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Penyambungan akaun belum tersedia lagi.",
+  connectFailed: "Tidak dapat menyambungkan, sila cuba lagi.",
+  connectFileTooBig: "Fail terlalu besar — eksport kuki untuk laman yang diperlukan sahaja.",
+  connectNotAnonymous: "Sambungkan akaun sebagai diri anda sendiri, bukan secara tanpa nama sebagai kumpulan: jika tidak, sambungan pentadbir akan bercampur aduk. Saya telah memusnahkan kod itu — dapatkan kod baharu.",
+  connectCodeInGroup:
+    "Kod sambungan yang disiarkan dalam sembang kumpulan boleh dilihat oleh orang lain — saya telah memusnahkannya dan membuang mesej itu. Dapatkan kod baharu dan hantar dengan /connect KOD: saya akan memadam mesej arahan itu serta-merta.",
+  groupWelcome:
+    "👋 Hai! Siarkan pautan video daripada TikTok, Instagram, YouTube, VK dan platform lain dalam sembang ini — saya akan membalas dengan video itu sendiri.\n\n" +
+    "Saya memuat turun klip sehingga 15 minit secara automatik, tanpa perlu arahan, dan selain itu saya kekal senyap.\n\n⚙️ Pentadbir kumpulan boleh melaraskan saya dengan /settings: padam mesej pautan, gaya teks, kualiti, video panjang dan bahasa.\n\n⚡ Tambah -audio selepas pautan untuk mendapatkan bunyi, atau -hd untuk kualiti terbaik.\n\n📣 Berita projek: @videonerdownload",
+  errorTooLong: "video ini terlalu panjang — kami belum dapat memuat turun video sepanjang itu.",
+  errorUnknown: "tidak dapat memuat turun video ini. Cuba lagi sebentar nanti atau hantar pautan lain.",
+  inlineHintButton: "Hantar pautan ke bot",
+  inlineResultTitle: "⬇️ Muat turun video",
+  inlineResultDescription: "Video akan disiarkan terus dalam sembang ini",
+  inlinePlaceholder: "⏬ Sedang memuat turun, ini mungkin mengambil masa beberapa minit...",
+  inlineOpenBot: "Buka bot",
+  inlineOnlySingleVideo:
+    "Mod ini menghantar satu video sahaja. Untuk hantaran berbilang fail atau foto, hantar pautan ke bot dalam sembang peribadi.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Untuk memuat turun, langgan ${channel} dan cuba lagi.`,
+  inlineRateLimited: "Terlalu banyak permintaan berturut-turut. Tunggu seminit dan cuba lagi.",
+  queueRest: (count) => `\n\n📋 Pautan yang masih dalam baris gilir: ${count}. Saya akan tunjukkan satu demi satu selepas yang ini.`,
+  queuedOne: (position) =>
+    `📋 Pautan dimasukkan ke baris gilir, #${position}. Mari selesaikan yang semasa dahulu — kemudian saya akan tunjukkan pilihan kualiti untuknya.`,
+  queuedMany: (added, waiting) =>
+    `📋 Pautan ditambah ke baris gilir: ${added}. Jumlah yang menunggu: ${waiting}. Saya akan tunjukkan satu demi satu selepas yang semasa.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Pautan ini sudah ada dalam baris gilir — tidak ditambah dua kali."
+      : `Pautan yang sudah ada dalam baris gilir tidak ditambah dua kali (ulangan: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Baris gilir memuatkan paling banyak ${limit} pautan — pautan selebihnya tidak ditambah (${rejected}). Hantar semula apabila baris gilir sudah bergerak.`,
+  skipButton: "✖️ Jangan muat turun",
+  skipped: "⏭ Pautan ini dilangkau.",
+  chooseTimedOut: "⌛ Tiada kualiti dipilih dalam masa 30 minit — pautan ini dilangkau.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot sedang dimulakan semula untuk kemas kini — baris gilir telah ditetapkan semula (pautan: ${count}). Sila hantar semula dalam seminit.`,
+  subtitlesButton: "📝 Sari kata",
+  subtitlesBack: "⬅️ Kembali ke kualiti",
+  subtitlesAuto: "auto",
+  subtitlesChoose: "Pilih bahasa sari kata",
+  subtitlesPreparing: "📝 Sedang menyediakan sari kata...",
+  subtitlesFailed: "Tidak dapat memuat turun sari kata dalam bahasa ini. Cuba bahasa lain.",
+  subtitlesBusy: "YouTube tidak memberikan sari kata buat masa ini — cuba lagi dalam beberapa minit.",
+  playlistFound: (title, count) =>
+    `📃 Senarai main${title ? ` "${title.slice(0, 150)}"` : ""}: ${count} video.\nSaya akan memuat turunnya satu demi satu. Format mana?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Kualiti terbaik",
+  playlistAudioButton: "🎵 Audio sahaja (mp3)",
+  playlistNoButton: "✖️ Tidak, terima kasih",
+  playlistQueued: (count) =>
+    `📃 Video daripada senarai main dimasukkan ke baris gilir: ${count}. Saya akan menghantarnya satu demi satu. Hentikan dengan butang di bawah atau /stop.`,
+  playlistFailed: "Tidak dapat membuka senarai main — ia mungkin peribadi. Hantar pautan ke satu video.",
+  stopButton: "⏹ Hentikan",
+  stopped: (dropped) => `⏹ Dihentikan.${dropped ? ` Pautan dibuang daripada baris gilir: ${dropped}.` : ""}`,
+  nothingToStop: "Tiada apa-apa yang sedang dimuat turun sekarang.",
+  languageChoose: "🌐 Pilih bahasa bot. \"Auto\" mengikut Telegram anda.",
+  languageChooseGroup: "🌐 Bahasa balasan bot dalam kumpulan ini. \"Auto\" — bahasa Telegram setiap ahli.",
+  languageAuto: "Auto — seperti dalam Telegram",
+  languageAutoGroup: "Auto — bahasa setiap ahli sendiri",
+  languageSaved: (name) => `✅ Bahasa bot: ${name}. Tukar dengan /language.`,
+  languageSavedAuto: "✅ Bot mengikut bahasa Telegram anda. Tukar dengan /language.",
+  settingsLanguageButton: (name) => `🌐 Bahasa: ${name ?? "auto"}`,
+  settingsBack: "⬅️ Kembali ke tetapan",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -7310,4 +7530,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms };

@@ -41,6 +41,7 @@ export const operator = {
   nameAz: "Fərdi sahibkar SARSEMBAYEV",
   nameKy: "Жеке ишкер SARSEMBAYEV",
   nameTg: "Соҳибкори инфиродӣ SARSEMBAYEV",
+  nameMs: "Usahawan Perseorangan SARSEMBAYEV",
   nameAr: "رائد الأعمال الفردي سارسيمباييف (SARSEMBAYEV)",
   directorRu: "Сарсембаев Тимур Сейпилович",
   directorEn: "Timur Sarsembayev",
@@ -104,6 +105,8 @@ export const operator = {
     "Жеке ишкер катары ишкердик иштин башталышы жөнүндө билдирме № KZ45UUZ00498687, 22.07.2026-ж.",
   basisTg:
     "Огоҳинома дар бораи оғози фаъолият ҳамчун соҳибкори инфиродӣ № KZ45UUZ00498687 аз 22.07.2026",
+  basisMs:
+    "Notis permulaan aktiviti sebagai usahawan perseorangan No. KZ45UUZ00498687 bertarikh 22.07.2026",
   basisAr:
     "إشعار ببدء نشاط رائد الأعمال الفردي رقم KZ45UUZ00498687 بتاريخ 22.07.2026",
   basisUk:
@@ -169,6 +172,8 @@ export const operator = {
     "Казакстан Республикасы, Алматы облусу, Эңбекчиказак району, Рахат айылдык округу, Азат айылы, PKST «Almagul-2», 117-имарат",
   addressTg:
     "Ҷумҳурии Қазоқистон, вилояти Алмаато, ноҳияи Енбекшиқазақ, округи деҳоти Раҳат, деҳаи Азат, PKST «Almagul-2», бинои 117",
+  addressMs:
+    "Republik Kazakhstan, Wilayah Almaty, Daerah Yenbekshikazakh, Daerah Luar Bandar Rakhat, Kampung Azat, PKST «Almagul-2», bangunan 117",
   addressAr:
     "جمهورية كازاخستان، منطقة ألماتي، مقاطعة إنبيكشيكازاخ، الدائرة الريفية راخات، قرية آزات، PKST «Almagul-2»، المبنى 117",
   addressEs:

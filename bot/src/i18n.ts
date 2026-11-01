@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -18,9 +18,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -8184,6 +8184,226 @@ const ug: Messages = {
   settingsBack: "⬅️ تەڭشەكلەرگە قايتىش",
 };
 
+const tk: Messages = {
+  start: "Salam! Maňa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ýa-da Threads platformalaryndaky wideonyň salgysyny iberiň — ony ýüklemäge kömek ederin.\n\n✨ Hil hiç zat bilen çäklenmeýär: platformada näme bar bolsa, 4K hiline çenli hemmesini berýärin — diňe faýl 2 GB-dan uly bolmasa bolýar, bu Telegram-yň botlar üçin goýan çägi. Bu ýerde tölegli funksiýalar ýok.\n\nDoly mugt: abunasyz, mahabatsyz, programmanyň içinde satyn almalarsyz.\n\n🧩 Kompýuterde ýükleýärsiňizmi? Brauzer giňeltmesini guruň — “Ýükle” düwmesi göni wideonyň sahypasynda peýda bolar: videoner.download/tk/extension\n\n👥 Meni topara goşuň — ol ýerde paýlaşylan salgylar boýunça wideolary özüm iberip duraryn.\n\n⚡ Hil saýlamazdan: salgydan soň -audio ýazsaňyz — diňe sesi (mp3), -hd ýazsaňyz — iň gowy hilde iberýärin.\n\n📣 Taslamanyň täzelikleri: @videonerdownload\n\n🌐 Botuň dili: /language",
+  notLink: "Bu salga meňzemeýär. Maňa wideonyň salgysyny iberiň.",
+  inviteGreeting: "Salam! Men Videoner — YouTube, TikTok, Instagram we beýleki platformalardan wideolary mugt ýükleýärin. Size paýlaşylan wideony taýýarlaýaryn 👇",
+  inviteNotFound: "Bu çakylyk salgysy boýunça wideo tapmadym. Maňa wideonyň salgysyny iberiň — men ony ýüklärin.",
+  inviteUnavailable: "Bu salgydaky wideony açyp bilmedim — hyzmat häzir jogap bermeýär. Şol salgyny bir minutdan soň täzeden açyň.",
+  fetchingInfo: "🔍 Wideo barada maglumat alýaryn...",
+  audioOnlyButton: "🎵 Diňe ses (mp3)",
+  photoButton: "📷 Suratlary ýükle",
+  slideshowButton: "🎞 Slaýd-şou (wideo)",
+  galleryButton: "📷+🎞 Suratlar we slaýd-şou",
+  chooseQuality: (title, duration) => `“${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nHili saýlaň:`,
+  sessionExpired: "Sessiýanyň möhleti geçdi — salgyny täzeden iberiň",
+  downloading: "⏬ Ýüklenýär, bu birnäçe minut alyp biler...",
+  downloadFailed: "ýükläp bolmady",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Ýüklenýär: ${percent}%${eta ? ` · galan wagt: ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Az galdy — faýly ýygnaýaryn...",
+  converting: (percent) => `⚙️ Öwrülýär: ${percent}%`,
+  etaUnderMinute: "bir minutdan az",
+  etaMinutes: (minutes) => `~${minutes} min`,
+  etaHours: (hours, minutes) => `~${hours} sag${minutes ? ` ${minutes} min` : ""}`,
+  downloadTimeout: "ýükleme gaty uzaga çekýär — wideo örän agyr ýaly. Pesräk hili saýlap görüň.",
+  downloadInterrupted: "⚠️ Bot täzelenmek üçin täzeden işledilýär — ýüklemäňiz kesildi. Salgyny bir minutdan soň täzeden iberiň.",
+  fileTooBig: (mb, url) =>
+    `Faýl uly boldy (${mb} MB) — Telegram ony bota ibermäge rugsat bermeýär.\nOny şu ýerden ýükläň: ${url}`,
+  sendingFile: "📤 Faýl iberilýär...",
+  sendingAlbum: (count) => `📤 Bu ýazgyda birnäçe faýl bar (${count}) — olary albom edip iberýärin...`,
+  failedPrefix: "❌ Şowsuz: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Çeşme: ${sourceUrl}\n` +
+        "Wideonyň ähli hukuklary onuň awtoryna degişlidir.\n" +
+        "@VideonerBot arkaly mugt ýüklendi",
+      `📣 Taslamanyň täzelikleri: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Paýlaşmak: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Ýüklemek üçin ${channel} kanalymyza agza boluň — bu ýeke-täk şert, hyzmat mugt bolmagynda galýar.\n\n` +
+    "Agza bolup, “Agza boldum” düwmesine basyň.",
+  openChannelButton: "📣 Kanaly aç",
+  checkSubscriptionButton: "Agza boldum",
+  subscribeThanks: "Sag boluň! Indi maňa wideonyň salgysyny iberiň.",
+  subscribeThanksResuming: "Sag boluň! Salgyňyz bilen işlemäge girişýärin.",
+  subscribeStillMissing: "Agzalygy entek görmeýärin. Agza bolup, ýene basyň.",
+  channelNotice: (channel) => `\n\nBu ýazgynyň salgysy ${channel} kanalynda peýda bolar — anonim, adyňyz görkezilmezden.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Muny we islendik başga wideony mugt ýükläň: @VideonerBot",
+  errorStoryNeedsId:
+    "belli bir storisiň salgysyny iberiň: ony Instagram programmasynda açyp, «Поделиться» (Paýlaş) → «Копировать ссылку» (Salgyny göçür) düwmesine basyň.",
+  errorInstagramStory:
+    "Instagram storislerini diňe hasabyna giren ulanyjylar görüp bilýär.",
+  errorLoginRequired:
+    "Bu ýazgy hasaba girmezden elýeterli däl: platforma ony diňe " +
+    "hasabyna giren ulanyjylara görkezýär. Bu ýapyk ýazgylarda, ýaş çäklendirmeli mazmunda we " +
+    "çäklendirilen tomaşaçylar üçin paýlaşylan ýazgylarda bolýar.\n\n" +
+    "Açyk ýazgylar kynçylyksyz ýüklenýär — başga salgyny synap görüň.",
+  errorUnsupportedPlatform:
+    "Bu salgyny tanap bilmedim — onuň YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ýa-da Threads platformalaryndaky wideonyň göni salgysydygyna göz ýetiriň.",
+  errorFileTooLarge: "faýl 2 GB-dan uly — Telegram botlara mundan uly faýllary ibermäge rugsat bermeýär. Ony saýtda ýa-da brauzer giňeltmesi bilen ýükläň — düwmeler aşakda. Ýa-da salgyny täzeden iberip, pesräk hili saýlaň.",
+  siteButton: "🌐 Saýtda ýükle",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Göwrümi ${limit} çäginden uly bolan hiller gizlenen: Telegram botlara mundan uly faýllary ibermäge rugsat bermeýär. Olary saýtda ýa-da brauzer giňeltmesi bilen ýükläp bilersiňiz — düwmeler aşakda.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Bu wideo iň pes hilde-de Telegram üçin gaty agyr (~${smallest}): Telegram botlara 2 GB-dan uly faýllary ibermäge rugsat bermeýär. Bu ýerde diňe sesini alyp bilersiňiz; wideony bolsa — saýtda ýa-da brauzer giňeltmesi bilen (düwmeler aşakda).`,
+  errorFormatUnavailable: "Bu wideo üçin şol hil elýeterli däl. Salgyny täzeden iberiň — häzirki sanawy görkezerin.",
+  errorNoVideoContent: "Bu salgyda ýüklär ýaly wideo ýok — ýazgyda diňe suratlar bar ýaly.",
+  errorRegionBlocked:
+    "Bu wideo awtoryň ýurdundan daşarda petiklenen — platforma ony " +
+    "biziň serwerimize bermeýär. Muny aýlanyp geçip bolmaýar: çäklendirme olaryň tarapynda." +
+    "\n\nBeýleki salgylar adatdaky ýaly ýüklenýär.",
+  errorRateLimited: "Yzly-yzyna gaty köp salgy — biraz garaşyň we ony täzeden iberiň.",
+  errorYoutubeDailyLimit: (gb) => `soňky 24 sagatda YouTube-dan ${gb} GB-dan köp ýüklediňiz — bu botuň bir adam üçin gündelik çägi. Soňky 24 sagat hasaplanýar, şonuň üçin täze YouTube wideolaryny birneme soňrak ýükläp bilersiňiz. Beýleki platformalar adatdaky ýaly işleýär.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Pleýlist saklandy: YouTube-yň gündelik çägine ýetildi. Ýüklenmedik wideolar: ${dropped}. Pleýlistiň salgysyny soňrak täzeden iberiň.`,
+  errorPlatformRefused:
+    "platforma bu wideony biziň serwerimize bermedi. Bu ýapyk " +
+    "ýa-da ýaş çäklendirmeli ýazgylarda bolýar, käwagt bolsa platforma " +
+    "elýeterliligi wagtlaýyn çäklendirýär. Birnäçe minutdan soň täzeden synanyşyň.",
+  errorThreadsNoMedia:
+    "bu Threads ýazgysynda ne wideo, ne-de surat görünýär. Ýa bu diňe tekstden ybarat ýazgy, ýa-da " +
+    "Threads onuň mediasyny diňe hasabyna giren ulanyjylara görkezýär — beýle ýazgylary hasaba girmezden ýükläp bolmaýar.",
+  extensionHint:
+    "\n\n💻 Muny kompýuterde Videoner brauzer giňeltmesi bilen ýükläp bilersiňiz: " +
+    "ol platformadaky öz hasabyňyz arkaly ýükleýär, açar söz hem, cookie hem brauzeriňizden çykmaýar.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Beýle ýazgylary ýüklemek üçin ${platform} hasabyňyzy bota bir gezek birikdiriň. Şondan soň bot Siziň görýän zatlaryňyzyň hemmesini ýükläp berer: ýapyk ýazgylary, reelsleri we storisleri, telefondan hem. Nädip birikdirmelidigini aşakdaky düwme görkezýär.${withExtension ? "\n\n💻 Ýa-da ony kompýuterde Videoner brauzer giňeltmesi bilen ýükläň." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Birikdirilen ${platform} hasabyňyz bu ýazgyny açyp bilmedi. Belki, giriş işlemesini bes edendir — hasaby täzeden birikdiriň. Ýa-da bu hasabyň ýazga elýeterliligi ýok.${withExtension ? "\n\n💻 Ony kompýuterde Videoner brauzer giňeltmesi bilen hem ýükläp bilersiňiz." : ""}`,
+  connectAccountButton: "🔑 Hasaby birikdir",
+  reconnectAccountButton: "🔑 Täzeden birikdir",
+  extensionButton: "🧩 Giňeltme bilen ýükle",
+  extensionCommand:
+    "🧩 Brauzer üçin Videoner: “Ýükle” düwmesi göni wideonyň sahypasynda — YouTube, Instagram, TikTok, VK, hasabyňyzdaky ýapyk wideolar we GetCourse sapaklary.\n\nKompýuterdäki Chrome, Edge, Opera, Yandex Browser we Firefox üçin.",
+  extensionPageButton: "🧩 Giňeltmäni gur",
+  addToGroupButton: "👥 Topara goş",
+  newsButton: "📣 Taslamanyň täzelikleri",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Taslamanyň täzelikleri: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Bu topardaky botuň sazlamalary\n\n" +
+    `🗑 Salgyly habary pozmak: ${s.deleteLinks ? "hawa" : "ýok"}\n` +
+    "Wideo iberilenden soň diňe salgydan ybarat habar pozulýar — çatda diňe wideo we ony paýlaşanyň ady galýar.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Häzir habarlary pozup bilemok: meni «Удаление сообщений» (Habarlary pozmak) hukugy bolan admin ediň.\n"
+      : "") +
+    `\n✍️ Wideonyň aşagyndaky tekst: ${{ full: "doly", short: "ady we çeşmesi", none: "tekst ýok" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Hil: ${s.quality === "max" ? "Telegram kabul edýän iň ýokary hil" : "standart (720p)"}\n` +
+    `\n⏱ Uzyn wideolar: ${s.longVideos ? "islendik uzynlykda" : "diňe 15 minuda çenli"}\n` +
+    `\n🔑 Kim öz hasabyny birikdirip biler (storisler we ýapyk ýazgylar üçin): ${s.cookiesBy === "all" ? "islendik agza" : "diňe adminler"}\n` +
+    `\n🌐 Jogap dili: ${s.language ? langName(s.language) : "her agzanyň öz dili"}\n` +
+    "\nSazlamalary diňe toparyň adminleri üýtgedip bilýär.",
+  settingsDeleteButton: (on) => `🗑 Salgylary pozmak: ${on ? "hawa" : "ýok"}`,
+  settingsCaptionButton: (style) => `✍️ Tekst: ${{ full: "doly", short: "gysga", none: "ýok" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Hil: ${mode === "max" ? "iň ýokary" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Uzyn wideolar: ${on ? "hawa" : "15 min çenli"}`,
+  settingsDoneButton: "✅ Taýýar",
+  settingsAdminsOnly: "Sazlamalary diňe toparyň adminleri üýtgedip bilýär.",
+  settingsGroupsOnly: "Sazlamalar toparlar üçin: meni topara goşuň we şol ýere /settings iberiň.",
+  settingsFailed: "Sazlamalary ýatda saklap bolmady, täzeden synanyşyň.",
+  settingsCookiesButton: (by) => `🔑 Hasap birikdirmek: ${by === "all" ? "hemmeler" : "adminler"}`,
+  accountsIntro:
+    "🔑 Birikdirilen hasaplar\n\nBot diňe hasabyna giren ulanyjylaryň görýän zatlaryny (Instagram storislerini, ýapyk ýazgylary) Siziň hasabyňyz arkaly ýükläp bilýär. Giriş ony birikdiren ýeriňizde işleýär: hususy çatda birikdirileni Siziň ýüklemeleriňiz üçin, şol sanda öz hasaby bolmadyk toparlardaky öz salgylaryňyz üçin işleýär; topara birikdirileni bolsa onuň ähli agzalaryna hyzmat edýär.",
+  accountsHowTo:
+    "Nädip birikdirmeli:\n1. Iň aňsady: kompýuterdäki Videoner giňeltmesi — platformanyň saýtynda hasabyňyza giriň, Videoner penjiresini açyň, “🔑 … hasabyňyzy bota birikdiriň” düwmesine basyň we kody maňa iberiň. Topar üçin şol topara /connect KOD iberiň.\n2. Ýa-da maňa cookies.txt faýlyny (brauzerden eksport edilen cookie-faýllar) iberiň ýa-da onuň tekstini habar edip goýberiň.\n3. Android telefondan — Firefox we Cookie-Editor goşmaçasy bilen: https://videoner.download/tk/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platformalar awtomatik ýüklemeleri halamaýar we hasaby çäklendirip ýa-da petikläp biler. Esasy hasabyňyzy däl-de, goşmaça hasaby birikdireniňiz gowy. Cookie-faýllar şifrlenen görnüşde saklanýar, diňe ýüklemek üçin ulanylýar we aşakdaky düwmeler bilen pozulýar.",
+  accountsNone: "Entek hiç zat birikdirilmedi.",
+  accountsGroupTitle: "🔑 Bu topara birikdirilen hasaplar",
+  accountsGroupHowTo:
+    "Bütin topar üçin birikdirmek: Videoner giňeltmesindäki “🔑 … hasabyňyzy bota birikdiriň” düwmesi bilen kod alyň we şu ýere /connect KOD iberiň. Eger hasaby diňe hususy çatyňyzda birikdiren bolsaňyz, bot ony bu ýerde Siziň öz salgylaryňyz üçin ulanýar. Öz birikdirmeleriňiz: @VideonerBot bilen hususy çatda /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ giriş işlemeýär)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ giriş işlemeýär)"}`,
+  accountsWhereHere: "hususy çat",
+  accountsWhereGroup: (title) => `“${title}” topary`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Ähli birikdirmelerimi aýyr",
+  accountsDeleted: "Aýryldy.",
+  accountsDeletedAll: (n) => `Aýrylan birikdirmeler: ${n}.`,
+  accountsNotAllowed: "Ony diňe birikdiren adam ýa-da toparyň admini aýryp biler.",
+  connectUsage:
+    "/connect KOD iberiň. Kody kompýuterdäki Videoner giňeltmesindäki “🔑 … hasabyňyzy bota birikdiriň” düwmesi berýär. Birikdirmeleriňiz: /accounts.",
+  connectOnlyAdmins: "Bu topara hasaplary diňe adminler birikdirip biler (seret: /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} birikdirildi. Indi bot diňe hasabyna giren ulanyjylaryň görýän zatlaryny hem ýükleýär. Görmek ýa-da aýyrmak: /accounts.\n\n⚠️ Platforma awtomatik ýüklemeler üçin hasaby çäklendirip biler — goşmaça hasaby ulanmak gowy.`,
+  connectWhereGroup: "bu topara",
+  connectWhereHere: "hususy çatdaky we inline režimdäki ýüklemeleriňiz üçin",
+  connectCodeNotFound: "Kod tapylmady ýa-da möhleti geçdi (kodlar 10 minut hereket edýär). Videoner giňeltmesinden täze kod alyň.",
+  connectRejectedNoSession: "Bu cookie-faýllarda giriş ýok. Platformanyň saýtynda hasabyňyza giriň we cookie-faýllary täzeden eksport ediň.",
+  connectRejectedUnknown: "Goldanylýan platformalaryň cookie-faýllary tapylmady: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Hasap birikdirmek entek elýeterli däl.",
+  connectFailed: "Birikdirip bolmady, täzeden synanyşyň.",
+  connectFileTooBig: "Faýl gaty uly — diňe gerekli saýtyň cookie-faýllaryny eksport ediň.",
+  connectNotAnonymous: "Hasaby topar adyndan anonim däl-de, öz adyňyzdan birikdiriň: ýogsam adminleriň birikdirmeleri garyşýar. Kody ýok etdim — täzesini alyň.",
+  connectCodeInGroup:
+    "Topar çatynda ýazylan birikdirme koduny başgalar görüp biler — men ony ýok etdim we habary pozdum. Täze kod alyň we ony /connect KOD görnüşinde iberiň: şol buýrukly habary derrew pozýaryn.",
+  groupWelcome:
+    "👋 Salam! Bu çata TikTok, Instagram, YouTube, VK we beýleki platformalardaky wideolaryň salgylaryny goýberiň — jogap edip wideonyň özüni iberýärin.\n\n" +
+    "15 minuda çenli rolikleri hiç hili buýruksyz özüm ýükleýärin, galan ýagdaýlarda dymýaryn.\n\n⚙️ Toparyň adminleri meni /settings arkaly sazlap biler: salgyly habarlary pozmak, tekstiň görnüşi, hil, uzyn wideolar we dil.\n\n⚡ Sesini almak üçin salgydan soň -audio, iň gowy hil üçin -hd goşuň.\n\n📣 Taslamanyň täzelikleri: @videonerdownload",
+  errorTooLong: "wideo gaty uzyn — beýle uzyn wideolary entek ýükläp bilmeýäris.",
+  errorUnknown: "bu wideony ýükläp bolmady. Biraz soňrak synanyşyň ýa-da başga salgy iberiň.",
+  inlineHintButton: "Salgyny bota iber",
+  inlineResultTitle: "⬇️ Wideony ýükle",
+  inlineResultDescription: "Wideo göni şu çatda goýlar",
+  inlinePlaceholder: "⏬ Ýüklenýär, bu birnäçe minut alyp biler...",
+  inlineOpenBot: "Boty aç",
+  inlineOnlySingleVideo:
+    "Bu režim diňe bir wideo iberýär. Birnäçe faýlly ýazgylar ýa-da suratlar üçin salgyny bota hususy çatda iberiň.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Ýüklemek üçin ${channel} kanalyna agza boluň we täzeden synanyşyň.`,
+  inlineRateLimited: "Yzly-yzyna gaty köp haýyş. Bir minut garaşyň we täzeden synanyşyň.",
+  queueRest: (count) => `\n\n📋 Nobatda henizem salgylar bar: ${count}. Olary şundan soň bir-birden görkezerin.`,
+  queuedOne: (position) =>
+    `📋 Salgy nobata goşuldy, №${position}. Ilki häzirkisini tamamlalyň — soňra onuň üçin hil saýlawyny görkezerin.`,
+  queuedMany: (added, waiting) =>
+    `📋 Nobata goşulan salgylar: ${added}. Jemi garaşýanlar: ${waiting}. Olary häzirkisinden soň bir-birden görkezerin.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Bu salgy eýýäm nobatda — ony ikinji gezek goşmaýaryn."
+      : `Nobatda eýýäm bar bolan salgylar ikinji gezek goşulmaýar (gaýtalananlar: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Nobatda iň köp ${limit} salgy saklanýar — artykmaçlary goşulmady (${rejected}). Nobat öňe süýşende olary iberiň.`,
+  skipButton: "✖️ Ýüklemeli däl",
+  skipped: "⏭ Bu salgy geçildi.",
+  chooseTimedOut: "⌛ 30 minudyň dowamynda hil saýlanmady — bu salgyny geçýärin.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot täzelenmek üçin täzeden işledilýär — nobat arassalandy (salgylar: ${count}). Olary bir minutdan soň täzeden iberiň.`,
+  subtitlesButton: "📝 Subtitrler",
+  subtitlesBack: "⬅️ Hil saýlawyna dolan",
+  subtitlesAuto: "awto",
+  subtitlesChoose: "Subtitrleriň dilini saýlaň",
+  subtitlesPreparing: "📝 Subtitrler taýýarlanýar...",
+  subtitlesFailed: "Bu dilde subtitrleri ýükläp bolmady. Başga dili synap görüň.",
+  subtitlesBusy: "YouTube häzir subtitrleri bermeýär — birnäçe minutdan soň täzeden synanyşyň.",
+  playlistFound: (title, count) =>
+    `📃 Pleýlist${title ? ` “${title.slice(0, 150)}”` : ""}: ${count} wideo.\nOlary bir-birden ýüklärin. Haýsy formatda?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Iň gowy hil",
+  playlistAudioButton: "🎵 Diňe ses (mp3)",
+  playlistNoButton: "✖️ Ýok, sag boluň",
+  playlistQueued: (count) =>
+    `📃 Pleýlistden nobata goşulan wideolar: ${count}. Olary bir-birden ibererin. Aşakdaky düwme ýa-da /stop bilen saklap bilersiňiz.`,
+  playlistFailed: "Pleýlisti açyp bolmady — ol ýapyk bolmagy mümkin. Aýry bir wideonyň salgysyny iberiň.",
+  stopButton: "⏹ Duruz",
+  stopped: (dropped) => `⏹ Saklandy.${dropped ? ` Nobatdan aýrylan salgylar: ${dropped}.` : ""}`,
+  nothingToStop: "Häzir hiç zat ýüklenmeýär.",
+  languageChoose: "🌐 Botuň dilini saýlaň. “Awtomatik” — Telegram-daky diliňiz boýunça.",
+  languageChooseGroup: "🌐 Bu topardaky botuň jogap dili. “Awtomatik” — her agzanyň Telegram dili.",
+  languageAuto: "Awtomatik — Telegram-daky ýaly",
+  languageAutoGroup: "Awtomatik — her agzanyň öz dili",
+  languageSaved: (name) => `✅ Botuň dili: ${name}. Ony /language arkaly üýtgedip bilersiňiz.`,
+  languageSavedAuto: "✅ Bot Telegram-daky diliňizi ulanýar. Ony /language arkaly üýtgedip bilersiňiz.",
+  settingsLanguageButton: (name) => `🌐 Dil: ${name ?? "awto"}`,
+  settingsBack: "⬅️ Sazlamalara dolan",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -8851,4 +9071,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk };

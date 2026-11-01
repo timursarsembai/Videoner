@@ -317,6 +317,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "چۈشۈرۈش ۋە ئۆچىرەتنى توختىتىش" },
     { command: "language", description: "بوت تىلى" },
   ],
+  tk: [
+    { command: "start", description: "Boty nädip ulanmaly" },
+    { command: "extension", description: "Brauzer giňeltmesi" },
+    { command: "accounts", description: "Storisler we ýapyk ýazgylar üçin hasaplaryňyz" },
+    { command: "connect", description: "Giňeltmedäki kod bilen hasaby birikdiriň" },
+    { command: "stop", description: "Ýüklemäni we nobaty saklaň" },
+    { command: "language", description: "Botuň dili" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -594,6 +602,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "كود ئارقىلىق بۇ گۇرۇپپىغا ھېسابات باغلاش" },
     { command: "language", description: "بۇ گۇرۇپپىدىكى بوت تىلى (باشقۇرغۇچىلار)" },
     { command: "start", description: "بوت گۇرۇپپىدا قانداق ئىشلەيدۇ" },
+  ],
+  tk: [
+    { command: "settings", description: "Bu topardaky botuň sazlamalary (adminler üçin)" },
+    { command: "accounts", description: "Bu topara birikdirilen hasaplar" },
+    { command: "connect", description: "Kod bilen bu topara hasap birikdiriň" },
+    { command: "language", description: "Bu topardaky botuň dili (adminler üçin)" },
+    { command: "start", description: "Bot toparda nähili işleýär" },
   ],
 };
 

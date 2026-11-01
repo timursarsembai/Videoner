@@ -486,6 +486,17 @@ export const blogUi: Record<
     readOnSite: "تور بېكەتتە ئوقۇش",
     readFull: "تولۇق ماقالىنى تور بېكەتتە ئوقۇڭ",
     dateLocale: "ug-CN-u-nu-latn",
+  },  tk: {
+    title: "Videoner blogy",
+    description: "Taslamanyň täzelikleri: botda, saýtda we giňeltmede näme täze peýda boldy we ony nädip ulanmaly.",
+    readMore: "Oka",
+    back: "Ähli makalalar",
+    allPosts: "Blog",
+    channel: "Telegramdaky täzelikler",
+    channelCta: "Taslamanyň täzelikleri — @videonerdownload Telegram kanalynda.",
+    readOnSite: "Saýtda oka",
+    readFull: "Saýtda doly oka",
+    dateLocale: "tk-TM",
   },
 };
 

@@ -2067,4 +2067,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "باش بەت",
   },
+  tk: {
+    metaTitle: "Videoner brauzer giňeltmesi",
+    title: "Brauzeriňiz üçin Videoner",
+    summary:
+      "Giňeltme wideo sahypalaryna “Ýükle” düwmesini goşýar we göni brauzeriňizde ýükleýär. Instagram, Facebook, TikTok we Threads Siziň öz girişiňiz arkaly ýüklenýär — şonuň üçin hasabyňyzda görýän hususy ýazgylaryňyz hem, platformanyň biziň serwerimize bermedik wideolary hem ýüklenýär.",
+    failedVideo: "Saýtda ýa-da botda ýükläp bolmadyk wideo:",
+    failedVideoHint:
+      "Giňeltmäni gurnaň, şu brauzerde platforma giriň, wideony açyň we aşaky sag burçdaky “Ýükle” düwmesine basyň.",
+    openVideo: "Wideony aç",
+    version: "Wersiýa",
+    browsersTitle: "Nirede işleýär",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi we Chromium esasyndaky beýleki brauzerler — kompýuterde.",
+    mobile: "Telefonlarda we planşetlerde giňeltmeler goldanmaýar — ol ýerde saýt ýa-da Telegram boty arkaly ýükläň.",
+    getcourseTitle: "GetCourse sapaklary",
+    getcourse:
+      "GetCourse-daky mekdepde sapagy öz girişiňiz bilen açyň: pleýeriň ýokarky sag burçunda “Ýükle” düwmesi peýda bolar, Videoner nyşany bolsa sapagyň ähli wideolaryny görkezer. Brauzer sapagy özi ýükleýär we ony mp4 faýla ýygnaýar — faýl biziň serwerimizden geçmeýär. Brauzerde başartmasa, sapagy şol bir hilde biziň serwerimiz ýükleýär: bu ýagdaýda oňa pleýerdäki wideonyň salgysy iberilýär.",
+    privacyTitle: "Girişiňiz Sizde galýar",
+    privacy:
+      "Giňeltme hiç haçan parol soramaýar: platforma haýyşy Siziň öz brauzeriňiz iberýär, biziň serwerimiz bolsa statistika üçin diňe gysga hasabat alýar — salgy, faýlyň ölçegi we ady. Cookie faýllary serwere diňe Siz özüňiz “Hasabyňyzy bota birikdiriň” düwmesine basanyňyzda iberilýär — we diňe şol platformanyň cookie faýllary, şifrlenen görnüşde.",
+    stepsTitle: "Chrome, Yandex Browser, Edge we Opera-da nädip gurnamaly",
+    steps: [
+      "Arhiwi ýükläň we ony açyň — adynda wersiýa belgisi bolan videoner-extension bukjasy peýda bolar.",
+      "Giňeltmeler sahypasyny açyň: salgy setirine chrome://extensions ýazyň (Edge-de — edge://extensions, Opera-da — opera://extensions).",
+      "Sahypanyň ýokarsyndaky «Режим разработчика» (Işläp düzüji tertibi) açaryny işlediň.",
+      "«Загрузить распакованное расширение» (Açylan giňeltmäni ýükle) düwmesine basyň we şol bukjany — içinde manifest.json faýly bolan bukjany saýlaň.",
+      "Taýýar: wideo sahypalarynda “Ýükle” düwmesi, brauzer panelinde bolsa Videoner nyşany peýda bolar.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 we täzesi — hem kompýuterde.",
+    firefoxSoon:
+      "Firefox üçin wersiýa ýakynda peýda bolar. Häzirlikçe giňeltme Chrome, Yandex Browser, Edge, Opera we Chromium esasyndaky beýleki brauzerlerde işleýär.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: ".zip arhiwi — birnäçe minutda gurnalýar",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Bir basyşda gurnamak",
+    yourBrowser: "Siziň brauzeriňiz",
+    soon: "Ýakynda",
+    firefoxStepsTitle: "Firefox-da nädip gurnamaly",
+    firefoxSteps: [
+      "Bu sahypanyň ýokarsyndaky Firefox düwmesine basyň.",
+      "Firefox videoner.download saýtyna goşmaçany gurnamaga rugsat bermelimi diýip sorar — «Продолжить установку» (Gurnamagy dowam et) düwmesine basyň.",
+      "«Добавить Videoner?» penjiresinde «Добавить» (Goş) düwmesine basyň.",
+      "Taýýar: wideo sahypalarynda “Ýükle” düwmesi, panelde bolsa Videoner nyşany peýda bolar. Täzelenmeleri Firefox özi gurnar.",
+    ],
+    updateTitle: "Chrome, Yandex Browser, Edge we Opera-da nädip täzelemeli",
+    updateSteps: [
+      "Täze wersiýa çykanda, Videoner nyşanynda NEW belgisi peýda bolýar, açylýan penjirede bolsa şu sahypa salgy bolýar.",
+      "Bu sahypanyň ýokarsyndaky Chrome düwmesi bilen arhiwi ýükläň we ony faýllary çalşyp, öňki açan bukjaňyza açyň.",
+      "Giňeltmeler sahypasyny açyň (chrome://extensions, Yandex Browser-de browser://extensions, edge://extensions) we Videoner kartoçkasyndaky tegelek oka — «Обновить» (Täzele) düwmesine basyň.",
+    ],
+    back: "Baş sahypa",
+  },
 };

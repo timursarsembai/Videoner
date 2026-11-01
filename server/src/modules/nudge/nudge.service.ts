@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('tk')) {
+      return (
+        'Salam! Siz bu boty açdyňyz, emma entek hiç zat ýüklemediňiz — ' +
+        'belki, nireden başlamalydygy düşnüksiz bolandyr.\n\n' +
+        'Bary-ýogy bir ädim: şu ýere wideonyň salgysyny iberiň, ' +
+        'meselem https://youtube.com/watch?v=jNQXAC9IVRw — men taýýar ' +
+        'faýly takmynan ýarym minutda yzyna ibererin.\n\n' +
+        'YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest we Threads işleýär. Doly mugt we islendik ' +
+        'hilde — 4K-a çenli, HD üçin goşmaça töleg ýok.\n\n' +
+        'Bir zat işlemese, şu ýerde jogap ýazyň. Bu ' +
+        'ýeke-täk ýatlatma, mundan beýläk sizi biynjalyk etmerin.'
+      );
+    }
+
     if (code.startsWith('ug')) {
       return (
         'ياخشىمۇسىز! بۇ بوتنى قوزغاتتىڭىز، ئەمما تېخى ھېچنېمە چۈشۈرمىدىڭىز — ' +

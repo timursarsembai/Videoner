@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -56,6 +56,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   ckb: "کوردی (سۆرانی)",
   ku: "Kurdî (Kurmancî)",
   ug: "ئۇيغۇرچە",
+  tk: "Türkmençe",
   tl: "Tagalog",
 };
 
@@ -13752,6 +13753,366 @@ const ug: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const tk: Translations = {
+  nav: {
+    home: "Baş sahypa",
+    downloaders: "Ýükleýjiler",
+    extension: "Giňeltme",
+    blog: "Blog",
+    switchTheme: "Temany çalyş",
+    language: "Dil",
+    comingSoon: "Ýakynda",
+  },
+  theme: {
+    light: "Ýagty",
+    dark: "Garaňky",
+    system: "Ulgam",
+  },
+  playlist: {
+    title: "“{title}” pleýlisti: {count} wideo",
+    hint: "Wideolar birin-birin ýüklenýär. Bu sahypany ýapmaň; brauzer birnäçe faýly ýüklemäge rugsat sorap biler.",
+    std: "720p",
+    hd: "Iň gowy hil",
+    audio: "Diňe ses (mp3)",
+    progress: "Wideo {index} / {count}",
+    stats: "Ýüklendi: {done} · başartmady: {failed}",
+    stop: "Duruz",
+    stopped: "Saklandy. {count} wideodan {done} sanysy ýüklendi.",
+    finished: "Pleýlist taýýar: {count} wideodan {done} sanysy.",
+    again: "Täzeden saýla",
+  },
+  footer: {
+    news: "Taslamanyň täzelikleri",
+    botCta: "Telegram boty hökmünde hem elýeterli:",
+    extension: "Brauzer giňeltmesi",
+    developedBy: "Işläp düzen",
+    rights: "Ähli hukuklar goralan.",
+  },
+  content: {
+    howToTitle: "{platform} wideosyny nädip ýüklemeli",
+    faqTitle: "Köp berilýän soraglar",
+  },
+  auth: {
+    loginButton: "Telegram arkaly giriň",
+    signIn: "Giriş",
+    logout: "Çykyş",
+    switchAccountHint: "Bu Siziň hasabyňyz dälmi?",
+    switchAccountLink: "Telegram Web-den çykyň",
+  },
+  home: {
+    new: "Täze",
+    manyFeatures: "Köp täze mümkinçilikler",
+    titleLine1: "Wideolary ýükläň",
+    titleLine2: "Çalt we aňsat",
+    subtitle:
+      "YouTube, Instagram, TikTok we beýlekiler üçin uniwersal wideo ýükleýji. HD-den başlap telefon üçin amatly hile çenli islendik hili saýlaň.",
+    subtitleExtra: "Çäksiz, kynçylyksyz — diňe ýüklemek.",
+    placeholder: "Islendik platformadan wideo salgysyny goýuň...",
+    download: "Ýükle",
+  },
+  video: {
+    description: "Beýany",
+    format: "Format",
+    selected: "Saýlandy: {quality}",
+    videoTab: "wideo",
+    audioTab: "ses",
+    converting: "Öwrülýär",
+    downloading: "Ýüklenýär",
+    downloadAgain: "Ýene ýükle",
+    startDownload: "Ýüklemäge başla",
+    convertingBtn: "Öwrülýär...",
+    downloadingBtn: "Ýüklenýär...",
+    loginRequiredHint: "Ýüklemek üçin Telegram arkaly giriň",
+    quotaExceededHint: "Günlük 20 ýükleme çägi doldy — ertir geliň",
+    postFiles: "Bu ýazgyda {count} faýl bar",
+    photoQuality: "Asyl suratlar",
+    slideshowQuality: "Slaýd-şou (wideo)",
+    galleryQuality: "Suratlar + slaýd-şou",
+    downloadAll: "Hemmesini ýükle",
+    downloadOne: "Sakla",
+    subtitlesTab: "subtitrler",
+    subtitlesHint: "Dili saýlaň — islendik pleýeriň açýan .srt faýlyny alarsyňyz.",
+    subtitlesAuto: "awto",
+    subtitlesDownload: "Subtitrleri ýükle",
+    subtitlesDownloading: "Subtitrler taýýarlanýar...",
+  },
+  toast: {
+    enterUrl: "Salgyny giriziň",
+    enterValidUrl: "Dogry salgy giriziň",
+    platformNotSupported: "Bu platforma goldanmaýar",
+    urlNotSupported: "Bu salgy goldanmaýar",
+    enterValidPlatformUrl: "Dogry {platform} salgysyny giriziň",
+    captchaNotReady: "Howpsuzlyk barlagy tamamlanýança azajyk garaşyň, soňra gaýtadan synanyşyň",
+    comingSoon: "Ýakynda! {name} entek goldanmaýar",
+    selectQuality: "Hili saýlaň",
+    downloadStarted: "Ýükleme başlandy!",
+    downloadCompleted: "Ýükleme tamamlandy!",
+    newsChannel: "Taslamanyň täzelikleri Telegramda:",
+    downloadUrlNotReceived: "Ýükleme salgysy alynmady",
+    needsBrowser:
+      "Platforma bu wideony biziň serwerimize bermedi: ol diňe hasabyna giren ulanyjylar üçin elýeterli ýa-da elýeterlilik wagtlaýyn çäklendirilen. Ony kompýuterde Videoner brauzer giňeltmesi bilen ýükläp bilersiňiz — ol Siziň öz girişiňiz arkaly ýükleýär.",
+    needsBrowserLink: "Giňeltmäni alyň →",
+  },
+  platforms: {
+    youtube: {
+      description: "YouTube-dan wideolary HD hilde ýükläň",
+      news: "Indi wideolar we Shorts goldanýar",
+      titleLine1: "YouTube wideo",
+      titleLine2: "we Shorts ýükle",
+      pageDescription:
+        "YouTube wideolaryny, Shorts-y we sesi ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat. 8K, 4K, HD hil we MP3 ses goldanýar.",
+      placeholder: "YouTube salgysyny şu ýere goýuň...",
+      howTo: [
+        "Wideonyň salgysyny brauzeriň salgy setirinden göçüriň ýa-da YouTube programmasynda “Paýlaş” düwmesine basyň.",
+        "Ony ýokardaky meýdança goýuň we “Ýükle” düwmesine basyň.",
+        "Hili saýlaň — wideo üçin 4K/8K-a çenli ýa-da diňe ses üçin MP3.",
+        "Faýlyňyz derrew ýüklenip başlaýar, hasaba girmek gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen YouTube wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "Videoner YouTube-yň şol wideo üçin berýän ähli çözgütlerini hödürleýär — 360p-den başlap, elýeterli bolsa 4K/8K-a çenli — şeýle hem MP3 ses çykarmak mümkinçiligi bar." },
+        { q: "Hususy ýa-da ýaş çäklendirmeli wideolary ýükläp bolýarmy?", a: "Diňe köpçülige açyk YouTube wideolary goldanýar; hususy, Size açylmadyk ýa-da giriş talap edýän mazmuny ýükläp bolmaýar." },
+        { q: "YouTube-dan wideo ýüklemek kanunymy?", a: "Diňe saklamaga hukugyňyz bar bolan wideolary ýükläň — öz mazmunyňyzy, Creative Commons ygtyýarnamaly wideolary ýa-da awtoryň rugsat beren islendik zadyny. YouTube-yň Hyzmat şertlerini we awtorlyk hukugy baradaky kanunlary hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Öwrülen faýllar serwerde takmynan bir sagat saklanýar, şonuň üçin ýükläniňizden soň olary derrew enjamyňyza saklaň." },
+      ],
+    },
+    facebook: {
+      description: "Facebook ýazgylaryndan we reels-den wideolary saklaň",
+      news: "Indi reels goldanýar",
+      titleLine1: "Facebook wideo",
+      titleLine2: "we Reels ýükle",
+      pageDescription:
+        "Facebook wideolaryny we reels-leri ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat.",
+      placeholder: "Facebook salgysyny şu ýere goýuň...",
+      howTo: [
+        "Facebook-da wideony ýa-da reels-i açyň we onuň salgysyny göçüriň (üç nokada basyň → “Salgyny göçür”).",
+        "Salgyny ýokarda goýuň we “Ýükle” düwmesine basyň.",
+        "MP4 hilini saýlaň ýa-da sesi MP3 görnüşinde çykaryň.",
+        "Faýl göni enjamyňyza ýüklenýär — Facebook hasaby gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen Facebook wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "Videoner Facebook-yň şol wideo ýa-da reels üçin berýän iň ýokary hilini MP4 görnüşinde alýar, şeýle hem MP3 ses görnüşi bar." },
+        { q: "Hususy wideolary ýükläp bolýarmy?", a: "Diňe köpçülige açyk ýazgylar, wideolar we reels-ler işleýär — hususy ýa-da diňe dostlar üçin mazmun elýeterli däl." },
+        { q: "Facebook-dan wideo ýüklemek kanunymy?", a: "Diňe saklamaga rugsadyňyz bar bolan wideolary ýükläň; awtoryň hukuklaryny we Facebook-yň Hyzmat şertlerini hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Faýllar öwrülenden soň takmynan bir sagat saklanýar, soňra awtomatik pozulýar — wagtynda ýükläň." },
+      ],
+    },
+    instagram: {
+      description: "Instagram reels, stories we ýazgylaryny ýükläň",
+      news: "Indi reels we stories goldanýar",
+      titleLine1: "Instagram Reels",
+      titleLine2: "we Stories ýükle",
+      pageDescription:
+        "Instagram reels, stories we ýazgylaryny ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat.",
+      placeholder: "Instagram salgysyny şu ýere goýuň...",
+      howTo: [
+        "Instagram-da Reels-i, ýazgyny ýa-da story-ni açyň we kagyz uçar nyşanyna basyň → “Salgyny göçür”.",
+        "Salgyny ýokardaky meýdança goýuň.",
+        "Islän hiliňizi we formatyňyzy saýlaň.",
+        "Ýükleme derrew başlaýar — hasaba girmek ýa-da programma gurnamak gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen Instagram mazmunyny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "Reels, ýazgylar we stories üçin elýeterli doly hil, MP4 ýa-da MP3 görnüşinde." },
+        { q: "Hususy hasaplardan ýükläp bolýarmy?", a: "Diňe köpçülige açyk Instagram hasaplary we ýazgylary goldanýar; hususy hasaplaryň mazmunyny ýükläp bolmaýar." },
+        { q: "Instagram-dan wideo ýüklemek kanunymy?", a: "Diňe saklamaga rugsat berlen zady ýükläň — awtory we Instagram-yň Hyzmat şertlerini hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Faýllar awtomatik pozulmazdan öň serwerde takmynan bir sagat saklanýar." },
+      ],
+    },
+    tiktok: {
+      description: "TikTok wideolaryny suw belgisiz ýükläň",
+      news: "Indi suw belgisiz",
+      titleLine1: "TikTok wideosyny",
+      titleLine2: "suw belgisiz ýükle",
+      pageDescription:
+        "TikTok wideolaryny suw belgisiz ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat.",
+      placeholder: "TikTok salgysyny şu ýere goýuň...",
+      howTo: [
+        "TikTok wideosynda “Paýlaş”, soňra “Salgyny göçür” düwmesine basyň.",
+        "Salgyny ýokarda goýuň we “Ýükle” düwmesine basyň.",
+        "Arassa MP4 — TikTok suw belgisi bolmazdan — ýa-da MP3 ses alyň.",
+        "Ony göni enjamyňyza saklaň.",
+      ],
+      faq: [
+        { q: "Videoner bilen TikTok wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "TikTok-yň şol wideo üçin berýän iň gowy hili, TikTok suw belgisi bolmazdan, şeýle hem MP3 ses." },
+        { q: "Hususy hasaplardan ýükläp bolýarmy?", a: "Diňe köpçülige açyk TikTok hasaplaryndaky wideolary ýükläp bolýar." },
+        { q: "TikTok-dan wideo ýüklemek kanunymy?", a: "Saklamaga hukugyňyz bar bolan wideolary ýükläň, awtory görkeziň we TikTok-yň Hyzmat şertlerini hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Ýüklenen faýllar serwerde takmynan bir sagat galýar, soňra awtomatik pozulýar." },
+      ],
+    },
+    twitter: {
+      description: "Twitter wideolaryny ýükläň",
+      news: "Indi Twitter wideolary goldanýar",
+      titleLine1: "Twitter wideo",
+      titleLine2: "ýükle",
+      pageDescription:
+        "Twitter wideolaryny ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat.",
+      placeholder: "Twitter salgysyny şu ýere goýuň...",
+      howTo: [
+        "Twitdiň aşagyndaky “Paýlaş” düwmesine basyň we “Salgyny göçür” saýlaň (ýa-da salgyny brauzerden göçüriň).",
+        "Ony ýokardaky meýdança goýuň.",
+        "Isleýän wideo hiliňizi saýlaň.",
+        "Ýükleme derrew başlaýar — X/Twitter hasaby gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen Twitter/X wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "X/Twitter-iň şol wideo üçin hödürleýän ähli hilleri, MP4 görnüşinde, şeýle hem MP3." },
+        { q: "Hususy hasaplardan ýükläp bolýarmy?", a: "Diňe köpçülige açyk hasaplaryň twitleri işleýär; goralan/hususy hasaplar goldanmaýar." },
+        { q: "Twitter/X-den wideo ýüklemek kanunymy?", a: "Saklamaga hukugyňyz bar bolan mazmuny ýükläň, ýerleşdireniň hukuklaryny we platformanyň Hyzmat şertlerini hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Faýllar döredilenden takmynan bir sagat soň awtomatik pozulýar." },
+      ],
+    },
+    vimeo: {
+      description: "Vimeo-dan wideolary ýokary hilde ýükläň",
+      news: "Indi Vimeo goldanýar",
+      titleLine1: "Vimeo wideo",
+      titleLine2: "ýükle",
+      pageDescription:
+        "Vimeo wideolaryny ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat.",
+      placeholder: "Vimeo salgysyny şu ýere goýuň...",
+      howTo: [
+        "Vimeo-ny açyň we wideonyň salgysyny göçüriň (ýa-da telefonda “Paýlaş” → “Salgyny göçür” basyň).",
+        "Salgyny ýokardaky meýdança goýuň we “Ýükle” düwmesine basyň.",
+        "Hili we formaty saýlaň — wideo üçin MP4, diňe ses gerek bolsa MP3.",
+        "Ýükleme derrew başlaýar; hasap ýa-da programma gurnamak gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen Vimeo wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "Videoner Vimeo-nyň şol wideo üçin elýeterli edýän ähli hillerini asyl ýüklenen çözgüde çenli hödürleýär, awtor beren bolsa HD we 4K hem şol sanda." },
+        { q: "Hususy ýa-da parol bilen goralan Vimeo wideolaryny ýükläp bolýarmy?", a: "Ýok — Videoner diňe köpçülige açyk Vimeo salgylary bilen işleýär. Hususy, parol bilen goralan ýa-da elýeterliligi çäklendirilen wideolary ýükläp bolmaýar." },
+        { q: "Vimeo-dan wideo ýüklemek kanunymy?", a: "Ýüklemek saklamaga hukugyňyz bar bolan wideolar üçin niýetlenendir — öz mazmunyňyz, Creative Commons ygtyýarnamaly wideolar ýa-da awtoryň ýüklemäge aç-açan rugsat beren islendik zady. Asyl awtoryň awtorlyk hukugyny we Vimeo-nyň hyzmat şertlerini hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Faýllar talap boýunça döredilýär we awtomatik pozulmazdan öň serwerde takmynan bir sagat saklanýar, şonuň üçin ýükleme gutaran badyna ony enjamyňyza saklaň." },
+      ],
+    },
+    vk: {
+      description: "VK-dan wideolary we klipleri ýükläň",
+      news: "Indi VK goldanýar",
+      titleLine1: "VK wideo",
+      titleLine2: "we klip ýükle",
+      pageDescription:
+        "VK wideolaryny we kliplerini ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat.",
+      placeholder: "VK salgysyny şu ýere goýuň...",
+      howTo: [
+        "VK-da (vk.com ýa-da VK Video) wideony ýa-da klipi açyň we onuň salgysyny salgy setirinden ýa-da “Paýlaş” düwmesinden göçüriň.",
+        "Salgyny ýokarda goýuň we “Ýükle” düwmesine basyň.",
+        "Elýeterli hili we formaty saýlaň.",
+        "Faýl göni ýüklenýär — VK-a girmek gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen VK wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "VK-nyň şol wideo ýa-da klip üçin berýän ähli hilleri, şeýle hem MP3 ses." },
+        { q: "VK-a girmek gerekmi?", a: "Ýok — wideo köpçülige açyk bolmaly. Videoner VK-a girmeýär, şonuň üçin hususy, diňe dostlar üçin ýa-da giriş talap edýän wideolary ýükläp bolmaýar." },
+        { q: "VK-dan wideo ýüklemek kanunymy?", a: "Diňe saklamaga hukugyňyz bar bolan wideolary ýükläň, VK-nyň Hyzmat şertlerini we ýükleýjiniň hukuklaryny hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Faýllar serwerde takmynan bir sagat saklanýar, soňra awtomatik pozulýar." },
+      ],
+    },
+    rutube: {
+      description: "Rutube-dan wideolary ýükläň",
+      news: "Indi Rutube goldanýar",
+      titleLine1: "Rutube wideo",
+      titleLine2: "ýükle",
+      pageDescription:
+        "Rutube wideolaryny ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat.",
+      placeholder: "Rutube salgysyny şu ýere goýuň...",
+      howTo: [
+        "Rutube-da wideony açyň we onuň salgysyny salgy setirinden ýa-da “Paýlaş” düwmesinden göçüriň.",
+        "Ony ýokardaky meýdança goýuň.",
+        "Hili we formaty saýlaň (wideo ýa-da ses).",
+        "Ýükleme derrew başlaýar, Rutube hasaby gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen Rutube wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "Rutube-yň hödürleýän ähli hilleri, MP4 görnüşinde, şeýle hem MP3 ses." },
+        { q: "Rutube-a girmek gerekmi?", a: "Ýok — Videoner diňe köpçülige açyk Rutube wideolary bilen işleýär; giriş ulanylmaýar we talap edilmeýär." },
+        { q: "Rutube-dan wideo ýüklemek kanunymy?", a: "Diňe saklamaga rugsat berlen mazmuny ýükläň, Rutube-yň Hyzmat şertlerini we awtoryň hukuklaryny hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Faýllar awtomatik aýrylmazdan öň serwerde takmynan bir sagat galýar." },
+      ],
+    },
+    okru: {
+      description: "OK.ru-dan (Odnoklassniki) wideolary ýükläň",
+      news: "Indi OK.ru goldanýar",
+      titleLine1: "OK.ru wideo",
+      titleLine2: "ýükle",
+      pageDescription:
+        "OK.ru (Odnoklassniki) wideolaryny ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat.",
+      placeholder: "OK.ru salgysyny şu ýere goýuň...",
+      howTo: [
+        "OK.ru-da (Odnoklassniki) wideony açyň we onuň salgysyny salgy setirinden göçüriň.",
+        "Salgyny ýokardaky meýdança goýuň we “Ýükle” düwmesine basyň.",
+        "Hiliňizi we formatyňyzy saýlaň.",
+        "Ýükleme derrew başlaýar — OK.ru-a girmek gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen OK.ru wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde wideo ýükläp bilerin?", a: "OK.ru-nyň şol wideo üçin berýän ähli hilleri, şeýle hem MP3." },
+        { q: "OK.ru-a girmek gerekmi?", a: "Ýok — diňe köpçülige açyk OK.ru (Odnoklassniki) wideolary işleýär. Videoner hiç haçan hasaba girmeýär, şonuň üçin hususy wideolar elýeterli däl." },
+        { q: "OK.ru-dan wideo ýüklemek kanunymy?", a: "Diňe saklamaga hukugyňyz bar bolan wideolary ýükläň, OK.ru-nyň Hyzmat şertlerini we ýükleýjiniň hukuklaryny hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Faýllar döredilenden takmynan bir sagat soň awtomatik pozulýar." },
+      ],
+    },
+    pinterest: {
+      description: "Pinterest pinlerinden wideolary ýükläň",
+      news: "Indi Pinterest goldanýar",
+      titleLine1: "Pinterest wideo",
+      titleLine2: "we pin ýükle",
+      pageDescription:
+        "Pinterest pinlerinden wideolary ýokary hilde ýükläň. Çalt, mugt we ulanmak aňsat. Bellik: diňe wideo pinlerini ýükläp bolýar — diňe suratly pinler goldanmaýar.",
+      placeholder: "Pinterest salgysyny şu ýere goýuň...",
+      howTo: [
+        "Pinterest-de pini açyň we “Paýlaş” → “Salgyny göçür” basyň (ýa-da salgyny brauzerden göçüriň).",
+        "Salgyny ýokardaky meýdança goýuň we “Ýükle” düwmesine basyň.",
+        "Islän hiliňizi we formatyňyzy saýlaň.",
+        "Faýlyňyz derrew ýüklenýär — hasap gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen Pinterest wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde ýükläp bilerin?", a: "Videoner Pinterest-iň şol pin wideosy üçin berýän ähli hillerini hödürleýär, şeýle hem MP3 ses çykarmak mümkinçiligi bar." },
+        { q: "Pinterest-den suratlary ýükläp bolýarmy?", a: "Ýok — diňe wideo pinlerini ýükläp bolýar. Pin diňe suratdan ybarat bolsa, çykarmak üçin wideo faýly ýok." },
+        { q: "Hususy ýa-da tagta bilen çäklendirilen pinleri ýükläp bolýarmy?", a: "Diňe köpçülige açyk pinler goldanýar; hususy tagtalary we giriş bilen çäklendirilen mazmuny ýükläp bolmaýar." },
+        { q: "Pinterest-den wideo ýüklemek kanunymy?", a: "Diňe saklamaga hukugyňyz bar bolan pinleri ýükläň — öz mazmunyňyzy ýa-da awtoryň rugsat beren islendik zadyny. Pinterest-iň Hyzmat şertlerini we awtorlyk hukugy baradaky kanunlary hormatlaň." },
+        { q: "Ýüklenen faýlym näçe wagt elýeterli bolýar?", a: "Öwrülen faýllar serwerde takmynan bir sagat saklanýar, şonuň üçin ýükläniňizden soň olary derrew enjamyňyza saklaň." },
+      ],
+    },
+    threads: {
+      description: "Threads ýazgylaryndan wideolary ýükläň",
+      news: "Indi Threads goldanýar",
+      titleLine1: "Threads wideo",
+      titleLine2: "ýükle",
+      pageDescription:
+        "Threads ýazgylaryndan wideolary ýükläň. Çalt, mugt we Threads-de hasap gerek däl. Threads wideonyň diňe bir görnüşini 720p-a çenli berýär — bu platformanyň elýeterli edýän iň ýokary hili.",
+      placeholder: "Threads salgysyny şu ýere goýuň...",
+      howTo: [
+        "Threads-de ýazgyny açyň we paýlaşmak nyşanyna, soňra “Salgyny göçür” basyň.",
+        "Salgyny ýokardaky meýdança goýuň we “Ýükle” düwmesine basyň.",
+        "Isleýän formatyňyzy saýlaň — wideo ýa-da MP3 ses.",
+        "Faýlyňyz derrew ýüklenýär — hasap gerek däl.",
+      ],
+      faq: [
+        { q: "Videoner bilen Threads wideolaryny ýüklemek mugtmy?", a: "Hawa, düýbünden mugt: hasaba girmek, abuna, mahabat we günlük ýükleme çägi ýok. Diňe YouTube traffigine çäk bar — bir tor üçin günde 10 GB — bu hyzmaty hyýanatçylykly ulanylmakdan goramak üçin." },
+        { q: "Ýüklemek üçin hasap gerekmi?", a: "Ýok. Ýüklemek üçin hasap ýa-da giriş gerek däl — diňe salgyny goýuň we “Ýükle” düwmesine basyň." },
+        { q: "Haýsy hilde ýükläp bilerin?", a: "Threads her ýazgy üçin wideonyň takyk bir görnüşini çap edýär, gysga tarapy boýunça 720p bilen çäklendirilen — awtor 4K ýüklän bolsa-da. Videoner Size şol faýly bolşy ýaly berýär, şeýle hem MP3 ses çykarmak mümkinçiligi bar. Hiç bir ýükleýji mundan köpüni hödürläp bilmeýär, sebäbi has ýokary çözgütler asla berilmeýär." },
+        { q: "threads.com we threads.net salgylarynyň ikisi hem işleýärmi?", a: "Hawa. threads.com/@user/post/CODE ýaly doly salgylar we gysga threads.net/t/CODE salgylary goldanýar." },
+        { q: "Threads ýazgysyndan suratlary ýükläp bolýarmy?", a: "Ýok — diňe wideolary. Ýazgyda diňe suratlar bar bolsa, çykarmak üçin wideo faýly ýok." },
+        { q: "Birnäçe wideoly ýazgy bolsa näme?", a: "Ýazgydaky birinji wideo ýüklenýär. Threads karuselinde birnäçe klip bolup biler, diňe birinjisi saklanýar." },
+        { q: "Hususy ýazgylary ýükläp bolýarmy?", a: "Ýok. Diňe hemmä görünýän ýazgylary ýükläp bolýar; hususy hasabyň ýa-da giriş talabynyň aňyrsyndaky zatlar elýeterli däl." },
+        { q: "Threads-den wideo ýüklemek kanunymy?", a: "Diňe saklamaga hukugyňyz bar bolan zady ýükläň — öz mazmunyňyzy ýa-da awtoryň rugsat beren islendik zadyny. Threads-iň Ulanyş şertlerini we awtorlyk hukugy baradaky kanunlary hormatlaň." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -14112,4 +14473,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku, ug };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku, ug, tk };

@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на тридцати девяти языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на сорока языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -11477,6 +11477,308 @@ export const legal: LegalByLanguage = {
             heading: "سەمىمىيەتسىز مۇراجىئەتلەر",
             body: [
               "قەستەن يالغان ئۇچۇر كىرگۈزۈلگەن مۇراجىئەت قانۇنغا ئاساسەن ئەرز قىلغۇچىنىڭ جاۋابكارلىقىنى كەلتۈرۈپ چىقىرىشى مۇمكىن. ئەگەر مۇراجىئەتتىن ھوقۇق ئىگىسىنىمۇ، تالاش-تارتىشلىق ماتېرىيالنىمۇ ئېنىقلىغىلى بولمىسا، بىز ئۇنى كۆرۈپ چىقىشنى رەت قىلىش ھوقۇقىغا ئىگە.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  tk: {
+    ui: {
+      updated: "Redaksiýanyň senesi",
+      back: "Baş sahypa",
+      operatorHeading: "Hyzmatyň operatory",
+      navHeading: "Beýleki resminamalar",
+      labels: {
+        privacy: "Gizlinlik syýasaty",
+        terms: "Ulanyjy ylalaşygy",
+        cookies: "Cookie syýasaty",
+        copyright: "Hukuk eýelerine",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Gizlinlik syýasaty",
+        summary: `${operator.site} haýsy maglumatlary ýygnaýar, olar näme üçin gerek, näçe wagt saklanýar we olary nädip pozmaly.`,
+        sections: [
+          {
+            heading: "Umumy düzgünler",
+            body: [
+              `Şu Syýasat ${operator.site} hyzmatynyň haýsy şahsy maglumatlary we haýsy maksat bilen işläp taýýarlaýandygyny beýan edýär. Maglumatlaryň operatory hökmünde ${operator.nameTk} çykyş edýär.`,
+              "Hyzmatdan peýdalanmak bilen, Siz şu ýerde beýan edilen işläp taýýarlamak tertibine razylyk berýärsiňiz. Eger Siz onuň bilen razy bolmasaňyz, haýyş edýäris, hyzmatdan peýdalanmaň.",
+              "Işläp taýýarlamak Gazagystan Respublikasynyň «Şahsy maglumatlar we olary goramak hakynda» Kanunyna laýyklykda, Ýewropa ykdysady zolagyndan gelýän myhmanlara degişlilikde bolsa GDPR-iň talaplary göz öňünde tutulyp amala aşyrylýar.",
+            ],
+          },
+          {
+            heading: "Haýsy maglumatlary işläp taýýarlaýarys",
+            body: [
+              "Biz hyzmatyň işlemegi üçin zerur bolanyndan artyk hiç zady bilkastlaýyn ýygnamaýarys we resminamalary, töleg maglumatlaryny ýa-da ýaşaýyş salgysyny soramaýarys.",
+            ],
+            bullets: [
+              "Siz bota ýazanyňyzda onuň alýan Telegram hasabynyň maglumatlary: san görnüşindäki identifikator, ulanyjy ady, ady we dil kody.",
+              "Ýüklemek üçin iberýän salgylaryňyz we synanyşygyň özi barada maglumatlar: platforma, senesi we wagty, saýlanan hil, netijesi (üstünlik ýa-da ýalňyşlyk).",
+              "Birikmäniň tehniki maglumatlary: IP-salgy, brauzeriň görnüşi we wersiýasy, dil, Siziň geçip gelen sahypaňyz. Olar serweriň žurnallaryna we web-analitika ulgamlaryna düşýär.",
+              "Cookie faýllary we analitika identifikatorlary — jikme-jiklikler Cookie syýasatynda.",
+            ],
+          },
+          {
+            heading: "Bu maglumatlar näme üçin gerek",
+            bullets: [
+              "Hyzmatyň özüni bermek: Siziň salgyňyz boýunça wideony almak we faýly Size bermek.",
+              "Siziň hasabyňyzy başgalaryňkydan tapawutlandyrmak we hyýanatçylykly peýdalanmaga garşy durmak.",
+              "Hyzmaty awtomatlaşdyrylan hyýanatçylykly peýdalanmakdan goramak: salgy iberilmezden öň Cloudflare Turnstile barlagy.",
+              "Saýtyň nähili ulanylýandygyna düşünmek we ýalňyşlyklary düzetmek — şahsyýetsizleşdirilen we jemlenen statistika.",
+              "Siziň ýüzlenmeleriňize we hukuk eýeleriniň ýüzlenmelerine jogap bermek.",
+              "Hyzmat barada pikiriňizi bilmek üçin wagtal-wagtal Size Telegram-da ýazmak — meselem, eger Siz ondan peýdalanmagy bes eden bolsaňyz. Jogap bermek hökman däl; eger şeýle habarlar Size gerek bolmasa, diňe şony aýdyň, biz mundan beýläk ýazmarys.",
+            ],
+          },
+          {
+            heading: "Işläp taýýarlamagyň esaslary",
+            body: [
+              "Telegram hasabynyň maglumatlary we ýüklemeler barada maglumatlar hyzmatdan peýdalanyp başlamak bilen Siziň kabul edýän Ulanyjy ylalaşygyňyzy ýerine ýetirmek üçin işlenip taýýarlanylýar.",
+              "Analitika cookie faýllary we saýtdaky hereketleriň ýazga alynmagy Siziň razylygyňyzyň esasynda işlenip taýýarlanylýar, ony Siz islendik wagt yzyna alyp bilersiňiz — muňuň usullary Cookie syýasatynda beýan edilýär.",
+              "Serweriň žurnallary we botlardan goramak hyzmaty işe ukyply we goragly saklamakdaky kanuny gyzyklanmamyzyň çäginde işlenip taýýarlanylýar.",
+              "Hyzmat barada pikiriňiz bilen bagly soraglar — hyzmaty kämilleşdirmekdäki kanuny gyzyklanmamyzyň çäginde; Siz olardan islendik wagt ýüz öwrüp bilersiňiz.",
+            ],
+          },
+          {
+            heading: "Birikdirilen hasaplar",
+            body: [
+              "Isleseňiz, platformadaky öz hasabyňyzy (Instagram, Facebook, YouTube, X, VK, TikTok) bota birikdirip bilersiňiz, şonda bot diňe ulgama giren ulanyjylara görünýän ýazgylary — storisleri, ýapyk ýazgylary ýükläp biler. Munuň üçin bot şol hasabyň cookie faýllaryny alýar — Videoner giňeltmesinden bir gezeklik kod arkaly ýa-da Siziň iberen faýlyňyzdan.",
+              "Biz diňe saýlanan platformanyň cookie faýllaryny saklaýarys, galanlaryny derrew taşlaýarys. Olar şifrlenen görnüşde saklanýar we diňe Siziň olary birikdiren ýeriňizdäki ýüklemeler üçin ulanylýar. Şahsy ýazyşmada birikdirilenler — Siziň ýüklemeleriňiz üçin, şol sanda öz hasaby birikdirilmedik toparlardaky Siziň öz salgylaryňyz üçin; başgalaryň salgylary üçin olar ulanylmaýar. Topara birikdirilenler — onuň agzalarynyň ýüklemeleri üçin we başga hiç ýerde ulanylmaýar.",
+              "Esas — Siziň razylygyňyz: hasaby Siz özüňiz birikdirýärsiňiz we ony islendik wagt /accounts buýrugy bilen pozup bilersiňiz. Pozulanda cookie faýllary yzyna dikeldip bolmaýan görnüşde öçürilýär. Eger platforma girişi kabul etmegini bes etse, bot bu barada Size habar berýär.",
+              "Birikdirilen hasap arkaly ýüklenen ýazgylar kanalymyzda çap edilmeýär we umumy keşden beýleki ulanyjylara berilmeýär.",
+            ],
+          },
+          {
+            heading: "Üçünji tarapyň hyzmatlary",
+            body: [
+              "Biz Siziň maglumatlaryňyzy satmaýarys we olary üçünji şahslara olaryň öz maksatlary üçin bermeýäris. Hyzmatyň işlemegi üçin aşakdaky üpjün edijiler çekilen, olaryň her biri maglumatlary öz düzgünlerine laýyklykda işläp taýýarlaýar:",
+            ],
+            bullets: [
+              "Telegram — " + BOT + " botunyň işi.",
+              "Cloudflare — botlardan goramak (Turnstile), saýty eltip bermek we poçtany ugrukdyrmak.",
+              "Google Analytics we Google Tag Manager — saparlaryň statistikasy.",
+              "Yandex Metrica — saparlaryň statistikasy, basyşlar kartasy we Webvisor. Webvisor sahypadaky hereketleri ýazga alýar: kursoryň hereketlerini, sahypany aýlamagy we basyşlary. Ýazga alnan maglumatlar diňe saýtyň amatlylygyny seljermek üçin ulanylýar.",
+            ],
+          },
+          {
+            heading: "Maglumatlary näçe wagt saklaýarys",
+            bullets: [
+              "Ýüklenen faýllar döredilenden takmynan bir sagat soň serwerden awtomatik usulda pozulýar. Biz Siziň wideolaryňyzyň arhiwini saklamaýarys.",
+              "Ýükleme synanyşyklary baradaky bellikler hyýanatçylykly peýdalanmaga garşy durmak we ýüzlenmelere seretmek üçin gerek bolýança saklanýar.",
+              "Hasabyň maglumatlary Siz hyzmatdan peýdalanýançaňyz saklanýar we Siziň haýyşyňyz boýunça pozulýar.",
+              "Serweriň žurnallary çäkli wagtyň dowamynda saklanýar we rotasiýa boýunça täzeden ýazylýar.",
+            ],
+          },
+          {
+            heading: "Maglumatlar nirede işlenip taýýarlanylýar",
+            body: [
+              "Hyzmatyň serwerleri Ýewropa Bileleşiginiň çägindäki maglumat merkezinde ýerleşýär. Ýokarda sanalan üpjün edijileriň bir bölegi maglumatlary öz syýasatlaryna laýyklykda onuň çäklerinden daşarda işläp taýýarlap biler.",
+            ],
+          },
+          {
+            heading: "Siziň hukuklaryňyz",
+            body: [
+              `Siz öz maglumatlaryňyzyň işlenip taýýarlanylyşy barada maglumat almaga, olary düzetmegi ýa-da pozmagy talap etmäge, razylygyňyzy yzyna almaga we işläp taýýarlamaga garşy çykmaga haklysyňyz. Munuň üçin ýüzlenme bilen baglanyşykly elektron poçtadan ýa-da Telegram hasabyndan ${MAIL} salgysyna ýazyň.`,
+              "Biz paýhasly möhletde, adatça otuz senenama gününiň dowamynda jogap berýäris. Hasabyň pozulmagy onuň bilen baglanyşykly ýükleme taryhynyň pozulmagyna getirýär.",
+            ],
+          },
+          {
+            heading: "Kämillik ýaşyna ýetmedikler",
+            body: [
+              "Hyzmat 16 ýaşdan kiçi çagalar üçin niýetlenmedik we olara gönükdirilmedik. Biz şeýle ulanyjylaryň maglumatlaryny bilkastlaýyn ýygnamaýarys; eger bu ýalňyşlyk bilen bolan bolsa, bize ýazyň, maglumatlar pozular.",
+            ],
+          },
+          {
+            heading: "Üýtgeşmeler",
+            body: [
+              "Biz şu Syýasaty täzeläp bileris. Hereket edýän redaksiýanyň senesi sahypanyň başynda görkezilýär; düýpli üýtgeşmeleri biz hyzmatda belläris.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Ulanyjy ylalaşygy",
+        summary: `${operator.site} hyzmatyndan peýdalanmagyň düzgünleri: näme etmek bolýar, näme bolmaýar we hyzmat haýsy şertlerde işleýär.`,
+        sections: [
+          {
+            heading: "Umumy düzgünler",
+            body: [
+              `Ylalaşyk ${operator.site} saýtyndan we ${BOT} Telegram-botundan peýdalanmagy düzgünleşdirýär. Hyzmatyň eýesi we administratory — ${operator.nameTk}.`,
+              "Hyzmatdan peýdalanyp başlamak bilen, Siz şertleri okandygyňyzy we olary kabul edýändigiňizi tassyklaýarsyňyz. Eger haýsydyr bir şert Size laýyk gelmeýän bolsa, hyzmatdan peýdalanmaly däl.",
+            ],
+          },
+          {
+            heading: "Hyzmat mugt",
+            body: [
+              "Hyzmatyň ähli mümkinçilikleri mugt berilýär. Bizde abunalyklar, tölegli tarifler, wideonyň tölegli hilleri we içerki satyn almalar ýok.",
+              "Biz mahabat görkezmeýäris we partnýorlyk salgylaryny ýerleşdirmeýäris.",
+            ],
+          },
+          {
+            heading: "Elýeterlilik şertleri",
+            bullets: [
+              "Saýtda ýüklemek üçin ne hasap, ne-de ulgama girmek gerek däl. Bot ulanyjylary olaryň Telegram hasaby boýunça tapawutlandyrýar.",
+              "Hyzmaty aşa ýüklenmekden we awtomatlaşdyrylan hyýanatçylykly peýdalanmakdan soraglaryň ýygylygyna bolan tehniki çäklendirmeler goraýar.",
+              "YouTube üçin gündelik trafik çägi hereket edýär: saýtda we giňeltmede bir tordan 24 sagatda 10 GB we botda bir Telegram hasaby üçin 24 sagatda 25 GB. Beýleki platformalara ol degişli däl.",
+              "Bot arkaly ýüklemek üçin kanalymyza ýazylmak talap edilmeýär. Bot faýllaryň tekstine taslamanyň habarlar kanalynyň salgysyny goşýar; oňa ýazylmak hökman däl.",
+            ],
+          },
+          {
+            heading: "Hyzmat näme edýär",
+            body: [
+              "Hyzmat tehniki araçy bolup durýar: Siziň salgyňyz boýunça ol köpçülige açyk sahypa ýüzlenýär, media faýly alýar we ony Size berýär.",
+              "Biz özümizde wideo katalogyny ýerleşdirmeýäris, başgalaryň kontenti boýunça gözleg geçirmeýäris we ýüklenen faýllary bermek üçin zerur bolan wagtdan — takmynan bir sagatdan — uzak saklamaýarys.",
+              "Belli bir platformanyň elýeterliligi onuň tehniki çözgütlerine bagly we duýduryşsyz üýtgäp biler.",
+            ],
+          },
+          {
+            heading: "Ulanyjynyň borçlary",
+            body: [
+              "Alnan faýllary nähili ulanýandygyňyz üçin Siz özbaşdak jogap berýärsiňiz we munuň üçin hukugyňyzyň bardygyny tassyklaýarsyňyz.",
+            ],
+            bullets: [
+              "Diňe hukuklary Size degişli bolan ýa-da ulanylmagyna hukuk eýesi ýa-da kanun tarapyndan rugsat berlen materialy ýükläň.",
+              "Hyzmaty awtorlyk we baglanyşykly hukuklary bozmak, gadagan edilen kontenti ýaýratmak we üçünji şahslaryň hukuklaryny bozmak üçin ulanmaň.",
+              "Hyzmatyň tehniki çäklendirmelerini, şol sanda soraglaryň ýygylygyna bolan çäklendirmeleri we botlara garşy barlagy aýlanyp geçmäge synanyşmaň.",
+              "Awtomatlaşdyrylan ýük döretmäň: köpçülikleýin soraglara, skriptlere we parserlere ýol berilmeýär.",
+            ],
+          },
+          {
+            heading: "Salgylaryň kanalda çap edilmegi",
+            body: [
+              "Bot arkaly wideo ýükläp, Siz asyl ýazgynyň salgysynyň biziň Telegram-kanalymyzda çap ediljekdigine razylyk berýärsiňiz. Bu barada duýduryş botda hil saýlanmazdan öň — ýagny Siz ýüklemek barada karar kabul etmezden öň görkezilýär.",
+              "Çap etmek anonim: kanala köpçülige açyk sahypanyň salgysy, roligiň ady we onuň örtügi — platformanyň ýazgynyň prewýusynda görkezýän şol kadr — iberilýär. Wideony kimiň ýükländigi görkezilmeýär. Wideo faýlyň özi hiç ýerde we hiç haçan çap edilmeýär: platformalaryň özleriniň her ýazgynyň aşagyndaky «Paýlaş» düwmesi arkaly ýaýratmagy teklip edýän salgysy ýaýradylýar.",
+              "Bir salgy bir gezekden köp çap edilmeýär. Eger Siz salgynyň kanala düşmegini islemeýän bolsaňyz, bu wideony biziň hyzmatymyz arkaly ýüklemäň.",
+              "Toparlardan gelen salgylar we birikdirilen hasap arkaly ýüklenen ýazgylar kanalda çap edilmeýär."
+            ],
+          },
+          {
+            heading: "Öz hasabyňyzy birikdirmek",
+            body: [
+              "Platformadaky öz hasabyňyzy bota birikdirmek bilen, Siz munuň Siziň hasabyňyzdygyny we ony dolandyrmaga hukugyňyzyň bardygyny tassyklaýarsyňyz.",
+              "Platformalar awtomatik ýüklemeleri makullamaýar we birikdirilen hasaby çäklendirip ýa-da petikläp biler. Bu töwekgelçiligi Siz öz üstüňize alýarsyňyz; biz aýratyn, esasy däl hasaby birikdirmegi maslahat berýäris. Platformanyň Siziň hasabyňyza girizjek çäklendirmeleri üçin biz jogapkär däl.",
+              "Topara birikdirilen hasap onuň ähli agzalarynyň ýüklemeleri üçin ulanylýar. Kimiň hasap birikdirip biljekdigini toparyň administratorlary çözýär we olar islendik hasaby pozup bilerler.",
+            ],
+          },
+          {
+            heading: "Jogapkärçiligiň çäklendirilmegi",
+            body: [
+              "Hyzmat «bolşy ýaly» şertlerinde berilýär. Biz bökdençsiz işlemegi, belli bir platformanyň elýeterliligini ýa-da faýlyň Siziň maksatlaryňyz üçin ýaramlydygyny kepillendirmeýäris.",
+              "Ýüklenen materialy nähili ulanandygyňyz we Siziň üçünji şahslaryň hukuklaryny bozmagyňyzyň netijeleri üçin biz jogapkärçilik çekmeýäris.",
+              "Biz mümkinçilikleriň düzümini üýtgetmäge, hyzmatyň işini tehniki hyzmat üçin togtatmaga we onuň işini bes etmäge haklydyrys.",
+            ],
+          },
+          {
+            heading: "Elýeterliligiň çäklendirilmegi",
+            body: [
+              "Şu şertler bozulanda, çäklendirmeleri aýlanyp geçmäge synanyşylanda, şeýle hem hukuk eýesinden esaslandyrylan şikaýat gelip gowuşanda, biz hyzmata elýeterliligi çäklendirip ýa-da bes edip bileris.",
+            ],
+          },
+          {
+            heading: "Üýtgeşmeler we ulanylýan hukuk",
+            body: [
+              "Biz şertleri üýtgedip bileris; hereket edýän redaksiýanyň senesi sahypanyň başynda görkezilýär. Üýtgeşmelerden soň hyzmatdan peýdalanmagy dowam etmek bilen, Siz täze redaksiýany kabul edýärsiňiz.",
+              "Taraplaryň arasyndaky gatnaşyklara Gazagystan Respublikasynyň hukugy ulanylýar. Taraplar jedelleri hat alyşmak arkaly çözmäge çalyşýarlar, ylalaşyk gazanylmadyk ýagdaýynda bolsa — Gazagystan Respublikasynyň kanunçylygynda bellenen tertipde.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Cookie syýasaty",
+        summary: `${operator.site} haýsy cookie faýllaryny ulanýar, olar näme üçin gerek we olardan nädip ýüz öwürmeli.`,
+        sections: [
+          {
+            heading: "Cookie näme",
+            body: [
+              "Cookie — saýtyň Siziň brauzeriňizde saklaýan kiçijik tekst faýllary. Olar Siziň sazlamalaryňyzy ýatda saklamaga we saparlaryň şahsyýetsizleşdirilen statistikasyny ýygnamaga mümkinçilik berýär.",
+              "Bu resminamada cookie bilen bilelikde ýakyn tehnologiýalary hem — brauzeriň ýerli ammaryny we hasaplaýjy-pikselleri beýan edýäris.",
+            ],
+          },
+          {
+            heading: "Zerur bolanlar",
+            body: [
+              "Olarsyz hyzmat işlemeýär, şonuň üçin olar hemişe gurnalýar.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — salgyny skriptiň däl-de, adamyň iberýändigini barlamak.",
+              "Interfeýsiň sazlamalary — saýlanan dil we bezeg temasy.",
+            ],
+          },
+          {
+            heading: "Analitik",
+            body: [
+              "Olar haýsy sahypalaryň ulanylýandygyna we ýalňyşlyklaryň nirede ýüze çykýandygyna düşünmäge kömek edýär. Olar Siziň razylygyňyz bilen gurnalýar we hyzmatyň işlemegi üçin hökman däl.",
+            ],
+            bullets: [
+              "Google Analytics we Google Tag Manager — saýta gelýänleriň sany we saýtdaky hereketler şahsyýetsizleşdirilen görnüşde.",
+              "Yandex Metrica — saýta gelýänleriň sany, basyşlar kartasy we Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Yandex Metrica-nyň Webvisor guraly sahypadaky hereketleri ýazga alýar: kursoryň hereketlerini, sahypany aýlamagy, basyşlary we salgy meýdançasyna girizilýän maglumatlary. Bu interfeýsiň nirede ulanyjyny bulaşdyrýandygyny görmek üçin gerek.",
+              "Biz bu ýazga alnan maglumatlary belli bir adamlary yzarlamak üçin ulanmaýarys. Saýtyň meýdançalaryna saklanmagyny islemeýän maglumatlaryňyzy girizmäň.",
+            ],
+          },
+          {
+            heading: "Nädip ýüz öwürmeli",
+            bullets: [
+              "Brauzeriňizde cookie faýllaryny petiklemegi ýa-da pozmagy sazlaň — bu usul sanalan ähli ulgamlar üçin işleýär.",
+              "Google Analytics: ýygnamagy öçürýän resmi brauzer goşmaçasy Google-yň saýtynda elýeterli.",
+              "Yandex Metrica: ýüz öwürmek Yandex-iň resmi goşmaçasy arkaly elýeterli.",
+              "Zerur cookie faýllarynyň öçürilmegi ýüklemegi mümkin däl eder.",
+            ],
+          },
+          {
+            heading: "Möhletler",
+            body: [
+              "Sessiýa cookie faýllary brauzer ýapylanda ýa-da sessiýanyň möhleti gutaranda pozulýar. Analitik hasaplaýjylar identifikatorlary olaryň üpjün edijileri tarapyndan bellenen möhletleriň dowamynda saklaýar.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Hukuk eýelerine",
+        summary: "Hyzmatyň awtorlyk hukuklary babatdaky garaýşy we hukuk bozulmasy barada şikaýat bermegiň tertibi.",
+        sections: [
+          {
+            heading: "Hyzmatyň garaýşy",
+            body: [
+              "Hyzmat özünde wideo ýerleşdirmeýär we olaryň katalogyny alyp barmaýar. Ol tehniki araçy hökmünde çykyş edýär: ulanyjynyň girizen salgysy boýunça köpçülige açyk sahypa ýüzlenýär we faýly ulanyja berýär.",
+              "Ýüklenen faýllar serwerde takmynan bir sagat saklanýar we awtomatik usulda pozulýar. Bizde başgalaryň kontentiniň hemişelik nusgasy galmaýar.",
+              "Ýüklenen materialyň ulanylmagy üçin jogapkärçiligi ulanyjy çekýär — bu Ulanyjy ylalaşygynda göni berkidilen.",
+            ],
+          },
+          {
+            heading: "Eger Siziň hukuklaryňyz bozulan bolsa",
+            body: [
+              `Eger Siz hukuk eýesi ýa-da onuň wekili bolsaňyz we hyzmatyň Siziň hukuklaryňyzy bozmak üçin ulanylýandygyny hasaplaýan bolsaňyz, ${MAIL} salgysyna ýazyň. Biz şeýle ýüzlenmelere seredýäris we çäreler görýäris.`,
+            ],
+          },
+          {
+            heading: "Ýüzlenmede näme görkezmeli",
+            bullets: [
+              "Haýsy eseriň meselesi gozgalýandygy we Siziň oňa haýsy esasda hukugyňyzyň bardygy.",
+              "Materialyň salgysy we, eger mälim bolsa, hukuk bozulmasynyň ýagdaýlary.",
+              "Siziň habarlaşmak üçin maglumatlaryňyz: ady ýa-da atlandyrylyşy, salgysy we elektron poçta salgysy.",
+              "Eger Siz hukuk eýesiniň adyndan hereket edýän bolsaňyz — ygtyýarlyklaryňyzyň tassyklamasy.",
+              "Ýüzlenmedäki maglumatlaryň hakykydygy we materialyň ulanylmagyna hukuk eýesi ýa-da kanun tarapyndan rugsat berilmändigi barada beýanat.",
+            ],
+          },
+          {
+            heading: "Biz näme ederis",
+            body: [
+              "Biz ýüzlenmä paýhasly möhletde, adatça otuz senenama gününiň dowamynda seredýäris we hukuk bozulmasy tassyklanan ýagdaýynda hyzmat arkaly materiala elýeterliligi, zerur bolanda bolsa hukuk bozujynyň hyzmata elýeterliligini çäklendirýäris.",
+              "Seredilişiň netijeleri barada Siziň görkezen elektron poçta salgyňyza habar bereris.",
+            ],
+          },
+          {
+            heading: "Ynsapsyz ýüzlenmeler",
+            body: [
+              "Bilkastlaýyn nädogry maglumatlary öz içine alýan ýüzlenme kanunçylyga laýyklykda arza berijiniň jogapkärçiligine getirip biler. Eger ýüzlenme hukuk eýesini-de, jedelli materialy-da anyklamaga mümkinçilik bermese, biz oňa seretmekden ýüz öwürmäge haklydyrys.",
             ],
           },
         ],

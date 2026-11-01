@@ -48,6 +48,7 @@ export const operator = {
   nameCkb: "بازرگانی تاک SARSEMBAYEV",
   nameKu: "Karsazê Takekesî SARSEMBAYEV",
   nameUg: "يەككە سودىگەر SARSEMBAYEV",
+  nameTk: "Hususy telekeçi SARSEMBAYEV",
   nameAr: "رائد الأعمال الفردي سارسيمباييف (SARSEMBAYEV)",
   directorRu: "Сарсембаев Тимур Сейпилович",
   directorEn: "Timur Sarsembayev",
@@ -125,6 +126,8 @@ export const operator = {
     "Agahdariya destpêkirina çalakiyê wekî karsazê takekesî, jimare KZ45UUZ00498687, dîrok 22.07.2026",
   basisUg:
     "يەككە سودىگەر سۈپىتىدە پائالىيەت باشلاش ھەققىدىكى ئۇقتۇرۇش، نومۇرى KZ45UUZ00498687، چېسلاسى 22.07.2026",
+  basisTk:
+    "Hususy telekeçi hökmünde işiň başlanandygy barada bildiriş № KZ45UUZ00498687, 22.07.2026",
   basisAr:
     "إشعار ببدء نشاط رائد الأعمال الفردي رقم KZ45UUZ00498687 بتاريخ 22.07.2026",
   basisUk:
@@ -204,6 +207,8 @@ export const operator = {
     "Komara Qazaxistanê, Herêma Almatyê, Navçeya Yenbekşiqazaq, Navçeya Gundewarî ya Raxat, Gundê Azat, PKST «Almagul-2», avahiya 117",
   addressUg:
     "قازاقىستان جۇمھۇرىيىتى، ئالمۇتا ۋىلايىتى، ئەمگەكچىقازاق ناھىيەسى، راخات يېزا رايونى، ئازات كەنتى، PKST «Almagul-2»، 117-بىنا",
+  addressTk:
+    "Gazagystan Respublikasy, Almaty welaýaty, Enbekşikazah etraby, Rahat oba okrugy, Azat obasy, PKST «Almagul-2», 117-nji bina",
   addressAr:
     "جمهورية كازاخستان، منطقة ألماتي، مقاطعة إنبيكشيكازاخ، الدائرة الريفية راخات، قرية آزات، PKST «Almagul-2»، المبنى 117",
   addressEs:

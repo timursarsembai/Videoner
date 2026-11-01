@@ -158,6 +158,11 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    // RSS английского блога: *.xml ниже исключены из middleware целиком, а
+    // этот адрес нужно переписать на /en/blog/rss.xml, как и любой
+    // английский путь без префикса. /<язык>/blog/rss.xml попадает в
+    // app/[locale]/blog/rss.xml и без middleware.
+    "/blog/rss.xml",
     "/((?!api|_next|dashboard|favicon.ico|icon.ico|robots.txt|sitemap.xml|images|.*\\.(?:png|jpg|jpeg|svg|webp|ico|txt|xml|zip|xpi|json)$).*)",
   ],
 };

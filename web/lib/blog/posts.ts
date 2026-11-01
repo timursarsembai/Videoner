@@ -9,6 +9,7 @@ import { Block, parseBlocks } from "./markdown";
 //   title: …
 //   summary: …
 //   date: YYYY-MM-DD
+//   updated: YYYY-MM-DD   (необязательно: дата заметной правки статьи)
 //   ---
 // Страницы блога собираются при сборке и пересобираются раз в час
 // (revalidate на страницах и в /api/blog/channel). Статьи с датой в будущем
@@ -18,6 +19,9 @@ import { Block, parseBlocks } from "./markdown";
 export type BlogPost = {
   slug: string;
   date: string;
+  // Дата последней правки (dateModified в JSON-LD, lastmod в sitemap); без
+  // поля updated в шапке совпадает с date.
+  updated: string;
   // Язык текста: если перевода на язык страницы нет — английский, потом русский.
   lang: Language;
   title: string;
@@ -27,6 +31,7 @@ export type BlogPost = {
 
 const DIR = path.join(process.cwd(), "content", "blog");
 const FALLBACK: Language[] = ["en", "ru"];
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 function parseFile(file: string): { meta: Record<string, string>; body: string } | null {
   if (!fs.existsSync(file)) return null;
@@ -52,8 +57,12 @@ export function getPost(slug: string, lang: Language): BlogPost | null {
     const parsed = parseFile(path.join(DIR, slug, `${l}.md`));
     if (!parsed) continue;
     const { meta, body } = parsed;
-    if (!meta.title || !/^\d{4}-\d{2}-\d{2}$/.test(meta.date ?? "") || meta.date > today()) return null;
-    return { slug, date: meta.date, lang: l, title: meta.title, summary: meta.summary ?? "", blocks: parseBlocks(body) };
+    if (!meta.title || !ISO_DATE.test(meta.date ?? "") || meta.date > today()) return null;
+    // Кривая дата правки (опечатка, правка «раньше» публикации или в будущем)
+    // — не повод прятать статью: просто считаем, что правок не было.
+    const updated =
+      ISO_DATE.test(meta.updated ?? "") && meta.updated > meta.date && meta.updated <= today() ? meta.updated : meta.date;
+    return { slug, date: meta.date, updated, lang: l, title: meta.title, summary: meta.summary ?? "", blocks: parseBlocks(body) };
   }
   return null;
 }

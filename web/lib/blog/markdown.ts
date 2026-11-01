@@ -102,3 +102,19 @@ export function telegramHtml(
   }
   return `${kept.join("\n\n")}\n\n${tail}`;
 }
+
+// Обратно в Markdown — для /llms-full.txt: тот же текст, что в .md, но
+// собранный из блоков (переносы строк внутри абзаца склеены).
+export function blocksToMarkdown(blocks: Block[]): string {
+  return blocks
+    .map((b) =>
+      b.type === "h"
+        ? `## ${b.text}`
+        : b.type === "ul"
+          ? b.items.map((i) => `- ${i}`).join("\n")
+          : b.type === "ol"
+            ? b.items.map((i, n) => `${n + 1}. ${i}`).join("\n")
+            : b.text,
+    )
+    .join("\n\n");
+}

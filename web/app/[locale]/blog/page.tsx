@@ -2,7 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Send } from "lucide-react";
 
+import JsonLd from "@/components/common/JsonLd";
 import { listPosts } from "@/lib/blog/posts";
+import { ORGANIZATION, blogUrl, ogImage, postUrl, rssUrl } from "@/lib/blog/seo";
 import { NEWS_CHANNEL_URL, blogUi, formatPostDate } from "@/lib/blog/ui";
 import { languageAlternates, localizedHref, OG_LOCALE } from "@/lib/i18n/routing";
 import { LANGUAGES } from "@/lib/i18n/translations";
@@ -20,12 +22,20 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const lang = resolveLocale((await params).locale);
   const ui = blogUi[lang];
-  const canonical = `https://videoner.download${localizedHref(lang, "/blog")}`;
+  const canonical = blogUrl(lang);
   return {
     title: ui.title,
     description: ui.description,
-    openGraph: { title: ui.title, description: ui.description, url: canonical, siteName: "Videoner", locale: OG_LOCALE[lang], type: "website" },
-    alternates: { canonical, languages: languageAlternates("/blog") },
+    openGraph: { title: ui.title, description: ui.description, url: canonical, siteName: "Videoner", locale: OG_LOCALE[lang], type: "website", images: [ogImage(lang)] },
+    // Иначе остались бы заголовок и описание главной из app/layout.tsx.
+    twitter: { card: "summary_large_image", title: ui.title, description: ui.description },
+    alternates: {
+      canonical,
+      languages: languageAlternates("/blog"),
+      // <link rel="alternate" type="application/rss+xml"> — по нему ленту
+      // находят читалки и краулеры (app/[locale]/blog/rss.xml).
+      types: { "application/rss+xml": [{ url: rssUrl(lang), title: ui.title }] },
+    },
   };
 }
 
@@ -35,6 +45,24 @@ export default async function BlogIndex({ params }: Props) {
   const posts = listPosts(lang);
   return (
     <main className="container max-w-3xl pb-12 pt-24 sm:pb-16 sm:pt-28">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          name: ui.title,
+          description: ui.description,
+          url: blogUrl(lang),
+          inLanguage: lang,
+          publisher: ORGANIZATION,
+          blogPost: posts.map((post) => ({
+            "@type": "BlogPosting",
+            headline: post.title,
+            url: postUrl(lang, post.slug),
+            datePublished: post.date,
+            dateModified: post.updated,
+          })),
+        }}
+      />
       <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{ui.title}</h1>
       <p className="mt-3 text-foreground/70">{ui.description}</p>
       <a

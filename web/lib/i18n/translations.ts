@@ -3,7 +3,10 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja", "ko", "th"] as const;
+// Порядок — как в меню выбора языка: по названию языка на нём самом,
+// сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
+// Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
+export const LANGUAGES = ["id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -36,6 +39,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   ja: "日本語",
   ko: "한국어",
   th: "ไทย",
+  tl: "Tagalog",
 };
 
 type PlatformStrings = {
@@ -8691,4 +8695,364 @@ const th: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th };
+const tl: Translations = {
+  nav: {
+    home: "Home",
+    downloaders: "Mga Downloader",
+    extension: "Extension",
+    blog: "Blog",
+    switchTheme: "Palitan ang tema",
+    language: "Wika",
+    comingSoon: "Malapit Na",
+  },
+  theme: {
+    light: "Light",
+    dark: "Dark",
+    system: "System",
+  },
+  playlist: {
+    title: `Playlist "{title}": {count} video`,
+    hint: "Isa-isang dina-download ang mga video. Huwag isara ang page na ito; maaaring humingi ng pahintulot ang browser mo para sa maraming download.",
+    std: "720p",
+    hd: "Pinakamagandang kalidad",
+    audio: "Audio lang (mp3)",
+    progress: "Video {index} sa {count}",
+    stats: "Na-download: {done} · pumalya: {failed}",
+    stop: "Ihinto",
+    stopped: "Inihinto. Na-download ang {done} sa {count}.",
+    finished: "Tapos na ang playlist: {done} sa {count}.",
+    again: "Pumili ulit",
+  },
+  footer: {
+    news: "Balita ng proyekto",
+    botCta: "Mayroon ding Telegram bot:",
+    extension: "Browser extension",
+    developedBy: "Ginawa ni",
+    rights: "Nakalaan ang lahat ng karapatan.",
+  },
+  content: {
+    howToTitle: "Paano Mag-download ng {platform} Video",
+    faqTitle: "Mga Madalas Itanong",
+  },
+  auth: {
+    loginButton: "Mag-log in gamit ang Telegram",
+    signIn: "Mag-sign In",
+    logout: "Mag-log out",
+    switchAccountHint: "Hindi mo account ito?",
+    switchAccountLink: "Mag-log out sa Telegram Web",
+  },
+  home: {
+    new: "Bago",
+    manyFeatures: "Maraming bagong feature",
+    titleLine1: "Mag-download ng Video",
+    titleLine2: "Mabilis at Madali",
+    subtitle:
+      "Ang all-in-one video downloader mo para sa YouTube, Instagram, TikTok at iba pa. Pumili ng kahit anong kalidad, mula HD hanggang pang-mobile.",
+    subtitleExtra: "Walang limit, walang abala — download lang.",
+    placeholder: "I-paste ang URL ng video mula sa kahit anong platform...",
+    download: "I-download",
+  },
+  video: {
+    description: "Paglalarawan",
+    format: "Format",
+    selected: "Napili: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Kino-convert",
+    downloading: "Dina-download",
+    downloadAgain: "I-download Ulit",
+    startDownload: "Simulan ang Download",
+    convertingBtn: "Kino-convert...",
+    downloadingBtn: "Dina-download...",
+    loginRequiredHint: "Mag-log in gamit ang Telegram para mag-download",
+    quotaExceededHint: "Naabot na ang daily limit na 20 download — bumalik bukas",
+    postFiles: "May {count} file ang post na ito",
+    photoQuality: "Orihinal na mga larawan",
+    slideshowQuality: "Slideshow (video)",
+    galleryQuality: "Mga larawan + slideshow",
+    downloadAll: "I-download lahat",
+    downloadOne: "I-save",
+    subtitlesTab: "subtitles",
+    subtitlesHint: "Pumili ng wika — makakakuha ka ng .srt file na nabubuksan ng kahit anong player.",
+    subtitlesAuto: "auto",
+    subtitlesDownload: "I-download ang subtitles",
+    subtitlesDownloading: "Inihahanda ang subtitles...",
+  },
+  toast: {
+    enterUrl: "Maglagay ng URL",
+    enterValidUrl: "Maglagay ng tamang URL",
+    platformNotSupported: "Hindi suportado ang platform na ito",
+    urlNotSupported: "Hindi suportado ang URL na ito",
+    enterValidPlatformUrl: "Maglagay ng tamang {platform} URL",
+    captchaNotReady: "Sandali lang habang tinatapos ang security check, saka subukan ulit",
+    comingSoon: "Malapit na! Hindi pa suportado ang {name}",
+    selectQuality: "Pumili ng kalidad",
+    downloadStarted: "Nagsimula na ang download!",
+    downloadCompleted: "Tapos na ang download!",
+    newsChannel: "Nasa Telegram ang mga balita ng proyekto:",
+    downloadUrlNotReceived: "Hindi natanggap ang download URL",
+    needsBrowser:
+      "Hindi ibinigay ng platform ang video na ito sa aming server: para lang ito sa mga naka-sign in na user, o pansamantalang limitado ang access. Maaari mo itong i-download gamit ang Videoner browser extension sa computer — nagda-download ito gamit ang sarili mong sign-in.",
+    needsBrowserLink: "Kunin ang extension →",
+  },
+  platforms: {
+    youtube: {
+      description: "I-download ang YouTube video sa HD na kalidad",
+      news: "May suporta na para sa mga video at Shorts",
+      titleLine1: "I-download ang YouTube",
+      titleLine2: "Video at Shorts",
+      pageDescription:
+        "I-download ang YouTube video, Shorts at audio sa mataas na kalidad. Mabilis, libre at madaling gamitin. Suportado ang 8K, 4K, HD at MP3 audio.",
+      placeholder: "I-paste ang YouTube URL dito...",
+      howTo: [
+        "Kopyahin ang link ng video mula sa address bar ng browser mo, o i-tap ang Share sa YouTube app.",
+        "I-paste ito sa box sa itaas at pindutin ang I-download.",
+        "Pumili ng kalidad — hanggang 4K/8K para sa video, o MP3 kung audio lang.",
+        "Agad na magsisimula ang download ng file mo, walang kailangang sign-in.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng YouTube video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Iniaalok ng Videoner ang bawat resolution na ibinibigay ng YouTube para sa video na iyon — mula 360p hanggang 4K/8K kung available — pati ang pagkuha ng MP3 audio." },
+        { q: "Puwede ko bang i-download ang mga private o age-restricted na video?", a: "Mga pampublikong YouTube video lang ang suportado; hindi mada-download ang private, unlisted na hindi para sa iyo, o content na nangangailangan ng login." },
+        { q: "Legal ba ang pag-download ng video mula sa YouTube?", a: "I-download lang ang mga video na may karapatan kang i-save — sarili mong content, mga video na may Creative Commons license, o anumang pinapayagan ng creator. Igalang ang Terms of Service ng YouTube at ang batas sa copyright." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Nananatili sa server ang mga na-convert na file nang mga isang oras, kaya i-save agad ang mga ito sa device mo pagkatapos mag-download." },
+      ],
+    },
+    facebook: {
+      description: "I-save ang mga video mula sa Facebook post at reels",
+      news: "May suporta na para sa reels",
+      titleLine1: "I-download ang Facebook",
+      titleLine2: "Video at Reels",
+      pageDescription:
+        "I-download ang Facebook video at reels sa mataas na kalidad. Mabilis, libre at madaling gamitin.",
+      placeholder: "I-paste ang Facebook URL dito...",
+      howTo: [
+        "Buksan ang video o reel sa Facebook at kopyahin ang link nito (i-tap ang tatlong tuldok → Copy Link).",
+        "I-paste ang link sa itaas at pindutin ang I-download.",
+        "Pumili ng kalidad ng MP4 o kunin ang audio bilang MP3.",
+        "Diretsong mada-download ang file sa device mo — hindi kailangan ng Facebook account.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng Facebook video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Kinukuha ng Videoner ang pinakamataas na kalidad na ibinibigay ng Facebook para sa video o reel na iyon, sa MP4, pati may opsyon para sa MP3 audio." },
+        { q: "Puwede ko bang i-download ang mga private na video?", a: "Mga pampublikong post, video at reels lang ang gumagana — hindi ma-access ang private o friends-only na content." },
+        { q: "Legal ba ang pag-download ng video mula sa Facebook?", a: "I-download lang ang mga video na may pahintulot kang i-save; igalang ang karapatan ng creator at ang Terms of Service ng Facebook." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Itinatago ang mga file nang mga isang oras pagkatapos ng conversion, saka awtomatikong binubura — mag-download agad." },
+      ],
+    },
+    instagram: {
+      description: "I-download ang Instagram reels, stories at post",
+      news: "May suporta na para sa reels at stories",
+      titleLine1: "I-download ang Instagram",
+      titleLine2: "Reels at Stories",
+      pageDescription:
+        "I-download ang Instagram reels, stories at post sa mataas na kalidad. Mabilis, libre at madaling gamitin.",
+      placeholder: "I-paste ang Instagram URL dito...",
+      howTo: [
+        "Buksan ang Reel, post o story sa Instagram at i-tap ang icon na eroplanong papel → Copy Link.",
+        "I-paste ang link sa box sa itaas.",
+        "Piliin ang gusto mong kalidad at format.",
+        "Agad na magsisimula ang download — walang login o pag-install ng app na kailangan.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng Instagram content gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Ang buong available na kalidad para sa reels, post at stories, sa MP4 o MP3." },
+        { q: "Puwede ba akong mag-download mula sa mga private account?", a: "Mga pampublikong Instagram account at post lang ang suportado; hindi mada-download ang content mula sa private account." },
+        { q: "Legal ba ang pag-download ng video mula sa Instagram?", a: "I-download lang ang pinapayagan kang i-save — igalang ang creator at ang Terms of Service ng Instagram." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Nasa server ang mga file nang mga isang oras bago awtomatikong mabura." },
+      ],
+    },
+    tiktok: {
+      description: "TikTok video download na walang watermark",
+      news: "Wala nang watermark",
+      titleLine1: "I-download ang TikTok",
+      titleLine2: "Nang Walang Watermark",
+      pageDescription:
+        "TikTok video download na walang watermark, sa mataas na kalidad. Mabilis, libre at madaling gamitin.",
+      placeholder: "I-paste ang TikTok URL dito...",
+      howTo: [
+        "I-tap ang Share sa TikTok video, saka Copy Link.",
+        "I-paste ang link sa itaas at pindutin ang I-download.",
+        "Kunin ang malinis na MP4 — walang TikTok watermark — o ang MP3 audio.",
+        "I-save ito diretso sa device mo.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng TikTok video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Ang pinakamagandang kalidad na ibinibigay ng TikTok para sa video na iyon, nang walang TikTok watermark, pati MP3 audio." },
+        { q: "Puwede ba akong mag-download mula sa mga private account?", a: "Mga video lang mula sa pampublikong TikTok account ang mada-download." },
+        { q: "Legal ba ang pag-download ng video mula sa TikTok?", a: "I-download ang mga video na may karapatan kang i-save, bigyan ng credit ang creator, at igalang ang Terms of Service ng TikTok." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Nananatili sa server ang mga na-download na file nang humigit-kumulang isang oras, saka awtomatikong binubura." },
+      ],
+    },
+    twitter: {
+      description: "I-download ang Twitter video",
+      news: "May suporta na para sa Twitter video",
+      titleLine1: "I-download ang Twitter",
+      titleLine2: "Video",
+      pageDescription:
+        "I-download ang Twitter video sa mataas na kalidad. Mabilis, libre at madaling gamitin.",
+      placeholder: "I-paste ang Twitter URL dito...",
+      howTo: [
+        "I-tap ang Share sa ilalim ng tweet at piliin ang Copy Link (o kopyahin ang URL mula sa browser mo).",
+        "I-paste ito sa box sa itaas.",
+        "Piliin ang kalidad ng video na gusto mo.",
+        "Agad na magsisimula ang download — hindi kailangan ng X/Twitter account.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng Twitter/X video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Bawat kalidad na iniaalok ng X/Twitter para sa video na iyon, sa MP4, pati MP3." },
+        { q: "Puwede ba akong mag-download mula sa mga private account?", a: "Mga tweet lang mula sa pampublikong account ang gumagana; hindi suportado ang mga protected/private account." },
+        { q: "Legal ba ang pag-download ng video mula sa Twitter/X?", a: "I-download ang content na may karapatan kang i-save, igalang ang karapatan ng nag-post at ang Terms of Service ng platform." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Awtomatikong binubura ang mga file mga isang oras pagkatapos gawin ang mga ito." },
+      ],
+    },
+    vimeo: {
+      description: "I-download ang Vimeo video sa mataas na kalidad",
+      news: "May suporta na para sa Vimeo",
+      titleLine1: "I-download ang Vimeo",
+      titleLine2: "Video",
+      pageDescription:
+        "I-download ang Vimeo video sa mataas na kalidad. Mabilis, libre at madaling gamitin.",
+      placeholder: "I-paste ang Vimeo URL dito...",
+      howTo: [
+        "Buksan ang Vimeo at kopyahin ang link ng video (o i-tap ang Share → Copy Link sa mobile).",
+        "I-paste ang link sa box sa itaas at pindutin ang I-download.",
+        "Pumili ng kalidad at format — MP4 para sa video, MP3 kung audio lang ang gusto mo.",
+        "Agad na magsisimula ang download mo; walang kailangang account o pag-install ng software.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng Vimeo video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Iniaalok ng Videoner ang bawat kalidad na ginagawang available ng Vimeo para sa video na iyon, hanggang sa orihinal na resolution ng upload, kasama ang HD at 4K kung ibinigay ito ng creator." },
+        { q: "Puwede ko bang i-download ang mga private o password-protected na Vimeo video?", a: "Hindi — gumagana lang ang Videoner sa mga pampublikong Vimeo link. Hindi mada-download ang mga private, password-protected o restricted na video." },
+        { q: "Legal ba ang pag-download ng video mula sa Vimeo?", a: "Ang pag-download ay para sa mga video na may karapatan kang i-save — sarili mong content, mga video na may Creative Commons license, o anumang tahasang pinayagan ng creator na i-download. Igalang ang copyright ng orihinal na creator at ang terms of service ng Vimeo." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Ginagawa ang mga file kapag hiniling at itinatago sa server nang mga isang oras bago awtomatikong mabura, kaya i-save ito agad sa device mo pagkatapos ng download." },
+      ],
+    },
+    vk: {
+      description: "I-download ang mga video at clip mula sa VK",
+      news: "May suporta na para sa VK",
+      titleLine1: "I-download ang VK",
+      titleLine2: "Video at Clip",
+      pageDescription:
+        "I-download ang VK video at clip sa mataas na kalidad. Mabilis, libre at madaling gamitin.",
+      placeholder: "I-paste ang VK URL dito...",
+      howTo: [
+        "Buksan ang video o clip sa VK (vk.com o VK Video) at kopyahin ang link nito mula sa address bar o sa Share button.",
+        "I-paste ang link sa itaas at pindutin ang I-download.",
+        "Piliin ang available na kalidad at format.",
+        "Diretsong mada-download ang file — hindi mo kailangang naka-log in sa VK.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng VK video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Lahat ng kalidad na ibinibigay ng VK para sa video o clip na iyon, pati MP3 audio." },
+        { q: "Kailangan ko bang mag-log in sa VK?", a: "Hindi — kailangang pampubliko ang video. Hindi nagla-log in ang Videoner sa VK, kaya hindi mada-download ang mga private, friends-only o login-required na video." },
+        { q: "Legal ba ang pag-download ng video mula sa VK?", a: "I-download lang ang mga video na may karapatan kang i-save, at igalang ang Terms of Service ng VK at ang karapatan ng nag-upload." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Itinatago ang mga file sa server nang mga isang oras, saka awtomatikong binubura." },
+      ],
+    },
+    rutube: {
+      description: "I-download ang mga video mula sa Rutube",
+      news: "May suporta na para sa Rutube",
+      titleLine1: "I-download ang Rutube",
+      titleLine2: "Video",
+      pageDescription:
+        "I-download ang Rutube video sa mataas na kalidad. Mabilis, libre at madaling gamitin.",
+      placeholder: "I-paste ang Rutube URL dito...",
+      howTo: [
+        "Buksan ang video sa Rutube at kopyahin ang link nito mula sa address bar o sa Share button.",
+        "I-paste ito sa box sa itaas.",
+        "Piliin ang kalidad at format (video o audio).",
+        "Agad na magsisimula ang download, hindi kailangan ng Rutube account.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng Rutube video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Bawat kalidad na iniaalok ng Rutube, sa MP4, pati MP3 audio." },
+        { q: "Kailangan ko bang mag-log in sa Rutube?", a: "Hindi — gumagana lang ang Videoner sa mga pampublikong Rutube video; walang login na ginagamit o kailangan." },
+        { q: "Legal ba ang pag-download ng video mula sa Rutube?", a: "I-download lang ang content na pinapayagan kang i-save, at igalang ang Terms of Service ng Rutube at ang karapatan ng creator." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Nananatili sa server ang mga file nang mga isang oras bago awtomatikong mabura." },
+      ],
+    },
+    okru: {
+      description: "I-download ang mga video mula sa OK.ru (Odnoklassniki)",
+      news: "May suporta na para sa OK.ru",
+      titleLine1: "I-download ang OK.ru",
+      titleLine2: "Video",
+      pageDescription:
+        "I-download ang OK.ru (Odnoklassniki) video sa mataas na kalidad. Mabilis, libre at madaling gamitin.",
+      placeholder: "I-paste ang OK.ru URL dito...",
+      howTo: [
+        "Buksan ang video sa OK.ru (Odnoklassniki) at kopyahin ang link nito mula sa address bar.",
+        "I-paste ang link sa box sa itaas at pindutin ang I-download.",
+        "Piliin ang kalidad at format mo.",
+        "Agad na magsisimula ang download — hindi kailangang mag-log in sa OK.ru.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng OK.ru video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ng video ang puwede kong i-download?", a: "Ang buong hanay ng kalidad na ibinibigay ng OK.ru para sa video na iyon, pati MP3." },
+        { q: "Kailangan ko bang mag-log in sa OK.ru?", a: "Hindi — mga pampublikong OK.ru (Odnoklassniki) video lang ang gumagana. Hindi kailanman nagla-log in ang Videoner sa isang account, kaya hindi ma-access ang mga private na video." },
+        { q: "Legal ba ang pag-download ng video mula sa OK.ru?", a: "I-download lang ang mga video na may karapatan kang i-save, at igalang ang Terms of Service ng OK.ru at ang karapatan ng nag-upload." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Awtomatikong binubura ang mga file humigit-kumulang isang oras pagkatapos gawin ang mga ito." },
+      ],
+    },
+    pinterest: {
+      description: "I-download ang mga video mula sa Pinterest pin",
+      news: "May suporta na para sa Pinterest",
+      titleLine1: "I-download ang Pinterest",
+      titleLine2: "Video at Pin",
+      pageDescription:
+        "I-download ang mga video mula sa Pinterest pin sa mataas na kalidad. Mabilis, libre at madaling gamitin. Paalala: mga video pin lang ang mada-download — hindi suportado ang mga pin na larawan lang.",
+      placeholder: "I-paste ang Pinterest URL dito...",
+      howTo: [
+        "Buksan ang pin sa Pinterest at i-tap ang Share → Copy Link (o kopyahin ang URL mula sa browser mo).",
+        "I-paste ang link sa box sa itaas at pindutin ang I-download.",
+        "Piliin ang gusto mong kalidad at format.",
+        "Agad na mada-download ang file mo — hindi kailangan ng account.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng Pinterest video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ang puwede kong i-download?", a: "Iniaalok ng Videoner ang bawat kalidad na ibinibigay ng Pinterest para sa video ng pin na iyon, pati ang pagkuha ng MP3 audio." },
+        { q: "Puwede ba akong mag-download ng mga larawan mula sa Pinterest?", a: "Hindi — mga video pin lang ang mada-download. Kung larawan lang ang pin, walang video file na makukuha." },
+        { q: "Puwede ko bang i-download ang mga private o board-restricted na pin?", a: "Mga pampublikong pin lang ang suportado; hindi mada-download ang mga private board at content na nangangailangan ng login." },
+        { q: "Legal ba ang pag-download ng video mula sa Pinterest?", a: "I-download lang ang mga pin na may karapatan kang i-save — sarili mong content o anumang pinapayagan ng creator. Igalang ang Terms of Service ng Pinterest at ang batas sa copyright." },
+        { q: "Gaano katagal available ang na-download kong file?", a: "Nananatili sa server ang mga na-convert na file nang mga isang oras, kaya i-save agad ang mga ito sa device mo pagkatapos mag-download." },
+      ],
+    },
+    threads: {
+      description: "I-download ang mga video mula sa Threads post",
+      news: "May suporta na para sa Threads",
+      titleLine1: "I-download ang Threads",
+      titleLine2: "Video",
+      pageDescription:
+        "I-download ang mga video mula sa Threads post. Mabilis, libre at walang kailangang Threads account. Iisang bersyon lang ng video ang ibinibigay ng Threads, hanggang 720p — iyon ang pinakamataas na kalidad na available sa platform.",
+      placeholder: "I-paste ang Threads URL dito...",
+      howTo: [
+        "Buksan ang post sa Threads at i-tap ang share icon, saka Copy Link.",
+        "I-paste ang link sa box sa itaas at pindutin ang I-download.",
+        "Piliin ang format na gusto mo — video o MP3 audio.",
+        "Agad na mada-download ang file mo — hindi kailangan ng account.",
+      ],
+      faq: [
+        { q: "Libre ba ang pag-download ng Threads video gamit ang Videoner?", a: "Oo, ganap na libre: walang sign-in, walang subscription, walang ads at walang daily download limit. Ang tanging limit ay sa YouTube traffic — 10 GB kada araw bawat network — para protektahan ang serbisyo laban sa pang-aabuso." },
+        { q: "Kailangan ko ba ng account para mag-download?", a: "Hindi. Walang kailangang account o sign-in para mag-download — i-paste lang ang link at pindutin ang I-download." },
+        { q: "Anong kalidad ang puwede kong i-download?", a: "Eksaktong iisang bersyon ng video bawat post ang inilalabas ng Threads, na may limit na 720p sa mas maikling gilid — kahit nag-upload ang author ng 4K. Ibinibigay sa iyo ng Videoner ang file na iyon nang buo, pati ang pagkuha ng MP3 audio. Walang downloader na makakapagbigay ng higit pa, dahil hindi talaga inilalabas ang mas matataas na resolution." },
+        { q: "Gumagana ba pareho ang mga link ng threads.com at threads.net?", a: "Oo. Suportado pareho ang buong link tulad ng threads.com/@user/post/CODE at ang maikling link na threads.net/t/CODE." },
+        { q: "Puwede ba akong mag-download ng mga larawan mula sa Threads post?", a: "Hindi — mga video lang. Kung larawan lang ang laman ng post, walang video file na makukuha." },
+        { q: "Paano kung may ilang video ang post?", a: "Ang unang video sa post ang mada-download. Puwedeng maglaman ng ilang clip ang mga carousel sa Threads, at ang una lang ang nase-save." },
+        { q: "Puwede ko bang i-download ang mga private post?", a: "Hindi. Mga pampublikong post lang ang mada-download; hindi ma-access ang anumang nasa private account o nasa likod ng login." },
+        { q: "Legal ba ang pag-download ng video mula sa Threads?", a: "I-download lang ang may karapatan kang i-save — sarili mong content o anumang pinapayagan ng author. Igalang ang Terms of Use ng Threads at ang batas sa copyright." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl };

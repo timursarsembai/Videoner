@@ -307,6 +307,18 @@ export const blogUi: Record<
     readFull: "อ่านฉบับเต็มบนเว็บไซต์",
     dateLocale: "th-TH-u-nu-latn-ca-gregory",
   },
+  tl: {
+    title: "Videoner blog",
+    description: "Mga balita ng proyekto: ano ang bago sa bot, sa website at sa extension, at kung paano ito gamitin.",
+    readMore: "Basahin",
+    back: "Lahat ng post",
+    allPosts: "Blog",
+    channel: "Balita sa Telegram",
+    channelCta: "Nasa Telegram channel na @videonerdownload ang mga balita ng proyekto.",
+    readOnSite: "Basahin sa website",
+    readFull: "Basahin ang buong post sa website",
+    dateLocale: "fil-PH",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

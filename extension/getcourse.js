@@ -83,9 +83,9 @@
   function addButton() {
     const ui = chrome.i18n.getUILanguage().toLowerCase();
     // Язык — как в content.js: сначала по браузеру, потом по выбору в окошке.
-    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", en: "Download" };
-    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", ar: "إخفاء الزر", zh: "隐藏按钮", hi: "बटन छिपाएँ", id: "Sembunyikan tombol", sw: "Ficha kitufe", de: "Button ausblenden", fr: "Masquer le bouton", it: "Nascondi il pulsante", pt: "Ocultar o botão", es: "Ocultar el botón", uz: "Tugmani yashirish", tr: "Düğmeyi gizle", fa: "پنهان کردن دکمه", vi: "Ẩn nút", bn: "বোতাম লুকান", ur: "بٹن چھپائیں", pl: "Ukryj przycisk", ja: "ボタンを非表示", ko: "버튼 숨기기", th: "ซ่อนปุ่ม", en: "Hide the button" };
-    const base = ui.split("-")[0] === "in" ? "id" : ui.split("-")[0];
+    const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", tl: "I-download", en: "Download" };
+    const HIDES = { ru: "Скрыть кнопку", uk: "Сховати кнопку", kk: "Батырманы жасыру", ar: "إخفاء الزر", zh: "隐藏按钮", hi: "बटन छिपाएँ", id: "Sembunyikan tombol", sw: "Ficha kitufe", de: "Button ausblenden", fr: "Masquer le bouton", it: "Nascondi il pulsante", pt: "Ocultar o botão", es: "Ocultar el botón", uz: "Tugmani yashirish", tr: "Düğmeyi gizle", fa: "پنهان کردن دکمه", vi: "Ẩn nút", bn: "বোতাম লুকান", ur: "بٹن چھپائیں", pl: "Ukryj przycisk", ja: "ボタンを非表示", ko: "버튼 숨기기", th: "ซ่อนปุ่ม", tl: "Itago ang button", en: "Hide the button" };
+    const base = { in: "id", fil: "tl" }[ui.split("-")[0]] ?? ui.split("-")[0];
     const l = base in LABELS ? base : "en";
     const PANEL_WIDTH = 340;
 

@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на двадцати четырёх языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на двадцати пяти языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -7255,6 +7255,308 @@ export const legal: LegalByLanguage = {
             heading: "คำร้องเรียนโดยไม่สุจริต",
             body: [
               "คำร้องเรียนที่มีข้อมูลซึ่งผู้ร้องรู้อยู่แล้วว่าเป็นเท็จอาจทำให้ผู้ร้องต้องรับผิดตามกฎหมาย เราอาจปฏิเสธที่จะพิจารณาคำร้องเรียนที่ไม่สามารถระบุตัวเจ้าของสิทธิ์หรือเนื้อหาที่เป็นข้อพิพาทได้",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  tl: {
+    ui: {
+      updated: "Huling binago noong",
+      back: "Bumalik sa pangunahing pahina",
+      operatorHeading: "Operator ng serbisyo",
+      navHeading: "Iba pang mga dokumento",
+      labels: {
+        privacy: "Patakaran sa Privacy",
+        terms: "Mga Tuntunin ng Paggamit",
+        cookies: "Patakaran sa Cookie",
+        copyright: "Para sa mga May-ari ng Karapatan",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Patakaran sa Privacy",
+        summary: `Anong datos ang kinokolekta ng ${operator.site}, bakit ito kailangan, gaano katagal ito iniimbak at paano ito ipabubura.`,
+        sections: [
+          {
+            heading: "Pangkalahatang mga probisyon",
+            body: [
+              `Inilalarawan ng Patakarang ito kung anong personal na datos (personal data) ang pinoproseso ng serbisyong ${operator.site} at para sa anong layunin. Ang data controller ay si ${operator.nameTl}.`,
+              "Sa paggamit ng serbisyo, sumasang-ayon ka sa paraan ng pagproseso na inilalarawan dito. Kung hindi ka sumasang-ayon dito, mangyaring huwag gamitin ang serbisyo.",
+              "Isinasagawa ang pagproseso alinsunod sa Batas ng Republika ng Kazakhstan \"Tungkol sa Personal na Datos at sa Proteksyon Nito\", at, kaugnay ng mga bisita mula sa European Economic Area, alinsunod din sa mga kinakailangan ng GDPR.",
+            ],
+          },
+          {
+            heading: "Anong datos ang aming pinoproseso",
+            body: [
+              "Sadyang hindi kami nangongolekta ng anumang higit sa kinakailangan para gumana ang serbisyo, at hindi kami humihingi ng mga dokumento ng pagkakakilanlan, datos ng pagbabayad o address.",
+            ],
+            bullets: [
+              "Datos ng Telegram account na natatanggap ng bot kapag nagpadala ka ng mensahe rito: numerikong identifier, username, pangalan at code ng wika.",
+              "Ang mga link na ipinapadala mo para i-download at ang mga detalye ng mismong pagtatangka: platform, petsa at oras, napiling kalidad, at ang resulta (tagumpay o error).",
+              "Teknikal na datos ng koneksyon: IP address, uri at bersyon ng browser, wika at pinanggalingang pahina (referring page). Napupunta ang mga ito sa mga log ng server at sa mga sistema ng web analytics.",
+              "Mga cookie at analytics identifier — para sa mga detalye, tingnan ang Patakaran sa Cookie.",
+            ],
+          },
+          {
+            heading: "Bakit kailangan ang datos na ito",
+            bullets: [
+              "Upang maibigay ang mismong serbisyo: kunin ang video mula sa iyong link at ibigay sa iyo ang file.",
+              "Upang makilala ang iyong account mula sa account ng iba at maiwasan ang pang-aabuso.",
+              "Upang maprotektahan ang serbisyo laban sa awtomatikong pang-aabuso sa pamamagitan ng pagsusuri ng Cloudflare Turnstile bago ipadala ang link.",
+              "Upang maunawaan kung paano ginagamit ang site at maitama ang mga error, gamit ang anonimisado at pinagsama-samang (aggregated) estadistika.",
+              "Upang tumugon sa iyong mga katanungan at sa mga katanungan ng mga may-ari ng karapatan.",
+              "Upang paminsan-minsang padalhan ka ng mensahe sa Telegram para alamin ang iyong opinyon tungkol sa serbisyo — halimbawa, kung tumigil ka na sa paggamit nito. Hindi sapilitan ang pagtugon; kung ayaw mong makatanggap ng ganitong mga mensahe, sabihin lamang ito at hindi na kami magpapadala muli.",
+            ],
+          },
+          {
+            heading: "Mga legal na batayan ng pagproseso",
+            body: [
+              "Ang datos ng Telegram account at ang mga tala ng pag-download ay pinoproseso upang maisakatuparan ang Mga Tuntunin ng Paggamit, na tinatanggap mo sa sandaling simulan mong gamitin ang serbisyo.",
+              "Ang mga analytics cookie at ang pagre-record ng mga aksyon sa site ay pinoproseso batay sa iyong pahintulot (consent), na maaari mong bawiin anumang oras — ang mga paraan ay inilalarawan sa Patakaran sa Cookie.",
+              "Ang mga log ng server at ang proteksyon laban sa mga bot ay nakabatay sa aming lehitimong interes (legitimate interest) na mapanatiling gumagana at ligtas ang serbisyo.",
+              "Ang pagtatanong tungkol sa iyong opinyon sa serbisyo ay nakabatay sa aming lehitimong interes na mapabuti ang serbisyo; maaari kang tumanggi rito anumang oras.",
+            ],
+          },
+          {
+            heading: "Mga nakakonektang account",
+            body: [
+              "Kung nais mo, maaari mong ikonekta sa bot ang iyong account sa isang platform (Instagram, Facebook, YouTube, X, VK, TikTok) upang ma-download ng bot ang mga post na nakikita lamang ng mga naka-sign in: mga story at mga pribadong post. Para dito, natatanggap ng bot ang mga cookie ng account na iyon — mula sa Videoner extension sa pamamagitan ng isang beses na code, o mula sa file na ipinadala mo.",
+              "Iniimbak lamang namin ang mga cookie ng napiling platform at agad na itinatapon ang iba. Iniimbak ang mga ito nang naka-encrypt at ginagamit lamang para sa mga pag-download kung saan mo ikinonekta ang mga ito. Ang mga cookie na ikinonekta sa iyong pribadong chat ay para sa iyong mga pag-download, kabilang ang iyong sariling mga link sa mga grupong walang sariling nakakonektang account; hindi kailanman ginagamit ang mga ito para sa mga link ng ibang tao. Ang mga cookie na ikinonekta sa isang grupo ay para lamang sa mga pag-download ng mga miyembro nito at wala nang iba.",
+              "Ang legal na batayan ay ang iyong pahintulot: ikaw mismo ang nagkokonekta ng account at maaari mo itong alisin anumang oras gamit ang command na /accounts. Kapag inalis, permanenteng binubura ang mga cookie. Kung huminto ang platform sa pagtanggap ng pag-login, ipaaalam ito sa iyo ng bot.",
+              "Ang mga post na na-download sa pamamagitan ng nakakonektang account ay hindi inilalathala sa aming channel at hindi ibinibigay sa ibang mga user mula sa pinagsasaluhang cache.",
+            ],
+          },
+          {
+            heading: "Mga serbisyo ng ikatlong partido",
+            body: [
+              "Hindi namin ibinebenta ang iyong datos at hindi namin ito ipinapasa sa mga ikatlong partido para sa kanilang sariling layunin. Gumagamit ang serbisyo ng mga sumusunod na provider, na bawat isa ay nagpoproseso ng datos ayon sa sarili nitong mga patakaran:",
+            ],
+            bullets: [
+              `Telegram — pagpapatakbo ng bot na ${BOT}.`,
+              "Cloudflare — proteksyon laban sa mga bot (Turnstile), paghahatid ng site at pagruruta ng email.",
+              "Google Analytics at Google Tag Manager — estadistika ng mga pagbisita.",
+              "Yandex Metrica — estadistika ng mga pagbisita, click map at Webvisor. Nire-record ng Webvisor ang mga aksyon sa pahina: paggalaw ng pointer, pag-scroll at mga pag-click. Ginagamit lamang ang mga recording upang suriin ang kadalian ng paggamit ng site.",
+            ],
+          },
+          {
+            heading: "Gaano katagal namin iniimbak ang datos",
+            bullets: [
+              "Awtomatikong binubura sa server ang mga na-download na file humigit-kumulang isang oras matapos itong malikha. Hindi kami nag-iingat ng archive ng iyong mga video.",
+              "Iniimbak ang mga tala ng mga pagtatangkang mag-download hangga't kinakailangan ito para maiwasan ang pang-aabuso at para masuri ang mga katanungan.",
+              "Iniimbak ang datos ng account habang ginagamit mo ang serbisyo at binubura ito kapag hiniling mo.",
+              "Iniimbak ang mga log ng server sa limitadong panahon at pinapatungan habang umiikot (rotation) ang mga ito.",
+            ],
+          },
+          {
+            heading: "Saan pinoproseso ang datos",
+            body: [
+              "Ang mga server ng serbisyo ay matatagpuan sa isang data center sa loob ng European Union. Maaaring iproseso ng ilan sa mga provider na nakalista sa itaas ang datos sa labas nito alinsunod sa kanilang sariling mga patakaran.",
+            ],
+          },
+          {
+            heading: "Ang iyong mga karapatan",
+            body: [
+              `May karapatan kang humingi ng impormasyon tungkol sa pagproseso ng iyong datos, hilingin na itama o burahin ito, bawiin ang iyong pahintulot at tumutol sa pagproseso. Para dito, sumulat sa ${MAIL} mula sa email address o Telegram account na kaugnay ng kahilingan.`,
+              "Tumutugon kami sa loob ng makatwirang panahon, karaniwang sa loob ng tatlumpung araw ng kalendaryo. Kapag binura ang isang account, binubura rin ang kasaysayan ng pag-download na nakaugnay rito.",
+            ],
+          },
+          {
+            heading: "Mga menor de edad",
+            body: [
+              "Ang serbisyo ay hindi nilalayon para sa mga batang wala pang 16 na taong gulang at hindi nakatuon sa kanila. Hindi namin sadyang kinokolekta ang kanilang datos; kung nangyari ito nang hindi sinasadya, sumulat sa amin at buburahin ang datos.",
+            ],
+          },
+          {
+            heading: "Mga pagbabago",
+            body: [
+              "Maaari naming i-update ang Patakarang ito. Nakasaad sa itaas ng pahina ang petsa ng kasalukuyang bersyon; ipapaalam namin sa loob ng serbisyo ang mahahalagang pagbabago.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Mga Tuntunin ng Paggamit",
+        summary: `Ang mga tuntunin sa paggamit ng ${operator.site}: kung ano ang pinapayagan, kung ano ang hindi, at sa anong mga kondisyon gumagana ang serbisyo.`,
+        sections: [
+          {
+            heading: "Pangkalahatang mga probisyon",
+            body: [
+              `Pinamamahalaan ng mga Tuntuning ito ang paggamit ng website na ${operator.site} at ng Telegram bot na ${BOT}. Ang may-ari at tagapangasiwa ng serbisyo ay si ${operator.nameTl}.`,
+              "Sa pagsisimulang gamitin ang serbisyo, kinukumpirma mo na nabasa mo ang mga Tuntuning ito at tinatanggap mo ang mga ito. Kung may anumang kondisyon na hindi angkop sa iyo, huwag gamitin ang serbisyo.",
+            ],
+          },
+          {
+            heading: "Libre ang serbisyo",
+            body: [
+              "Ibinibigay nang libre ang lahat ng tampok ng serbisyo. Wala kaming mga subscription, bayad na plano, bayad na kalidad ng video o mga pagbili sa loob ng serbisyo.",
+              "Hindi kami nagpapakita ng advertisement at hindi kami naglalagay ng mga affiliate link.",
+            ],
+          },
+          {
+            heading: "Mga kondisyon ng pag-access",
+            bullets: [
+              "Hindi kailangan ng account o pag-sign in para mag-download sa website. Kinikilala ng bot ang mga user batay sa kanilang Telegram account.",
+              "Pinoprotektahan ang serbisyo laban sa labis na karga (overload) at awtomatikong pang-aabuso ng mga teknikal na limitasyon sa dalas ng mga kahilingan.",
+              "May pang-araw-araw na limitasyon sa trapiko para sa YouTube: 10 GB bawat 24 oras bawat network sa website at sa extension, at 25 GB bawat 24 oras bawat Telegram account sa bot. Hindi nito sakop ang ibang mga platform.",
+              "Hindi kailangang mag-subscribe sa aming channel para makapag-download sa pamamagitan ng bot. Nagdaragdag ang bot ng link sa news channel ng proyekto sa caption ng mga file; hindi sapilitan ang pag-subscribe dito.",
+            ],
+          },
+          {
+            heading: "Ano ang ginagawa ng serbisyo",
+            body: [
+              "Ang serbisyo ay isang teknikal na tagapamagitan (technical intermediary): sa pamamagitan ng link na ibinigay mo, ina-access nito ang isang pahinang bukas sa publiko, kinukuha ang media file at ipinapasa ito sa iyo.",
+              "Hindi kami nagho-host ng katalogo ng mga video, hindi kami naghahanap sa nilalaman ng iba, at hindi namin iniimbak ang mga na-download na file nang mas matagal kaysa sa kinakailangan para maihatid ang mga ito — humigit-kumulang isang oras.",
+              "Ang pagiging available ng isang partikular na platform ay nakadepende sa mga teknikal na desisyon ng platform na iyon at maaaring magbago nang walang paunang abiso.",
+            ],
+          },
+          {
+            heading: "Mga obligasyon ng user",
+            body: [
+              "Ikaw lamang ang may pananagutan sa kung paano mo ginagamit ang mga file na nakuha mo, at kinukumpirma mo na may karapatan kang gawin ito.",
+            ],
+            bullets: [
+              "I-download lamang ang materyal na ikaw ang may-ari ng karapatan, o ang paggamit nito ay pinahihintulutan ng may-ari ng karapatan o ng batas.",
+              "Huwag gamitin ang serbisyo upang labagin ang karapatang-ari (copyright) o ang mga kaugnay na karapatan (related rights), upang magpakalat ng ipinagbabawal na nilalaman o upang labagin ang mga karapatan ng ikatlong partido.",
+              "Huwag subukang lampasan ang mga teknikal na limitasyon ng serbisyo, kabilang ang mga limitasyon sa dalas ng mga kahilingan at ang pagsusuri laban sa mga bot.",
+              "Huwag lumikha ng awtomatikong karga: hindi pinapayagan ang maramihang kahilingan, mga script at mga scraper.",
+            ],
+          },
+          {
+            heading: "Paglalathala ng mga link sa channel",
+            body: [
+              "Sa pag-download ng video sa pamamagitan ng bot, sumasang-ayon ka na ilalathala sa aming Telegram channel ang link sa orihinal na post. Ipinapakita sa bot ang abiso tungkol dito bago ka pumili ng kalidad — ibig sabihin, bago ka magpasya na mag-download.",
+              "Anonimo ang paglalathala: ang ipinapadala sa channel ay ang link sa pahinang bukas sa publiko, ang pamagat ng video at ang cover nito — ang mismong frame na ipinapakita ng platform sa preview ng post. Hindi isinasaad kung sino ang nag-download ng video. Ang mismong video file ay hindi kailanman inilalathala kahit saan: ang ipinapakalat ay ang link, na ang mga platform mismo ang nag-aanyayang ipakalat sa pamamagitan ng button na \"Ibahagi\" (Share) sa ilalim ng bawat post.",
+              "Ang iisang link ay inilalathala nang hindi hihigit sa isang beses. Kung ayaw mong mapunta sa channel ang isang link, huwag i-download ang video na iyon sa pamamagitan ng aming serbisyo.",
+              "Ang mga link mula sa mga grupo at ang mga post na na-download sa pamamagitan ng nakakonektang account ay hindi inilalathala sa channel."
+            ],
+          },
+          {
+            heading: "Pagkonekta ng iyong account",
+            body: [
+              "Sa pagkonekta sa bot ng iyong account sa isang platform, kinukumpirma mo na iyo ang account na ito at may karapatan kang gamitin ito sa ganitong paraan.",
+              "Hindi sinasang-ayunan ng mga platform ang mga awtomatikong pag-download at maaari nilang limitahan o i-block ang nakakonektang account. Ikaw ang tumatanggap ng panganib na ito; inirerekomenda naming magkonekta ng hiwalay na account sa halip na ang iyong pangunahing account. Hindi kami mananagot sa mga limitasyong ipapataw ng platform sa iyong account.",
+              "Ang account na nakakonekta sa isang grupo ay ginagamit para sa mga pag-download ng lahat ng miyembro nito. Ang mga admin ng grupo ang nagpapasya kung sino ang maaaring magkonekta ng mga account, at maaari nilang alisin ang alinman sa mga ito.",
+            ],
+          },
+          {
+            heading: "Limitasyon ng pananagutan",
+            body: [
+              "Ibinibigay ang serbisyo nang \"as is\" (kung ano ito). Hindi namin ginagarantiya ang tuloy-tuloy na paggana, ang pagiging available ng isang partikular na platform o ang pagiging angkop ng file sa iyong layunin.",
+              "Hindi kami mananagot sa kung paano mo ginamit ang na-download na materyal, o sa mga kahihinatnan ng iyong paglabag sa mga karapatan ng ikatlong partido.",
+              "May karapatan kaming baguhin ang mga tampok ng serbisyo, pansamantalang ihinto ang serbisyo para sa maintenance, at wakasan ang operasyon nito.",
+            ],
+          },
+          {
+            heading: "Paghihigpit sa pag-access",
+            body: [
+              "Maaari naming limitahan o wakasan ang pag-access sa serbisyo kapag nilabag ang mga Tuntuning ito, kapag may pagtatangkang lampasan ang mga limitasyon, o kapag nakatanggap kami ng makatwirang reklamo mula sa may-ari ng karapatan.",
+            ],
+          },
+          {
+            heading: "Mga pagbabago at naaangkop na batas",
+            body: [
+              "Maaari naming baguhin ang mga Tuntuning ito; nakasaad sa itaas ng pahina ang petsa ng kasalukuyang bersyon. Ang patuloy na paggamit ng serbisyo matapos ang mga pagbabago ay nangangahulugang tinatanggap mo ang bagong bersyon.",
+              "Ang ugnayan ng mga partido ay pinamamahalaan ng batas ng Republika ng Kazakhstan. Sisikapin ng mga partido na lutasin ang mga hindi pagkakaunawaan sa pamamagitan ng sulatan, at kung hindi magkasundo, sa paraang itinakda ng batas ng Republika ng Kazakhstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Patakaran sa Cookie",
+        summary: `Anong mga cookie ang ginagamit ng ${operator.site}, para saan ang mga ito at paano tanggihan ang mga ito.`,
+        sections: [
+          {
+            heading: "Ano ang cookie",
+            body: [
+              "Ang mga cookie ay maliliit na text file na iniimbak ng isang site sa iyong browser. Pinahihintulutan ng mga ito na matandaan ang iyong mga setting at makakolekta ng anonimisadong estadistika ng mga pagbisita.",
+              "Bukod sa mga cookie, inilalarawan din ng dokumentong ito ang mga kaugnay na teknolohiya — ang local storage ng browser at mga tracking pixel.",
+            ],
+          },
+          {
+            heading: "Mahigpit na kinakailangan",
+            body: [
+              "Hindi gumagana ang serbisyo kung wala ang mga ito, kaya palagi itong itinatakda.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — sinusuri kung ang link ay ipinapadala ng isang tao at hindi ng isang script.",
+              "Mga setting ng interface — ang napiling wika at tema ng disenyo.",
+            ],
+          },
+          {
+            heading: "Para sa analytics",
+            body: [
+              "Tinutulungan kami ng mga ito na maunawaan kung aling mga pahina ang ginagamit at kung saan nagkakaroon ng mga error. Itinatakda ang mga ito nang may iyong pahintulot at hindi kinakailangan para gumana ang serbisyo.",
+            ],
+            bullets: [
+              "Google Analytics at Google Tag Manager — dami ng bisita at gawi sa site sa anonimisadong anyo.",
+              "Yandex Metrica — dami ng bisita, click map at Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Nire-record ng Webvisor ng Yandex Metrica ang mga aksyon sa pahina: paggalaw ng pointer, pag-scroll, mga pag-click at pag-type sa field ng link. Kailangan ito upang makita kung saan nakalilito ang interface.",
+              "Hindi namin ginagamit ang mga recording na ito upang subaybayan ang mga partikular na tao. Huwag maglagay sa mga field ng site ng impormasyong ayaw mong maiimbak.",
+            ],
+          },
+          {
+            heading: "Paano tumanggi",
+            bullets: [
+              "I-block o burahin ang mga cookie sa mga setting ng iyong browser — gumagana ang paraang ito para sa lahat ng sistemang nakalista rito.",
+              "Google Analytics: makukuha sa site ng Google ang opisyal na browser add-on na nagdi-disable ng pagkolekta ng datos.",
+              "Yandex Metrica: maaaring tumanggi sa pamamagitan ng opisyal na add-on ng Yandex.",
+              "Kapag in-disable ang mahigpit na kinakailangang mga cookie, hindi na posible ang pag-download.",
+            ],
+          },
+          {
+            heading: "Mga panahon ng pag-iimbak",
+            body: [
+              "Binubura ang mga session cookie kapag isinara ang browser o kapag nag-expire ang session. Iniimbak ng mga analytics tool ang kanilang mga identifier sa loob ng mga panahong itinakda ng kanilang mga provider.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Para sa mga May-ari ng Karapatan",
+        summary: "Ang posisyon ng serbisyo tungkol sa karapatang-ari (copyright) at ang paraan ng paghahain ng reklamo tungkol sa paglabag.",
+        sections: [
+          {
+            heading: "Ang posisyon ng serbisyo",
+            body: [
+              "Hindi nagho-host ng mga video ang serbisyo at hindi ito nag-iingat ng katalogo ng mga ito. Gumaganap ito bilang teknikal na tagapamagitan: sa pamamagitan ng link na inilagay ng user, ina-access nito ang isang pahinang bukas sa publiko at ipinapasa ang file sa user na iyon.",
+              "Iniimbak ang mga na-download na file sa server nang humigit-kumulang isang oras at awtomatikong binubura pagkatapos. Walang permanenteng kopya ng nilalaman ng iba na nananatili sa amin.",
+              "Ang pananagutan sa paggamit ng na-download na materyal ay nasa user — tahasan itong nakasaad sa Mga Tuntunin ng Paggamit.",
+            ],
+          },
+          {
+            heading: "Kung nilabag ang iyong mga karapatan",
+            body: [
+              `Kung ikaw ay may-ari ng karapatan o kinatawan nito at naniniwala kang ginagamit ang serbisyo upang labagin ang iyong mga karapatan, sumulat sa ${MAIL}. Sinusuri namin ang ganitong mga reklamo at gumagawa ng kaukulang hakbang.`,
+            ],
+          },
+          {
+            heading: "Ano ang dapat isama sa reklamo",
+            bullets: [
+              "Kung aling akda ang apektado at sa anong batayan mo hawak ang mga karapatan dito.",
+              "Ang link sa materyal at, kung alam, ang mga pangyayari ng paglabag.",
+              "Ang iyong mga detalye sa pakikipag-ugnayan: pangalan o pangalan ng organisasyon, address at email address.",
+              "Kung kumikilos ka sa ngalan ng may-ari ng karapatan — patunay ng iyong awtoridad.",
+              "Isang pahayag na tumpak ang impormasyon sa reklamo at na ang paggamit ng materyal ay hindi pinahihintulutan ng may-ari ng karapatan o ng batas.",
+            ],
+          },
+          {
+            heading: "Ano ang aming gagawin",
+            body: [
+              "Sinusuri namin ang reklamo sa loob ng makatwirang panahon, karaniwang sa loob ng tatlumpung araw ng kalendaryo, at kapag nakumpirma ang paglabag, nililimitahan namin ang pag-access sa materyal sa pamamagitan ng serbisyo at, kung kinakailangan, ang pag-access ng lumabag sa serbisyo.",
+              "Ipapaalam namin ang resulta ng pagsusuri sa email address na ibinigay mo.",
+            ],
+          },
+          {
+            heading: "Mga reklamong may masamang intensyon",
+            body: [
+              "Ang reklamong naglalaman ng impormasyong alam na hindi totoo ay maaaring magdulot ng pananagutan sa nagrereklamo alinsunod sa naaangkop na batas. May karapatan kaming tumangging suriin ang reklamo kung hindi nito matutukoy ang may-ari ng karapatan o ang pinagtatalunang materyal.",
             ],
           },
         ],

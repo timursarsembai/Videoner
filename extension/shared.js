@@ -2097,6 +2097,91 @@ const TEXTS = {
     langAuto: "อัตโนมัติ",
     langLabel: "ภาษา",
   },
+  tl: {
+    loading: "Kinukuha ang info ng video…",
+    notVideoPage:
+      "Magbukas ng video page sa YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest o Threads at i-click ulit ang icon. GetCourse lesson: kung bukas na ang lesson page bago na-install ang extension, i-reload ito.",
+    gcLesson: "GetCourse lesson",
+    gcPick: "May ilang video sa lesson na ito — pumili ng isa",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Ang browser mo ang magda-download at magdudugtong nito. Puwede mong isara ang window na ito, pero hindi ang browser.",
+    gcNoStream: "Hindi makuha ang video mula sa player. I-reload ang lesson page at subukan ulit.",
+    video: "Video",
+    photo: "Mga larawan sa orihinal na laki",
+    slideshow: "Slideshow (video)",
+    gallery: "Mga larawan + slideshow",
+    audioOnly: "Audio lang (mp3)",
+    subtitles: "Subtitles (.srt)",
+    subtitlesAuto: "auto-generated",
+    back: "Bumalik",
+    starting: "Sinisimulan ang download…",
+    waiting: "Naghihintay ng bakanteng slot sa server…",
+    downloading: "Nagda-download",
+    converting: "Pinoproseso",
+    left: (eta) => `${eta} na lang`,
+    saving: "Sine-save sa Downloads…",
+    done: "Tapos na — nasa Downloads mo na ang file.",
+    news: "📣 Balita ng proyekto: @videonerdownload",
+    again: "Mag-download ng iba",
+    directDownload: "I-download ang video (mp4)",
+    directPhoto: "I-download ang larawan (jpg)",
+    directNote: "Diretso mula sa browser mo — walang pila sa server",
+    moreOptions: "Ibang quality at audio",
+    fallback: "Pumalya ang download sa browser — sa server na lang magda-download.",
+    openSite: "Buksan ang videoner.download",
+    retry: "Subukan ulit",
+    min: "min",
+    sec: "s",
+    errNetwork: "Hindi maabot ang Videoner. I-check ang koneksyon mo at subukan ulit.",
+    errRateLimit: "Sobrang daming sunud-sunod na request. Maghintay ng isang minuto at subukan ulit.",
+    errUnsupported:
+      "Walang video sa page na ito na kayang i-download ng Videoner. Buksan ang page ng mismong video o post.",
+    errYoutubeDaily: "Ubos na ang daily YouTube limit ng network mo. Subukan ulit bukas.",
+    errTooLarge: "Masyadong malaki ang file sa quality na ito. Pumili ng mas mababa.",
+    errLogin:
+      "Para lang sa mga naka-sign in ang post na ito. Walang problema sa pag-download ng mga public post.",
+    errRegion: "Nilimitahan ng author ang post na ito ayon sa bansa, kaya hindi ito ma-download.",
+    errServerBlocked: "Pansamantalang nililimitahan ng platform ang server namin. Subukan ulit mamaya.",
+    errFailed: "Pumalya ang download. Subukan ulit o pumili ng ibang quality.",
+    errGeneric: "May nangyaring mali. Subukan ulit mamaya.",
+    acctButton: (p) => `🔑 I-connect ang iyong ${p} account sa bot`,
+    acctWarn: (p) =>
+      `Gamit ang account mo, makakapag-download ang @VideonerBot ng mga nakikita lang ng mga naka-sign in sa ${p}: stories, private posts. Ayaw ng mga platform sa automated downloads at puwede nilang limitahan ang account — mas mabuting mag-connect ng secondary account. Hihingi ang browser ng pahintulot na basahin ang cookies ng site na ito; ang cookies lang ng ${p} ang ipapadala sa server, naka-encrypt.`,
+    acctConfirm: "I-connect",
+    acctCancel: "Kanselahin",
+    acctSending: "Kumokonekta…",
+    acctDenied: "Hindi ma-connect ang account kung walang pahintulot sa cookies.",
+    acctNoLogin: (p) => `Hindi ka naka-sign in sa ${p} sa browser na ito. Mag-sign in sa site at subukan ulit.`,
+    acctFailed: "Hindi ito gumana. Subukan ulit mamaya.",
+    acctCodeTitle: (p) => `Code para i-connect ang ${p}:`,
+    acctCodeHelp:
+      "Ipadala ito sa @VideonerBot sa private chat — para sa sarili mong downloads. Para sa group, ipadala ang /connect CODE sa group. Valid ang code nang 10 minuto.",
+    acctCopy: "Kopyahin",
+    acctCopied: "Nakopya na",
+    acctOpenBot: "Buksan ang bot",
+    acctNewCode: "Kumuha ng bagong code",
+    acctList: "Mga koneksyon ko sa bot",
+    acctRevoke: "Bawiin ang access sa cookies",
+    acctRevoked:
+      "Binawi na ang access sa cookies — hindi na ito binabasa ng extension. Nananatili sa bot ang mga account na na-connect mo na: alisin ang mga ito sa “Mga koneksyon ko sa bot”.",
+    playlistOffer: "📃 I-download ang buong playlist",
+    playlistTitle: (title, n) => `📃 Playlist${title ? ` "${title}"` : ""}: ${n} video`,
+    playlistHint: "Isa-isa ko silang ida-download. Puwede mong isara ang window na ito.",
+    playlist720: "Playlist sa 720p",
+    playlistBest: "Playlist sa pinakamataas na quality",
+    playlistAudio: "Playlist — audio lang (mp3)",
+    playlistProgress: (i, n) => `Video ${i} sa ${n}`,
+    playlistStats: (done, failed) => `Na-download: ${done}${failed ? ` · pumalya: ${failed}` : ""}`,
+    playlistStop: "⏹ Ihinto",
+    playlistDone: (done, n) => `Na-download ang playlist: ${done} sa ${n}.`,
+    playlistStopped: (done, n) => `Inihinto. Na-download ang ${done} sa ${n}.`,
+    playlistLoading: "Kinukuha ang listahan ng mga video…",
+    close: "Isara",
+    updateAvailable: (v) => `Labas na ang version ${v}.`,
+    updateHow: "Paano mag-update",
+    langAuto: "Auto",
+    langLabel: "Wika",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -2187,12 +2272,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский, персидский и урду пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", en: "English" };
+export const LANG_NAMES = { id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ru: "Русский", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", zh: "中文", ja: "日本語", ko: "한국어" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -2205,6 +2290,7 @@ export const sitePath = (path) => (lang === "en" ? path : `/${lang}${path}`);
 function pickLang(uiLanguage) {
   let base = uiLanguage.toLowerCase().split("-")[0];
   if (base === "in") base = "id"; // старый код индонезийского
+  if (base === "fil") base = "tl"; // Chrome называет филиппинский «fil»
   return base in TEXTS ? base : "en";
 }
 
@@ -2299,11 +2385,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому, корейскому и тайскому — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому, корейскому, тайскому и тагальскому — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

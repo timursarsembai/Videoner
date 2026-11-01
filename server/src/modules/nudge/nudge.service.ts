@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('tl') || code.startsWith('fil')) {
+      return (
+        'Hello! Sinimulan mo ang bot na ito pero wala ka pang na-download — ' +
+        'baka hindi malinaw kung saan magsisimula.\n\n' +
+        'Isang hakbang lang: ipadala dito ang link ng isang video, ' +
+        'halimbawa https://youtube.com/watch?v=jNQXAC9IVRw — at ibabalik ko ang ' +
+        'file sa loob ng mga kalahating minuto.\n\n' +
+        'Gumagana sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest at Threads. Ganap na libre at sa anumang ' +
+        'kalidad — hanggang 4K, walang dagdag na bayad para sa HD.\n\n' +
+        'Kung may hindi gumana, mag-reply ka lang dito. Ito ang ' +
+        'tanging paalala, hindi na kita guguluhin ulit.'
+      );
+    }
+
     if (code.startsWith('th')) {
       return (
         'สวัสดี! คุณเริ่มใช้บอทนี้แล้ว แต่ยังไม่ได้ดาวน์โหลดอะไรเลย — ' +

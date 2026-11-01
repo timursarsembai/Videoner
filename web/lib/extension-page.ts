@@ -1287,4 +1287,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "หน้าแรก",
   },
+  tl: {
+    metaTitle: "Videoner browser extension",
+    title: "Videoner para sa iyong browser",
+    summary:
+      "Nagdadagdag ang extension ng button na I-download sa mga page ng video at nagda-download mismo sa iyong browser. Ang Instagram, Facebook, TikTok at Threads ay dina-download gamit ang sarili mong sign-in — kaya gumagana rin ang mga private post na nakikita mo sa account mo, pati ang mga video na hindi ibinigay ng platform sa aming server.",
+    failedVideo: "Ang video na hindi ma-download sa website o sa bot:",
+    failedVideoHint:
+      "I-install ang extension, mag-sign in sa platform sa browser na ito, buksan ang video at i-click ang I-download sa kanang ibabang sulok.",
+    openVideo: "Buksan ang video",
+    version: "Bersyon",
+    browsersTitle: "Saan ito gumagana",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi at iba pang browser na batay sa Chromium — sa computer.",
+    mobile: "Hindi sinusuportahan ng mga phone at tablet ang mga extension — doon, gamitin ang website o ang Telegram bot.",
+    getcourseTitle: "Mga lesson sa GetCourse",
+    getcourse:
+      "Buksan ang isang lesson sa GetCourse school habang naka-sign in: lalabas ang button na I-download sa kanang itaas na sulok ng player, at ipapakita ng icon ng Videoner ang lahat ng video sa lesson. Ang browser mo mismo ang magda-download ng lesson at bubuo nito bilang mp4 — hindi dumadaan sa aming server ang file. Kung pumalya iyon, ang aming server ang magda-download ng lesson sa parehong kalidad; sa ganitong kaso, matatanggap nito ang link ng video mula sa player.",
+    privacyTitle: "Sa iyo lang ang sign-in mo",
+    privacy:
+      "Hindi kailanman humihingi ng password ang extension: ang sarili mong browser ang nagpapadala ng request sa platform, at maikling ulat lang para sa statistics ang natatanggap ng aming server — ang link, laki ng file at pamagat. Napapadala lang ang cookies sa server kung ikaw mismo ang pumindot ng \"Ikonekta ang account sa bot\" — at cookies lang ng platform na iyon, naka-encrypt.",
+    stepsTitle: "Paano i-install sa Chrome, Yandex Browser, Edge at Opera",
+    steps: [
+      "I-download ang archive at i-unzip ito — lalabas ang folder na videoner-extension na may version number sa pangalan nito.",
+      "Buksan ang page ng mga extension: i-type ang chrome://extensions sa address bar (edge://extensions sa Edge, opera://extensions sa Opera).",
+      "I-on ang “Developer mode” — ang switch sa itaas ng page.",
+      "I-click ang “Load unpacked” at piliin ang folder na iyon — ang may lamang manifest.json.",
+      "Tapos na: may button nang I-download sa mga page ng video, at lalabas ang icon ng Videoner sa toolbar ng browser.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 o mas bago — sa computer din.",
+    firefoxSoon:
+      "Malapit nang lumabas ang bersyon para sa Firefox. Sa ngayon, gumagana ang extension sa Chrome, Yandex Browser, Edge, Opera at iba pang browser na batay sa Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Isang .zip archive — maii-install sa loob ng ilang minuto",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Install sa isang click",
+    yourBrowser: "Ang browser mo",
+    soon: "Malapit na",
+    firefoxStepsTitle: "Paano i-install sa Firefox",
+    firefoxSteps: [
+      "I-click ang button na Firefox sa itaas ng page na ito.",
+      "Tatanungin ng Firefox kung papayagan ang videoner.download na mag-install ng add-on — i-click ang “Continue to Installation”.",
+      "Sa prompt na “Add Videoner?”, i-click ang “Add”.",
+      "Tapos na: may button nang I-download sa mga page ng video, at lalabas ang icon ng Videoner sa toolbar. Kusang ini-install ng Firefox ang mga update.",
+    ],
+    updateTitle: "Paano mag-update sa Chrome, Yandex Browser, Edge at Opera",
+    updateSteps: [
+      "Kapag may bagong bersyon, may badge na NEW ang icon ng Videoner at may link papunta rito ang popup.",
+      "I-download ang archive gamit ang button na Chrome sa itaas ng page na ito at i-unpack ito sa parehong folder tulad ng dati, palitan ang mga file.",
+      "Buksan ang page ng mga extension (chrome://extensions, browser://extensions sa Yandex Browser, edge://extensions) at pindutin ang “Reload” — ang pabilog na arrow sa card ng Videoner.",
+    ],
+    back: "Home",
+  },
 };

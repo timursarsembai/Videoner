@@ -16,7 +16,7 @@
   // uiLang) или язык браузера. Выбор читается асинхронно, поэтому сначала
   // подпись по браузеру, потом — по выбору.
   const ui = chrome.i18n.getUILanguage().toLowerCase();
-  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", tl: "I-download", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
@@ -41,9 +41,10 @@
     ja: "この動画のボタンを非表示",
     ko: "이 동영상에서 버튼 숨기기",
     th: "ซ่อนปุ่มในวิดีโอนี้",
+    tl: "Itago ang button sa video na ito",
     en: "Hide the button for this video",
   };
-  const base = ui.split("-")[0] === "in" ? "id" : ui.split("-")[0];
+  const base = { in: "id", fil: "tl" }[ui.split("-")[0]] ?? ui.split("-")[0];
   const l = base in LABELS ? base : "en";
   const PANEL_WIDTH = 360;
 

@@ -197,6 +197,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "หยุดการดาวน์โหลดและคิว" },
     { command: "language", description: "ภาษาของบอท" },
   ],
+  tl: [
+    { command: "start", description: "Paano gamitin ang bot" },
+    { command: "extension", description: "Browser extension" },
+    { command: "accounts", description: "Ang iyong mga account para sa stories at private post" },
+    { command: "connect", description: "I-connect ang account gamit ang code mula sa extension" },
+    { command: "stop", description: "Ihinto ang mga download at ang queue" },
+    { command: "language", description: "Wika ng bot" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -369,6 +377,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "เชื่อมต่อบัญชีกับกลุ่มนี้ด้วยรหัส" },
     { command: "language", description: "ภาษาของบอทในกลุ่มนี้ (สำหรับแอดมิน)" },
     { command: "start", description: "วิธีที่บอททำงานในกลุ่ม" },
+  ],
+  tl: [
+    { command: "settings", description: "Mga setting ng bot sa group na ito (para sa mga admin)" },
+    { command: "accounts", description: "Mga account na naka-connect sa group na ito" },
+    { command: "connect", description: "I-connect ang account sa group na ito gamit ang code" },
+    { command: "language", description: "Wika ng bot sa group na ito (para sa mga admin)" },
+    { command: "start", description: "Paano gumagana ang bot sa group" },
   ],
 };
 

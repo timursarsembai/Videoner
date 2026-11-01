@@ -355,8 +355,8 @@ export class UserCookiesService {
     if (!token) return;
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
-    const norm = base === 'in' ? 'id' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' ? norm : 'en';
+    const norm = base === 'in' ? 'id' : base === 'fil' ? 'tl' : base;
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -384,6 +384,7 @@ export class UserCookiesService {
       ja: forGroup ? 'グループ用' : 'あなた用',
       ko: forGroup ? '그룹용' : '내 계정',
       th: forGroup ? 'สำหรับกลุ่ม' : 'สำหรับคุณ',
+      tl: forGroup ? 'para sa isang grupo' : 'para sa iyo',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -410,6 +411,7 @@ export class UserCookiesService {
       ja: `⚠️ 接続済みの ${name} ログイン（${where}）が使えなくなりました。プラットフォームが受け付けなくなっています。アカウントからログアウトしたか、アカウントが制限された可能性があります。\n\n引き続きこのアカウントでダウンロードするには、もう一度接続してください。接続の一覧: /accounts`,
       ko: `⚠️ 연결된 ${name} 로그인(${where})이 더 이상 작동하지 않아요. 플랫폼이 더는 받아들이지 않아요. 계정에서 로그아웃했거나 계정이 제한되었을 수 있어요.\n\n이 계정으로 계속 다운로드하려면 계정을 다시 연결해 주세요. 연결 목록: /accounts`,
       th: `⚠️ การเข้าสู่ระบบ ${name} ที่เชื่อมต่อไว้ (${where}) ใช้งานไม่ได้แล้ว: แพลตฟอร์มไม่ยอมรับอีกต่อไป คุณอาจออกจากระบบบัญชี หรือบัญชีถูกจำกัด\n\nหากต้องการดาวน์โหลดด้วยบัญชีนี้ต่อ ให้เชื่อมต่อบัญชีอีกครั้ง รายการการเชื่อมต่อ: /accounts`,
+      tl: `⚠️ Hindi na gumagana ang naka-connect na ${name} login (${where}): hindi na ito tinatanggap ng platform. Baka nag-log out ka sa account, o na-restrict ang account.\n\nPara patuloy na makapag-download gamit ito, i-connect ulit ang account. Ang iyong mga koneksyon: /accounts.`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

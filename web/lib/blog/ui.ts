@@ -319,6 +319,18 @@ export const blogUi: Record<
     readFull: "ሙሉውን በድረ-ገጹ ላይ ያንብቡ",
     dateLocale: "am-ET",
   },
+  om: {
+    title: "Bloogii Videoner",
+    description: "Oduu pirojektii: bootii, marsariitii fi dabalata biraawuzarii keessatti maaltu haaraa akka ta'e fi akkamitti itti fayyadamuu akka dandeessan.",
+    readMore: "Dubbisaa",
+    back: "Barreeffamoota hunda",
+    allPosts: "Bloogii",
+    channel: "Oduu Telegram irratti",
+    channelCta: "Oduun pirojektii chaanaalii Telegram @videonerdownload irratti argama.",
+    readOnSite: "Marsariitii irratti dubbisaa",
+    readFull: "Guutuu isaa marsariitii irratti dubbisaa",
+    dateLocale: "om-ET",
+  },
   tl: {
     title: "Videoner blog",
     description: "Mga balita ng proyekto: ano ang bago sa bot, sa website at sa extension, at kung paano ito gamitin.",

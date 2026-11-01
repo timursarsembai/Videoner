@@ -213,6 +213,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "ማውረዱን እና ወረፋውን ያቁሙ" },
     { command: "language", description: "የቦቱ ቋንቋ" },
   ],
+  om: [
+    { command: "start", description: "Bootii akkamitti akka fayyadamtan" },
+    { command: "extension", description: "Dabalata biraawuzarii" },
+    { command: "accounts", description: "Akkaawuntiiwwan keessan istoorii fi maxxansa dhuunfaaf" },
+    { command: "connect", description: "Koodii dabalata irraa argameen akkaawuntii walqabsiisaa" },
+    { command: "stop", description: "Buufachuu fi tarree eegumsaa dhaabaa" },
+    { command: "language", description: "Afaan bootii" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -399,6 +407,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "በኮድ ከዚህ ቡድን ጋር መለያ ያገናኙ" },
     { command: "language", description: "በዚህ ቡድን ውስጥ የቦቱ ቋንቋ (ለአስተዳዳሪዎች)" },
     { command: "start", description: "ቦቱ በቡድን ውስጥ እንዴት እንደሚሰራ" },
+  ],
+  om: [
+    { command: "settings", description: "Qindaa'ina bootii garee kanaa (bulchitootaaf)" },
+    { command: "accounts", description: "Akkaawuntiiwwan garee kanaan walqabatan" },
+    { command: "connect", description: "Koodiin akkaawuntii garee kanaan walqabsiisaa" },
+    { command: "language", description: "Afaan bootii garee kana keessatti (bulchitootaaf)" },
+    { command: "start", description: "Bootiin garee keessatti akkamitti akka hojjetu" },
   ],
 };
 

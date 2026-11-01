@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -5323,6 +5323,226 @@ const am: Messages = {
   settingsBack: "⬅️ ወደ ቅንብሮች ይመለሱ",
 };
 
+const om: Messages = {
+  start: "Akkam! Liinkii viidiyoo YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ykn Threads irraa naaf ergaa — akka buufattan isin gargaara.\n\n✨ Daangaan qulqullinaa hin jiru: waan waltajjichi dhiyeessu hunda hanga 4K tti ni argattu — faayilichi hanga 2 GB hin caalletti; kun daangaa Telegram bootiiwwaniif kaa'eedha. Tajaajilli kaffaltii barbaadu as hin jiru.\n\nGuutummaatti bilisa: maallaqni galmee, beeksisni, bittaan app keessaa hin jiru.\n\n🧩 Kompiitara irratti buufachaa jirtuu? Dabalata biraawuzarii fe'aa — qabduun “Buusi” fuula viidiyoo irratti kallattiin mul'ata: videoner.download/om/extension\n\n👥 Garee tokkotti na dabalaa, liinkii namoonni achitti qoodaniif viidiyoowwan nan maxxansa.\n\n⚡ Filannoo qulqullinaa irra darbaa: sagalee qofa (mp3) argachuuf liinkii booda -audio dabalaa, qulqullina isa caalu argachuuf immoo -hd.\n\n📣 Oduu pirojektii: @videonerdownload\n\n🌐 Afaan bootii: /language",
+  notLink: "Kun liinkii hin fakkaatu. Liinkii viidiyoo naaf ergaa.",
+  inviteGreeting: "Akkam! Ani Videoner — viidiyoowwan YouTube, TikTok, Instagram fi waltajjiiwwan biroo irraa bilisaan nan buufadha. Viidiyoo namni tokko isinii qoode qopheessaa jira 👇",
+  inviteNotFound: "Liinkii affeerraa kanaaf viidiyoo argachuu hin dandeenye. Liinkii viidiyoo naaf ergaa, nan buufadha.",
+  inviteUnavailable: "Viidiyoo liinkii kana irraa banuu hin dandeenye — tajaajilichi amma deebii hin kennu. Daqiiqaa tokko booda liinkii sana irra deebi'aa banaa.",
+  fetchingInfo: "🔍 Odeeffannoo viidiyoo fidaa jira...",
+  audioOnlyButton: "🎵 Sagalee qofa (mp3)",
+  photoButton: "📷 Suuraawwan buufadhaa",
+  slideshowButton: "🎞 Islaayid shoo (viidiyoo)",
+  galleryButton: "📷+🎞 Suuraawwanii fi islaayid shoo",
+  chooseQuality: (title, duration) => `“${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nQulqullina filadhaa:`,
+  sessionExpired: "Yeroon darbeera — liinkicha irra deebi'aa ergaa",
+  downloading: "⏬ Buufachaa jira, daqiiqaa muraasa fudhachuu danda'a...",
+  downloadFailed: "buufachuun hin milkoofne",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Buufachaa jira: ${percent}%${eta ? ` · ${eta} hafeera` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Xumuramuu ga'eera — faayilicha walitti qindeessaa jira...",
+  converting: (percent) => `⚙️ Jijjiiraa jira: ${percent}%`,
+  etaUnderMinute: "daqiiqaa tokkoo gadi",
+  etaMinutes: (minutes) => `~daqiiqaa ${minutes}`,
+  etaHours: (hours, minutes) => `~sa'aatii ${hours}${minutes ? ` daqiiqaa ${minutes}` : ""}`,
+  downloadTimeout: "buufachuun yeroo dheeraa fudhachaa jira — viidiyoon kun baay'ee ulfaataa fakkaata. Qulqullina gadi aanaa yaalaa.",
+  downloadInterrupted: "⚠️ Bootiin fooyya'iinsaaf irra deebi'ee ka'aa jira — buufachuun keessan addaan citeera. Daqiiqaa tokko booda liinkicha irra deebi'aa ergaa.",
+  fileTooBig: (mb, url) =>
+    `Faayilichi guddaa ta'e (${mb} MB) — Telegram bootiin akka erguu hin hayyamu.\nAsitti buufadhaa: ${url}`,
+  sendingFile: "📤 Faayilii ergaa jira...",
+  sendingAlbum: (count) => `📤 Maxxansi kun faayilota hedduu (${count}) qaba — akka albamiitti ergaa jira...`,
+  failedPrefix: "❌ Hin milkoofne: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Madda: ${sourceUrl}\n` +
+        "Mirgi viidiyoo kanaa hundi kan uumaa isaati.\n" +
+        "@VideonerBot fayyadamuun bilisaan buufatame",
+      `📣 Oduu pirojektii: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Qoodaa: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Buufachuuf, chaanaalii keenya ${channel} hordofaa — haalli jiru kana qofa, tajaajilli bilisa ta'ee itti fufa.\n\n` +
+    "Hordofaatii “Hordofeera” tuqaa.",
+  openChannelButton: "📣 Chaanaalii banaa",
+  checkSubscriptionButton: "Hordofeera",
+  subscribeThanks: "Galatoomaa! Amma liinkii viidiyoo naaf ergaa.",
+  subscribeThanksResuming: "Galatoomaa! Liinkii keessan amma itti fufaa jira.",
+  subscribeStillMissing: "Hordoffiin ammallee hin mul'atu. Hordofaatii irra deebi'aa tuqaa.",
+  channelNotice: (channel) => `\n\nLiinkiin maxxansa kanaa ${channel} irratti ni mul'ata — maqaa keessan malee, maqaa dhoksuun.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Viidiyoo kanaa fi kan biroo kamiyyuu bilisaan buufadhaa: @VideonerBot",
+  errorStoryNeedsId:
+    "liinkii istoorii murtaa'aa tokkoo ergaa: app Instagram keessatti banaatii Qoodi → Liinkii garagalchi tuqaa.",
+  errorInstagramStory:
+    "Istooriiwwan Instagram kan mul'atan namoota seenaniif qofa.",
+  errorLoginRequired:
+    "Maxxansi kun osoo hin seenin hin argamu: waltajjichi kan kennu namoota " +
+    "seenaniif qofa. Kun maxxansoota dhuunfaa, qabiyyee daangaa umurii qabuu fi " +
+    "maxxansoota namoota muraasaaf qoodaman irratti ta'a.\n\n" +
+    "Maxxansoonni uummataa rakkoo malee buufatamu — liinkii biraa yaalaa.",
+  errorUnsupportedPlatform:
+    "Liinkii kana adda baasuu hin dandeenye — liinkiin kun liinkii viidiyoo kallattii YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ykn Threads irraa ta'uu isaa mirkaneeffadhaa.",
+  errorFileTooLarge: "faayilichi 2 GB caala — Telegram bootiin faayilota kana caalan akka ergu hin hayyamu. Marsariitii irratti ykn dabalata biraawuzariitiin buufadhaa — qabduuwwan armaan gadii. Ykn liinkicha irra deebi'aa ergaatii qulqullina gadi aanaa filadhaa.",
+  siteButton: "🌐 Marsariitii irratti buufadhaa",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Qulqullinni ${limit} caalu dhokfameera: Telegram bootiin faayilota kana caalan akka ergu hin hayyamu. Marsariitii irratti ykn dabalata biraawuzariitiin buufachuu dandeessu — qabduuwwan armaan gadii.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Viidiyoon kun qulqullina isa gadi aanaa irrattillee Telegram'f baay'ee ulfaataadha (~${smallest}): Telegram bootiin faayilota 2 GB caalan akka ergu hin hayyamu. Asitti sagalee qofa argachuu dandeessu; viidiyoo immoo — marsariitii irratti ykn dabalata biraawuzariitiin (qabduuwwan armaan gadii).`,
+  errorFormatUnavailable: "Qulqullinni kun viidiyoo kanaaf hin jiru. Liinkicha irra deebi'aa ergaa — tarree haaraa isinittan agarsiisa.",
+  errorNoVideoContent: "Liinkii kana keessa viidiyoon buufatamu hin jiru — maxxansi kun suuraa qofa qaba fakkaata.",
+  errorRegionBlocked:
+    "Viidiyoon kun biyya uumaa isaatiin ala cufameera — waltajjichi " +
+    "sarvara keenyaaf hin kennu. Karaan itti darbamu hin jiru: daangeessichi isaan biratti." +
+    "\n\nLiinkiiwwan biroo akkuma duraatti buufatamu.",
+  errorRateLimited: "Liinkiiwwan baay'een walitti aananii dhufan — xiqqoo eegaatii irra deebi'aa ergaa.",
+  errorYoutubeDailyLimit: (gb) => `sa'aatii 24 darban keessatti YouTube irraa ${gb} GB caalaa buufattaniittu — kun daangaa guyyaa bootii nama tokkoof kaa'ameedha. Sa'aatii 24 darban qofa lakkaa'a, kanaaf viidiyoowwan YouTube haaraa xiqqoo booda buufachuu dandeessu. Waltajjiiwwan biroo akkuma duraatti hojjetu.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Tarreen viidiyoo dhaabbateera: daangaan guyyaa YouTube ga'eera. Viidiyoowwan hin buufatamne: ${dropped}. Liinkii tarree viidiyoo booda irra deebi'aa ergaa.`,
+  errorPlatformRefused:
+    "waltajjichi viidiyoo kana sarvara keenyaaf hin kennine. Kun maxxansoota dhuunfaa " +
+    "ykn daangaa umurii qaban irratti ta'a, yeroo tokko tokko immoo waltajjichi yeroodhaaf " +
+    "seensa daangeessa. Daqiiqaa muraasa booda irra deebi'aa yaalaa.",
+  errorThreadsNoMedia:
+    "maxxansa Threads kana keessatti viidiyoon ykn suuraan hin mul'atu. Yookaan maxxansa barreeffama qofaati, yookaan " +
+    "Threads miidiyaa isaa namoota seenaniif qofa agarsiisa — maxxansoonni akkasii osoo hin seenin buufatamuu hin danda'an.",
+  extensionHint:
+    "\n\n💻 Kompiitara irratti dabalata biraawuzarii Videoner'n buufachuu dandeessu: " +
+    "seensa keessan waltajjicha irratti fayyadamee buufata, jechi icciitii ykn kuukiin tokkollee biraawuzarii keessan keessaa hin ba'u.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Maxxansoota akkasii buufachuuf, akkaawuntii ${platform} keessan bootii wajjin walqabsiisaa — al tokko qofa. Sana booda bootiin waan isin argitan hunda buufata: maxxansoota dhuunfaa, reels fi istooriiwwan, bilbila irraas. Qabduun armaan gadii akkamitti akka ta'u agarsiisa.${withExtension ? "\n\n💻 Ykn kompiitara irratti dabalata biraawuzarii Videoner'n buufadhaa." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Akkaawuntiin ${platform} keessan kan walqabsiifame maxxansa kana banuu hin dandeenye. Seensi hojjechuu dhiisee ta'uu danda'a — akkaawuntii irra deebi'aa walqabsiisaa. Ykn akkaawuntiin kun maxxansa kanaaf hayyama hin qabu.${withExtension ? "\n\n💻 Akkasumas kompiitara irratti dabalata biraawuzarii Videoner'n buufachuu dandeessu." : ""}`,
+  connectAccountButton: "🔑 Akkaawuntii walqabsiisaa",
+  reconnectAccountButton: "🔑 Irra deebi'aa walqabsiisaa",
+  extensionButton: "🧩 Dabalataan buufadhaa",
+  extensionCommand:
+    "🧩 Videoner biraawuzarii keessaniif: qabduu “Buusi” fuula viidiyoo irratti kallattiin — YouTube, Instagram, TikTok, VK, viidiyoowwan dhuunfaa akkaawuntii keessan irraa fi barnoota GetCourse.\n\nKompiitara irratti Chrome, Edge, Opera, Yandex Browser fi Firefox'f.",
+  extensionPageButton: "🧩 Dabalata fe'aa",
+  addToGroupButton: "👥 Gareetti dabalaa",
+  newsButton: "📣 Oduu pirojektii",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Oduu pirojektii: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Qindaa'ina bootii garee kanaa\n\n" +
+    `🗑 Ergaa liinkii qabu haquu: ${s.deleteLinks ? "eeyyee" : "lakki"}\n` +
+    "Erga viidiyoon ergamee booda, ergaan liinkii qofa qabu ni haqama — chaatiin viidiyoo maqaa nama qoodee wajjin qofa qabata.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Amma ergaawwan haquu hin danda'u: mirga “Ergaawwan haquu” wajjin bulchaa na godhaa.\n"
+      : "") +
+    `\n✍️ Ibsa viidiyoo jalaa: ${{ full: "guutuu", short: "mata-duree fi madda", none: "ibsa malee" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Qulqullina: ${s.quality === "max" ? "isa Telegram fudhatu keessaa isa olaanaa" : "idilee (720p)"}\n` +
+    `\n⏱ Viidiyoowwan dheeraa: ${s.longVideos ? "dheerina kamiyyuu" : "hanga daqiiqaa 15 qofa"}\n` +
+    `\n🔑 Eenyutu akkaawuntii isaa walqabsiisuu danda'a (istooriif fi maxxansa dhuunfaaf): ${s.cookiesBy === "all" ? "miseensa kamiyyuu" : "bulchitoota qofa"}\n` +
+    `\n🌐 Afaan deebii: ${s.language ? langName(s.language) : "afaan miseensa tokkoon tokkoo"}\n` +
+    "\nQindaa'ina jijjiiruu kan danda'an bulchitoota garee qofa.",
+  settingsDeleteButton: (on) => `🗑 Liinkiiwwan haquu: ${on ? "eeyyee" : "lakki"}`,
+  settingsCaptionButton: (style) => `✍️ Ibsa: ${{ full: "guutuu", short: "gabaabaa", none: "hin jiru" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Qulqullina: ${mode === "max" ? "olaanaa" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Viidiyoowwan dheeraa: ${on ? "eeyyee" : "hanga daq. 15"}`,
+  settingsDoneButton: "✅ Xumurameera",
+  settingsAdminsOnly: "Qindaa'ina jijjiiruu kan danda'an bulchitoota garee qofa.",
+  settingsGroupsOnly: "Qindaa'inni gareewwaniif: garee tokkotti na dabalaatii achitti /settings ergaa.",
+  settingsFailed: "Qindaa'ina olkaa'uu hin dandeenye, irra deebi'aa yaalaa.",
+  settingsCookiesButton: (by) => `🔑 Akkaawuntii walqabsiisuu: ${by === "all" ? "nama hunda" : "bulchitoota"}`,
+  accountsIntro:
+    "🔑 Akkaawuntiiwwan walqabsiifaman\n\nBootiin waan namoota seenan qofaaf mul'atu (istoorii Instagram, maxxansoota dhuunfaa) akkaawuntii keessan fayyadamee buufachuu danda'a. Seensi bakka itti walqabsiiftan qofatti hojjeta: kan chaatii dhuunfaa keessatti walqabsiifame buufannaa keessan tajaajila, liinkiiwwan keessan gareewwan akkaawuntii mataa isaanii hin qabne keessatti ergitan dabalatee; kan garee tokkoon walqabsiifame miseensota isaa hunda tajaajila.",
+  accountsHowTo:
+    "Akkamitti walqabsiisuu:\n1. Inni salphaan: kompiitara irratti dabalata Videoner — marsariitii waltajjichaa irratti seenaa, foddaa Videoner banaa, “🔑 Akkaawuntii … keessan bootii wajjin walqabsiisaa” tuqaatii koodii naaf ergaa. Gareef yoo ta'e, garee sana keessatti /connect KOODII ergaa.\n2. Ykn faayilii cookies.txt (kuukii biraawuzarii irraa baafame) naaf ergaa, ykn barreeffama isaa akka ergaatti maxxansaa.\n3. Bilbila Android irraa — Firefox fi dabalata Cookie-Editor'n: https://videoner.download/om/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Waltajjiiwwan buufannaa ofumaan ta'u hin jaallatan, akkaawuntii daangeessuu ykn cufuu danda'u. Akkaawuntii keessan isa ijoo osoo hin taane akkaawuntii lammaffaa walqabsiisuun wayya. Kuukiin icciitiin kuufama, buufachuuf qofa tajaajila, qabduuwwan armaan gadiitiin ni haqama.",
+  accountsNone: "Ammaaf wanti walqabsiifame hin jiru.",
+  accountsGroupTitle: "🔑 Akkaawuntiiwwan garee kanaan walqabsiifaman",
+  accountsGroupHowTo:
+    "Garee guutuuf walqabsiisuuf: dabalata Videoner keessatti qabduu “🔑 Akkaawuntii … keessan bootii wajjin walqabsiisaa” fayyadamaatii koodii argadhaa, as immoo /connect KOODII ergaa. Yoo akkaawuntii chaatii dhuunfaa keessan qofatti walqabsiiftan, bootiin liinkiiwwan keessaniif asitti itti fayyadama. Walqabsiisoota keessan: chaatii dhuunfaa @VideonerBot wajjin keessatti /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ seensi hin hojjetu)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ seensi hin hojjetu)"}`,
+  accountsWhereHere: "chaatii dhuunfaa",
+  accountsWhereGroup: (title) => `garee “${title}”`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Walqabsiisoota koo hunda haqaa",
+  accountsDeleted: "Haqameera.",
+  accountsDeletedAll: (n) => `Walqabsiisoonni haqaman: ${n}.`,
+  accountsNotAllowed: "Haquu kan danda'u nama walqabsiise ykn bulchaa garee qofa.",
+  connectUsage:
+    "/connect KOODII ergaa. Koodii qabduun “🔑 Akkaawuntii … keessan bootii wajjin walqabsiisaa” dabalata Videoner kompiitara irraa isiniif kenna. Walqabsiisoota keessan: /accounts.",
+  connectOnlyAdmins: "Garee kanaan akkaawuntii walqabsiisuu kan danda'an bulchitoota qofa (/settings ilaalaa).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} walqabsiifameera. Bootiin amma waan namoota seenan qofaaf mul'atus ni buufata. Ilaaluuf ykn haquuf: /accounts.\n\n⚠️ Waltajjichi buufannaa ofumaan ta'uuf akkaawuntii daangeessuu danda'a — akkaawuntii lammaffaa fayyadamuun wayya.`,
+  connectWhereGroup: "garee kanaan",
+  connectWhereHere: "buufannaa keessan chaatii dhuunfaa fi haala inline keessatti",
+  connectCodeNotFound: "Koodiin hin argamne ykn yeroon isaa darbeera (koodiin daqiiqaa 10 qofa tura). Dabalata Videoner keessatti koodii haaraa argadhaa.",
+  connectRejectedNoSession: "Kuukiin kun seensa hin qabu. Marsariitii waltajjichaa irratti seenaatii kuukii irra deebi'aa baasaa.",
+  connectRejectedUnknown: "Kuukiin waltajjiiwwan deeggaramanii hin argamne: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Akkaawuntii walqabsiisuun ammaaf hin jiru.",
+  connectFailed: "Walqabsiisuu hin dandeenye, irra deebi'aa yaalaa.",
+  connectFileTooBig: "Faayilichi baay'ee guddaa dha — kuukii marsariitii barbaachisu qofa baasaa.",
+  connectNotAnonymous: "Akkaawuntii akka ofii keessaniitti walqabsiisaa, akka garee maqaa dhoksuun miti: yoo kanaa miti walqabsiisoonni bulchitootaa walitti makamu. Koodii sana balleesseera — haaraa argadhaa.",
+  connectCodeInGroup:
+    "Koodiin walqabsiisaa chaatii garee keessatti maxxanfame namoota biroon mul'achuu danda'a — koodii balleesseera, ergaas haqeera. Haaraa argadhaatii /connect KOODII jedhaa ergaa: ergaa ajaja sanaa battaluma nan haqa.",
+  groupWelcome:
+    "👋 Akkam! Chaatii kana keessatti liinkii viidiyoowwan TikTok, Instagram, YouTube, VK fi waltajjiiwwan biroo irraa maxxansaa — viidiyoo mataa isaatiin deebisa.\n\n" +
+    "Viidiyoowwan hanga daqiiqaa 15 ofumaan nan buufadha, ajajni hin barbaachisu, yeroo biraa immoo callisa.\n\n⚙️ Bulchitoonni garee /settings'n na qindeessuu danda'u: ergaawwan liinkii haquu, akkaataa ibsaa, qulqullina, viidiyoowwan dheeraa fi afaan.\n\n⚡ Sagalee argachuuf liinkii booda -audio dabalaa, qulqullina isa caalu argachuuf immoo -hd.\n\n📣 Oduu pirojektii: @videonerdownload",
+  errorTooLong: "viidiyoon kun baay'ee dheeraa dha — viidiyoowwan akkasii dheeratan ammaaf buufachuu hin dandeenyu.",
+  errorUnknown: "viidiyoo kana buufachuu hin dandeenye. Xiqqoo booda irra deebi'aa yaalaa ykn liinkii biraa ergaa.",
+  inlineHintButton: "Liinkii bootiif ergaa",
+  inlineResultTitle: "⬇️ Viidiyoo buufadhaa",
+  inlineResultDescription: "Viidiyoon chaatii kana keessatti kallattiin ni maxxanfama",
+  inlinePlaceholder: "⏬ Buufachaa jira, daqiiqaa muraasa fudhachuu danda'a...",
+  inlineOpenBot: "Bootii banaa",
+  inlineOnlySingleVideo:
+    "Haalli kun viidiyoo tokko qofa erga. Maxxansoota faayilota hedduu qabaniif ykn suuraawwaniif, liinkicha chaatii dhuunfaa keessatti bootiif ergaa.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Buufachuuf, ${channel} hordofaatii irra deebi'aa yaalaa.`,
+  inlineRateLimited: "Gaaffiiwwan baay'een walitti aananii dhufan. Daqiiqaa tokko eegaatii irra deebi'aa yaalaa.",
+  queueRest: (count) => `\n\n📋 Liinkiiwwan ammallee tarree eegumsaa keessa jiran: ${count}. Kana booda tokko tokkoon isinittan agarsiisa.`,
+  queuedOne: (position) =>
+    `📋 Liinkiin tarree eegumsaatti dabalameera, #${position}. Dura isa amma jiru haa xumurru — sana booda filannoo qulqullinaa isaa isinittan agarsiisa.`,
+  queuedMany: (added, waiting) =>
+    `📋 Liinkiiwwan tarree eegumsaatti dabalaman: ${added}. Waliigala kan eegaa jiran: ${waiting}. Isa amma jiru booda tokko tokkoon isinittan agarsiisa.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Liinkiin kun duraanuu tarree eegumsaa keessa jira — al lama hin dabalamu."
+      : `Liinkiiwwan duraanuu tarree eegumsaa keessa jiran al lama hin dabalaman (irra deddeebi'an: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Tarreen eegumsaa liinkii ${limit} ol hin qabatu — kanneen hafan hin dabalamne (${rejected}). Erga tarreen socho'ee booda ergaa.`,
+  skipButton: "✖️ Hin buufatinaa",
+  skipped: "⏭ Liinkii kana irra darbeera.",
+  chooseTimedOut: "⌛ Daqiiqaa 30 keessatti qulqullinni hin filatamne — liinkii kana irra darbaa jira.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bootiin fooyya'iinsaaf irra deebi'ee ka'aa jira — tarreen eegumsaa haqameera (liinkiiwwan: ${count}). Daqiiqaa tokko booda irra deebi'aa ergaa.`,
+  subtitlesButton: "📝 Barreeffama jalaa",
+  subtitlesBack: "⬅️ Gara qulqullinaatti deebi'aa",
+  subtitlesAuto: "ofumaan",
+  subtitlesChoose: "Afaan barreeffama jalaa filadhaa",
+  subtitlesPreparing: "📝 Barreeffama jalaa qopheessaa jira...",
+  subtitlesFailed: "Barreeffama jalaa afaan kanaan buufachuu hin dandeenye. Afaan biraa yaalaa.",
+  subtitlesBusy: "YouTube amma barreeffama jalaa hin kennu — daqiiqaa muraasa booda irra deebi'aa yaalaa.",
+  playlistFound: (title, count) =>
+    `📃 Tarree viidiyoo${title ? ` “${title.slice(0, 150)}”` : ""}: viidiyoo ${count}.\nTokko tokkoon nan buufadha. Akkaataa kam?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Qulqullina isa caalu",
+  playlistAudioButton: "🎵 Sagalee qofa (mp3)",
+  playlistNoButton: "✖️ Lakki, galatoomaa",
+  playlistQueued: (count) =>
+    `📃 Viidiyoowwan tarree viidiyoo irraa tarree eegumsaatti galan: ${count}. Tokko tokkoon nan erga. Qabduu armaan gadiitiin ykn /stop'n dhaabaa.`,
+  playlistFailed: "Tarree viidiyoo banuu hin dandeenye — dhuunfaa ta'uu danda'a. Liinkii viidiyoo tokkoo ergaa.",
+  stopButton: "⏹ Dhaabi",
+  stopped: (dropped) => `⏹ Dhaabbateera.${dropped ? ` Liinkiiwwan tarree eegumsaa keessaa haqaman: ${dropped}.` : ""}`,
+  nothingToStop: "Amma wanti buufatamaa jiru hin jiru.",
+  languageChoose: "🌐 Afaan bootii filadhaa. “Ofumaan” afaan Telegram keessanii hordofa.",
+  languageChooseGroup: "🌐 Afaan deebii bootii garee kana keessatti. “Ofumaan” — afaan Telegram miseensa tokkoon tokkoo.",
+  languageAuto: "Ofumaan — akka Telegram",
+  languageAutoGroup: "Ofumaan — afaan miseensa tokkoon tokkoo",
+  languageSaved: (name) => `✅ Afaan bootii: ${name}. /language'n jijjiiruu dandeessu.`,
+  languageSavedAuto: "✅ Bootiin afaan Telegram keessanii hordofa. /language'n jijjiiruu dandeessu.",
+  settingsLanguageButton: (name) => `🌐 Afaan: ${name ?? "ofumaan"}`,
+  settingsBack: "⬅️ Gara qindaa'inaatti deebi'aa",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -5990,4 +6210,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om };

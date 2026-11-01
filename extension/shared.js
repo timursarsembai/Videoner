@@ -2267,6 +2267,91 @@ const TEXTS = {
     langAuto: "ራስ-ሰር",
     langLabel: "ቋንቋ",
   },
+  om: {
+    loading: "Odeeffannoo viidiyoo fidaa jira…",
+    notVideoPage:
+      "Fuula viidiyoo YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ykn Threads irratti banaatii mallattoo sana irra deebi'aa cuqaasaa. Barnoota GetCourse: fuulli barnootaa osoo dabalanni hin diriirfamin dura banamee yoo ture, irra deebi'aa fe'aa.",
+    gcLesson: "Barnoota GetCourse",
+    gcPick: "Barnoonni kun viidiyoowwan hedduu qaba — tokko filadhaa",
+    gcVideo: (n) => `Viidiyoo ${n}`,
+    gcNote: "Biraawuzariin keessan ni buusa, kutaalee isaas walitti fida. Foddaa kana cufuu dandeessu, biraawuzarii garuu hin cufinaa.",
+    gcNoStream: "Viidiyoo taphachiisaa irraa argachuun hin danda'amne. Fuula barnootaa irra deebi'aa fe'aatii ammas yaalaa.",
+    video: "Viidiyoo",
+    photo: "Suuraalee hamma isaanii jalqabaatiin",
+    slideshow: "Islaayid shoo (viidiyoo)",
+    gallery: "Suuraalee + islaayid shoo",
+    audioOnly: "Sagalee qofa (mp3)",
+    subtitles: "Barreeffama jalaa (.srt)",
+    subtitlesAuto: "ofumaan kan uumame",
+    back: "Duubatti",
+    starting: "Buusuun jalqabamaa jira…",
+    waiting: "Sarvarii irratti bakka duwwaa eegaa jira…",
+    downloading: "Buusaa jira",
+    converting: "Qopheessaa jira",
+    left: (eta) => `${eta} hafe`,
+    saving: "Kuusaa Downloads keessatti olkaa'aa jira…",
+    done: "Xumurameera — faayilichi kuusaa Downloads keessan keessa jira.",
+    news: "📣 Oduu pirojektichaa: @videonerdownload",
+    again: "Kan biraa buusaa",
+    directDownload: "Viidiyoo buusaa (mp4)",
+    directPhoto: "Suuraa buusaa (jpg)",
+    directNote: "Kallattiin biraawuzarii keessan irraa — eegumsa sarvarii malee",
+    moreOptions: "Qulqullina biroo fi sagalee",
+    fallback: "Biraawuzariin buusuu hin dandeenye — karaa sarvariitiin buusaa jira.",
+    openSite: "videoner.download banaa",
+    retry: "Ammas yaalaa",
+    min: "daq",
+    sec: "sek",
+    errNetwork: "Videoner bira ga'uun hin danda'amne. Walqunnamtii keessan mirkaneeffadhaatii ammas yaalaa.",
+    errRateLimit: "Gaaffiiwwan baay'een walduraa duubaan ergamaniiru. Daqiiqaa tokko eegaatii ammas yaalaa.",
+    errUnsupported:
+      "Fuula kana irratti viidiyoon Videoner buusuu danda'u hin jiru. Fuula viidiyoo ykn maxxansa murtaa'e tokkoo banaa.",
+    errYoutubeDaily: "Daangaan guyyaa YouTube kan neetwoorkii keessanii xumurameera. Boru ammas yaalaa.",
+    errTooLarge: "Qulqullina kanaan faayilichi baay'ee guddaa dha. Qulqullina gadi aanaa filadhaa.",
+    errLogin:
+      "Maxxansi kun warra seenaniif qofa mul'ata. Maxxansoonni uummataa rakkoo tokko malee ni bu'u.",
+    errRegion: "Barreessaan maxxansa kana biyyaan daangeesseera, kanaaf buusuun hin danda'amu.",
+    errServerBlocked: "Waltajjichi yeroof sarvarii keenya daangessaa jira. Maaloo booda ammas yaalaa.",
+    errFailed: "Buusuun hin milkoofne. Ammas yaalaa ykn qulqullina biraa filadhaa.",
+    errGeneric: "Wanti tokko dogoggoreera. Maaloo xiqqoo booda ammas yaalaa.",
+    acctButton: (p) => `🔑 Akkaawuntii ${p} keessan bootii wajjin walqabsiisaa`,
+    acctWarn: (p) =>
+      `@VideonerBot akkaawuntii keessaniin waan ${p} irratti warra seenan qofaaf mul'atu buusuu danda'a: istoorii, maxxansa dhuunfaa. Waltajjiiwwan buusuu ofumaan hojjetamu hin jaallatan, akkaawuntichas daangessuu danda'u — akkaawuntii lammaffaa walqabsiisuun wayya. Biraawuzariin kuukii marsariitii kanaa dubbisuuf hayyama isin gaafata; kuukiin ${p} qofti, iccitiidhaan eegamee, gara sarvariitti ergama.`,
+    acctConfirm: "Walqabsiisaa",
+    acctCancel: "Haqaa",
+    acctSending: "Walqabsiisaa jira…",
+    acctDenied: "Hayyama kuukii malee akkaawuntii walqabsiisuun hin danda'amu.",
+    acctNoLogin: (p) => `Biraawuzarii kana keessatti ${p} keessa hin seenine. Marsariitii irratti seenaatii ammas yaalaa.`,
+    acctFailed: "Hin milkoofne. Xiqqoo booda ammas yaalaa.",
+    acctCodeTitle: (p) => `Koodii ${p} walqabsiisuuf:`,
+    acctCodeHelp:
+      "Buufata mataa keessaniif chaatii dhuunfaa keessatti @VideonerBot-tti ergaa. Gareef ammoo garee keessatti /connect KOODII ergaa. Koodiin daqiiqaa 10f hojjeta.",
+    acctCopy: "Garagalchaa",
+    acctCopied: "Garagalfameera",
+    acctOpenBot: "Bootii banaa",
+    acctNewCode: "Koodii haaraa argadhaa",
+    acctList: "Walqabsiisota koo bootii keessaa",
+    acctRevoke: "Hayyama kuukii haqaa",
+    acctRevoked:
+      "Hayyamni kuukii haqameera — dabalanni kana booda kuukii hin dubbisu. Akkaawuntiiwwan dura walqabsiiftan bootii keessa turu: “Walqabsiisota koo bootii keessaa” keessatti haqaa.",
+    playlistOffer: "📃 Tarree viidiyoo guutuu buusaa",
+    playlistTitle: (title, n) => `📃 Tarree viidiyoo${title ? ` “${title}”` : ""}: viidiyoo ${n}`,
+    playlistHint: "Tokko tokkoon nan buusa. Foddaa kana cufuu dandeessu.",
+    playlist720: "Tarree viidiyoo 720p'n",
+    playlistBest: "Tarree viidiyoo qulqullina olaanaan",
+    playlistAudio: "Tarree viidiyoo — sagalee qofa (mp3)",
+    playlistProgress: (i, n) => `Viidiyoo ${i} / ${n}`,
+    playlistStats: (done, failed) => `Kan bu'e: ${done}${failed ? ` · kan hin milkoofne: ${failed}` : ""}`,
+    playlistStop: "⏹ Dhaabi",
+    playlistDone: (done, n) => `Tarreen viidiyoo buufameera: ${n} keessaa ${done}.`,
+    playlistStopped: (done, n) => `Dhaabbateera. ${n} keessaa ${done} buufameera.`,
+    playlistLoading: "Viidiyoowwan tarree viidiyoo keessaa argachaa jira…",
+    close: "Cufaa",
+    updateAvailable: (v) => `Veershiniin ${v} ba'eera.`,
+    updateHow: "Akkamitti haaromsuu dandeessu",
+    langAuto: "Ofumaan",
+    langLabel: "Afaan",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -2357,12 +2442,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), оромо (om, om-ET → om), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский, персидский и урду пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ru: "Русский", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
+export const LANG_NAMES = { om: "Afaan Oromoo", id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ru: "Русский", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -2470,11 +2555,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому, корейскому, тайскому, тагальскому и амхарскому — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому, корейскому, тайскому, тагальскому, амхарскому и оромо — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am" || lang === "om";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

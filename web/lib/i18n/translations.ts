@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -40,6 +40,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   ko: "한국어",
   th: "ไทย",
   am: "አማርኛ",
+  om: "Afaan Oromoo",
   tl: "Tagalog",
 };
 
@@ -9056,6 +9057,366 @@ const am: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const om: Translations = {
+  nav: {
+    home: "Fuula jalqabaa",
+    downloaders: "Buusuuwwan",
+    extension: "Dabalata biraawuzarii",
+    blog: "Bloogii",
+    switchTheme: "Haala agarsiisaa jijjiiri",
+    language: "Afaan",
+    comingSoon: "Dhiyootti",
+  },
+  theme: {
+    light: "Ifaa",
+    dark: "Dukkanaa",
+    system: "Sirna",
+  },
+  playlist: {
+    title: `Tarree viidiyoo "{title}": viidiyoo {count}`,
+    hint: "Viidiyoowwan tokko tokkoon buufamu. Fuula kana banaa tursiisaa; biraawuzariin keessan buusuuwwan hedduu akka hayyamtan isin gaafachuu danda'a.",
+    std: "720p",
+    hd: "Qulqullina isa caalu",
+    audio: "Sagalee qofa (mp3)",
+    progress: "Viidiyoo {index} kan {count} keessaa",
+    stats: "Buufame: {done} · kan hin milkoofne: {failed}",
+    stop: "Dhaabi",
+    stopped: "Dhaabbateera. {count} keessaa {done} buufameera.",
+    finished: "Tarreen viidiyoo xumurameera: {count} keessaa {done}.",
+    again: "Ammas filadhu",
+  },
+  footer: {
+    news: "Oduu pirojektii",
+    botCta: "Akka bootii Telegram-ittis ni argama:",
+    extension: "Dabalata biraawuzarii",
+    developedBy: "Kan qopheesse",
+    rights: "Mirgi hundi eegamaadha.",
+  },
+  content: {
+    howToTitle: "Viidiyoo {platform} akkamitti buusuu dandeessan",
+    faqTitle: "Gaaffilee yeroo baay'ee gaafataman",
+  },
+  auth: {
+    loginButton: "Telegram-iin seeni",
+    signIn: "Seeni",
+    logout: "Ba'i",
+    switchAccountHint: "Akkaawuntii keessan miti?",
+    switchAccountLink: "Telegram Web keessaa ba'aa",
+  },
+  home: {
+    new: "Haaraa",
+    manyFeatures: "Amaloota haaraa hedduu",
+    titleLine1: "Viidiyoo saffisaan",
+    titleLine2: "fi salphaatti buusaa",
+    subtitle:
+      "Meeshaa viidiyoo buusuu tokkicha YouTube, Instagram, TikTok fi kanneen biroof. Qulqullina kamiyyuu filadhaa — HD irraa kaasee hanga kan bilbilaaf mijatuutti.",
+    subtitleExtra: "Daangaa malee, rakkoo malee — buusuu qofa.",
+    placeholder: "Liinkii viidiyoo waltajjii kamirraayyuu as maxxansaa...",
+    download: "Buusi",
+  },
+  video: {
+    description: "Ibsa",
+    format: "Foormaatii",
+    selected: "Filatame: {quality}",
+    videoTab: "viidiyoo",
+    audioTab: "sagalee",
+    converting: "Jijjiiramaa jira",
+    downloading: "Buufamaa jira",
+    downloadAgain: "Irra deebi'ii buusi",
+    startDownload: "Buusuu jalqabi",
+    convertingBtn: "Jijjiiramaa jira...",
+    downloadingBtn: "Buufamaa jira...",
+    loginRequiredHint: "Buusuuf Telegram-iin seenaa",
+    quotaExceededHint: "Daangaan guyyaa buusuu 20 guuteera — boru deebi'aa",
+    postFiles: "Maxxansi kun faayilii {count} qaba",
+    photoQuality: "Suuraalee orijinaalaa",
+    slideshowQuality: "Islaayid shoo (viidiyoo)",
+    galleryQuality: "Suuraalee + islaayid shoo",
+    downloadAll: "Hunda buusi",
+    downloadOne: "Olkaa'i",
+    subtitlesTab: "barreeffama jalaa",
+    subtitlesHint: "Afaan filadhaa — faayilii .srt taphachiisaan kamiyyuu banu ni argattu.",
+    subtitlesAuto: "ofumaan",
+    subtitlesDownload: "Barreeffama jalaa buusi",
+    subtitlesDownloading: "Barreeffamni jalaa qophaa'aa jira...",
+  },
+  toast: {
+    enterUrl: "Maaloo liinkii galchaa",
+    enterValidUrl: "Maaloo liinkii sirrii galchaa",
+    platformNotSupported: "Waltajjiin kun hin deeggaramu",
+    urlNotSupported: "Liinkiin kun hin deeggaramu",
+    enterValidPlatformUrl: "Maaloo liinkii {platform} sirrii galchaa",
+    captchaNotReady: "Maaloo mirkaneessi nageenyaa hanga xumuramutti xiqqoo eegaatii irra deebi'aa yaalaa",
+    comingSoon: "Dhiyootti! {name} ammaaf hin deeggaramu",
+    selectQuality: "Maaloo qulqullina filadhaa",
+    downloadStarted: "Buusuun jalqabeera!",
+    downloadCompleted: "Buusuun xumurameera!",
+    newsChannel: "Oduun pirojektii Telegram irratti argama:",
+    downloadUrlNotReceived: "Liinkiin buusuu hin argamne",
+    needsBrowser:
+      "Waltajjiin kun viidiyoo kana sarvarii keenyaaf hin kennine: fayyadamtoota seenan qofaaf argama, ykn argamuun isaa yeroof daangeffameera. Kompiitara irratti dabalata biraawuzarii Videoner-iin buusuu dandeessu — seensa keessan mataa keessaniitiin buusa.",
+    needsBrowserLink: "Dabalata argadhaa →",
+  },
+  platforms: {
+    youtube: {
+      description: "Viidiyoo YouTube qulqullina HD-n buusaa",
+      news: "Amma viidiyoo fi Shorts ni deeggara",
+      titleLine1: "Viidiyoo YouTube",
+      titleLine2: "fi Shorts buusaa",
+      pageDescription:
+        "Viidiyoo YouTube, Shorts fi sagalee qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa. 8K, 4K, qulqullina HD fi sagalee MP3 ni deeggara.",
+      placeholder: "Liinkii YouTube as maxxansaa...",
+      howTo: [
+        "Liinkii viidiyoo sararaa teessoo biraawuzarii keessaa garagalchaa, ykn appii YouTube irratti Share tuqaa.",
+        "Saanduqa olii keessa maxxansaatii “Buusi” tuqaa.",
+        "Qulqullina filadhaa — viidiyoof hanga 4K/8K, ykn sagalee qofaaf MP3.",
+        "Faayiliin keessan battalumatti buufamuu jalqaba, seenuu hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo YouTube buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Videoner qulqullina YouTube viidiyoo sanaaf kennu hunda isiniif dhiyeessa — 360p irraa kaasee hanga 4K/8K bakka jirutti — akkasumas sagalee MP3 baasuu." },
+        { q: "Viidiyoo dhuunfaa ykn umuriin daangeffame buusuu nan danda'aa?", a: "Viidiyoo YouTube uummataaf banaa ta'an qofatu deeggarama; viidiyoo dhuunfaa, isiniif hin agarsiifamne ykn seenuu barbaadan buusuun hin danda'amu." },
+        { q: "Viidiyoo YouTube irraa buusuun seeraan hayyamamaadhaa?", a: "Viidiyoo olkaa'uuf mirga qabdan qofa buusaa — qabiyyee mataa keessanii, viidiyoo hayyama Creative Commons qaban, ykn kan uumaan isaa hayyame. Haala Tajaajilaa YouTube fi seera mirga qabeenyaa kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni jijjiiraman sarvarii irra sa'aatii tokko naannoo turu, kanaaf erga buuftanii booda battalumatti meeshaa keessan irratti olkaa'aa." },
+      ],
+    },
+    facebook: {
+      description: "Viidiyoo fi reels maxxansa Facebook irraa olkaa'aa",
+      news: "Amma reels ni deeggara",
+      titleLine1: "Viidiyoo Facebook",
+      titleLine2: "fi Reels buusaa",
+      pageDescription:
+        "Viidiyoo fi reels Facebook qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa.",
+      placeholder: "Liinkii Facebook as maxxansaa...",
+      howTo: [
+        "Viidiyoo ykn reel Facebook irratti banaatii liinkii isaa garagalchaa (tuqaalee sadan tuqaa → Copy Link).",
+        "Liinkii olitti maxxansaatii “Buusi” tuqaa.",
+        "Qulqullina MP4 filadhaa ykn sagalee MP3 godhaa baasaa.",
+        "Faayiliin kallattiin meeshaa keessanitti buufama — akkaawuntii Facebook hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo Facebook buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Videoner qulqullina Facebook viidiyoo ykn reel sanaaf kennu keessaa isa olaanaa MP4-n fudhata, akkasumas filannoo sagalee MP3 ni qaba." },
+        { q: "Viidiyoo dhuunfaa buusuu nan danda'aa?", a: "Maxxansa, viidiyoo fi reels uummataaf banaa ta'an qofatu hojjeta — qabiyyee dhuunfaa ykn hiriyoota qofaaf ta'e argachuun hin danda'amu." },
+        { q: "Viidiyoo Facebook irraa buusuun seeraan hayyamamaadhaa?", a: "Viidiyoo olkaa'uuf hayyama qabdan qofa buusaa; mirga uumaa fi Haala Tajaajilaa Facebook kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni erga jijjiiramanii booda sa'aatii tokko naannoo turu, achii ofumaan haqamu — dafaatii buusaa." },
+      ],
+    },
+    instagram: {
+      description: "Reels, stories fi maxxansa Instagram buusaa",
+      news: "Amma reels fi stories ni deeggara",
+      titleLine1: "Reels fi Stories",
+      titleLine2: "Instagram buusaa",
+      pageDescription:
+        "Reels, stories fi maxxansa Instagram qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa.",
+      placeholder: "Liinkii Instagram as maxxansaa...",
+      howTo: [
+        "Reel, maxxansa ykn story Instagram irratti banaatii mallattoo xiyyaara waraqaa tuqaa → Copy Link.",
+        "Liinkii saanduqa olii keessa maxxansaa.",
+        "Qulqullina fi foormaatii barbaaddan filadhaa.",
+        "Buusuun battalumatti jalqaba — seenuun ykn appii fe'uun hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin qabiyyee Instagram buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Reels, maxxansa fi stories qulqullina guutuu jiruun, MP4 ykn MP3-n." },
+        { q: "Akkaawuntii dhuunfaa irraa buusuu nan danda'aa?", a: "Akkaawuntii fi maxxansa Instagram uummataaf banaa ta'an qofatu deeggarama; qabiyyee akkaawuntii dhuunfaa buusuun hin danda'amu." },
+        { q: "Viidiyoo Instagram irraa buusuun seeraan hayyamamaadhaa?", a: "Waan olkaa'uuf hayyamamtan qofa buusaa — uumaa fi Haala Tajaajilaa Instagram kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni ofumaan haqamuu dura sarvarii irra sa'aatii tokko naannoo turu." },
+      ],
+    },
+    tiktok: {
+      description: "Viidiyoo TikTok watermark malee buusaa",
+      news: "Amma watermark malee",
+      titleLine1: "Viidiyoo TikTok",
+      titleLine2: "watermark malee buusaa",
+      pageDescription:
+        "Viidiyoo TikTok watermark malee qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa.",
+      placeholder: "Liinkii TikTok as maxxansaa...",
+      howTo: [
+        "Viidiyoo TikTok irratti Share tuqaatii achii Copy Link.",
+        "Liinkii olitti maxxansaatii “Buusi” tuqaa.",
+        "MP4 qulqulluu — watermark TikTok malee — ykn sagalee MP3 argadhaa.",
+        "Kallattiin meeshaa keessan irratti olkaa'aa.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo TikTok buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Qulqullina TikTok viidiyoo sanaaf kennu keessaa isa olaanaa, watermark TikTok malee, akkasumas sagalee MP3." },
+        { q: "Akkaawuntii dhuunfaa irraa buusuu nan danda'aa?", a: "Viidiyoo akkaawuntii TikTok uummataaf banaa ta'an irraa qofa buusuun ni danda'ama." },
+        { q: "Viidiyoo TikTok irraa buusuun seeraan hayyamamaadhaa?", a: "Viidiyoo olkaa'uuf mirga qabdan buusaa, maqaa uumaa caqasaa, Haala Tajaajilaa TikTok kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni buufaman sarvarii irra sa'aatii tokko naannoo turanii ofumaan haqamu." },
+      ],
+    },
+    twitter: {
+      description: "Viidiyoo Twitter buusaa",
+      news: "Amma viidiyoo Twitter ni deeggara",
+      titleLine1: "Viidiyoo Twitter",
+      titleLine2: "buusaa",
+      pageDescription:
+        "Viidiyoo Twitter qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa.",
+      placeholder: "Liinkii Twitter as maxxansaa...",
+      howTo: [
+        "Tiwiitii jalatti Share tuqaatii Copy Link filadhaa (ykn liinkii biraawuzarii keessaa garagalchaa).",
+        "Saanduqa olii keessa maxxansaa.",
+        "Qulqullina viidiyoo barbaaddan filadhaa.",
+        "Buusuun battalumatti jalqaba — akkaawuntii X/Twitter hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo Twitter/X buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Qulqullina X/Twitter viidiyoo sanaaf kennu hunda, MP4-n, akkasumas MP3." },
+        { q: "Akkaawuntii dhuunfaa irraa buusuu nan danda'aa?", a: "Tiwiitii akkaawuntii uummataaf banaa ta'an irraa qofatu hojjeta; akkaawuntiin eegamoo/dhuunfaa hin deeggaraman." },
+        { q: "Viidiyoo Twitter/X irraa buusuun seeraan hayyamamaadhaa?", a: "Qabiyyee olkaa'uuf mirga qabdan buusaa; mirga nama maxxanse fi Haala Tajaajilaa waltajjii sanaa kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni erga qophaa'anii sa'aatii tokko naannoo booda ofumaan haqamu." },
+      ],
+    },
+    vimeo: {
+      description: "Viidiyoo Vimeo qulqullina olaanaan buusaa",
+      news: "Amma Vimeo ni deeggara",
+      titleLine1: "Viidiyoo Vimeo",
+      titleLine2: "buusaa",
+      pageDescription:
+        "Viidiyoo Vimeo qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa.",
+      placeholder: "Liinkii Vimeo as maxxansaa...",
+      howTo: [
+        "Vimeo banaatii liinkii viidiyoo garagalchaa (ykn bilbila irratti Share → Copy Link tuqaa).",
+        "Liinkii saanduqa olii keessa maxxansaatii “Buusi” tuqaa.",
+        "Qulqullina fi foormaatii filadhaa — viidiyoof MP4, sagalee qofa yoo barbaaddan MP3.",
+        "Buusuun keessan battalumatti jalqaba; akkaawuntii ykn sooftiweerii fe'uun hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo Vimeo buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Videoner qulqullina Vimeo viidiyoo sanaaf kennu hunda dhiyeessa, hanga qulqullina jalqaba itti fe'ameetti, bakka uumaan kenne HD fi 4K dabalatee." },
+        { q: "Viidiyoo Vimeo dhuunfaa ykn jecha icciitiin eegame buusuu nan danda'aa?", a: "Lakki — Videoner liinkii Vimeo uummataaf banaa ta'an qofaan hojjeta. Viidiyoo dhuunfaa, jecha icciitiin eegame ykn argamuun isaa daangeffame buusuun hin danda'amu." },
+        { q: "Viidiyoo Vimeo irraa buusuun seeraan hayyamamaadhaa?", a: "Buusuun viidiyoo olkaa'uuf mirga qabdaniif qophaa'e — qabiyyee mataa keessanii, viidiyoo hayyama Creative Commons qaban, ykn kan uumaan isaa buusuuf ifatti hayyame. Mirga qabeenyaa uumaa jalqabaa fi haala tajaajilaa Vimeo kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni yeroo barbaachisan qophaa'anii sarvarii irra sa'aatii tokko naannoo turanii ofumaan haqamu, kanaaf akkuma buusuun xumurameen meeshaa keessan irratti olkaa'aa." },
+      ],
+    },
+    vk: {
+      description: "Viidiyoo fi kiliippii VK irraa buusaa",
+      news: "Amma VK ni deeggara",
+      titleLine1: "Viidiyoo fi kiliippii",
+      titleLine2: "VK buusaa",
+      pageDescription:
+        "Viidiyoo fi kiliippii VK qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa.",
+      placeholder: "Liinkii VK as maxxansaa...",
+      howTo: [
+        "Viidiyoo ykn kiliippii VK (vk.com ykn VK Video) irratti banaatii liinkii isaa sararaa teessoo ykn qabduu Share irraa garagalchaa.",
+        "Liinkii olitti maxxansaatii “Buusi” tuqaa.",
+        "Qulqullina fi foormaatii jiru filadhaa.",
+        "Faayiliin kallattiin buufama — VK seenuun isin hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo VK buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Qulqullina VK viidiyoo ykn kiliippii sanaaf kennu hunda, akkasumas sagalee MP3." },
+        { q: "VK seenuun na barbaachisaa?", a: "Lakki — viidiyoon uummataaf banaa ta'uu qaba. Videoner VK hin seenu, kanaaf viidiyoo dhuunfaa, hiriyoota qofaaf ta'e ykn seenuu barbaadu buusuun hin danda'amu." },
+        { q: "Viidiyoo VK irraa buusuun seeraan hayyamamaadhaa?", a: "Viidiyoo olkaa'uuf mirga qabdan qofa buusaa; Haala Tajaajilaa VK fi mirga nama fe'e kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni sarvarii irra sa'aatii tokko naannoo turanii ofumaan haqamu." },
+      ],
+    },
+    rutube: {
+      description: "Viidiyoo Rutube irraa buusaa",
+      news: "Amma Rutube ni deeggara",
+      titleLine1: "Viidiyoo Rutube",
+      titleLine2: "buusaa",
+      pageDescription:
+        "Viidiyoo Rutube qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa.",
+      placeholder: "Liinkii Rutube as maxxansaa...",
+      howTo: [
+        "Viidiyoo Rutube irratti banaatii liinkii isaa sararaa teessoo ykn qabduu Share irraa garagalchaa.",
+        "Saanduqa olii keessa maxxansaa.",
+        "Qulqullina fi foormaatii (viidiyoo ykn sagalee) filadhaa.",
+        "Buusuun battalumatti jalqaba, akkaawuntii Rutube hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo Rutube buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Qulqullina Rutube kennu hunda, MP4-n, akkasumas sagalee MP3." },
+        { q: "Rutube seenuun na barbaachisaa?", a: "Lakki — Videoner viidiyoo Rutube uummataaf banaa ta'an qofaan hojjeta; seenuun hin fayyadamu, hin barbaachisus." },
+        { q: "Viidiyoo Rutube irraa buusuun seeraan hayyamamaadhaa?", a: "Qabiyyee olkaa'uuf hayyamamtan qofa buusaa; Haala Tajaajilaa Rutube fi mirga uumaa kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni ofumaan haqamuu dura sarvarii irra sa'aatii tokko naannoo turu." },
+      ],
+    },
+    okru: {
+      description: "Viidiyoo OK.ru (Odnoklassniki) irraa buusaa",
+      news: "Amma OK.ru ni deeggara",
+      titleLine1: "Viidiyoo OK.ru",
+      titleLine2: "buusaa",
+      pageDescription:
+        "Viidiyoo OK.ru (Odnoklassniki) qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa.",
+      placeholder: "Liinkii OK.ru as maxxansaa...",
+      howTo: [
+        "Viidiyoo OK.ru (Odnoklassniki) irratti banaatii liinkii isaa sararaa teessoo irraa garagalchaa.",
+        "Liinkii saanduqa olii keessa maxxansaatii “Buusi” tuqaa.",
+        "Qulqullina fi foormaatii keessan filadhaa.",
+        "Buusuun battalumatti jalqaba — OK.ru seenuun hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo OK.ru buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina viidiyoo akkamii buusuu danda'a?", a: "Qulqullina OK.ru viidiyoo sanaaf kennu hunda, akkasumas MP3." },
+        { q: "OK.ru seenuun na barbaachisaa?", a: "Lakki — viidiyoo OK.ru (Odnoklassniki) uummataaf banaa ta'an qofatu hojjeta. Videoner yoomiyyuu akkaawuntii hin seenu, kanaaf viidiyoo dhuunfaa argachuun hin danda'amu." },
+        { q: "Viidiyoo OK.ru irraa buusuun seeraan hayyamamaadhaa?", a: "Viidiyoo olkaa'uuf mirga qabdan qofa buusaa; Haala Tajaajilaa OK.ru fi mirga nama fe'e kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni erga qophaa'anii sa'aatii tokko naannoo booda ofumaan haqamu." },
+      ],
+    },
+    pinterest: {
+      description: "Viidiyoo pinii Pinterest irraa buusaa",
+      news: "Amma Pinterest ni deeggara",
+      titleLine1: "Viidiyoo fi pinii",
+      titleLine2: "Pinterest buusaa",
+      pageDescription:
+        "Viidiyoo pinii Pinterest irraa qulqullina olaanaan buusaa. Saffisaa, bilisaa fi fayyadamuuf salphaa. Hubadhaa: pinii viidiyoo qofatu buufama — pinii suuraa qofa qaban hin deeggaraman.",
+      placeholder: "Liinkii Pinterest as maxxansaa...",
+      howTo: [
+        "Pinii Pinterest irratti banaatii Share → Copy Link tuqaa (ykn liinkii biraawuzarii keessaa garagalchaa).",
+        "Liinkii saanduqa olii keessa maxxansaatii “Buusi” tuqaa.",
+        "Qulqullina fi foormaatii barbaaddan filadhaa.",
+        "Faayiliin keessan battalumatti buufama — akkaawuntii hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo Pinterest buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina akkamii buusuu danda'a?", a: "Videoner qulqullina Pinterest viidiyoo pinii sanaaf kennu hunda dhiyeessa, akkasumas sagalee MP3 baasuu." },
+        { q: "Suuraalee ykn fakkiilee Pinterest irraa buusuu nan danda'aa?", a: "Lakki — pinii viidiyoo qofatu buufama. Piniin tokko suuraa qofa yoo ta'e, faayiliin viidiyoo baafamu hin jiru." },
+        { q: "Pinii dhuunfaa ykn boordiin daangeffame buusuu nan danda'aa?", a: "Pinii uummataaf banaa ta'an qofatu deeggarama; boordii dhuunfaa fi qabiyyee seenuu barbaadu buusuun hin danda'amu." },
+        { q: "Viidiyoo Pinterest irraa buusuun seeraan hayyamamaadhaa?", a: "Pinii olkaa'uuf mirga qabdan qofa buusaa — qabiyyee mataa keessanii ykn kan uumaan isaa hayyame. Haala Tajaajilaa Pinterest fi seera mirga qabeenyaa kabajaa." },
+        { q: "Faayiliin buufame hammam turee argama?", a: "Faayiloonni jijjiiraman sarvarii irra sa'aatii tokko naannoo turu, kanaaf erga buuftanii booda battalumatti meeshaa keessan irratti olkaa'aa." },
+      ],
+    },
+    threads: {
+      description: "Viidiyoo maxxansa Threads irraa buusaa",
+      news: "Amma Threads ni deeggara",
+      titleLine1: "Viidiyoo Threads",
+      titleLine2: "buusaa",
+      pageDescription:
+        "Viidiyoo maxxansa Threads irraa buusaa. Saffisaa, bilisaa, akkaawuntii Threads hin barbaachisu. Threads viidiyoo tokko qofa hanga 720p kenna — kun qulqullina waltajjiin sun kennu keessaa isa olaanaadha.",
+      placeholder: "Liinkii Threads as maxxansaa...",
+      howTo: [
+        "Maxxansa Threads keessatti banaatii mallattoo qooddachuu tuqaa, achii Copy Link.",
+        "Liinkii saanduqa olii keessa maxxansaatii “Buusi” tuqaa.",
+        "Foormaatii barbaaddan filadhaa — viidiyoo ykn sagalee MP3.",
+        "Faayiliin keessan battalumatti buufama — akkaawuntii hin barbaachisu.",
+      ],
+      faq: [
+        { q: "Videoner-iin viidiyoo Threads buusuun bilisaa?", a: "Eeyyee, guutummaatti bilisa: seenuu hin barbaachisu, kaffaltii idilee hin jiru, beeksisni hin jiru, daangaan buusuu guyyaas hin jiru. Daangaan tokkichi daandii YouTube irratti qofa — guyyaatti networkii tokkoof GB 10 — tajaajila kana fayyadama sirrii hin taane irraa eeguuf." },
+        { q: "Buusuuf akkaawuntii na barbaachisaa?", a: "Lakki. Buusuun akkaawuntii ykn seenuu hin gaafatu — liinkii maxxansaatii “Buusi” tuqaa." },
+        { q: "Qulqullina akkamii buusuu danda'a?", a: "Threads maxxansa tokkoof viidiyoo tokkicha qofa maxxansa, kunis gama gabaabaan hanga 720p-tti daangeffame — barreessaan 4K yoo fe'e illee. Videoner faayilii sana akkuma jirutti isiniif kenna, akkasumas sagalee MP3 baasuu. Meeshaan buusuu kamiyyuu kana caalaa kennuu hin danda'u, sababni isaas qulqullinni olaanaan sun gonkumaa hin dhiyaatu." },
+        { q: "Liinkiin threads.com fi threads.net lachuu ni hojjetuu?", a: "Eeyyee. Liinkiin guutuun akka threads.com/@user/post/CODE fi liinkiin gabaabaan threads.net/t/CODE lachuu ni deeggaramu." },
+        { q: "Suuraalee maxxansa Threads irraa buusuu nan danda'aa?", a: "Lakki — viidiyoo qofa. Maxxansi tokko suuraa qofa yoo qabaate, faayiliin viidiyoo baafamu hin jiru." },
+        { q: "Maxxansa viidiyoo hedduu qabu hoo?", a: "Viidiyoon jalqabaa maxxansa keessaa buufama. Karuuseliin Threads kiliippii hedduu qabaachuu danda'a, isa jalqabaa qofatu olkaa'ama." },
+        { q: "Maxxansa dhuunfaa buusuu nan danda'aa?", a: "Lakki. Maxxansa uummataaf mul'atan qofa buusuun ni danda'ama; waan akkaawuntii dhuunfaa ykn seenuu duuba jiru argachuun hin danda'amu." },
+        { q: "Viidiyoo Threads irraa buusuun seeraan hayyamamaadhaa?", a: "Waan olkaa'uuf mirga qabdan qofa buusaa — qabiyyee mataa keessanii ykn kan barreessaan isaa hayyame. Haala Fayyadamaa Threads fi seera mirga qabeenyaa kabajaa." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -9416,4 +9777,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, tl };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, tl };

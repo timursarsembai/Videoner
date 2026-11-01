@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на двадцати шести языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на двадцати семи языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -7557,6 +7557,308 @@ export const legal: LegalByLanguage = {
             heading: "በቅን ልቦና ያልቀረቡ ቅሬታዎች",
             body: [
               "ሆን ተብሎ የተሳሳተ መረጃ የያዘ ቅሬታ በሕጉ መሠረት በአመልካቹ ላይ ኃላፊነት ሊያስከትል ይችላል። ቅሬታው የመብት ባለቤቱንም ሆነ አከራካሪውን ይዘት ለመለየት የማያስችል ከሆነ ቅሬታውን ላለመመርመር መብት አለን።",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  om: {
+    ui: {
+      updated: "Kan haaromfame",
+      back: "Gara fuula jalqabaatti",
+      operatorHeading: "Bulchaa tajaajilaa",
+      navHeading: "Sanadoota biroo",
+      labels: {
+        privacy: "Imaammata Dhuunfaa",
+        terms: "Waliigaltee Fayyadamaa",
+        cookies: "Imaammata Cookie",
+        copyright: "Abbootii Mirgaatiif",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Imaammata Dhuunfaa",
+        summary: `${operator.site} odeeffannoo akkamii akka sassaabu, maaliif akka barbaachisu, hammam akka turfamu fi akkamitti akka haqamu.`,
+        sections: [
+          {
+            heading: "Qajeelfamoota waliigalaa",
+            body: [
+              `Imaammanni kun tajaajilli ${operator.site} odeeffannoo dhuunfaa (personal data) akkamii fi kaayyoo maaliif akka adeemsisu (processing) ibsa. To'ataan odeeffannoo (data controller) ${operator.nameOm} dha.`,
+              "Tajaajila kana fayyadamuudhaan, akkaataa adeemsa odeeffannoo asitti ibsame ni fudhattu. Yoo isa hin fudhanne, maaloo tajaajila kana hin fayyadaminaa.",
+              "Adeemsi kun Seera Rippaablika Kaazaakistaan “Waa'ee Odeeffannoo Dhuunfaa fi Eegumsa Isaanii” jedhuun, akkasumas daawwattoota Naannoo Diinagdee Awurooppaa (European Economic Area) irraa dhufaniif ulaagaalee GDPR tilmaama keessa galchuudhaan raawwatama.",
+            ],
+          },
+          {
+            heading: "Odeeffannoo maal adeemsifna",
+            body: [
+              "Waan hojii tajaajilaatiif barbaachisu ol homaa beekaa hin sassaabnu; sanadoota eenyummaa, odeeffannoo kaffaltii ykn teessoo hin gaafannu.",
+            ],
+            bullets: [
+              "Odeeffannoo herrega Telegram kan bootiin yeroo isin isaaf barreessitan argatu: eenyummeessaa lakkoofsaa (numeric id), maqaa fayyadamaa (username), maqaa fi koodii afaanii.",
+              "Liinkiiwwan buusuuf ergitan fi odeeffannoo yaalii sanaa: waltajjii, guyyaa fi sa'aatii, qulqullina filatame, fi bu'aa (milkaa'ina ykn dogoggora).",
+              "Odeeffannoo teeknikaa walqunnamtii: teessoo IP, gosaa fi fooyya'iinsa (version) biraawuzarii, afaan, fi fuula irraa dhuftan. Kunniin galmee sarvarii (server logs) fi meeshaalee xiinxala marsariitii keessa galu.",
+              "Cookie fi eenyummeessitoota xiinxalaa — bal'inaan Imaammata Cookie keessatti ilaalaa.",
+            ],
+          },
+          {
+            heading: "Odeeffannoon kun maaliif barbaachisa",
+            bullets: [
+              "Tajaajila mataa isaa kennuuf: viidiyoo liinkii keessan irraa argachuu fi faayilicha isiniif kennuu.",
+              "Herrega keessan kan namoota biroo irraa adda baasuu fi itti fayyadama sirrii hin taane ittisuuf.",
+              "Tajaajila itti fayyadama sirrii hin taane kan ofumaan (automated) raawwatamu irraa eeguuf: liinkiin osoo hin ergamin dura mirkaneessa Cloudflare Turnstile.",
+              "Marsariitiin akkamitti akka itti fayyadamamu hubachuu fi dogoggoroota sirreessuuf — istaatiksii eenyummaa hin agarsiifne fi walitti qabame fayyadamuun.",
+              "Gaaffiiwwan keessanii fi kan abbootii mirgaa deebisuuf.",
+              "Yeroo tokko tokko Telegram irratti ilaalcha tajaajila irratti qabdan gaafachuuf isinii barreessuuf — fakkeenyaaf, yoo itti fayyadamuu dhaabdan. Deebii kennuun dirqama miti; ergaawwan akkasii yoo hin barbaanne, nutti himaa qofa, lammata isinii hin barreessinu.",
+            ],
+          },
+          {
+            heading: "Bu'uura seeraa adeemsaa",
+            body: [
+              "Odeeffannoon herrega Telegram fi galmeewwan buusuu Waliigaltee Fayyadamaa, isa yeroo tajaajila fayyadamuu jalqabdan fudhattan, raawwachuuf adeemsifamu.",
+              "Cookie xiinxalaa fi galmeessi sochii marsariitii irratti godhamu eeyyama keessan irratti hundaa'uun adeemsifamu; eeyyama kana yeroo kamiyyuu deebifachuu dandeessu — karaaleen isaa Imaammata Cookie keessatti ibsamaniiru.",
+              "Galmeen sarvarii fi eegumsi bootii irraa fedhii seera qabeessa (legitimate interest) keenya tajaajila hojjetaa fi nageenya qabu taasisuu irratti hundaa'u.",
+              "Ilaalcha keessan tajaajila irratti gaafachuun fedhii seera qabeessa keenya tajaajila fooyyessuu irratti hundaa'a; yeroo kamiyyuu didachuu dandeessu.",
+            ],
+          },
+          {
+            heading: "Herregoota walqabsiifaman",
+            body: [
+              "Yoo barbaaddan, herrega keessan waltajjii tokko irratti (Instagram, Facebook, YouTube, X, VK, TikTok) bootii wajjin walqabsiisuu dandeessu, akka bootiin barreeffamoota warra seenaniif qofa mul'atan — stories, maxxansoota dhuunfaa — buusuuf. Kanaaf bootiin cookie herrega sanaa ni argata — dabalata biraawuzarii Videoner irraa koodii yeroo tokkoo fayyadamuun, ykn faayila isin ergitan irraa.",
+              "Cookie waltajjii filatamee qofa kuufna; kanneen hafan battaluma gatna. Haala koodiin eegame (encrypted) ta'een kuufamu, buusuu iddoo isin itti walqabsiiftan qofaaf itti fayyadamna. Kanneen chaatii dhuunfaa keessatti walqabsiifaman buusuu keessaniif — liinkiiwwan keessan ofii garee herregni mataa isaa hin walqabsiifamne keessattis dabalatee — oolu; liinkiiwwan namoota biroof hin fayyadan. Kanneen garee tokkotti walqabsiifaman buusuu miseensota isaatiif qofa oolu, iddoo biraatti hin fayyadan.",
+              "Bu'uurri seeraa eeyyama keessan: herrega ofumaan walqabsiiftu, yeroo kamiyyuu ajaja /accounts fayyadamuun haquu dandeessu. Yeroo haqamu cookie deebi'ee hin argamnetti balleeffama. Yoo waltajjiin seensa fudhachuu dhiise, bootiin isinitti beeksisa.",
+              "Barreeffamoonni herrega walqabsiifame fayyadamuun buufaman chaanaalii keenya irratti hin maxxanfaman, kuusaa waliinii (shared cache) irraas fayyadamtoota biroof hin kennaman.",
+            ],
+          },
+          {
+            heading: "Tajaajiloota qaama sadaffaa",
+            body: [
+              "Odeeffannoo keessan hin gurgurru, qaamota sadaffaatiif kaayyoo isaanii ofiitiif hin dabarsinu. Hojii tajaajilaatiif dhiyeessitoonni armaan gadii hirmaatu; tokkoon tokkoon isaanii odeeffannoo seera mataa isaatiin adeemsisa:",
+            ],
+            bullets: [
+              `Telegram — hojii bootii ${BOT}.`,
+              "Cloudflare — eegumsa bootii irraa (Turnstile), dhiyeessa marsariitii fi qajeelcha imeelii.",
+              "Google Analytics fi Google Tag Manager — istaatiksii daawwannaa.",
+              "Yandex Metrica — istaatiksii daawwannaa, kaartaa cuqaasaa (click map) fi Webvisor. Webvisor sochii fuula irratti godhamu galmeessa: sochii akeektuu (pointer), gadi-ol sochoosuu (scrolling) fi cuqaasa. Galmeewwan kun mijataa ta'uu marsariitii xiinxaluuf qofa oolu.",
+            ],
+          },
+          {
+            heading: "Odeeffannoon hammam turfama",
+            bullets: [
+              "Faayiloonni buufaman erga uumamanii gara sa'aatii tokkoo booda ofumaan sarvarii irraa haqamu. Kuusaa viidiyoo keessanii hin qabnu.",
+              "Galmeewwan yaalii buusuu hamma itti fayyadama sirrii hin taane ittisuu fi gaaffiiwwan qorachuuf barbaachisutti turfamu.",
+              "Odeeffannoon herregaa hamma tajaajila fayyadamtanitti turfama, gaaffii keessaniin ni haqama.",
+              "Galmeen sarvarii yeroo murtaa'eef turfamee, akkaataa naanna'iinsa (rotation) isaatiin irra deebi'amee barreeffama.",
+            ],
+          },
+          {
+            heading: "Odeeffannoon eessatti adeemsifama",
+            body: [
+              "Sarvaroonni tajaajilaa giddugala daataa (data centre) Gamtaa Awurooppaa keessatti argamu keessa jiru. Dhiyeessitoota olitti tarreeffaman keessaa tokko tokko akkaataa imaammata mataa isaaniitiin odeeffannoo daangaa isaatiin alatti adeemsisuu danda'u.",
+            ],
+          },
+          {
+            heading: "Mirgoota keessan",
+            body: [
+              `Waa'ee adeemsa odeeffannoo keessanii odeeffannoo argachuu, akka sirreeffamu ykn haqamu gaafachuu, eeyyama deebifachuu fi adeemsa mormuuf mirga qabdu. Kanaaf, imeelii ykn herrega Telegram gaaffichaan walqabatu irraa teessoo ${MAIL} irratti nuuf barreessaa.`,
+              "Yeroo madaalawaa keessatti, yeroo baay'ee guyyoota kaalaandarii soddoma keessatti, deebii kennina. Herregni yoo haqame, seenaan buusuu isaan walqabatus ni haqama.",
+            ],
+          },
+          {
+            heading: "Daa'imman",
+            body: [
+              "Tajaajilli kun daa'imman umuriin isaanii 16 gadiitiif hin qophoofne, isaan irrattis hin xiyyeeffanne. Odeeffannoo isaanii beekaa hin sassaabnu; yoo dogoggoraan kun ta'e, nuuf barreessaa, odeeffannoon sun ni haqama.",
+            ],
+          },
+          {
+            heading: "Jijjiiramoota",
+            body: [
+              "Imaammata kana haaromsuu dandeenya. Guyyaan fooyya'iinsa ammaa fuula jalqaba irratti ibsameera; jijjiiramoota ijoo tajaajila keessatti ni beeksifna.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Waliigaltee Fayyadamaa",
+        summary: `Seerota itti fayyadama ${operator.site}: maaltu hayyamame, maaltu dhorkame, fi tajaajilli haala akkamii irratti hojjeta.`,
+        sections: [
+          {
+            heading: "Qajeelfamoota waliigalaa",
+            body: [
+              `Waliigalteen kun itti fayyadama marsariitii ${operator.site} fi bootii Telegram ${BOT} ni bulcha. Abbaan qabeenyaa fi bulchaan tajaajilaa ${operator.nameOm} dha.`,
+              "Tajaajila fayyadamuu jalqabuudhaan, haalawwan kana dubbistanii akka fudhattan ni mirkaneessitu. Yoo haalli kamiyyuu isiniif hin mijanne, tajaajila kana fayyadamuu hin qabdan.",
+            ],
+          },
+          {
+            heading: "Tajaajilli kun bilisa",
+            body: [
+              "Dandeettiiwwan tajaajilaa hundi bilisaan kennamu. Galmee kaffaltii (subscription), karoora kaffaltii, qulqullina viidiyoo kaffaltiin argamu ykn bittaa tajaajila keessaa hin qabnu.",
+              "Beeksisa hin agarsiifnu, liinkiiwwan michummaa (affiliate links) hin kaa'innu.",
+            ],
+          },
+          {
+            heading: "Haalawwan seensaa",
+            bullets: [
+              "Marsariitii irratti buusuuf herregni ykn seensi hin barbaachisu. Bootiin fayyadamtoota herrega isaanii Telegram irratti hundaa'uun adda baasa.",
+              "Daangaawwan teeknikaa baay'ina gaaffii irratti kaa'aman tajaajila ba'aa garmalee fi itti fayyadama sirrii hin taane kan ofumaan raawwatamu irraa eegu.",
+              "YouTube irratti daangaan tiraafikii guyyaa ni hojjeta: marsariitii fi dabalata biraawuzarii irratti neetworkii tokko irraa sa'aatii 24 keessatti 10 GB, bootii keessatti immoo herrega Telegram tokkoof sa'aatii 24 keessatti 25 GB. Waltajjiiwwan biroo hin tuqu.",
+              "Bootii fayyadamuun buusuuf chaanaalii keenya hordofuun (subscribe) hin barbaachisu. Bootiin ibsa faayilootaa keessatti liinkii chaanaalii oduu pirojektichaa ni dabala; isa hordofuun dirqama miti.",
+            ],
+          },
+          {
+            heading: "Tajaajilli maal hojjeta",
+            body: [
+              "Tajaajilli kun giddu-galeessa teeknikaa ti: liinkii isin kennitan hordofee fuula uummataaf banaa ta'e irraa faayila miidiyaa argatee isinii dabarsa.",
+              "Kuusaa (catalogue) viidiyoo hin qabnu, qabiyyee namoota biroo keessa barbaacha hin geggeessinu, faayilota buufaman yeroo dabarsuuf barbaachisu — gara sa'aatii tokkoo — ol hin kuufnu.",
+              "Argamuun waltajjii tokkoo murtee teeknikaa waltajjii sanaa irratti hundaa'a, beeksisa malee jijjiiramuu danda'a.",
+            ],
+          },
+          {
+            heading: "Dirqama fayyadamaa",
+            body: [
+              "Akkaataa faayilota argattan itti fayyadamtaniif itti gaafatamummaan kan keessan qofa, kanaafis mirga akka qabdan ni mirkaneessitu.",
+            ],
+            bullets: [
+              "Meeshaa mirgi isaa kan keessan ta'e, ykn itti fayyadamni isaa abbaa mirgaatiin ykn seeraan hayyamame qofa buusaa.",
+              "Tajaajila kana mirga abbummaa (copyright) fi mirgoota walqabatan (related rights) cabsuuf, qabiyyee dhorkame raabsuuf ykn mirga qaamota sadaffaa cabsuuf hin fayyadaminaa.",
+              "Daangaawwan teeknikaa tajaajilaa, daangaa baay'ina gaaffii fi mirkaneessa bootii dabalatee, darbuuf hin yaalinaa.",
+              "Ba'aa ofumaan raawwatamu hin uuminaa: gaaffiiwwan bal'aa (bulk requests), iskiriptiiwwan fi parsaroonni (scrapers) hin hayyamaman.",
+            ],
+          },
+          {
+            heading: "Liinkiiwwan chaanaalii irratti maxxansuu",
+            body: [
+              "Bootii fayyadamuun viidiyoo buusuudhaan, liinkiin barreeffama madda isaa chaanaalii Telegram keenya irratti akka maxxanfamu ni walii galtu. Akeekkachiisni kanaa bootii keessatti osoo qulqullina hin filatin dura — jechuunis osoo buusuuf hin murteessin dura — ni mul'ata.",
+              "Maxxansi kun maqaa malee: chaanaaliitti kan ergamu liinkii fuula uummataaf banaa ta'ee, mata-duree viidiyoo fi suuraa isaa isa duraa (cover) — fakkii waltajjiin sun mul'isa duraa (preview) barreeffamichaa keessatti agarsiisu sana — dha. Eenyu akka buuse hin ibsamu. Faayilli viidiyoo mataan isaa yoomiyyuu eessayyuu hin maxxanfamu: kan raabsamu liinkii qofa, isa waltajjiiwwan ofii isaaniitiin furtuu “Qooduu” (Share) barreeffama hunda jalatti argamuun akka raabsamu affeeran.",
+              "Liinkiin tokko al tokko caalaa hin maxxanfamu. Yoo liinkiin tokko chaanaalii irra akka ga'u hin barbaanne, viidiyoo sana tajaajila keenyaan hin buusinaa.",
+              "Liinkiiwwan garee irraa fi barreeffamoonni herrega walqabsiifame fayyadamuun buufaman chaanaalii irratti hin maxxanfaman."
+            ],
+          },
+          {
+            heading: "Herrega keessan walqabsiisuu",
+            body: [
+              "Herrega keessan waltajjii irratti jiru bootii wajjin walqabsiisuudhaan, herregni sun kan keessan ta'uu fi akkasitti itti fayyadamuuf mirga akka qabdan ni mirkaneessitu.",
+              "Waltajjiiwwan buusuu ofumaan raawwatamu hin deeggaran, herrega walqabsiifame daangessuu ykn cufuu danda'u. Balaa kana isin ofitti fudhattu; herrega ijoo keessan osoo hin taane herrega addaa biraa akka walqabsiiftan isin gorsina. Daangaa waltajjiin herrega keessan irra kaa'uuf itti gaafatamummaa hin qabnu.",
+              "Herregni garee tokkotti walqabsiifame buusuu miseensota isaa hundaatiif itti fayyadama. Bulchitoonni garee eenyu herrega walqabsiisuu akka danda'u murteessu, isaan keessaa kamiyyuu haquus danda'u.",
+            ],
+          },
+          {
+            heading: "Daangaa itti gaafatamummaa",
+            body: [
+              "Tajaajilli kun haala “akkuma jiruutti” (as is) kennama. Hojii addaan hin cinne, argamuu waltajjii murtaa'e tokkoo ykn faayilli kaayyoo keessaniif mijaa'aa ta'uu hin wabeeffannu.",
+              "Akkaataa meeshaa buufattan itti fayyadamtaniif, akkasumas bu'aa mirga qaamota sadaffaa cabsuu keessan irraa dhufuuf itti gaafatamummaa hin qabnu.",
+              "Dandeettiiwwan tajaajilaa jijjiiruu, tajaajila suphaaf (maintenance) yeroof dhaabuu fi hojii isaa guutummaatti dhaabuuf mirga qabna.",
+            ],
+          },
+          {
+            heading: "Seensa daangessuu",
+            body: [
+              "Haalawwan kun yoo cabaman, daangaawwan darbuuf yaaliin yoo godhame, akkasumas komiin abbaa mirgaa bu'uura qabu yoo dhufe, seensa tajaajilaa daangessuu ykn addaan kutuu dandeenya.",
+            ],
+          },
+          {
+            heading: "Jijjiiramoota fi seera hojiirra oolu",
+            body: [
+              "Haalawwan kana jijjiiruu dandeenya; guyyaan fooyya'iinsa hojiirra jiruu fuula jalqaba irratti ibsameera. Erga jijjiiramni godhamee booda tajaajila fayyadamuu itti fufuun fooyya'iinsa haaraa akka fudhattan agarsiisa.",
+              "Walitti dhufeenya qaamotaa irratti seerri Rippaablika Kaazaakistaan hojiirra oola. Qaamonni falmii ergaa wal-jijjiiruudhaan furuuf carraaqu; walii galuun yoo hin danda'amne, akkaataa seerri Rippaablika Kaazaakistaan kaa'een furama.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Imaammata Cookie",
+        summary: `${operator.site} cookie akkamii akka fayyadamu, maaliif akka barbaachisan fi akkamitti didachuu akka dandeessan.`,
+        sections: [
+          {
+            heading: "Cookie jechuun maal jechuu dha",
+            body: [
+              "Cookie faayilota barruu xixiqqaa marsariitiin biraawuzarii keessan keessatti kuusu dha. Isaan qindaa'ina (settings) keessan yaadachuu fi istaatiksii daawwannaa eenyummaa hin agarsiifne sassaabuuf gargaaru.",
+              "Sanadni kun cookie wajjin teeknoolojiiwwan walfakkaatan — kuusaa naannoo biraawuzarii (local storage) fi piksaloota hordoffii (tracking pixels) — ni ibsa.",
+            ],
+          },
+          {
+            heading: "Kanneen dirqama barbaachisan",
+            body: [
+              "Isaan malee tajaajilli hin hojjetu, kanaaf yeroo hunda ni kaa'amu.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — liinkii kan ergu nama malee iskiriptii akka hin taane mirkaneessa.",
+              "Qindaa'ina fuula fayyadamaa (interface) — afaan fi bifa (theme) filattan.",
+            ],
+          },
+          {
+            heading: "Kanneen xiinxalaa",
+            body: [
+              "Isaan fuulota kamtu akka itti fayyadamamu fi dogoggoroonni eessatti akka uumaman hubachuuf nu gargaaru. Eeyyama keessaniin kaa'amu, hojii tajaajilaatiif dirqama miti.",
+            ],
+            bullets: [
+              "Google Analytics fi Google Tag Manager — baay'ina daawwattootaa fi amala marsariitii irratti, eenyummaa osoo hin agarsiisin.",
+              "Yandex Metrica — baay'ina daawwattootaa, kaartaa cuqaasaa (click map) fi Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor kan Yandex Metrica sochii fuula irratti godhamu galmeessa: sochii akeektuu, gadi-ol sochoosuu, cuqaasa fi waan bakka liinkii keessatti barreeffamu. Kunis fuulli fayyadamaa iddoo itti namoota burjaajessu ilaaluuf barbaachisa.",
+              "Galmeewwan kana namoota dhuunfaa hordofuuf hin fayyadamnu. Maaloo, bakkeewwan marsariitii keessatti odeeffannoo akka kuufamu hin barbaanne hin galchinaa.",
+            ],
+          },
+          {
+            heading: "Akkamitti didachuu dandeessu",
+            bullets: [
+              "Qindaa'ina biraawuzarii keessanii keessatti cookie cufuu ykn haquu qopheessaa — karaan kun sirnoota asitti tarreeffaman hundaaf ni hojjeta.",
+              "Google Analytics: dabalataan (add-on) biraawuzarii ofiisiyaalaa sassaabbii dhaabu marsariitii Google irraa ni argama.",
+              "Yandex Metrica: didachuun dabalata (add-on) ofiisiyaalaa Yandex fayyadamuun ni danda'ama.",
+              "Cookie dirqama barbaachisan dhaabuun buusuu hin danda'amne taasisa.",
+            ],
+          },
+          {
+            heading: "Yeroo kuufamaa",
+            body: [
+              "Cookie seshinii (session cookies) yeroo biraawuzarii cuftan ykn yeroon seshinii yoo xumurame ni haqamu. Meeshaaleen xiinxalaa eenyummeessitoota isaanii yeroo dhiyeessitoonni isaanii murteessaniif kuusu.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Abbootii Mirgaatiif",
+        summary: "Ejjennoo tajaajilaa mirga abbummaa (copyright) irratti fi akkaataa komii cabiinsaa dhiyeessuu.",
+        sections: [
+          {
+            heading: "Ejjennoo tajaajilaa",
+            body: [
+              "Tajaajilli kun viidiyoo of biratti hin kuusu, kuusaa (catalogue) isaaniis hin qabu. Giddu-galeessa teeknikaa ta'ee hojjeta: liinkii fayyadamaan galche hordofee, fuula uummataaf banaa ta'e bira ga'ee faayilicha fayyadamaa sanaaf dabarsa.",
+              "Faayiloonni buufaman sarvarii irratti gara sa'aatii tokkoo turanii ofumaan haqamu. Garagalchi qabiyyee namoota biroo dhaabbataan nu bira hin hafu.",
+              "Itti fayyadama meeshaa buufamee irratti itti gaafatamummaan kan fayyadamaa ti — kunis Waliigaltee Fayyadamaa keessatti ifatti kaa'ameera.",
+            ],
+          },
+          {
+            heading: "Yoo mirgi keessan cabe",
+            body: [
+              `Yoo isin abbaa mirgaa ykn bakka bu'aa isaa taatanii fi tajaajilli kun mirga keessan cabsuuf itti fayyadamamaa jira jettanii yaaddan, teessoo ${MAIL} irratti nuuf barreessaa. Komii akkasii ni qorannee tarkaanfii ni fudhanna.`,
+            ],
+          },
+          {
+            heading: "Komii keessatti maal ibsuu qabdu",
+            bullets: [
+              "Hojiin kam akka tuqame fi bu'uura maaliin mirga isa irratti akka qabdan.",
+              "Liinkii meeshichaa fi, yoo beekamu, haala cabiinsichaa.",
+              "Odeeffannoo quunnamtii keessan: maqaa ykn maqaa dhaabbataa, teessoo fi teessoo imeelii.",
+              "Yoo abbaa mirgaa bakka bu'uun hojjettan — ragaa aangoo keessanii.",
+              "Ibsa odeeffannoon komii keessa jiru sirrii ta'uu fi itti fayyadamni meeshichaa abbaa mirgaatiin ykn seeraan hin hayyamamne ta'uu mirkaneessu.",
+            ],
+          },
+          {
+            heading: "Maal goona",
+            body: [
+              "Komii yeroo madaalawaa keessatti, yeroo baay'ee guyyoota kaalaandarii soddoma keessatti, ni qorranna; cabiinsi yoo mirkanaa'e, tajaajila keenyaan seensa meeshichaa ni daangessina, yoo barbaachise immoo seensa nama mirga cabsee tajaajilaatti qabu ni daangessina.",
+              "Bu'aa qorannichaa teessoo imeelii isin kennitan irratti isinitti ni beeksifna.",
+            ],
+          },
+          {
+            heading: "Komii amanamummaa hin qabne",
+            body: [
+              "Komiin odeeffannoo sobaa beekamaa of keessaa qabu, akkaataa seera hojiirra jiruun itti gaafatamummaa dhiyeessaa irratti fiduu danda'a. Komiin abbaa mirgaas ta'e meeshaa falmisiisaa adda baasuu hin dandeessifne yoo ta'e, qorachuu diduuf mirga qabna.",
             ],
           },
         ],

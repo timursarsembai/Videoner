@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('om')) {
+      return (
+        'Akkam! Boota kana jalqabdaniittu, garuu ammayyuu homaa hin buufanne — ' +
+        'eessaa akka jalqabdan ifa hin taane ta\'a.\n\n' +
+        'Tarkaanfii tokko qofa: liinkii viidiyoo tokkoo asitti ergaa, ' +
+        'fakkeenyaaf https://youtube.com/watch?v=jNQXAC9IVRw — ani immoo ' +
+        'faayilicha gara walakkaa daqiiqaa keessatti isinii deebisa.\n\n' +
+        'YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest fi Threads irratti hojjeta. Guutummaatti bilisa, qulqullina ' +
+        'kamiinuu — hanga 4K, HD dhaaf kaffaltii dabalataa hin qabu.\n\n' +
+        'Wanti tokko yoo hin hojjenne, asumatti deebii barreessaa qofa. Kun ' +
+        'yaadachiisa qofa, si\'a kana booda isin hin rakkisu.'
+      );
+    }
+
     if (code.startsWith('am')) {
       return (
         'ሰላም! ይህን ቦት ጀምረዋል፣ ግን እስካሁን ምንም አላወረዱም — ' +

@@ -1339,6 +1339,58 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "ወደ መነሻ",
   },
+  om: {
+    metaTitle: "Dabalata biraawuzarii Videoner",
+    title: "Videoner biraawuzarii keessaniif",
+    summary:
+      "Dabalanni kun fuula viidiyoo irratti qabduu “Buusi” dabalee kallattiin biraawuzarii keessan keessatti buusa. Instagram, Facebook, TikTok fi Threads seensa keessan mataa keessaniitiin buufamu — kanaaf maxxansi dhuunfaa akkaawuntii keessan keessatti argitan, akkasumas viidiyoon waltajjiin sun sarvarii keenyaaf hin kennine ni buufamu.",
+    failedVideo: "Viidiyoo marsariitii ykn bootii keessatti buusuun hin danda'amne:",
+    failedVideoHint:
+      "Dabalata fe'aa, biraawuzarii kanuma keessatti waltajjii sana seenaa, viidiyoo banaatii golee gadii mirgaa irratti “Buusi” cuqaasaa.",
+    openVideo: "Viidiyoo bani",
+    version: "Veershinii",
+    browsersTitle: "Eessatti hojjeta",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi fi biraawuzaroota Chromium irratti hundaa'an biroo — kompiitara irratti.",
+    mobile: "Bilbilli fi taabileetiin dabalata hin deeggaran — achitti marsariitii ykn bootii Telegram fayyadamaa.",
+    getcourseTitle: "Barnoota GetCourse",
+    getcourse:
+      "Barnoota mana barumsaa GetCourse keessaa seentanii banaa: golee olii mirgaa taphachiisaa irratti qabduun “Buusi” ni mul'ata, mallattoon Videoner immoo viidiyoo barnoota sanaa hunda tarreessa. Biraawuzariin keessan ofumaan barnoota buusee mp4 tokkotti walitti qaba — faayiliin sarvarii keenya keessa hin darbu. Sun yoo hin milkoofne, sarvariin keenya barnoota sana qulqullina walfakkaatuun buusa; yeroo sana liinkii viidiyoo taphachiisaa irraa argata.",
+    privacyTitle: "Seensi keessan isinuma bira tura",
+    privacy:
+      "Dabalanni gonkumaa jecha icciitii hin gaafatu: gaaffii gara waltajjiitti biraawuzarii keessan mataa keessaniitu erga, sarvariin keenya immoo gabaasa gabaabaa istaatistiksiif qofa argata — liinkii, hamma faayilii fi mata-duree. Kuukiin gara sarvariitti kan ergamu yoo isin mataan keessan “🔑 Akkaawuntii … keessan bootii wajjin walqabsiisaa” tuqxan qofa — kunis kuukii waltajjii sanaa qofa, iccitiidhaan.",
+    stepsTitle: "Chrome, Yandex Browser, Edge fi Opera irratti akkamitti fe'uu dandeessan",
+    steps: [
+      "Arkaayivii buusaatii banaa (unzip) — kuusaa videoner-extension jedhamu kan maqaa isaa keessatti lakkoofsa veershinii qabu ni argattu.",
+      "Fuula dabalataa banaa: sararaa teessoo keessatti chrome://extensions barreessaa (Edge keessatti — edge://extensions, Opera keessatti — opera://extensions).",
+      "“Developer mode” banaa — qabduu jijjiirraa fuula irra olii jiru.",
+      "“Load unpacked” cuqaasaatii kuusaa sana filadhaa — isa faayilii manifest.json of keessaa qabu.",
+      "Xumurameera: fuulli viidiyoo qabduu “Buusi” argata, mallattoon Videoner immoo baaraa meeshaalee biraawuzarii irratti mul'ata.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 ykn isa booda — isas kompiitara irratti.",
+    firefoxSoon:
+      "Veershiniin Firefox dhiyootti ni dhufa. Ammaaf dabalanni Chrome, Yandex Browser, Edge, Opera fi biraawuzaroota Chromium irratti hundaa'an biroo keessatti hojjeta.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Arkaayivii .zip — daqiiqaa muraasa keessatti fe'ama",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Cuqaasa tokkoon fe'ama",
+    yourBrowser: "Biraawuzarii keessan",
+    soon: "Dhiyootti",
+    firefoxStepsTitle: "Firefox irratti akkamitti fe'uu dandeessan",
+    firefoxSteps: [
+      "Qabduu Firefox fuula kanaa irra olii jiru cuqaasaa.",
+      "Firefox videoner.download dabalata (add-on) akka fe'u hayyamuu barbaaddanii isin gaafata — “Continue to Installation” cuqaasaa.",
+      "Foddaa “Add Videoner?” keessatti “Add” cuqaasaa.",
+      "Xumurameera: fuulli viidiyoo qabduu “Buusi” argata, mallattoon Videoner immoo baaraa meeshaalee irratti mul'ata. Fooyya'iinsota Firefox ofumaan fe'a.",
+    ],
+    updateTitle: "Chrome, Yandex Browser, Edge fi Opera irratti akkamitti haaromsuu dandeessan",
+    updateSteps: [
+      "Yeroo veershiniin haaraan ba'u, mallattoon Videoner mallattoo NEW agarsiisa, foddaan isaas liinkii as geessu qaba.",
+      "Qabduu Chrome fuula kanaa irra olii jiruun arkaayivii buusaatii kuusaa duraan itti baaftan sanatti faayiloota bakka buusuun banaa.",
+      "Fuula dabalataa banaa (chrome://extensions, Yandex Browser keessatti browser://extensions, edge://extensions) “Reload” cuqaasaa — xiyya marsaa kaardii Videoner irra jiru.",
+    ],
+    back: "Fuula jalqabaa",
+  },
   tl: {
     metaTitle: "Videoner browser extension",
     title: "Videoner para sa iyong browser",

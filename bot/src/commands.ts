@@ -349,6 +349,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Zaustavite preuzimanje i red" },
     { command: "language", description: "Jezik bota" },
   ],
+  ce: [
+    { command: "start", description: "Бот муха лело" },
+    { command: "extension", description: "Браузеран расширени" },
+    { command: "accounts", description: "Сторисашна а, къайлачу посташна а Шайн аккаунташ" },
+    { command: "connect", description: "Расширенера кодаца аккаунт тӀетаса" },
+    { command: "stop", description: "Чуяккхар а, рогӀ а сацо" },
+    { command: "language", description: "Ботан мотт" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -654,6 +662,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Povežite račun s ovom grupom kodom" },
     { command: "language", description: "Jezik bota u ovoj grupi (za administratore)" },
     { command: "start", description: "Kako bot radi u grupi" },
+  ],
+  ce: [
+    { command: "settings", description: "ХӀокху тобанехь ботан нисдарш (администраторшна)" },
+    { command: "accounts", description: "ХӀокху тобане тӀетесна аккаунташ" },
+    { command: "connect", description: "Кодаца хӀокху тобане аккаунт тӀетаса" },
+    { command: "language", description: "ХӀокху тобанехь ботан мотт (администраторшна)" },
+    { command: "start", description: "Бот тобанехь муха болх беш ю" },
   ],
 };
 

@@ -34,6 +34,8 @@ test("picks the language from Telegram's language_code", () => {
   assert.equal(detectLang("sq-XK"), "sq");
   assert.equal(detectLang("bs"), "bs");
   assert.equal(detectLang("bs-BA"), "bs");
+  assert.equal(detectLang("ce"), "ce");
+  assert.equal(detectLang("ce-RU"), "ce");
   assert.equal(detectLang("kmr"), "ku");
   assert.equal(detectLang("ar-SA"), "ar");
   assert.equal(detectLang("zh-hans"), "zh");

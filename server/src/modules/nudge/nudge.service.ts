@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ce')) {
+      return (
+        'Маршалла! Шу хӀокху ботаца доладелла, амма хӀинца а цхьа а хӀума чуяккхина дац — ' +
+        'хила мега, мичара доладала деза ца хаьа.\n\n' +
+        'Цхьа гӀулч бен яц: кхуза видеон хьажорг дахьийта, ' +
+        'масала https://youtube.com/watch?v=jNQXAC9IVRw — ас ' +
+        'кийча файл ахминот гергга хенахь юхадохьуьйтур ю.\n\n' +
+        'YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest а, Threads а болх беш ю. ДӀадерриг мах боцуш а, муьлхха а ' +
+        'дикаллехь а — 4K кхаччалц, HD-на тӀе мах бац.\n\n' +
+        'Цхьаъ болх ца беш делахь, кхузахь жоп язде. ХӀара ' +
+        'цхьа бен доцу дагахьбаккхар ду, кхин Шу хьийзор дац.'
+      );
+    }
+
     if (code.startsWith('bs')) {
       return (
         'Zdravo! Pokrenuli ste ovog bota, ali još niste ništa preuzeli — ' +

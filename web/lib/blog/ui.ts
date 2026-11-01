@@ -534,6 +534,18 @@ export const blogUi: Record<
     readFull: "Pročitajte cijelu objavu na stranici",
     dateLocale: "bs-BA",
   },
+  ce: {
+    title: "Videoner-ан блог",
+    description: "Проектан керла хаамаш: ботехь, сайтехь, расширенехь хӀун керла даьлла а, цунах муха пайдаэца а.",
+    readMore: "Деша",
+    back: "Ерриге статьяш",
+    allPosts: "Блог",
+    channel: "Керла хаамаш Telegram-ехь",
+    channelCta: "Проектан керла хаамаш — @videonerdownload Telegram-каналехь.",
+    readOnSite: "Сайтехь деша",
+    readFull: "Сайтехь дуьззина деша",
+    dateLocale: "ru-RU",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Bot, InlineKeyboard } from "grammy";
+import { Bot, GrammyError, InlineKeyboard } from "grammy";
 import { LANGS, NEWS_CHANNEL, messages, sitePath } from "./i18n.js";
 import { langOf } from "./language.js";
 import { COMMANDS, GROUP_COMMANDS } from "./commands.js";
@@ -118,21 +118,38 @@ process.on("SIGTERM", () => void shutdownGracefully("SIGTERM"));
 process.on("SIGINT", () => void shutdownGracefully("SIGINT"));
 
 // Меню команд (кнопка «Меню» в чате). Ставим при каждом запуске — так оно
-// всегда совпадает с кодом; сбой не мешает боту работать.
-void bot.api.setMyCommands(COMMANDS.en).catch((e) => console.error("setMyCommands:", e?.message ?? e));
-for (const lang of LANGS.filter((l) => l !== "en")) {
-  void bot.api
-    .setMyCommands(COMMANDS[lang], { language_code: lang })
-    .catch((e) => console.error(`setMyCommands ${lang}:`, e?.message ?? e));
+// всегда совпадает с кодом; сбой не мешает боту работать. По одному запросу
+// за раз: 25 языков × 2 меню разом Telegram режет ответом 429, и часть
+// языков оставалась с меню на английском. На 429 ждём retry_after и повторяем.
+async function setCommandsWithRetry(label: string, call: () => Promise<unknown>) {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      await call();
+      return;
+    } catch (e) {
+      const retryAfter = e instanceof GrammyError ? e.parameters?.retry_after : undefined;
+      if (retryAfter === undefined || attempt === 4) {
+        console.error(`setMyCommands ${label}:`, (e as Error)?.message ?? e);
+        return;
+      }
+      await new Promise((r) => setTimeout(r, (retryAfter + 1) * 1000));
+    }
+  }
 }
-void bot.api
-  .setMyCommands(GROUP_COMMANDS.en, { scope: { type: "all_group_chats" } })
-  .catch((e) => console.error("setMyCommands groups:", e?.message ?? e));
-for (const lang of LANGS.filter((l) => l !== "en")) {
-  void bot.api
-    .setMyCommands(GROUP_COMMANDS[lang], { scope: { type: "all_group_chats" }, language_code: lang })
-    .catch((e) => console.error(`setMyCommands groups ${lang}:`, e?.message ?? e));
+
+async function registerCommandMenus() {
+  await setCommandsWithRetry("en", () => bot.api.setMyCommands(COMMANDS.en));
+  await setCommandsWithRetry("groups en", () =>
+    bot.api.setMyCommands(GROUP_COMMANDS.en, { scope: { type: "all_group_chats" } }),
+  );
+  for (const lang of LANGS.filter((l) => l !== "en")) {
+    await setCommandsWithRetry(lang, () => bot.api.setMyCommands(COMMANDS[lang], { language_code: lang }));
+    await setCommandsWithRetry(`groups ${lang}`, () =>
+      bot.api.setMyCommands(GROUP_COMMANDS[lang], { scope: { type: "all_group_chats" }, language_code: lang }),
+    );
+  }
 }
+void registerCommandMenus();
 
 // Статьи блога → канал новостей (blog-channel.ts).
 startBlogChannel(bot.api);

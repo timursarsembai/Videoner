@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { cn } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Golos_Text, Space_Grotesk } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
@@ -9,9 +9,24 @@ import { GoogleTagManager, GoogleTagManagerNoScript } from "@/components/layout/
 import { YandexMetrika, YandexMetrikaNoScript } from "@/components/layout/YandexMetrika";
 import JsonLd from "@/components/common/JsonLd";
 
+// У Space Grotesk нет кириллицы, а у Golos Text есть, в том числе буквы
+// казахского, татарского, таджикского и кавказских языков. Golos стоит в
+// стеке вторым: браузер берёт его только для тех символов, которых нет в
+// Space Grotesk, и скачивает только кириллические наборы (unicode-range), так
+// что латинским страницам он не стоит ничего. Подстройку запасного шрифта под
+// метрики (adjustFontFallback) у Space Grotesk выключаем: этот «Space Grotesk
+// Fallback» — локальный Arial без unicode-range, он перехватывал бы кириллицу
+// раньше, чем до неё дойдёт Golos.
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-sans",
+  adjustFontFallback: false,
+});
+
+const golosText = Golos_Text({
+  subsets: ["cyrillic", "cyrillic-ext"],
+  variable: "--font-cyrillic",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -78,7 +93,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("antialiased", spaceGrotesk.variable)}>
+      <body className={cn("antialiased", spaceGrotesk.variable, golosText.variable)}>
         <JsonLd data={organizationSchema} />
         <JsonLd data={websiteSchema} />
         <GoogleTagManagerNoScript />

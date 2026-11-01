@@ -17,7 +17,7 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans: ["var(--font-sans)", "var(--font-cyrillic)", ...fontFamily.sans],
       },
       colors: {
         primary: {

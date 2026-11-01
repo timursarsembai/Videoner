@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base === 'fil' ? 'tl' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' || norm === 'so' || norm === 'az' || norm === 'ky' || norm === 'tg' || norm === 'ms' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' || norm === 'so' || norm === 'az' || norm === 'ky' || norm === 'tg' || norm === 'ms' || norm === 'nl' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -393,6 +393,7 @@ export class UserCookiesService {
       ky: forGroup ? 'топ үчүн' : 'сиз үчүн',
       tg: forGroup ? 'барои гурӯҳ' : 'барои шумо',
       ms: forGroup ? 'untuk kumpulan' : 'untuk anda',
+      nl: forGroup ? 'voor een groep' : 'voor jou',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -428,6 +429,7 @@ export class UserCookiesService {
       ky: `⚠️ Туташтырылган ${name} кирүүңүз (${where}) иштебей калды: платформа аны мындан ары кабыл албайт. Балким, аккаунттан чыгып кеткендирсиз же аккаунт чектелгендир.\n\nАл аркылуу жүктөп алууну улантуу үчүн аккаунтту кайра туташтырыңыз. Туташууларыңыз: /accounts.`,
       tg: `⚠️ Вуруди пайвастшудаи ${name} (${where}) дигар кор намекунад: платформа онро дигар қабул намекунад. Шояд шумо аз аккаунт баромадаед ё аккаунт маҳдуд шудааст.\n\nБарои идомаи боргирӣ бо он аккаунтро аз нав пайваст кунед. Пайвастҳои шумо: /accounts.`,
       ms: `⚠️ Log masuk ${name} yang anda sambungkan (${where}) tidak berfungsi lagi: platform tidak lagi menerimanya. Mungkin anda telah log keluar daripada akaun, atau akaun telah disekat.\n\nUntuk terus memuat turun menggunakannya, sambungkan akaun semula. Sambungan anda: /accounts.`,
+      nl: `⚠️ Je gekoppelde ${name}-login (${where}) werkt niet meer: het platform accepteert hem niet meer. Misschien ben je uitgelogd, of is het account beperkt.\n\nKoppel het account opnieuw om ermee te blijven downloaden. Je koppelingen: /accounts.`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

@@ -4,10 +4,10 @@ const DOMAIN = "https://videoner.download";
 // en рендерится без префикса в URL (миддлварь делает internal rewrite /vimeo -> /en/vimeo),
 // поэтому в статической выдаче билда все страницы физически лежат под /en, /ru, /es, /uk, /kk, /ar, /zh, /hi, /id, /sw, /de, /fr, /it, /pt, /uz —
 // здесь превращаем /en/* обратно в каноничный путь без префикса и добавляем hreflang-алтернативы.
-const PREFIXED = ["ru", "es", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja", "ko", "th", "tl", "am", "om", "ha", "so", "az", "ky", "tg", "ms"];
+const PREFIXED = ["ru", "es", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja", "ko", "th", "tl", "am", "om", "ha", "so", "az", "ky", "tg", "ms", "nl"];
 
 function stripLocalePrefix(path) {
-  const m = path.match(/^\/(en|ru|es|uk|kk|ar|zh|hi|id|sw|de|fr|it|pt|uz|tr|fa|vi|bn|ur|pl|ja|ko|th|tl|am|om|ha|so|az|ky|tg|ms)(\/.*)?$/);
+  const m = path.match(/^\/(en|ru|es|uk|kk|ar|zh|hi|id|sw|de|fr|it|pt|uz|tr|fa|vi|bn|ur|pl|ja|ko|th|tl|am|om|ha|so|az|ky|tg|ms|nl)(\/.*)?$/);
   if (m) return m[2] || "/";
   return path;
 }

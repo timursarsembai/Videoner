@@ -415,6 +415,18 @@ export const blogUi: Record<
     readFull: "Baca hantaran penuh di laman web",
     dateLocale: "ms-MY",
   },
+  nl: {
+    title: "Videoner-blog",
+    description: "Projectnieuws: wat er nieuw is in de bot, op de website en in de extensie, en hoe je het gebruikt.",
+    readMore: "Lezen",
+    back: "Alle artikelen",
+    allPosts: "Blog",
+    channel: "Nieuws op Telegram",
+    channelCta: "Projectnieuws vind je in het Telegram-kanaal @videonerdownload.",
+    readOnSite: "Lezen op de website",
+    readFull: "Lees het volledige bericht op de website",
+    dateLocale: "nl-NL",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

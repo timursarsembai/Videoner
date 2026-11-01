@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -6863,6 +6863,226 @@ const ms: Messages = {
   settingsBack: "⬅️ Kembali ke tetapan",
 };
 
+const nl: Messages = {
+  start: "Hoi! Stuur me een link naar een video van YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest of Threads — ik help je hem te downloaden.\n\n✨ Geen kwaliteitslimieten: je krijgt alles wat het platform aanbiedt, tot 4K — zolang het bestand binnen 2 GB past, de limiet van Telegram voor bots. Betaalde functies zijn er hier niet.\n\nHelemaal gratis: geen abonnementen, geen advertenties, geen in-app-aankopen.\n\n🧩 Download je op een computer? Installeer de browserextensie — er verschijnt een knop Downloaden direct op de videopagina: videoner.download/nl/extension\n\n👥 Voeg me toe aan een groep, dan plaats ik daar de video's bij de links die mensen delen.\n\n⚡ Sla de kwaliteitskeuze over: zet -audio achter de link voor alleen geluid (mp3), of -hd voor de beste kwaliteit.\n\n📣 Projectnieuws: @videonerdownload\n\n🌐 Taal van de bot: /language",
+  notLink: "Dat lijkt geen link. Stuur me een videolink.",
+  inviteGreeting: "Hoi! Ik ben Videoner — ik download gratis video's van YouTube, TikTok, Instagram en andere platforms. Ik zet de video klaar die iemand met je heeft gedeeld 👇",
+  inviteNotFound: "Ik kon geen video vinden bij deze uitnodigingslink. Stuur me een videolink, dan download ik hem.",
+  inviteUnavailable: "Ik kon de video via deze link niet openen — de dienst reageert op dit moment niet. Open dezelfde link over een minuut opnieuw.",
+  fetchingInfo: "🔍 Video-informatie ophalen...",
+  audioOnlyButton: "🎵 Alleen audio (mp3)",
+  photoButton: "📷 Foto's downloaden",
+  slideshowButton: "🎞 Diavoorstelling (video)",
+  galleryButton: "📷+🎞 Foto's en diavoorstelling",
+  chooseQuality: (title, duration) => `“${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nKies de kwaliteit:`,
+  sessionExpired: "Sessie verlopen — stuur de link opnieuw",
+  downloading: "⏬ Bezig met downloaden, dit kan een paar minuten duren...",
+  downloadFailed: "downloaden mislukt",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Bezig met downloaden: ${percent}%${eta ? ` · nog ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Bijna klaar — het bestand wordt samengevoegd...",
+  converting: (percent) => `⚙️ Converteren: ${percent}%`,
+  etaUnderMinute: "minder dan een minuut",
+  etaMinutes: (minutes) => `~${minutes} min`,
+  etaHours: (hours, minutes) => `~${hours} u${minutes ? ` ${minutes} min` : ""}`,
+  downloadTimeout: "het downloaden duurt te lang — de video lijkt erg zwaar. Probeer een lagere kwaliteit.",
+  downloadInterrupted: "⚠️ De bot wordt opnieuw gestart voor een update — je download is onderbroken. Stuur de link over een minuut opnieuw.",
+  fileTooBig: (mb, url) =>
+    `Het bestand is groot geworden (${mb} MB) — Telegram laat de bot het niet versturen.\nDownload het hier: ${url}`,
+  sendingFile: "📤 Bestand versturen...",
+  sendingAlbum: (count) => `📤 Deze post bevat meerdere bestanden (${count}) — ik stuur ze als album...`,
+  failedPrefix: "❌ Mislukt: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Bron: ${sourceUrl}\n` +
+        "Alle rechten op de video liggen bij de maker.\n" +
+        "Gratis gedownload met @VideonerBot",
+      `📣 Projectnieuws: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Delen: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Abonneer je op ons kanaal ${channel} om te downloaden — dat is de enige voorwaarde, de dienst blijft gratis.\n\n` +
+    "Abonneer je en tik op “Ik ben geabonneerd”.",
+  openChannelButton: "📣 Kanaal openen",
+  checkSubscriptionButton: "Ik ben geabonneerd",
+  subscribeThanks: "Bedankt! Stuur me nu een link naar een video.",
+  subscribeThanksResuming: "Bedankt! Ik ga nu verder met je link.",
+  subscribeStillMissing: "Ik zie het abonnement nog niet. Abonneer je en tik nog een keer.",
+  channelNotice: (channel) => `\n\nDe link naar deze post verschijnt in ${channel} — anoniem, zonder je naam.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Download deze en elke andere video gratis: @VideonerBot",
+  errorStoryNeedsId:
+    "stuur een link naar een specifieke story: open hem in de Instagram-app en tik op Delen → Link kopiëren.",
+  errorInstagramStory:
+    "Instagram-story's zijn alleen zichtbaar voor mensen die zijn ingelogd.",
+  errorLoginRequired:
+    "Deze post is niet beschikbaar zonder in te loggen: het platform toont hem alleen aan " +
+    "ingelogde gebruikers. Dat gebeurt bij privéposts, content met een leeftijdsgrens en " +
+    "posts die met een beperkt publiek zijn gedeeld.\n\n" +
+    "Openbare posts worden zonder problemen gedownload — probeer een andere link.",
+  errorUnsupportedPlatform:
+    "Ik herken deze link niet — controleer of het een directe videolink is van YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest of Threads.",
+  errorFileTooLarge: "het bestand is groter dan 2 GB — Telegram laat bots geen grotere bestanden versturen. Download het op de website of met de browserextensie — knoppen hieronder. Of stuur de link opnieuw en kies een lagere kwaliteit.",
+  siteButton: "🌐 Downloaden op de website",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Kwaliteiten zwaarder dan ${limit} zijn verborgen: Telegram laat bots geen grotere bestanden versturen. Je kunt ze downloaden op de website of met de browserextensie — knoppen hieronder.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Deze video is zelfs in de laagste kwaliteit te zwaar voor Telegram (~${smallest}): Telegram laat bots geen bestanden groter dan 2 GB versturen. Hier kun je alleen de audio krijgen; de video — op de website of met de browserextensie (knoppen hieronder).`,
+  errorFormatUnavailable: "Die kwaliteit is niet beschikbaar voor deze video. Stuur de link opnieuw — ik laat de actuele lijst zien.",
+  errorNoVideoContent: "Deze link bevat geen video om te downloaden — de post lijkt alleen foto's te hebben.",
+  errorRegionBlocked:
+    "Deze video is geblokkeerd buiten het land van de maker — het platform geeft hem " +
+    "niet aan onze server. Daar is niets aan te doen: de beperking ligt bij het platform." +
+    "\n\nAndere links worden gewoon gedownload.",
+  errorRateLimited: "Te veel links achter elkaar — wacht even en stuur hem opnieuw.",
+  errorYoutubeDailyLimit: (gb) => `je hebt de afgelopen 24 uur meer dan ${gb} GB van YouTube gedownload — dat is de daglimiet van de bot per persoon. Er wordt gekeken naar de afgelopen 24 uur, dus je kunt iets later weer nieuwe YouTube-video's downloaden. Andere platforms werken gewoon.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Afspeellijst gestopt: de daglimiet voor YouTube is bereikt. Niet gedownloade video's: ${dropped}. Stuur de link naar de afspeellijst later opnieuw.`,
+  errorPlatformRefused:
+    "het platform heeft deze video niet aan onze server gegeven. Dat gebeurt bij privéposts " +
+    "of posts met een leeftijdsgrens, en soms beperkt het platform de toegang gewoon " +
+    "tijdelijk. Probeer het over een paar minuten opnieuw.",
+  errorThreadsNoMedia:
+    "in deze Threads-post is geen video of foto te zien. Het is een post met alleen tekst, of " +
+    "Threads toont de media alleen aan ingelogde gebruikers — zulke posts kunnen niet worden gedownload zonder in te loggen.",
+  extensionHint:
+    "\n\n💻 Je kunt hem downloaden met de browserextensie van Videoner op een computer: " +
+    "die downloadt met je eigen login op het platform, en er verlaten geen wachtwoord of cookies je browser.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Om zulke posts te downloaden, koppel je je ${platform}-account aan de bot — één keer. Daarna downloadt de bot alles wat jij kunt zien: privéposts, reels en story's, ook vanaf je telefoon. De knop hieronder laat zien hoe.${withExtension ? "\n\n💻 Of download hem met de browserextensie van Videoner op een computer." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Je gekoppelde ${platform}-account kon deze post niet openen. Misschien werkt de login niet meer — koppel het account opnieuw. Of dit account heeft geen toegang tot de post.${withExtension ? "\n\n💻 Je kunt hem ook downloaden met de browserextensie van Videoner op een computer." : ""}`,
+  connectAccountButton: "🔑 Account koppelen",
+  reconnectAccountButton: "🔑 Opnieuw koppelen",
+  extensionButton: "🧩 Downloaden met de extensie",
+  extensionCommand:
+    "🧩 Videoner voor je browser: een knop Downloaden direct op de videopagina — YouTube, Instagram, TikTok, VK, privévideo's uit je account en lessen van GetCourse.\n\nVoor Chrome, Edge, Opera, Yandex Browser en Firefox op een computer.",
+  extensionPageButton: "🧩 Extensie installeren",
+  addToGroupButton: "👥 Toevoegen aan een groep",
+  newsButton: "📣 Projectnieuws",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Projectnieuws: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Instellingen van de bot voor deze groep\n\n" +
+    `🗑 Bericht met de link verwijderen: ${s.deleteLinks ? "ja" : "nee"}\n` +
+    "Zodra de video is verstuurd, wordt een bericht met alleen de link verwijderd — in de chat blijft alleen de video met de naam van wie hem deelde.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Ik kan nu geen berichten verwijderen: maak me beheerder met het recht “Berichten verwijderen”.\n"
+      : "") +
+    `\n✍️ Tekst onder de video: ${{ full: "volledig", short: "titel en bron", none: "geen tekst" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Kwaliteit: ${s.quality === "max" ? "de hoogste die Telegram accepteert" : "standaard (720p)"}\n` +
+    `\n⏱ Lange video's: ${s.longVideos ? "elke lengte" : "alleen tot 15 minuten"}\n` +
+    `\n🔑 Wie eigen accounts mag koppelen (voor story's en privéposts): ${s.cookiesBy === "all" ? "elk lid" : "alleen beheerders"}\n` +
+    `\n🌐 Antwoordtaal: ${s.language ? langName(s.language) : "die van elk lid zelf"}\n` +
+    "\nAlleen beheerders van de groep kunnen de instellingen wijzigen.",
+  settingsDeleteButton: (on) => `🗑 Links verwijderen: ${on ? "ja" : "nee"}`,
+  settingsCaptionButton: (style) => `✍️ Tekst: ${{ full: "volledig", short: "kort", none: "geen" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Kwaliteit: ${mode === "max" ? "hoogste" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Lange video's: ${on ? "ja" : "tot 15 min"}`,
+  settingsDoneButton: "✅ Klaar",
+  settingsAdminsOnly: "Alleen beheerders van de groep kunnen de instellingen wijzigen.",
+  settingsGroupsOnly: "Instellingen zijn voor groepen: voeg me toe aan een groep en stuur daar /settings.",
+  settingsFailed: "De instellingen konden niet worden opgeslagen, probeer het opnieuw.",
+  settingsCookiesButton: (by) => `🔑 Accounts koppelen: ${by === "all" ? "iedereen" : "beheerders"}`,
+  accountsIntro:
+    "🔑 Gekoppelde accounts\n\nDe bot kan downloaden wat alleen ingelogde mensen zien (Instagram-story's, privéposts) — via jouw account. Een login werkt waar je hem hebt gekoppeld: een login in de privéchat geldt voor jouw downloads, ook voor je eigen links in groepen zonder eigen account; een login die aan een groep is gekoppeld, geldt voor alle leden.",
+  accountsHowTo:
+    "Zo koppel je een account:\n1. Het makkelijkst: de Videoner-extensie op een computer — log in op de website van het platform, open het venster van Videoner, klik op “🔑 Je …-account aan de bot koppelen” en stuur me de code. Voor een groep stuur je /connect CODE in die groep.\n2. Of stuur me een bestand cookies.txt (cookies geëxporteerd uit de browser), of plak de tekst ervan als bericht.\n3. Vanaf een Android-telefoon — met Firefox en de add-on Cookie-Editor: https://videoner.download/nl/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platforms houden niet van automatische downloads en kunnen het account beperken of blokkeren. Koppel liever een tweede account, niet je hoofdaccount. Cookies worden versleuteld opgeslagen, alleen voor downloads gebruikt en verwijderd met de knoppen hieronder.",
+  accountsNone: "Er is nog niets gekoppeld.",
+  accountsGroupTitle: "🔑 Accounts gekoppeld aan deze groep",
+  accountsGroupHowTo:
+    "Om er een voor de hele groep te koppelen: haal een code op met de knop “🔑 Je …-account aan de bot koppelen” in de Videoner-extensie en stuur hier /connect CODE. Als je een account alleen in je privéchat hebt gekoppeld, gebruikt de bot het hier voor je eigen links. Je koppelingen: /accounts in een privéchat met @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ login werkt niet)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ login werkt niet)"}`,
+  accountsWhereHere: "privéchat",
+  accountsWhereGroup: (title) => `groep “${title}”`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Al mijn koppelingen verwijderen",
+  accountsDeleted: "Verwijderd.",
+  accountsDeletedAll: (n) => `Koppelingen verwijderd: ${n}.`,
+  accountsNotAllowed: "Alleen degene die het heeft gekoppeld of een beheerder van de groep kan het verwijderen.",
+  connectUsage:
+    "Stuur /connect CODE. De code krijg je met de knop “🔑 Je …-account aan de bot koppelen” in de Videoner-extensie op een computer. Je koppelingen: /accounts.",
+  connectOnlyAdmins: "Alleen beheerders kunnen accounts aan deze groep koppelen (zie /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} gekoppeld ${where}. De bot downloadt nu ook wat alleen ingelogde mensen zien. Bekijken of verwijderen: /accounts.\n\n⚠️ Het platform kan het account beperken vanwege automatische downloads — gebruik liever een tweede account.`,
+  connectWhereGroup: "aan deze groep",
+  connectWhereHere: "voor je downloads in de privéchat en de inline-modus",
+  connectCodeNotFound: "Code niet gevonden of verlopen (codes zijn 10 minuten geldig). Haal een nieuwe op in de Videoner-extensie.",
+  connectRejectedNoSession: "Deze cookies bevatten geen login. Log in op de website van het platform en exporteer de cookies opnieuw.",
+  connectRejectedUnknown: "Geen cookies van ondersteunde platforms gevonden: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Accounts koppelen is nog niet beschikbaar.",
+  connectFailed: "Koppelen mislukt, probeer het opnieuw.",
+  connectFileTooBig: "Het bestand is te groot — exporteer alleen de cookies van de benodigde website.",
+  connectNotAnonymous: "Koppel het account als jezelf, niet anoniem namens de groep: anders raken de koppelingen van beheerders door elkaar. Ik heb de code ongeldig gemaakt — haal een nieuwe op.",
+  connectCodeInGroup:
+    "Een koppelcode die in de groepschat is geplaatst, kunnen anderen zien — ik heb hem ongeldig gemaakt en het bericht verwijderd. Haal een nieuwe op en stuur die met /connect CODE: dat bericht met de opdracht verwijder ik meteen.",
+  groupWelcome:
+    "👋 Hoi! Plaats in deze chat links naar video's van TikTok, Instagram, YouTube, VK en andere platforms — ik antwoord met de video zelf.\n\n" +
+    "Clips tot 15 minuten download ik vanzelf, zonder opdrachten, en verder houd ik me stil.\n\n⚙️ Beheerders van de groep kunnen me instellen met /settings: berichten met links verwijderen, tekst onder de video, kwaliteit, lange video's en taal.\n\n⚡ Zet -audio achter een link voor het geluid, of -hd voor de beste kwaliteit.\n\n📣 Projectnieuws: @videonerdownload",
+  errorTooLong: "de video is te lang — zulke lange video's kunnen we nog niet downloaden.",
+  errorUnknown: "deze video kon niet worden gedownload. Probeer het iets later opnieuw of stuur een andere link.",
+  inlineHintButton: "Stuur een link naar de bot",
+  inlineResultTitle: "⬇️ Video downloaden",
+  inlineResultDescription: "De video wordt direct in deze chat geplaatst",
+  inlinePlaceholder: "⏬ Bezig met downloaden, dit kan een paar minuten duren...",
+  inlineOpenBot: "Bot openen",
+  inlineOnlySingleVideo:
+    "Deze modus verstuurt één video. Voor posts met meerdere bestanden of foto's stuur je de link in een privéchat naar de bot.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Abonneer je op ${channel} om te downloaden en probeer het opnieuw.`,
+  inlineRateLimited: "Te veel verzoeken achter elkaar. Wacht een minuut en probeer het opnieuw.",
+  queueRest: (count) => `\n\n📋 Links nog in de wachtrij: ${count}. Na deze laat ik ze een voor een zien.`,
+  queuedOne: (position) =>
+    `📋 Link in de wachtrij gezet, nr. ${position}. Eerst maken we de huidige af — daarna laat ik de kwaliteitskeuze ervoor zien.`,
+  queuedMany: (added, waiting) =>
+    `📋 Links toegevoegd aan de wachtrij: ${added}. In totaal wachtend: ${waiting}. Na de huidige laat ik ze een voor een zien.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Deze link staat al in de wachtrij — ik voeg hem niet twee keer toe."
+      : `Links die al in de wachtrij staan, worden niet twee keer toegevoegd (herhalingen: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `De wachtrij bevat maximaal ${limit} links — de rest is niet toegevoegd (${rejected}). Stuur ze zodra de wachtrij is opgeschoten.`,
+  skipButton: "✖️ Niet downloaden",
+  skipped: "⏭ Deze link overgeslagen.",
+  chooseTimedOut: "⌛ Binnen 30 minuten geen kwaliteit gekozen — ik sla deze link over.",
+  queueLostOnRestart: (count) =>
+    `⚠️ De bot wordt opnieuw gestart voor een update — de wachtrij is gewist (links: ${count}). Stuur ze over een minuut opnieuw.`,
+  subtitlesButton: "📝 Ondertiteling",
+  subtitlesBack: "⬅️ Terug naar kwaliteit",
+  subtitlesAuto: "automatisch",
+  subtitlesChoose: "Kies de taal van de ondertiteling",
+  subtitlesPreparing: "📝 Ondertiteling voorbereiden...",
+  subtitlesFailed: "Kon de ondertiteling in deze taal niet downloaden. Probeer een andere taal.",
+  subtitlesBusy: "YouTube levert op dit moment geen ondertiteling — probeer het over een paar minuten opnieuw.",
+  playlistFound: (title, count) =>
+    `📃 Afspeellijst${title ? ` “${title.slice(0, 150)}”` : ""}: ${count} video's.\nIk download ze een voor een. Welk formaat?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Beste kwaliteit",
+  playlistAudioButton: "🎵 Alleen audio (mp3)",
+  playlistNoButton: "✖️ Nee, bedankt",
+  playlistQueued: (count) =>
+    `📃 Video's uit de afspeellijst in de wachtrij: ${count}. Ik stuur ze een voor een. Stoppen met de knop hieronder of /stop.`,
+  playlistFailed: "Kon de afspeellijst niet openen — misschien is hij privé. Stuur een link naar één video.",
+  stopButton: "⏹ Stoppen",
+  stopped: (dropped) => `⏹ Gestopt.${dropped ? ` Links verwijderd uit de wachtrij: ${dropped}.` : ""}`,
+  nothingToStop: "Er wordt op dit moment niets gedownload.",
+  languageChoose: "🌐 Kies de taal van de bot. “Automatisch” volgt je Telegram.",
+  languageChooseGroup: "🌐 De antwoordtaal van de bot in deze groep. “Automatisch” — de Telegram-taal van elk lid.",
+  languageAuto: "Automatisch — zoals in Telegram",
+  languageAutoGroup: "Automatisch — die van elk lid zelf",
+  languageSaved: (name) => `✅ Taal van de bot: ${name}. Wijzigen met /language.`,
+  languageSavedAuto: "✅ De bot volgt je Telegram-taal. Wijzigen met /language.",
+  settingsLanguageButton: (name) => `🌐 Taal: ${name ?? "automatisch"}`,
+  settingsBack: "⬅️ Terug naar instellingen",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -7530,4 +7750,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl };

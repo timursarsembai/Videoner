@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на тридцати трёх языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на тридцати четырёх языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -9667,6 +9667,308 @@ export const legal: LegalByLanguage = {
             heading: "Aduan berniat jahat",
             body: [
               "Aduan yang mengandungi maklumat yang diketahui palsu boleh menyebabkan pengadu bertanggungjawab di bawah undang-undang yang terpakai. Kami berhak menolak untuk menimbangkan aduan yang tidak membolehkan pemegang hak mahupun bahan yang dipertikaikan dikenal pasti.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  nl: {
+    ui: {
+      updated: "Versie van",
+      back: "Naar de startpagina",
+      operatorHeading: "Exploitant van de dienst",
+      navHeading: "Andere documenten",
+      labels: {
+        privacy: "Privacyverklaring",
+        terms: "Gebruiksvoorwaarden",
+        cookies: "Cookiebeleid",
+        copyright: "Voor rechthebbenden",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Privacyverklaring",
+        summary: `Welke gegevens ${operator.site} verzamelt, waarvoor ze nodig zijn, hoe lang ze worden bewaard en hoe u ze kunt laten verwijderen.`,
+        sections: [
+          {
+            heading: "Algemeen",
+            body: [
+              `Deze privacyverklaring beschrijft welke persoonsgegevens de dienst ${operator.site} verwerkt en met welk doel. Verwerkingsverantwoordelijke is ${operator.nameNl}.`,
+              "Door de dienst te gebruiken, stemt u in met de hier beschreven verwerking. Als u daarmee niet instemt, gebruik de dienst dan niet.",
+              "De verwerking vindt plaats in overeenstemming met de Wet van de Republiek Kazachstan “Inzake persoonsgegevens en de bescherming daarvan” en, voor bezoekers uit de Europese Economische Ruimte, met inachtneming van de vereisten van de AVG (GDPR).",
+            ],
+          },
+          {
+            heading: "Welke gegevens wij verwerken",
+            body: [
+              "Wij verzamelen bewust niets meer dan wat nodig is voor de werking van de dienst en vragen niet om identiteitsdocumenten, betaalgegevens of een adres.",
+            ],
+            bullets: [
+              "Gegevens van uw Telegram-account die de bot ontvangt wanneer u hem een bericht stuurt: numerieke ID, gebruikersnaam, voornaam en taalcode.",
+              "De links die u ter download indient en gegevens over de downloadpoging zelf: platform, datum en tijd, gekozen kwaliteit en resultaat (gelukt of fout).",
+              "Technische verbindingsgegevens: IP-adres, type en versie van de browser, taal en verwijzende pagina. Deze komen terecht in de serverlogboeken en in de webanalysediensten.",
+              "Cookies en analyse-ID's — zie het Cookiebeleid voor meer informatie.",
+            ],
+          },
+          {
+            heading: "Waarvoor deze gegevens nodig zijn",
+            bullets: [
+              "Om de dienst zelf te leveren: de video via uw link ophalen en het bestand aan u verstrekken.",
+              "Om uw account van dat van anderen te onderscheiden en misbruik tegen te gaan.",
+              "Om de dienst te beschermen tegen geautomatiseerd misbruik: de Cloudflare Turnstile-controle voordat een link wordt ingediend.",
+              "Om te begrijpen hoe de website wordt gebruikt en fouten te verhelpen — aan de hand van geanonimiseerde en geaggregeerde statistieken.",
+              "Om uw verzoeken en die van rechthebbenden te beantwoorden.",
+              "Om u af en toe via Telegram te benaderen en naar uw mening over de dienst te vragen — bijvoorbeeld als u ermee bent gestopt. Antwoorden is niet verplicht; wilt u zulke berichten niet ontvangen, laat het ons dan gewoon weten en wij schrijven u niet meer.",
+            ],
+          },
+          {
+            heading: "Rechtsgronden voor de verwerking",
+            body: [
+              "Gegevens van uw Telegram-account en gegevens over downloads worden verwerkt ter uitvoering van de Gebruiksvoorwaarden, die u aanvaardt zodra u de dienst gaat gebruiken.",
+              "Analysecookies en de registratie van handelingen op de website worden verwerkt op basis van uw toestemming, die u op elk moment kunt intrekken — hoe, staat beschreven in het Cookiebeleid.",
+              "Serverlogboeken en de bescherming tegen bots berusten op ons gerechtvaardigd belang om de dienst werkend en beveiligd te houden.",
+              "Het vragen naar uw mening over de dienst berust op ons gerechtvaardigd belang om de dienst te verbeteren; u kunt zich daar op elk moment voor afmelden.",
+            ],
+          },
+          {
+            heading: "Gekoppelde accounts",
+            body: [
+              "Desgewenst kunt u uw account op een platform (Instagram, Facebook, YouTube, X, VK, TikTok) aan de bot koppelen, zodat de bot posts kan downloaden die alleen voor ingelogde gebruikers zichtbaar zijn: stories, besloten posts. Daarvoor ontvangt de bot de cookies van dat account — van de Videoner-extensie via een eenmalige code, of uit een bestand dat u hebt gestuurd.",
+              "Wij bewaren alleen de cookies van het gekozen platform en verwijderen de overige onmiddellijk. Ze worden versleuteld opgeslagen en uitsluitend gebruikt voor downloads op de plek waar u ze hebt gekoppeld. Cookies die in uw privéchat zijn gekoppeld, dienen voor uw downloads, inclusief uw eigen links in groepen waaraan geen eigen account is gekoppeld; voor links van anderen worden ze niet gebruikt. Cookies die aan een groep zijn gekoppeld, dienen uitsluitend voor downloads door de leden van die groep.",
+              "De rechtsgrond is uw toestemming: u koppelt het account zelf en kunt het op elk moment verwijderen met /accounts. Bij verwijdering worden de cookies onherroepelijk gewist. Als het platform de inlog niet meer accepteert, laat de bot u dat weten.",
+              "Posts die via een gekoppeld account zijn gedownload, worden niet in ons kanaal gepubliceerd en niet vanuit de gedeelde cache aan andere gebruikers verstrekt.",
+            ],
+          },
+          {
+            heading: "Diensten van derden",
+            body: [
+              "Wij verkopen uw gegevens niet en verstrekken ze niet aan derden voor hun eigen doeleinden. Voor de werking van de dienst worden de volgende aanbieders ingeschakeld, die elk gegevens volgens hun eigen regels verwerken:",
+            ],
+            bullets: [
+              `Telegram — werking van de bot ${BOT}.`,
+              "Cloudflare — bescherming tegen bots (Turnstile), levering van de website en routering van e-mail.",
+              "Google Analytics en Google Tag Manager — bezoekstatistieken.",
+              "Yandex Metrica — bezoekstatistieken, klikkaart en Webvisor. Webvisor registreert handelingen op de pagina: bewegingen van de aanwijzer, scrollen en klikken. De opnamen worden uitsluitend gebruikt om de gebruiksvriendelijkheid van de website te analyseren.",
+            ],
+          },
+          {
+            heading: "Hoe lang wij gegevens bewaren",
+            bullets: [
+              "Gedownloade bestanden worden ongeveer een uur na aanmaak automatisch van de server verwijderd. Wij houden geen archief van uw video's bij.",
+              "Gegevens over downloadpogingen worden bewaard zolang dat nodig is om misbruik tegen te gaan en verzoeken af te handelen.",
+              "Accountgegevens worden bewaard zolang u de dienst gebruikt en op uw verzoek verwijderd.",
+              "Serverlogboeken worden gedurende een beperkte tijd bewaard en bij rotatie overschreven.",
+            ],
+          },
+          {
+            heading: "Waar gegevens worden verwerkt",
+            body: [
+              "De servers van de dienst staan in een datacenter binnen de Europese Unie. Sommige van de hierboven genoemde aanbieders kunnen gegevens daarbuiten verwerken in overeenstemming met hun eigen beleid.",
+            ],
+          },
+          {
+            heading: "Uw rechten",
+            body: [
+              `U hebt het recht informatie te verkrijgen over de verwerking van uw gegevens, rectificatie of wissing daarvan te verlangen, uw toestemming in te trekken en bezwaar te maken tegen de verwerking. Schrijf daarvoor naar ${MAIL} vanaf het e-mailadres of het Telegram-account waarop het verzoek betrekking heeft.`,
+              "Wij antwoorden binnen een redelijke termijn, in de regel binnen dertig kalenderdagen. Verwijdering van een account houdt ook verwijdering in van de daaraan gekoppelde downloadgeschiedenis.",
+            ],
+          },
+          {
+            heading: "Minderjarigen",
+            body: [
+              "De dienst is niet bedoeld voor en niet gericht op kinderen jonger dan 16 jaar. Wij verzamelen niet bewust gegevens van zulke gebruikers; als dat per vergissing toch is gebeurd, neem dan contact met ons op en de gegevens worden verwijderd.",
+            ],
+          },
+          {
+            heading: "Wijzigingen",
+            body: [
+              "Wij kunnen deze privacyverklaring bijwerken. De datum van de geldende versie staat bovenaan de pagina; wezenlijke wijzigingen maken wij in de dienst kenbaar.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Gebruiksvoorwaarden",
+        summary: `De regels voor het gebruik van ${operator.site}: wat wel mag, wat niet mag en onder welke voorwaarden de dienst werkt.`,
+        sections: [
+          {
+            heading: "Algemeen",
+            body: [
+              `Deze voorwaarden regelen het gebruik van de website ${operator.site} en de Telegram-bot ${BOT}. Eigenaar en beheerder van de dienst is ${operator.nameNl}.`,
+              "Door de dienst te gaan gebruiken, bevestigt u dat u deze voorwaarden hebt gelezen en aanvaardt. Als een van de voorwaarden u niet past, gebruik de dienst dan niet.",
+            ],
+          },
+          {
+            heading: "De dienst is gratis",
+            body: [
+              "Alle mogelijkheden van de dienst worden kosteloos aangeboden. Er zijn geen abonnementen, betaalde pakketten, betaalde videokwaliteiten of aankopen binnen de dienst.",
+              "Wij tonen geen advertenties en plaatsen geen affiliatelinks.",
+            ],
+          },
+          {
+            heading: "Toegangsvoorwaarden",
+            bullets: [
+              "Voor downloaden op de website is geen account en geen inlog nodig. De bot onderscheidt gebruikers aan de hand van hun Telegram-account.",
+              "Technische beperkingen op de frequentie van verzoeken beschermen de dienst tegen overbelasting en geautomatiseerd misbruik.",
+              "Voor YouTube geldt een dagelijkse datalimiet: 10 GB per 24 uur per netwerk op de website en in de extensie, en 25 GB per 24 uur per Telegram-account in de bot. Andere platforms vallen hier niet onder.",
+              "Voor downloaden via de bot is een abonnement op ons kanaal niet vereist. De bot voegt in de tekst bij bestanden een link toe naar het nieuwskanaal van het project; abonneren daarop is niet verplicht.",
+            ],
+          },
+          {
+            heading: "Wat de dienst doet",
+            body: [
+              "De dienst treedt op als technische tussenpersoon: via de link die u opgeeft, benadert hij een openbaar toegankelijke pagina, haalt het mediabestand op en geeft het aan u door.",
+              "Wij hosten geen videocatalogus, zoeken niet in de content van anderen en bewaren gedownloade bestanden niet langer dan nodig is voor de overdracht — ongeveer een uur.",
+              "Of een bepaald platform beschikbaar is, hangt af van de technische keuzes van dat platform en kan zonder voorafgaande kennisgeving veranderen.",
+            ],
+          },
+          {
+            heading: "Verplichtingen van de gebruiker",
+            body: [
+              "U bent zelf verantwoordelijk voor de manier waarop u de verkregen bestanden gebruikt, en u bevestigt dat u daartoe gerechtigd bent.",
+            ],
+            bullets: [
+              "Download uitsluitend materiaal waarvan de rechten bij u berusten of waarvan het gebruik door de rechthebbende of de wet is toegestaan.",
+              "Gebruik de dienst niet om inbreuk te maken op auteursrecht of naburige rechten, om verboden content te verspreiden of om inbreuk te maken op de rechten van derden.",
+              "Probeer de technische beperkingen van de dienst niet te omzeilen, waaronder de beperkingen op de frequentie van verzoeken en de botcontrole.",
+              "Veroorzaak geen geautomatiseerde belasting: massale verzoeken, scripts en scrapers zijn niet toegestaan.",
+            ],
+          },
+          {
+            heading: "Publicatie van links in het kanaal",
+            body: [
+              "Door een video via de bot te downloaden, stemt u ermee in dat de link naar de oorspronkelijke post in ons Telegram-kanaal wordt gepubliceerd. Een melding hierover wordt in de bot getoond voordat u een kwaliteit kiest — dus voordat u besluit te downloaden.",
+              "De publicatie is anoniem: naar het kanaal gaan de link naar een openbaar toegankelijke pagina, de titel van de video en de omslagafbeelding — hetzelfde beeld dat het platform zelf toont in de preview van de post. Wie de video heeft gedownload, wordt niet vermeld. Het videobestand zelf wordt nooit en nergens gepubliceerd: wat wordt verspreid is de link, die de platforms zelf aanbieden om te verspreiden via de knop “Delen” onder elke post.",
+              "Dezelfde link wordt niet meer dan één keer gepubliceerd. Als u niet wilt dat een link in het kanaal terechtkomt, download die video dan niet via onze dienst.",
+              "Links uit groepen en posts die via een gekoppeld account zijn gedownload, worden niet in het kanaal gepubliceerd."
+            ],
+          },
+          {
+            heading: "Uw eigen account koppelen",
+            body: [
+              "Door uw account op een platform aan de bot te koppelen, bevestigt u dat het uw account is en dat u gerechtigd bent het op deze manier te gebruiken.",
+              "Platforms keuren geautomatiseerde downloads niet goed en kunnen een gekoppeld account beperken of blokkeren. Dit risico neemt u voor eigen rekening; wij raden aan een apart account te koppelen in plaats van uw hoofdaccount. Wij zijn niet aansprakelijk voor beperkingen die een platform aan uw account oplegt.",
+              "Een aan een groep gekoppeld account wordt gebruikt voor downloads door alle leden van die groep. De beheerders van de groep bepalen wie accounts mag koppelen en kunnen elk daarvan verwijderen.",
+            ],
+          },
+          {
+            heading: "Beperking van aansprakelijkheid",
+            body: [
+              "De dienst wordt geleverd “in de huidige staat”. Wij garanderen geen ononderbroken werking, geen beschikbaarheid van een bepaald platform en niet dat een bestand geschikt is voor uw doeleinden.",
+              "Wij zijn niet aansprakelijk voor wat u met het gedownloade materiaal doet, noch voor de gevolgen van inbreuken die u maakt op de rechten van derden.",
+              "Wij hebben het recht het aanbod van de dienst te wijzigen, de dienst voor onderhoud op te schorten en de dienst te beëindigen.",
+            ],
+          },
+          {
+            heading: "Beperking van de toegang",
+            body: [
+              "Wij kunnen de toegang tot de dienst beperken of beëindigen bij schending van deze voorwaarden, bij pogingen om beperkingen te omzeilen en bij een gegronde klacht van een rechthebbende.",
+            ],
+          },
+          {
+            heading: "Wijzigingen en toepasselijk recht",
+            body: [
+              "Wij kunnen deze voorwaarden wijzigen; de datum van de geldende versie staat bovenaan de pagina. Door de dienst na een wijziging te blijven gebruiken, aanvaardt u de nieuwe versie.",
+              "Op de rechtsverhouding tussen de partijen is het recht van de Republiek Kazachstan van toepassing. De partijen streven ernaar geschillen via correspondentie te beslechten en, bij gebreke van overeenstemming, op de wijze die is vastgelegd in de wetgeving van de Republiek Kazachstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Cookiebeleid",
+        summary: `Welke cookies ${operator.site} gebruikt, waarvoor ze dienen en hoe u ze kunt weigeren.`,
+        sections: [
+          {
+            heading: "Wat cookies zijn",
+            body: [
+              "Cookies zijn kleine tekstbestanden die een website in uw browser opslaat. Ze maken het mogelijk uw instellingen te onthouden en geanonimiseerde bezoekstatistieken te verzamelen.",
+              "Naast cookies beschrijven wij in dit document ook verwante technologieën: de lokale opslag van de browser en trackingpixels.",
+            ],
+          },
+          {
+            heading: "Strikt noodzakelijke cookies",
+            body: [
+              "Zonder deze cookies werkt de dienst niet, daarom worden ze altijd geplaatst.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — controleert of een link door een mens wordt ingediend en niet door een script.",
+              "Interface-instellingen — de door u gekozen taal en het kleurthema.",
+            ],
+          },
+          {
+            heading: "Analytische cookies",
+            body: [
+              "Deze helpen ons te begrijpen welke pagina's worden gebruikt en waar fouten optreden. Ze worden geplaatst met uw toestemming en zijn niet vereist voor de werking van de dienst.",
+            ],
+            bullets: [
+              "Google Analytics en Google Tag Manager — bezoekersaantallen en gedrag op de website, in geanonimiseerde vorm.",
+              "Yandex Metrica — bezoekersaantallen, klikkaart en Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor van Yandex Metrica registreert handelingen op de pagina: bewegingen van de aanwijzer, scrollen, klikken en invoer in het linkveld. Dit dient om te zien waar de interface gebruikers in verwarring brengt.",
+              "Wij gebruiken deze opnamen niet om individuele personen te volgen. Voer in de velden van de website geen informatie in die u niet opgeslagen wilt zien.",
+            ],
+          },
+          {
+            heading: "Hoe u cookies weigert",
+            bullets: [
+              "Stel in uw browser in dat cookies worden geblokkeerd of verwijderd — dit werkt voor alle hier genoemde systemen.",
+              "Google Analytics: de officiële browser-add-on waarmee de gegevensverzameling wordt uitgeschakeld, is verkrijgbaar op de website van Google.",
+              "Yandex Metrica: afmelden is mogelijk via de officiële add-on van Yandex.",
+              "Als u strikt noodzakelijke cookies uitschakelt, is downloaden niet meer mogelijk.",
+            ],
+          },
+          {
+            heading: "Bewaartermijnen",
+            body: [
+              "Sessiecookies worden verwijderd wanneer u de browser sluit of wanneer de sessie verloopt. Analysediensten bewaren hun ID's gedurende de termijnen die door hun aanbieders zijn vastgesteld.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Voor rechthebbenden",
+        summary: "Het standpunt van de dienst ten aanzien van auteursrecht en de procedure voor het indienen van een klacht over inbreuk.",
+        sections: [
+          {
+            heading: "Standpunt van de dienst",
+            body: [
+              "De dienst host geen video's en houdt geen catalogus daarvan bij. Hij treedt op als technische tussenpersoon: via de link die een gebruiker heeft ingevoerd, benadert hij een openbaar toegankelijke pagina en geeft het bestand door aan die gebruiker.",
+              "Gedownloade bestanden blijven ongeveer een uur op de server staan en worden daarna automatisch verwijderd. Er blijft bij ons geen blijvende kopie van content van anderen achter.",
+              "De verantwoordelijkheid voor het gebruik van gedownload materiaal ligt bij de gebruiker — dit is uitdrukkelijk vastgelegd in de Gebruiksvoorwaarden.",
+            ],
+          },
+          {
+            heading: "Als inbreuk wordt gemaakt op uw rechten",
+            body: [
+              `Als u rechthebbende of diens vertegenwoordiger bent en meent dat de dienst wordt gebruikt om inbreuk te maken op uw rechten, schrijf dan naar ${MAIL}. Wij beoordelen zulke klachten en nemen maatregelen.`,
+            ],
+          },
+          {
+            heading: "Wat u in de klacht vermeldt",
+            bullets: [
+              "Om welk werk het gaat en op grond waarvan u de rechten daarop bezit.",
+              "Een link naar het materiaal en, voor zover bekend, de omstandigheden van de inbreuk.",
+              "Uw contactgegevens: naam of bedrijfsnaam, adres en e-mailadres.",
+              "Als u namens een rechthebbende optreedt — een bewijs van uw vertegenwoordigingsbevoegdheid.",
+              "Een verklaring dat de informatie in de klacht juist is en dat het gebruik van het materiaal niet door de rechthebbende of de wet is toegestaan.",
+            ],
+          },
+          {
+            heading: "Wat wij doen",
+            body: [
+              "Wij beoordelen een klacht binnen een redelijke termijn, in de regel binnen dertig kalenderdagen, en blokkeren bij bevestiging van de inbreuk de toegang tot het materiaal via de dienst en zo nodig de toegang van de inbreukmaker tot de dienst.",
+              "Over de uitkomst van de beoordeling informeren wij u via het door u opgegeven e-mailadres.",
+            ],
+          },
+          {
+            heading: "Klachten te kwader trouw",
+            body: [
+              "Een klacht die willens en wetens onjuiste informatie bevat, kan leiden tot aansprakelijkheid van de indiener op grond van het toepasselijke recht. Wij kunnen weigeren een klacht in behandeling te nemen als daaruit noch de rechthebbende noch het betwiste materiaal kan worden vastgesteld.",
             ],
           },
         ],

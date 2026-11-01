@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -47,6 +47,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   ky: "Кыргызча",
   tg: "Тоҷикӣ",
   ms: "Bahasa Melayu",
+  nl: "Nederlands",
   tl: "Tagalog",
 };
 
@@ -11583,6 +11584,366 @@ const ms: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const nl: Translations = {
+  nav: {
+    home: "Home",
+    downloaders: "Downloaders",
+    extension: "Extensie",
+    blog: "Blog",
+    switchTheme: "Thema wisselen",
+    language: "Taal",
+    comingSoon: "Binnenkort",
+  },
+  theme: {
+    light: "Licht",
+    dark: "Donker",
+    system: "Systeem",
+  },
+  playlist: {
+    title: `Afspeellijst “{title}”: {count} video's`,
+    hint: "Video's worden één voor één gedownload. Houd deze pagina open; je browser kan vragen om meerdere downloads toe te staan.",
+    std: "720p",
+    hd: "Beste kwaliteit",
+    audio: "Alleen audio (mp3)",
+    progress: "Video {index} van {count}",
+    stats: "Gedownload: {done} · mislukt: {failed}",
+    stop: "Stoppen",
+    stopped: "Gestopt. {done} van {count} gedownload.",
+    finished: "Afspeellijst klaar: {done} van {count}.",
+    again: "Opnieuw kiezen",
+  },
+  footer: {
+    news: "Projectnieuws",
+    botCta: "Ook beschikbaar als Telegram-bot:",
+    extension: "Browserextensie",
+    developedBy: "Ontwikkeld door",
+    rights: "Alle rechten voorbehouden.",
+  },
+  content: {
+    howToTitle: "Zo download je {platform}-video's",
+    faqTitle: "Veelgestelde vragen",
+  },
+  auth: {
+    loginButton: "Inloggen met Telegram",
+    signIn: "Inloggen",
+    logout: "Uitloggen",
+    switchAccountHint: "Niet jouw account?",
+    switchAccountLink: "Uitloggen bij Telegram Web",
+  },
+  home: {
+    new: "Nieuw",
+    manyFeatures: "Veel nieuwe functies",
+    titleLine1: "Video's downloaden",
+    titleLine2: "snel en eenvoudig",
+    subtitle:
+      "Jouw universele videodownloader voor YouTube, Instagram, TikTok en meer. Kies elke kwaliteit, van HD tot mobielvriendelijk.",
+    subtitleExtra: "Geen limieten, geen gedoe, gewoon downloaden.",
+    placeholder: "Plak de videolink van elk platform...",
+    download: "Downloaden",
+  },
+  video: {
+    description: "Beschrijving",
+    format: "Formaat",
+    selected: "Gekozen: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Bezig met converteren",
+    downloading: "Bezig met downloaden",
+    downloadAgain: "Opnieuw downloaden",
+    startDownload: "Download starten",
+    convertingBtn: "Converteren...",
+    downloadingBtn: "Downloaden...",
+    loginRequiredHint: "Log in met Telegram om te downloaden",
+    quotaExceededHint: "Daglimiet van 20 downloads bereikt — kom morgen terug",
+    postFiles: "Deze post bevat {count} bestanden",
+    photoQuality: "Originele foto's",
+    slideshowQuality: "Diavoorstelling (video)",
+    galleryQuality: "Foto's + diavoorstelling",
+    downloadAll: "Alles downloaden",
+    downloadOne: "Opslaan",
+    subtitlesTab: "ondertiteling",
+    subtitlesHint: "Kies een taal — je krijgt een .srt-bestand dat elke speler kan openen.",
+    subtitlesAuto: "auto",
+    subtitlesDownload: "Ondertiteling downloaden",
+    subtitlesDownloading: "Ondertiteling voorbereiden...",
+  },
+  toast: {
+    enterUrl: "Voer een link in",
+    enterValidUrl: "Voer een geldige link in",
+    platformNotSupported: "Dit platform wordt niet ondersteund",
+    urlNotSupported: "Deze link wordt niet ondersteund",
+    enterValidPlatformUrl: "Voer een geldige {platform}-link in",
+    captchaNotReady: "Wacht even tot de beveiligingscontrole klaar is en probeer het dan opnieuw",
+    comingSoon: "Binnenkort! {name} wordt nog niet ondersteund",
+    selectQuality: "Kies een kwaliteit",
+    downloadStarted: "Download gestart!",
+    downloadCompleted: "Download voltooid!",
+    newsChannel: "Projectnieuws vind je op Telegram:",
+    downloadUrlNotReceived: "Geen downloadlink ontvangen",
+    needsBrowser:
+      "Het platform gaf deze video niet aan onze server: hij is alleen beschikbaar voor ingelogde gebruikers, of de toegang is tijdelijk beperkt. Je kunt hem downloaden met de Videoner-browserextensie op een computer — die downloadt met je eigen login.",
+    needsBrowserLink: "Extensie installeren →",
+  },
+  platforms: {
+    youtube: {
+      description: "YouTube-video's downloaden in HD-kwaliteit",
+      news: "Nu met ondersteuning voor video's en Shorts",
+      titleLine1: "Download YouTube-video's",
+      titleLine2: "en Shorts",
+      pageDescription:
+        "YouTube video downloaden: video's, Shorts en audio in hoge kwaliteit. Snel, gratis en eenvoudig. Ondersteunt 8K, 4K, HD en MP3-audio.",
+      placeholder: "Plak hier de YouTube-link...",
+      howTo: [
+        "Kopieer de videolink uit de adresbalk van je browser, of tik op Delen in de YouTube-app.",
+        "Plak hem in het veld hierboven en klik op Downloaden.",
+        "Kies een kwaliteit — tot 4K/8K voor video, of MP3 voor alleen audio.",
+        "Je bestand wordt meteen gedownload, zonder in te loggen.",
+      ],
+      faq: [
+        { q: "Is YouTube-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "Videoner biedt elke resolutie die YouTube voor die video aanbiedt — van 360p tot 4K/8K waar beschikbaar — plus MP3-audio." },
+        { q: "Kan ik privévideo's of video's met leeftijdsbeperking downloaden?", a: "Alleen openbaar toegankelijke YouTube-video's worden ondersteund; privévideo's, verborgen video's die niet met jou gedeeld zijn of content waarvoor je moet inloggen kunnen niet worden gedownload." },
+        { q: "Is het legaal om video's van YouTube te downloaden?", a: "Download alleen video's die je mag opslaan — je eigen content, video's met een Creative Commons-licentie of alles waarvoor de maker toestemming geeft. Respecteer de Servicevoorwaarden van YouTube en het auteursrecht." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Geconverteerde bestanden blijven ongeveer een uur op de server staan, dus sla ze direct na het downloaden op je apparaat op." },
+      ],
+    },
+    facebook: {
+      description: "Video's uit Facebook-posts en reels opslaan",
+      news: "Nu met ondersteuning voor reels",
+      titleLine1: "Download Facebook-video's",
+      titleLine2: "en reels",
+      pageDescription:
+        "Facebook video downloaden: video's en reels in hoge kwaliteit. Snel, gratis en eenvoudig.",
+      placeholder: "Plak hier de Facebook-link...",
+      howTo: [
+        "Open de video of reel op Facebook en kopieer de link (tik op de drie puntjes → Link kopiëren).",
+        "Plak de link hierboven en klik op Downloaden.",
+        "Kies de MP4-kwaliteit of haal de audio eruit als MP3.",
+        "Het bestand wordt direct op je apparaat gedownload — geen Facebook-account nodig.",
+      ],
+      faq: [
+        { q: "Is Facebook-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "Videoner haalt de hoogste kwaliteit op die Facebook voor die video of reel aanbiedt, in MP4, plus een MP3-audiooptie." },
+        { q: "Kan ik privévideo's downloaden?", a: "Alleen openbare posts, video's en reels werken — privécontent of content die alleen voor vrienden zichtbaar is, is niet toegankelijk." },
+        { q: "Is het legaal om video's van Facebook te downloaden?", a: "Download alleen video's die je mag opslaan; respecteer de rechten van de maker en de Servicevoorwaarden van Facebook." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Bestanden worden na het converteren ongeveer een uur bewaard en daarna automatisch verwijderd — download ze dus meteen." },
+      ],
+    },
+    instagram: {
+      description: "Instagram-reels, stories en posts downloaden",
+      news: "Nu met ondersteuning voor reels en stories",
+      titleLine1: "Download Instagram-reels",
+      titleLine2: "en stories",
+      pageDescription:
+        "Instagram video downloaden: reels, stories en posts in hoge kwaliteit. Snel, gratis en eenvoudig.",
+      placeholder: "Plak hier de Instagram-link...",
+      howTo: [
+        "Open de reel, post of story op Instagram en tik op het papieren-vliegtuigje → Link kopiëren.",
+        "Plak de link in het veld hierboven.",
+        "Kies de gewenste kwaliteit en het formaat.",
+        "De download start meteen — zonder inloggen of een app te installeren.",
+      ],
+      faq: [
+        { q: "Is Instagram-content downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "De volledige beschikbare kwaliteit voor reels, posts en stories, in MP4 of MP3." },
+        { q: "Kan ik downloaden van privéaccounts?", a: "Alleen openbare Instagram-accounts en -posts worden ondersteund; content van privéaccounts kan niet worden gedownload." },
+        { q: "Is het legaal om video's van Instagram te downloaden?", a: "Download alleen wat je mag opslaan — respecteer de maker en de Gebruiksvoorwaarden van Instagram." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Bestanden blijven ongeveer een uur op de server staan en worden daarna automatisch verwijderd." },
+      ],
+    },
+    tiktok: {
+      description: "TikTok-video's downloaden zonder watermerk",
+      news: "Nu zonder watermerk",
+      titleLine1: "Download TikTok-video's",
+      titleLine2: "zonder watermerk",
+      pageDescription:
+        "TikTok video downloaden zonder watermerk, in hoge kwaliteit. Snel, gratis en eenvoudig.",
+      placeholder: "Plak hier de TikTok-link...",
+      howTo: [
+        "Tik op Delen bij de TikTok-video en daarna op Link kopiëren.",
+        "Plak de link hierboven en klik op Downloaden.",
+        "Je krijgt een schone MP4 — zonder TikTok-watermerk — of de MP3-audio.",
+        "Sla hem direct op je apparaat op.",
+      ],
+      faq: [
+        { q: "Is TikTok-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "De beste kwaliteit die TikTok voor die video aanbiedt, zonder het TikTok-watermerk, plus MP3-audio." },
+        { q: "Kan ik downloaden van privéaccounts?", a: "Alleen video's van openbare TikTok-accounts kunnen worden gedownload." },
+        { q: "Is het legaal om video's van TikTok te downloaden?", a: "Download video's die je mag opslaan, vermeld de maker en respecteer de Servicevoorwaarden van TikTok." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Gedownloade bestanden blijven ongeveer een uur op de server staan en worden daarna automatisch verwijderd." },
+      ],
+    },
+    twitter: {
+      description: "Twitter-video's downloaden",
+      news: "Nu met ondersteuning voor Twitter-video's",
+      titleLine1: "Download video's",
+      titleLine2: "van Twitter",
+      pageDescription:
+        "Twitter video downloaden in hoge kwaliteit. Snel, gratis en eenvoudig.",
+      placeholder: "Plak hier de Twitter-link...",
+      howTo: [
+        "Tik op Delen onder de tweet en kies Link kopiëren (of kopieer de link uit je browser).",
+        "Plak hem in het veld hierboven.",
+        "Kies de gewenste videokwaliteit.",
+        "De download begint meteen — geen X/Twitter-account nodig.",
+      ],
+      faq: [
+        { q: "Is Twitter/X-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "Elke kwaliteit die X/Twitter voor die video aanbiedt, in MP4, plus MP3." },
+        { q: "Kan ik downloaden van privéaccounts?", a: "Alleen tweets van openbare accounts werken; beschermde/privéaccounts worden niet ondersteund." },
+        { q: "Is het legaal om video's van Twitter/X te downloaden?", a: "Download content die je mag opslaan, en respecteer de rechten van de plaatser en de Servicevoorwaarden van het platform." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Bestanden worden ongeveer een uur nadat ze zijn aangemaakt automatisch verwijderd." },
+      ],
+    },
+    vimeo: {
+      description: "Vimeo-video's downloaden in hoge kwaliteit",
+      news: "Nu met ondersteuning voor Vimeo",
+      titleLine1: "Download video's",
+      titleLine2: "van Vimeo",
+      pageDescription:
+        "Vimeo video downloaden in hoge kwaliteit. Snel, gratis en eenvoudig.",
+      placeholder: "Plak hier de Vimeo-link...",
+      howTo: [
+        "Open Vimeo en kopieer de videolink (of tik op mobiel op Delen → Link kopiëren).",
+        "Plak de link in het veld hierboven en klik op Downloaden.",
+        "Kies een kwaliteit en formaat — MP4 voor video, MP3 als je alleen de audio wilt.",
+        "Je download start meteen; geen account of software-installatie nodig.",
+      ],
+      faq: [
+        { q: "Is Vimeo-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "Videoner biedt elke kwaliteit die Vimeo voor die video beschikbaar stelt, tot de oorspronkelijke uploadresolutie, inclusief HD en 4K als de maker die heeft aangeboden." },
+        { q: "Kan ik privévideo's of met een wachtwoord beveiligde Vimeo-video's downloaden?", a: "Nee — Videoner werkt alleen met openbaar toegankelijke Vimeo-links. Privévideo's, met een wachtwoord beveiligde video's of video's met beperkte toegang kunnen niet worden gedownload." },
+        { q: "Is het legaal om video's van Vimeo te downloaden?", a: "Downloaden is bedoeld voor video's die je mag opslaan — je eigen content, video's met een Creative Commons-licentie of alles waarvoor de maker uitdrukkelijk toestemming heeft gegeven. Respecteer het auteursrecht van de oorspronkelijke maker en de servicevoorwaarden van Vimeo." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Bestanden worden op aanvraag aangemaakt en ongeveer een uur op de server bewaard voordat ze automatisch worden verwijderd, dus sla het bestand direct na het downloaden op je apparaat op." },
+      ],
+    },
+    vk: {
+      description: "Video's en clips van VK downloaden",
+      news: "Nu met ondersteuning voor VK",
+      titleLine1: "Download VK-video's",
+      titleLine2: "en clips",
+      pageDescription:
+        "VK video downloaden: video's en clips in hoge kwaliteit. Snel, gratis en eenvoudig.",
+      placeholder: "Plak hier de VK-link...",
+      howTo: [
+        "Open de video of clip op VK (vk.com of VK Video) en kopieer de link uit de adresbalk of via de knop Delen.",
+        "Plak de link hierboven en klik op Downloaden.",
+        "Kies de beschikbare kwaliteit en het formaat.",
+        "Het bestand wordt direct gedownload — je hoeft niet ingelogd te zijn op VK.",
+      ],
+      faq: [
+        { q: "Is VK-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "Alle kwaliteiten die VK voor die video of clip aanbiedt, plus MP3-audio." },
+        { q: "Moet ik inloggen op VK?", a: "Nee — de video moet openbaar zijn. Videoner logt niet in op VK, dus privévideo's, video's alleen voor vrienden of video's waarvoor je moet inloggen kunnen niet worden gedownload." },
+        { q: "Is het legaal om video's van VK te downloaden?", a: "Download alleen video's die je mag opslaan, en respecteer de Servicevoorwaarden van VK en de rechten van de uploader." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Bestanden worden ongeveer een uur op de server bewaard en daarna automatisch verwijderd." },
+      ],
+    },
+    rutube: {
+      description: "Video's van Rutube downloaden",
+      news: "Nu met ondersteuning voor Rutube",
+      titleLine1: "Download video's",
+      titleLine2: "van Rutube",
+      pageDescription:
+        "Rutube video downloaden in hoge kwaliteit. Snel, gratis en eenvoudig.",
+      placeholder: "Plak hier de Rutube-link...",
+      howTo: [
+        "Open de video op Rutube en kopieer de link uit de adresbalk of via de knop Delen.",
+        "Plak hem in het veld hierboven.",
+        "Kies kwaliteit en formaat (video of audio).",
+        "De download start meteen, geen Rutube-account nodig.",
+      ],
+      faq: [
+        { q: "Is Rutube-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "Elke kwaliteit die Rutube aanbiedt, in MP4, plus MP3-audio." },
+        { q: "Moet ik inloggen op Rutube?", a: "Nee — Videoner werkt alleen met openbaar beschikbare Rutube-video's; inloggen wordt niet gebruikt en is niet nodig." },
+        { q: "Is het legaal om video's van Rutube te downloaden?", a: "Download alleen content die je mag opslaan, en respecteer de Servicevoorwaarden van Rutube en de rechten van de maker." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Bestanden blijven ongeveer een uur op de server staan voordat ze automatisch worden verwijderd." },
+      ],
+    },
+    okru: {
+      description: "Video's van OK.ru (Odnoklassniki) downloaden",
+      news: "Nu met ondersteuning voor OK.ru",
+      titleLine1: "Download video's",
+      titleLine2: "van OK.ru",
+      pageDescription:
+        "OK.ru video downloaden: video's van Odnoklassniki in hoge kwaliteit. Snel, gratis en eenvoudig.",
+      placeholder: "Plak hier de OK.ru-link...",
+      howTo: [
+        "Open de video op OK.ru (Odnoklassniki) en kopieer de link uit de adresbalk.",
+        "Plak de link in het veld hierboven en klik op Downloaden.",
+        "Kies je kwaliteit en formaat.",
+        "De download begint meteen — inloggen op OK.ru is niet nodig.",
+      ],
+      faq: [
+        { q: "Is OK.ru-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke videokwaliteit kan ik downloaden?", a: "Het volledige kwaliteitsbereik dat OK.ru voor die video aanbiedt, plus MP3." },
+        { q: "Moet ik inloggen op OK.ru?", a: "Nee — alleen openbare video's van OK.ru (Odnoklassniki) werken. Videoner logt nooit in op een account, dus privévideo's zijn niet toegankelijk." },
+        { q: "Is het legaal om video's van OK.ru te downloaden?", a: "Download alleen video's die je mag opslaan, en respecteer de Servicevoorwaarden van OK.ru en de rechten van de uploader." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Bestanden worden ongeveer een uur nadat ze zijn aangemaakt automatisch verwijderd." },
+      ],
+    },
+    pinterest: {
+      description: "Video's uit Pinterest-pins downloaden",
+      news: "Nu met ondersteuning voor Pinterest",
+      titleLine1: "Download video's en pins",
+      titleLine2: "van Pinterest",
+      pageDescription:
+        "Pinterest video downloaden: video's uit pins in hoge kwaliteit. Snel, gratis en eenvoudig. Let op: alleen videopins kunnen worden gedownload — pins met alleen foto's worden niet ondersteund.",
+      placeholder: "Plak hier de Pinterest-link...",
+      howTo: [
+        "Open de pin op Pinterest en tik op Delen → Link kopiëren (of kopieer de link uit je browser).",
+        "Plak de link in het veld hierboven en klik op Downloaden.",
+        "Kies de gewenste kwaliteit en het formaat.",
+        "Je bestand wordt meteen gedownload — geen account nodig.",
+      ],
+      faq: [
+        { q: "Is Pinterest-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke kwaliteit kan ik downloaden?", a: "Videoner biedt elke kwaliteit die Pinterest voor de video van die pin aanbiedt, plus het extraheren van MP3-audio." },
+        { q: "Kan ik foto's of afbeeldingen van Pinterest downloaden?", a: "Nee — alleen videopins kunnen worden gedownload. Als een pin alleen een foto bevat, is er geen videobestand om op te halen." },
+        { q: "Kan ik privépins of pins van afgeschermde borden downloaden?", a: "Alleen openbaar toegankelijke pins worden ondersteund; privéborden en content waarvoor je moet inloggen kunnen niet worden gedownload." },
+        { q: "Is het legaal om video's van Pinterest te downloaden?", a: "Download alleen pins die je mag opslaan — je eigen content of alles waarvoor de maker toestemming geeft. Respecteer de Servicevoorwaarden van Pinterest en het auteursrecht." },
+        { q: "Hoelang is mijn gedownloade bestand beschikbaar?", a: "Geconverteerde bestanden blijven ongeveer een uur op de server staan, dus sla ze direct na het downloaden op je apparaat op." },
+      ],
+    },
+    threads: {
+      description: "Video's uit Threads-posts downloaden",
+      news: "Nu met ondersteuning voor Threads",
+      titleLine1: "Download video's",
+      titleLine2: "van Threads",
+      pageDescription:
+        "Threads video downloaden uit posts. Snel, gratis en zonder Threads-account. Threads levert één versie van de video, tot 720p — dat is de hoogste kwaliteit die het platform beschikbaar stelt.",
+      placeholder: "Plak hier de Threads-link...",
+      howTo: [
+        "Open de post in Threads, tik op het deelpictogram en daarna op Link kopiëren.",
+        "Plak de link in het veld hierboven en klik op Downloaden.",
+        "Kies het gewenste formaat — video of MP3-audio.",
+        "Je bestand wordt meteen gedownload — geen account nodig.",
+      ],
+      faq: [
+        { q: "Is Threads-video's downloaden met Videoner gratis?", a: "Ja, helemaal gratis: zonder inloggen, zonder abonnementen, zonder advertenties en zonder daglimiet voor downloads. De enige grens geldt voor YouTube-verkeer — 10 GB per dag per netwerk — om de dienst tegen misbruik te beschermen." },
+        { q: "Heb ik een account nodig om te downloaden?", a: "Nee. Voor downloaden heb je geen account en hoef je niet in te loggen — plak gewoon een link en klik op Downloaden." },
+        { q: "In welke kwaliteit kan ik downloaden?", a: "Threads publiceert precies één versie van de video per post, met een maximum van 720p aan de korte zijde — ook als de maker 4K heeft geüpload. Videoner geeft je dat bestand zoals het is, plus het extraheren van MP3-audio. Geen enkele downloader kan meer bieden, omdat hogere resoluties simpelweg niet worden geleverd." },
+        { q: "Werken links van zowel threads.com als threads.net?", a: "Ja. Volledige links zoals threads.com/@user/post/CODE en korte links zoals threads.net/t/CODE worden allebei ondersteund." },
+        { q: "Kan ik foto's uit een Threads-post downloaden?", a: "Nee — alleen video's. Als een post alleen foto's bevat, is er geen videobestand om op te halen." },
+        { q: "En een post met meerdere video's?", a: "De eerste video in de post wordt gedownload. Carrousels in Threads kunnen meerdere clips bevatten, en alleen de eerste wordt opgeslagen." },
+        { q: "Kan ik privéposts downloaden?", a: "Nee. Alleen openbaar zichtbare posts kunnen worden gedownload; alles achter een privéaccount of een loginmuur is niet toegankelijk." },
+        { q: "Is het legaal om video's van Threads te downloaden?", a: "Download alleen wat je mag opslaan — je eigen content of alles waarvoor de maker toestemming geeft. Respecteer de Gebruiksvoorwaarden van Threads en het auteursrecht." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -11943,4 +12304,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl };

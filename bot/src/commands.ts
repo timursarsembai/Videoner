@@ -269,6 +269,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Hentikan muat turun dan baris gilir" },
     { command: "language", description: "Bahasa bot" },
   ],
+  nl: [
+    { command: "start", description: "Hoe je de bot gebruikt" },
+    { command: "extension", description: "Browserextensie" },
+    { command: "accounts", description: "Je accounts voor story's en privéposts" },
+    { command: "connect", description: "Account koppelen met een code uit de extensie" },
+    { command: "stop", description: "Downloaden en wachtrij stoppen" },
+    { command: "language", description: "Taal van de bot" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -504,6 +512,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Sambungkan akaun ke kumpulan ini dengan kod" },
     { command: "language", description: "Bahasa bot dalam kumpulan ini (pentadbir)" },
     { command: "start", description: "Cara bot berfungsi dalam kumpulan" },
+  ],
+  nl: [
+    { command: "settings", description: "Instellingen van de bot voor deze groep (beheerders)" },
+    { command: "accounts", description: "Accounts gekoppeld aan deze groep" },
+    { command: "connect", description: "Account aan deze groep koppelen met een code" },
+    { command: "language", description: "Taal van de bot in deze groep (beheerders)" },
+    { command: "start", description: "Hoe de bot in een groep werkt" },
   ],
 };
 

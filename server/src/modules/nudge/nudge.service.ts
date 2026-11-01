@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('nl')) {
+      return (
+        'Hoi! Je hebt deze bot gestart maar nog niets gedownload — ' +
+        'misschien is het niet duidelijk waar je moet beginnen.\n\n' +
+        'Het is maar één stap: stuur hier een videolink, ' +
+        'bijvoorbeeld https://youtube.com/watch?v=jNQXAC9IVRw — dan stuur ik ' +
+        'het bestand binnen ongeveer een halve minuut terug.\n\n' +
+        'Werkt met YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest en Threads. Helemaal gratis en in elke ' +
+        'kwaliteit — tot 4K, zonder extra kosten voor HD.\n\n' +
+        'Werkt er iets niet, stuur dan gewoon een antwoord. Dit is de ' +
+        'enige herinnering, ik val je hierna niet meer lastig.'
+      );
+    }
+
     if (code.startsWith('ms')) {
       return (
         'Hai! Anda telah memulakan bot ini tetapi belum memuat turun apa-apa — ' +

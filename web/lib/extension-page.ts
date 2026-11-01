@@ -611,6 +611,58 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Startseite",
   },
+  nl: {
+    metaTitle: "Videoner-browserextensie",
+    title: "Videoner voor je browser",
+    summary:
+      "De extensie voegt een knop “Downloaden” toe aan videopagina's en downloadt direct in je browser. Instagram, Facebook, TikTok en Threads worden gedownload met je eigen login — zo werken ook privéposts die je in je account ziet, en video's die het platform niet aan onze server gaf.",
+    failedVideo: "De video die niet kon worden gedownload op de website of in de bot:",
+    failedVideoHint:
+      "Installeer de extensie, log in dezelfde browser in op het platform, open de video en klik rechtsonder op “Downloaden”.",
+    openVideo: "Video openen",
+    version: "Versie",
+    browsersTitle: "Waar het werkt",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi en andere op Chromium gebaseerde browsers — op een computer.",
+    mobile: "Telefoons en tablets ondersteunen geen extensies — gebruik daar de website of de Telegram-bot.",
+    getcourseTitle: "GetCourse-lessen",
+    getcourse:
+      "Open een les in een GetCourse-school terwijl je bent ingelogd: rechtsboven in de speler verschijnt een knop “Downloaden”, en het Videoner-pictogram toont alle video's van de les. Je browser downloadt de les zelf en zet die om naar een mp4 — het bestand gaat niet via onze server. Lukt dat niet, dan downloadt onze server de les in dezelfde kwaliteit; in dat geval krijgt hij de videolink uit de speler.",
+    privacyTitle: "Je login blijft bij jou",
+    privacy:
+      "De extensie vraagt nooit om een wachtwoord: je eigen browser doet het verzoek aan het platform, en onze server krijgt alleen een kort rapport voor de statistieken — de link, de bestandsgrootte en de titel. Cookies gaan alleen naar de server als je zelf op “Je account aan de bot koppelen” klikt — en alleen de cookies van dat platform, versleuteld.",
+    stepsTitle: "Installeren in Chrome, Yandex Browser, Edge en Opera",
+    steps: [
+      "Download het archief en pak het uit — je krijgt een map videoner-extension met het versienummer in de naam.",
+      "Open de extensiepagina: typ chrome://extensions in de adresbalk (edge://extensions in Edge, opera://extensions in Opera).",
+      "Zet “Ontwikkelaarsmodus” aan — de schakelaar bovenaan de pagina.",
+      "Klik op “Uitgepakte extensie laden” en kies die map — de map waarin manifest.json staat.",
+      "Klaar: videopagina's krijgen een knop “Downloaden”, en het Videoner-pictogram verschijnt in de werkbalk van de browser.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 of nieuwer — ook op een computer.",
+    firefoxSoon:
+      "De versie voor Firefox komt binnenkort. Voorlopig werkt de extensie in Chrome, Yandex Browser, Edge, Opera en andere op Chromium gebaseerde browsers.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Een .zip-archief — in een paar minuten geïnstalleerd",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Installeren met één klik",
+    yourBrowser: "Jouw browser",
+    soon: "Binnenkort",
+    firefoxStepsTitle: "Installeren in Firefox",
+    firefoxSteps: [
+      "Klik op de knop Firefox bovenaan deze pagina.",
+      "Firefox vraagt of videoner.download een add-on mag installeren — klik op “Doorgaan met installatie”.",
+      "Klik in het venster “Videoner toevoegen?” op “Toevoegen”.",
+      "Klaar: videopagina's krijgen een knop “Downloaden”, en het Videoner-pictogram verschijnt in de werkbalk. Updates installeert Firefox zelf.",
+    ],
+    updateTitle: "Bijwerken in Chrome, Yandex Browser, Edge en Opera",
+    updateSteps: [
+      "Zodra er een nieuwe versie is, toont het Videoner-pictogram een NEW-label en verwijst het pop-upvenster hierheen.",
+      "Download het archief met de knop Chrome bovenaan deze pagina en pak het uit in dezelfde map als eerder, waarbij je de bestanden vervangt.",
+      "Open de extensiepagina (chrome://extensions, browser://extensions in Yandex Browser, edge://extensions) en klik op “Opnieuw laden” — de ronde pijl op de kaart van Videoner.",
+    ],
+    back: "Startpagina",
+  },
   fr: {
     metaTitle: "Extension de navigateur Videoner",
     title: "Videoner pour votre navigateur",

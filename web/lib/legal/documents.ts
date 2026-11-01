@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на двадцати восьми языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на двадцати девяти языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -8161,6 +8161,306 @@ export const legal: LegalByLanguage = {
             heading: "Ƙorafe-ƙorafe na mugun nufi",
             body: [
               "Ƙorafin da ke ɗauke da bayanan ƙarya da gangan na iya jawo wa mai ƙorafin alhaki bisa ga dokokin da ke aiki. Muna da haƙƙin ƙin duba ƙorafin da bai bayyana mai haƙƙin mallaka ko abin da ake jayayya a kai ba.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  so: {
+    ui: {
+      updated: "La cusboonaysiiyay",
+      back: "Ku noqo bogga hore",
+      operatorHeading: "Maamulaha adeegga",
+      navHeading: "Dukumentiyo kale",
+      labels: {
+        privacy: "Siyaasadda Asturnaanta",
+        terms: "Shuruudaha Isticmaalka",
+        cookies: "Siyaasadda Cookie-ga",
+        copyright: "Milkiilayaasha Xuquuqda",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Siyaasadda Asturnaanta",
+        summary: `Xogta uu ${operator.site} uruuriyo, sababta loogu baahan yahay, muddada la kaydiyo iyo sida loo tirtiri karo.`,
+        sections: [
+          {
+            heading: "Qodobbo guud",
+            body: [
+              `Siyaasaddan waxay qeexaysaa xogta shakhsiga ah ee uu adeegga ${operator.site} habeeyo iyo ujeeddada loo habeeyo. Maamulaha xogta (data controller) waa ${operator.nameSo}.`,
+              "Markaad isticmaasho adeegga, waxaad oggolaanaysaa habka habaynta xogta ee halkan lagu sharraxay. Haddii aadan ku raacsanayn, fadlan ha isticmaalin adeegga.",
+              "Habaynta xogta waxaa loo sameeyaa si waafaqsan Sharciga Jamhuuriyadda Kazakhstan “Ku saabsan Xogta Shakhsiga ah iyo Ilaalinteeda”, iyo, marka ay khusayso booqdayaasha ka yimaada Aagga Dhaqaalaha Yurub (European Economic Area), iyadoo la tixgelinayo shuruudaha GDPR.",
+            ],
+          },
+          {
+            heading: "Xogta aan habayno",
+            body: [
+              "Si ula kac ah uma uruurinno wax ka badan inta adeeggu u baahan yahay, kama codsanno dukumentiyo, xog lacag-bixin ama cinwaan.",
+            ],
+            bullets: [
+              "Xogta akoonka Telegram ee bot-ku helo markaad u qorto: aqoonsiga tirada ah (numeric id), magaca isticmaalaha (username), magaca iyo koodka luqadda.",
+              "Link-yada aad u soo dirto soo dejinta iyo faahfaahinta isku daygaas laftiisa: madasha, taariikhda iyo waqtiga, tayada la doortay iyo natiijada (guul ama khalad).",
+              "Xogta farsamo ee isku xirka: cinwaanka IP, nooca iyo nuqulka biraawsarka, luqadda iyo bogga laga yimid. Xogtani waxay gashaa diiwaannada server-ka (server logs) iyo qalabka falanqaynta website-ka (web analytics).",
+              "Cookie-yada iyo aqoonsiyada falanqaynta — faahfaahin ka eeg Siyaasadda Cookie-ga.",
+            ],
+          },
+          {
+            heading: "Sababta aan xogtan ugu baahannahay",
+            bullets: [
+              "Si aan u bixinno adeegga laftiisa: inaan ka soo qaadno muuqaalka link-gaaga oo aan kuu dhiibno faylka.",
+              "Si aan akoonkaaga uga kala saarno akoonnada dadka kale oo aan uga hortagno ku-takri-falka (abuse).",
+              "Si aan adeegga uga ilaalinno ku-takri-falka iskiis u shaqeeya (automated): hubinta Cloudflare Turnstile ka hor inta aan link-ga la soo dirin.",
+              "Si aan u fahanno sida loo isticmaalo website-ka oo aan u saxno khaladaadka — iyadoo la adeegsanayo tirakoob aan qofka lagu aqoonsan karin (anonymised) oo la isku daray.",
+              "Si aan uga jawaabno codsiyadaada iyo codsiyada milkiilayaasha xuquuqda.",
+              "Si aan mararka qaarkood kuugu soo qorno Telegram si aan u ogaanno fikirkaaga ku saabsan adeegga — tusaale ahaan, haddii aad joojisay isticmaalkiisa. Ka jawaabiddu waa ikhtiyaar; haddii aadan rabin fariimahan oo kale, si fudud noo sheeg, mar dambena kuuma soo qori doonno.",
+            ],
+          },
+          {
+            heading: "Saldhigga sharci ee habaynta",
+            body: [
+              "Xogta akoonka Telegram iyo diiwaannada soo dejinta waxaa loo habeeyaa si loo fuliyo Shuruudaha Isticmaalka, kuwaas oo aad aqbasho markaad bilowdo isticmaalka adeegga.",
+              "Cookie-yada falanqaynta iyo duubista ficillada website-ka waxaa loo habeeyaa iyadoo lagu salaynayo oggolaanshahaaga, kaas oo aad dib ula noqon karto wakhti kasta — hababka waxaa lagu sharraxay Siyaasadda Cookie-ga.",
+              "Diiwaannada server-ka iyo ka ilaalinta bot-yada waxay ku salaysan yihiin danteenna sharciga ah (legitimate interest) ee ah in adeeggu sii shaqeeyo oo uu ammaan ahaado.",
+              "Weydiinta fikirkaaga ku saabsan adeegga waxay ku salaysan tahay danteenna sharciga ah ee ah horumarinta adeegga; wakhti kasta waad diidi kartaa.",
+            ],
+          },
+          {
+            heading: "Akoonnada ku xiran",
+            body: [
+              "Haddii aad doorato, waxaad bot-ka ku xiri kartaa akoonkaaga madal (Instagram, Facebook, YouTube, X, VK, TikTok) si uu u soo dejiyo boostooyinka ay arki karaan oo keliya isticmaalayaasha soo galay: sheekooyinka (stories) iyo boostooyinka gaarka ah. Si tan loo sameeyo, bot-ku wuxuu helaa cookie-yada akoonkaas — kordhiyaha Videoner iyadoo loo marayo kood hal mar la isticmaalo, ama fayl aad soo dirtay.",
+              "Waxaan kaydinnaa oo keliya cookie-yada madasha la doortay, inta kalena isla markiiba waan tuurnaa. Waxaa loo kaydiyaa qaab sir ah (encrypted), waxaana loo isticmaalaa oo keliya soo dejinta meesha aad ku xirtay. Cookie-yada lagu xiray wada-sheekaysigaaga gaarka ah waxay u adeegaan soo dejintaada, oo ay ku jiraan link-yadaada gaarka ah ee kooxaha aan akoon u gaar ah lagu xirin; marna looma isticmaalo link-yada dadka kale. Cookie-yada koox lagu xiray waxay u adeegaan oo keliya soo dejinta xubnaheeda, meel kalena looma isticmaalo.",
+              "Saldhigga sharci waa oggolaanshahaaga: adiga ayaa akoonka ku xira, waxaadna ka saari kartaa wakhti kasta adigoo adeegsanaya amarka /accounts. Marka la saaro, cookie-yada si joogto ah ayaa loo tirtiraa. Haddii madashu joojiso aqbalaadda soo galitaanka, bot-ku wuu kuu sheegayaa.",
+              "Boostooyinka lagu soo dejiyo akoon ku xiran laguma daabaco kanaalkeenna, lagamana siiyo isticmaalayaasha kale kaydka guud (shared cache).",
+            ],
+          },
+          {
+            heading: "Adeegyada dhinac saddexaad",
+            body: [
+              "Xogtaada ma iibinno, umana gudbinno dhinacyo saddexaad si ay ugu isticmaalaan ujeeddooyinkooda. Adeeggu wuxuu ku tiirsan yahay bixiyeyaashan soo socda, mid walbana xogta wuxuu u habeeyaa sida xeerarkiisa gaarka ah:",
+            ],
+            bullets: [
+              `Telegram — shaqaynta bot-ka ${BOT}.`,
+              "Cloudflare — ka ilaalinta bot-yada (Turnstile), gaarsiinta website-ka iyo marinta iimaylka.",
+              "Google Analytics iyo Google Tag Manager — tirakoobka booqashooyinka.",
+              "Yandex Metrica — tirakoobka booqashooyinka, khariidadda gujinta (click map) iyo Webvisor. Webvisor wuxuu duubaa ficillada bogga: dhaqdhaqaaqa tilmaamaha (pointer), hoos-u-dhaqaajinta (scrolling) iyo gujinta. Duubitaannada waxaa loo isticmaalaa oo keliya falanqaynta fududaanta isticmaalka website-ka.",
+            ],
+          },
+          {
+            heading: "Muddada aan xogta kaydinno",
+            bullets: [
+              "Faylasha la soo dejiyay si toos ah ayaa server-ka looga tirtiraa qiyaastii hal saac kadib markii la abuuray. Kayd (archive) muuqaalladaada ah ma hayno.",
+              "Diiwaannada isku dayada soo dejinta waxaa la kaydiyaa inta looga baahan yahay ka hortagga ku-takri-falka iyo baaritaanka codsiyada.",
+              "Xogta akoonka waxaa la kaydiyaa inta aad isticmaalayso adeegga, waxaana la tirtiraa markaad codsato.",
+              "Diiwaannada server-ka waxaa la kaydiyaa muddo xaddidan, waxaana lagu beddelaa xog cusub marka ay wareegaan (rotation).",
+            ],
+          },
+          {
+            heading: "Meesha xogta lagu habeeyo",
+            body: [
+              "Server-yada adeeggu waxay ku yaallaan xarun xog (data centre) oo ku taal gudaha Midowga Yurub. Qaar ka mid ah bixiyeyaasha kor ku xusan waxay xogta ku habayn karaan meel ka baxsan, iyagoo raacaya siyaasadahooda gaarka ah.",
+            ],
+          },
+          {
+            heading: "Xuquuqdaada",
+            body: [
+              `Waxaad xaq u leedahay inaad hesho macluumaad ku saabsan habaynta xogtaada, inaad codsato in la saxo ama la tirtiro, inaad dib ula noqoto oggolaanshaha oo aad diido habaynta. Si tan loo sameeyo, noogu soo qor ${MAIL} adigoo ka soo diraya iimaylka ama akoonka Telegram ee codsigu khuseeyo.`,
+              "Waxaan ku jawaabnaa muddo macquul ah, sida caadiga ah gudaha soddon maalmood oo kalandar ah. Tirtiridda akoonka waxay sidoo kale keentaa tirtiridda taariikhda soo dejinta ee ku xiran.",
+            ],
+          },
+          {
+            heading: "Carruurta",
+            body: [
+              "Adeeggu looguma talagalin, lamana beegsanayo carruurta ka yar 16 sano. Si ula kac ah uma uruurinno xogtooda; haddii tani si qalad ah u dhacday, noo soo qor, xogtana waa la tirtiri doonaa.",
+            ],
+          },
+          {
+            heading: "Isbeddellada",
+            body: [
+              "Waxaan cusboonaysiin karnaa Siyaasaddan. Taariikhda nuqulka hadda jira waxaa lagu muujiyay bogga korkiisa; isbeddellada muhiimka ah waxaan ku tilmaami doonnaa gudaha adeegga.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Shuruudaha Isticmaalka",
+        summary: `Xeerarka isticmaalka ${operator.site}: waxa la oggol yahay, waxa aan la oggolayn iyo shuruudaha uu adeeggu ku shaqeeyo.`,
+        sections: [
+          {
+            heading: "Qodobbo guud",
+            body: [
+              `Shuruudahan waxay nidaamiyaan isticmaalka website-ka ${operator.site} iyo bot-ka Telegram ee ${BOT}. Milkiilaha iyo maamulaha adeeggu waa ${operator.nameSo}.`,
+              "Markaad bilowdo isticmaalka adeegga, waxaad xaqiijinaysaa inaad akhriday Shuruudahan oo aad aqbashay. Haddii ay jirto shuruud aan kugu habboonayn, fadlan ha isticmaalin adeegga.",
+            ],
+          },
+          {
+            heading: "Adeeggu waa bilaash",
+            body: [
+              "Dhammaan waxa adeeggu bixiyo waa bilaash. Ma jiraan rukummo (subscriptions), qorshayaal lacag leh, tayooyin muuqaal oo lacag leh ama iibsasho gudaha adeegga ah.",
+              "Xayeysiis ma soo bandhigno, mana dhigno link-yo iskaashi (affiliate links).",
+            ],
+          },
+          {
+            heading: "Shuruudaha helitaanka",
+            bullets: [
+              "Soo dejinta website-ka uma baahna akoon ama soo galid. Bot-ku isticmaalayaasha wuxuu ku kala saaraa akoonkooda Telegram.",
+              "Xaddidaadyo farsamo oo saaran inta jeer ee codsiyada la soo diro ayaa adeegga ka ilaaliya culays xad-dhaaf ah iyo ku-takri-fal iskiis u shaqeeya.",
+              "Soo dejinta YouTube waxay leedahay xad maalinle ah oo xogta la gudbiyo (traffic): 10 GB 24 saacadood gudahood shabakad kasta marka la isticmaalo website-ka iyo kordhiyaha, iyo 25 GB 24 saacadood gudahood akoon kasta oo Telegram ah marka la isticmaalo bot-ka. Xadkani ma khuseeyo madallada kale.",
+              "Si aad wax ugu soo dejiso bot-ka uma baahnid inaad ku biirto kanaalkeenna. Bot-ku wuxuu qoraalka faylasha ku daraa link-ga kanaalka wararka ee mashruuca; ku biiristiisu waa ikhtiyaar.",
+            ],
+          },
+          {
+            heading: "Waxa adeeggu qabto",
+            body: [
+              "Adeeggu wuxuu u shaqeeyaa sidii dhexdhexaadiye farsamo: wuxuu raacaa link-ga aad bixiso, wuxuu faylka warbaahinta (media) ka soo qaadaa bog si guud loo heli karo, kadibna wuu kuu gudbiyaa.",
+              "Ma haysanno buug-tusmeed (catalogue) muuqaallo ah, ma samayno raadin ku saabsan nuxurka (content) dadka kale, faylasha la soo dejiyayna kama kaydinno wax ka badan inta gudbintu u baahan tahay — qiyaastii hal saac.",
+              "Shaqaynta madal gaar ah waxay ku xiran tahay go'aannada farsamo ee madashaas, waxayna isbeddeli kartaa ogeysiis la'aan.",
+            ],
+          },
+          {
+            heading: "Waajibaadkaaga",
+            body: [
+              "Adiga keligaa ayaa mas'uul ka ah sida aad u isticmaasho faylasha aad hesho, waxaadna xaqiijinaysaa inaad xaq u leedahay inaad sidaas samayso.",
+            ],
+            bullets: [
+              "Soo deji oo keliya waxyaabaha aad leedahay xuquuqdooda, ama kuwa uu milkiilaha xuquuqdu ama sharcigu oggol yahay isticmaalkooda.",
+              "Ha u isticmaalin adeegga ku xadgudubka xuquuqda qoraaga (copyright) ama xuquuqda la xiriirta (related rights), faafinta nuxur mamnuuc ah ama ku xadgudubka xuquuqda dadka kale.",
+              "Ha isku dayin inaad ka gudubto xaddidaadyada farsamo ee adeegga, oo ay ku jiraan xaddidaadda inta jeer ee codsiyada iyo hubinta bot-yada.",
+              "Ha abuurin culays iskiis u shaqeeya: codsiyo tiro badan, script-yo iyo scraper-yo lama oggola.",
+            ],
+          },
+          {
+            heading: "Wadaagista link-yada kanaalka",
+            body: [
+              "Markaad muuqaal ku soo dejiso bot-ka, waxaad oggolaanaysaa in link-ga boostada asalka ah lagu daabaco kanaalkeenna Telegram. Ogeysiis arrintan ku saabsan ayaa bot-ka lagu muujiyaa ka hor inta aadan dooran tayada — taasoo ah, ka hor inta aadan go'aansan inaad soo dejiso.",
+              "Daabacaaddu waa mid qarsoodi ah (anonymous): kanaalka waxaa la geeyaa link-ga bogga si guud loo heli karo, cinwaanka muuqaalka iyo sawirka daboolka — isla sawirka ay madashu ku muujiso horudhaca (preview) boostadeeda. Lama sheego cidda soo dejisay. Faylka muuqaalka laftiisa marna meelna laguma daabaco: waxa la gudbiyo waa link-ga, kaas oo madallada laftoodu dadka ku dhiirrigeliyaan inay gudbiyaan iyagoo adeegsanaya badhanka “Wadaag” (Share) ee ka hooseeya boost kasta.",
+              "Isla link-ga hal mar wax ka badan lama daabaco. Haddii aadan doonayn in link uu gaaro kanaalka, muuqaalkaas ha ku soo dejin adeeggeenna.",
+              "Link-yada kooxaha iyo boostooyinka lagu soo dejiyo akoon ku xiran marna laguma daabaco kanaalka."
+            ],
+          },
+          {
+            heading: "Ku xiridda akoonkaaga",
+            body: [
+              "Markaad bot-ka ku xirto akoonkaaga madal, waxaad xaqiijinaysaa inuu yahay akoonkaaga oo aad xaq u leedahay inaad sidan u isticmaasho.",
+              "Madalladu ma oggola soo dejinta iskiis u shaqaysa, waxayna xaddidi karaan ama xannibi karaan akoonka ku xiran. Khatartan adiga ayaa qaadanaya; waxaan kugula talinaynaa inaad ku xirto akoon labaad halkii aad ka xiri lahayd akoonkaaga ugu muhiimsan. Mas'uul kama nihin xaddidaadyada ay madashu saarto akoonkaaga.",
+              "Akoonka koox lagu xiray waxaa loo isticmaalaa soo dejinta dhammaan xubnaheeda. Maamulayaasha kooxda (admins) ayaa go'aamiya cidda ku xiri karta akoonnada, waxayna ka saari karaan mid kasta oo ka mid ah.",
+            ],
+          },
+          {
+            heading: "Xaddidaadda mas'uuliyadda",
+            body: [
+              "Adeegga waxaa loo bixiyaa sida uu yahay (as is). Ma dammaanad qaadno shaqayn aan hakad lahayn, helitaanka madal gaar ah, ama in fayl uu ku habboonaado ujeeddadaada.",
+              "Mas'uul kama nihin waxa aad ku samayso waxyaabaha aad soo dejiso, iyo cawaaqibka ka dhasha ku xadgudubkaaga xuquuqda dadka kale.",
+              "Waxaan xaq u leenahay inaan beddelno waxa adeeggu bixiyo, inaan u hakinno dayactir, iyo inaan joojinno shaqayntiisa.",
+            ],
+          },
+          {
+            heading: "Xaddidaadda helitaanka",
+            body: [
+              "Waxaan xaddidi karnaa ama joojin karnaa helitaanka adeegga marka lagu xadgudbo Shuruudahan, marka la isku dayo in laga gudbo xaddidaadyada, ama marka la helo cabasho sabab leh oo ka timid milkiilaha xuquuqda.",
+            ],
+          },
+          {
+            heading: "Isbeddellada iyo sharciga lagu dabaqayo",
+            body: [
+              "Waxaan wax ka beddeli karnaa Shuruudahan; taariikhda nuqulka hadda dhaqan galka ah waxaa lagu muujiyay bogga korkiisa. Sii wadidda isticmaalka adeegga kadib isbeddel waxay ka dhigan tahay inaad aqbashay nuqulka cusub.",
+              "Xiriirka dhinacyada waxaa lagu dabaqayaa sharciga Jamhuuriyadda Kazakhstan. Dhinacyadu waxay isku dayi doonaan inay khilaafaadka ku xalliyaan wada-xiriir qoraal ah, haddii aan heshiis la gaarinna, habka uu dejiyay sharciga Jamhuuriyadda Kazakhstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Siyaasadda Cookie-ga",
+        summary: `Cookie-yada uu ${operator.site} isticmaalo, waxa loogu talagalay iyo sida loo diido.`,
+        sections: [
+          {
+            heading: "Waa maxay cookie-yadu",
+            body: [
+              "Cookie-yadu waa faylal qoraal ah oo yaryar oo website-ku ku kaydiyo biraawsarkaaga. Waxay u oggolaadaan adeegga inuu xasuusto dejintaada, waxayna suurtagelinayaan in la uruuriyo tirakoob booqasho oo aan qofka lagu aqoonsan karin.",
+              "Cookie-yada ka sokow, dukumentigan wuxuu sidoo kale sharraxayaa tignoolajiyada la xiriirta: kaydka gudaha ee biraawsarka (local storage) iyo pixel-yada raad-raaca (tracking pixels).",
+            ],
+          },
+          {
+            heading: "Kuwa lagama maarmaanka ah",
+            body: ["Iyaga la'aantood adeeggu ma shaqeeyo, sidaas darteed had iyo jeer waa la dejiyaa."],
+            bullets: [
+              "Cloudflare Turnstile — wuxuu hubiyaa in link-ga uu soo diray qof, ee uusan ahayn script.",
+              "Dejinta interface-ka — luqadda iyo midabka muuqaalka (theme) ee aad dooratay.",
+            ],
+          },
+          {
+            heading: "Falanqaynta",
+            body: [
+              "Waxay naga caawiyaan inaan ogaanno boggaga la isticmaalo iyo meelaha khaladaadku ka dhacaan. Waxaa la dejiyaa oggolaanshahaaga, umana baahna adeeggu si uu u shaqeeyo.",
+            ],
+            bullets: [
+              "Google Analytics iyo Google Tag Manager — booqashooyinka iyo dhaqanka website-ka, qaab aan qofka lagu aqoonsan karin.",
+              "Yandex Metrica — booqashooyinka, khariidadda gujinta iyo Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor-ka Yandex Metrica wuxuu duubaa ficillada bogga: dhaqdhaqaaqa tilmaamaha, hoos-u-dhaqaajinta, gujinta iyo qorista goobta link-ga. Ujeeddadu waa inaan aragno meelaha interface-ku dadka ku jahwareeriyo.",
+              "Duubitaannadan uma isticmaalno raad-raaca shakhsiyaad gaar ah. Fadlan ha gelin goobaha website-ka wax aadan rabin in la kaydiyo.",
+            ],
+          },
+          {
+            heading: "Sida loo diido",
+            bullets: [
+              "Ka xannib ama ka tirtir cookie-yada dejinta biraawsarkaaga — habkani wuxuu u shaqeeyaa dhammaan nidaamyada halkan ku xusan.",
+              "Google Analytics: kordhiyaha biraawsarka ee rasmiga ah ee joojiya uruurinta waxaa laga heli karaa Google.",
+              "Yandex Metrica: ka bixitaanku waa suurtagal iyadoo loo marayo kordhiyaha rasmiga ah ee Yandex.",
+              "Joojinta cookie-yada lagama maarmaanka ah waxay soo dejinta ka dhigaysaa mid aan suurtagal ahayn.",
+            ],
+          },
+          {
+            heading: "Muddada kaydinta",
+            body: [
+              "Cookie-yada fadhiga (session cookies) waa la tirtiraa marka aad xirto biraawsarka ama marka muddada fadhigu dhammaato. Qalabka falanqaynta waxay aqoonsiyadooda kaydiyaan muddooyinka ay dejiyeen bixiyeyaashoodu.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Milkiilayaasha Xuquuqda",
+        summary: "Mowqifka adeegga ee ku saabsan xuquuqda qoraaga iyo habka loo gudbiyo cabasho ku saabsan ku xadgudub.",
+        sections: [
+          {
+            heading: "Mowqifkeenna",
+            body: [
+              "Adeeggu ma martigeliyo muuqaallo, mana hayo buug-tusmeed. Wuxuu u shaqeeyaa sidii dhexdhexaadiye farsamo: wuxuu raacaa link-ga uu isticmaaluhu geliyo, wuxuu gaaraa bog si guud loo heli karo, kadibna faylka wuxuu u gudbiyaa isticmaalahaas.",
+              "Faylasha la soo dejiyay waxay server-ka ku jiraan qiyaastii hal saac, kadibna si toos ah ayaa loo tirtiraa. Nuqul joogto ah oo nuxurka dadka kale ah nagama hadho.",
+              "Mas'uuliyadda isticmaalka waxyaabaha la soo dejiyay waxaa leh isticmaalaha, sida si cad loogu qoray Shuruudaha Isticmaalka.",
+            ],
+          },
+          {
+            heading: "Haddii xuquuqdaada lagu xadgudbo",
+            body: [
+              `Haddii aad tahay milkiilaha xuquuqda ama wakiilkiisa oo aad aaminsan tahay in adeegga loo isticmaalayo ku xadgudubka xuquuqdaada, noogu soo qor ${MAIL}. Cabashooyinka noocaas ah waan eegnaa, tallaabana waan ka qaadnaa.`,
+            ],
+          },
+          {
+            heading: "Waxa lagu daro cabashada",
+            bullets: [
+              "Shaqada ay khusayso iyo saldhigga aad ku leedahay xuquuqdeeda.",
+              "Link-ga waxyaabaha la xiriira iyo, haddii la ogyahay, xaaladaha ku xadgudubka.",
+              "Xogtaada xiriirka: magaca ama magaca hay'adda, cinwaanka iyo cinwaanka iimaylka.",
+              "Haddii aad ku matalayso milkiilaha xuquuqda, caddaynta awooddaada matalaadda.",
+              "Bayaan sheegaya in macluumaadka cabashadu sax yihiin, iyo in isticmaalka waxyaabaha aanu oggolaan milkiilaha xuquuqdu ama sharcigu.",
+            ],
+          },
+          {
+            heading: "Waxa aan samayn doonno",
+            body: [
+              "Cabashada waxaan dib u eegnaa muddo macquul ah, sida caadiga ah gudaha soddon maalmood oo kalandar ah, haddii ku xadgudubka la xaqiijiyana waxaan xannibnaa helitaanka waxyaabaha iyadoo loo marayo adeegga iyo, haddii loo baahdo, helitaanka adeegga ee ku xadgudbaha.",
+              "Natiijada waxaan kuu soo sheegi doonnaa cinwaanka iimaylka aad bixisay.",
+            ],
+          },
+          {
+            heading: "Cabashooyinka niyad-xumada ah",
+            body: [
+              "Cabasho ay ku jiraan macluumaad been ah oo si ula kac ah loo bixiyay waxay cabashada gudbiyaha ka dhigi kartaa mid mas'uul ka ah sida uu dhigayo sharciga khuseeya. Waxaan diidi karnaa inaan eegno cabasho aan aqoonsanayn milkiilaha xuquuqda iyo waxyaabaha lagu muransan yahay midkoodna.",
             ],
           },
         ],

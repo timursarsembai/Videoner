@@ -2437,6 +2437,91 @@ const TEXTS = {
     langAuto: "Atomatik",
     langLabel: "Harshe",
   },
+  so: {
+    loading: "Waxaa la soo helayaa xogta muuqaalka…",
+    notVideoPage:
+      "Fur bog muuqaal ah oo ku yaal YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ama Threads, kadibna mar kale guji astaanta. Casharka GetCourse: haddii bogga casharku furnaa ka hor intaan kordhiyaha la rakibin, dib u soo rar.",
+    gcLesson: "Casharka GetCourse",
+    gcPick: "Casharkan wuxuu leeyahay dhowr muuqaal — dooro mid",
+    gcVideo: (n) => `Muuqaal ${n}`,
+    gcNote: "Biraawsarkaaga ayaa soo dejinaya oo isku dhejinaya. Daaqaddan waad xiri kartaa, laakiin biraawsarka ha xirin.",
+    gcNoStream: "Muuqaalka lagama helin ciyaariyaha. Dib u soo rar bogga casharka oo isku day mar kale.",
+    video: "Muuqaal",
+    photo: "Sawirro cabbirkoodii asalka ahaa",
+    slideshow: "Bandhig sawirro (muuqaal)",
+    gallery: "Sawirro + bandhig sawirro",
+    audioOnly: "Cod keliya (mp3)",
+    subtitles: "Qoraalka hoose (.srt)",
+    subtitlesAuto: "si toos ah loo sameeyay",
+    back: "Dib u noqo",
+    starting: "Soo dejinta waa la bilaabayaa…",
+    waiting: "Waxaa la sugayaa meel bannaan oo server-ka ah…",
+    downloading: "Waa la soo dejinayaa",
+    converting: "Waa la diyaarinayaa",
+    left: (eta) => `${eta} ayaa haray`,
+    saving: "Waxaa lagu kaydinayaa Downloads…",
+    done: "Waa dhammaatay — faylku wuxuu ku jiraa Downloads-kaaga.",
+    news: "📣 Wararka mashruuca: @videonerdownload",
+    again: "Soo deji mid kale",
+    directDownload: "Soo deji muuqaalka (mp4)",
+    directPhoto: "Soo deji sawirka (jpg)",
+    directNote: "Si toos ah biraawsarkaaga — saf la'aan server-ka",
+    moreOptions: "Tayooyin kale iyo cod",
+    fallback: "Biraawsarku wuu ku guuldareystay soo dejinta — waxaa lagu soo dejinayaa server-ka.",
+    openSite: "Fur videoner.download",
+    retry: "Isku day mar kale",
+    min: "daq",
+    sec: "ilb",
+    errNetwork: "Videoner lama gaari karo. Hubi xiriirka internetkaaga oo isku day mar kale.",
+    errRateLimit: "Codsiyo aad u badan ayaa isku xigay. Sug daqiiqad oo isku day mar kale.",
+    errUnsupported:
+      "Boggan kuma jiro muuqaal uu Videoner soo dejin karo. Fur bogga muuqaal ama boost gaar ah.",
+    errYoutubeDaily: "Xadka maalinlaha ah ee YouTube ee shabakaddaada waa dhammaaday. Isku day berri.",
+    errTooLarge: "Faylku aad buu u weyn yahay tayadan. Dooro tayo ka hooseysa.",
+    errLogin:
+      "Boostkan waxaa arki kara oo keliya dadka akoonkooda soo galay. Boostooyinka dadweynaha dhib la'aan ayaa loo soo dejiyaa.",
+    errRegion: "Qoraaga ayaa boostkan ku xaddiday waddamo qaar, sidaa darteed lama soo dejin karo.",
+    errServerBlocked: "Madashu si ku meel gaar ah ayay u xaddidaysaa server-kayaga. Fadlan isku day mar dambe.",
+    errFailed: "Soo dejintu way guuldareysatay. Isku day mar kale ama dooro tayo kale.",
+    errGeneric: "Wax baa khaldamay. Fadlan isku day mar kale wax yar kadib.",
+    acctButton: (p) => `🔑 Ku xir akoonkaaga ${p} bot-ka`,
+    acctWarn: (p) =>
+      `@VideonerBot wuxuu akoonkaaga ${p} ku soo dejin karaa waxa ay arkaan oo keliya dadka soo galay: stories, boostooyin gaar ah. Madalaha ma jecla soo dejinta tooska ah, waxayna xaddidi karaan akoonka — waxaa fiican inaad ku xirto akoon labaad. Biraawsarku wuxuu ku weydiin doonaa oggolaansho uu ku akhriyo cookies-ka boggan; server-ka waxaa loo diraa oo keliya cookies-ka ${p}, iyagoo sir ah (encrypted).`,
+    acctConfirm: "Ku xir",
+    acctCancel: "Iska daa",
+    acctSending: "Waa la xirayaa…",
+    acctDenied: "Akoonka lama xiri karo oggolaanshaha cookies la'aantiis.",
+    acctNoLogin: (p) => `Kuma aadan soo gelin ${p} biraawsarkan. Ku soo gal bogga oo isku day mar kale.`,
+    acctFailed: "Taasi ma shaqayn. Isku day mar kale wax yar kadib.",
+    acctCodeTitle: (p) => `Koodka lagu xirayo ${p}:`,
+    acctCodeHelp:
+      "U dir @VideonerBot sheeko gaar ah — soo dejintaada gaarka ah. Koox ahaan, ku dir /connect KOOD kooxda dhexdeeda. Koodku wuxuu shaqeynayaa 10 daqiiqo.",
+    acctCopy: "Koobiyee",
+    acctCopied: "Waa la koobiyeeyay",
+    acctOpenBot: "Fur bot-ka",
+    acctNewCode: "Hel kood cusub",
+    acctList: "Xiriirradayda bot-ka",
+    acctRevoke: "Ka noqo oggolaanshaha cookies",
+    acctRevoked:
+      "Oggolaanshaha cookies waa la laalay — kordhiyuhu mar dambe ma akhrinayo. Akoonnada aad horay u xirtay waxay ku sii jiraan bot-ka: kaga saar “Xiriirradayda bot-ka”.",
+    playlistOffer: "📃 Soo deji liiska muuqaallada oo dhan",
+    playlistTitle: (title, n) => `📃 Liiska muuqaallada${title ? ` “${title}”` : ""}: ${n} muuqaal`,
+    playlistHint: "Mid mid ayaan u soo dejin doonaa. Daaqaddan waad xiri kartaa.",
+    playlist720: "Liiska muuqaallada 720p",
+    playlistBest: "Liiska muuqaallada tayada ugu fiican",
+    playlistAudio: "Liiska muuqaallada — cod kaliya (mp3)",
+    playlistProgress: (i, n) => `Muuqaal ${i} oo ka mid ah ${n}`,
+    playlistStats: (done, failed) => `La soo dejiyay: ${done}${failed ? ` · guuldareystay: ${failed}` : ""}`,
+    playlistStop: "⏹ Jooji",
+    playlistDone: (done, n) => `Liiska muuqaallada waa la soo dejiyay: ${done} oo ka mid ah ${n}.`,
+    playlistStopped: (done, n) => `Waa la joojiyay. La soo dejiyay ${done} oo ka mid ah ${n}.`,
+    playlistLoading: "Waxaa la soo helayaa liiska muuqaallada…",
+    close: "Xir",
+    updateAvailable: (v) => `Nooca ${v} waa soo baxay.`,
+    updateHow: "Sida loo cusboonaysiiyo",
+    langAuto: "Otomaatig",
+    langLabel: "Luqadda",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -2527,12 +2612,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), оромо (om, om-ET → om), хауса (ha, ha-NG → ha), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), оромо (om, om-ET → om), хауса (ha, ha-NG → ha), сомали (so, so-SO → so), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский, персидский и урду пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { om: "Afaan Oromoo", id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", ha: "Hausa", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ru: "Русский", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
+export const LANG_NAMES = { om: "Afaan Oromoo", id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", ha: "Hausa", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", so: "Soomaali", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ru: "Русский", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -2642,9 +2727,9 @@ export function formatSize(bytes) {
   const gb = bytes / 1024 ** 3;
   // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому, корейскому, тайскому, тагальскому, амхарскому, оромо и хауса — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am" || lang === "om" || lang === "ha";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am" || lang === "om" || lang === "ha" || lang === "so";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", ha: "ha-NG", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", ha: "ha-NG", so: "so-SO", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

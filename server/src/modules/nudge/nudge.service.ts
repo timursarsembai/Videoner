@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('so')) {
+      return (
+        'Salaan! Waxaad bilowday bot-kan laakiin weli waxba ma aadan soo dejin — ' +
+        'malaha ma cadda meesha laga bilaabo.\n\n' +
+        'Hal tallaabo oo keliya: halkan ku soo dir link-ga muuqaal, ' +
+        'tusaale ahaan https://youtube.com/watch?v=jNQXAC9IVRw — anna ' +
+        'faylka ayaan kuu soo celin doonaa qiyaastii nus daqiiqo gudaheed.\n\n' +
+        'Wuxuu la shaqeeyaa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest iyo Threads. Gebi ahaanba waa bilaash, tayo kasta — ' +
+        'ilaa 4K, lacag dheeraad ah looma baahna HD.\n\n' +
+        'Haddii ay wax shaqayn waayaan, halkan uun ku jawaab. Tani waa ' +
+        'xasuusin keliya, mar dambe kuma dhibi doono.'
+      );
+    }
+
     if (code.startsWith('ha')) {
       return (
         'Sannu! Kun fara wannan bot amma har yanzu ba ku sauke komai ba — ' +

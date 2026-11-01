@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -5763,6 +5763,226 @@ const ha: Messages = {
   settingsBack: "⬅️ Koma ga saituna",
 };
 
+const so: Messages = {
+  start: "Salaan! Ii soo dir link muuqaal oo ka yimid YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ama Threads — waan kaa caawin doonaa inaad soo dejiso.\n\n✨ Xad tayo ma jiro: waxaad helaysaa wax kasta oo madashu bixiso, ilaa 4K — inta faylku uusan ka badnayn 2 GB, xadka Telegram u yeelay bot-yada. Halkan ma jiraan adeegyo lacag ah.\n\nGabi ahaanba waa bilaash: ma jiro rukummo, ma jiro xayaysiis, mana jiro wax iibsasho ah oo app-ka gudihiisa ah.\n\n🧩 Kombiyuutar ma ku soo dejinaysaa? Rakib kordhiyaha biraawsarka — badhanka “Soo deji” ayaa si toos ah uga soo muuqan doona bogga muuqaalka: videoner.download/so/extension\n\n👥 Igu dar koox, waxaanan halkaas ku dhejin doonaa muuqaallada link-yada dadku wadaagaan.\n\n⚡ Ka bood doorashada tayada: ku dar -audio link-ga kadib si aad u hesho codka oo keliya (mp3), ama -hd si aad u hesho tayada ugu fiican.\n\n📣 Wararka mashruuca: @videonerdownload\n\n🌐 Luqadda bot-ka: /language",
+  notLink: "Taasi uma eka link. Ii soo dir link muuqaal.",
+  inviteGreeting: "Salaan! Waxaan ahay Videoner — waxaan bilaash uga soo dejiyaa muuqaallada YouTube, TikTok, Instagram iyo madallo kale. Waxaan diyaarinayaa muuqaalka laguu soo wadaagay 👇",
+  inviteNotFound: "Kuma aanan helin muuqaal link-gan martiqaadka ah. Ii soo dir link muuqaal, waanan soo dejin doonaa.",
+  inviteUnavailable: "Ma aan furi karin muuqaalka link-gan — adeeggu hadda ma jawaabayo. Mar kale fur isla link-gaas daqiiqad kadib.",
+  fetchingInfo: "🔍 Waxaan soo helayaa xogta muuqaalka...",
+  audioOnlyButton: "🎵 Cod oo keliya (mp3)",
+  photoButton: "📷 Soo deji sawirrada",
+  slideshowButton: "🎞 Bandhig sawirro (muuqaal)",
+  galleryButton: "📷+🎞 Sawirro iyo bandhig sawirro",
+  chooseQuality: (title, duration) => `“${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nDooro tayada:`,
+  sessionExpired: "Waqtigu wuu dhacay — mar kale soo dir link-ga",
+  downloading: "⏬ Waa la soo dejinayaa, tani waxay qaadan kartaa dhowr daqiiqo...",
+  downloadFailed: "soo dejintu way fashilantay",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Waa la soo dejinayaa: ${percent}%${eta ? ` · ${eta} ayaa haray` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Ku dhawaad waa dhammaatay — faylka ayaa la isku ururinayaa...",
+  converting: (percent) => `⚙️ Waa la beddelayaa: ${percent}%`,
+  etaUnderMinute: "in ka yar daqiiqad",
+  etaMinutes: (minutes) => `~${minutes} daqiiqo`,
+  etaHours: (hours, minutes) => `~${hours} saac${minutes ? ` ${minutes} daqiiqo` : ""}`,
+  downloadTimeout: "soo dejintu aad bay u dheeraatay — muuqaalku wuxuu u egyahay mid aad u culus. Isku day tayo ka hooseysa.",
+  downloadInterrupted: "⚠️ Bot-ka ayaa dib loo bilaabayaa si loo cusbooneysiiyo — soo dejintaadii way go'day. Fadlan mar kale soo dir link-ga daqiiqad kadib.",
+  fileTooBig: (mb, url) =>
+    `Faylku wuxuu noqday mid weyn (${mb} MB) — Telegram uma oggola bot-ka inuu diro.\nHalkan ka soo deji: ${url}`,
+  sendingFile: "📤 Faylka ayaa la dirayaa...",
+  sendingAlbum: (count) => `📤 Boostadan waxay leedahay faylal dhowr ah (${count}) — waxaan u dirayaa albam ahaan...`,
+  failedPrefix: "❌ Way fashilantay: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Isha: ${sourceUrl}\n` +
+        "Dhammaan xuquuqda muuqaalka waxaa iska leh sameeyihiisa.\n" +
+        "Bilaash lagu soo dejiyay @VideonerBot",
+      `📣 Wararka mashruuca: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 La wadaag: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Si aad wax u soo dejiso, fadlan ku biir kanaalkayaga ${channel} — taasi waa shuruudda keliya, adeeggu wuu sii ahaanayaa bilaash.\n\n` +
+    "Ku biir oo riix “Waan ku biiray”.",
+  openChannelButton: "📣 Fur kanaalka",
+  checkSubscriptionButton: "Waan ku biiray",
+  subscribeThanks: "Mahadsanid! Hadda ii soo dir link muuqaal.",
+  subscribeThanksResuming: "Mahadsanid! Hadda ayaan qaadanayaa link-gaagii.",
+  subscribeStillMissing: "Weli ma arko ku biiriddaada. Ku biir oo mar kale riix.",
+  channelNotice: (channel) => `\n\nLink-ga boostadan wuxuu ka soo muuqan doonaa ${channel} — si qarsoodi ah, magacaaga la'aan.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Bilaash ku soo deji kan iyo muuqaal kasta oo kale: @VideonerBot",
+  errorStoryNeedsId:
+    "soo dir link-ga story gaar ah: ka fur app-ka Instagram oo taabo Share → Copy link.",
+  errorInstagramStory:
+    "Stories-ka Instagram waxaa arki kara oo keliya dadka akoonkooda galay.",
+  errorLoginRequired:
+    "Boostadan lama heli karo adigoon akoon gelin: madashu waxay siisaa oo keliya " +
+    "isticmaalayaasha akoonkooda galay. Taasi waxay dhacdaa boostooyinka gaarka ah, waxyaabaha da'da lagu xaddiday " +
+    "iyo boostooyinka loo wadaagay dad xaddidan.\n\n" +
+    "Boostooyinka dadweynaha si dhib la'aan ah ayaa loo soo dejiyaa — isku day link kale.",
+  errorUnsupportedPlatform:
+    "Ma aqoonsan karin link-gan — hubi inuu yahay link toos ah oo muuqaal ah oo ka yimid YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ama Threads.",
+  errorFileTooLarge: "faylku wuu ka weyn yahay 2 GB — Telegram uma oggola bot-yada inay diraan faylal ka weyn. Ka soo deji websaydhka ama kordhiyaha biraawsarka — badhamada hoose. Ama mar kale soo dir link-ga oo dooro tayo ka hooseysa.",
+  siteButton: "🌐 Ka soo deji websaydhka",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Tayooyinka ka culus ${limit} waa la qariyay: Telegram uma oggola bot-yada inay diraan faylal ka weyn. Waxaad ka soo dejisan kartaa websaydhka ama kordhiyaha biraawsarka — badhamada hoose.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Muuqaalkani aad buu ugu culus yahay Telegram xitaa tayada ugu hooseysa (~${smallest}): Telegram uma oggola bot-yada inay diraan faylal ka weyn 2 GB. Halkan waxaad ka heli kartaa codka oo keliya; muuqaalka — websaydhka ama kordhiyaha biraawsarka (badhamada hoose).`,
+  errorFormatUnavailable: "Tayadaas looma hayo muuqaalkan. Mar kale soo dir link-ga — waxaan ku tusi doonaa liiska hadda jira.",
+  errorNoVideoContent: "Link-gan ma laha muuqaal la soo dejiyo — boostadu waxay u egtahay sawirro oo keliya.",
+  errorRegionBlocked:
+    "Muuqaalkan waa laga xannibay meel ka baxsan dalka sameeyaha — madashu uma dirayso " +
+    "server-kayaga. Ma jirto si looga gudbo: xaddidaaddu dhinacooda ayay ka timid." +
+    "\n\nLink-yada kale si caadi ah ayaa loo soo dejiyaa.",
+  errorRateLimited: "Link-yo aad u badan oo isku xiga — wax yar sug oo mar kale soo dir.",
+  errorYoutubeDailyLimit: (gb) => `waxaad YouTube ka soo dejisay in ka badan ${gb} GB 24-kii saac ee la soo dhaafay — taasi waa xadka maalinlaha ah ee bot-ka ee qof kasta. Wuxuu xisaabiyaa 24-ka saac ee u dambeeyay, markaa waxaad soo dejin kartaa muuqaallo cusub oo YouTube ah wax yar kadib. Madallada kale si caadi ah ayay u shaqeeyaan.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Liiska muuqaallada waa la joojiyay: xadka maalinlaha ah ee YouTube waa la gaaray. Muuqaallada aan la soo dejin: ${dropped}. Mar dambe soo dir link-ga liiska muuqaallada.`,
+  errorPlatformRefused:
+    "madashu ma siin muuqaalkan server-kayaga. Tani waxay dhacdaa boostooyinka gaarka ah " +
+    "ama kuwa da'da lagu xaddiday, mararka qaarkoodna madashu waxay xaddiddaa gelitaanka " +
+    "muddo. Isku day mar kale dhowr daqiiqo kadib.",
+  errorThreadsNoMedia:
+    "boostadan Threads kuma muuqdo muuqaal ama sawir. Ama waa boost qoraal oo keliya ah, ama " +
+    "Threads waxay warbaahinteeda tustaa oo keliya dadka akoonkooda galay — boostooyinkaas lama soo dejin karo adigoon akoon gelin.",
+  extensionHint:
+    "\n\n💻 Waxaad ku soo dejin kartaa kordhiyaha biraawsarka Videoner ee kombiyuutarka: " +
+    "wuxuu soo dejiyaa isagoo adeegsanaya gelitaankaaga madasha, eraygaaga sirta ah iyo cookies-kaagu kama baxaan biraawsarkaaga.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Si aad u soo dejiso boostooyinka noocan ah, ku xir akoonkaaga ${platform} bot-ka — hal mar. Intaa kadib bot-ku wuxuu soo dejiyaa wax kasta oo aad arki karto: boostooyinka gaarka ah, reels iyo stories, xitaa taleefankaaga. Badhanka hoose ayaa ku tusaya sida.${withExtension ? "\n\n💻 Ama ku soo deji kordhiyaha biraawsarka Videoner ee kombiyuutarka." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Akoonkaaga ${platform} ee ku xiran ma furi karin boostadan. Gelitaanku waxaa laga yaabaa inuu joojiyay shaqada — mar kale ku xir akoonka. Ama akoonkani ma laha gelitaan boostada.${withExtension ? "\n\n💻 Waxaad sidoo kale ku soo dejin kartaa kordhiyaha biraawsarka Videoner ee kombiyuutarka." : ""}`,
+  connectAccountButton: "🔑 Ku xir akoonka",
+  reconnectAccountButton: "🔑 Dib u xir",
+  extensionButton: "🧩 Ku soo deji kordhiyaha",
+  extensionCommand:
+    "🧩 Videoner biraawsarkaaga: badhanka “Soo deji” oo toos ugu jira bogga muuqaalka — YouTube, Instagram, TikTok, VK, muuqaallo gaar ah oo akoonkaaga ka yimid iyo casharrada GetCourse.\n\nWaxaa loogu talagalay Chrome, Edge, Opera, Yandex Browser iyo Firefox ee kombiyuutarka.",
+  extensionPageButton: "🧩 Rakib kordhiyaha",
+  addToGroupButton: "👥 Ku dar koox",
+  newsButton: "📣 Wararka mashruuca",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Wararka mashruuca: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Dejinta bot-ka ee kooxdan\n\n" +
+    `🗑 Tirtir fariinta link-ga leh: ${s.deleteLinks ? "haa" : "maya"}\n` +
+    "Marka muuqaalka la diro, fariin ka koobnayd link-ga oo keliya waa la tirtiraa — sheekadu waxay haysaa muuqaalka oo keliya iyo magaca qofkii wadaagay.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Hadda ma tirtiri karo fariimaha: iga dhig admin leh xuquuqda “Delete messages”.\n"
+      : "") +
+    `\n✍️ Qoraalka muuqaalka: ${{ full: "buuxa", short: "cinwaanka iyo isha", none: "qoraal la'aan" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Tayada: ${s.quality === "max" ? "tan ugu sarreysa ee Telegram aqbalo" : "caadi (720p)"}\n` +
+    `\n⏱ Muuqaallada dhaadheer: ${s.longVideos ? "dherer kasta" : "ilaa 15 daqiiqo oo keliya"}\n` +
+    `\n🔑 Yaa ku xiri kara akoonkiisa (stories iyo boostooyinka gaarka ah): ${s.cookiesBy === "all" ? "xubin kasta" : "maamulayaasha oo keliya"}\n` +
+    `\n🌐 Luqadda jawaabta: ${s.language ? langName(s.language) : "tan xubin kasta"}\n` +
+    "\nMaamulayaasha kooxda oo keliya ayaa beddeli kara dejinta.",
+  settingsDeleteButton: (on) => `🗑 Tirtir link-yada: ${on ? "haa" : "maya"}`,
+  settingsCaptionButton: (style) => `✍️ Qoraal: ${{ full: "buuxa", short: "gaaban", none: "midna" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Tayada: ${mode === "max" ? "ugu sarreysa" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Muuqaallo dhaadheer: ${on ? "haa" : "ilaa 15 daqiiqo"}`,
+  settingsDoneButton: "✅ Dhammee",
+  settingsAdminsOnly: "Maamulayaasha kooxda oo keliya ayaa beddeli kara dejinta.",
+  settingsGroupsOnly: "Dejintu waxay u taal kooxaha: igu dar koox oo halkaas ku dir /settings.",
+  settingsFailed: "Ma kaydin karin dejinta, fadlan mar kale isku day.",
+  settingsCookiesButton: (by) => `🔑 Ku xiridda akoonnada: ${by === "all" ? "qof kasta" : "maamulayaasha"}`,
+  accountsIntro:
+    "🔑 Akoonnada ku xiran\n\nBot-ku wuxuu soo dejin karaa waxa ay arkaan oo keliya dadka akoonkooda galay (stories-ka Instagram, boostooyinka gaarka ah) — isagoo adeegsanaya akoonkaaga. Gelitaanku wuxuu ka shaqeeyaa meesha aad ku xirtay: midka sheekada gaarka ah wuxuu u adeegaa soo dejintaada, oo ay ku jiraan link-yadaada kooxaha aan lahayn akoon u gaar ah; midka koox lagu xiray wuxuu u adeegaa dhammaan xubnaheeda.",
+  accountsHowTo:
+    "Sida loo xiro:\n1. Tan ugu fudud: kordhiyaha Videoner ee kombiyuutarka — gal websaydhka madasha, fur daaqadda Videoner, riix “🔑 Ku xir akoonkaaga … bot-ka” oo ii soo dir koodka. Koox ahaan, ku dir /connect KOOD kooxdaas gudaheeda.\n2. Ama ii soo dir fayl cookies.txt ah (cookies laga soo saaray biraawsarka), ama qoraalkiisa ku dheji fariin ahaan.\n3. Taleefan Android ah — adigoo isticmaalaya Firefox iyo add-on-ka Cookie-Editor: https://videoner.download/so/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Madallada ma jecla soo dejinta otomaatigga ah, waxayna xaddidi karaan ama xannibi karaan akoonka. Waxaa fiican inaad ku xirto akoon labaad, ha ahaan kaaga ugu muhiimsan. Cookies-ka waxaa lagu kaydiyaa si sir ah, waxaa loo isticmaalaa oo keliya soo dejinta, waxaana lagu tirtiraa badhamada hoose.",
+  accountsNone: "Weli waxba lama xirin.",
+  accountsGroupTitle: "🔑 Akoonnada ku xiran kooxdan",
+  accountsGroupHowTo:
+    "Si aad mid ugu xirto kooxda oo dhan: ka hel kood badhanka “🔑 Ku xir akoonkaaga … bot-ka” ee kordhiyaha Videoner oo halkan ku dir /connect KOOD. Haddii aad akoon ku xirtay sheekadaada gaarka ah oo keliya, bot-ku halkan wuxuu u isticmaalaa link-yadaada. Xiriiradaada: /accounts sheeko gaar ah oo aad la leedahay @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ gelitaanku ma shaqeynayo)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ gelitaanku ma shaqeynayo)"}`,
+  accountsWhereHere: "sheekada gaarka ah",
+  accountsWhereGroup: (title) => `kooxda “${title}”`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Tirtir dhammaan xiriirradayda",
+  accountsDeleted: "Waa la tirtiray.",
+  accountsDeletedAll: (n) => `Xiriirada la tirtiray: ${n}.`,
+  accountsNotAllowed: "Qofka ku xiray ama maamulaha kooxda oo keliya ayaa tirtiri kara.",
+  connectUsage:
+    "Soo dir /connect KOOD. Koodka waxaa ku siinaya badhanka “🔑 Ku xir akoonkaaga … bot-ka” ee kordhiyaha Videoner ee kombiyuutarka. Xiriiradaada: /accounts.",
+  connectOnlyAdmins: "Maamulayaasha oo keliya ayaa akoonno ku xiri kara kooxdan (eeg /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} waa lagu xiray ${where}. Bot-ku hadda wuxuu sidoo kale soo dejiyaa waxa ay arkaan oo keliya dadka akoonkooda galay. Eeg ama tirtir: /accounts.\n\n⚠️ Madashu waxay xaddidi kartaa akoonka soo dejinta otomaatigga ah awgeed — waxaa fiican inaad isticmaasho akoon labaad.`,
+  connectWhereGroup: "kooxdan",
+  connectWhereHere: "soo dejintaada ee sheekada gaarka ah iyo habka inline",
+  connectCodeNotFound: "Koodka lama helin ama wuu dhacay (koodadku waxay shaqeeyaan 10 daqiiqo). Ka hel mid cusub kordhiyaha Videoner.",
+  connectRejectedNoSession: "Cookies-kan kuma jiro gelitaan akoon. Gal websaydhka madasha oo mar kale soo saar cookies-ka.",
+  connectRejectedUnknown: "Lama helin cookies madallo la taageero: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Ku xiridda akoonnada weli lama heli karo.",
+  connectFailed: "Ma ku xiri karin, fadlan mar kale isku day.",
+  connectFileTooBig: "Faylku aad buu u weyn yahay — soo saar cookies-ka websaydhka loo baahan yahay oo keliya.",
+  connectNotAnonymous: "Akoonka ku xir adigoo naftaada ah, ha ahaan si qarsoodi ah oo magaca kooxda ah: haddii kale xiriirada maamulayaasha way isku dhex qasmayaan. Koodka waan burburiyay — hel mid cusub.",
+  connectCodeInGroup:
+    "Koodka xiriirka ee lagu dhejiyo sheekada kooxda dad kale ayaa arki kara — waan burburiyay, fariintana waan tirtiray. Hel mid cusub oo ku dir /connect KOOD: fariinta amarkaas isla markiiba waan tirtiraa.",
+  groupWelcome:
+    "👋 Salaan! Sheekadan ku dhaji link-yada muuqaallada TikTok, Instagram, YouTube, VK iyo madallo kale — waxaan kugu jawaabi doonaa muuqaalka laftiisa.\n\n" +
+    "Waxaan si iskay ah u soo dejiyaa muuqaallada ilaa 15 daqiiqo ah, amarro looma baahna, haddii kalena waan aamusaa.\n\n⚙️ Maamulayaasha kooxda waxay igu habayn karaan /settings: tirtirka fariimaha link-ga, qaabka qoraalka, tayada, muuqaallada dhaadheer iyo luqadda.\n\n⚡ Ku dar -audio link-ga kadib si aad u hesho codka, ama -hd si aad u hesho tayada ugu fiican.\n\n📣 Wararka mashruuca: @videonerdownload",
+  errorTooLong: "muuqaalku aad buu u dheer yahay — weli ma soo dejin karno muuqaallo intaas le'eg.",
+  errorUnknown: "ma soo dejin karin muuqaalkan. Isku day mar kale wax yar kadib ama soo dir link kale.",
+  inlineHintButton: "U dir link bot-ka",
+  inlineResultTitle: "⬇️ Soo deji muuqaalka",
+  inlineResultDescription: "Muuqaalka waxaa si toos ah loogu dhejin doonaa sheekadan",
+  inlinePlaceholder: "⏬ Waa la soo dejinayaa, tani waxay qaadan kartaa dhowr daqiiqo...",
+  inlineOpenBot: "Fur bot-ka",
+  inlineOnlySingleVideo:
+    "Habkani wuxuu diraa hal muuqaal. Boostooyinka faylal badan leh ama sawirrada, link-ga u dir bot-ka sheeko gaar ah.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Si aad wax u soo dejiso, ku biir ${channel} oo mar kale isku day.`,
+  inlineRateLimited: "Codsiyo aad u badan oo isku xiga. Sug daqiiqad oo mar kale isku day.",
+  queueRest: (count) => `\n\n📋 Link-yada weli safka ku jira: ${count}. Midba mar ayaan kuu tusi doonaa kan kadib.`,
+  queuedOne: (position) =>
+    `📋 Link-ga safka ayaa la geliyay, #${position}. Aan marka hore dhammeyno kan hadda socda — kadib waxaan kuu tusi doonaa doorashada tayada.`,
+  queuedMany: (added, waiting) =>
+    `📋 Link-yada safka lagu daray: ${added}. Wadarta sugaysa: ${waiting}. Midba mar ayaan kuu tusi doonaa kan hadda socda kadib.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Link-gan horey ayuu safka ugu jiray — laba jeer laguma darayo."
+      : `Link-yada horey safka ugu jiray laba jeer laguma darayo (ku celcelin: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Safku wuxuu qaadi karaa ugu badnaan ${limit} link — kuwa dheeraadka ah lama darin (${rejected}). Soo dir marka safku dhaqaaqo.`,
+  skipButton: "✖️ Ha soo dejin",
+  skipped: "⏭ Link-gan waa laga gudbay.",
+  chooseTimedOut: "⌛ Tayo lama dooran 30 daqiiqo gudahood — link-gan waa laga gudbayaa.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot-ka ayaa dib loo bilaabayaa si loo cusbooneysiiyo — safka waa la tirtiray (link-yo: ${count}). Fadlan mar kale soo dir daqiiqad kadib.`,
+  subtitlesButton: "📝 Qoraalka hoose",
+  subtitlesBack: "⬅️ Ku noqo tayada",
+  subtitlesAuto: "otomaatig",
+  subtitlesChoose: "Dooro luqadda qoraalka hoose",
+  subtitlesPreparing: "📝 Qoraalka hoose waa la diyaarinayaa...",
+  subtitlesFailed: "Ma soo dejin karin qoraalka hoose ee luqaddan. Isku day luqad kale.",
+  subtitlesBusy: "YouTube hadda ma bixinayo qoraalka hoose — isku day mar kale dhowr daqiiqo kadib.",
+  playlistFound: (title, count) =>
+    `📃 Liiska muuqaallada${title ? ` “${title.slice(0, 150)}”` : ""}: ${count} muuqaal.\nMidba mar ayaan soo dejin doonaa. Qaabkee?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Tayada ugu fiican",
+  playlistAudioButton: "🎵 Cod oo keliya (mp3)",
+  playlistNoButton: "✖️ Maya, mahadsanid",
+  playlistQueued: (count) =>
+    `📃 Muuqaallada liiska ee safka la geliyay: ${count}. Midba mar ayaan kuu soo diri doonaa. Ku jooji badhanka hoose ama /stop.`,
+  playlistFailed: "Ma furi karin liiska muuqaallada — waxaa laga yaabaa inuu gaar yahay. Soo dir link hal muuqaal ah.",
+  stopButton: "⏹ Jooji",
+  stopped: (dropped) => `⏹ Waa la joojiyay.${dropped ? ` Link-yada safka laga saaray: ${dropped}.` : ""}`,
+  nothingToStop: "Hadda waxba lama soo dejinayo.",
+  languageChoose: "🌐 Dooro luqadda bot-ka. “Otomaatig” wuxuu raacaa Telegram-kaaga.",
+  languageChooseGroup: "🌐 Luqadda jawaabta bot-ka ee kooxdan. “Otomaatig” — luqadda Telegram ee xubin kasta.",
+  languageAuto: "Otomaatig — sida Telegram",
+  languageAutoGroup: "Otomaatig — tan xubin kasta",
+  languageSaved: (name) => `✅ Luqadda bot-ka: ${name}. Ku beddel /language.`,
+  languageSavedAuto: "✅ Bot-ku wuxuu raacaa luqadda Telegram-kaaga. Ku beddel /language.",
+  settingsLanguageButton: (name) => `🌐 Luqadda: ${name ?? "otomaatig"}`,
+  settingsBack: "⬅️ Ku noqo dejinta",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -6430,4 +6650,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so };

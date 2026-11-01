@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -42,6 +42,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   am: "አማርኛ",
   om: "Afaan Oromoo",
   ha: "Hausa",
+  so: "Soomaali",
   tl: "Tagalog",
 };
 
@@ -9778,6 +9779,366 @@ const ha: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const so: Translations = {
+  nav: {
+    home: "Bogga hore",
+    downloaders: "Soo dejiyeyaal",
+    extension: "Kordhiye",
+    blog: "Blog",
+    switchTheme: "Beddel muuqaalka bogga",
+    language: "Luqadda",
+    comingSoon: "Dhowaan",
+  },
+  theme: {
+    light: "Iftiin",
+    dark: "Mugdi",
+    system: "Nidaamka",
+  },
+  playlist: {
+    title: `Liiska muuqaallada "{title}": {count} muuqaal`,
+    hint: "Muuqaallada mid mid ayaa loo soo dejinayaa. Boggan furan u daa; biraawsarkaagu wuxuu ku weydiin karaa inaad oggolaato soo dejin badan.",
+    std: "720p",
+    hd: "Tayada ugu fiican",
+    audio: "Cod keliya (mp3)",
+    progress: "Muuqaal {index} ee {count}",
+    stats: "La soo dejiyey: {done} · fashilmay: {failed}",
+    stop: "Jooji",
+    stopped: "Waa la joojiyey. La soo dejiyey {done} ee {count}.",
+    finished: "Liiska muuqaallada waa dhammaaday: {done} ee {count}.",
+    again: "Mar kale dooro",
+  },
+  footer: {
+    news: "Wararka mashruuca",
+    botCta: "Sidoo kale waxaa laga heli karaa bot Telegram ah:",
+    extension: "Kordhiye biraawsar",
+    developedBy: "Waxaa sameeyey",
+    rights: "Xuquuqda oo dhan way dhowran tahay.",
+  },
+  content: {
+    howToTitle: "Sida loo soo dejiyo muuqaallada {platform}",
+    faqTitle: "Su'aalaha inta badan la is weydiiyo",
+  },
+  auth: {
+    loginButton: "Ku gal Telegram",
+    signIn: "Gal",
+    logout: "Ka bax",
+    switchAccountHint: "Ma aha akoonkaaga?",
+    switchAccountLink: "Ka bax Telegram Web",
+  },
+  home: {
+    new: "Cusub",
+    manyFeatures: "Astaamo cusub oo badan",
+    titleLine1: "Soo deji muuqaallo",
+    titleLine2: "si degdeg ah oo fudud",
+    subtitle:
+      "Soo dejiyahaaga muuqaallada ee guud ee YouTube, Instagram, TikTok iyo kuwo kale. Dooro tayo kasta, laga bilaabo HD ilaa mid ku habboon taleefanka.",
+    subtitleExtra: "Xad la'aan, dhib la'aan, kaliya soo dejin.",
+    placeholder: "Halkan ku dheji link-ga muuqaalka ee goob kasta...",
+    download: "Soo deji",
+  },
+  video: {
+    description: "Sharaxaad",
+    format: "Qaab",
+    selected: "La doortay: {quality}",
+    videoTab: "muuqaal",
+    audioTab: "cod",
+    converting: "Waa la beddelayaa",
+    downloading: "Waa la soo dejinayaa",
+    downloadAgain: "Mar kale soo deji",
+    startDownload: "Bilow soo dejinta",
+    convertingBtn: "Waa la beddelayaa...",
+    downloadingBtn: "Waa la soo dejinayaa...",
+    loginRequiredHint: "Ku gal Telegram si aad u soo dejiso",
+    quotaExceededHint: "Waxaad gaartay xadka maalinlaha ah ee 20 soo dejin — berri soo noqo",
+    postFiles: "Boostadan waxay leedahay {count} fayl",
+    photoQuality: "Sawirrada asalka ah",
+    slideshowQuality: "Bandhig sawirro (muuqaal)",
+    galleryQuality: "Sawirro + bandhig sawirro",
+    downloadAll: "Soo deji dhammaan",
+    downloadOne: "Kaydi",
+    subtitlesTab: "qoraalka hoose",
+    subtitlesHint: "Dooro luqad — waxaad heli doontaa fayl .srt ah oo ciyaariye kasta furi karo.",
+    subtitlesAuto: "toos",
+    subtitlesDownload: "Soo deji qoraalka hoose",
+    subtitlesDownloading: "Qoraalka hoose waa la diyaarinayaa...",
+  },
+  toast: {
+    enterUrl: "Fadlan geli link",
+    enterValidUrl: "Fadlan geli link sax ah",
+    platformNotSupported: "Goobtan lama taageero",
+    urlNotSupported: "Link-gan lama taageero",
+    enterValidPlatformUrl: "Fadlan geli link {platform} oo sax ah",
+    captchaNotReady: "Fadlan wax yar sug inta hubinta amniga ay dhammaanayso, kadibna isku day mar kale",
+    comingSoon: "Dhowaan! {name} weli lama taageero",
+    selectQuality: "Fadlan dooro tayada",
+    downloadStarted: "Soo dejintu way bilaabatay!",
+    downloadCompleted: "Soo dejintu way dhammaatay!",
+    newsChannel: "Wararka mashruuca waxay ku jiraan Telegram:",
+    downloadUrlNotReceived: "Link-ga soo dejinta lama helin",
+    needsBrowser:
+      "Goobtu muuqaalkan ma siinin server-kayaga: waxaa heli kara oo keliya isticmaalayaasha soo galay, ama gelitaanka si ku meel gaar ah ayaa loo xaddiday. Waxaad ku soo dejisan kartaa kordhiyaha biraawsarka Videoner ee kombiyuutarka — wuxuu ku soo dejiyaa gelitaankaaga adiga.",
+    needsBrowserLink: "Hel kordhiyaha →",
+  },
+  platforms: {
+    youtube: {
+      description: "Soo deji muuqaallo YouTube tayo HD ah",
+      news: "Hadda waxaa la taageeraa muuqaallada iyo Shorts",
+      titleLine1: "Soo deji muuqaal YouTube",
+      titleLine2: "iyo Shorts",
+      pageDescription:
+        "Soo deji muuqaallada YouTube, Shorts iyo codka qaabab tayo sare leh. Degdeg, bilaash ah oo fudud. Waxaa la taageeraa tayada 8K, 4K, HD iyo codka MP3.",
+      placeholder: "Halkan ku dheji link-ga YouTube...",
+      howTo: [
+        "Ka koobiyee link-ga muuqaalka bar-ciwaanka biraawsarkaaga, ama riix Share ee app-ka YouTube.",
+        "Ku dheji sanduuqa kore oo riix Soo deji.",
+        "Dooro tayada — ilaa 4K/8K muuqaalka, ama MP3 haddii aad cod keliya rabto.",
+        "Faylkaagu isla markiiba wuu soo degayaa, looma baahna gelitaan.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada YouTube ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Videoner wuxuu bixiyaa dhammaan xallinta YouTube u bixiso muuqaalkaas — laga bilaabo 360p ilaa 4K/8K haddii ay jirto — iyo sidoo kale soo saarista codka MP3." },
+        { q: "Ma soo dejin karaa muuqaallo gaar ah ama da'da lagu xaddiday?", a: "Waxaa la taageeraa oo keliya muuqaallada YouTube ee dadweynaha u furan; muuqaallada gaarka ah, kuwa aan adiga laguu oggolayn ama u baahan gelitaan lama soo dejin karo." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo YouTube?", a: "Soo deji oo keliya muuqaallada aad xaq u leedahay inaad kaydiso — waxyaabahaaga, muuqaallada leh shatiga Creative Commons, ama wax kasta oo abuuraha oggolaado. Ixtiraam Shuruudaha Adeegga YouTube iyo sharciga xuquuqda daabacaadda." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha la beddelay waxay server-ka ku jiraan qiyaastii hal saac, markaa isla markiiba ku kaydi qalabkaaga kadib soo dejinta." },
+      ],
+    },
+    facebook: {
+      description: "Kaydi muuqaallada boostooyinka iyo reels-ka Facebook",
+      news: "Hadda waxaa la taageeraa reels",
+      titleLine1: "Soo deji muuqaal Facebook",
+      titleLine2: "iyo Reels",
+      pageDescription:
+        "Soo deji muuqaallada iyo reels-ka Facebook tayo sare leh. Degdeg, bilaash ah oo fudud.",
+      placeholder: "Halkan ku dheji link-ga Facebook...",
+      howTo: [
+        "Ka fur muuqaalka ama reel-ka Facebook oo koobiyee link-giisa (riix saddexda dhibcood → Copy Link).",
+        "Ku dheji link-ga sanduuqa kore oo riix Soo deji.",
+        "Dooro tayada MP4 ama codka u soo saar MP3 ahaan.",
+        "Faylku si toos ah ayuu qalabkaaga ugu soo degayaa — looma baahna akoon Facebook.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada Facebook ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Videoner wuxuu qaadaa tayada ugu sarreysa ee Facebook u bixiso muuqaalkaas ama reel-kaas, qaabka MP4, iyo sidoo kale ikhtiyaarka codka MP3." },
+        { q: "Ma soo dejin karaa muuqaallo gaar ah?", a: "Waxaa shaqeeya oo keliya boostooyinka, muuqaallada iyo reels-ka dadweynaha; waxyaabaha gaarka ah ama saaxiibada keliya loogu talagalay lama heli karo." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo Facebook?", a: "Soo deji oo keliya muuqaallada laguu oggol yahay inaad kaydiso; ixtiraam xuquuqda abuuraha iyo Shuruudaha Adeegga Facebook." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha waxaa la hayaa qiyaastii hal saac kadib beddelka, kadibna si toos ah ayaa loo tirtiraa — si dhakhso ah u soo deji." },
+      ],
+    },
+    instagram: {
+      description: "Soo deji reels, stories iyo boostooyinka Instagram",
+      news: "Hadda waxaa la taageeraa reels iyo stories",
+      titleLine1: "Soo deji Instagram",
+      titleLine2: "Reels iyo Stories",
+      pageDescription:
+        "Soo deji reels, stories iyo boostooyinka Instagram tayo sare leh. Degdeg, bilaash ah oo fudud.",
+      placeholder: "Halkan ku dheji link-ga Instagram...",
+      howTo: [
+        "Ka fur Reel-ka, boostada ama story-ga Instagram oo riix astaanta diyaaradda warqadda → Copy Link.",
+        "Ku dheji link-ga sanduuqa kore.",
+        "Dooro tayada iyo qaabka aad doorbidayso.",
+        "Soo dejintu isla markiiba way bilaabanaysaa — looma baahna gelitaan ama rakibid app.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta waxyaabaha Instagram ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Tayada buuxda ee la heli karo ee reels, boostooyin iyo stories, qaabka MP4 ama MP3." },
+        { q: "Ma ka soo dejin karaa akoonno gaar ah?", a: "Waxaa la taageeraa oo keliya akoonnada iyo boostooyinka Instagram ee dadweynaha; waxyaabaha akoonnada gaarka ah lama soo dejin karo." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo Instagram?", a: "Soo deji oo keliya waxa laguu oggol yahay inaad kaydiso — ixtiraam abuuraha iyo Shuruudaha Adeegga Instagram." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha waxay server-ka ku jiraan qiyaastii hal saac ka hor inta aan si toos ah loo tirtirin." },
+      ],
+    },
+    tiktok: {
+      description: "Soo deji muuqaallada TikTok aan watermark lahayn",
+      news: "Hadda watermark la'aan",
+      titleLine1: "Soo deji muuqaal TikTok",
+      titleLine2: "aan watermark lahayn",
+      pageDescription:
+        "Soo deji muuqaallada TikTok aan watermark lahayn tayo sare leh. Degdeg, bilaash ah oo fudud.",
+      placeholder: "Halkan ku dheji link-ga TikTok...",
+      howTo: [
+        "Riix Share ee muuqaalka TikTok, kadib Copy Link.",
+        "Ku dheji link-ga sanduuqa kore oo riix Soo deji.",
+        "Hel MP4 nadiif ah — aan watermark TikTok lahayn — ama codka MP3.",
+        "Si toos ah ugu kaydi qalabkaaga.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada TikTok ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Tayada ugu fiican ee TikTok u bixiso muuqaalkaas, aan watermark TikTok lahayn, iyo sidoo kale codka MP3." },
+        { q: "Ma ka soo dejin karaa akoonno gaar ah?", a: "Waxaa la soo dejin karaa oo keliya muuqaallada akoonnada TikTok ee dadweynaha." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo TikTok?", a: "Soo deji muuqaallada aad xaq u leedahay inaad kaydiso, xusa abuuraha, oo ixtiraam Shuruudaha Adeegga TikTok." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha la soo dejiyey waxay server-ka ku jiraan qiyaastii hal saac, kadibna si toos ah ayaa loo tirtiraa." },
+      ],
+    },
+    twitter: {
+      description: "Soo deji muuqaallada Twitter",
+      news: "Hadda waxaa la taageeraa muuqaallada Twitter",
+      titleLine1: "Soo deji muuqaal",
+      titleLine2: "Twitter",
+      pageDescription:
+        "Soo deji muuqaallada Twitter tayo sare leh. Degdeg, bilaash ah oo fudud.",
+      placeholder: "Halkan ku dheji link-ga Twitter...",
+      howTo: [
+        "Riix Share ee hoos yaal tweet-ka oo dooro Copy Link (ama ka koobiyee link-ga biraawsarkaaga).",
+        "Ku dheji sanduuqa kore.",
+        "Dooro tayada muuqaalka ee aad rabto.",
+        "Soo dejintu isla markiiba way bilaabanaysaa — looma baahna akoon X/Twitter.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada Twitter/X ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Tayo kasta oo X/Twitter u bixiso muuqaalkaas, qaabka MP4, iyo sidoo kale MP3." },
+        { q: "Ma ka soo dejin karaa akoonno gaar ah?", a: "Waxaa shaqeeya oo keliya tweet-yada akoonnada dadweynaha; akoonnada la ilaaliyo/gaarka ah lama taageero." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo Twitter/X?", a: "Soo deji waxyaabaha aad xaq u leedahay inaad kaydiso, adigoo ixtiraamaya xuquuqda qofka dhigay iyo Shuruudaha Adeegga goobta." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha si toos ah ayaa loo tirtiraa qiyaastii hal saac kadib marka la sameeyo." },
+      ],
+    },
+    vimeo: {
+      description: "Soo deji muuqaallo Vimeo tayo sare leh",
+      news: "Hadda waxaa la taageeraa Vimeo",
+      titleLine1: "Soo deji muuqaal",
+      titleLine2: "Vimeo",
+      pageDescription:
+        "Soo deji muuqaallada Vimeo tayo sare leh. Degdeg, bilaash ah oo fudud.",
+      placeholder: "Halkan ku dheji link-ga Vimeo...",
+      howTo: [
+        "Fur Vimeo oo koobiyee link-ga muuqaalka (ama taleefanka ku riix Share → Copy Link).",
+        "Ku dheji link-ga sanduuqa kore oo riix Soo deji.",
+        "Dooro tayada iyo qaabka — MP4 muuqaalka, MP3 haddii aad cod keliya rabto.",
+        "Soo dejintaadu isla markiiba way bilaabanaysaa; looma baahna akoon ama rakibid barnaamij.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada Vimeo ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Videoner wuxuu bixiyaa tayo kasta oo Vimeo u diyaariyo muuqaalkaas, ilaa xallinta asalka ah ee la soo geliyey, oo ay ku jiraan HD iyo 4K haddii abuuruhu bixiyey." },
+        { q: "Ma soo dejin karaa muuqaallada Vimeo ee gaarka ah ama furaha sirta ah leh?", a: "Maya — Videoner wuxuu la shaqeeyaa oo keliya link-yada Vimeo ee dadweynaha u furan. Muuqaallada gaarka ah, kuwa furaha sirta ah lagu ilaaliyo ama gelitaankoodu xaddidan yahay lama soo dejin karo." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo Vimeo?", a: "Soo dejintu waxay u taal muuqaallada aad xaq u leedahay inaad kaydiso — waxyaabahaaga, muuqaallada leh shatiga Creative Commons, ama wax kasta oo abuuruhu si cad u oggolaaday in la soo dejiyo. Ixtiraam xuquuqda daabacaadda abuuraha asalka ah iyo shuruudaha adeegga Vimeo." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha waxaa la sameeyaa marka la codsado waxaana server-ka lagu hayaa qiyaastii hal saac ka hor inta aan si toos ah loo tirtirin, markaa ku kaydi qalabkaaga isla marka soo dejintu dhammaato." },
+      ],
+    },
+    vk: {
+      description: "Soo deji muuqaallo iyo clips VK",
+      news: "Hadda waxaa la taageeraa VK",
+      titleLine1: "Soo deji muuqaal VK",
+      titleLine2: "iyo Clips",
+      pageDescription:
+        "Soo deji muuqaallada iyo clips-ka VK tayo sare leh. Degdeg, bilaash ah oo fudud.",
+      placeholder: "Halkan ku dheji link-ga VK...",
+      howTo: [
+        "Ka fur muuqaalka ama clip-ka VK (vk.com ama VK Video) oo ka koobiyee link-giisa bar-ciwaanka ama badhanka Share.",
+        "Ku dheji link-ga sanduuqa kore oo riix Soo deji.",
+        "Dooro tayada iyo qaabka la heli karo.",
+        "Faylku si toos ah ayuu u soo degayaa — uma baahnid inaad gasho VK.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada VK ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Dhammaan tayada VK u bixiso muuqaalkaas ama clip-kaas, iyo sidoo kale codka MP3." },
+        { q: "Ma u baahanahay inaan galo VK?", a: "Maya — muuqaalku waa inuu dadweynaha u furan yahay. Videoner ma galo VK, markaa muuqaallada gaarka ah, kuwa saaxiibada keliya ama u baahan gelitaan lama soo dejin karo." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo VK?", a: "Soo deji oo keliya muuqaallada aad xaq u leedahay inaad kaydiso, adigoo ixtiraamaya Shuruudaha Adeegga VK iyo xuquuqda qofka soo geliyey." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha server-ka waxaa lagu hayaa qiyaastii hal saac, kadibna si toos ah ayaa loo tirtiraa." },
+      ],
+    },
+    rutube: {
+      description: "Soo deji muuqaallo Rutube",
+      news: "Hadda waxaa la taageeraa Rutube",
+      titleLine1: "Soo deji muuqaal",
+      titleLine2: "Rutube",
+      pageDescription:
+        "Soo deji muuqaallada Rutube tayo sare leh. Degdeg, bilaash ah oo fudud.",
+      placeholder: "Halkan ku dheji link-ga Rutube...",
+      howTo: [
+        "Ka fur muuqaalka Rutube oo ka koobiyee link-giisa bar-ciwaanka ama badhanka Share.",
+        "Ku dheji sanduuqa kore.",
+        "Dooro tayada iyo qaabka (muuqaal ama cod).",
+        "Soo dejintu isla markiiba way bilaabanaysaa, looma baahna akoon Rutube.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada Rutube ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Tayo kasta oo Rutube bixiso, qaabka MP4, iyo sidoo kale codka MP3." },
+        { q: "Ma u baahanahay inaan galo Rutube?", a: "Maya — Videoner wuxuu la shaqeeyaa oo keliya muuqaallada Rutube ee dadweynaha u furan; gelitaan lama isticmaalo loomana baahna." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo Rutube?", a: "Soo deji oo keliya waxyaabaha laguu oggol yahay inaad kaydiso, adigoo ixtiraamaya Shuruudaha Adeegga Rutube iyo xuquuqda abuuraha." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha waxay server-ka ku jiraan qiyaastii hal saac ka hor inta aan si toos ah loo tirtirin." },
+      ],
+    },
+    okru: {
+      description: "Soo deji muuqaallo OK.ru (Odnoklassniki)",
+      news: "Hadda waxaa la taageeraa OK.ru",
+      titleLine1: "Soo deji muuqaal",
+      titleLine2: "OK.ru",
+      pageDescription:
+        "Soo deji muuqaallada OK.ru (Odnoklassniki) tayo sare leh. Degdeg, bilaash ah oo fudud.",
+      placeholder: "Halkan ku dheji link-ga OK.ru...",
+      howTo: [
+        "Ka fur muuqaalka OK.ru (Odnoklassniki) oo ka koobiyee link-giisa bar-ciwaanka.",
+        "Ku dheji link-ga sanduuqa kore oo riix Soo deji.",
+        "Dooro tayada iyo qaabka.",
+        "Soo dejintu isla markiiba way bilaabanaysaa — looma baahna gelitaan OK.ru.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada OK.ru ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Dhammaan tayada OK.ru u bixiso muuqaalkaas, iyo sidoo kale MP3." },
+        { q: "Ma u baahanahay inaan galo OK.ru?", a: "Maya — waxaa shaqeeya oo keliya muuqaallada OK.ru (Odnoklassniki) ee dadweynaha. Videoner weligiis ma galo akoon, markaa muuqaallada gaarka ah lama heli karo." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo OK.ru?", a: "Soo deji oo keliya muuqaallada aad xaq u leedahay inaad kaydiso, adigoo ixtiraamaya Shuruudaha Adeegga OK.ru iyo xuquuqda qofka soo geliyey." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha si toos ah ayaa loo tirtiraa qiyaastii hal saac kadib marka la sameeyo." },
+      ],
+    },
+    pinterest: {
+      description: "Soo deji muuqaallada pin-nada Pinterest",
+      news: "Hadda waxaa la taageeraa Pinterest",
+      titleLine1: "Soo deji muuqaal Pinterest",
+      titleLine2: "iyo Pins",
+      pageDescription:
+        "Soo deji muuqaallada pin-nada Pinterest tayo sare leh. Degdeg, bilaash ah oo fudud. Ogsoonow: waxaa la soo dejin karaa oo keliya pin-nada muuqaalka — pin-nada sawirrada keliya ah lama taageero.",
+      placeholder: "Halkan ku dheji link-ga Pinterest...",
+      howTo: [
+        "Ka fur pin-ka Pinterest oo riix Share → Copy Link (ama ka koobiyee link-ga biraawsarkaaga).",
+        "Ku dheji link-ga sanduuqa kore oo riix Soo deji.",
+        "Dooro tayada iyo qaabka aad doorbidayso.",
+        "Faylkaagu isla markiiba wuu soo degayaa — looma baahna akoon.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada Pinterest ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Videoner wuxuu bixiyaa tayo kasta oo Pinterest u bixiso muuqaalka pin-kaas, iyo sidoo kale soo saarista codka MP3." },
+        { q: "Ma ka soo dejin karaa sawirro Pinterest?", a: "Maya — waxaa la soo dejin karaa oo keliya pin-nada muuqaalka. Haddii pin-ku yahay sawir keliya, ma jiro fayl muuqaal ah oo la soo saaro." },
+        { q: "Ma soo dejin karaa pin-no gaar ah ama ku xaddidan board?", a: "Waxaa la taageeraa oo keliya pin-nada dadweynaha u furan; board-yada gaarka ah iyo waxyaabaha u baahan gelitaan lama soo dejin karo." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo Pinterest?", a: "Soo deji oo keliya pin-nada aad xaq u leedahay inaad kaydiso — waxyaabahaaga ama wax kasta oo abuuruhu oggolaado. Ixtiraam Shuruudaha Adeegga Pinterest iyo sharciga xuquuqda daabacaadda." },
+        { q: "Ilaa intee ayuu faylka la soo dejiyey diyaar yahay?", a: "Faylasha la beddelay waxay server-ka ku jiraan qiyaastii hal saac, markaa isla markiiba ku kaydi qalabkaaga kadib soo dejinta." },
+      ],
+    },
+    threads: {
+      description: "Soo deji muuqaallada boostooyinka Threads",
+      news: "Hadda waxaa la taageeraa Threads",
+      titleLine1: "Soo deji muuqaal",
+      titleLine2: "Threads",
+      pageDescription:
+        "Soo deji muuqaallada boostooyinka Threads. Degdeg, bilaash ah, looma baahna akoon Threads. Threads wuxuu bixiyaa hal nooc oo muuqaal ah, ilaa 720p — taasi waa tayada ugu sarreysa ee goobtu diyaariso.",
+      placeholder: "Halkan ku dheji link-ga Threads...",
+      howTo: [
+        "Ka fur boostada Threads oo riix astaanta wadaagga, kadib Copy Link.",
+        "Ku dheji link-ga sanduuqa kore oo riix Soo deji.",
+        "Dooro qaabka aad rabto — muuqaal ama codka MP3.",
+        "Faylkaagu isla markiiba wuu soo degayaa — looma baahna akoon.",
+      ],
+      faq: [
+        { q: "Ma bilaash baa soo dejinta muuqaallada Threads ee Videoner?", a: "Haa, gebi ahaanba waa bilaash: gelitaan looma baahna, ma jiraan rukumo, xayaysiis ama xad maalinle ah oo soo dejin ah. Xadka keliya waa taraafikada YouTube — 10 GB maalintii shabakad kasta — si adeegga looga ilaaliyo xadgudub." },
+        { q: "Ma u baahanahay akoon si aan u soo dejiyo?", a: "Maya. Soo dejintu uma baahna akoon ama gelitaan — kaliya ku dheji link-ga oo riix Soo deji." },
+        { q: "Tayo noocee ah ayaan soo dejin karaa?", a: "Threads wuxuu boost kasta u daabacaa hal nooc oo muuqaal ah, oo lagu xaddiday 720p dhinaca gaaban — xitaa haddii qoruhu soo geliyey 4K. Videoner faylkaas sidiisa ayuu kuu siiyaa, iyo sidoo kale soo saarista codka MP3. Ma jiro soo dejiye bixin kara wax ka badan, sababtoo ah xallin ka sarreysa lama bixiyo gabi ahaanba." },
+        { q: "Link-yada threads.com iyo threads.net labaduba ma shaqeeyaan?", a: "Haa. Link-yada buuxa sida threads.com/@user/post/CODE iyo link-yada gaaban sida threads.net/t/CODE labaduba waa la taageeraa." },
+        { q: "Ma ka soo dejin karaa sawirro boost Threads ah?", a: "Maya — muuqaallo keliya. Haddii boostadu ay ka kooban tahay sawirro keliya, ma jiro fayl muuqaal ah oo la soo saaro." },
+        { q: "Ka warran boost leh dhowr muuqaal?", a: "Waxaa la soo dejiyaa muuqaalka koowaad ee boostada. Carousel-ka Threads wuxuu qaadi karaa dhowr clip, waxaana la kaydiyaa oo keliya kan koowaad." },
+        { q: "Ma soo dejin karaa boostooyin gaar ah?", a: "Maya. Waxaa la soo dejin karaa oo keliya boostooyinka dadweynaha u muuqda; wax kasta oo ka dambeeya akoon gaar ah ama darbiga gelitaanka lama heli karo." },
+        { q: "Ma sharci baa in muuqaallo laga soo dejiyo Threads?", a: "Soo deji oo keliya waxa aad xaq u leedahay inaad kaydiso — waxyaabahaaga ama wax kasta oo qoruhu oggolaado. Ixtiraam Shuruudaha Isticmaalka Threads iyo sharciga xuquuqda daabacaadda." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -10138,4 +10499,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, tl };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, tl };

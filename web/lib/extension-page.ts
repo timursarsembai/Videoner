@@ -1443,6 +1443,58 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Gida",
   },
+  so: {
+    metaTitle: "Kordhiyaha biraawsarka Videoner",
+    title: "Videoner biraawsarkaaga",
+    summary:
+      "Kordhiyuhu wuxuu badhanka Soo deji ku daraa bogagga muuqaallada wuxuuna si toos ah ugu soo dejiyaa biraawsarkaaga. Instagram, Facebook, TikTok iyo Threads waxaa lagu soo dejiyaa gelitaankaaga adiga — sidaas darteed boostooyinka gaarka ah ee aad ku aragto akoonkaaga sidoo kale way shaqeeyaan, sida muuqaallada goobtu aysan siinin server-kayaga.",
+    failedVideo: "Muuqaalka aan laga soo dejin karin bogga ama bot-ka:",
+    failedVideoHint:
+      "Rakib kordhiyaha, ku gal goobta isla biraawsarkan, fur muuqaalka oo riix Soo deji geeska midig ee hoose.",
+    openVideo: "Fur muuqaalka",
+    version: "Nooca",
+    browsersTitle: "Halka uu ka shaqeeyo",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi iyo biraawsarrada kale ee ku dhisan Chromium — kombiyuutarka.",
+    mobile: "Taleefannada iyo tablet-yada ma taageeraan kordhiyeyaal — halkaas isticmaal bogga ama bot-ka Telegram.",
+    getcourseTitle: "Casharrada GetCourse",
+    getcourse:
+      "Fur cashar ku jira dugsi GetCourse adigoo soo galay: badhanka Soo deji wuxuu ka muuqanayaa geeska midig ee sare ee ciyaariyaha, astaanta Videoner-na waxay tusaysaa dhammaan muuqaallada casharka. Biraawsarkaagu isagaa soo dejiya casharka oo u isku keena mp4 — faylku ma maro server-kayaga. Haddii taasi fashilanto, server-kayaga ayaa casharka ku soo dejiya isla tayadaas; markaas wuxuu helayaa link-ga muuqaalka ee ciyaariyaha.",
+    privacyTitle: "Gelitaankaagu adiga ayuu kula jiraa",
+    privacy:
+      "Kordhiyuhu weligiis kuma weydiiyo furaha sirta ah: biraawsarkaaga adiga ayaa codsiga u dira goobta, server-kayaguna wuxuu helaa oo keliya warbixin gaaban oo tirakoob ah — link-ga, cabbirka faylka iyo cinwaanka. Cookies-ku server-ka waxay u tagaan oo keliya haddii adigu riixdo \"Ku xir akoonka bot-ka\" — oo keliya cookies-ka goobtaas, iyagoo sir ah.",
+    stepsTitle: "Sida loogu rakibo Chrome, Yandex Browser, Edge iyo Opera",
+    steps: [
+      "Soo deji kaydka oo fur — waxaad helaysaa gal videoner-extension ah oo magaciisa ku jiro lambarka nooca.",
+      "Fur bogga kordhiyeyaasha: ku qor chrome://extensions bar-ciwaanka (edge://extensions ee Edge, opera://extensions ee Opera).",
+      "Daar “Developer mode” — furaha ku yaal xagga sare ee bogga.",
+      "Riix “Load unpacked” oo dooro galkaas — kan ay ku jirto manifest.json.",
+      "Waa diyaar: bogagga muuqaallada waxaa ku soo baxaya badhanka Soo deji, astaanta Videoner-na waxay ka muuqanaysaa bar-qalabka biraawsarka.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 ama ka dambe — sidoo kale kombiyuutarka.",
+    firefoxSoon:
+      "Nooca Firefox dhowaan ayuu imanayaa. Hadda kordhiyuhu wuxuu ka shaqeeyaa Chrome, Yandex Browser, Edge, Opera iyo biraawsarrada kale ee ku dhisan Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Kayd .zip ah — wuxuu ku rakibmaa dhowr daqiiqo",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Rakibid hal riix ah",
+    yourBrowser: "Biraawsarkaaga",
+    soon: "Dhowaan",
+    firefoxStepsTitle: "Sida loogu rakibo Firefox",
+    firefoxSteps: [
+      "Riix badhanka Firefox ee ku yaal xagga sare ee boggan.",
+      "Firefox wuxuu ku weydiinayaa inuu u oggolaado videoner.download inuu rakibo add-on — riix “Continue to Installation”.",
+      "Daaqadda “Add Videoner?” riix “Add”.",
+      "Waa diyaar: bogagga muuqaallada waxaa ku soo baxaya badhanka Soo deji, astaanta Videoner-na waxay ka muuqanaysaa bar-qalabka. Firefox isagaa rakiba cusboonaysiinta.",
+    ],
+    updateTitle: "Sida loo cusboonaysiiyo Chrome, Yandex Browser, Edge iyo Opera",
+    updateSteps: [
+      "Marka nooc cusub soo baxo, astaanta Videoner waxay muujinaysaa calaamadda NEW, daaqadda yarna waxay leedahay link halkan ku keenaya.",
+      "Soo deji kaydka adigoo isticmaalaya badhanka Chrome ee xagga sare ee boggan oo ku fur isla galkii hore, adigoo beddelaya faylasha.",
+      "Fur bogga kordhiyeyaasha (chrome://extensions, browser://extensions ee Yandex Browser, edge://extensions) oo riix “Reload” — fallaarta wareegsan ee kaarka Videoner.",
+    ],
+    back: "Bogga hore",
+  },
   tl: {
     metaTitle: "Videoner browser extension",
     title: "Videoner para sa iyong browser",

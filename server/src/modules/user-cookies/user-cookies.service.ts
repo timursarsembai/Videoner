@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base === 'fil' ? 'tl' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' || norm === 'so' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -388,6 +388,7 @@ export class UserCookiesService {
       am: forGroup ? 'ለቡድን' : 'ለእርስዎ',
       om: forGroup ? 'garee tokkoof' : 'isiniif',
       ha: forGroup ? 'na rukuni' : 'naku',
+      so: forGroup ? 'koox ahaan' : 'adiga ahaan',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -418,6 +419,7 @@ export class UserCookiesService {
       am: `⚠️ የተገናኘው የ${name} መግቢያዎ (${where}) መስራት አቁሟል፦ መድረኩ ከእንግዲህ አይቀበለውም። ከመለያው ወጥተው ሊሆን ይችላል፣ ወይም መለያው ተገድቦ ሊሆን ይችላል።\n\nበእሱ ማውረድዎን ለመቀጠል መለያውን እንደገና ያገናኙ። ግንኙነቶችዎ፦ /accounts`,
       om: `⚠️ Seensi ${name} keessan kan walqabsiifame (${where}) hojjechuu dhiiseera: waltajjichi si'ana hin fudhatu. Akkaawuntii irraa baatanii ta'uu danda'a, ykn akkaawuntichi daangeffamee ta'uu danda'a.\n\nIttiin buusuu itti fufuuf, akkaawunticha irra deebi'aa walqabsiisaa. Walqunnamtiiwwan keessan: /accounts.`,
       ha: `⚠️ Shigar ${name} da kuka haɗa (${where}) ta daina aiki: dandalin ba ya karɓar ta yanzu. Wataƙila kun fita daga asusun, ko an taƙaita asusun.\n\nDon ci gaba da saukewa da shi, ku sake haɗa asusun. Haɗin ku: /accounts.`,
+      so: `⚠️ Gelitaanka ${name} ee aad ku xirtay (${where}) wuu joogsaday: barnaamijku mar dambe ma aqbalo. Waxaa laga yaabaa inaad ka baxday akoonka, ama akoonka waa la xaddiday.\n\nSi aad ugu sii wadato soo dejinta, mar kale ku xir akoonka. Xiriiradaada: /accounts.`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

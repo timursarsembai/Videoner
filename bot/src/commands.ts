@@ -229,6 +229,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Tsayar da saukewa da layi" },
     { command: "language", description: "Harshen bot" },
   ],
+  so: [
+    { command: "start", description: "Sida loo isticmaalo bot-ka" },
+    { command: "extension", description: "Kordhiye biraawsar" },
+    { command: "accounts", description: "Akoonnadaada stories iyo boostooyinka gaarka ah" },
+    { command: "connect", description: "Ku xir akoon adigoo isticmaalaya kood kordhiyaha ka yimid" },
+    { command: "stop", description: "Jooji soo dejinta iyo safka" },
+    { command: "language", description: "Luqadda bot-ka" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -429,6 +437,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Haɗa asusu da wannan rukuni ta lamba" },
     { command: "language", description: "Harshen bot a wannan rukuni (don admins)" },
     { command: "start", description: "Yadda bot ke aiki a rukuni" },
+  ],
+  so: [
+    { command: "settings", description: "Dejinta bot-ka ee kooxdan (maamulayaasha)" },
+    { command: "accounts", description: "Akoonnada ku xiran kooxdan" },
+    { command: "connect", description: "Ku xir akoon kooxdan adigoo isticmaalaya kood" },
+    { command: "language", description: "Luqadda bot-ka ee kooxdan (maamulayaasha)" },
+    { command: "start", description: "Sida bot-ku uga shaqeeyo kooxda" },
   ],
 };
 

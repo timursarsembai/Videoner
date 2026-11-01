@@ -343,6 +343,18 @@ export const blogUi: Record<
     readFull: "Karanta cikakken rubutun a shafin",
     dateLocale: "ha-NG",
   },
+  so: {
+    title: "Blog-ga Videoner",
+    description: "Wararka mashruuca: waxa cusub ee bot-ka, bogga iyo kordhiyaha, iyo sida loo isticmaalo.",
+    readMore: "Akhri",
+    back: "Dhammaan qoraallada",
+    allPosts: "Blog",
+    channel: "Wararka Telegram",
+    channelCta: "Wararka mashruuca waxay ku jiraan kanaalka Telegram @videonerdownload.",
+    readOnSite: "Ka akhri bogga",
+    readFull: "Ka akhri qoraalka oo dhan bogga",
+    dateLocale: "so-SO",
+  },
   tl: {
     title: "Videoner blog",
     description: "Mga balita ng proyekto: ano ang bago sa bot, sa website at sa extension, at kung paano ito gamitin.",

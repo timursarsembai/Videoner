@@ -2522,6 +2522,91 @@ const TEXTS = {
     langAuto: "Otomaatig",
     langLabel: "Luqadda",
   },
+  az: {
+    loading: "Video məlumatları alınır…",
+    notVideoPage:
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest və ya Threads-də video səhifəsini açın və ikona yenidən klikləyin. GetCourse dərsi: dərs səhifəsi genişlənmə quraşdırılmazdan əvvəl açılıbsa, onu yeniləyin.",
+    gcLesson: "GetCourse dərsi",
+    gcPick: "Bu dərsdə bir neçə video var — birini seçin",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Brauzeriniz videonu yükləyib birləşdirir. Bu pəncərəni bağlaya bilərsiniz, amma brauzeri yox.",
+    gcNoStream: "Videonu pleyerdən almaq alınmadı. Dərs səhifəsini yeniləyin və yenidən cəhd edin.",
+    video: "Video",
+    photo: "Orijinal ölçüdə fotolar",
+    slideshow: "Slayd-şou (video)",
+    gallery: "Fotolar + slayd-şou",
+    audioOnly: "Yalnız audio (mp3)",
+    subtitles: "Subtitrlər (.srt)",
+    subtitlesAuto: "avtomatik",
+    back: "Geri",
+    starting: "Yükləmə başlayır…",
+    waiting: "Serverdə boş yer gözlənilir…",
+    downloading: "Yüklənir",
+    converting: "Emal olunur",
+    left: (eta) => `${eta} qaldı`,
+    saving: "Yükləmələr qovluğuna saxlanılır…",
+    done: "Hazırdır — fayl Yükləmələr qovluğundadır.",
+    news: "📣 Layihə xəbərləri: @videonerdownload",
+    again: "Başqasını yüklə",
+    directDownload: "Videonu yüklə (mp4)",
+    directPhoto: "Şəkli yüklə (jpg)",
+    directNote: "Birbaşa brauzerdən — server növbəsi olmadan",
+    moreOptions: "Digər keyfiyyətlər və audio",
+    fallback: "Brauzerdə yükləmək alınmadı — server vasitəsilə yüklənir.",
+    openSite: "videoner.download saytını açın",
+    retry: "Yenidən cəhd edin",
+    min: "dəq",
+    sec: "san",
+    errNetwork: "Videoner ilə əlaqə qurulmadı. İnternet bağlantınızı yoxlayın və yenidən cəhd edin.",
+    errRateLimit: "Ardıcıl çox sorğu göndərildi. Bir dəqiqə gözləyin və yenidən cəhd edin.",
+    errUnsupported:
+      "Bu səhifədə Videoner-in yükləyə biləcəyi video yoxdur. Konkret video və ya paylaşım səhifəsini açın.",
+    errYoutubeDaily: "Şəbəkəniz üçün gündəlik YouTube limiti bitib. Sabah yenidən cəhd edin.",
+    errTooLarge: "Bu keyfiyyətdə fayl çox böyükdür. Daha aşağı keyfiyyət seçin.",
+    errLogin:
+      "Bu paylaşım yalnız hesaba daxil olmuş istifadəçilər üçün əlçatandır. Açıq paylaşımlar problemsiz yüklənir.",
+    errRegion: "Müəllif bu paylaşımı ölkəyə görə məhdudlaşdırıb, ona görə onu yükləmək mümkün deyil.",
+    errServerBlocked: "Platforma serverimizi müvəqqəti məhdudlaşdırır. Bir az sonra yenidən cəhd edin.",
+    errFailed: "Yükləmək alınmadı. Yenidən cəhd edin və ya başqa keyfiyyət seçin.",
+    errGeneric: "Nəsə səhv getdi. Bir az sonra yenidən cəhd edin.",
+    acctButton: (p) => `🔑 ${p} hesabınızı bota qoşun`,
+    acctWarn: (p) =>
+      `@VideonerBot sizin hesabınızla ${p} platformasında yalnız hesaba daxil olanların gördüyü məzmunu yükləyə biləcək: storilər, qapalı paylaşımlar. Platformalar avtomatik yükləmələri sevmir və hesabı məhdudlaşdıra bilər — əlavə hesab qoşmaq daha yaxşıdır. Brauzer bu saytın cookie fayllarını oxumaq üçün icazə istəyəcək; serverə yalnız ${p} cookie faylları şifrələnmiş şəkildə göndərilir.`,
+    acctConfirm: "Qoş",
+    acctCancel: "Ləğv et",
+    acctSending: "Qoşulur…",
+    acctDenied: "Cookie fayllarına icazə olmadan hesabı qoşmaq mümkün deyil.",
+    acctNoLogin: (p) => `Bu brauzerdə ${p} hesabınıza daxil olmamısınız. Saytda hesabınıza daxil olun və yenidən cəhd edin.`,
+    acctFailed: "Alınmadı. Bir az sonra yenidən cəhd edin.",
+    acctCodeTitle: (p) => `${p} hesabını qoşmaq üçün kod:`,
+    acctCodeHelp:
+      "Onu şəxsi çatda @VideonerBot-a göndərin — öz yükləmələriniz üçün. Qrup üçün qrupda /connect CODE göndərin. Kod 10 dəqiqə etibarlıdır.",
+    acctCopy: "Kopyala",
+    acctCopied: "Kopyalandı",
+    acctOpenBot: "Botu aç",
+    acctNewCode: "Yeni kod al",
+    acctList: "Botdakı qoşulmalarım",
+    acctRevoke: "Cookie icazəsini ləğv et",
+    acctRevoked:
+      "Cookie icazəsi ləğv edildi — genişlənmə artıq onları oxumur. Qoşduğunuz hesablar botda qalır: onları «Botdakı qoşulmalarım» bölməsində silin.",
+    playlistOffer: "📃 Bütün pleylisti yüklə",
+    playlistTitle: (title, n) => `📃 Pleylist${title ? ` «${title}»` : ""}: ${n} video`,
+    playlistHint: "Onları bir-bir yükləyəcəyəm. Bu pəncərəni bağlaya bilərsiniz.",
+    playlist720: "Pleylist 720p keyfiyyətdə",
+    playlistBest: "Pleylist ən yaxşı keyfiyyətdə",
+    playlistAudio: "Pleylist — yalnız audio (mp3)",
+    playlistProgress: (i, n) => `Video ${i} / ${n}`,
+    playlistStats: (done, failed) => `Yükləndi: ${done}${failed ? ` · alınmadı: ${failed}` : ""}`,
+    playlistStop: "⏹ Dayandır",
+    playlistDone: (done, n) => `Pleylist yükləndi: ${done} / ${n}.`,
+    playlistStopped: (done, n) => `Dayandırıldı. Yükləndi: ${done} / ${n}.`,
+    playlistLoading: "Video siyahısı alınır…",
+    close: "Bağla",
+    updateAvailable: (v) => `${v} versiyası çıxıb.`,
+    updateHow: "Necə yeniləmək olar",
+    langAuto: "Avto",
+    langLabel: "Dil",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -2612,12 +2697,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), оромо (om, om-ET → om), хауса (ha, ha-NG → ha), сомали (so, so-SO → so), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), оромо (om, om-ET → om), хауса (ha, ha-NG → ha), сомали (so, so-SO → so), азербайджанский (az, az-AZ, az-Latn → az), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский, персидский и урду пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { om: "Afaan Oromoo", id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", ha: "Hausa", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", so: "Soomaali", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ru: "Русский", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
+export const LANG_NAMES = { om: "Afaan Oromoo", az: "Azərbaycanca", id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", ha: "Hausa", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", so: "Soomaali", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ru: "Русский", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -2725,11 +2810,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому, корейскому, тайскому, тагальскому, амхарскому, оромо и хауса — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому, корейскому, тайскому, тагальскому, амхарскому, оромо, хауса, сомали и азербайджанскому — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am" || lang === "om" || lang === "ha" || lang === "so";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am" || lang === "om" || lang === "ha" || lang === "so" || lang === "az";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", ha: "ha-NG", so: "so-SO", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", ha: "ha-NG", so: "so-SO", az: "az-AZ", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

@@ -1495,6 +1495,58 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Bogga hore",
   },
+  az: {
+    metaTitle: "Videoner brauzer genişlənməsi",
+    title: "Brauzeriniz üçün Videoner",
+    summary:
+      "Genişlənmə video səhifələrinə «Yüklə» düyməsi əlavə edir və videonu birbaşa brauzerinizdə yükləyir. Instagram, Facebook, TikTok və Threads sizin öz hesabınızla yüklənir — beləliklə hesabınızda gördüyünüz bağlı paylaşımlar da, platformanın serverimizə vermədiyi videolar da yüklənir.",
+    failedVideo: "Saytda və ya botda yüklənə bilməyən video:",
+    failedVideoHint:
+      "Genişlənməni quraşdırın, bu brauzerdə platformaya daxil olun, videonu açın və sağ aşağı küncdəki «Yüklə» düyməsini basın.",
+    openVideo: "Videonu aç",
+    version: "Versiya",
+    browsersTitle: "Harada işləyir",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi və Chromium əsaslı digər brauzerlər — kompüterdə.",
+    mobile: "Telefon və planşetlər genişlənmələri dəstəkləmir — orada saytdan və ya Telegram botundan istifadə edin.",
+    getcourseTitle: "GetCourse dərsləri",
+    getcourse:
+      "GetCourse məktəbində dərsi öz hesabınızla açın: pleyerin sağ yuxarı küncündə «Yüklə» düyməsi görünəcək, Videoner ikonu isə dərsdəki bütün videoları göstərəcək. Brauzer dərsi özü yükləyir və mp4 faylına yığır — fayl serverimizdən keçmir. Brauzerdə alınmasa, dərsi eyni keyfiyyətdə serverimiz yükləyəcək: bu halda ona pleyerdəki video linki göndərilir.",
+    privacyTitle: "Hesabınız sizdə qalır",
+    privacy:
+      "Genişlənmə heç vaxt parol soruşmur: platformaya sorğunu sizin öz brauzeriniz göndərir, serverimiz isə statistika üçün yalnız qısa hesabat alır — link, fayl ölçüsü və ad. Cookie faylları serverə yalnız «Hesabı bota qoş» düyməsini özünüz bassanız göndərilir — və yalnız həmin platformanın cookie faylları, şifrələnmiş şəkildə.",
+    stepsTitle: "Chrome, Yandex Browser, Edge və Opera-da necə quraşdırmaq olar",
+    steps: [
+      "Arxivi yükləyin və açın (zip-dən çıxarın) — adında versiya nömrəsi olan videoner-extension qovluğu yaranacaq.",
+      "Genişlənmələr səhifəsini açın: ünvan sətrinə chrome://extensions yazın (Edge-də — edge://extensions, Opera-da — opera://extensions).",
+      "Səhifənin yuxarısındakı «Developer mode» (Tərtibatçı rejimi) açarını yandırın.",
+      "«Load unpacked» (Açılmış genişlənməni yüklə) düyməsini basın və həmin qovluğu seçin — içində manifest.json faylı olan qovluğu.",
+      "Hazırdır: video səhifələrində «Yüklə» düyməsi, brauzer panelində isə Videoner ikonu görünəcək.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 və daha yeni — həmçinin kompüterdə.",
+    firefoxSoon:
+      "Firefox versiyası tezliklə çıxacaq. Hələlik genişlənmə Chrome, Yandex Browser, Edge, Opera və Chromium əsaslı digər brauzerlərdə işləyir.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: ".zip arxivi — bir-iki dəqiqəyə quraşdırılır",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Bir kliklə quraşdırma",
+    yourBrowser: "Sizin brauzeriniz",
+    soon: "Tezliklə",
+    firefoxStepsTitle: "Firefox-da necə quraşdırmaq olar",
+    firefoxSteps: [
+      "Bu səhifənin yuxarısındakı Firefox düyməsini basın.",
+      "Firefox videoner.download saytına əlavə quraşdırmağa icazə verib-verməməyi soruşacaq — «Continue to Installation» (Quraşdırmanı davam etdir) düyməsini basın.",
+      "«Add Videoner?» (Videoner əlavə edilsin?) pəncərəsində «Add» (Əlavə et) düyməsini basın.",
+      "Hazırdır: video səhifələrində «Yüklə» düyməsi, paneldə isə Videoner ikonu görünəcək. Yeniləmələri Firefox özü quraşdırır.",
+    ],
+    updateTitle: "Chrome, Yandex Browser, Edge və Opera-da necə yeniləmək olar",
+    updateSteps: [
+      "Yeni versiya çıxanda Videoner ikonunda NEW nişanı görünür, pəncərədə isə bu səhifəyə link olur.",
+      "Bu səhifənin yuxarısındakı Chrome düyməsi ilə arxivi yükləyin və onu əvvəlki qovluğa faylları əvəz etməklə açın.",
+      "Genişlənmələr səhifəsini açın (chrome://extensions, Yandex Browser-də browser://extensions, edge://extensions) və Videoner kartındakı «Reload» (Yenilə) — dairəvi ox düyməsini basın.",
+    ],
+    back: "Ana səhifə",
+  },
   tl: {
     metaTitle: "Videoner browser extension",
     title: "Videoner para sa iyong browser",

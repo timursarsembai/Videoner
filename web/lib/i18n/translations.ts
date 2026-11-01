@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "az", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -43,6 +43,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   om: "Afaan Oromoo",
   ha: "Hausa",
   so: "Soomaali",
+  az: "Azərbaycanca",
   tl: "Tagalog",
 };
 
@@ -10139,6 +10140,366 @@ const so: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const az: Translations = {
+  nav: {
+    home: "Ana səhifə",
+    downloaders: "Yükləyicilər",
+    extension: "Genişlənmə",
+    blog: "Bloq",
+    switchTheme: "Mövzunu dəyiş",
+    language: "Dil",
+    comingSoon: "Tezliklə",
+  },
+  theme: {
+    light: "İşıqlı",
+    dark: "Qaranlıq",
+    system: "Sistem",
+  },
+  playlist: {
+    title: "«{title}» pleylisti: {count} video",
+    hint: "Videolar bir-bir yüklənir. Bu səhifəni açıq saxlayın; brauzeriniz bir neçə faylın yüklənməsinə icazə istəyə bilər.",
+    std: "720p",
+    hd: "Ən yaxşı keyfiyyət",
+    audio: "Yalnız audio (mp3)",
+    progress: "Video {index} / {count}",
+    stats: "Yükləndi: {done} · alınmadı: {failed}",
+    stop: "Dayandır",
+    stopped: "Dayandırıldı. {count} videodan {done} yükləndi.",
+    finished: "Pleylist tamamlandı: {count} videodan {done}.",
+    again: "Yenidən seç",
+  },
+  footer: {
+    news: "Layihə xəbərləri",
+    botCta: "Telegram botu kimi də mövcuddur:",
+    extension: "Brauzer genişlənməsi",
+    developedBy: "Hazırlayan",
+    rights: "Bütün hüquqlar qorunur.",
+  },
+  content: {
+    howToTitle: "{platform} videolarını necə yükləmək olar",
+    faqTitle: "Tez-tez verilən suallar",
+  },
+  auth: {
+    loginButton: "Telegram ilə daxil ol",
+    signIn: "Daxil ol",
+    logout: "Çıxış",
+    switchAccountHint: "Bu sizin hesabınız deyil?",
+    switchAccountLink: "Telegram Web-dən çıxın",
+  },
+  home: {
+    new: "Yeni",
+    manyFeatures: "Çoxlu yeni imkanlar",
+    titleLine1: "Sürətli və asan",
+    titleLine2: "video yükləmə",
+    subtitle:
+      "YouTube, Instagram, TikTok və digər saytlar üçün universal video yükləyiciniz. HD-dən mobil formata qədər istənilən keyfiyyəti seçin.",
+    subtitleExtra: "Limit yoxdur, əziyyət yoxdur — sadəcə yükləyin.",
+    placeholder: "İstənilən platformadan video linkini yapışdırın...",
+    download: "Yüklə",
+  },
+  video: {
+    description: "Təsvir",
+    format: "Format",
+    selected: "Seçildi: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Çevrilir",
+    downloading: "Yüklənir",
+    downloadAgain: "Yenidən yüklə",
+    startDownload: "Yükləməyə başla",
+    convertingBtn: "Çevrilir...",
+    downloadingBtn: "Yüklənir...",
+    loginRequiredHint: "Yükləmək üçün Telegram ilə daxil olun",
+    quotaExceededHint: "Gündəlik 20 yükləmə limitinə çatdınız — sabah yenidən gəlin",
+    postFiles: "Bu paylaşımda {count} fayl var",
+    photoQuality: "Orijinal fotolar",
+    slideshowQuality: "Slayd-şou (video)",
+    galleryQuality: "Fotolar + slayd-şou",
+    downloadAll: "Hamısını yüklə",
+    downloadOne: "Saxla",
+    subtitlesTab: "subtitrlər",
+    subtitlesHint: "Dil seçin — istənilən pleyerin açdığı .srt faylı alacaqsınız.",
+    subtitlesAuto: "avto",
+    subtitlesDownload: "Subtitrləri yüklə",
+    subtitlesDownloading: "Subtitrlər hazırlanır...",
+  },
+  toast: {
+    enterUrl: "Zəhmət olmasa, link daxil edin",
+    enterValidUrl: "Zəhmət olmasa, düzgün link daxil edin",
+    platformNotSupported: "Bu platforma dəstəklənmir",
+    urlNotSupported: "Bu link dəstəklənmir",
+    enterValidPlatformUrl: "Zəhmət olmasa, düzgün {platform} linki daxil edin",
+    captchaNotReady: "Təhlükəsizlik yoxlamasının bitməsini bir az gözləyin, sonra yenidən cəhd edin",
+    comingSoon: "Tezliklə! {name} hələ dəstəklənmir",
+    selectQuality: "Zəhmət olmasa, keyfiyyət seçin",
+    downloadStarted: "Yükləmə başladı!",
+    downloadCompleted: "Yükləmə tamamlandı!",
+    newsChannel: "Layihə xəbərləri Telegram-dadır:",
+    downloadUrlNotReceived: "Yükləmə linki alınmadı",
+    needsBrowser:
+      "Platforma bu videonu serverimizə vermədi: video yalnız hesaba daxil olmuş istifadəçilər üçün əlçatandır və ya giriş müvəqqəti məhdudlaşdırılıb. Onu kompüterdə Videoner brauzer genişlənməsi ilə yükləyə bilərsiniz — genişlənmə sizin öz hesabınızla yükləyir.",
+    needsBrowserLink: "Genişlənməni əldə edin →",
+  },
+  platforms: {
+    youtube: {
+      description: "YouTube-dan videoları HD keyfiyyətdə yükləyin",
+      news: "İndi videolar və Shorts dəstəklənir",
+      titleLine1: "YouTube video",
+      titleLine2: "və Shorts yüklə",
+      pageDescription:
+        "YouTube videolarını, Shorts və audionu yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat. 8K, 4K, HD keyfiyyət və MP3 audio dəstəklənir.",
+      placeholder: "YouTube linkini bura yapışdırın...",
+      howTo: [
+        "Video linkini brauzerin ünvan sətrindən kopyalayın və ya YouTube tətbiqində «Paylaş» düyməsinə toxunun.",
+        "Linki yuxarıdakı xanaya yapışdırın və «Yüklə» düyməsini basın.",
+        "Keyfiyyəti seçin — video üçün 4K/8K-ya qədər və ya yalnız audio üçün MP3.",
+        "Fayl dərhal yüklənməyə başlayır, hesaba daxil olmaq lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə YouTube videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "Videoner YouTube-un həmin video üçün təqdim etdiyi bütün keyfiyyətləri təklif edir — 360p-dən, mövcud olduqda 4K/8K-ya qədər — üstəlik MP3 audio çıxarılması." },
+        { q: "Şəxsi və ya yaş məhdudiyyətli videoları yükləmək olar?", a: "Yalnız açıq YouTube videoları dəstəklənir; şəxsi, sizə əlçatan olmayan və ya hesaba daxil olmağı tələb edən məzmunu yükləmək mümkün deyil." },
+        { q: "YouTube-dan video yükləmək qanunidir?", a: "Yalnız saxlamağa hüququnuz olan videoları yükləyin — öz məzmununuzu, Creative Commons lisenziyalı videoları və ya müəllifin icazə verdiyi hər şeyi. YouTube-un İstifadə Şərtlərinə və müəllif hüquqları qanununa hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Çevrilmiş fayllar serverdə təxminən bir saat saxlanılır, ona görə də onları yükləmədən dərhal sonra cihazınıza saxlayın." },
+      ],
+    },
+    facebook: {
+      description: "Facebook paylaşımlarından və reels-dən videoları saxlayın",
+      news: "İndi reels dəstəklənir",
+      titleLine1: "Facebook video",
+      titleLine2: "və reels yüklə",
+      pageDescription:
+        "Facebook videolarını və reels-i yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat.",
+      placeholder: "Facebook linkini bura yapışdırın...",
+      howTo: [
+        "Facebook-da videonu və ya reels-i açın və linkini kopyalayın (üç nöqtə → «Linki kopyala»).",
+        "Linki yuxarıya yapışdırın və «Yüklə» düyməsini basın.",
+        "MP4 keyfiyyətini seçin və ya audionu MP3 kimi çıxarın.",
+        "Fayl birbaşa cihazınıza yüklənir — Facebook hesabı lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə Facebook videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "Videoner Facebook-un həmin video və ya reels üçün təqdim etdiyi ən yüksək keyfiyyəti MP4 formatında götürür, üstəlik MP3 audio seçimi var." },
+        { q: "Şəxsi videoları yükləmək olar?", a: "Yalnız açıq paylaşımlar, videolar və reels işləyir — şəxsi və ya yalnız dostlar üçün olan məzmun əlçatan deyil." },
+        { q: "Facebook-dan video yükləmək qanunidir?", a: "Yalnız saxlamağa icazəniz olan videoları yükləyin; müəllifin hüquqlarına və Facebook-un İstifadə Şərtlərinə hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Fayllar çevrildikdən sonra təxminən bir saat saxlanılır, sonra avtomatik silinir — tez yükləyin." },
+      ],
+    },
+    instagram: {
+      description: "Instagram reels, stories və paylaşımlarını yükləyin",
+      news: "İndi reels və stories dəstəklənir",
+      titleLine1: "Instagram reels",
+      titleLine2: "və stories yüklə",
+      pageDescription:
+        "Instagram reels, stories və paylaşımlarını yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat.",
+      placeholder: "Instagram linkini bura yapışdırın...",
+      howTo: [
+        "Instagram-da reels-i, paylaşımı və ya stories-i açın və kağız təyyarə ikonuna → «Linki kopyala» toxunun.",
+        "Linki yuxarıdakı xanaya yapışdırın.",
+        "İstədiyiniz keyfiyyəti və formatı seçin.",
+        "Yükləmə dərhal başlayır — daxil olmaq və ya tətbiq quraşdırmaq lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə Instagram məzmununu yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "Reels, paylaşımlar və stories üçün mövcud olan tam keyfiyyət, MP4 və ya MP3 formatında." },
+        { q: "Bağlı hesablardan yükləmək olar?", a: "Yalnız açıq Instagram hesabları və paylaşımları dəstəklənir; bağlı hesabların məzmununu yükləmək mümkün deyil." },
+        { q: "Instagram-dan video yükləmək qanunidir?", a: "Yalnız saxlamağa icazəniz olanı yükləyin — müəllifə və Instagram-ın İstifadə Şərtlərinə hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Fayllar avtomatik silinməzdən əvvəl serverdə təxminən bir saat qalır." },
+      ],
+    },
+    tiktok: {
+      description: "TikTok videolarını su nişanı olmadan yükləyin",
+      news: "İndi su nişanı olmadan",
+      titleLine1: "TikTok videolarını",
+      titleLine2: "su nişanı olmadan yüklə",
+      pageDescription:
+        "TikTok videolarını su nişanı olmadan yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat.",
+      placeholder: "TikTok linkini bura yapışdırın...",
+      howTo: [
+        "TikTok videosunda «Paylaş» düyməsinə, sonra «Linki kopyala»ya toxunun.",
+        "Linki yuxarıya yapışdırın və «Yüklə» düyməsini basın.",
+        "Təmiz MP4 — TikTok su nişanı olmadan — və ya MP3 audio əldə edin.",
+        "Onu birbaşa cihazınıza saxlayın.",
+      ],
+      faq: [
+        { q: "Videoner ilə TikTok videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "TikTok-un həmin video üçün təqdim etdiyi ən yaxşı keyfiyyət, TikTok su nişanı olmadan, üstəlik MP3 audio." },
+        { q: "Bağlı hesablardan yükləmək olar?", a: "Yalnız açıq TikTok hesablarının videolarını yükləmək olar." },
+        { q: "TikTok-dan video yükləmək qanunidir?", a: "Saxlamağa hüququnuz olan videoları yükləyin, müəllifi qeyd edin və TikTok-un İstifadə Şərtlərinə hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Yüklənmiş fayllar serverdə təxminən bir saat qalır, sonra avtomatik silinir." },
+      ],
+    },
+    twitter: {
+      description: "Twitter videolarını yükləyin",
+      news: "İndi Twitter videoları dəstəklənir",
+      titleLine1: "Twitter",
+      titleLine2: "video yüklə",
+      pageDescription:
+        "Twitter videolarını yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat.",
+      placeholder: "Twitter linkini bura yapışdırın...",
+      howTo: [
+        "Tvitin altında «Paylaş» düyməsinə toxunun və «Linki kopyala»nı seçin (və ya URL-i brauzerdən kopyalayın).",
+        "Onu yuxarıdakı xanaya yapışdırın.",
+        "İstədiyiniz video keyfiyyətini seçin.",
+        "Yükləmə dərhal başlayır — X/Twitter hesabı lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə Twitter/X videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "X/Twitter-in həmin video üçün təqdim etdiyi bütün keyfiyyətlər, MP4 formatında, üstəlik MP3." },
+        { q: "Bağlı hesablardan yükləmək olar?", a: "Yalnız açıq hesabların tvitləri işləyir; qorunan/bağlı hesablar dəstəklənmir." },
+        { q: "Twitter/X-dən video yükləmək qanunidir?", a: "Saxlamağa hüququnuz olan məzmunu yükləyin, müəllifin hüquqlarına və platformanın İstifadə Şərtlərinə hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Fayllar yaradıldıqdan təxminən bir saat sonra avtomatik silinir." },
+      ],
+    },
+    vimeo: {
+      description: "Vimeo-dan videoları yüksək keyfiyyətdə yükləyin",
+      news: "İndi Vimeo dəstəklənir",
+      titleLine1: "Vimeo",
+      titleLine2: "video yüklə",
+      pageDescription:
+        "Vimeo videolarını yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat.",
+      placeholder: "Vimeo linkini bura yapışdırın...",
+      howTo: [
+        "Vimeo-nu açın və video linkini kopyalayın (və ya mobil cihazda «Paylaş» → «Linki kopyala»).",
+        "Linki yuxarıdakı xanaya yapışdırın və «Yüklə» düyməsini basın.",
+        "Keyfiyyəti və formatı seçin — video üçün MP4, yalnız audio lazımdırsa MP3.",
+        "Yükləmə dərhal başlayır; hesab və ya proqram quraşdırmaq lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə Vimeo videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "Videoner Vimeo-nun həmin video üçün təqdim etdiyi bütün keyfiyyətləri təklif edir — orijinal yükləmə ölçüsünə qədər, müəllif təqdim etdikdə HD və 4K da daxil olmaqla." },
+        { q: "Şəxsi və ya parolla qorunan Vimeo videolarını yükləmək olar?", a: "Xeyr — Videoner yalnız açıq Vimeo linkləri ilə işləyir. Şəxsi, parolla qorunan və ya girişi məhdud videoları yükləmək mümkün deyil." },
+        { q: "Vimeo-dan video yükləmək qanunidir?", a: "Yükləmə saxlamağa hüququnuz olan videolar üçün nəzərdə tutulub — öz məzmununuz, Creative Commons lisenziyalı videolar və ya müəllifin yükləməyə açıq şəkildə icazə verdiyi hər şey. Orijinal müəllifin müəllif hüquqlarına və Vimeo-nun istifadə şərtlərinə hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Fayllar sorğu ilə yaradılır və avtomatik silinməzdən əvvəl serverdə təxminən bir saat saxlanılır, ona görə də yükləmə bitən kimi onu cihazınıza saxlayın." },
+      ],
+    },
+    vk: {
+      description: "VK-dan videoları və klipləri yükləyin",
+      news: "İndi VK dəstəklənir",
+      titleLine1: "VK video",
+      titleLine2: "və klip yüklə",
+      pageDescription:
+        "VK videolarını və kliplərini yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat.",
+      placeholder: "VK linkini bura yapışdırın...",
+      howTo: [
+        "VK-da (vk.com və ya VK Video) videonu və ya klipi açın və linkini ünvan sətrindən və ya «Paylaş» düyməsindən kopyalayın.",
+        "Linki yuxarıya yapışdırın və «Yüklə» düyməsini basın.",
+        "Mövcud keyfiyyəti və formatı seçin.",
+        "Fayl birbaşa yüklənir — VK-ya daxil olmaq lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə VK videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "VK-nın həmin video və ya klip üçün təqdim etdiyi bütün keyfiyyətlər, üstəlik MP3 audio." },
+        { q: "VK-ya daxil olmaq lazımdır?", a: "Xeyr — video açıq olmalıdır. Videoner VK-ya daxil olmur, ona görə də şəxsi, yalnız dostlar üçün və ya daxil olmağı tələb edən videoları yükləmək mümkün deyil." },
+        { q: "VK-dan video yükləmək qanunidir?", a: "Yalnız saxlamağa hüququnuz olan videoları yükləyin, VK-nın İstifadə Şərtlərinə və yükləyənin hüquqlarına hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Fayllar serverdə təxminən bir saat saxlanılır, sonra avtomatik silinir." },
+      ],
+    },
+    rutube: {
+      description: "Rutube-dan videoları yükləyin",
+      news: "İndi Rutube dəstəklənir",
+      titleLine1: "Rutube",
+      titleLine2: "video yüklə",
+      pageDescription:
+        "Rutube videolarını yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat.",
+      placeholder: "Rutube linkini bura yapışdırın...",
+      howTo: [
+        "Rutube-da videonu açın və linkini ünvan sətrindən və ya «Paylaş» düyməsindən kopyalayın.",
+        "Onu yuxarıdakı xanaya yapışdırın.",
+        "Keyfiyyəti və formatı seçin (video və ya audio).",
+        "Yükləmə dərhal başlayır, Rutube hesabı lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə Rutube videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "Rutube-un təqdim etdiyi bütün keyfiyyətlər, MP4 formatında, üstəlik MP3 audio." },
+        { q: "Rutube-a daxil olmaq lazımdır?", a: "Xeyr — Videoner yalnız açıq Rutube videoları ilə işləyir; heç bir hesaba daxil olmur və bu tələb olunmur." },
+        { q: "Rutube-dan video yükləmək qanunidir?", a: "Yalnız saxlamağa icazəniz olan məzmunu yükləyin, Rutube-un İstifadə Şərtlərinə və müəllifin hüquqlarına hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Fayllar avtomatik silinməzdən əvvəl serverdə təxminən bir saat qalır." },
+      ],
+    },
+    okru: {
+      description: "OK.ru (Odnoklassniki) videolarını yükləyin",
+      news: "İndi OK.ru dəstəklənir",
+      titleLine1: "OK.ru",
+      titleLine2: "video yüklə",
+      pageDescription:
+        "OK.ru (Odnoklassniki) videolarını yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat.",
+      placeholder: "OK.ru linkini bura yapışdırın...",
+      howTo: [
+        "OK.ru-da (Odnoklassniki) videonu açın və linkini ünvan sətrindən kopyalayın.",
+        "Linki yuxarıdakı xanaya yapışdırın və «Yüklə» düyməsini basın.",
+        "Keyfiyyəti və formatı seçin.",
+        "Yükləmə dərhal başlayır — OK.ru-ya daxil olmaq lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə OK.ru videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə video yükləyə bilərəm?", a: "OK.ru-nun həmin video üçün təqdim etdiyi bütün keyfiyyətlər, üstəlik MP3." },
+        { q: "OK.ru-ya daxil olmaq lazımdır?", a: "Xeyr — yalnız açıq OK.ru (Odnoklassniki) videoları işləyir. Videoner heç vaxt hesaba daxil olmur, ona görə də şəxsi videolar əlçatan deyil." },
+        { q: "OK.ru-dan video yükləmək qanunidir?", a: "Yalnız saxlamağa hüququnuz olan videoları yükləyin, OK.ru-nun İstifadə Şərtlərinə və yükləyənin hüquqlarına hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Fayllar yaradıldıqdan təxminən bir saat sonra avtomatik silinir." },
+      ],
+    },
+    pinterest: {
+      description: "Pinterest pinlərindən videoları yükləyin",
+      news: "İndi Pinterest dəstəklənir",
+      titleLine1: "Pinterest video",
+      titleLine2: "və pin yüklə",
+      pageDescription:
+        "Pinterest pinlərindən videoları yüksək keyfiyyətdə yükləyin. Sürətli, pulsuz və rahat. Qeyd: yalnız video pinləri yükləmək olar — yalnız fotodan ibarət pinlər dəstəklənmir.",
+      placeholder: "Pinterest linkini bura yapışdırın...",
+      howTo: [
+        "Pinterest-də pini açın və «Paylaş» → «Linki kopyala»ya toxunun (və ya URL-i brauzerdən kopyalayın).",
+        "Linki yuxarıdakı xanaya yapışdırın və «Yüklə» düyməsini basın.",
+        "İstədiyiniz keyfiyyəti və formatı seçin.",
+        "Fayl dərhal yüklənir — hesab lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə Pinterest videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə yükləyə bilərəm?", a: "Videoner Pinterest-in həmin pinin videosu üçün təqdim etdiyi bütün keyfiyyətləri təklif edir, üstəlik MP3 audio çıxarılması." },
+        { q: "Pinterest-dən foto və ya şəkil yükləmək olar?", a: "Xeyr — yalnız video pinləri yükləmək olar. Pin yalnız fotodan ibarətdirsə, çıxarılacaq video fayl yoxdur." },
+        { q: "Şəxsi və ya lövhəsi məhdud pinləri yükləmək olar?", a: "Yalnız açıq pinlər dəstəklənir; şəxsi lövhələri və daxil olmağı tələb edən məzmunu yükləmək mümkün deyil." },
+        { q: "Pinterest-dən video yükləmək qanunidir?", a: "Yalnız saxlamağa hüququnuz olan pinləri yükləyin — öz məzmununuzu və ya müəllifin icazə verdiyi hər şeyi. Pinterest-in İstifadə Şərtlərinə və müəllif hüquqları qanununa hörmət edin." },
+        { q: "Yüklənmiş fayl nə qədər əlçatan qalır?", a: "Çevrilmiş fayllar serverdə təxminən bir saat saxlanılır, ona görə də onları yükləmədən dərhal sonra cihazınıza saxlayın." },
+      ],
+    },
+    threads: {
+      description: "Threads paylaşımlarından videoları yükləyin",
+      news: "İndi Threads dəstəklənir",
+      titleLine1: "Threads",
+      titleLine2: "video yüklə",
+      pageDescription:
+        "Threads paylaşımlarından videoları yükləyin. Sürətli, pulsuz və Threads hesabı lazım deyil. Threads videonun yalnız bir variantını, 720p-yə qədər verir — bu, platformanın təqdim etdiyi ən yüksək keyfiyyətdir.",
+      placeholder: "Threads linkini bura yapışdırın...",
+      howTo: [
+        "Threads-də paylaşımı açın, paylaşma ikonuna, sonra «Linki kopyala»ya toxunun.",
+        "Linki yuxarıdakı xanaya yapışdırın və «Yüklə» düyməsini basın.",
+        "İstədiyiniz formatı seçin — video və ya MP3 audio.",
+        "Fayl dərhal yüklənir — hesab lazım deyil.",
+      ],
+      faq: [
+        { q: "Videoner ilə Threads videolarını yükləmək pulsuzdur?", a: "Bəli, tamamilə pulsuzdur: hesaba daxil olmaq, abunə və reklam yoxdur, gündəlik yükləmə limiti də yoxdur. Yeganə məhdudiyyət YouTube trafikinə aiddir — xidməti sui-istifadədən qorumaq üçün bir şəbəkə üçün gündə 10 GB." },
+        { q: "Yükləmək üçün hesab lazımdır?", a: "Xeyr. Yükləmək üçün hesab və ya daxil olmaq tələb olunmur — sadəcə linki yapışdırın və «Yüklə» düyməsini basın." },
+        { q: "Hansı keyfiyyətdə yükləyə bilərəm?", a: "Threads hər paylaşım üçün videonun yalnız bir variantını dərc edir, qısa tərəfi 720p ilə məhdudlaşır — müəllif 4K yükləsə belə. Videoner bu faylı olduğu kimi verir, üstəlik MP3 audio çıxarılması. Heç bir yükləyici daha çoxunu təklif edə bilməz, çünki daha yüksək ölçülər sadəcə verilmir." },
+        { q: "Həm threads.com, həm də threads.net linkləri işləyir?", a: "Bəli. threads.com/@user/post/CODE kimi tam linklər və threads.net/t/CODE kimi qısa linklər dəstəklənir." },
+        { q: "Threads paylaşımından foto yükləmək olar?", a: "Xeyr — yalnız videolar. Paylaşımda yalnız fotolar varsa, çıxarılacaq video fayl yoxdur." },
+        { q: "Bir neçə videosu olan paylaşım necə?", a: "Paylaşımdakı birinci video yüklənir. Threads karuselləri bir neçə klip saxlaya bilər və yalnız birincisi saxlanılır." },
+        { q: "Şəxsi paylaşımları yükləmək olar?", a: "Xeyr. Yalnız açıq görünən paylaşımları yükləmək olar; bağlı hesabın və ya daxil olmağı tələb edən məzmun əlçatan deyil." },
+        { q: "Threads-dən video yükləmək qanunidir?", a: "Yalnız saxlamağa hüququnuz olanı yükləyin — öz məzmununuzu və ya müəllifin icazə verdiyi hər şeyi. Threads İstifadə Şərtlərinə və müəllif hüquqları qanununa hörmət edin." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -10499,4 +10860,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, tl };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, tl };

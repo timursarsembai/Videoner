@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на двадцати девяти языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на тридцати языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -8461,6 +8461,308 @@ export const legal: LegalByLanguage = {
             heading: "Cabashooyinka niyad-xumada ah",
             body: [
               "Cabasho ay ku jiraan macluumaad been ah oo si ula kac ah loo bixiyay waxay cabashada gudbiyaha ka dhigi kartaa mid mas'uul ka ah sida uu dhigayo sharciga khuseeya. Waxaan diidi karnaa inaan eegno cabasho aan aqoonsanayn milkiilaha xuquuqda iyo waxyaabaha lagu muransan yahay midkoodna.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  az: {
+    ui: {
+      updated: "Redaksiya tarixi",
+      back: "Ana səhifəyə",
+      operatorHeading: "Xidmətin operatoru",
+      navHeading: "Digər sənədlər",
+      labels: {
+        privacy: "Məxfilik siyasəti",
+        terms: "İstifadəçi razılaşması",
+        cookies: "Cookie siyasəti",
+        copyright: "Hüquq sahiblərinə",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Məxfilik siyasəti",
+        summary: `${operator.site} hansı məlumatları toplayır, onlar nə üçün lazımdır, nə qədər saxlanılır və onları necə silmək olar.`,
+        sections: [
+          {
+            heading: "Ümumi müddəalar",
+            body: [
+              `Bu Siyasət ${operator.site} xidmətinin hansı fərdi məlumatları və hansı məqsədlə emal etdiyini təsvir edir. Məlumatların operatoru qismində ${operator.nameAz} çıxış edir.`,
+              "Xidmətdən istifadə etməklə siz burada təsvir olunan emal qaydası ilə razılaşırsınız. Əgər onunla razı deyilsinizsə, lütfən, xidmətdən istifadə etməyin.",
+              "Emal Qazaxıstan Respublikasının «Fərdi məlumatlar və onların qorunması haqqında» Qanununa uyğun olaraq, Avropa İqtisadi Zonasından olan ziyarətçilərə münasibətdə isə GDPR tələbləri nəzərə alınmaqla həyata keçirilir.",
+            ],
+          },
+          {
+            heading: "Hansı məlumatları emal edirik",
+            body: [
+              "Biz bilərəkdən xidmətin işləməsi üçün zəruri olandan artıq heç nə toplamırıq və sənədləri, ödəniş məlumatlarını və ya ünvanı tələb etmirik.",
+            ],
+            bullets: [
+              "Bota yazdığınız zaman onun aldığı Telegram hesabı məlumatları: rəqəmsal identifikator, istifadəçi adı, ad və dil kodu.",
+              "Yükləmək üçün göndərdiyiniz linklər və cəhdin özü haqqında məlumatlar: platforma, tarix və vaxt, seçilmiş keyfiyyət, nəticə (uğur və ya xəta).",
+              "Qoşulmanın texniki məlumatları: IP ünvanı, brauzerin növü və versiyası, dil, keçidin edildiyi səhifə. Bu məlumatlar server jurnallarına və veb-analitika sistemlərinə düşür.",
+              "Cookie faylları və analitika identifikatorları — ətraflı məlumat Cookie siyasətindədir.",
+            ],
+          },
+          {
+            heading: "Bu məlumatlar nə üçün lazımdır",
+            bullets: [
+              "Xidmətin özünü göstərmək: linkiniz üzrə videonu əldə etmək və faylı sizə vermək.",
+              "Hesabınızı başqalarının hesabından fərqləndirmək və sui-istifadələrin qarşısını almaq.",
+              "Xidməti avtomatlaşdırılmış sui-istifadələrdən qorumaq: link göndərilməzdən əvvəl Cloudflare Turnstile yoxlaması.",
+              "Saytdan necə istifadə olunduğunu anlamaq və xətaları aradan qaldırmaq — anonimləşdirilmiş və ümumiləşdirilmiş statistika.",
+              "Sizin müraciətlərinizə və hüquq sahiblərinin müraciətlərinə cavab vermək.",
+              "Xidmət haqqında fikrinizi öyrənmək üçün arabir sizə Telegram-da yazmaq — məsələn, ondan istifadəni dayandırmısınızsa. Cavab vermək məcburi deyil; belə mesajlar sizə lazım deyilsə, sadəcə bunu bildirin və biz daha yazmayacağıq.",
+            ],
+          },
+          {
+            heading: "Emalın əsasları",
+            body: [
+              "Telegram hesabı məlumatları və yükləmələr haqqında məlumatlar xidmətdən istifadəyə başlamaqla qəbul etdiyiniz İstifadəçi razılaşmasının icrası üçün emal olunur.",
+              "Analitika cookie faylları və saytdakı hərəkətlərin qeydə alınması istənilən vaxt geri götürə biləcəyiniz razılığınız əsasında emal olunur — bunun üsulları Cookie siyasətində təsvir edilib.",
+              "Server jurnalları və botlardan qorunma xidməti işlək və təhlükəsiz saxlamaqda qanuni marağımız çərçivəsində emal olunur.",
+              "Xidmət haqqında fikrinizlə bağlı suallar xidməti təkmilləşdirməkdə qanuni marağımız çərçivəsində verilir; siz istənilən vaxt onlardan imtina edə bilərsiniz.",
+            ],
+          },
+          {
+            heading: "Qoşulmuş hesablar",
+            body: [
+              "İstəsəniz, platformadakı hesabınızı (Instagram, Facebook, YouTube, X, VK, TikTok) bota qoşa bilərsiniz ki, bot yalnız daxil olmuş istifadəçilərə görünən paylaşımları — hekayələri (stories), qapalı paylaşımları yükləsin. Bunun üçün bot həmin hesabın cookie fayllarını alır — Videoner genişlənməsindən birdəfəlik kod vasitəsilə və ya sizin göndərdiyiniz fayldan.",
+              "Biz yalnız seçilmiş platformanın cookie fayllarını saxlayırıq, qalanlarını dərhal silirik. Onlar şifrələnmiş şəkildə saxlanılır və yalnız onları qoşduğunuz yerdəki yükləmələr üçün istifadə olunur. Şəxsi çatda qoşulanlar sizin yükləmələriniz üçün, o cümlədən öz hesabı qoşulmamış qruplarda sizin öz linkləriniz üçün istifadə olunur; başqalarının linkləri üçün onlardan istifadə edilmir. Qrupa qoşulanlar yalnız həmin qrupun üzvlərinin yükləmələri üçün istifadə olunur və başqa heç yerdə tətbiq edilmir.",
+              "Əsas sizin razılığınızdır: hesabı özünüz qoşursunuz və istənilən vaxt /accounts əmri ilə onu silə bilərsiniz. Silindikdə cookie faylları geri qaytarılmaz şəkildə məhv edilir. Platforma girişi qəbul etməyi dayandırarsa, bot bu barədə sizə bildirir.",
+              "Qoşulmuş hesab vasitəsilə yüklənmiş paylaşımlar kanalımızda dərc olunmur və ümumi keşdən digər istifadəçilərə verilmir.",
+            ],
+          },
+          {
+            heading: "Üçüncü tərəf xidmətləri",
+            body: [
+              "Biz məlumatlarınızı satmırıq və onları üçüncü şəxslərə onların öz məqsədləri üçün ötürmürük. Xidmətin işləməsi üçün aşağıdakı təchizatçılar cəlb olunub və onların hər biri məlumatları öz qaydalarına uyğun emal edir:",
+            ],
+            bullets: [
+              `Telegram — ${BOT} botunun işləməsi.`,
+              "Cloudflare — botlardan qorunma (Turnstile), saytın çatdırılması və poçtun marşrutlaşdırılması.",
+              "Google Analytics və Google Tag Manager — ziyarət statistikası.",
+              "Yandex Metrica — ziyarət statistikası, klik xəritəsi və Webvisor. Webvisor səhifədəki hərəkətləri qeydə alır: göstəricinin hərəkəti, səhifənin sürüşdürülməsi və kliklər. Qeydlər yalnız saytın istifadə rahatlığını təhlil etmək üçün istifadə olunur.",
+            ],
+          },
+          {
+            heading: "Məlumatları nə qədər saxlayırıq",
+            bullets: [
+              "Yüklənmiş fayllar yaradıldıqdan təxminən bir saat sonra serverdən avtomatik silinir. Biz videolarınızın arxivini saxlamırıq.",
+              "Yükləmə cəhdləri haqqında qeydlər sui-istifadələrin qarşısını almaq və müraciətlərə baxmaq üçün lazım olduğu müddətdə saxlanılır.",
+              "Hesab məlumatları siz xidmətdən istifadə etdiyiniz müddətdə saxlanılır və sorğunuz əsasında silinir.",
+              "Server jurnalları məhdud müddət ərzində saxlanılır və rotasiya getdikcə üzərinə yenidən yazılır.",
+            ],
+          },
+          {
+            heading: "Məlumatlar harada emal olunur",
+            body: [
+              "Xidmətin serverləri Avropa İttifaqı ərazisindəki data-mərkəzdə yerləşir. Yuxarıda sadalanan təchizatçıların bir qismi öz siyasətlərinə uyğun olaraq məlumatları onun hüdudlarından kənarda emal edə bilər.",
+            ],
+          },
+          {
+            heading: "Hüquqlarınız",
+            body: [
+              `Siz məlumatlarınızın emalı haqqında məlumat almaq, onların düzəldilməsini və ya silinməsini tələb etmək, razılığınızı geri götürmək və emala etiraz etmək hüququna maliksiniz. Bunun üçün müraciətlə əlaqəli olan e-poçt ünvanından və ya Telegram hesabından ${MAIL} ünvanına yazın.`,
+              "Biz ağlabatan müddətdə, bir qayda olaraq otuz təqvim günü ərzində cavab veririk. Hesabın silinməsi onunla əlaqəli yükləmə tarixçəsinin də silinməsinə səbəb olur.",
+            ],
+          },
+          {
+            heading: "Yetkinlik yaşına çatmayanlar",
+            body: [
+              "Xidmət 16 yaşından kiçik uşaqlar üçün nəzərdə tutulmayıb və onlara ünvanlanmayıb. Biz bilərəkdən belə istifadəçilərin məlumatlarını toplamırıq; əgər bu, səhvən baş veribsə, bizə yazın və məlumatlar silinəcək.",
+            ],
+          },
+          {
+            heading: "Dəyişikliklər",
+            body: [
+              "Biz bu Siyasəti yeniləyə bilərik. Qüvvədə olan redaksiyanın tarixi səhifənin əvvəlində göstərilib; əhəmiyyətli dəyişiklikləri xidmətdə qeyd edəcəyik.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "İstifadəçi razılaşması",
+        summary: `${operator.site} xidmətindən istifadə qaydaları: nəyə icazə verilir, nə qadağandır və xidmət hansı şərtlərlə işləyir.`,
+        sections: [
+          {
+            heading: "Ümumi müddəalar",
+            body: [
+              `Bu Razılaşma ${operator.site} saytından və ${BOT} Telegram botundan istifadəni tənzimləyir. Xidmətin sahibi və administratoru — ${operator.nameAz}.`,
+              "Xidmətdən istifadəyə başlamaqla siz şərtləri oxuduğunuzu və onları qəbul etdiyinizi təsdiq edirsiniz. Hər hansı şərt sizə uyğun deyilsə, xidmətdən istifadə etməməlisiniz.",
+            ],
+          },
+          {
+            heading: "Xidmət pulsuzdur",
+            body: [
+              "Xidmətin bütün imkanları pulsuz təqdim olunur. Bizdə abunəliklər, ödənişli tariflər, ödənişli video keyfiyyətləri və daxili alışlar yoxdur.",
+              "Biz reklam göstərmirik və tərəfdaş linkləri yerləşdirmirik.",
+            ],
+          },
+          {
+            heading: "Giriş şərtləri",
+            bullets: [
+              "Saytda yükləmək üçün nə hesab, nə də giriş tələb olunur. Bot istifadəçiləri onların Telegram hesabına görə fərqləndirir.",
+              "Xidməti həddən artıq yüklənmədən və avtomatlaşdırılmış sui-istifadələrdən sorğu tezliyinə dair texniki məhdudiyyətlər qoruyur.",
+              "YouTube üçün gündəlik trafik limiti qüvvədədir: saytda və genişlənmədə bir şəbəkədən 24 saat ərzində 10 GB, botda isə bir Telegram hesabına 24 saat ərzində 25 GB. Bu limit digər platformalara şamil edilmir.",
+              "Bot vasitəsilə yükləmək üçün kanalımıza abunə olmaq tələb olunmur. Bot faylların mətninə layihənin xəbər kanalının linkini əlavə edir; ona abunə olmaq məcburi deyil.",
+            ],
+          },
+          {
+            heading: "Xidmət nə edir",
+            body: [
+              "Xidmət texniki vasitəçidir: linkiniz üzrə ictimaiyyət üçün əlçatan səhifəyə müraciət edir, media faylı əldə edir və onu sizə ötürür.",
+              "Biz özümüzdə video kataloqu yerləşdirmirik, başqalarının kontenti üzrə axtarış aparmırıq və yüklənmiş faylları ötürülmə üçün zəruri olan vaxtdan — təxminən bir saatdan artıq saxlamırıq.",
+              "Konkret platformanın əlçatanlığı onun texniki qərarlarından asılıdır və xəbərdarlıq edilmədən dəyişə bilər.",
+            ],
+          },
+          {
+            heading: "İstifadəçinin öhdəlikləri",
+            body: [
+              "Əldə etdiyiniz fayllardan necə istifadə etdiyinizə görə yalnız siz cavabdehsiniz və buna hüququnuz olduğunu təsdiq edirsiniz.",
+            ],
+            bullets: [
+              "Yalnız hüquqları sizə məxsus olan və ya istifadəsinə hüquq sahibi yaxud qanun tərəfindən icazə verilən materialı yükləyin.",
+              "Xidmətdən müəllif hüququnu və əlaqəli hüquqları pozmaq, qadağan olunmuş kontenti yaymaq və üçüncü şəxslərin hüquqlarını pozmaq üçün istifadə etməyin.",
+              "Xidmətin texniki məhdudiyyətlərindən, o cümlədən sorğu tezliyi məhdudiyyətlərindən və bot yoxlamasından yan keçməyə cəhd etməyin.",
+              "Avtomatlaşdırılmış yük yaratmayın: kütləvi sorğulara, skriptlərə və parserlərə yol verilmir.",
+            ],
+          },
+          {
+            heading: "Linklərin kanalda dərc edilməsi",
+            body: [
+              "Bot vasitəsilə video yükləməklə siz orijinal paylaşımın linkinin Telegram kanalımızda dərc ediləcəyi ilə razılaşırsınız. Bu barədə xəbərdarlıq botda keyfiyyəti seçməzdən əvvəl — yəni yükləmək qərarını verməzdən əvvəl göstərilir.",
+              "Dərc anonimdir: kanala ictimaiyyət üçün əlçatan səhifənin linki, videonun adı və onun örtüyü — platformanın paylaşımın önizləməsində göstərdiyi həmin kadr göndərilir. Videonu kimin yüklədiyi göstərilmir. Video faylın özü heç yerdə və heç vaxt dərc olunmur: yayılan yalnız linkdir — platformaların özlərinin hər paylaşımın altındakı «Paylaş» düyməsi ilə yaymağı təklif etdiyi link.",
+              "Eyni link bir dəfədən artıq dərc olunmur. Linkin kanala düşməsini istəmirsinizsə, həmin videonu xidmətimiz vasitəsilə yükləməyin.",
+              "Qruplardan olan linklər və qoşulmuş hesab vasitəsilə yüklənmiş paylaşımlar kanalda dərc olunmur."
+            ],
+          },
+          {
+            heading: "Öz hesabınızın qoşulması",
+            body: [
+              "Platformadakı hesabınızı bota qoşmaqla siz bunun sizin hesabınız olduğunu və onun barəsində sərəncam vermək hüququnuz olduğunu təsdiq edirsiniz.",
+              "Platformalar avtomatik yükləmələri bəyənmir və qoşulmuş hesabı məhdudlaşdıra və ya bloklaya bilər. Bu riski siz öz üzərinizə götürürsünüz; əsas hesabınızı deyil, ayrıca hesab qoşmağı tövsiyə edirik. Platformanın hesabınıza tətbiq edəcəyi məhdudiyyətlərə görə biz məsuliyyət daşımırıq.",
+              "Qrupa qoşulmuş hesab onun bütün üzvlərinin yükləmələri üçün istifadə olunur. Hesabları kimin qoşa biləcəyinə qrupun administratorları qərar verir və onlar istənilən hesabı silə bilər.",
+            ],
+          },
+          {
+            heading: "Məsuliyyətin məhdudlaşdırılması",
+            body: [
+              "Xidmət «olduğu kimi» şərti ilə təqdim olunur. Biz fasiləsiz işə, konkret platformanın əlçatanlığına və ya faylın məqsədləriniz üçün yararlılığına zəmanət vermirik.",
+              "Yüklənmiş materialdan necə istifadə etdiyinizə və üçüncü şəxslərin hüquqlarını pozmağınızın nəticələrinə görə biz məsuliyyət daşımırıq.",
+              "Biz imkanların tərkibini dəyişmək, texniki xidmət üçün xidmətin işini dayandırmaq və onun fəaliyyətinə xitam vermək hüququna malikik.",
+            ],
+          },
+          {
+            heading: "Girişin məhdudlaşdırılması",
+            body: [
+              "Bu şərtlər pozulduqda, məhdudiyyətlərdən yan keçməyə cəhd edildikdə, habelə hüquq sahibindən əsaslandırılmış şikayət daxil olduqda biz xidmətə girişi məhdudlaşdıra və ya dayandıra bilərik.",
+            ],
+          },
+          {
+            heading: "Dəyişikliklər və tətbiq olunan hüquq",
+            body: [
+              "Biz şərtləri dəyişə bilərik; qüvvədə olan redaksiyanın tarixi səhifənin əvvəlində göstərilib. Dəyişikliklərdən sonra xidmətdən istifadəni davam etdirməklə siz yeni redaksiyanı qəbul edirsiniz.",
+              "Tərəflər arasındakı münasibətlərə Qazaxıstan Respublikasının hüququ tətbiq edilir. Tərəflər mübahisələri yazışma yolu ilə həll etməyə çalışırlar, razılığa gəlinmədikdə isə — Qazaxıstan Respublikasının qanunvericiliyi ilə müəyyən edilmiş qaydada.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Cookie siyasəti",
+        summary: `${operator.site} hansı cookie fayllarından istifadə edir, onlar nə üçün lazımdır və onlardan necə imtina etmək olar.`,
+        sections: [
+          {
+            heading: "Cookie nədir",
+            body: [
+              "Cookie — saytın brauzerinizdə saxladığı kiçik mətn fayllarıdır. Onlar parametrlərinizi yadda saxlamağa və anonimləşdirilmiş ziyarət statistikasını toplamağa imkan verir.",
+              "Bu sənəddə cookie ilə yanaşı oxşar texnologiyaları da — brauzerin lokal yaddaşını və piksel sayğaclarını təsvir edirik.",
+            ],
+          },
+          {
+            heading: "Zəruri",
+            body: [
+              "Onlarsız xidmət işləmir, buna görə də onlar həmişə quraşdırılır.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — linki skriptin deyil, insanın göndərdiyinin yoxlanılması.",
+              "İnterfeys parametrləri — seçilmiş dil və tərtibat mövzusu.",
+            ],
+          },
+          {
+            heading: "Analitik",
+            body: [
+              "Onlar hansı səhifələrdən istifadə olunduğunu və xətaların harada yarandığını anlamağa kömək edir. Razılığınızla quraşdırılır və xidmətin işləməsi üçün məcburi deyil.",
+            ],
+            bullets: [
+              "Google Analytics və Google Tag Manager — anonimləşdirilmiş şəkildə ziyarətçi sayı və saytdakı davranış.",
+              "Yandex Metrica — ziyarətçi sayı, klik xəritəsi və Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Yandex Metrica-nın Webvisor aləti səhifədəki hərəkətləri qeydə alır: göstəricinin hərəkəti, səhifənin sürüşdürülməsi, kliklər və link sahəsinə daxil edilən mətn. Bu, interfeysin harada çaşqınlıq yaratdığını görmək üçün lazımdır.",
+              "Biz bu qeydlərdən konkret insanları izləmək üçün istifadə etmirik. Saytın sahələrinə saxlanılmasını istəmədiyiniz məlumatları daxil etməyin.",
+            ],
+          },
+          {
+            heading: "Necə imtina etmək olar",
+            bullets: [
+              "Brauzerinizdə cookie fayllarının bloklanmasını və ya silinməsini tənzimləyin — bu üsul sadalanan bütün sistemlər üçün işləyir.",
+              "Google Analytics: məlumat toplanmasını söndürən rəsmi brauzer əlavəsi Google saytında mövcuddur.",
+              "Yandex Metrica: imtina Yandex-in rəsmi əlavəsi vasitəsilə mümkündür.",
+              "Zəruri cookie fayllarının söndürülməsi yükləməni qeyri-mümkün edəcək.",
+            ],
+          },
+          {
+            heading: "Saxlama müddətləri",
+            body: [
+              "Sessiya cookie faylları brauzer bağlandıqda və ya sessiyanın müddəti başa çatdıqda silinir. Analitik sayğaclar identifikatorları öz təchizatçılarının müəyyən etdiyi müddətlər ərzində saxlayır.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Hüquq sahiblərinə",
+        summary: "Xidmətin müəllif hüququ ilə bağlı mövqeyi və pozuntu barədə şikayətin verilməsi qaydası.",
+        sections: [
+          {
+            heading: "Xidmətin mövqeyi",
+            body: [
+              "Xidmət özündə video yerləşdirmir və onların kataloqunu aparmır. O, texniki vasitəçi kimi çıxış edir: istifadəçinin daxil etdiyi link üzrə ictimaiyyət üçün əlçatan səhifəyə müraciət edir və faylı istifadəçiyə ötürür.",
+              "Yüklənmiş fayllar serverdə təxminən bir saat saxlanılır və avtomatik silinir. Bizdə başqalarının kontentinin daimi surəti qalmır.",
+              "Yüklənmiş materialın istifadəsinə görə məsuliyyəti istifadəçi daşıyır — bu, İstifadəçi razılaşmasında birbaşa təsbit olunub.",
+            ],
+          },
+          {
+            heading: "Hüquqlarınız pozulubsa",
+            body: [
+              `Əgər siz hüquq sahibi və ya onun nümayəndəsisinizsə və xidmətin hüquqlarınızı pozmaq üçün istifadə olunduğunu hesab edirsinizsə, ${MAIL} ünvanına yazın. Biz belə müraciətlərə baxırıq və tədbirlər görürük.`,
+            ],
+          },
+          {
+            heading: "Müraciətdə nə göstərilməlidir",
+            bullets: [
+              "Hansı əsərə toxunulduğu və hansı əsasla ona hüquqlarınızın olduğu.",
+              "Materialın linki və məlumdursa, pozuntunun halları.",
+              "Əlaqə məlumatlarınız: ad və ya təşkilatın adı, ünvan və e-poçt ünvanı.",
+              "Hüquq sahibinin adından çıxış edirsinizsə — səlahiyyətlərinizin təsdiqi.",
+              "Müraciətdəki məlumatların doğru olduğu və materialın istifadəsinə hüquq sahibi və ya qanun tərəfindən icazə verilmədiyi barədə bəyanat.",
+            ],
+          },
+          {
+            heading: "Biz nə edəcəyik",
+            body: [
+              "Biz müraciətə ağlabatan müddətdə, bir qayda olaraq otuz təqvim günü ərzində baxırıq və pozuntu təsdiqləndikdə xidmət vasitəsilə materiala girişi, zəruri hallarda isə pozuntuya yol verən şəxsin xidmətə girişini məhdudlaşdırırıq.",
+              "Baxılmanın nəticələri barədə göstərdiyiniz e-poçt ünvanına məlumat verəcəyik.",
+            ],
+          },
+          {
+            heading: "Vicdansız müraciətlər",
+            body: [
+              "Bilərəkdən yanlış məlumatlar ehtiva edən müraciət qanunvericiliyə uyğun olaraq müraciət edənin məsuliyyətinə səbəb ola bilər. Müraciət nə hüquq sahibini, nə də mübahisəli materialı müəyyən etməyə imkan vermirsə, biz ona baxmaqdan imtina etmək hüququna malikik.",
             ],
           },
         ],

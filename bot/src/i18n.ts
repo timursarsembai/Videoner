@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -5983,6 +5983,226 @@ const so: Messages = {
   settingsBack: "⬅️ Ku noqo dejinta",
 };
 
+const az: Messages = {
+  start: "Salam! Mənə YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest və ya Threads-dən videonun linkini göndərin — onu yükləməyinizə kömək edəcəyəm.\n\n✨ Keyfiyyət məhdudiyyəti yoxdur: platforma nə verirsə, 4K-ya qədər alırsınız — təki fayl 2 GB-a sığsın, bu, Telegram-ın botlar üçün qoyduğu limitdir. Burada ödənişli funksiyalar yoxdur.\n\nTamamilə pulsuzdur: abunə haqqı yoxdur, reklam yoxdur, tətbiqdaxili alış yoxdur.\n\n🧩 Kompüterdə yükləyirsiniz? Brauzer genişlənməsini quraşdırın — «Yüklə» düyməsi birbaşa video səhifəsində görünəcək: videoner.download/az/extension\n\n👥 Məni qrupa əlavə edin — orada paylaşılan linklərə görə videoları özüm göndərəcəyəm.\n\n⚡ Keyfiyyət seçimini keçin: yalnız səs (mp3) üçün linkdən sonra -audio, ən yaxşı keyfiyyət üçün isə -hd əlavə edin.\n\n📣 Layihə xəbərləri: @videonerdownload\n\n🌐 Botun dili: /language",
+  notLink: "Bu, linkə oxşamır. Mənə videonun linkini göndərin.",
+  inviteGreeting: "Salam! Mən Videoner-əm — YouTube, TikTok, Instagram və digər platformalardan videoları pulsuz yükləyirəm. Sizinlə paylaşılan videonu hazırlayıram 👇",
+  inviteNotFound: "Bu dəvət linkinə görə video tapa bilmədim. Mənə videonun linkini göndərin, onu yükləyəcəyəm.",
+  inviteUnavailable: "Bu linkdəki videonu aça bilmədim — xidmət hazırda cavab vermir. Bir dəqiqədən sonra eyni linki yenidən açın.",
+  fetchingInfo: "🔍 Video haqqında məlumat alınır...",
+  audioOnlyButton: "🎵 Yalnız audio (mp3)",
+  photoButton: "📷 Fotoları yüklə",
+  slideshowButton: "🎞 Slayd-şou (video)",
+  galleryButton: "📷+🎞 Fotolar və slayd-şou",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nKeyfiyyəti seçin:`,
+  sessionExpired: "Sessiyanın vaxtı bitib — linki yenidən göndərin",
+  downloading: "⏬ Yüklənir, bu bir-iki dəqiqə çəkə bilər...",
+  downloadFailed: "yükləmək alınmadı",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Yüklənir: ${percent}%${eta ? ` · qalıb ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Az qalıb — fayl yığılır...",
+  converting: (percent) => `⚙️ Çevrilir: ${percent}%`,
+  etaUnderMinute: "bir dəqiqədən az",
+  etaMinutes: (minutes) => `~${minutes} dəq`,
+  etaHours: (hours, minutes) => `~${hours} saat${minutes ? ` ${minutes} dəq` : ""}`,
+  downloadTimeout: "yükləmə çox uzun çəkir — video, deyəsən, çox ağırdır. Daha aşağı keyfiyyət seçin.",
+  downloadInterrupted: "⚠️ Bot yeniləmə üçün yenidən başladılır — yükləməniz kəsildi. Bir dəqiqədən sonra linki yenidən göndərin.",
+  fileTooBig: (mb, url) =>
+    `Fayl böyük alındı (${mb} MB) — Telegram botun onu göndərməsinə icazə vermir.\nBuradan yükləyin: ${url}`,
+  sendingFile: "📤 Fayl göndərilir...",
+  sendingAlbum: (count) => `📤 Bu paylaşımda bir neçə fayl var (${count}) — onları albom kimi göndərirəm...`,
+  failedPrefix: "❌ Alınmadı: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Mənbə: ${sourceUrl}\n` +
+        "Videoya olan bütün hüquqlar müəllifinə məxsusdur.\n" +
+        "@VideonerBot ilə pulsuz yüklənib",
+      `📣 Layihə xəbərləri: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Paylaşın: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Yükləmək üçün ${channel} kanalımıza abunə olun — bu, yeganə şərtdir, xidmət pulsuz qalır.\n\n` +
+    "Abunə olun və «Abunə oldum» düyməsini basın.",
+  openChannelButton: "📣 Kanalı açın",
+  checkSubscriptionButton: "Abunə oldum",
+  subscribeThanks: "Təşəkkür edirik! İndi mənə videonun linkini göndərin.",
+  subscribeThanksResuming: "Təşəkkür edirik! Linkinizi indi götürürəm.",
+  subscribeStillMissing: "Abunəliyi hələ görmürəm. Abunə olun və yenidən basın.",
+  channelNotice: (channel) => `\n\nBu paylaşımın linki ${channel} kanalında görünəcək — anonim, adınız olmadan.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Bu və istənilən başqa videonu pulsuz yükləyin: @VideonerBot",
+  errorStoryNeedsId:
+    "konkret storinin linkini göndərin: onu Instagram tətbiqində açın və «Paylaş» → «Linki kopyala» düyməsini basın.",
+  errorInstagramStory:
+    "Instagram storiləri yalnız hesaba daxil olmuş istifadəçilərə görünür.",
+  errorLoginRequired:
+    "Bu paylaşım hesaba daxil olmadan əlçatan deyil: platforma onu yalnız " +
+    "daxil olmuş istifadəçilərə göstərir. Bu, qapalı paylaşımlarda, yaş məhdudiyyətli məzmunda və " +
+    "məhdud auditoriya ilə paylaşılan paylaşımlarda olur.\n\n" +
+    "Açıq paylaşımlar problemsiz yüklənir — başqa link yoxlayın.",
+  errorUnsupportedPlatform:
+    "Bu linki tanıya bilmədim — onun YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest və ya Threads-dən birbaşa video linki olduğuna əmin olun.",
+  errorFileTooLarge: "fayl 2 GB-dan böyükdür — Telegram botlara daha böyük faylları göndərməyə icazə vermir. Onu saytda və ya brauzer genişlənməsi ilə yükləyin — düymələr aşağıdadır. Və ya linki yenidən göndərib daha aşağı keyfiyyət seçin.",
+  siteButton: "🌐 Saytda yüklə",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ${limit} həcmindən ağır keyfiyyətlər gizlədilib: Telegram botlara daha böyük faylları göndərməyə icazə vermir. Onları saytda və ya brauzer genişlənməsi ilə yükləyə bilərsiniz — düymələr aşağıdadır.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Bu video ən aşağı keyfiyyətdə belə Telegram üçün çox ağırdır (~${smallest}): Telegram botlara 2 GB-dan böyük faylları göndərməyə icazə vermir. Burada yalnız audionu ala bilərsiniz; videonu isə — saytda və ya brauzer genişlənməsi ilə (düymələr aşağıdadır).`,
+  errorFormatUnavailable: "Bu video üçün belə keyfiyyət yoxdur. Linki yenidən göndərin — aktual siyahını göstərəcəyəm.",
+  errorNoVideoContent: "Bu linkdə yükləmək üçün video yoxdur — deyəsən, paylaşımda yalnız foto var.",
+  errorRegionBlocked:
+    "Bu video müəllifin ölkəsindən kənarda bloklanıb — platforma onu " +
+    "serverimizə vermir. Bunun yan yolu yoxdur: məhdudiyyət onların tərəfindədir." +
+    "\n\nDigər linklər həmişəki kimi yüklənir.",
+  errorRateLimited: "Ardıcıl çox link göndərildi — bir az gözləyin və yenidən göndərin.",
+  errorYoutubeDailyLimit: (gb) => `son 24 saatda YouTube-dan ${gb} GB-dan çox yükləmisiniz — bu, botun bir nəfər üçün gündəlik limitidir. Limit son 24 saatı sayır, ona görə də yeni YouTube videolarını bir az sonra yükləyə biləcəksiniz. Digər platformalar həmişəki kimi işləyir.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Pleylist dayandırıldı: gündəlik YouTube limitinə çatıldı. Yüklənməmiş videolar: ${dropped}. Pleylistin linkini sonra yenidən göndərin.`,
+  errorPlatformRefused:
+    "platforma bu videonu serverimizə vermədi. Bu, qapalı " +
+    "və ya yaş məhdudiyyətli paylaşımlarda olur, bəzən isə platforma girişi sadəcə " +
+    "müvəqqəti məhdudlaşdırır. Bir neçə dəqiqədən sonra yenidən cəhd edin.",
+  errorThreadsNoMedia:
+    "bu Threads paylaşımında video və ya foto görünmür. Ya bu, yalnız mətndən ibarət paylaşımdır, ya da " +
+    "Threads onun mediasını yalnız hesaba daxil olmuş istifadəçilərə göstərir — belə paylaşımları hesaba daxil olmadan yükləmək mümkün deyil.",
+  extensionHint:
+    "\n\n💻 Onu kompüterdə Videoner brauzer genişlənməsi ilə yükləyə bilərsiniz: " +
+    "o, platformadakı öz hesabınızla yükləyir, parol və ya cookies brauzerinizdən kənara çıxmır.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Belə paylaşımları yükləmək üçün ${platform} hesabınızı bota qoşun — bir dəfə. Bundan sonra bot sizin gördüyünüz hər şeyi yükləyəcək: qapalı paylaşımları, reels və storiləri, telefondan da. Bunu necə etmək lazım olduğunu aşağıdakı düymə göstərir.${withExtension ? "\n\n💻 Və ya onu kompüterdə Videoner brauzer genişlənməsi ilə yükləyin." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Qoşulmuş ${platform} hesabınız bu paylaşımı aça bilmədi. Ola bilər ki, giriş artıq işləmir — hesabı yenidən qoşun. Və ya bu hesabın paylaşıma girişi yoxdur.${withExtension ? "\n\n💻 Onu kompüterdə Videoner brauzer genişlənməsi ilə də yükləyə bilərsiniz." : ""}`,
+  connectAccountButton: "🔑 Hesabı qoş",
+  reconnectAccountButton: "🔑 Yenidən qoş",
+  extensionButton: "🧩 Genişlənmə ilə yüklə",
+  extensionCommand:
+    "🧩 Brauzeriniz üçün Videoner: «Yüklə» düyməsi birbaşa video səhifəsində — YouTube, Instagram, TikTok, VK, hesabınızdakı qapalı videolar və GetCourse dərsləri.\n\nKompüterdə Chrome, Edge, Opera, Yandex Browser və Firefox üçün.",
+  extensionPageButton: "🧩 Genişlənməni quraşdır",
+  addToGroupButton: "👥 Qrupa əlavə et",
+  newsButton: "📣 Layihə xəbərləri",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Layihə xəbərləri: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Bu qrupda botun parametrləri\n\n" +
+    `🗑 Linkli mesajı silmək: ${s.deleteLinks ? "bəli" : "xeyr"}\n` +
+    "Video göndərildikdən sonra yalnız linkdən ibarət mesaj silinir — çatda yalnız video və onu paylaşanın adı qalır.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Hazırda mesajları silə bilmirəm: məni «Mesajları silmək» hüququ ilə admin edin.\n"
+      : "") +
+    `\n✍️ Videonun altındakı mətn: ${{ full: "tam", short: "ad və mənbə", none: "mətnsiz" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Keyfiyyət: ${s.quality === "max" ? "Telegram-ın qəbul etdiyi ən yüksək" : "standart (720p)"}\n` +
+    `\n⏱ Uzun videolar: ${s.longVideos ? "istənilən uzunluqda" : "yalnız 15 dəqiqəyə qədər"}\n` +
+    `\n🔑 Kim öz hesablarını qoşa bilər (storilər və qapalı paylaşımlar üçün): ${s.cookiesBy === "all" ? "istənilən üzv" : "yalnız adminlər"}\n` +
+    `\n🌐 Cavab dili: ${s.language ? langName(s.language) : "hər üzvün öz dili"}\n` +
+    "\nParametrləri yalnız qrup adminləri dəyişə bilər.",
+  settingsDeleteButton: (on) => `🗑 Linkləri silmək: ${on ? "bəli" : "xeyr"}`,
+  settingsCaptionButton: (style) => `✍️ Mətn: ${{ full: "tam", short: "qısa", none: "yoxdur" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Keyfiyyət: ${mode === "max" ? "ən yüksək" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Uzun videolar: ${on ? "bəli" : "15 dəq-yə qədər"}`,
+  settingsDoneButton: "✅ Hazırdır",
+  settingsAdminsOnly: "Parametrləri yalnız qrup adminləri dəyişə bilər.",
+  settingsGroupsOnly: "Parametrlər qruplar üçündür: məni qrupa əlavə edin və orada /settings göndərin.",
+  settingsFailed: "Parametrləri saxlamaq alınmadı, yenidən cəhd edin.",
+  settingsCookiesButton: (by) => `🔑 Hesabları qoşmaq: ${by === "all" ? "hamı" : "adminlər"}`,
+  accountsIntro:
+    "🔑 Qoşulmuş hesablar\n\nBot yalnız hesaba daxil olmuş istifadəçilərin gördüyünü (Instagram storiləri, qapalı paylaşımlar) sizin hesabınızla yükləyə bilər. Giriş harada qoşulubsa, orada işləyir: şəxsi çatda qoşulan sizin yükləmələrinizə, o cümlədən öz hesabı olmayan qruplardakı öz linklərinizə xidmət edir; qrupa qoşulan isə onun bütün üzvlərinə xidmət edir.",
+  accountsHowTo:
+    "Necə qoşmaq olar:\n1. Ən asanı: kompüterdə Videoner genişlənməsi — platformanın saytında hesabınıza daxil olun, Videoner pəncərəsini açın, «🔑 … hesabınızı bota qoşun» düyməsini basın və kodu mənə göndərin. Qrup üçün həmin qrupda /connect KOD göndərin.\n2. Və ya mənə cookies.txt faylını (brauzerdən ixrac edilmiş cookies) göndərin, yaxud onun mətnini mesaj kimi yapışdırın.\n3. Android telefondan — Firefox və Cookie-Editor əlavəsi ilə: https://videoner.download/az/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platformalar avtomatik yükləmələri sevmir və hesabı məhdudlaşdıra və ya bloklaya bilər. Əsas hesabı deyil, ikinci dərəcəli hesabı qoşmaq daha yaxşıdır. Cookies şifrələnmiş şəkildə saxlanılır, yalnız yükləmələr üçün istifadə olunur və aşağıdakı düymələrlə silinir.",
+  accountsNone: "Hələ heç nə qoşulmayıb.",
+  accountsGroupTitle: "🔑 Bu qrupa qoşulmuş hesablar",
+  accountsGroupHowTo:
+    "Bütün qrup üçün qoşmaq: Videoner genişlənməsindəki «🔑 … hesabınızı bota qoşun» düyməsi ilə kod alın və burada /connect KOD göndərin. Əgər hesabı yalnız şəxsi çatınızda qoşmusunuzsa, bot onu burada da öz linkləriniz üçün istifadə edir. Qoşulmalarınız: @VideonerBot ilə şəxsi çatda /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ giriş işləmir)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ giriş işləmir)"}`,
+  accountsWhereHere: "şəxsi çat",
+  accountsWhereGroup: (title) => `«${title}» qrupu`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Bütün qoşulmalarımı sil",
+  accountsDeleted: "Silindi.",
+  accountsDeletedAll: (n) => `Silinən qoşulmalar: ${n}.`,
+  accountsNotAllowed: "Onu yalnız qoşan şəxs və ya qrup admini silə bilər.",
+  connectUsage:
+    "/connect KOD göndərin. Kodu kompüterdəki Videoner genişlənməsində «🔑 … hesabınızı bota qoşun» düyməsi verir. Qoşulmalarınız: /accounts.",
+  connectOnlyAdmins: "Bu qrupa hesabları yalnız adminlər qoşa bilər (bax: /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} qoşuldu. Bot indi yalnız hesaba daxil olmuş istifadəçilərin gördüyünü də yükləyir. Baxmaq və ya silmək: /accounts.\n\n⚠️ Platforma avtomatik yükləmələrə görə hesabı məhdudlaşdıra bilər — ikinci dərəcəli hesabdan istifadə etmək daha yaxşıdır.`,
+  connectWhereGroup: "bu qrupa",
+  connectWhereHere: "şəxsi çatdakı və inline rejimdəki yükləmələriniz üçün",
+  connectCodeNotFound: "Kod tapılmadı və ya vaxtı bitib (kodlar 10 dəqiqə etibarlıdır). Videoner genişlənməsində yenisini alın.",
+  connectRejectedNoSession: "Bu cookies-də giriş yoxdur. Platformanın saytında hesabınıza daxil olun və cookies-i yenidən ixrac edin.",
+  connectRejectedUnknown: "Dəstəklənən platformaların cookies-i tapılmadı: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Hesabların qoşulması hələ mümkün deyil.",
+  connectFailed: "Qoşmaq alınmadı, yenidən cəhd edin.",
+  connectFileTooBig: "Fayl çox böyükdür — yalnız lazım olan saytın cookies-ini ixrac edin.",
+  connectNotAnonymous: "Hesabı qrup adından anonim deyil, öz adınızdan qoşun: əks halda adminlərin qoşulmaları qarışır. Kodu ləğv etdim — yenisini alın.",
+  connectCodeInGroup:
+    "Qrup çatında yazılmış qoşulma kodunu başqaları görə bilər — onu ləğv etdim və mesajı sildim. Yenisini alın və /connect KOD ilə göndərin: bu əmrli mesajı dərhal silirəm.",
+  groupWelcome:
+    "👋 Salam! Bu çatda TikTok, Instagram, YouTube, VK və digər platformalardan videoların linklərini paylaşın — cavab olaraq videonun özünü göndərəcəyəm.\n\n" +
+    "15 dəqiqəyə qədər olan videoları özüm, əmrsiz yükləyirəm, qalan hallarda isə susuram.\n\n⚙️ Qrup adminləri məni /settings ilə tənzimləyə bilər: linkli mesajların silinməsi, mətn üslubu, keyfiyyət, uzun videolar və dil.\n\n⚡ Səsi almaq üçün linkdən sonra -audio, ən yaxşı keyfiyyət üçün isə -hd əlavə edin.\n\n📣 Layihə xəbərləri: @videonerdownload",
+  errorTooLong: "video çox uzundur — belə uzun videoları hələ yükləyə bilmirik.",
+  errorUnknown: "bu videonu yükləmək alınmadı. Bir az sonra yenidən cəhd edin və ya başqa link göndərin.",
+  inlineHintButton: "Linki bota göndərin",
+  inlineResultTitle: "⬇️ Videonu yüklə",
+  inlineResultDescription: "Video birbaşa bu çatda dərc olunacaq",
+  inlinePlaceholder: "⏬ Yüklənir, bu bir-iki dəqiqə çəkə bilər...",
+  inlineOpenBot: "Botu açın",
+  inlineOnlySingleVideo:
+    "Bu rejim yalnız bir video göndərir. Bir neçə fayllı paylaşımlar və ya fotolar üçün linki bota şəxsi çatda göndərin.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Yükləmək üçün ${channel} kanalına abunə olun və yenidən cəhd edin.`,
+  inlineRateLimited: "Ardıcıl çox sorğu göndərildi. Bir dəqiqə gözləyin və yenidən cəhd edin.",
+  queueRest: (count) => `\n\n📋 Növbədə hələ linklər var: ${count}. Bundan sonra onları bir-bir göstərəcəyəm.`,
+  queuedOne: (position) =>
+    `📋 Link növbəyə əlavə olundu, №${position}. Əvvəlcə cari linki bitirək — sonra onun üçün keyfiyyət seçimini göstərəcəyəm.`,
+  queuedMany: (added, waiting) =>
+    `📋 Növbəyə əlavə olunan linklər: ${added}. Cəmi gözləyir: ${waiting}. Cari linkdən sonra onları bir-bir göstərəcəyəm.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Bu link artıq növbədədir — onu ikinci dəfə əlavə etmirəm."
+      : `Artıq növbədə olan linklər ikinci dəfə əlavə edilmir (təkrarlar: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Növbədə ən çoxu ${limit} link ola bilər — artıq olanlar əlavə edilmədi (${rejected}). Növbə irəlilədikdən sonra onları göndərin.`,
+  skipButton: "✖️ Yükləmə",
+  skipped: "⏭ Bu linki keçdim.",
+  chooseTimedOut: "⌛ 30 dəqiqə ərzində keyfiyyət seçilmədi — bu linki keçirəm.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot yeniləmə üçün yenidən başladılır — növbə sıfırlandı (linklər: ${count}). Bir dəqiqədən sonra onları yenidən göndərin.`,
+  subtitlesButton: "📝 Subtitrlər",
+  subtitlesBack: "⬅️ Keyfiyyətə qayıt",
+  subtitlesAuto: "avto",
+  subtitlesChoose: "Subtitrlərin dilini seçin",
+  subtitlesPreparing: "📝 Subtitrlər hazırlanır...",
+  subtitlesFailed: "Bu dildə subtitrləri yükləmək alınmadı. Başqa dil seçin.",
+  subtitlesBusy: "YouTube hazırda subtitrləri vermir — bir neçə dəqiqədən sonra yenidən cəhd edin.",
+  playlistFound: (title, count) =>
+    `📃 Pleylist${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} video.\nOnları bir-bir yükləyəcəyəm. Hansı formatda?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Ən yaxşı keyfiyyət",
+  playlistAudioButton: "🎵 Yalnız audio (mp3)",
+  playlistNoButton: "✖️ Xeyr, təşəkkürlər",
+  playlistQueued: (count) =>
+    `📃 Pleylistdən növbəyə əlavə olunan videolar: ${count}. Onları bir-bir göndərəcəyəm. Aşağıdakı düymə və ya /stop ilə dayandırın.`,
+  playlistFailed: "Pleylisti açmaq alınmadı — ola bilər ki, qapalıdır. Ayrıca bir videonun linkini göndərin.",
+  stopButton: "⏹ Dayandır",
+  stopped: (dropped) => `⏹ Dayandırıldı.${dropped ? ` Növbədən silinən linklər: ${dropped}.` : ""}`,
+  nothingToStop: "Hazırda heç nə yüklənmir.",
+  languageChoose: "🌐 Botun dilini seçin. «Avto» — Telegram dilinizə uyğunlaşır.",
+  languageChooseGroup: "🌐 Bu qrupda botun cavab dili. «Avto» — hər üzvün Telegram dili.",
+  languageAuto: "Avto — Telegram-dakı kimi",
+  languageAutoGroup: "Avto — hər üzvün öz dili",
+  languageSaved: (name) => `✅ Botun dili: ${name}. /language ilə dəyişin.`,
+  languageSavedAuto: "✅ Bot Telegram dilinizə uyğunlaşır. /language ilə dəyişin.",
+  settingsLanguageButton: (name) => `🌐 Dil: ${name ?? "avto"}`,
+  settingsBack: "⬅️ Parametrlərə qayıt",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -6650,4 +6870,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az };

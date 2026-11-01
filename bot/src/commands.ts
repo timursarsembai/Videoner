@@ -237,6 +237,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Jooji soo dejinta iyo safka" },
     { command: "language", description: "Luqadda bot-ka" },
   ],
+  az: [
+    { command: "start", description: "Botdan necə istifadə etmək olar" },
+    { command: "extension", description: "Brauzer genişlənməsi" },
+    { command: "accounts", description: "Storilər və qapalı paylaşımlar üçün öz hesablarınız" },
+    { command: "connect", description: "Genişlənmədən alınan kodla hesabı qoşun" },
+    { command: "stop", description: "Yükləməni və növbəni dayandırın" },
+    { command: "language", description: "Botun dili" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -444,6 +452,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Ku xir akoon kooxdan adigoo isticmaalaya kood" },
     { command: "language", description: "Luqadda bot-ka ee kooxdan (maamulayaasha)" },
     { command: "start", description: "Sida bot-ku uga shaqeeyo kooxda" },
+  ],
+  az: [
+    { command: "settings", description: "Bu qrupda botun parametrləri (adminlər üçün)" },
+    { command: "accounts", description: "Bu qrupa qoşulmuş hesablar" },
+    { command: "connect", description: "Kodla bu qrupa hesab qoşun" },
+    { command: "language", description: "Bu qrupda botun dili (adminlər üçün)" },
+    { command: "start", description: "Bot qrupda necə işləyir" },
   ],
 };
 

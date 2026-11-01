@@ -221,6 +221,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Buufachuu fi tarree eegumsaa dhaabaa" },
     { command: "language", description: "Afaan bootii" },
   ],
+  ha: [
+    { command: "start", description: "Yadda ake amfani da bot" },
+    { command: "extension", description: "Ƙarin burauza" },
+    { command: "accounts", description: "Asusunku don stories da wallafe-wallafe na sirri" },
+    { command: "connect", description: "Haɗa asusu da lamba daga ƙarin burauza" },
+    { command: "stop", description: "Tsayar da saukewa da layi" },
+    { command: "language", description: "Harshen bot" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -414,6 +422,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Koodiin akkaawuntii garee kanaan walqabsiisaa" },
     { command: "language", description: "Afaan bootii garee kana keessatti (bulchitootaaf)" },
     { command: "start", description: "Bootiin garee keessatti akkamitti akka hojjetu" },
+  ],
+  ha: [
+    { command: "settings", description: "Saitunan bot na wannan rukuni (don admins)" },
+    { command: "accounts", description: "Asusun da aka haɗa da wannan rukuni" },
+    { command: "connect", description: "Haɗa asusu da wannan rukuni ta lamba" },
+    { command: "language", description: "Harshen bot a wannan rukuni (don admins)" },
+    { command: "start", description: "Yadda bot ke aiki a rukuni" },
   ],
 };
 

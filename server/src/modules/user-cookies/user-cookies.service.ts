@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base === 'fil' ? 'tl' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -387,6 +387,7 @@ export class UserCookiesService {
       tl: forGroup ? 'para sa isang grupo' : 'para sa iyo',
       am: forGroup ? 'ለቡድን' : 'ለእርስዎ',
       om: forGroup ? 'garee tokkoof' : 'isiniif',
+      ha: forGroup ? 'na rukuni' : 'naku',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -416,6 +417,7 @@ export class UserCookiesService {
       tl: `⚠️ Hindi na gumagana ang naka-connect na ${name} login (${where}): hindi na ito tinatanggap ng platform. Baka nag-log out ka sa account, o na-restrict ang account.\n\nPara patuloy na makapag-download gamit ito, i-connect ulit ang account. Ang iyong mga koneksyon: /accounts.`,
       am: `⚠️ የተገናኘው የ${name} መግቢያዎ (${where}) መስራት አቁሟል፦ መድረኩ ከእንግዲህ አይቀበለውም። ከመለያው ወጥተው ሊሆን ይችላል፣ ወይም መለያው ተገድቦ ሊሆን ይችላል።\n\nበእሱ ማውረድዎን ለመቀጠል መለያውን እንደገና ያገናኙ። ግንኙነቶችዎ፦ /accounts`,
       om: `⚠️ Seensi ${name} keessan kan walqabsiifame (${where}) hojjechuu dhiiseera: waltajjichi si'ana hin fudhatu. Akkaawuntii irraa baatanii ta'uu danda'a, ykn akkaawuntichi daangeffamee ta'uu danda'a.\n\nIttiin buusuu itti fufuuf, akkaawunticha irra deebi'aa walqabsiisaa. Walqunnamtiiwwan keessan: /accounts.`,
+      ha: `⚠️ Shigar ${name} da kuka haɗa (${where}) ta daina aiki: dandalin ba ya karɓar ta yanzu. Wataƙila kun fita daga asusun, ko an taƙaita asusun.\n\nDon ci gaba da saukewa da shi, ku sake haɗa asusun. Haɗin ku: /accounts.`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

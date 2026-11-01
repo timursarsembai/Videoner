@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -41,6 +41,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   th: "ไทย",
   am: "አማርኛ",
   om: "Afaan Oromoo",
+  ha: "Hausa",
   tl: "Tagalog",
 };
 
@@ -9417,6 +9418,366 @@ const om: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const ha: Translations = {
+  nav: {
+    home: "Gida",
+    downloaders: "Masu saukewa",
+    extension: "Ƙari",
+    blog: "Blog",
+    switchTheme: "Canja jigo",
+    language: "Harshe",
+    comingSoon: "Nan ba da jimawa ba",
+  },
+  theme: {
+    light: "Haske",
+    dark: "Duhu",
+    system: "Na tsarin",
+  },
+  playlist: {
+    title: `Jerin bidiyo "{title}": bidiyo {count}`,
+    hint: "Ana sauke bidiyon ɗaya bayan ɗaya. Ku bar wannan shafin a buɗe; burauzarku na iya neman izinin sauke fayiloli da yawa.",
+    std: "720p",
+    hd: "Mafi kyawun inganci",
+    audio: "Sauti kawai (mp3)",
+    progress: "Bidiyo {index} cikin {count}",
+    stats: "An sauke: {done} · sun kasa: {failed}",
+    stop: "Tsaya",
+    stopped: "An tsaya. An sauke {done} cikin {count}.",
+    finished: "Jerin bidiyo ya ƙare: {done} cikin {count}.",
+    again: "Ku sake zaɓa",
+  },
+  footer: {
+    news: "Labaran aikin",
+    botCta: "Akwai kuma a matsayin bot na Telegram:",
+    extension: "Ƙarin burauza",
+    developedBy: "An haɓaka ta",
+    rights: "Duk haƙƙoƙi a kiyaye suke.",
+  },
+  content: {
+    howToTitle: "Yadda ake sauke bidiyon {platform}",
+    faqTitle: "Tambayoyin da ake yawan yi",
+  },
+  auth: {
+    loginButton: "Shiga da Telegram",
+    signIn: "Shiga",
+    logout: "Fita",
+    switchAccountHint: "Ba asusunku ba ne?",
+    switchAccountLink: "Fita daga Telegram Web",
+  },
+  home: {
+    new: "Sabo",
+    manyFeatures: "Sababbin abubuwa da yawa",
+    titleLine1: "Sauke bidiyo",
+    titleLine2: "cikin sauri da sauƙi",
+    subtitle:
+      "Mai sauke bidiyo na kowane dandali: YouTube, Instagram, TikTok da sauransu. Ku zaɓi kowane inganci, daga HD zuwa wanda ya dace da wayar hannu.",
+    subtitleExtra: "Babu iyaka, babu wahala — saukewa kawai.",
+    placeholder: "Ku liƙa hanyar haɗin bidiyo daga kowane dandali...",
+    download: "Sauke",
+  },
+  video: {
+    description: "Bayani",
+    format: "Tsari",
+    selected: "An zaɓa: {quality}",
+    videoTab: "bidiyo",
+    audioTab: "sauti",
+    converting: "Ana canzawa",
+    downloading: "Ana saukewa",
+    downloadAgain: "Sake saukewa",
+    startDownload: "Fara saukewa",
+    convertingBtn: "Ana canzawa...",
+    downloadingBtn: "Ana saukewa...",
+    loginRequiredHint: "Ku shiga da Telegram don saukewa",
+    quotaExceededHint: "An kai iyakar saukewa 20 na yau — ku dawo gobe",
+    postFiles: "Wannan wallafa tana da fayiloli {count}",
+    photoQuality: "Hotuna na asali",
+    slideshowQuality: "Nunin hotuna (bidiyo)",
+    galleryQuality: "Hotuna + nunin hotuna",
+    downloadAll: "Sauke duka",
+    downloadOne: "Ajiye",
+    subtitlesTab: "rubutun ƙasa",
+    subtitlesHint: "Ku zaɓi harshe — za ku sami fayil ɗin .srt da kowace manhajar kunna bidiyo ke iya buɗewa.",
+    subtitlesAuto: "atomatik",
+    subtitlesDownload: "Sauke rubutun ƙasa",
+    subtitlesDownloading: "Ana shirya rubutun ƙasa...",
+  },
+  toast: {
+    enterUrl: "Ku shigar da hanyar haɗi",
+    enterValidUrl: "Ku shigar da ingantacciyar hanyar haɗi",
+    platformNotSupported: "Ba a tallafa wa wannan dandali ba",
+    urlNotSupported: "Ba a tallafa wa wannan hanyar haɗi ba",
+    enterValidPlatformUrl: "Ku shigar da ingantacciyar hanyar haɗi ta {platform}",
+    captchaNotReady: "Ku jira ɗan lokaci har binciken tsaro ya kammala, sannan ku sake gwadawa",
+    comingSoon: "Yana nan tafe! Ba a tallafa wa {name} tukuna ba",
+    selectQuality: "Ku zaɓi inganci",
+    downloadStarted: "Saukewa ya fara!",
+    downloadCompleted: "Saukewa ya kammala!",
+    newsChannel: "Labaran aikin suna kan Telegram:",
+    downloadUrlNotReceived: "Ba a karɓi hanyar saukewa ba",
+    needsBrowser:
+      "Dandalin bai ba sabar mu wannan bidiyo ba: masu shiga asusu ne kawai ke iya ganinsa, ko kuma an taƙaita samun dama na ɗan lokaci. Kuna iya sauke shi da ƙarin burauza na Videoner a kwamfuta — yana saukewa ta amfani da shigarku.",
+    needsBrowserLink: "Samu ƙarin →",
+  },
+  platforms: {
+    youtube: {
+      description: "Sauke bidiyon YouTube cikin ingancin HD",
+      news: "Yanzu tare da tallafin bidiyo da Shorts",
+      titleLine1: "Sauke bidiyon YouTube",
+      titleLine2: "da Shorts",
+      pageDescription:
+        "Sauke bidiyon YouTube, Shorts da sauti cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani. Tallafi ga ingancin 8K, 4K, HD da sautin MP3.",
+      placeholder: "Ku liƙa hanyar haɗin YouTube a nan...",
+      howTo: [
+        "Ku kwafi hanyar haɗin bidiyon daga sandar adireshi ta burauzarku, ko ku danna Share a manhajar YouTube.",
+        "Ku liƙa ta a cikin akwatin da ke sama sannan ku danna Sauke.",
+        "Ku zaɓi inganci — har zuwa 4K/8K don bidiyo, ko MP3 don sauti kawai.",
+        "Fayil ɗinku zai fara saukewa nan take, ba tare da buƙatar shiga ba.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon YouTube da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Videoner yana ba da kowane girman hoto da YouTube ke bayarwa don wannan bidiyo — daga 360p har zuwa 4K/8K inda akwai — da kuma ciro sautin MP3." },
+        { q: "Zan iya sauke bidiyo na sirri ko waɗanda aka taƙaita da shekaru?", a: "Bidiyon YouTube da kowa zai iya gani ne kawai ake tallafawa; abubuwa na sirri, waɗanda ba a buɗe muku ba, ko masu buƙatar shiga ba za a iya sauke su ba." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga YouTube?", a: "Ku sauke bidiyon da kuke da haƙƙin ajiyewa kawai — abubuwanku na kanku, bidiyo masu lasisin Creative Commons, ko duk abin da mai ƙirƙira ya yarda. Ku mutunta Sharuɗɗan Sabis na YouTube da dokar haƙƙin mallaka." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Fayilolin da aka canza suna kan sabar na kusan awa ɗaya, don haka ku ajiye su a na'urarku nan da nan bayan saukewa." },
+      ],
+    },
+    facebook: {
+      description: "Ajiye bidiyo daga wallafe-wallafen Facebook da reels",
+      news: "Yanzu tare da tallafin reels",
+      titleLine1: "Sauke bidiyon Facebook",
+      titleLine2: "da Reels",
+      pageDescription:
+        "Sauke bidiyon Facebook da reels cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani.",
+      placeholder: "Ku liƙa hanyar haɗin Facebook a nan...",
+      howTo: [
+        "Ku buɗe bidiyo ko reel a Facebook sannan ku kwafi hanyar haɗinsa (ku danna ɗigo uku → Copy Link).",
+        "Ku liƙa hanyar haɗin a sama sannan ku danna Sauke.",
+        "Ku zaɓi ingancin MP4 ko ku ciro sautin a matsayin MP3.",
+        "Fayil ɗin zai sauka kai tsaye a na'urarku — ba a buƙatar asusun Facebook.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon Facebook da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Videoner yana ɗaukar mafi girman ingancin da Facebook ke bayarwa don wannan bidiyo ko reel, a MP4, da kuma zaɓin sautin MP3." },
+        { q: "Zan iya sauke bidiyo na sirri?", a: "Wallafe-wallafe, bidiyo da reels na jama'a ne kawai ke aiki — abubuwa na sirri ko na abokai kawai ba sa samuwa." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga Facebook?", a: "Ku sauke bidiyon da kuke da izinin ajiyewa kawai; ku mutunta haƙƙoƙin mai ƙirƙira da Sharuɗɗan Sabis na Facebook." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Ana ajiye fayiloli na kusan awa ɗaya bayan canzawa, sannan a goge su ta atomatik — ku sauke da wuri." },
+      ],
+    },
+    instagram: {
+      description: "Sauke reels, stories da wallafe-wallafen Instagram",
+      news: "Yanzu tare da tallafin reels da stories",
+      titleLine1: "Sauke Instagram",
+      titleLine2: "Reels da Stories",
+      pageDescription:
+        "Sauke reels, stories da wallafe-wallafen Instagram cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani.",
+      placeholder: "Ku liƙa hanyar haɗin Instagram a nan...",
+      howTo: [
+        "Ku buɗe Reel, wallafa ko story a Instagram sannan ku danna alamar jirgin takarda → Copy Link.",
+        "Ku liƙa hanyar haɗin a cikin akwatin da ke sama.",
+        "Ku zaɓi inganci da tsarin da kuke so.",
+        "Saukewa zai fara nan take — ba a buƙatar shiga ko shigar da wata manhaja.",
+      ],
+      faq: [
+        { q: "Shin sauke abubuwan Instagram da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Cikakken ingancin da ake da shi don reels, wallafe-wallafe da stories, a MP4 ko MP3." },
+        { q: "Zan iya sauke daga asusun sirri?", a: "Asusun Instagram na jama'a da wallafe-wallafensu ne kawai ake tallafawa; ba za a iya sauke abubuwa daga asusun sirri ba." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga Instagram?", a: "Ku sauke abin da aka ba ku izinin ajiyewa kawai — ku mutunta mai ƙirƙira da Sharuɗɗan Sabis na Instagram." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Fayiloli suna kan sabar na kusan awa ɗaya kafin a goge su ta atomatik." },
+      ],
+    },
+    tiktok: {
+      description: "Sauke bidiyon TikTok ba tare da alamar ruwa ba",
+      news: "Yanzu ba tare da alamar ruwa ba",
+      titleLine1: "Sauke TikTok",
+      titleLine2: "ba tare da alamar ruwa ba",
+      pageDescription:
+        "Sauke bidiyon TikTok ba tare da alamar ruwa ba cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani.",
+      placeholder: "Ku liƙa hanyar haɗin TikTok a nan...",
+      howTo: [
+        "Ku danna Share a kan bidiyon TikTok, sannan Copy Link.",
+        "Ku liƙa hanyar haɗin a sama sannan ku danna Sauke.",
+        "Ku sami MP4 mai tsabta — ba tare da alamar ruwa ta TikTok ba — ko sautin MP3.",
+        "Ku ajiye shi kai tsaye a na'urarku.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon TikTok da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Mafi kyawun ingancin da TikTok ke bayarwa don wannan bidiyo, ba tare da alamar ruwa ta TikTok ba, da kuma sautin MP3." },
+        { q: "Zan iya sauke daga asusun sirri?", a: "Bidiyo daga asusun TikTok na jama'a ne kawai za a iya saukewa." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga TikTok?", a: "Ku sauke bidiyon da kuke da haƙƙin ajiyewa, ku ambaci mai ƙirƙira, kuma ku mutunta Sharuɗɗan Sabis na TikTok." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Fayilolin da aka sauke suna kan sabar na kusan awa ɗaya, sannan a goge su ta atomatik." },
+      ],
+    },
+    twitter: {
+      description: "Sauke bidiyon Twitter",
+      news: "Yanzu tare da tallafin bidiyon Twitter",
+      titleLine1: "Sauke bidiyon",
+      titleLine2: "Twitter",
+      pageDescription:
+        "Sauke bidiyon Twitter cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani.",
+      placeholder: "Ku liƙa hanyar haɗin Twitter a nan...",
+      howTo: [
+        "Ku danna Share a ƙarƙashin tweet ɗin sannan ku zaɓi Copy Link (ko ku kwafi adireshin daga burauzarku).",
+        "Ku liƙa shi a cikin akwatin da ke sama.",
+        "Ku zaɓi ingancin bidiyon da kuke so.",
+        "Saukewa zai fara nan da nan — ba a buƙatar asusun X/Twitter.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon Twitter/X da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Kowane inganci da X/Twitter ke bayarwa don wannan bidiyo, a MP4, da kuma MP3." },
+        { q: "Zan iya sauke daga asusun sirri?", a: "Tweets daga asusun jama'a ne kawai ke aiki; ba a tallafa wa asusun da aka kare ko na sirri ba." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga Twitter/X?", a: "Ku sauke abubuwan da kuke da haƙƙin ajiyewa, tare da mutunta haƙƙoƙin wanda ya wallafa da Sharuɗɗan Sabis na dandalin." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Ana goge fayiloli ta atomatik kusan awa ɗaya bayan an samar da su." },
+      ],
+    },
+    vimeo: {
+      description: "Sauke bidiyon Vimeo cikin inganci mai kyau",
+      news: "Yanzu tare da tallafin Vimeo",
+      titleLine1: "Sauke bidiyon",
+      titleLine2: "Vimeo",
+      pageDescription:
+        "Sauke bidiyon Vimeo cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani.",
+      placeholder: "Ku liƙa hanyar haɗin Vimeo a nan...",
+      howTo: [
+        "Ku buɗe Vimeo sannan ku kwafi hanyar haɗin bidiyon (ko ku danna Share → Copy Link a waya).",
+        "Ku liƙa hanyar haɗin a cikin akwatin da ke sama sannan ku danna Sauke.",
+        "Ku zaɓi inganci da tsari — MP4 don bidiyo, MP3 idan sauti kawai kuke so.",
+        "Saukewarku za ta fara nan take; ba a buƙatar asusu ko shigar da wata manhaja.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon Vimeo da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Videoner yana ba da kowane inganci da Vimeo ke samarwa don wannan bidiyo, har zuwa girman asalin abin da aka ɗora, ciki har da HD da 4K inda mai ƙirƙira ya samar da su." },
+        { q: "Zan iya sauke bidiyon Vimeo na sirri ko masu kalmar sirri?", a: "A'a — Videoner yana aiki ne kawai da hanyoyin haɗin Vimeo da kowa zai iya buɗewa. Ba za a iya sauke bidiyo na sirri, masu kalmar sirri ko waɗanda aka taƙaita samun damarsu ba." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga Vimeo?", a: "An yi saukewa ne don bidiyon da kuke da haƙƙin ajiyewa — abubuwanku na kanku, bidiyo masu lasisin Creative Commons, ko duk abin da mai ƙirƙira ya bayyana ya yarda a sauke. Ku mutunta haƙƙin mallakar mai ƙirƙira da sharuɗɗan sabis na Vimeo." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Ana samar da fayiloli lokacin da aka nema kuma ana ajiye su a sabar na kusan awa ɗaya kafin a goge su ta atomatik, don haka ku ajiye shi a na'urarku nan da nan bayan saukewa ta kammala." },
+      ],
+    },
+    vk: {
+      description: "Sauke bidiyo da gajerun bidiyo daga VK",
+      news: "Yanzu tare da tallafin VK",
+      titleLine1: "Sauke bidiyon VK",
+      titleLine2: "da Clips",
+      pageDescription:
+        "Sauke bidiyo da clips na VK cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani.",
+      placeholder: "Ku liƙa hanyar haɗin VK a nan...",
+      howTo: [
+        "Ku buɗe bidiyo ko clip a VK (vk.com ko VK Video) sannan ku kwafi hanyar haɗinsa daga sandar adireshi ko maɓallin Share.",
+        "Ku liƙa hanyar haɗin a sama sannan ku danna Sauke.",
+        "Ku zaɓi inganci da tsarin da ake da su.",
+        "Fayil ɗin zai sauka kai tsaye — ba sai kun shiga VK ba.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon VK da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Duk ingancin da VK ke bayarwa don wannan bidiyo ko clip, da kuma sautin MP3." },
+        { q: "Ina buƙatar shiga VK?", a: "A'a — dole bidiyon ya kasance na jama'a. Videoner ba ya shiga VK, don haka ba za a iya sauke bidiyo na sirri, na abokai kawai ko masu buƙatar shiga ba." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga VK?", a: "Ku sauke bidiyon da kuke da haƙƙin ajiyewa kawai, tare da mutunta Sharuɗɗan Sabis na VK da haƙƙoƙin wanda ya ɗora." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Ana ajiye fayiloli a sabar na kusan awa ɗaya, sannan a goge su ta atomatik." },
+      ],
+    },
+    rutube: {
+      description: "Sauke bidiyo daga Rutube",
+      news: "Yanzu tare da tallafin Rutube",
+      titleLine1: "Sauke bidiyon",
+      titleLine2: "Rutube",
+      pageDescription:
+        "Sauke bidiyon Rutube cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani.",
+      placeholder: "Ku liƙa hanyar haɗin Rutube a nan...",
+      howTo: [
+        "Ku buɗe bidiyon a Rutube sannan ku kwafi hanyar haɗinsa daga sandar adireshi ko maɓallin Share.",
+        "Ku liƙa shi a cikin akwatin da ke sama.",
+        "Ku zaɓi inganci da tsari (bidiyo ko sauti).",
+        "Saukewa zai fara nan da nan, ba a buƙatar asusun Rutube.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon Rutube da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Kowane inganci da Rutube ke bayarwa, a MP4, da kuma sautin MP3." },
+        { q: "Ina buƙatar shiga Rutube?", a: "A'a — Videoner yana aiki ne kawai da bidiyon Rutube na jama'a; ba a amfani da shiga kuma ba a buƙatarsa." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga Rutube?", a: "Ku sauke abubuwan da aka ba ku izinin ajiyewa kawai, tare da mutunta Sharuɗɗan Sabis na Rutube da haƙƙoƙin mai ƙirƙira." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Fayiloli suna kan sabar na kusan awa ɗaya kafin a goge su ta atomatik." },
+      ],
+    },
+    okru: {
+      description: "Sauke bidiyo daga OK.ru (Odnoklassniki)",
+      news: "Yanzu tare da tallafin OK.ru",
+      titleLine1: "Sauke bidiyon",
+      titleLine2: "OK.ru",
+      pageDescription:
+        "Sauke bidiyon OK.ru (Odnoklassniki) cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani.",
+      placeholder: "Ku liƙa hanyar haɗin OK.ru a nan...",
+      howTo: [
+        "Ku buɗe bidiyon a OK.ru (Odnoklassniki) sannan ku kwafi hanyar haɗinsa daga sandar adireshi.",
+        "Ku liƙa hanyar haɗin a cikin akwatin da ke sama sannan ku danna Sauke.",
+        "Ku zaɓi inganci da tsarin da kuke so.",
+        "Saukewa zai fara nan take — ba a buƙatar shiga OK.ru.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon OK.ru da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci na bidiyo zan iya saukewa?", a: "Dukkan ingancin da OK.ru ke bayarwa don wannan bidiyo, da kuma MP3." },
+        { q: "Ina buƙatar shiga OK.ru?", a: "A'a — bidiyon OK.ru (Odnoklassniki) na jama'a ne kawai ke aiki. Videoner ba ya taɓa shiga wani asusu, don haka bidiyo na sirri ba sa samuwa." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga OK.ru?", a: "Ku sauke bidiyon da kuke da haƙƙin ajiyewa kawai, tare da mutunta Sharuɗɗan Sabis na OK.ru da haƙƙoƙin wanda ya ɗora." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Ana goge fayiloli ta atomatik kusan awa ɗaya bayan an samar da su." },
+      ],
+    },
+    pinterest: {
+      description: "Sauke bidiyo daga pins na Pinterest",
+      news: "Yanzu tare da tallafin Pinterest",
+      titleLine1: "Sauke bidiyon Pinterest",
+      titleLine2: "da Pins",
+      pageDescription:
+        "Sauke bidiyo daga pins na Pinterest cikin inganci mai kyau. Cikin sauri, kyauta kuma mai sauƙin amfani. Lura: pins masu bidiyo ne kawai za a iya saukewa — ba a tallafa wa pins masu hotuna kawai ba.",
+      placeholder: "Ku liƙa hanyar haɗin Pinterest a nan...",
+      howTo: [
+        "Ku buɗe pin a Pinterest sannan ku danna Share → Copy Link (ko ku kwafi adireshin daga burauzarku).",
+        "Ku liƙa hanyar haɗin a cikin akwatin da ke sama sannan ku danna Sauke.",
+        "Ku zaɓi inganci da tsarin da kuke so.",
+        "Fayil ɗinku zai sauka nan take — ba a buƙatar asusu.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon Pinterest da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci zan iya saukewa?", a: "Videoner yana ba da kowane inganci da Pinterest ke bayarwa don bidiyon wannan pin, da kuma ciro sautin MP3." },
+        { q: "Zan iya sauke hotuna daga Pinterest?", a: "A'a — pins masu bidiyo ne kawai za a iya saukewa. Idan pin yana da hotuna kawai, babu fayil ɗin bidiyo da za a ciro." },
+        { q: "Zan iya sauke pins na sirri ko waɗanda aka taƙaita a board?", a: "Pins da kowa zai iya gani ne kawai ake tallafawa; ba za a iya sauke boards na sirri da abubuwan da ke buƙatar shiga ba." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga Pinterest?", a: "Ku sauke pins da kuke da haƙƙin ajiyewa kawai — abubuwanku na kanku ko duk abin da mai ƙirƙira ya yarda. Ku mutunta Sharuɗɗan Sabis na Pinterest da dokar haƙƙin mallaka." },
+        { q: "Har yaushe fayil ɗin da na sauke zai kasance?", a: "Fayilolin da aka canza suna kan sabar na kusan awa ɗaya, don haka ku ajiye su a na'urarku nan da nan bayan saukewa." },
+      ],
+    },
+    threads: {
+      description: "Sauke bidiyo daga wallafe-wallafen Threads",
+      news: "Yanzu tare da tallafin Threads",
+      titleLine1: "Sauke bidiyon",
+      titleLine2: "Threads",
+      pageDescription:
+        "Sauke bidiyo daga wallafe-wallafen Threads. Cikin sauri, kyauta, kuma ba a buƙatar asusun Threads. Threads yana bayar da sigar bidiyo ɗaya kawai, har zuwa 720p — wannan ne mafi girman ingancin da dandalin ke samarwa.",
+      placeholder: "Ku liƙa hanyar haɗin Threads a nan...",
+      howTo: [
+        "Ku buɗe wallafar a Threads sannan ku danna alamar rabawa, sannan Copy Link.",
+        "Ku liƙa hanyar haɗin a cikin akwatin da ke sama sannan ku danna Sauke.",
+        "Ku zaɓi tsarin da kuke so — bidiyo ko sautin MP3.",
+        "Fayil ɗinku zai sauka nan take — ba a buƙatar asusu.",
+      ],
+      faq: [
+        { q: "Shin sauke bidiyon Threads da Videoner kyauta ne?", a: "Ee, kyauta ne gaba ɗaya: babu shiga, babu biyan kuɗin wata-wata, babu talla kuma babu iyakar saukewa ta yau da kullum. Iyaka ɗaya kawai ita ce kan zirga-zirgar YouTube — 10 GB a rana ga kowace hanyar sadarwa — don kare sabis ɗin daga cin zarafi." },
+        { q: "Ina buƙatar asusu don saukewa?", a: "A'a. Saukewa ba ya buƙatar asusu ko shiga — ku liƙa hanyar haɗi kawai sannan ku danna Sauke." },
+        { q: "Wane inganci zan iya saukewa?", a: "Threads yana wallafa sigar bidiyo ɗaya tak a kowace wallafa, wadda aka iyakance a 720p a gefen da ya fi gajarta — ko da marubucin ya ɗora 4K. Videoner yana ba ku wannan fayil ɗin yadda yake, da kuma ciro sautin MP3. Babu mai saukewa da zai iya bayar da fiye da haka, domin ba a bayar da ingancin da ya fi haka kwata-kwata." },
+        { q: "Shin hanyoyin haɗin threads.com da threads.net duka suna aiki?", a: "Ee. Ana tallafa wa cikakkun hanyoyin haɗi kamar threads.com/@user/post/CODE da gajerun hanyoyin haɗi kamar threads.net/t/CODE duka." },
+        { q: "Zan iya sauke hotuna daga wallafar Threads?", a: "A'a — bidiyo kawai. Idan wallafa tana da hotuna kawai, babu fayil ɗin bidiyo da za a ciro." },
+        { q: "Me game da wallafa mai bidiyo da yawa?", a: "Ana sauke bidiyo na farko a cikin wallafar. Carousel na Threads na iya ɗaukar gajerun bidiyo da yawa, kuma na farkon ne kawai ake ajiyewa." },
+        { q: "Zan iya sauke wallafe-wallafe na sirri?", a: "A'a. Wallafe-wallafen da kowa zai iya gani ne kawai za a iya saukewa; duk abin da ke bayan asusun sirri ko bangon shiga ba ya samuwa." },
+        { q: "Shin ya halatta a doka a sauke bidiyo daga Threads?", a: "Ku sauke abin da kuke da haƙƙin ajiyewa kawai — abubuwanku na kanku ko duk abin da marubucin ya yarda. Ku mutunta Sharuɗɗan Amfani na Threads da dokar haƙƙin mallaka." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -9777,4 +10138,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, tl };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, tl };

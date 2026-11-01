@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на двадцати семи языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на двадцати восьми языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -7859,6 +7859,308 @@ export const legal: LegalByLanguage = {
             heading: "Komii amanamummaa hin qabne",
             body: [
               "Komiin odeeffannoo sobaa beekamaa of keessaa qabu, akkaataa seera hojiirra jiruun itti gaafatamummaa dhiyeessaa irratti fiduu danda'a. Komiin abbaa mirgaas ta'e meeshaa falmisiisaa adda baasuu hin dandeessifne yoo ta'e, qorachuu diduuf mirga qabna.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  ha: {
+    ui: {
+      updated: "An sabunta a",
+      back: "Koma shafin farko",
+      operatorHeading: "Mai gudanar da sabis",
+      navHeading: "Sauran takardu",
+      labels: {
+        privacy: "Manufar Sirri",
+        terms: "Sharuɗɗan Amfani",
+        cookies: "Manufar Cookie",
+        copyright: "Ga Masu Haƙƙin Mallaka",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Manufar Sirri",
+        summary: `Waɗanne bayanai ${operator.site} ke tattarawa, dalilin da ake buƙatarsu, tsawon lokacin da ake adana su da yadda za a share su.`,
+        sections: [
+          {
+            heading: "Gabaɗaya",
+            body: [
+              `Wannan Manufa tana bayyana irin bayanan sirri (personal data) da sabis ɗin ${operator.site} ke sarrafawa da kuma dalilin hakan. Mai kula da bayanai (data controller) shi ne ${operator.nameHa}.`,
+              "Ta hanyar amfani da sabis ɗin, kun amince da tsarin sarrafa bayanai da aka bayyana a nan. Idan ba ku amince da shi ba, don Allah kada ku yi amfani da sabis ɗin.",
+              "Ana sarrafa bayanai bisa ga Dokar Jamhuriyar Kazakhstan “Game da Bayanan Sirri da Kariyarsu”, kuma, game da maziyarta daga Yankin Tattalin Arzikin Turai (European Economic Area), tare da la'akari da buƙatun GDPR.",
+            ],
+          },
+          {
+            heading: "Bayanan da muke sarrafawa",
+            body: [
+              "Da gangan ba ma tattara wani abu fiye da abin da sabis ɗin ke buƙata don aiki, kuma ba ma neman takardun shaida, bayanan biyan kuɗi ko adireshi.",
+            ],
+            bullets: [
+              "Bayanan asusun Telegram da bot ke samu idan kuka aika masa saƙo: lambar shaida (id), sunan mai amfani (username), suna da lambar harshe.",
+              "Hanyoyin haɗin da kuke aikawa don saukewa da bayanai game da ƙoƙarin saukewar kansa: dandali, kwanan wata da lokaci, ingancin da aka zaɓa, da sakamako (nasara ko kuskure).",
+              "Bayanan fasaha na haɗin intanet: adireshin IP, nau'i da sigar burauza, harshe da shafin da kuka fito. Waɗannan suna shiga cikin bayanan ayyukan uwar garke (server logs) da kayan aikin nazarin yanar gizo.",
+              "Cookies da masu gano nazari (analytics identifiers) — ƙarin bayani a cikin Manufar Cookie.",
+            ],
+          },
+          {
+            heading: "Dalilin da muke buƙatar bayanan",
+            bullets: [
+              "Don samar da sabis ɗin kansa: samo bidiyo ta hanyar haɗinku da kuma ba ku fayil ɗin.",
+              "Don bambanta asusunku da na wasu da kuma hana cin zarafi.",
+              "Don kare sabis ɗin daga cin zarafi na atomatik: binciken Cloudflare Turnstile kafin aika hanyar haɗi.",
+              "Don fahimtar yadda ake amfani da shafin da gyara kurakurai, ta amfani da ƙididdigar da aka cire sunaye (anonymised) kuma aka haɗa wuri ɗaya (aggregated).",
+              "Don amsa tambayoyinku da na masu haƙƙin mallaka.",
+              "Don aiko muku da saƙo a Telegram lokaci-lokaci domin jin ra'ayinku game da sabis ɗin — misali, idan kun daina amfani da shi. Ba dole ba ne ku amsa; idan ba ku son irin waɗannan saƙonni, kawai ku faɗa mana, kuma ba za mu sake rubuto muku ba.",
+            ],
+          },
+          {
+            heading: "Tushen doka na sarrafa bayanai",
+            body: [
+              "Ana sarrafa bayanan asusun Telegram da bayanan saukewa domin aiwatar da Sharuɗɗan Amfani, waɗanda kuke amincewa da su lokacin da kuka fara amfani da sabis ɗin.",
+              "Ana sarrafa cookies na nazari da naɗar ayyuka a shafin bisa yardarku, wadda za ku iya janyewa a kowane lokaci — an bayyana hanyoyin a cikin Manufar Cookie.",
+              "Bayanan ayyukan uwar garke da kariya daga bot sun dogara ne a kan halattaccen muradinmu (legitimate interest) na ci gaba da gudanar da sabis ɗin cikin aminci.",
+              "Tambayoyi game da ra'ayinku kan sabis ɗin sun dogara ne a kan halattaccen muradinmu na inganta sabis ɗin; za ku iya ƙin karɓar su a kowane lokaci.",
+            ],
+          },
+          {
+            heading: "Asusun da aka haɗa",
+            body: [
+              "Idan kuna so, za ku iya haɗa asusunku na wani dandali (Instagram, Facebook, YouTube, X, VK, TikTok) da bot domin ya sauke wallafe-wallafen da masu shiga asusu kaɗai ke iya gani: labarai (stories) da wallafe-wallafe na sirri. Don haka bot yana karɓar cookies na wannan asusun — daga ƙarin burauza na Videoner ta hanyar lambar amfani sau ɗaya, ko daga fayil da kuka aiko.",
+              "Muna adana cookies na dandalin da aka zaɓa kaɗai, sauran kuma muna watsar da su nan take. Ana adana su a rufaffen tsari (encrypted) kuma ana amfani da su ne kawai don saukewa a inda kuka haɗa su. Waɗanda aka haɗa a cikin hirarku ta sirri suna aiki ne don saukewarku, har da hanyoyin haɗinku na kanku a cikin rukunonin da ba su da nasu asusun; ba a taɓa amfani da su don hanyoyin haɗin wasu mutane ba. Waɗanda aka haɗa da rukuni suna aiki ne don saukewar membobinsa kaɗai, ba a wani wuri ba.",
+              "Tushen doka shi ne yardarku: ku da kanku kuke haɗa asusun, kuma za ku iya cire shi a kowane lokaci ta umarnin /accounts. Idan aka cire su, ana goge cookies ɗin har abada. Idan dandalin ya daina karɓar shigarku, bot zai sanar da ku.",
+              "Wallafe-wallafen da aka sauke ta asusun da aka haɗa ba a wallafa su a tasharmu, kuma ba a ba wa sauran masu amfani su daga ma'ajiyar gama-gari (shared cache).",
+            ],
+          },
+          {
+            heading: "Sabis na ɓangare na uku",
+            body: [
+              "Ba ma sayar da bayananku kuma ba ma miƙa su ga ɓangare na uku don manufofinsu na kansu. Sabis ɗin yana amfani da masu samar da sabis masu zuwa, kowannensu yana sarrafa bayanai bisa ga ƙa'idojinsa:",
+            ],
+            bullets: [
+              `Telegram — gudanar da bot ɗin ${BOT}.`,
+              "Cloudflare — kariya daga bot (Turnstile), isar da shafin yanar gizo da tura saƙonnin imel.",
+              "Google Analytics da Google Tag Manager — ƙididdigar ziyara.",
+              "Yandex Metrica — ƙididdigar ziyara, taswirar dannawa da Webvisor. Webvisor yana naɗar ayyuka a shafi: motsin alamar linzami (pointer), gungurawa da dannawa. Ana amfani da naɗaɗɗun ne kawai don nazarin sauƙin amfani da shafin.",
+            ],
+          },
+          {
+            heading: "Tsawon lokacin adanawa",
+            bullets: [
+              "Ana share fayilolin da aka sauke daga uwar garke ta atomatik kusan awa ɗaya bayan an ƙirƙire su. Ba ma adana tarin bidiyonku.",
+              "Ana adana bayanan ƙoƙarin saukewa muddin ana buƙatarsu don hana cin zarafi da duba tambayoyi.",
+              "Ana adana bayanan asusu muddin kuna amfani da sabis ɗin, kuma ana share su idan kuka nema.",
+              "Ana adana bayanan ayyukan uwar garke na ƙayyadadden lokaci, kuma ana sake rubuta su yayin juyawarsu (rotation).",
+            ],
+          },
+          {
+            heading: "Inda ake sarrafa bayanai",
+            body: [
+              "Uwar garken sabis ɗin suna cikin cibiyar bayanai (data centre) a cikin Tarayyar Turai. Wasu daga cikin masu samar da sabis da aka lissafa a sama na iya sarrafa bayanai a wajenta bisa ga manufofinsu.",
+            ],
+          },
+          {
+            heading: "Haƙƙoƙinku",
+            body: [
+              `Kuna da haƙƙin samun bayani game da sarrafa bayananku, neman a gyara su ko a share su, janye yardarku da kuma ƙin amincewa da sarrafa su. Don yin haka, ku rubuto zuwa ${MAIL} daga adireshin imel ko asusun Telegram da buƙatar ta shafa.`,
+              "Muna amsawa cikin lokaci mai ma'ana, yawanci cikin kwanaki talatin na kalanda. Share asusu yana haɗawa da share tarihin saukewa da ke da alaƙa da shi.",
+            ],
+          },
+          {
+            heading: "Ƙananan yara",
+            body: [
+              "Ba a tsara sabis ɗin don yara 'yan ƙasa da shekara 16 ba, kuma ba a kansu aka nufa shi ba. Ba ma tattara bayanansu da gangan; idan hakan ya faru bisa kuskure, ku rubuto mana, za a share bayanan.",
+            ],
+          },
+          {
+            heading: "Canje-canje",
+            body: [
+              "Za mu iya sabunta wannan Manufa. Ana nuna kwanan watan sigar da ke aiki a saman shafin, kuma za mu sanar da muhimman canje-canje a cikin sabis ɗin.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Sharuɗɗan Amfani",
+        summary: `Ƙa'idojin amfani da ${operator.site}: abin da aka yarda, abin da aka hana, da sharuɗɗan da sabis ɗin ke aiki a kansu.`,
+        sections: [
+          {
+            heading: "Gabaɗaya",
+            body: [
+              `Waɗannan Sharuɗɗa suna tsara amfani da shafin yanar gizo na ${operator.site} da bot na Telegram ${BOT}. Mamallaki kuma mai gudanar da sabis ɗin shi ne ${operator.nameHa}.`,
+              "Ta hanyar fara amfani da sabis ɗin, kuna tabbatar da cewa kun karanta waɗannan Sharuɗɗa kuma kun amince da su. Idan wani sharaɗi bai dace da ku ba, kada ku yi amfani da sabis ɗin.",
+            ],
+          },
+          {
+            heading: "Sabis ɗin kyauta ne",
+            body: [
+              "Duk abin da sabis ɗin ke bayarwa kyauta ne. Babu kuɗin rajista na lokaci-lokaci (subscription), babu tsare-tsaren biya, babu ingancin bidiyo na biya, kuma babu sayayya a cikin sabis ɗin.",
+              "Ba ma nuna tallace-tallace kuma ba ma sanya hanyoyin haɗi na haɗin gwiwa (affiliate links).",
+            ],
+          },
+          {
+            heading: "Sharuɗɗan samun dama",
+            bullets: [
+              "Saukewa a shafin yanar gizo ba ya buƙatar asusu ko shiga. Bot yana bambanta masu amfani ta asusunsu na Telegram.",
+              "Ƙayyadaddun iyakoki na fasaha kan yawan buƙatu suna kare sabis ɗin daga cunkoso da cin zarafi na atomatik.",
+              "Saukewa daga YouTube yana da iyakar zirga-zirgar bayanai (traffic) ta yini: 10 GB a cikin awa 24 ga kowace hanyar sadarwa a shafin yanar gizo da kuma a cikin ƙarin burauza, da 25 GB a cikin awa 24 ga kowane asusun Telegram a cikin bot. Wannan bai shafi sauran dandaloli ba.",
+              "Ba sai kun shiga (subscribe) tasharmu ba don saukewa ta bot. Bot yana ƙara hanyar haɗi zuwa tashar labarai ta aikin a cikin bayanin fayiloli; shiga cikinta ba dole ba ne.",
+            ],
+          },
+          {
+            heading: "Abin da sabis ɗin ke yi",
+            body: [
+              "Sabis ɗin mai shiga tsakani ne na fasaha: yana bin hanyar haɗin da kuka bayar, yana samo fayil ɗin kafofin watsa labarai (media) daga shafin da kowa zai iya gani, sannan ya miƙa muku shi.",
+              "Ba ma ajiye tarin bidiyo a wurinmu, ba ma gudanar da bincike a cikin abubuwan wasu, kuma ba ma adana fayilolin da aka sauke fiye da lokacin da ake buƙata don isar da su — kusan awa ɗaya.",
+              "Ko wani dandali zai yi aiki ya dogara ne da shawarwarin fasaha na wannan dandalin, kuma hakan na iya canzawa ba tare da sanarwa ba.",
+            ],
+          },
+          {
+            heading: "Wajiban mai amfani",
+            body: [
+              "Ku kaɗai ke da alhakin yadda kuke amfani da fayilolin da kuka samu, kuma kuna tabbatar da cewa kuna da haƙƙin yin hakan.",
+            ],
+            bullets: [
+              "Ku sauke abin da kuke da haƙƙin mallakarsa kaɗai, ko wanda mai haƙƙin mallaka ko doka ta ba da izinin amfani da shi.",
+              "Kada ku yi amfani da sabis ɗin don keta haƙƙin mallaka ko haƙƙoƙi masu alaƙa (related rights), yaɗa abubuwan da aka haramta ko keta haƙƙoƙin wasu.",
+              "Kada ku yi ƙoƙarin kauce wa ƙayyadaddun iyakokin fasaha na sabis ɗin, ciki har da iyakokin yawan buƙatu da binciken bot.",
+              "Kada ku haifar da nauyi na atomatik: ba a yarda da buƙatu masu yawa a lokaci guda, rubutattun shirye-shirye (scripts) da masu tattara bayanai (scrapers) ba.",
+            ],
+          },
+          {
+            heading: "Wallafa hanyoyin haɗi a tasha",
+            body: [
+              "Ta hanyar sauke bidiyo ta bot, kun amince cewa za a wallafa hanyar haɗi zuwa ainihin wallafar a tasharmu ta Telegram. Ana nuna sanarwa game da hakan a cikin bot kafin ku zaɓi inganci — wato, kafin ku yanke shawarar saukewa.",
+              "Wallafawar ba ta bayyana suna: tashar tana karɓar hanyar haɗi zuwa shafin da kowa zai iya gani, taken bidiyon da hoton murfinsa — hoton da dandalin ke nunawa a samfoti na wallafarsa. Ba a bayyana wanda ya sauke shi ba. Ba a taɓa wallafa fayil ɗin bidiyon kansa a ko'ina ba: abin da ake yaɗawa shi ne hanyar haɗin, wadda dandalolin da kansu ke gayyatar mutane su yaɗa ta maɓallin “Raba” (Share) da ke ƙarƙashin kowace wallafa.",
+              "Ana wallafa hanyar haɗi ɗaya sau ɗaya kawai. Idan ba ku son hanyar haɗi ta isa tashar, kada ku sauke wannan bidiyon ta sabis ɗinmu.",
+              "Hanyoyin haɗi daga rukunoni da wallafe-wallafen da aka sauke ta asusun da aka haɗa ba a taɓa wallafa su a tashar ba."
+            ],
+          },
+          {
+            heading: "Haɗa asusunku",
+            body: [
+              "Ta hanyar haɗa asusunku na wani dandali da bot, kuna tabbatar da cewa asusun naku ne kuma kuna da haƙƙin amfani da shi ta wannan hanya.",
+              "Dandaloli ba sa goyon bayan saukewa ta atomatik kuma suna iya taƙaita ko dakatar da asusun da aka haɗa. Kuna ɗaukar wannan haɗari a kanku; muna ba da shawarar ku haɗa wani asusu na daban maimakon babban asusunku. Ba mu da alhakin taƙaitawar da dandali zai sanya wa asusunku.",
+              "Ana amfani da asusun da aka haɗa da rukuni don saukewar duk membobinsa. Masu gudanar da rukuni (admins) ne ke yanke shawarar wanda zai iya haɗa asusu, kuma za su iya cire kowanne daga cikinsu.",
+            ],
+          },
+          {
+            heading: "Iyakance alhaki",
+            body: [
+              "Ana samar da sabis ɗin “yadda yake” (as is). Ba mu ba da tabbacin aiki ba tare da katsewa ba, samuwar wani dandali na musamman, ko dacewar fayil da manufarku.",
+              "Ba mu da alhakin abin da kuke yi da abubuwan da kuka sauke, haka kuma ba mu da alhakin sakamakon keta haƙƙoƙin wasu da kuka yi.",
+              "Muna da haƙƙin canza abubuwan da sabis ɗin ke bayarwa, dakatar da shi na ɗan lokaci don gyara, da kuma kawo ƙarshen aikinsa.",
+            ],
+          },
+          {
+            heading: "Taƙaita samun dama",
+            body: [
+              "Za mu iya taƙaita ko dakatar da damar amfani da sabis ɗin idan aka keta waɗannan Sharuɗɗa, idan aka yi ƙoƙarin kauce wa iyakoki, ko kuma idan aka sami ƙorafi mai tushe daga mai haƙƙin mallaka.",
+            ],
+          },
+          {
+            heading: "Canje-canje da dokar da ke aiki",
+            body: [
+              "Za mu iya gyara waɗannan Sharuɗɗa; ana nuna kwanan watan sigar da ke aiki a saman shafin. Ci gaba da amfani da sabis ɗin bayan canji yana nufin kun amince da sabuwar sigar.",
+              "Dokar Jamhuriyar Kazakhstan ce ke tsara dangantakar ɓangarorin. Ɓangarorin za su yi ƙoƙarin sasanta saɓani ta hanyar wasiƙu, idan kuma ba a cimma yarjejeniya ba, ta hanyar da dokokin Jamhuriyar Kazakhstan suka tanada.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Manufar Cookie",
+        summary: `Waɗanne cookies ne ${operator.site} ke amfani da su, dalilin da ake buƙatarsu da yadda za a ƙi su.`,
+        sections: [
+          {
+            heading: "Menene cookies",
+            body: [
+              "Cookies ƙananan fayilolin rubutu ne da shafin yanar gizo ke adanawa a cikin burauzarku. Suna ba da damar tuna saitunanku da tattara ƙididdigar ziyara ba tare da bayyana sunaye ba.",
+              "Tare da cookies, wannan takarda tana bayyana fasahohi masu kama da su: ma'ajiyar gida ta burauza (local storage) da pixels na bin diddigi (tracking pixels).",
+            ],
+          },
+          {
+            heading: "Waɗanda suka zama dole",
+            body: [
+              "Idan babu su sabis ɗin ba ya aiki, don haka ana saita su koyaushe.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — yana tabbatar da cewa mutum ne ke aika hanyar haɗi, ba rubutaccen shiri (script) ba.",
+              "Saitunan fuskar sadarwa (interface) — harshen da kuka zaɓa da jigon launi.",
+            ],
+          },
+          {
+            heading: "Na nazari",
+            body: [
+              "Suna taimaka mana mu ga waɗanne shafuka ake amfani da su da kuma inda kurakurai ke faruwa. Ana saita su da yardarku kuma ba dole ba ne don aikin sabis ɗin.",
+            ],
+            bullets: [
+              "Google Analytics da Google Tag Manager — yawan ziyara da halayya a shafin, ba tare da bayyana sunaye ba.",
+              "Yandex Metrica — yawan ziyara, taswirar dannawa da Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor na Yandex Metrica yana naɗar ayyuka a shafi: motsin alamar linzami, gungurawa, dannawa da rubutu a filin hanyar haɗi. Manufarsa ita ce mu ga inda fuskar sadarwa ke rikitar da mutane.",
+              "Ba ma amfani da waɗannan naɗaɗɗun don bin diddigin wasu takamaiman mutane. Don Allah kada ku shigar da wani abu a cikin filayen shafin wanda ba za ku so a adana ba.",
+            ],
+          },
+          {
+            heading: "Yadda ake ƙin su",
+            bullets: [
+              "Ku toshe ko share cookies a cikin saitunan burauzarku — wannan hanya tana aiki ga dukkan tsarin da aka lissafa a nan.",
+              "Google Analytics: ana samun ƙarin burauza na hukuma daga Google wanda ke dakatar da tattara bayanai.",
+              "Yandex Metrica: ana iya ƙin amincewa ta hanyar ƙarin burauza na hukuma na Yandex.",
+              "Kashe cookies da suka zama dole zai sa saukewa ta gagara.",
+            ],
+          },
+          {
+            heading: "Tsawon lokacin adanawa",
+            body: [
+              "Ana share cookies na zama (session cookies) idan kuka rufe burauza ko idan zaman ya ƙare. Kayan aikin nazari suna adana masu gano su na tsawon lokacin da masu samar da su suka ƙayyade.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Ga Masu Haƙƙin Mallaka",
+        summary: "Matsayin sabis ɗin game da haƙƙin mallaka da yadda ake shigar da ƙorafi game da keta haƙƙi.",
+        sections: [
+          {
+            heading: "Matsayin sabis ɗin",
+            body: [
+              "Sabis ɗin ba ya ajiye bidiyo a wurinsa kuma ba shi da tarin bidiyo. Yana aiki a matsayin mai shiga tsakani na fasaha: yana bin hanyar haɗin da mai amfani ya shigar, yana kai wa ga shafin da kowa zai iya gani, sannan ya miƙa fayil ɗin ga wannan mai amfani.",
+              "Fayilolin da aka sauke suna kasancewa a uwar garke na kusan awa ɗaya, sannan a share su ta atomatik. Babu wani kwafi na dindindin na abubuwan wani da ke saura a wurinmu.",
+              "Alhakin amfani da abubuwan da aka sauke yana kan mai amfani — kamar yadda Sharuɗɗan Amfani suka bayyana a fili.",
+            ],
+          },
+          {
+            heading: "Idan an keta haƙƙoƙinku",
+            body: [
+              `Idan ku masu haƙƙin mallaka ne ko wakilinsu kuma kuna ganin ana amfani da sabis ɗin don keta haƙƙoƙinku, ku rubuto zuwa ${MAIL}. Muna duba irin waɗannan ƙorafe-ƙorafe kuma muna ɗaukar mataki.`,
+            ],
+          },
+          {
+            heading: "Abin da za a haɗa a cikin ƙorafi",
+            bullets: [
+              "Wane aiki abin ya shafa da kuma bisa wane tushe kuke da haƙƙi a kansa.",
+              "Hanyar haɗi zuwa abin da ake magana a kai kuma, idan an sani, yanayin da keta haƙƙin ya faru.",
+              "Bayanan tuntuɓarku: suna ko sunan ƙungiya, adireshi da adireshin imel.",
+              "Idan kuna aiki a madadin mai haƙƙin mallaka — shaidar ikonku na yin hakan.",
+              "Sanarwa cewa bayanan da ke cikin ƙorafin gaskiya ne, kuma mai haƙƙin mallaka ko doka ba su ba da izinin amfani da abin ba.",
+            ],
+          },
+          {
+            heading: "Abin da za mu yi",
+            body: [
+              "Muna duba ƙorafi cikin lokaci mai ma'ana, yawanci cikin kwanaki talatin na kalanda, kuma idan aka tabbatar da keta haƙƙi, muna toshe damar samun abin ta sabis ɗin, kuma idan ya zama dole, damar mai keta haƙƙin ta amfani da sabis ɗin.",
+              "Za mu sanar da sakamakon dubawa zuwa adireshin imel da kuka bayar.",
+            ],
+          },
+          {
+            heading: "Ƙorafe-ƙorafe na mugun nufi",
+            body: [
+              "Ƙorafin da ke ɗauke da bayanan ƙarya da gangan na iya jawo wa mai ƙorafin alhaki bisa ga dokokin da ke aiki. Muna da haƙƙin ƙin duba ƙorafin da bai bayyana mai haƙƙin mallaka ko abin da ake jayayya a kai ba.",
             ],
           },
         ],

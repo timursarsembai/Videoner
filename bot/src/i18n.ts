@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -5543,6 +5543,226 @@ const om: Messages = {
   settingsBack: "⬅️ Gara qindaa'inaatti deebi'aa",
 };
 
+const ha: Messages = {
+  start: "Sannu! Ku aiko min da hanyar haɗi ta bidiyo daga YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ko Threads — zan taimaka muku ku sauke shi.\n\n✨ Babu iyaka a inganci: za ku sami duk abin da dandalin ke bayarwa, har zuwa 4K — muddin fayil ɗin bai wuce 2 GB ba, iyakar da Telegram ya sanya wa bot. Babu wani abu na biya a nan.\n\nKyauta ne gaba ɗaya: babu biyan kuɗi na wata-wata, babu talla, babu sayayya a cikin manhaja.\n\n🧩 Kuna saukewa a kwamfuta? Ku sanya ƙarin burauza — maɓallin “Sauke” zai bayyana kai tsaye a shafin bidiyon: videoner.download/ha/extension\n\n👥 Ku ƙara ni a rukuni, zan wallafa bidiyoyin hanyoyin haɗin da mutane ke turawa a can.\n\n⚡ Ku tsallake zaɓin inganci: ku ƙara -audio bayan hanyar haɗi don sauti kawai (mp3), ko -hd don mafi kyawun inganci.\n\n📣 Labaran aikin: @videonerdownload\n\n🌐 Harshen bot: /language",
+  notLink: "Wannan bai yi kama da hanyar haɗi ba. Ku aiko min da hanyar haɗi ta bidiyo.",
+  inviteGreeting: "Sannu! Ni ne Videoner — ina sauke bidiyo daga YouTube, TikTok, Instagram da sauran dandamali kyauta. Ina shirya muku bidiyon da aka turo muku 👇",
+  inviteNotFound: "Ban sami bidiyo don wannan hanyar haɗin gayyata ba. Ku aiko min da hanyar haɗi ta bidiyo, zan sauke shi.",
+  inviteUnavailable: "Ban iya buɗe bidiyon daga wannan hanyar haɗi ba — sabis ɗin ba ya amsawa a yanzu. Ku sake buɗe wannan hanyar haɗi bayan minti ɗaya.",
+  fetchingInfo: "🔍 Ana samo bayanan bidiyo...",
+  audioOnlyButton: "🎵 Sauti kawai (mp3)",
+  photoButton: "📷 Sauke hotuna",
+  slideshowButton: "🎞 Nunin hotuna (bidiyo)",
+  galleryButton: "📷+🎞 Hotuna da nunin hotuna",
+  chooseQuality: (title, duration) => `“${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nKu zaɓi inganci:`,
+  sessionExpired: "Lokacin zama ya ƙare — ku sake aiko da hanyar haɗin",
+  downloading: "⏬ Ana saukewa, wannan na iya ɗaukar mintuna kaɗan...",
+  downloadFailed: "saukewa ta gaza",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Ana saukewa: ${percent}%${eta ? ` · saura ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ An kusa gamawa — ana haɗa fayil ɗin...",
+  converting: (percent) => `⚙️ Ana canzawa: ${percent}%`,
+  etaUnderMinute: "ƙasa da minti ɗaya",
+  etaMinutes: (minutes) => `~minti ${minutes}`,
+  etaHours: (hours, minutes) => `~awa ${hours}${minutes ? ` minti ${minutes}` : ""}`,
+  downloadTimeout: "saukewar na ɗaukar lokaci mai tsawo — da alama bidiyon yana da nauyi sosai. Ku gwada ƙaramin inganci.",
+  downloadInterrupted: "⚠️ Bot yana sake farawa don sabuntawa — saukewarku ta katse. Don Allah ku sake aiko da hanyar haɗin bayan minti ɗaya.",
+  fileTooBig: (mb, url) =>
+    `Fayil ɗin ya zama babba (${mb} MB) — Telegram ba zai bar bot ya aika shi ba.\nKu sauke shi a nan: ${url}`,
+  sendingFile: "📤 Ana aika fayil...",
+  sendingAlbum: (count) => `📤 Wannan wallafa tana da fayiloli da yawa (${count}) — ana aika su a matsayin kundi...`,
+  failedPrefix: "❌ An gaza: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Tushe: ${sourceUrl}\n` +
+        "Duk haƙƙoƙin bidiyon na mai shi ne.\n" +
+        "An sauke kyauta tare da @VideonerBot",
+      `📣 Labaran aikin: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Raba: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Don saukewa, don Allah ku yi rajista a tasharmu ${channel} — wannan ne kawai sharaɗi, sabis ɗin zai ci gaba da zama kyauta.\n\n` +
+    "Ku yi rajista sannan ku danna “Na yi rajista”.",
+  openChannelButton: "📣 Buɗe tashar",
+  checkSubscriptionButton: "Na yi rajista",
+  subscribeThanks: "Na gode! Yanzu ku aiko min da hanyar haɗi ta bidiyo.",
+  subscribeThanksResuming: "Na gode! Ina ci gaba da hanyar haɗinku yanzu.",
+  subscribeStillMissing: "Har yanzu ban ga rajistar ba. Ku yi rajista sannan ku sake dannawa.",
+  channelNotice: (channel) => `\n\nHanyar haɗin wannan wallafa za ta bayyana a ${channel} — ba tare da sunanku ba.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Ku sauke wannan da kowane bidiyo kyauta: @VideonerBot",
+  errorStoryNeedsId:
+    "ku aiko da hanyar haɗi ta takamaiman labari (story): ku buɗe shi a manhajar Instagram sannan ku danna Share → Copy link.",
+  errorInstagramStory:
+    "Labaran (stories) Instagram suna bayyana ne kawai ga mutanen da suka shiga asusunsu.",
+  errorLoginRequired:
+    "Wannan wallafa ba ta samuwa ba tare da shiga asusu ba: dandalin yana ba da ita ne kawai ga " +
+    "masu amfani da suka shiga. Hakan na faruwa da wallafe-wallafe na sirri, abun ciki mai iyakar shekaru da " +
+    "wallafe-wallafen da aka raba ga taƙaitattun mutane.\n\n" +
+    "Wallafe-wallafen jama'a suna saukuwa ba tare da matsala ba — ku gwada wata hanyar haɗi.",
+  errorUnsupportedPlatform:
+    "Ban gane wannan hanyar haɗi ba — ku tabbatar hanyar haɗi ce kai tsaye ta bidiyo daga YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ko Threads.",
+  errorFileTooLarge: "fayil ɗin ya wuce 2 GB — Telegram ba ya bar bot su aika manyan fayiloli. Ku sauke shi a shafin yanar gizo ko da ƙarin burauza — maɓallan da ke ƙasa. Ko ku sake aiko da hanyar haɗin ku zaɓi ƙaramin inganci.",
+  siteButton: "🌐 Sauke a shafin yanar gizo",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ An ɓoye ingancin da ya fi ${limit} nauyi: Telegram ba ya bar bot su aika manyan fayiloli. Kuna iya sauke su a shafin yanar gizo ko da ƙarin burauza — maɓallan da ke ƙasa.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Wannan bidiyo ya yi nauyi sosai ga Telegram ko a mafi ƙarancin inganci (~${smallest}): Telegram ba ya bar bot su aika fayilolin da suka wuce 2 GB. A nan kuna iya samun sauti kawai; bidiyon kuwa — a shafin yanar gizo ko da ƙarin burauza (maɓallan da ke ƙasa).`,
+  errorFormatUnavailable: "Wannan inganci ba ya samuwa ga wannan bidiyo. Ku sake aiko da hanyar haɗin — zan nuna muku jerin na yanzu.",
+  errorNoVideoContent: "Babu bidiyon da za a sauke a wannan hanyar haɗi — da alama wallafar hotuna kawai ce.",
+  errorRegionBlocked:
+    "An toshe wannan bidiyo a wajen ƙasar mai shi — dandalin ba zai ba da shi " +
+    "ga sabarmu ba. Babu hanyar kewaye shi: takunkumin daga gefensu ne." +
+    "\n\nSauran hanyoyin haɗi suna saukuwa kamar yadda aka saba.",
+  errorRateLimited: "Hanyoyin haɗi sun yi yawa a jere — ku jira kaɗan sannan ku sake aikowa.",
+  errorYoutubeDailyLimit: (gb) => `kun sauke fiye da ${gb} GB daga YouTube cikin awanni 24 da suka wuce — wannan ne iyakar bot ta yau da kullum ga kowane mutum. Tana ƙirga awanni 24 na ƙarshe, don haka kuna iya sauke sabbin bidiyoyin YouTube nan gaba kaɗan. Sauran dandamali suna aiki kamar yadda aka saba.`,
+  playlistStoppedByLimit: (dropped) => `⏹ An dakatar da jerin bidiyo: an kai iyakar YouTube ta yau da kullum. Bidiyoyin da ba a sauke ba: ${dropped}. Ku sake aiko da hanyar haɗin jerin bidiyon daga baya.`,
+  errorPlatformRefused:
+    "dandalin bai ba sabarmu wannan bidiyo ba. Hakan na faruwa da wallafe-wallafe na sirri " +
+    "ko masu iyakar shekaru, kuma wani lokaci dandalin kawai yana taƙaita samun dama na " +
+    "ɗan lokaci. Ku sake gwadawa bayan mintuna kaɗan.",
+  errorThreadsNoMedia:
+    "babu bidiyo ko hoto da ake gani a wannan wallafar Threads. Ko dai wallafa ce ta rubutu kawai, ko kuma " +
+    "Threads yana nuna hotuna da bidiyonta ne kawai ga waɗanda suka shiga asusu — irin waɗannan wallafe-wallafe ba za a iya sauke su ba sai an shiga.",
+  extensionHint:
+    "\n\n💻 Kuna iya sauke shi da ƙarin burauza na Videoner a kwamfuta: " +
+    "yana saukewa ta amfani da shigarku a dandalin, kuma babu kalmar sirri ko cookies da ke barin burauzarku.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Don sauke irin waɗannan wallafe-wallafe, ku haɗa asusunku na ${platform} da bot — sau ɗaya. Bayan haka bot zai sauke duk abin da kuke iya gani: wallafe-wallafe na sirri, reels da stories, har daga wayarku. Maɓallin da ke ƙasa yana nuna yadda ake yi.${withExtension ? "\n\n💻 Ko ku sauke shi da ƙarin burauza na Videoner a kwamfuta." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Asusunku na ${platform} da aka haɗa bai iya buɗe wannan wallafa ba. Wataƙila shigar ta daina aiki — ku sake haɗa asusun. Ko kuma wannan asusu ba shi da damar ganin wallafar.${withExtension ? "\n\n💻 Kuna kuma iya sauke shi da ƙarin burauza na Videoner a kwamfuta." : ""}`,
+  connectAccountButton: "🔑 Haɗa asusu",
+  reconnectAccountButton: "🔑 Sake haɗawa",
+  extensionButton: "🧩 Sauke da ƙarin burauza",
+  extensionCommand:
+    "🧩 Videoner don burauzarku: maɓallin “Sauke” kai tsaye a shafin bidiyo — YouTube, Instagram, TikTok, VK, bidiyoyi na sirri daga asusunku da darussan GetCourse.\n\nDon Chrome, Edge, Opera, Yandex Browser da Firefox a kwamfuta.",
+  extensionPageButton: "🧩 Sanya ƙarin burauza",
+  addToGroupButton: "👥 Ƙara a rukuni",
+  newsButton: "📣 Labaran aikin",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Labaran aikin: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Saitunan bot na wannan rukuni\n\n" +
+    `🗑 Goge saƙon da ke ɗauke da hanyar haɗi: ${s.deleteLinks ? "e" : "a'a"}\n` +
+    "Da zarar an aika bidiyon, ana goge saƙon da ke ɗauke da hanyar haɗi kawai — tattaunawar tana riƙe bidiyon kawai tare da sunan wanda ya turo shi.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Ba zan iya goge saƙonni yanzu ba: ku mai da ni admin tare da izinin “Delete messages”.\n"
+      : "") +
+    `\n✍️ Rubutu a ƙarƙashin bidiyo: ${{ full: "cikakke", short: "take da tushe", none: "babu rubutu" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Inganci: ${s.quality === "max" ? "mafi girma da Telegram ke karɓa" : "na yau da kullum (720p)"}\n` +
+    `\n⏱ Dogayen bidiyoyi: ${s.longVideos ? "kowane tsawo" : "har zuwa minti 15 kawai"}\n` +
+    `\n🔑 Wa zai iya haɗa asusunsa (don stories da wallafe-wallafe na sirri): ${s.cookiesBy === "all" ? "kowane memba" : "admins kawai"}\n` +
+    `\n🌐 Harshen amsa: ${s.language ? langName(s.language) : "na kowane memba"}\n` +
+    "\nAdmins na rukuni ne kawai za su iya canza saitunan.",
+  settingsDeleteButton: (on) => `🗑 Goge hanyoyin haɗi: ${on ? "e" : "a'a"}`,
+  settingsCaptionButton: (style) => `✍️ Rubutu: ${{ full: "cikakke", short: "gajere", none: "babu" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Inganci: ${mode === "max" ? "mafi girma" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Dogayen bidiyoyi: ${on ? "e" : "har minti 15"}`,
+  settingsDoneButton: "✅ An gama",
+  settingsAdminsOnly: "Admins na rukuni ne kawai za su iya canza saitunan.",
+  settingsGroupsOnly: "Saitunan na rukunoni ne: ku ƙara ni a rukuni sannan ku aika /settings a can.",
+  settingsFailed: "Ban iya adana saitunan ba, don Allah ku sake gwadawa.",
+  settingsCookiesButton: (by) => `🔑 Haɗa asusu: ${by === "all" ? "kowa" : "admins"}`,
+  accountsIntro:
+    "🔑 Asusun da aka haɗa\n\nBot zai iya sauke abin da waɗanda suka shiga asusu kawai ke gani (stories na Instagram, wallafe-wallafe na sirri) — ta amfani da asusunku. Shiga yana aiki a inda kuka haɗa shi: wanda ke cikin tattaunawar sirri yana yi wa saukewarku aiki, har da hanyoyin haɗinku a rukunonin da ba su da nasu asusu; wanda aka haɗa da rukuni yana yi wa dukkan membobinsa aiki.",
+  accountsHowTo:
+    "Yadda ake haɗawa:\n1. Mafi sauƙi: ƙarin burauza na Videoner a kwamfuta — ku shiga a shafin dandalin, ku buɗe taga na Videoner, ku danna “🔑 Haɗa asusunku na … da bot” sannan ku aiko min da lambar. Don rukuni, ku aika /connect LAMBA a cikin wannan rukuni.\n2. Ko ku aiko min da fayil ɗin cookies.txt (cookies da aka fitar daga burauza), ko ku liƙa rubutunsa a matsayin saƙo.\n3. Daga wayar Android — da Firefox da ƙarin Cookie-Editor: https://videoner.download/ha/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Dandamali ba sa son saukewa ta atomatik kuma suna iya taƙaita ko dakatar da asusun. Gara ku haɗa asusu na biyu, ba babban asusunku ba. Ana adana cookies a ɓoye (encrypted), ana amfani da su ne don saukewa kawai, kuma ana cire su da maɓallan da ke ƙasa.",
+  accountsNone: "Har yanzu ba a haɗa komai ba.",
+  accountsGroupTitle: "🔑 Asusun da aka haɗa da wannan rukuni",
+  accountsGroupHowTo:
+    "Don haɗa ɗaya ga dukkan rukunin: ku sami lamba da maɓallin “🔑 Haɗa asusunku na … da bot” a cikin ƙarin burauza na Videoner sannan ku aika /connect LAMBA a nan. Idan kun haɗa asusu a tattaunawarku ta sirri kawai, bot zai yi amfani da shi a nan don hanyoyin haɗinku. Haɗin ku: /accounts a tattaunawar sirri da @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ shiga ba ya aiki)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ shiga ba ya aiki)"}`,
+  accountsWhereHere: "tattaunawar sirri",
+  accountsWhereGroup: (title) => `rukuni “${title}”`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Cire dukkan haɗina",
+  accountsDeleted: "An cire.",
+  accountsDeletedAll: (n) => `An cire haɗi: ${n}.`,
+  accountsNotAllowed: "Wanda ya haɗa shi ko admin na rukuni ne kawai zai iya cire shi.",
+  connectUsage:
+    "Ku aika /connect LAMBA. Maɓallin “🔑 Haɗa asusunku na … da bot” a cikin ƙarin burauza na Videoner a kwamfuta yana ba ku lambar. Haɗin ku: /accounts.",
+  connectOnlyAdmins: "Admins ne kawai za su iya haɗa asusu da wannan rukuni (duba /settings).",
+  connectDone: (platform, where) =>
+    `✅ An haɗa ${platform} ${where}. Yanzu bot yana kuma sauke abin da waɗanda suka shiga asusu kawai ke gani. Duba ko cire: /accounts.\n\n⚠️ Dandalin na iya taƙaita asusun saboda saukewa ta atomatik — gara ku yi amfani da asusu na biyu.`,
+  connectWhereGroup: "da wannan rukuni",
+  connectWhereHere: "don saukewarku a tattaunawar sirri da yanayin inline",
+  connectCodeNotFound: "Ba a sami lambar ba ko ta ƙare (lambobi suna aiki na minti 10). Ku sami sabuwa a cikin ƙarin burauza na Videoner.",
+  connectRejectedNoSession: "Waɗannan cookies ba su da shiga. Ku shiga a shafin dandalin sannan ku sake fitar da cookies.",
+  connectRejectedUnknown: "Ba a sami cookies na dandamali da ake tallafawa ba: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Haɗa asusu bai samu ba tukuna.",
+  connectFailed: "Ban iya haɗawa ba, don Allah ku sake gwadawa.",
+  connectFileTooBig: "Fayil ɗin ya yi girma sosai — ku fitar da cookies na shafin da ake buƙata kawai.",
+  connectNotAnonymous: "Ku haɗa asusun a matsayinku, ba a ɓoye a matsayin rukunin ba: in ba haka ba haɗin admins zai cakuɗe. Na lalata lambar — ku sami sabuwa.",
+  connectCodeInGroup:
+    "Lambar haɗi da aka wallafa a tattaunawar rukuni wasu za su iya gani — na lalata ta kuma na cire saƙon. Ku sami sabuwa sannan ku aika ta da /connect LAMBA: zan goge saƙon umarnin nan take.",
+  groupWelcome:
+    "👋 Sannu! Ku wallafa hanyoyin haɗi na bidiyo daga TikTok, Instagram, YouTube, VK da sauran dandamali a wannan tattaunawa — zan amsa da bidiyon kansa.\n\n" +
+    "Ina sauke bidiyoyi har zuwa minti 15 da kaina, ba tare da umarni ba, kuma ina yin shiru a sauran lokuta.\n\n⚙️ Admins na rukuni za su iya daidaita ni da /settings: goge saƙonnin hanyoyin haɗi, salon rubutu, inganci, dogayen bidiyoyi da harshe.\n\n⚡ Ku ƙara -audio bayan hanyar haɗi don samun sauti, ko -hd don mafi kyawun inganci.\n\n📣 Labaran aikin: @videonerdownload",
+  errorTooLong: "bidiyon ya yi tsawo sosai — ba za mu iya sauke irin waɗannan dogayen bidiyoyi ba tukuna.",
+  errorUnknown: "ban iya sauke wannan bidiyo ba. Ku sake gwadawa nan gaba kaɗan ko ku aiko da wata hanyar haɗi.",
+  inlineHintButton: "Aika hanyar haɗi ga bot",
+  inlineResultTitle: "⬇️ Sauke bidiyo",
+  inlineResultDescription: "Za a wallafa bidiyon kai tsaye a wannan tattaunawa",
+  inlinePlaceholder: "⏬ Ana saukewa, wannan na iya ɗaukar mintuna kaɗan...",
+  inlineOpenBot: "Buɗe bot",
+  inlineOnlySingleVideo:
+    "Wannan yanayi yana aika bidiyo ɗaya ne kawai. Don wallafe-wallafe masu fayiloli da yawa ko hotuna, ku aika hanyar haɗin ga bot a tattaunawar sirri.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Don saukewa, ku yi rajista a ${channel} sannan ku sake gwadawa.`,
+  inlineRateLimited: "Buƙatu sun yi yawa a jere. Ku jira minti ɗaya sannan ku sake gwadawa.",
+  queueRest: (count) => `\n\n📋 Hanyoyin haɗi da suka rage a layi: ${count}. Zan nuna su ɗaya bayan ɗaya bayan wannan.`,
+  queuedOne: (position) =>
+    `📋 An saka hanyar haɗin a layi, na ${position}. Bari mu gama na yanzu da farko — sannan zan nuna muku zaɓin inganci gare shi.`,
+  queuedMany: (added, waiting) =>
+    `📋 An ƙara hanyoyin haɗi a layi: ${added}. Jimillar masu jira: ${waiting}. Zan nuna su ɗaya bayan ɗaya bayan na yanzu.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Wannan hanyar haɗi tana cikin layi tuni — ba zan ƙara ta sau biyu ba."
+      : `Hanyoyin haɗin da ke cikin layi tuni ba a ƙara su sau biyu (maimaitawa: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Layi yana ɗaukar hanyoyin haɗi ${limit} ne kawai — ba a ƙara sauran ba (${rejected}). Ku aiko da su da zarar layin ya ci gaba.`,
+  skipButton: "✖️ Kada a sauke",
+  skipped: "⏭ An tsallake wannan hanyar haɗi.",
+  chooseTimedOut: "⌛ Ba a zaɓi inganci cikin minti 30 ba — ana tsallake wannan hanyar haɗi.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot yana sake farawa don sabuntawa — an share layin (hanyoyin haɗi: ${count}). Don Allah ku sake aiko da su bayan minti ɗaya.`,
+  subtitlesButton: "📝 Rubutun ƙasa",
+  subtitlesBack: "⬅️ Koma ga inganci",
+  subtitlesAuto: "atomatik",
+  subtitlesChoose: "Ku zaɓi harshen rubutun ƙasa",
+  subtitlesPreparing: "📝 Ana shirya rubutun ƙasa...",
+  subtitlesFailed: "Ban iya sauke rubutun ƙasa a wannan harshe ba. Ku gwada wani harshe.",
+  subtitlesBusy: "YouTube ba ya bayar da rubutun ƙasa a yanzu — ku sake gwadawa bayan mintuna kaɗan.",
+  playlistFound: (title, count) =>
+    `📃 Jerin bidiyo${title ? ` “${title.slice(0, 150)}”` : ""}: bidiyo ${count}.\nZan sauke su ɗaya bayan ɗaya. Wane tsari?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Mafi kyawun inganci",
+  playlistAudioButton: "🎵 Sauti kawai (mp3)",
+  playlistNoButton: "✖️ A'a, na gode",
+  playlistQueued: (count) =>
+    `📃 An saka bidiyoyi daga jerin bidiyo a layi: ${count}. Zan aika su ɗaya bayan ɗaya. Ku tsayar da maɓallin da ke ƙasa ko /stop.`,
+  playlistFailed: "Ban iya buɗe jerin bidiyon ba — wataƙila na sirri ne. Ku aiko da hanyar haɗi ta bidiyo ɗaya.",
+  stopButton: "⏹ Tsaya",
+  stopped: (dropped) => `⏹ An tsayar.${dropped ? ` Hanyoyin haɗin da aka cire daga layi: ${dropped}.` : ""}`,
+  nothingToStop: "Babu abin da ake saukewa a yanzu.",
+  languageChoose: "🌐 Ku zaɓi harshen bot. “Atomatik” yana bin harshen Telegram ɗinku.",
+  languageChooseGroup: "🌐 Harshen amsar bot a wannan rukuni. “Atomatik” — harshen Telegram na kowane memba.",
+  languageAuto: "Atomatik — kamar a Telegram",
+  languageAutoGroup: "Atomatik — na kowane memba",
+  languageSaved: (name) => `✅ Harshen bot: ${name}. Ku canza shi da /language.`,
+  languageSavedAuto: "✅ Bot yana bin harshen Telegram ɗinku. Ku canza shi da /language.",
+  settingsLanguageButton: (name) => `🌐 Harshe: ${name ?? "atomatik"}`,
+  settingsBack: "⬅️ Koma ga saituna",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -6210,4 +6430,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha };

@@ -331,6 +331,18 @@ export const blogUi: Record<
     readFull: "Guutuu isaa marsariitii irratti dubbisaa",
     dateLocale: "om-ET",
   },
+  ha: {
+    title: "Blog na Videoner",
+    description: "Labaran aikin: abin da ya sabunta a bot, a shafin yanar gizo da a ƙarin burauza, da yadda ake amfani da shi.",
+    readMore: "Karanta",
+    back: "Duk rubuce-rubuce",
+    allPosts: "Blog",
+    channel: "Labarai a Telegram",
+    channelCta: "Labaran aikin suna kan tashar Telegram @videonerdownload.",
+    readOnSite: "Karanta a shafin",
+    readFull: "Karanta cikakken rubutun a shafin",
+    dateLocale: "ha-NG",
+  },
   tl: {
     title: "Videoner blog",
     description: "Mga balita ng proyekto: ano ang bago sa bot, sa website at sa extension, at kung paano ito gamitin.",

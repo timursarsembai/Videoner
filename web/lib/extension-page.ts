@@ -1391,6 +1391,58 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Fuula jalqabaa",
   },
+  ha: {
+    metaTitle: "Ƙarin burauza na Videoner",
+    title: "Videoner don burauzarku",
+    summary:
+      "Ƙarin yana sanya maɓallin Sauke a shafukan bidiyo kuma yana saukewa kai tsaye a cikin burauzarku. Ana sauke Instagram, Facebook, TikTok da Threads ta amfani da shigarku — don haka wallafe-wallafe na sirri da kuke iya gani a asusunku ma suna aiki, haka nan bidiyon da dandalin bai ba sabar mu ba.",
+    failedVideo: "Bidiyon da ba a iya saukewa a shafin ko a bot ba:",
+    failedVideoHint:
+      "Ku shigar da ƙarin, ku shiga dandalin a wannan burauzar, ku buɗe bidiyon sannan ku danna Sauke a kusurwar ƙasa ta dama.",
+    openVideo: "Buɗe bidiyon",
+    version: "Siga",
+    browsersTitle: "Inda yake aiki",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi da sauran burauzoyin da aka gina a kan Chromium — a kwamfuta.",
+    mobile: "Wayoyi da kwamfutar hannu ba sa tallafa wa ƙari — a can ku yi amfani da shafin yanar gizo ko bot na Telegram.",
+    getcourseTitle: "Darussan GetCourse",
+    getcourse:
+      "Ku buɗe darasi a makarantar GetCourse yayin da kuka shiga: maɓallin Sauke zai bayyana a kusurwar sama ta dama ta na'urar kunnawa, kuma alamar Videoner za ta jera duk bidiyon darasin. Burauzarku da kanta tana sauke darasin kuma ta haɗa shi zuwa mp4 — fayil ɗin ba ya ratsa sabar mu. Idan hakan bai yi nasara ba, sabar mu za ta sauke darasin a inganci iri ɗaya maimakon haka; a wannan yanayin tana karɓar hanyar haɗin bidiyon daga na'urar kunnawa.",
+    privacyTitle: "Shigarku tana nan a hannunku",
+    privacy:
+      "Ƙarin ba ya taɓa neman kalmar sirri: burauzarku da kanta ce ke aika buƙata zuwa dandalin, kuma sabar mu tana karɓar taƙaitaccen rahoto ne kawai don ƙididdiga — hanyar haɗi, girman fayil da take. Kukis suna zuwa sabar ne kawai idan ku da kanku kuka danna \"Haɗa asusu da bot\" — kuma kukis na wannan dandali kawai, a ɓoye.",
+    stepsTitle: "Yadda ake shigarwa a Chrome, Yandex Browser, Edge da Opera",
+    steps: [
+      "Ku sauke rumbun sannan ku buɗe shi — za ku sami babban fayil mai suna videoner-extension da lambar siga a cikin sunansa.",
+      "Ku buɗe shafin ƙari: ku rubuta chrome://extensions a sandar adireshi (edge://extensions a Edge, opera://extensions a Opera).",
+      "Ku kunna “Developer mode” — makunnin da ke saman shafin.",
+      "Ku danna “Load unpacked” sannan ku zaɓi wannan babban fayil — wanda ke ɗauke da manifest.json.",
+      "An gama: shafukan bidiyo za su sami maɓallin Sauke, kuma alamar Videoner za ta bayyana a sandar kayan aikin burauza.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 ko sabo — shi ma a kwamfuta.",
+    firefoxSoon:
+      "Sigar Firefox tana nan tafe. A yanzu ƙarin yana aiki a Chrome, Yandex Browser, Edge, Opera da sauran burauzoyin da aka gina a kan Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Rumbun .zip — shigarwa cikin mintuna kaɗan",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Shigarwa da danna sau ɗaya",
+    yourBrowser: "Burauzarku",
+    soon: "Nan ba da jimawa ba",
+    firefoxStepsTitle: "Yadda ake shigarwa a Firefox",
+    firefoxSteps: [
+      "Ku danna maɓallin Firefox a saman wannan shafin.",
+      "Firefox zai tambaya ko ya bar videoner.download ya shigar da add-on — ku danna “Continue to Installation”.",
+      "A cikin saƙon “Add Videoner?”, ku danna “Add”.",
+      "An gama: shafukan bidiyo za su sami maɓallin Sauke, kuma alamar Videoner za ta bayyana a sandar kayan aiki. Firefox yana shigar da sabuntawa da kansa.",
+    ],
+    updateTitle: "Yadda ake sabuntawa a Chrome, Yandex Browser, Edge da Opera",
+    updateSteps: [
+      "Idan sabuwar siga ta fito, alamar Videoner za ta nuna alamar NEW, kuma taga mai buɗewa za ta kawo ku nan.",
+      "Ku sauke rumbun da maɓallin Chrome a saman wannan shafin sannan ku buɗe shi a cikin babban fayil ɗin da kuka yi amfani da shi a baya, tare da maye gurbin fayilolin.",
+      "Ku buɗe shafin ƙari (chrome://extensions, browser://extensions a Yandex Browser, edge://extensions) sannan ku danna “Reload” — kibiya mai zagaye a katin Videoner.",
+    ],
+    back: "Gida",
+  },
   tl: {
     metaTitle: "Videoner browser extension",
     title: "Videoner para sa iyong browser",

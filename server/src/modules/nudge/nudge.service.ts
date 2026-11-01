@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ha')) {
+      return (
+        'Sannu! Kun fara wannan bot amma har yanzu ba ku sauke komai ba — ' +
+        'wataƙila ba a fayyace inda za a fara ba.\n\n' +
+        'Mataki ɗaya kawai: ku aiko da hanyar haɗin bidiyo a nan, ' +
+        'misali https://youtube.com/watch?v=jNQXAC9IVRw — ni kuma zan dawo ' +
+        'muku da fayil ɗin cikin kusan rabin minti.\n\n' +
+        'Yana aiki da YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest da Threads. Kyauta ne gaba ɗaya kuma a kowane ' +
+        'inganci — har zuwa 4K, babu ƙarin kuɗi don HD.\n\n' +
+        'Idan wani abu bai yi aiki ba, ku amsa a nan kawai. Wannan ne ' +
+        'kaɗai tunatarwa, ba zan sake damun ku ba.'
+      );
+    }
+
     if (code.startsWith('om')) {
       return (
         'Akkam! Boota kana jalqabdaniittu, garuu ammayyuu homaa hin buufanne — ' +

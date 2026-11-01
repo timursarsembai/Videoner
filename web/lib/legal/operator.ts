@@ -36,6 +36,7 @@ export const operator = {
   nameTl: "Indibidwal na Negosyante SARSEMBAYEV",
   nameAm: "ግለሰብ ሥራ ፈጣሪ SARSEMBAYEV",
   nameOm: "Daldalaa Dhuunfaa SARSEMBAYEV",
+  nameHa: "Ɗan Kasuwa Mai Zaman Kansa SARSEMBAYEV",
   nameAr: "رائد الأعمال الفردي سارسيمباييف (SARSEMBAYEV)",
   directorRu: "Сарсембаев Тимур Сейпилович",
   directorEn: "Timur Sarsembayev",
@@ -89,6 +90,8 @@ export const operator = {
     "የሥራ እንቅስቃሴ መጀመሩን የሚገልጽ ማስታወቂያ ቁ. KZ45UUZ00498687 ቀን 22.07.2026",
   basisOm:
     "Beeksisa jalqabbii hojii daldala dhuunfaa Lak. KZ45UUZ00498687 kan guyyaa 22.07.2026",
+  basisHa:
+    "Sanarwar fara harkokin kasuwanci na ɗan kasuwa mai zaman kansa Lamba KZ45UUZ00498687 ta ranar 22.07.2026",
   basisAr:
     "إشعار ببدء نشاط رائد الأعمال الفردي رقم KZ45UUZ00498687 بتاريخ 22.07.2026",
   basisUk:
@@ -144,6 +147,8 @@ export const operator = {
     "የካዛኪስታን ሪፐብሊክ፣ አልማቲ ክልል፣ የንቤክሺካዛክ ወረዳ፣ ራኻት የገጠር ወረዳ፣ አዛት መንደር፣ PKST «Almagul-2»፣ ሕንፃ 117",
   addressOm:
     "Rippaabliika Kaazaakistaan, Naannoo Almaatii, Aanaa Yenbekshikazakh, Aanaa Baadiyyaa Rakhat, Ganda Azat, PKST «Almagul-2», gamoo 117",
+  addressHa:
+    "Jamhuriyar Kazakhstan, Yankin Almaty, Gundumar Yenbekshikazakh, Gundumar Karkara ta Rakhat, Ƙauyen Azat, PKST «Almagul-2», gini 117",
   addressAr:
     "جمهورية كازاخستان، منطقة ألماتي، مقاطعة إنبيكشيكازاخ، الدائرة الريفية راخات، قرية آزات، PKST «Almagul-2»، المبنى 117",
   addressEs:

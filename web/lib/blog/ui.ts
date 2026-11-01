@@ -247,6 +247,18 @@ export const blogUi: Record<
     readFull: "পুরো পোস্টটি সাইটে পড়ুন",
     dateLocale: "bn-BD-u-nu-latn",
   },
+  ur: {
+    title: "Videoner بلاگ",
+    description: "پروجیکٹ کی خبریں: بوٹ، ویب سائٹ اور ایکسٹینشن میں کیا نیا آیا ہے اور اسے کیسے استعمال کریں۔",
+    readMore: "پڑھیں",
+    back: "تمام مضامین",
+    allPosts: "بلاگ",
+    channel: "Telegram پر خبریں",
+    channelCta: "پروجیکٹ کی خبریں Telegram چینل ‎@videonerdownload پر۔",
+    readOnSite: "سائٹ پر پڑھیں",
+    readFull: "پورا مضمون سائٹ پر پڑھیں",
+    dateLocale: "ur-PK-u-nu-latn",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

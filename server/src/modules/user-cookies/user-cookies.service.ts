@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -379,6 +379,7 @@ export class UserCookiesService {
       fa: forGroup ? 'برای یک گروه' : 'برای شما',
       vi: forGroup ? 'cho một nhóm' : 'cho bạn',
       bn: forGroup ? 'একটি গ্রুপের জন্য' : 'আপনার জন্য',
+      ur: forGroup ? 'ایک گروپ کے لیے' : 'آپ کے لیے',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -400,6 +401,7 @@ export class UserCookiesService {
       fa: `⚠️ ورود متصل‌شدهٔ ${name} (${where}) دیگر کار نمی‌کند: پلتفرم دیگر آن را نمی‌پذیرد. شاید از حساب خارج شده‌اید یا حساب محدود شده است.\n\nبرای ادامهٔ دانلود با آن، حساب را دوباره متصل کنید. فهرست اتصال‌ها: \u200e/accounts`,
       vi: `⚠️ Đăng nhập ${name} đã kết nối (${where}) đã ngừng hoạt động: nền tảng không còn chấp nhận nó. Có thể bạn đã đăng xuất khỏi tài khoản, hoặc tài khoản bị hạn chế.\n\nĐể tiếp tục tải xuống bằng tài khoản này, hãy kết nối lại. Danh sách kết nối: /accounts.`,
       bn: `⚠️ যুক্ত করা ${name} লগইন (${where}) আর কাজ করছে না: প্ল্যাটফর্ম এটি আর গ্রহণ করছে না। হয়তো আপনি অ্যাকাউন্ট থেকে লগ আউট করেছেন, অথবা অ্যাকাউন্টটি সীমিত করা হয়েছে।\n\nএটি দিয়ে আবার ডাউনলোড করতে, অ্যাকাউন্টটি আবার যুক্ত করুন। সংযোগের তালিকা: /accounts।`,
+      ur: `⚠️ جوڑا گیا ${name} لاگ اِن (${where}) اب کام نہیں کر رہا: پلیٹ فارم اسے اب قبول نہیں کرتا۔ شاید آپ اکاؤنٹ سے لاگ آؤٹ ہو گئے ہیں یا اکاؤنٹ محدود کر دیا گیا ہے۔\n\nاس سے دوبارہ ڈاؤن لوڈ کرنے کے لیے اکاؤنٹ دوبارہ جوڑیں۔ کنکشنز کی فہرست: \u200e/accounts`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

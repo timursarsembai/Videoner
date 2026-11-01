@@ -157,6 +157,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "ডাউনলোড ও সারি থামান" },
     { command: "language", description: "বটের ভাষা" },
   ],
+  ur: [
+    { command: "start", description: "بوٹ کیسے استعمال کریں" },
+    { command: "extension", description: "براؤزر ایکسٹینشن" },
+    { command: "accounts", description: "اسٹوریز اور پرائیویٹ پوسٹس کے لیے آپ کے اکاؤنٹس" },
+    { command: "connect", description: "ایکسٹینشن کے کوڈ سے اکاؤنٹ جوڑیں" },
+    { command: "stop", description: "ڈاؤن لوڈ اور قطار روکیں" },
+    { command: "language", description: "بوٹ کی زبان" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -294,6 +302,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "কোড দিয়ে এই গ্রুপে অ্যাকাউন্ট যুক্ত করুন" },
     { command: "language", description: "এই গ্রুপে বটের ভাষা (অ্যাডমিনদের জন্য)" },
     { command: "start", description: "গ্রুপে বট কীভাবে কাজ করে" },
+  ],
+  ur: [
+    { command: "settings", description: "اس گروپ میں بوٹ کی سیٹنگز (ایڈمنز)" },
+    { command: "accounts", description: "اس گروپ سے جڑے اکاؤنٹس" },
+    { command: "connect", description: "کوڈ سے اس گروپ میں اکاؤنٹ جوڑیں" },
+    { command: "language", description: "اس گروپ میں بوٹ کی زبان (ایڈمنز)" },
+    { command: "start", description: "گروپ میں بوٹ کیسے کام کرتا ہے" },
   ],
 };
 

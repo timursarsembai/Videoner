@@ -1577,6 +1577,91 @@ const TEXTS = {
     langAuto: "Tự động",
     langLabel: "Ngôn ngữ",
   },
+  bn: {
+    loading: "ভিডিওর তথ্য আনা হচ্ছে…",
+    notVideoPage:
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest বা Threads-এ একটি ভিডিওর পেজ খুলে আবার আইকনে ক্লিক করুন। GetCourse লেসন: এক্সটেনশন ইনস্টলের আগে লেসনের পেজ খোলা থাকলে পেজটি রিলোড করুন।",
+    gcLesson: "GetCourse লেসন",
+    gcPick: "এই লেসনে কয়েকটি ভিডিও আছে — একটি বেছে নিন",
+    gcVideo: (n) => `ভিডিও ${n}`,
+    gcNote: "আপনার ব্রাউজার ভিডিওটি ডাউনলোড করে জোড়া লাগাবে। এই উইন্ডো বন্ধ করতে পারেন, কিন্তু ব্রাউজার নয়।",
+    gcNoStream: "প্লেয়ার থেকে ভিডিও পাওয়া যায়নি। লেসনের পেজ রিলোড করে আবার চেষ্টা করুন।",
+    video: "ভিডিও",
+    photo: "আসল সাইজের ছবি",
+    slideshow: "স্লাইডশো (ভিডিও)",
+    gallery: "ছবি + স্লাইডশো",
+    audioOnly: "শুধু অডিও (mp3)",
+    subtitles: "সাবটাইটেল (.srt)",
+    subtitlesAuto: "স্বয়ংক্রিয়",
+    back: "পিছনে",
+    starting: "ডাউনলোড শুরু হচ্ছে…",
+    waiting: "সার্ভারে খালি জায়গার অপেক্ষা…",
+    downloading: "ডাউনলোড হচ্ছে",
+    converting: "প্রসেস হচ্ছে",
+    left: (eta) => `বাকি ${eta}`,
+    saving: "ডাউনলোডস-এ সেভ হচ্ছে…",
+    done: "সম্পন্ন — ফাইলটি আপনার ডাউনলোডস-এ আছে।",
+    news: "📣 প্রজেক্টের খবর: @videonerdownload",
+    again: "আরেকটি ডাউনলোড করুন",
+    directDownload: "ভিডিও ডাউনলোড (mp4)",
+    directPhoto: "ছবি ডাউনলোড (jpg)",
+    directNote: "সরাসরি ব্রাউজার থেকে — সার্ভারের সারি ছাড়াই",
+    moreOptions: "অন্য কোয়ালিটি ও অডিও",
+    fallback: "ব্রাউজারে ডাউনলোড হয়নি — সার্ভারের মাধ্যমে ডাউনলোড হচ্ছে।",
+    openSite: "videoner.download খুলুন",
+    retry: "আবার চেষ্টা করুন",
+    min: "মিনিট",
+    sec: "সেকেন্ড",
+    errNetwork: "Videoner-এর সাথে সংযোগ করা যাচ্ছে না। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।",
+    errRateLimit: "পরপর অনেক বেশি অনুরোধ। এক মিনিট অপেক্ষা করে আবার চেষ্টা করুন।",
+    errUnsupported:
+      "এই পেজে এমন কোনো ভিডিও নেই যা Videoner ডাউনলোড করতে পারে। নির্দিষ্ট কোনো ভিডিও বা পোস্টের পেজ খুলুন।",
+    errYoutubeDaily: "আপনার নেটওয়ার্কের দৈনিক YouTube সীমা শেষ। আগামীকাল আবার চেষ্টা করুন।",
+    errTooLarge: "এই কোয়ালিটিতে ফাইলটি অনেক বড়। কম কোয়ালিটি বেছে নিন।",
+    errLogin:
+      "এই পোস্টটি শুধু সাইন ইন করা ব্যবহারকারীরা দেখতে পারেন। পাবলিক পোস্ট কোনো সমস্যা ছাড়াই ডাউনলোড হয়।",
+    errRegion: "লেখক এই পোস্টটি দেশ অনুযায়ী সীমিত করেছেন, তাই এটি ডাউনলোড করা যাবে না।",
+    errServerBlocked: "প্ল্যাটফর্মটি সাময়িকভাবে আমাদের সার্ভার সীমিত করছে। দয়া করে পরে আবার চেষ্টা করুন।",
+    errFailed: "ডাউনলোড ব্যর্থ হয়েছে। আবার চেষ্টা করুন বা অন্য কোয়ালিটি বেছে নিন।",
+    errGeneric: "কিছু একটা ভুল হয়েছে। একটু পরে আবার চেষ্টা করুন।",
+    acctButton: (p) => `🔑 আপনার ${p} অ্যাকাউন্ট বটের সাথে যুক্ত করুন`,
+    acctWarn: (p) =>
+      `@VideonerBot আপনার অ্যাকাউন্ট দিয়ে ${p}-এ শুধু সাইন ইন করা ব্যবহারকারীদের দেখা কনটেন্ট ডাউনলোড করতে পারবে: স্টোরি, প্রাইভেট পোস্ট। প্ল্যাটফর্মগুলো স্বয়ংক্রিয় ডাউনলোড পছন্দ করে না এবং অ্যাকাউন্ট সীমিত করতে পারে — তাই একটি দ্বিতীয় অ্যাকাউন্ট যুক্ত করাই ভালো। ব্রাউজার এই সাইটের কুকি পড়ার অনুমতি চাইবে; শুধু ${p}-এর কুকি এনক্রিপ্ট করে সার্ভারে পাঠানো হয়।`,
+    acctConfirm: "যুক্ত করুন",
+    acctCancel: "বাতিল",
+    acctSending: "যুক্ত করা হচ্ছে…",
+    acctDenied: "কুকির অনুমতি ছাড়া অ্যাকাউন্ট যুক্ত করা যাবে না।",
+    acctNoLogin: (p) => `এই ব্রাউজারে আপনি ${p}-এ সাইন ইন করেননি। সাইটে সাইন ইন করে আবার চেষ্টা করুন।`,
+    acctFailed: "হয়নি। একটু পরে আবার চেষ্টা করুন।",
+    acctCodeTitle: (p) => `${p} যুক্ত করার কোড:`,
+    acctCodeHelp:
+      "নিজের ডাউনলোডের জন্য কোডটি প্রাইভেট চ্যাটে @VideonerBot-কে পাঠান। গ্রুপের জন্য গ্রুপে /connect কোড পাঠান। কোডটি 10 মিনিট বৈধ থাকবে।",
+    acctCopy: "কপি করুন",
+    acctCopied: "কপি হয়েছে",
+    acctOpenBot: "বট খুলুন",
+    acctNewCode: "নতুন কোড নিন",
+    acctList: "বটে আমার সংযোগগুলো",
+    acctRevoke: "কুকি অ্যাক্সেস বাতিল করুন",
+    acctRevoked:
+      "কুকি অ্যাক্সেস বাতিল হয়েছে — এক্সটেনশন আর এগুলো পড়ে না। আগে যুক্ত করা অ্যাকাউন্টগুলো বটে থেকে যাবে: “বটে আমার সংযোগগুলো”-তে গিয়ে সেগুলো সরান।",
+    playlistOffer: "📃 পুরো প্লেলিস্ট ডাউনলোড করুন",
+    playlistTitle: (title, n) => `📃 প্লেলিস্ট${title ? ` "${title}"` : ""}: ${n}টি ভিডিও`,
+    playlistHint: "একটা একটা করে ডাউনলোড করব। এই উইন্ডো বন্ধ করতে পারেন।",
+    playlist720: "প্লেলিস্ট 720p-তে",
+    playlistBest: "প্লেলিস্ট সেরা কোয়ালিটিতে",
+    playlistAudio: "প্লেলিস্ট — শুধু অডিও (mp3)",
+    playlistProgress: (i, n) => `ভিডিও ${i} / ${n}`,
+    playlistStats: (done, failed) => `ডাউনলোড হয়েছে: ${done}${failed ? ` · ব্যর্থ: ${failed}` : ""}`,
+    playlistStop: "⏹ থামান",
+    playlistDone: (done, n) => `প্লেলিস্ট ডাউনলোড হয়েছে: ${n}টির মধ্যে ${done}টি।`,
+    playlistStopped: (done, n) => `থামানো হয়েছে। ডাউনলোড হয়েছে ${n}টির মধ্যে ${done}টি।`,
+    playlistLoading: "ভিডিওর তালিকা আনা হচ্ছে…",
+    close: "বন্ধ করুন",
+    updateAvailable: (v) => `সংস্করণ ${v} প্রকাশিত হয়েছে।`,
+    updateHow: "কীভাবে আপডেট করবেন",
+    langAuto: "স্বয়ংক্রিয়",
+    langLabel: "ভাষা",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -1667,12 +1752,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский и персидский пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -1779,11 +1864,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому и вьетнамскому — латинские GB/MB, как и цифры (ar-u-nu-latn, fa-IR-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому и бенгальскому — латинские GB/MB, как и цифры (ar-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

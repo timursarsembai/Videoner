@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('bn')) {
+      return (
+        'নমস্কার! আপনি এই বটটি চালু করেছেন, কিন্তু এখনও কিছু ডাউনলোড করেননি — ' +
+        'হয়তো কোথা থেকে শুরু করবেন বোঝা যায়নি।\n\n' +
+        'মাত্র একটি ধাপ: এখানে একটি ভিডিওর লিংক পাঠান, ' +
+        'যেমন https://youtube.com/watch?v=jNQXAC9IVRw — আর আমি প্রায় আধা মিনিটের মধ্যে ' +
+        'ফাইলটি ফেরত পাঠাব।\n\n' +
+        'YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest এবং Threads-এ কাজ করে। সম্পূর্ণ বিনামূল্যে এবং যেকোনো ' +
+        'মানে — 4K পর্যন্ত, HD-এর জন্য কোনো অতিরিক্ত খরচ নেই।\n\n' +
+        'কিছু কাজ না করলে, শুধু এখানে উত্তর দিন। এটিই ' +
+        'একমাত্র রিমাইন্ডার, আর বিরক্ত করব না।'
+      );
+    }
+
     if (code.startsWith('vi')) {
       return (
         'Xin chào! Bạn đã khởi động bot này nhưng chưa tải xuống gì — ' +

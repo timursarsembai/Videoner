@@ -235,6 +235,18 @@ export const blogUi: Record<
     readFull: "Đọc toàn bộ bài viết trên trang web",
     dateLocale: "vi-VN",
   },
+  bn: {
+    title: "Videoner ব্লগ",
+    description: "প্রজেক্টের খবর: বটে, সাইটে ও এক্সটেনশনে নতুন কী এসেছে এবং কীভাবে ব্যবহার করবেন।",
+    readMore: "পড়ুন",
+    back: "সব পোস্ট",
+    allPosts: "ব্লগ",
+    channel: "Telegram-এ খবর",
+    channelCta: "প্রজেক্টের খবর Telegram চ্যানেল @videonerdownload-এ।",
+    readOnSite: "সাইটে পড়ুন",
+    readFull: "পুরো পোস্টটি সাইটে পড়ুন",
+    dateLocale: "bn-BD-u-nu-latn",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

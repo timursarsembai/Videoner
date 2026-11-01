@@ -26,6 +26,7 @@ export const OG_LOCALE: Record<Language, string> = {
   tr: "tr_TR",
   fa: "fa_IR",
   vi: "vi_VN",
+  bn: "bn_BD",
 };
 
 export function localizedHref(language: Language, href: string): string {

@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -14,9 +14,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz", "tr", "fa", "vi"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz", "tr", "fa", "vi", "bn"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -3779,6 +3779,226 @@ const vi: Messages = {
   settingsBack: "⬅️ Quay lại cài đặt",
 };
 
+
+const bn: Messages = {
+  start: "হ্যালো! YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest বা Threads থেকে ভিডিওর লিংক পাঠান — আমি ডাউনলোড করতে সাহায্য করব।\n\n✨ কোয়ালিটির কোনো সীমা নেই: প্ল্যাটফর্ম যা দেয় তা-ই পাবেন, 4K পর্যন্ত — শুধু ফাইলটি 2 GB-এর মধ্যে হতে হবে, বটের জন্য এটাই Telegram-এর সীমা। এখানে কোনো পেইড ফিচার নেই।\n\nসম্পূর্ণ ফ্রি: কোনো সাবস্ক্রিপশন নেই, বিজ্ঞাপন নেই, ইন-অ্যাপ কেনাকাটা নেই।\n\n🧩 কম্পিউটারে ডাউনলোড করছেন? ব্রাউজার এক্সটেনশন ইনস্টল করুন — ভিডিওর পেজেই একটি ডাউনলোড বাটন দেখা যাবে: videoner.download/bn/extension\n\n👥 আমাকে কোনো গ্রুপে যোগ করুন — সেখানে কেউ লিংক শেয়ার করলে আমি ভিডিওটি পোস্ট করে দেব।\n\n⚡ কোয়ালিটি বাছাই এড়িয়ে যান: শুধু সাউন্ডের (mp3) জন্য লিংকের পরে -audio লিখুন, আর সেরা কোয়ালিটির জন্য -hd।\n\n📣 প্রজেক্টের খবর: @videonerdownload\n\n🌐 বটের ভাষা: /language",
+  notLink: "এটি লিংক বলে মনে হচ্ছে না। আমাকে একটি ভিডিওর লিংক পাঠান।",
+  inviteGreeting: "হ্যালো! আমি Videoner — YouTube, TikTok, Instagram ও অন্যান্য প্ল্যাটফর্ম থেকে বিনামূল্যে ভিডিও ডাউনলোড করি। আপনার সাথে শেয়ার করা ভিডিওটি তৈরি করছি 👇",
+  inviteNotFound: "এই আমন্ত্রণ লিংকের জন্য কোনো ভিডিও খুঁজে পাইনি। আমাকে ভিডিওর লিংক পাঠান, আমি ডাউনলোড করে দেব।",
+  inviteUnavailable: "এই লিংক থেকে ভিডিওটি খুলতে পারিনি — সার্ভিসটি এখন সাড়া দিচ্ছে না। এক মিনিট পরে একই লিংক আবার খুলুন।",
+  fetchingInfo: "🔍 ভিডিওর তথ্য আনা হচ্ছে...",
+  audioOnlyButton: "🎵 শুধু অডিও (mp3)",
+  photoButton: "📷 ছবি ডাউনলোড করুন",
+  slideshowButton: "🎞 স্লাইডশো (ভিডিও)",
+  galleryButton: "📷+🎞 ছবি ও স্লাইডশো",
+  chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\nকোয়ালিটি বেছে নিন:`,
+  sessionExpired: "সেশনের মেয়াদ শেষ — লিংকটি আবার পাঠান",
+  downloading: "⏬ ডাউনলোড হচ্ছে, এতে কয়েক মিনিট লাগতে পারে...",
+  downloadFailed: "ডাউনলোড ব্যর্থ হয়েছে",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ ডাউনলোড হচ্ছে: ${percent}%${eta ? ` · বাকি ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ প্রায় শেষ — ফাইলটি জোড়া লাগানো হচ্ছে...",
+  converting: (percent) => `⚙️ কনভার্ট হচ্ছে: ${percent}%`,
+  etaUnderMinute: "এক মিনিটেরও কম",
+  etaMinutes: (minutes) => `~${minutes} মিনিট`,
+  etaHours: (hours, minutes) => `~${hours} ঘণ্টা${minutes ? ` ${minutes} মিনিট` : ""}`,
+  downloadTimeout: "ডাউনলোডে অনেক বেশি সময় লাগছে — ভিডিওটি মনে হয় খুব ভারী। কম কোয়ালিটি বেছে দেখুন।",
+  downloadInterrupted: "⚠️ আপডেটের জন্য বট রিস্টার্ট হচ্ছে — আপনার ডাউনলোড থেমে গেছে। এক মিনিট পরে লিংকটি আবার পাঠান।",
+  fileTooBig: (mb, url) =>
+    `ফাইলটি বড় হয়ে গেছে (${mb} MB) — Telegram বটকে এটি পাঠাতে দেয় না।\nএখান থেকে ডাউনলোড করুন: ${url}`,
+  sendingFile: "📤 ফাইল পাঠানো হচ্ছে...",
+  sendingAlbum: (count) => `📤 এই পোস্টে কয়েকটি ফাইল আছে (${count}) — অ্যালবাম হিসেবে পাঠাচ্ছি...`,
+  failedPrefix: "❌ ব্যর্থ: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `সোর্স: ${sourceUrl}\n` +
+        "ভিডিওর সব স্বত্ব এর নির্মাতার।\n" +
+        "@VideonerBot দিয়ে বিনামূল্যে ডাউনলোড করা",
+      `📣 প্রজেক্টের খবর: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 শেয়ার করুন: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `ডাউনলোড করতে আমাদের চ্যানেল ${channel} সাবস্ক্রাইব করুন — এটাই একমাত্র শর্ত, সার্ভিসটি ফ্রি-ই থাকবে।\n\n` +
+    "সাবস্ক্রাইব করে «আমি সাবস্ক্রাইব করেছি» চাপুন।",
+  openChannelButton: "📣 চ্যানেল খুলুন",
+  checkSubscriptionButton: "আমি সাবস্ক্রাইব করেছি",
+  subscribeThanks: "ধন্যবাদ! এখন আমাকে একটি ভিডিওর লিংক পাঠান।",
+  subscribeThanksResuming: "ধন্যবাদ! আপনার লিংকটি নিয়ে কাজ শুরু করছি।",
+  subscribeStillMissing: "এখনো সাবস্ক্রিপশন দেখতে পাচ্ছি না। সাবস্ক্রাইব করে আবার চাপুন।",
+  channelNotice: (channel) => `\n\nএই পোস্টের লিংক ${channel}-এ দেখা যাবে — বেনামে, আপনার নাম ছাড়া।`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "এটি এবং যেকোনো ভিডিও বিনামূল্যে ডাউনলোড করুন: @VideonerBot",
+  errorStoryNeedsId:
+    "নির্দিষ্ট একটি স্টোরির লিংক পাঠান: Instagram অ্যাপে সেটি খুলে Share → Copy link চাপুন।",
+  errorInstagramStory:
+    "Instagram স্টোরি শুধু সাইন ইন করা ব্যবহারকারীরাই দেখতে পান।",
+  errorLoginRequired:
+    "সাইন ইন ছাড়া এই পোস্ট দেখা যায় না: প্ল্যাটফর্মটি এটি শুধু " +
+    "লগ ইন করা ব্যবহারকারীদের দেখায়। প্রাইভেট পোস্ট, বয়স-সীমিত কনটেন্ট এবং " +
+    "সীমিত দর্শকের সাথে শেয়ার করা পোস্টে এমন হয়।\n\n" +
+    "পাবলিক পোস্ট কোনো সমস্যা ছাড়াই ডাউনলোড হয় — অন্য একটি লিংক দিয়ে চেষ্টা করুন।",
+  errorUnsupportedPlatform:
+    "লিংকটি চিনতে পারিনি — নিশ্চিত করুন যে এটি YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest বা Threads-এর সরাসরি ভিডিও লিংক।",
+  errorFileTooLarge: "ফাইলটি 2 GB-এর চেয়ে বড় — Telegram বটকে এর চেয়ে বড় ফাইল পাঠাতে দেয় না। ওয়েবসাইটে বা ব্রাউজার এক্সটেনশন দিয়ে ডাউনলোড করুন — বাটন নিচে আছে। অথবা লিংকটি আবার পাঠিয়ে কম কোয়ালিটি বেছে নিন।",
+  siteButton: "🌐 ওয়েবসাইটে ডাউনলোড করুন",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ${limit}-এর চেয়ে ভারী কোয়ালিটিগুলো লুকানো আছে: Telegram বটকে এর চেয়ে বড় ফাইল পাঠাতে দেয় না। সেগুলো ওয়েবসাইটে বা ব্রাউজার এক্সটেনশন দিয়ে ডাউনলোড করতে পারেন — বাটন নিচে আছে।`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ সবচেয়ে কম কোয়ালিটিতেও এই ভিডিওটি Telegram-এর জন্য খুব ভারী (~${smallest}): Telegram বটকে 2 GB-এর বেশি ফাইল পাঠাতে দেয় না। এখানে শুধু অডিও পাবেন; ভিডিওটি — ওয়েবসাইটে বা ব্রাউজার এক্সটেনশন দিয়ে (বাটন নিচে আছে)।`,
+  errorFormatUnavailable: "এই ভিডিওর জন্য এই কোয়ালিটি পাওয়া যাচ্ছে না। লিংকটি আবার পাঠান — আমি বর্তমান তালিকা দেখাব।",
+  errorNoVideoContent: "এই লিংকে ডাউনলোড করার মতো কোনো ভিডিও নেই — পোস্টটিতে মনে হয় শুধু ছবি আছে।",
+  errorRegionBlocked:
+    "এই ভিডিওটি নির্মাতার দেশের বাইরে ব্লক করা — প্ল্যাটফর্মটি এটি আমাদের " +
+    "সার্ভারে দেয় না। এর কোনো উপায় নেই: সীমাবদ্ধতাটি তাদের দিক থেকে।" +
+    "\n\nঅন্য লিংক স্বাভাবিকভাবেই ডাউনলোড হয়।",
+  errorRateLimited: "পরপর অনেক বেশি লিংক — একটু অপেক্ষা করে আবার পাঠান।",
+  errorYoutubeDailyLimit: (gb) => `গত 24 ঘণ্টায় আপনি YouTube থেকে ${gb} GB-এর বেশি ডাউনলোড করেছেন — এটাই একজনের জন্য বটের দৈনিক সীমা। হিসাব হয় শেষ 24 ঘণ্টার, তাই কিছুক্ষণ পরে আবার নতুন YouTube ভিডিও ডাউনলোড করতে পারবেন। অন্য প্ল্যাটফর্ম স্বাভাবিকভাবে কাজ করছে।`,
+  playlistStoppedByLimit: (dropped) => `⏹ প্লেলিস্ট থামানো হয়েছে: YouTube-এর দৈনিক সীমা পূর্ণ হয়েছে। ডাউনলোড হয়নি এমন ভিডিও: ${dropped}। পরে প্লেলিস্টের লিংকটি আবার পাঠান।`,
+  errorPlatformRefused:
+    "প্ল্যাটফর্মটি এই ভিডিওটি আমাদের সার্ভারকে দেয়নি। প্রাইভেট " +
+    "বা বয়স-সীমিত পোস্টে এমন হয়, আর কখনো কখনো প্ল্যাটফর্ম কিছু সময়ের জন্য " +
+    "অ্যাক্সেস সীমিত করে দেয়। কয়েক মিনিট পরে আবার চেষ্টা করুন।",
+  errorThreadsNoMedia:
+    "এই Threads পোস্টে কোনো ভিডিও বা ছবি দেখা যাচ্ছে না। হয় এটি শুধু লেখার পোস্ট, অথবা " +
+    "Threads এর মিডিয়া শুধু সাইন ইন করা ব্যবহারকারীদের দেখায় — এমন পোস্ট লগ ইন ছাড়া ডাউনলোড করা যায় না।",
+  extensionHint:
+    "\n\n💻 কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়ে এটি ডাউনলোড করতে পারেন: " +
+    "এটি প্ল্যাটফর্মে আপনার নিজের সাইন ইন ব্যবহার করে ডাউনলোড করে, আর কোনো পাসওয়ার্ড বা কুকি আপনার ব্রাউজারের বাইরে যায় না।",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 এমন পোস্ট ডাউনলোড করতে আপনার ${platform} অ্যাকাউন্ট বটের সাথে যুক্ত করুন — একবারই। এরপর আপনি যা দেখতে পান বট সবই ডাউনলোড করবে: প্রাইভেট পোস্ট, রিলস ও স্টোরি, ফোন থেকেও। কীভাবে করবেন, নিচের বাটনে দেখানো আছে।${withExtension ? "\n\n💻 অথবা কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়ে ডাউনলোড করুন।" : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ আপনার যুক্ত করা ${platform} অ্যাকাউন্ট এই পোস্টটি খুলতে পারেনি। হয়তো লগ ইন আর কাজ করছে না — অ্যাকাউন্টটি আবার যুক্ত করুন। অথবা এই অ্যাকাউন্টের পোস্টটিতে অ্যাক্সেস নেই।${withExtension ? "\n\n💻 কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়েও এটি ডাউনলোড করতে পারেন।" : ""}`,
+  connectAccountButton: "🔑 অ্যাকাউন্ট যুক্ত করুন",
+  reconnectAccountButton: "🔑 আবার যুক্ত করুন",
+  extensionButton: "🧩 এক্সটেনশন দিয়ে ডাউনলোড করুন",
+  extensionCommand:
+    "🧩 আপনার ব্রাউজারের জন্য Videoner: ভিডিওর পেজেই একটি ডাউনলোড বাটন — YouTube, Instagram, TikTok, VK, আপনার অ্যাকাউন্টের প্রাইভেট ভিডিও এবং GetCourse-এর লেসন।\n\nকম্পিউটারে Chrome, Edge, Opera, Yandex Browser ও Firefox-এর জন্য।",
+  extensionPageButton: "🧩 এক্সটেনশন ইনস্টল করুন",
+  addToGroupButton: "👥 গ্রুপে যোগ করুন",
+  newsButton: "📣 প্রজেক্টের খবর",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 প্রজেক্টের খবর: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ এই গ্রুপে বটের সেটিংস\n\n" +
+    `🗑 লিংকসহ মেসেজ মুছে ফেলা: ${s.deleteLinks ? "হ্যাঁ" : "না"}\n` +
+    "ভিডিও পাঠানোর পরে যে মেসেজে শুধু লিংক ছিল সেটি মুছে যায় — চ্যাটে থাকে শুধু ভিডিও, সাথে যিনি শেয়ার করেছেন তাঁর নাম।\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ আমি এখন মেসেজ মুছতে পারছি না: আমাকে \"Delete messages\" অধিকারসহ অ্যাডমিন বানান।\n"
+      : "") +
+    `\n✍️ ভিডিওর নিচের ক্যাপশন: ${{ full: "পুরো", short: "শিরোনাম ও সোর্স", none: "ক্যাপশন নেই" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 কোয়ালিটি: ${s.quality === "max" ? "Telegram যত বেশি নেয়" : "স্ট্যান্ডার্ড (720p)"}\n` +
+    `\n⏱ লম্বা ভিডিও: ${s.longVideos ? "যেকোনো দৈর্ঘ্যের" : "শুধু 15 মিনিট পর্যন্ত"}\n` +
+    `\n🔑 কারা নিজের অ্যাকাউন্ট যুক্ত করতে পারবেন (স্টোরি ও প্রাইভেট পোস্টের জন্য): ${s.cookiesBy === "all" ? "যেকোনো সদস্য" : "শুধু অ্যাডমিনরা"}\n` +
+    `\n🌐 উত্তরের ভাষা: ${s.language ? langName(s.language) : "প্রত্যেক সদস্যের নিজের"}\n` +
+    "\nশুধু গ্রুপের অ্যাডমিনরাই সেটিংস বদলাতে পারেন।",
+  settingsDeleteButton: (on) => `🗑 লিংক মুছুন: ${on ? "হ্যাঁ" : "না"}`,
+  settingsCaptionButton: (style) => `✍️ ক্যাপশন: ${{ full: "পুরো", short: "সংক্ষিপ্ত", none: "নেই" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 কোয়ালিটি: ${mode === "max" ? "সর্বোচ্চ" : "720p"}`,
+  settingsLongButton: (on) => `⏱ লম্বা ভিডিও: ${on ? "হ্যাঁ" : "15 মিনিট পর্যন্ত"}`,
+  settingsDoneButton: "✅ সম্পন্ন",
+  settingsAdminsOnly: "শুধু গ্রুপের অ্যাডমিনরাই সেটিংস বদলাতে পারেন।",
+  settingsGroupsOnly: "সেটিংস গ্রুপের জন্য: আমাকে কোনো গ্রুপে যোগ করে সেখানে /settings পাঠান।",
+  settingsFailed: "সেটিংস সেভ করা যায়নি, আবার চেষ্টা করুন।",
+  settingsCookiesButton: (by) => `🔑 অ্যাকাউন্ট যুক্ত করা: ${by === "all" ? "সবাই" : "অ্যাডমিনরা"}`,
+  accountsIntro:
+    "🔑 যুক্ত অ্যাকাউন্ট\n\nশুধু সাইন ইন করা লোকেরা যা দেখতে পান (Instagram স্টোরি, প্রাইভেট পোস্ট), বট তা আপনার অ্যাকাউন্ট ব্যবহার করে ডাউনলোড করতে পারে। লগ ইন সেখানেই কাজ করে যেখানে আপনি এটি যুক্ত করেছেন: প্রাইভেট চ্যাটে যুক্ত করা অ্যাকাউন্ট আপনার ডাউনলোডের জন্য, যেসব গ্রুপে নিজস্ব অ্যাকাউন্ট নেই সেখানে আপনার নিজের লিংকসহ; আর গ্রুপে যুক্ত করা অ্যাকাউন্ট সেই গ্রুপের সব সদস্যের জন্য।",
+  accountsHowTo:
+    "কীভাবে যুক্ত করবেন:\n1. সবচেয়ে সহজ: কম্পিউটারে Videoner এক্সটেনশন — প্ল্যাটফর্মের সাইটে সাইন ইন করুন, Videoner উইন্ডো খুলুন, «🔑 আপনার … অ্যাকাউন্ট বটের সাথে যুক্ত করুন» চাপুন এবং কোডটি আমাকে পাঠান। গ্রুপের জন্য সেই গ্রুপেই /connect কোড পাঠান।\n2. অথবা আমাকে একটি cookies.txt ফাইল পাঠান (ব্রাউজার থেকে এক্সপোর্ট করা কুকি), অথবা এর লেখা মেসেজ হিসেবে পেস্ট করুন।\n3. Android ফোন থেকে — Firefox ও Cookie-Editor অ্যাড-অন দিয়ে: https://videoner.download/bn/blog/android-firefox",
+  accountsWarning:
+    "⚠️ প্ল্যাটফর্মগুলো স্বয়ংক্রিয় ডাউনলোড পছন্দ করে না এবং অ্যাকাউন্ট সীমিত বা ব্যান করতে পারে। মূল অ্যাকাউন্ট নয়, একটি বাড়তি অ্যাকাউন্ট যুক্ত করাই ভালো। কুকি এনক্রিপ্ট করে রাখা হয়, শুধু ডাউনলোডের জন্য ব্যবহার করা হয়, আর নিচের বাটন দিয়ে মুছে ফেলা যায়।",
+  accountsNone: "এখনো কিছু যুক্ত করা হয়নি।",
+  accountsGroupTitle: "🔑 এই গ্রুপে যুক্ত অ্যাকাউন্ট",
+  accountsGroupHowTo:
+    "পুরো গ্রুপের জন্য অ্যাকাউন্ট যুক্ত করতে: Videoner এক্সটেনশনের «🔑 আপনার … অ্যাকাউন্ট বটের সাথে যুক্ত করুন» বাটন দিয়ে কোড নিন এবং এখানে /connect কোড পাঠান। আপনি যদি শুধু প্রাইভেট চ্যাটে অ্যাকাউন্ট যুক্ত করে থাকেন, বট এখানে আপনার নিজের লিংকের জন্য সেটি ব্যবহার করবে। আপনার সংযোগগুলো: @VideonerBot-এর সাথে প্রাইভেট চ্যাটে /accounts।",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ লগ ইন কাজ করছে না)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ লগ ইন কাজ করছে না)"}`,
+  accountsWhereHere: "প্রাইভেট চ্যাট",
+  accountsWhereGroup: (title) => `গ্রুপ "${title}"`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 আমার সব সংযোগ মুছুন",
+  accountsDeleted: "মুছে ফেলা হয়েছে।",
+  accountsDeletedAll: (n) => `সংযোগ মুছে ফেলা হয়েছে: ${n}।`,
+  accountsNotAllowed: "শুধু যিনি এটি যুক্ত করেছেন অথবা গ্রুপের অ্যাডমিন এটি মুছতে পারেন।",
+  connectUsage:
+    "/connect কোড পাঠান। কোডটি পাবেন কম্পিউটারে Videoner এক্সটেনশনের «🔑 আপনার … অ্যাকাউন্ট বটের সাথে যুক্ত করুন» বাটন থেকে। আপনার সংযোগগুলো: /accounts।",
+  connectOnlyAdmins: "এই গ্রুপে শুধু অ্যাডমিনরাই অ্যাকাউন্ট যুক্ত করতে পারেন (দেখুন /settings)।",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} যুক্ত হয়েছে। এখন বট সেগুলোও ডাউনলোড করবে যা শুধু সাইন ইন করা লোকেরা দেখতে পান। দেখুন বা মুছুন: /accounts।\n\n⚠️ স্বয়ংক্রিয় ডাউনলোডের কারণে প্ল্যাটফর্ম অ্যাকাউন্টটি সীমিত করতে পারে — একটি বাড়তি অ্যাকাউন্ট ব্যবহার করাই ভালো।`,
+  connectWhereGroup: "এই গ্রুপে",
+  connectWhereHere: "প্রাইভেট চ্যাট ও ইনলাইন মোডে আপনার ডাউনলোডের জন্য",
+  connectCodeNotFound: "কোডটি পাওয়া যায়নি বা মেয়াদ শেষ (কোড 10 মিনিট কার্যকর থাকে)। Videoner এক্সটেনশন থেকে নতুন কোড নিন।",
+  connectRejectedNoSession: "এই কুকিতে কোনো লগ ইন নেই। প্ল্যাটফর্মের সাইটে সাইন ইন করে আবার কুকি এক্সপোর্ট করুন।",
+  connectRejectedUnknown: "সমর্থিত প্ল্যাটফর্মের কোনো কুকি পাওয়া যায়নি: Instagram, Facebook, YouTube, X, VK, TikTok।",
+  connectUnavailable: "অ্যাকাউন্ট যুক্ত করার সুবিধা এখনো চালু হয়নি।",
+  connectFailed: "যুক্ত করা যায়নি, আবার চেষ্টা করুন।",
+  connectFileTooBig: "ফাইলটি অনেক বড় — শুধু প্রয়োজনীয় সাইটের কুকি এক্সপোর্ট করুন।",
+  connectNotAnonymous: "অ্যাকাউন্টটি নিজের নামে যুক্ত করুন, গ্রুপের নামে বেনামে নয়: নইলে অ্যাডমিনদের সংযোগ মিশে যায়। আমি কোডটি বাতিল করেছি — নতুন একটি নিন।",
+  connectCodeInGroup:
+    "গ্রুপ চ্যাটে পোস্ট করা সংযোগ কোড অন্যরা দেখতে পারেন — আমি কোডটি বাতিল করেছি এবং মেসেজটি মুছে দিয়েছি। নতুন কোড নিয়ে /connect কোড দিয়ে পাঠান: ওই কমান্ডের মেসেজ আমি সঙ্গে সঙ্গে মুছে দিই।",
+  groupWelcome:
+    "👋 হ্যালো! এই চ্যাটে TikTok, Instagram, YouTube, VK ও অন্যান্য প্ল্যাটফর্মের ভিডিওর লিংক পোস্ট করুন — আমি উত্তরে ভিডিওটিই পাঠাব।\n\n" +
+    "15 মিনিট পর্যন্ত ভিডিও আমি নিজে থেকেই ডাউনলোড করি, কোনো কমান্ড লাগে না, আর বাকি সময় চুপ থাকি।\n\n⚙️ গ্রুপের অ্যাডমিনরা /settings দিয়ে আমাকে সাজাতে পারেন: লিংকের মেসেজ মুছে ফেলা, ক্যাপশনের ধরন, কোয়ালিটি, লম্বা ভিডিও ও ভাষা।\n\n⚡ সাউন্ড পেতে লিংকের পরে -audio লিখুন, আর সেরা কোয়ালিটির জন্য -hd।\n\n📣 প্রজেক্টের খবর: @videonerdownload",
+  errorTooLong: "ভিডিওটি অনেক লম্বা — এত লম্বা ভিডিও আমরা এখনো ডাউনলোড করতে পারি না।",
+  errorUnknown: "এই ভিডিওটি ডাউনলোড করা যায়নি। একটু পরে আবার চেষ্টা করুন বা অন্য লিংক পাঠান।",
+  inlineHintButton: "বটকে লিংক পাঠান",
+  inlineResultTitle: "⬇️ ভিডিও ডাউনলোড করুন",
+  inlineResultDescription: "ভিডিওটি সরাসরি এই চ্যাটে পোস্ট হবে",
+  inlinePlaceholder: "⏬ ডাউনলোড হচ্ছে, এতে কয়েক মিনিট লাগতে পারে...",
+  inlineOpenBot: "বট খুলুন",
+  inlineOnlySingleVideo:
+    "এই মোডে একটি মাত্র ভিডিও পাঠানো যায়। একাধিক ফাইলের পোস্ট বা ছবির জন্য প্রাইভেট চ্যাটে বটকে লিংকটি পাঠান।",
+  inlineSubscribeRequired: (channel: string) =>
+    `ডাউনলোড করতে ${channel} সাবস্ক্রাইব করে আবার চেষ্টা করুন।`,
+  inlineRateLimited: "পরপর অনেক বেশি অনুরোধ। এক মিনিট অপেক্ষা করে আবার চেষ্টা করুন।",
+  queueRest: (count) => `\n\n📋 সারিতে এখনো লিংক আছে: ${count}। এটির পরে একে একে দেখাব।`,
+  queuedOne: (position) =>
+    `📋 লিংকটি সারিতে রাখা হয়েছে, #${position}। আগে বর্তমানটি শেষ করি — তারপর এর কোয়ালিটি বাছাই দেখাব।`,
+  queuedMany: (added, waiting) =>
+    `📋 সারিতে লিংক যোগ হয়েছে: ${added}। মোট অপেক্ষায়: ${waiting}। বর্তমানটির পরে একে একে দেখাব।`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "এই লিংকটি আগে থেকেই সারিতে আছে — দ্বিতীয়বার যোগ করছি না।"
+      : `সারিতে আগে থেকে থাকা লিংক দ্বিতীয়বার যোগ করা হয় না (পুনরাবৃত্তি: ${count})।`,
+  queueFull: (limit, rejected) =>
+    `সারিতে সর্বোচ্চ ${limit}টি লিংক রাখা যায় — বাড়তিগুলো যোগ করা হয়নি (${rejected})। সারি এগোলে সেগুলো পাঠান।`,
+  skipButton: "✖️ ডাউনলোড করবেন না",
+  skipped: "⏭ এই লিংকটি বাদ দেওয়া হয়েছে।",
+  chooseTimedOut: "⌛ 30 মিনিটের মধ্যে কোনো কোয়ালিটি বাছাই করা হয়নি — এই লিংকটি বাদ দিচ্ছি।",
+  queueLostOnRestart: (count) =>
+    `⚠️ আপডেটের জন্য বট রিস্টার্ট হচ্ছে — সারি রিসেট হয়ে গেছে (লিংক: ${count})। এক মিনিট পরে সেগুলো আবার পাঠান।`,
+  subtitlesButton: "📝 সাবটাইটেল",
+  subtitlesBack: "⬅️ কোয়ালিটিতে ফিরে যান",
+  subtitlesAuto: "অটো",
+  subtitlesChoose: "সাবটাইটেলের ভাষা বেছে নিন",
+  subtitlesPreparing: "📝 সাবটাইটেল তৈরি হচ্ছে...",
+  subtitlesFailed: "এই ভাষায় সাবটাইটেল ডাউনলোড করা যায়নি। অন্য ভাষা বেছে দেখুন।",
+  subtitlesBusy: "YouTube এখন সাবটাইটেল দিচ্ছে না — কয়েক মিনিট পরে আবার চেষ্টা করুন।",
+  playlistFound: (title, count) =>
+    `📃 প্লেলিস্ট${title ? ` "${title.slice(0, 150)}"` : ""}: ${count}টি ভিডিও।\nএকে একে ডাউনলোড করব। কোন ফরম্যাটে?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 সেরা কোয়ালিটি",
+  playlistAudioButton: "🎵 শুধু অডিও (mp3)",
+  playlistNoButton: "✖️ না, ধন্যবাদ",
+  playlistQueued: (count) =>
+    `📃 প্লেলিস্ট থেকে সারিতে রাখা ভিডিও: ${count}। একে একে পাঠাব। নিচের বাটন বা /stop দিয়ে থামান।`,
+  playlistFailed: "প্লেলিস্টটি খোলা যায়নি — হয়তো এটি প্রাইভেট। একটি নির্দিষ্ট ভিডিওর লিংক পাঠান।",
+  stopButton: "⏹ থামান",
+  stopped: (dropped) => `⏹ থামানো হয়েছে।${dropped ? ` সারি থেকে সরানো লিংক: ${dropped}।` : ""}`,
+  nothingToStop: "এখন কিছুই ডাউনলোড হচ্ছে না।",
+  languageChoose: "🌐 বটের ভাষা বেছে নিন। \"অটো\" আপনার Telegram-এর ভাষা অনুসরণ করে।",
+  languageChooseGroup: "🌐 এই গ্রুপে বটের উত্তরের ভাষা। \"অটো\" — প্রত্যেক সদস্যের Telegram-এর ভাষা।",
+  languageAuto: "অটো — Telegram-এর মতো",
+  languageAutoGroup: "অটো — প্রত্যেক সদস্যের নিজের",
+  languageSaved: (name) => `✅ বটের ভাষা: ${name}। /language দিয়ে বদলান।`,
+  languageSavedAuto: "✅ বট আপনার Telegram-এর ভাষা অনুসরণ করবে। /language দিয়ে বদলান।",
+  settingsLanguageButton: (name) => `🌐 ভাষা: ${name ?? "অটো"}`,
+  settingsBack: "⬅️ সেটিংসে ফিরে যান",
+};
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -4226,4 +4446,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn };

@@ -367,6 +367,18 @@ export const blogUi: Record<
     readFull: "Yazının tamamını saytda oxuyun",
     dateLocale: "az-AZ",
   },
+  ky: {
+    title: "Videoner блогу",
+    description: "Долбоордун жаңылыктары: ботто, сайтта жана кеңейтүүдө эмне жаңы пайда болду жана аны кантип колдонсо болот.",
+    readMore: "Окуу",
+    back: "Бардык макалалар",
+    allPosts: "Блог",
+    channel: "Telegram'дагы жаңылыктар",
+    channelCta: "Долбоордун жаңылыктары — @videonerdownload Telegram-каналында.",
+    readOnSite: "Сайттан окуу",
+    readFull: "Толугу менен сайттан окуу",
+    dateLocale: "ky-KG",
+  },
   tl: {
     title: "Videoner blog",
     description: "Mga balita ng proyekto: ano ang bago sa bot, sa website at sa extension, at kung paano ito gamitin.",

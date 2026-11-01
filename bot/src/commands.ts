@@ -245,6 +245,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Yükləməni və növbəni dayandırın" },
     { command: "language", description: "Botun dili" },
   ],
+  ky: [
+    { command: "start", description: "Ботту кантип колдонуу керек" },
+    { command: "extension", description: "Браузер кеңейтүүсү" },
+    { command: "accounts", description: "Стористер жана жабык посттор үчүн өз аккаунттарыңыз" },
+    { command: "connect", description: "Кеңейтүүдөн алынган код менен аккаунтту туташтыруу" },
+    { command: "stop", description: "Жүктөп алууну жана кезекти токтотуу" },
+    { command: "language", description: "Боттун тили" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -459,6 +467,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Kodla bu qrupa hesab qoşun" },
     { command: "language", description: "Bu qrupda botun dili (adminlər üçün)" },
     { command: "start", description: "Bot qrupda necə işləyir" },
+  ],
+  ky: [
+    { command: "settings", description: "Бул топтогу боттун жөндөөлөрү (администраторлор үчүн)" },
+    { command: "accounts", description: "Бул топко туташтырылган аккаунттар" },
+    { command: "connect", description: "Код менен бул топко аккаунт туташтыруу" },
+    { command: "language", description: "Бул топтогу боттун тили (администраторлор үчүн)" },
+    { command: "start", description: "Бот топто кантип иштейт" },
   ],
 };
 

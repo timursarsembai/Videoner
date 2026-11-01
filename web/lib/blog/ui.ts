@@ -463,6 +463,18 @@ export const blogUi: Record<
     readFull: "هەموو بابەتەکە لە ماڵپەڕ بخوێنەوە",
     dateLocale: "ckb-IQ-u-nu-latn",
   },
+  ku: {
+    title: "Bloga Videoner",
+    description: "Nûçeyên projeyê: di bot, malper û pêvekê de çi nû ye û çawa bi kar bînî.",
+    readMore: "Bixwîne",
+    back: "Hemû nivîs",
+    allPosts: "Blog",
+    channel: "Nûçe li ser Telegram",
+    channelCta: "Nûçeyên projeyê li kanala Telegram @videonerdownload in.",
+    readOnSite: "Li malperê bixwîne",
+    readFull: "Hemû nivîsê li malperê bixwîne",
+    dateLocale: "ku-TR",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

@@ -1,12 +1,13 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
   // «in» — старый код индонезийского, некоторые клиенты шлют его до сих пор;
-  // «fil» — филиппинский (тагальский), так его называют браузеры и часть клиентов.
-  const base = code === "in" ? "id" : code === "fil" ? "tl" : code;
+  // «fil» — филиппинский (тагальский), так его называют браузеры и часть клиентов;
+  // «kmr» — код курманджи по ISO 639-3, у него есть двухбуквенный «ku».
+  const base = code === "in" ? "id" : code === "fil" ? "tl" : code === "kmr" ? "ku" : code;
   return isLang(base) ? base : "en";
 }
 
@@ -17,9 +18,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -7743,6 +7744,226 @@ const ckb: Messages = {
   settingsBack: "⬅️ گەڕانەوە بۆ ڕێکخستنەکان",
 };
 
+const ku: Messages = {
+  start: "Silav! Lînka vîdyoyekê ji YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest an Threads ji min re bişîne — ez ê alîkariya te bikim ku tu wê daxînî.\n\n✨ Sînorê kalîteyê tune: platform çi kalîteyê pêşkêş bike, heta 4K, tu wê distînî — bi şertê ku pel ji 2 GB ne mezintir be; ev sînorê Telegram e ji bo botan. Li vir ti taybetmendiyên bi pere tune ne.\n\nBi tevahî belaş: ne abonetî, ne reklam, ne kirîn di nav sepanê de.\n\n🧩 Li ser komputerê dadixînî? Pêveka gerokê saz bike — bişkoka “Daxîne” rasterast li ser rûpela vîdyoyê derdikeve: videoner.download/ku/extension\n\n👥 Min li komekê zêde bike û ez ê vîdyoyên lînkên ku endam li wir parve dikin bişînim.\n\n⚡ Hilbijartina kalîteyê derbas bike: piştî lînkê -audio binivîse ji bo tenê deng (mp3), an -hd ji bo kalîteya herî baş.\n\n📣 Nûçeyên projeyê: @videonerdownload\n\n🌐 Zimanê botê: /language",
+  notLink: "Ev wek lînkekê xuya nake. Lînka vîdyoyekê ji min re bişîne.",
+  inviteGreeting: "Silav! Ez Videoner im — ez vîdyoyan ji YouTube, TikTok, Instagram û platformên din belaş dadixînim. Vîdyoya ku kesekî bi te re parve kiriye amade dikim 👇",
+  inviteNotFound: "Min ji bo vê lînka vexwendinê vîdyoyek nedît. Lînka vîdyoyekê ji min re bişîne û ez ê wê daxînim.",
+  inviteUnavailable: "Min nikarî vîdyoya ji vê lînkê veke — xizmet niha bersiv nade. Piştî deqeyekê heman lînkê dîsa veke.",
+  fetchingInfo: "🔍 Agahiyên vîdyoyê tên wergirtin...",
+  audioOnlyButton: "🎵 Tenê deng (mp3)",
+  photoButton: "📷 Wêneyan daxîne",
+  slideshowButton: "🎞 Pêşandana wêneyan (vîdyo)",
+  galleryButton: "📷+🎞 Wêne û pêşandana wêneyan",
+  chooseQuality: (title, duration) => `“${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nKalîteyê hilbijêre:`,
+  sessionExpired: "Dema danişînê qediya — lînkê dîsa bişîne",
+  downloading: "⏬ Tê daxistin, dibe ku çend deqeyan bidome...",
+  downloadFailed: "daxistin bi ser neket",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Tê daxistin: ${percent}%${eta ? ` · ${eta} maye` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Hema qediya — pel tê berhevkirin...",
+  converting: (percent) => `⚙️ Tê veguhertin: ${percent}%`,
+  etaUnderMinute: "kêmtir ji deqeyekê",
+  etaMinutes: (minutes) => `~${minutes} deq`,
+  etaHours: (hours, minutes) => `~${hours} saet${minutes ? ` ${minutes} deq` : ""}`,
+  downloadTimeout: "daxistin pir dirêj dikişîne — xuya ye ku vîdyo pir giran e. Kalîteyeke nizmtir biceribîne.",
+  downloadInterrupted: "⚠️ Bot ji bo nûkirinê ji nû ve dest pê dike — daxistina te hate birîn. Ji kerema xwe piştî deqeyekê lînkê dîsa bişîne.",
+  fileTooBig: (mb, url) =>
+    `Pel mezin derket (${mb} MB) — Telegram nahêle ku bot wê bişîne.\nLi vir daxîne: ${url}`,
+  sendingFile: "📤 Pel tê şandin...",
+  sendingAlbum: (count) => `📤 Di vê postê de çend pel hene (${count}) — wek albûm tên şandin...`,
+  failedPrefix: "❌ Bi ser neket: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Çavkanî: ${sourceUrl}\n` +
+        "Hemû mafên vîdyoyê yên xwediyê wê ne.\n" +
+        "Bi @VideonerBot belaş hate daxistin",
+      `📣 Nûçeyên projeyê: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Parve bike: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Ji bo daxistinê, ji kerema xwe bibe aboneyê kanala me ${channel} — ev tenê şert e, xizmet belaş dimîne.\n\n` +
+    "Bibe abone û “Ez bûm abone” bitikîne.",
+  openChannelButton: "📣 Kanalê veke",
+  checkSubscriptionButton: "Ez bûm abone",
+  subscribeThanks: "Spas! Niha lînka vîdyoyekê ji min re bişîne.",
+  subscribeThanksResuming: "Spas! Niha ez dest bi lînka te dikim.",
+  subscribeStillMissing: "Ez hîn aboneyiyê nabînim. Bibe abone û dîsa bitikîne.",
+  channelNotice: (channel) => `\n\nLînka vê postê dê li ${channel} derkeve — bênav, bêyî navê te.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Vê û her vîdyoyeke din belaş daxîne: @VideonerBot",
+  errorStoryNeedsId:
+    "lînka story-yeke diyar bişîne: wê di sepana Instagram de veke û Share → Copy link bitikîne.",
+  errorInstagramStory:
+    "Story-yên Instagram tenê ji kesên têketî re xuya dibin.",
+  errorLoginRequired:
+    "Ev post bêyî têketinê nayê vekirin: platform wê tenê nîşanî " +
+    "bikarhênerên têketî dide. Ev bi postên taybet, naveroka bi sînorê temen û " +
+    "postên ku bi temaşevanên sînorkirî re hatine parvekirin re diqewime.\n\n" +
+    "Postên giştî bê pirsgirêk tên daxistin — lînkeke din biceribîne.",
+  errorUnsupportedPlatform:
+    "Min ev lînk nas nekir — piştrast bike ku ew lînka rasterast a vîdyoyekê ye ji YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest an Threads.",
+  errorFileTooLarge: "pel ji 2 GB mezintir e — Telegram nahêle ku bot pelên mezintir bişînin. Wê li ser malperê an bi pêveka gerokê daxîne — bişkok li jêr in. An jî lînkê dîsa bişîne û kalîteyeke nizmtir hilbijêre.",
+  siteButton: "🌐 Li ser malperê daxîne",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Kalîteyên ji ${limit} girantir hatine veşartin: Telegram nahêle ku bot pelên mezintir bişînin. Tu dikarî wan li ser malperê an bi pêveka gerokê daxînî — bişkok li jêr in.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Ev vîdyo ji bo Telegram pir giran e, heta di kalîteya herî nizm de jî (~${smallest}): Telegram nahêle ku bot pelên ji 2 GB mezintir bişînin. Li vir tu dikarî tenê dengê wê bistînî; vîdyoyê — li ser malperê an bi pêveka gerokê (bişkok li jêr in).`,
+  errorFormatUnavailable: "Ev kalîte ji bo vê vîdyoyê tune ye. Lînkê dîsa bişîne — ez ê lîsteya niha nîşan bidim.",
+  errorNoVideoContent: "Di vê lînkê de vîdyoyek ji bo daxistinê tune — xuya ye ku post tenê ji wêneyan pêk tê.",
+  errorRegionBlocked:
+    "Ev vîdyo li derveyî welatê xwediyê wê hatiye astengkirin — platform wê " +
+    "nade servera me. Ti rê tune ku em jê derbas bibin: sînorkirin ji aliyê wan ve ye." +
+    "\n\nLînkên din wek her car tên daxistin.",
+  errorRateLimited: "Li pey hev gelek lînk — hinekî bisekine û dîsa bişîne.",
+  errorYoutubeDailyLimit: (gb) => `te di 24 saetên dawî de zêdetirî ${gb} GB ji YouTube daxist — ev sînorê rojane yê botê ye ji bo her kesî. Ew 24 saetên dawî dihejmêre, ji ber vê yekê tu dikarî vîdyoyên nû yên YouTube hinekî paşê daxînî. Platformên din wek her car dixebitin.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Lîsteya vîdyoyan hate rawestandin: sînorê rojane yê YouTube tije bû. Vîdyoyên nehatine daxistin: ${dropped}. Lînka lîsteya vîdyoyan paşê dîsa bişîne.`,
+  errorPlatformRefused:
+    "platformê ev vîdyo neda servera me. Ev bi postên taybet " +
+    "an bi sînorê temen diqewime, û carinan platform tenê ji bo demekê " +
+    "gihîştinê sînordar dike. Piştî çend deqeyan dîsa biceribîne.",
+  errorThreadsNoMedia:
+    "di vê posta Threads de ti vîdyo an wêne xuya nabe. An ew postek tenê nivîs e, an jî " +
+    "Threads medyaya wê tenê nîşanî bikarhênerên têketî dide — postên wiha bêyî têketinê nayên daxistin.",
+  extensionHint:
+    "\n\n💻 Tu dikarî wê bi pêveka gerokê ya Videoner li ser komputerê daxînî: " +
+    "ew bi têketina te ya li ser platformê dadixîne, û ti şîfre an cookies ji geroka te dernakevin.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Ji bo daxistina postên wiha, hesabê xwe yê ${platform} bi botê ve girê bide — tenê carekê. Piştre bot her tiştê ku tu dikarî bibînî dadixîne: postên taybet, reels û story, ji telefonê jî. Bişkoka li jêr nîşan dide çawa.${withExtension ? "\n\n💻 An jî wê bi pêveka gerokê ya Videoner li ser komputerê daxîne." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Hesabê te yê ${platform} ê girêdayî nikarî vê postê veke. Dibe ku têketin êdî nexebite — hesabê dîsa girê bide. An jî ev hesab nikare xwe bigihîne vê postê.${withExtension ? "\n\n💻 Tu dikarî wê bi pêveka gerokê ya Videoner li ser komputerê jî daxînî." : ""}`,
+  connectAccountButton: "🔑 Hesab girê bide",
+  reconnectAccountButton: "🔑 Dîsa girê bide",
+  extensionButton: "🧩 Bi pêvekê daxîne",
+  extensionCommand:
+    "🧩 Videoner ji bo geroka te: bişkoka “Daxîne” rasterast li ser rûpela vîdyoyê — YouTube, Instagram, TikTok, VK, vîdyoyên taybet ji hesabê te û dersên GetCourse.\n\nJi bo Chrome, Edge, Opera, Yandex Browser û Firefox li ser komputerê.",
+  extensionPageButton: "🧩 Pêvekê saz bike",
+  addToGroupButton: "👥 Li komekê zêde bike",
+  newsButton: "📣 Nûçeyên projeyê",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Nûçeyên projeyê: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Mîhengên botê ji bo vê komê\n\n" +
+    `🗑 Peyama bi lînkê jê bibe: ${s.deleteLinks ? "erê" : "na"}\n` +
+    "Piştî ku vîdyo tê şandin, peyameke ku tenê lînk tê de bû tê jêbirin — di sohbetê de tenê vîdyo bi navê kesê ku ew parve kiriye dimîne.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Ez niha nikarim peyaman jê bibim: min bike rêveber bi mafê “Delete messages”.\n"
+      : "") +
+    `\n✍️ Nivîsa bin vîdyoyê: ${{ full: "tevahî", short: "sernav û çavkanî", none: "bê nivîs" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Kalîte: ${s.quality === "max" ? "ya herî bilind ku Telegram qebûl dike" : "standard (720p)"}\n` +
+    `\n⏱ Vîdyoyên dirêj: ${s.longVideos ? "her dirêjahî" : "tenê heta 15 deqeyan"}\n` +
+    `\n🔑 Kî dikare hesabên xwe girê bide (ji bo story û postên taybet): ${s.cookiesBy === "all" ? "her endam" : "tenê rêveber"}\n` +
+    `\n🌐 Zimanê bersivan: ${s.language ? langName(s.language) : "yê her endamî"}\n` +
+    "\nTenê rêveberên komê dikarin mîhengan biguherînin.",
+  settingsDeleteButton: (on) => `🗑 Lînkan jê bibe: ${on ? "erê" : "na"}`,
+  settingsCaptionButton: (style) => `✍️ Nivîs: ${{ full: "tevahî", short: "kurt", none: "tune" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Kalîte: ${mode === "max" ? "herî bilind" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Vîdyoyên dirêj: ${on ? "erê" : "heta 15 deq"}`,
+  settingsDoneButton: "✅ Qediya",
+  settingsAdminsOnly: "Tenê rêveberên komê dikarin mîhengan biguherînin.",
+  settingsGroupsOnly: "Mîheng ji bo koman in: min li komekê zêde bike û li wir /settings bişîne.",
+  settingsFailed: "Mîheng nehatin tomarkirin, ji kerema xwe dîsa biceribîne.",
+  settingsCookiesButton: (by) => `🔑 Girêdana hesaban: ${by === "all" ? "her kes" : "rêveber"}`,
+  accountsIntro:
+    "🔑 Hesabên girêdayî\n\nBot dikare tiştên ku tenê kesên têketî dibînin (story-yên Instagram, postên taybet) daxîne — bi hesabê te. Têketinek li wê derê dixebite ku te ew lê girê daye: ya di sohbeta taybet de ji bo daxistinên te ye, di nav de lînkên te yên di wan koman de ku hesabê wan ê xwe tune; ya bi komekê ve girêdayî ji bo hemû endamên wê ye.",
+  accountsHowTo:
+    "Çawa girê bidî:\n1. Ya herî hêsan: pêveka Videoner li ser komputerê — li ser malpera platformê têkeve, pencereya Videoner veke, “🔑 Hesabê xwe yê … bi botê ve girê bide” bitikîne û kodê ji min re bişîne. Ji bo komekê, di wê komê de /connect CODE bişîne.\n2. An jî pelek cookies.txt (cookies ji gerokê hatine derxistin) ji min re bişîne, an jî nivîsa wê kopî bike û wek peyamekê bişîne.\n3. Ji telefoneke Android — bi Firefox û pêveka Cookie-Editor: https://videoner.download/ku/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platform ji daxistinên otomatîk hez nakin û dibe ku hesabê sînordar bikin an qedexe bikin. Çêtir e hesabekî duyemîn girê bidî, ne yê xwe yê sereke. Cookies bi şîfrekirî tên hilanîn, tenê ji bo daxistinê tên bikaranîn û bi bişkokên li jêr tên jêbirin.",
+  accountsNone: "Hîn tiştek nehatiye girêdan.",
+  accountsGroupTitle: "🔑 Hesabên bi vê komê ve girêdayî",
+  accountsGroupHowTo:
+    "Ji bo girêdana hesabekî ji bo tevahiya komê: bi bişkoka “🔑 Hesabê xwe yê … bi botê ve girê bide” di pêveka Videoner de kodekê bistîne û li vir /connect CODE bişîne. Heke te hesabek tenê di sohbeta xwe ya taybet de girê daye, bot li vir wî ji bo lînkên te yên xwe bi kar tîne. Girêdanên te: /accounts di sohbeta taybet de bi @VideonerBot re.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ têketin naxebite)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ têketin naxebite)"}`,
+  accountsWhereHere: "sohbeta taybet",
+  accountsWhereGroup: (title) => `koma “${title}”`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Hemû girêdanên min jê bibe",
+  accountsDeleted: "Hate jêbirin.",
+  accountsDeletedAll: (n) => `Girêdan hatin jêbirin: ${n}.`,
+  accountsNotAllowed: "Tenê kesê ku ew girê daye an rêveberekî komê dikare wê jê bibe.",
+  connectUsage:
+    "/connect CODE bişîne. Bişkoka “🔑 Hesabê xwe yê … bi botê ve girê bide” di pêveka Videoner de li ser komputerê kodê dide te. Girêdanên te: /accounts.",
+  connectOnlyAdmins: "Tenê rêveber dikarin hesaban bi vê komê ve girê bidin (binêre /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} hate girêdan. Niha bot tiştên ku tenê kesên têketî dibînin jî dadixîne. Dîtin an jêbirin: /accounts.\n\n⚠️ Dibe ku platform hesabê ji ber daxistinên otomatîk sînordar bike — çêtir e hesabekî duyemîn bi kar bînî.`,
+  connectWhereGroup: "bi vê komê ve",
+  connectWhereHere: "ji bo daxistinên te di sohbeta taybet û moda inline de",
+  connectCodeNotFound: "Kod nehat dîtin an dema wê qediya (kod 10 deqeyan derbasdar in). Di pêveka Videoner de kodeke nû bistîne.",
+  connectRejectedNoSession: "Di van cookies de têketin tune. Li ser malpera platformê têkeve û cookies dîsa derxe.",
+  connectRejectedUnknown: "Cookies-ên platformên piştgirîkirî nehatin dîtin: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Girêdana hesaban hîn ne berdest e.",
+  connectFailed: "Girêdan bi ser neket, ji kerema xwe dîsa biceribîne.",
+  connectFileTooBig: "Pel pir mezin e — tenê cookies-ên malpera pêwîst derxe.",
+  connectNotAnonymous: "Hesabê bi navê xwe girê bide, ne bênav wek komê: wekî din girêdanên rêveberan tevlihev dibin. Min kod betal kir — kodeke nû bistîne.",
+  connectCodeInGroup:
+    "Koda girêdanê ya ku di sohbeta komê de hatiye şandin kesên din jî dikarin bibînin — min ew betal kir û peyam jê bir. Kodeke nû bistîne û bi /connect CODE bişîne: ez wê peyama fermanê yekser jê dibim.",
+  groupWelcome:
+    "👋 Silav! Lînkên vîdyoyan ji TikTok, Instagram, YouTube, VK û platformên din di vê sohbetê de bişîne — ez ê bi vîdyoyê bixwe bersiv bidim.\n\n" +
+    "Ez klîpên heta 15 deqeyan bi xwe dadixînim, bêyî fermanan, û wekî din bêdeng dimînim.\n\n⚙️ Rêveberên komê dikarin min bi /settings eyar bikin: jêbirina peyamên lînkan, şêwaza nivîsê, kalîte, vîdyoyên dirêj û ziman.\n\n⚡ Piştî lînkê -audio zêde bike da ku dengê wê bistînî, an -hd ji bo kalîteya herî baş.\n\n📣 Nûçeyên projeyê: @videonerdownload",
+  errorTooLong: "vîdyo pir dirêj e — em hîn nikarin vîdyoyên ewqas dirêj daxînin.",
+  errorUnknown: "ev vîdyo nehat daxistin. Hinekî paşê dîsa biceribîne an lînkeke din bişîne.",
+  inlineHintButton: "Lînkekê ji botê re bişîne",
+  inlineResultTitle: "⬇️ Vîdyoyê daxîne",
+  inlineResultDescription: "Vîdyo dê rasterast di vê sohbetê de were şandin",
+  inlinePlaceholder: "⏬ Tê daxistin, dibe ku çend deqeyan bidome...",
+  inlineOpenBot: "Botê veke",
+  inlineOnlySingleVideo:
+    "Ev mod tenê yek vîdyoyê dişîne. Ji bo postên bi çend pelan an wêneyan, lînkê di sohbeta taybet de ji botê re bişîne.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Ji bo daxistinê, bibe aboneyê ${channel} û dîsa biceribîne.`,
+  inlineRateLimited: "Li pey hev gelek daxwaz. Deqeyekê bisekine û dîsa biceribîne.",
+  queueRest: (count) => `\n\n📋 Lînkên hîn di rêzê de: ${count}. Piştî vê yekê ez ê wan yek bi yek nîşan bidim.`,
+  queuedOne: (position) =>
+    `📋 Lînk ket rêzê, #${position}. Pêşî em ya niha biqedînin — paşê ez ê hilbijartina kalîteyê ji bo wê nîşan bidim.`,
+  queuedMany: (added, waiting) =>
+    `📋 Lînkên li rêzê hatin zêdekirin: ${added}. Bi tevahî li bendê ne: ${waiting}. Piştî ya niha ez ê wan yek bi yek nîşan bidim.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Ev lînk jixwe di rêzê de ye — ez du caran lê zêde nakim."
+      : `Lînkên ku jixwe di rêzê de ne du caran nayên zêdekirin (dubare: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Rêz herî zêde ${limit} lînkan digire — yên zêde nehatin zêdekirin (${rejected}). Gava rêz bimeşe, wan bişîne.`,
+  skipButton: "✖️ Derbas bike",
+  skipped: "⏭ Ev lînk hate derbaskirin.",
+  chooseTimedOut: "⌛ Di nav 30 deqeyan de kalîte nehat hilbijartin — ev lînk tê derbaskirin.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot ji bo nûkirinê ji nû ve dest pê dike — rêz hate valakirin (lînk: ${count}). Ji kerema xwe piştî deqeyekê wan dîsa bişîne.`,
+  subtitlesButton: "📝 Binnivîs",
+  subtitlesBack: "⬅️ Vegere kalîteyê",
+  subtitlesAuto: "otomatîk",
+  subtitlesChoose: "Zimanê binnivîsê hilbijêre",
+  subtitlesPreparing: "📝 Binnivîs tên amadekirin...",
+  subtitlesFailed: "Binnivîs bi vî zimanî nehatin daxistin. Zimanekî din biceribîne.",
+  subtitlesBusy: "YouTube niha binnivîsan nade — piştî çend deqeyan dîsa biceribîne.",
+  playlistFound: (title, count) =>
+    `📃 Lîsteya vîdyoyan${title ? ` “${title.slice(0, 150)}”` : ""}: ${count} vîdyo.\nEz ê wan yek bi yek daxînim. Kîjan format?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Kalîteya herî baş",
+  playlistAudioButton: "🎵 Tenê deng (mp3)",
+  playlistNoButton: "✖️ Na, spas",
+  playlistQueued: (count) =>
+    `📃 Vîdyoyên ji lîsteyê ketin rêzê: ${count}. Ez ê wan yek bi yek bişînim. Bi bişkoka li jêr an /stop rawestîne.`,
+  playlistFailed: "Lîsteya vîdyoyan venebû — dibe ku taybet be. Lînka vîdyoyeke yekane bişîne.",
+  stopButton: "⏹ Rawestîne",
+  stopped: (dropped) => `⏹ Hate rawestandin.${dropped ? ` Lînkên ji rêzê hatin jêbirin: ${dropped}.` : ""}`,
+  nothingToStop: "Niha tiştek nayê daxistin.",
+  languageChoose: "🌐 Zimanê botê hilbijêre. “Otomatîk” li gorî Telegrama te ye.",
+  languageChooseGroup: "🌐 Zimanê bersivên botê di vê komê de. “Otomatîk” — zimanê Telegrama her endamî.",
+  languageAuto: "Otomatîk — wek di Telegram de",
+  languageAutoGroup: "Otomatîk — yê her endamî",
+  languageSaved: (name) => `✅ Zimanê botê: ${name}. Bi /language biguherîne.`,
+  languageSavedAuto: "✅ Bot zimanê Telegrama te dişopîne. Bi /language biguherîne.",
+  settingsLanguageButton: (name) => `🌐 Ziman: ${name ?? "otomatîk"}`,
+  settingsBack: "⬅️ Vegere mîhengan",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -8410,4 +8631,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku };

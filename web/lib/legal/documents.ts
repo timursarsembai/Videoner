@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на тридцати семи языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на тридцати восьми языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -10875,6 +10875,308 @@ export const legal: LegalByLanguage = {
             heading: "داواکارییە بەدنیەتەکان",
             body: [
               "داواکارییەک کە بە زانینەوە زانیاریی هەڵەی تێدابێت، لەوانەیە بەپێی یاسا بەرپرسیارێتی بۆ پێشکەشکەرەکەی دروست بکات. مافی ئەوەمان هەیە لێکۆڵینەوە لە داواکارییەک ڕەت بکەینەوە ئەگەر نە خاوەن ماف و نە ماددە ناکۆکلەسەرەکە دیاری نەکات.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  ku: {
+    ui: {
+      updated: "Nûkirina dawî",
+      back: "Vegere rûpela sereke",
+      operatorHeading: "Operatorê xizmetê",
+      navHeading: "Belgeyên din",
+      labels: {
+        privacy: "Polîtîkaya Nepeniyê",
+        terms: "Peymana Bikarhêner",
+        cookies: "Polîtîkaya Cookie",
+        copyright: "Ji bo Xwediyên Mafan",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Polîtîkaya Nepeniyê",
+        summary: `${operator.site} kîjan daneyan berhev dike, ew çima pêwîst in, çiqas tên hilanîn û tu çawa dikarî wan jê bibî.`,
+        sections: [
+          {
+            heading: "Hukmên giştî",
+            body: [
+              `Ev Polîtîka diyar dike ku xizmeta ${operator.site} kîjan daneyên kesane û bi kîjan armancê pêvajo dike. Operatorê daneyan (data controller) ${operator.nameKu} e.`,
+              "Bi bikaranîna xizmetê, tu rêbaza pêvajoyê ya li vir hatiye diyarkirin dipejirînî. Heke tu pê re ne razî yî, ji kerema xwe xizmetê bi kar neyne.",
+              "Pêvajo li gorî Qanûna Komara Qazaxistanê “Li ser Daneyên Kesane û Parastina Wan” tê kirin, û di derbarê serdanvanên ji Herêma Aborî ya Ewropayê de, bi berçavgirtina pêdiviyên GDPR.",
+            ],
+          },
+          {
+            heading: "Em kîjan daneyan pêvajo dikin",
+            body: [
+              "Em bi zanebûn ji bilî tiştên ku ji bo xebata xizmetê pêwîst in tiştekî berhev nakin û belge, daneyên dravdanê an navnîşanê ji te naxwazin.",
+            ],
+            bullets: [
+              "Daneyên hesabê Telegramê yên ku bot dema tu jê re dinivîsî distîne: nasnameya hejmarî (id), navê bikarhêner (username), nav û koda ziman.",
+              "Lînkên ku tu ji bo daxistinê dişînî û agahiyên li ser hewldanê bi xwe: platform, dîrok û dem, kalîteya hilbijartî, encam (serkeftin an çewtî).",
+              "Daneyên teknîkî yên girêdanê: navnîşana IP, cure û guhertoya gerokê, ziman, rûpela ku tu jê hatî. Ev dane dikevin tomarên serverê (log) û pergalên analîtîka webê.",
+              "Pelên cookie û nasnameyên analîtîkê — hûrgulî di Polîtîkaya Cookie de ne.",
+            ],
+          },
+          {
+            heading: "Ev dane çima pêwîst in",
+            bullets: [
+              "Pêşkêşkirina xizmetê bi xwe: wergirtina vîdyoyê bi lînka te û radestkirina pelê ji te re.",
+              "Ji hev cudakirina hesabê te ji yên kesên din û pêşîgirtina li îstîsmarê.",
+              "Parastina xizmetê ji îstîsmara otomatîk: kontrola Cloudflare Turnstile berî şandina lînkê.",
+              "Têgihîştina ka malper çawa tê bikaranîn û rakirina çewtiyan — bi statîstîkên bênavkirî û giştî.",
+              "Bersivdana daxwazên te û yên xwediyên mafan.",
+              "Carinan li Telegramê ji te re nivîsandin, da ku em nêrîna te ya li ser xizmetê bizanin — bo nimûne, heke te dev ji bikaranîna wê berdabe. Bersivdan ne mecbûrî ye; heke tu van peyaman naxwazî, tenê vê bibêje û em êdî ji te re nanivîsin.",
+            ],
+          },
+          {
+            heading: "Bingehên pêvajoyê",
+            body: [
+              "Daneyên hesabê Telegramê û agahiyên li ser daxistinan ji bo bicîhanîna Peymana Bikarhêner tên pêvajokirin, ku tu bi destpêkirina bikaranîna xizmetê dipejirînî.",
+              "Pelên cookie yên analîtîkê û tomarkirina çalakiyan li ser malperê li ser bingeha razîbûna te tên pêvajokirin, ku tu dikarî her dem paşve bistînî — rê di Polîtîkaya Cookie de hatine diyarkirin.",
+              "Tomarên serverê û parastina ji botan di çarçoveya berjewendiya me ya rewa (legitimate interest) de tên pêvajokirin, da ku xizmet bixebite û parastî bimîne.",
+              "Pirsên li ser nêrîna te ya derbarê xizmetê de di çarçoveya berjewendiya me ya rewa (legitimate interest) a baştirkirina xizmetê de ne; tu dikarî her dem wan red bikî.",
+            ],
+          },
+          {
+            heading: "Hesabên girêdayî",
+            body: [
+              "Heke tu bixwazî, tu dikarî hesabê xwe yê li ser platformekê (Instagram, Facebook, YouTube, X, VK, TikTok) bi botê ve girê bidî, da ku bot postên ku tenê ji bikarhênerên têketî re xuya dibin daxîne: story û postên taybet. Ji bo vê, bot cookie yên wî hesabî distîne — ji pêveka Videoner bi kodeke yekcarî an ji pelekî ku te şandiye.",
+              "Em tenê cookie yên platforma hilbijartî hildigirin û yên din yekser davêjin. Ew bi awayekî şîfrekirî tên hilanîn û tenê ji bo daxistinan li cihê ku te ew lê girê dane tên bikaranîn. Yên di sohbeta taybet de hatine girêdan ji bo daxistinên te ne, di nav de lînkên te bi xwe di wan koman de ku hesabekî wan ê xwe ne girêdayî ye; ji bo lînkên kesên din nayên bikaranîn. Yên bi komekê ve hatine girêdan tenê ji bo daxistinên endamên wê ne û li tu cihekî din nayên bikaranîn.",
+              "Bingeh razîbûna te ye: tu hesabê xwe bi xwe girê didî û dikarî her dem bi fermana /accounts wî jê bibî. Dema hesab tê jêbirin, cookie bi awayekî bêveger tên paqijkirin. Heke platform êdî têketinê qebûl neke, bot vê ji te re dibêje.",
+              "Postên ku bi hesabekî girêdayî hatine daxistin di kanala me de nayên weşandin û ji cache ya hevpar ji bikarhênerên din re nayên dayîn.",
+            ],
+          },
+          {
+            heading: "Xizmetên aliyên sêyem",
+            body: [
+              "Em daneyên te nafiroşin û ji bo armancên wan ên taybet radestî aliyên sêyem nakin. Ji bo xebata xizmetê ev peydakerên jêrîn tên bikaranîn, ku her yek ji wan daneyan li gorî qaîdeyên xwe pêvajo dike:",
+            ],
+            bullets: [
+              `Telegram — xebitandina botê ${BOT}.`,
+              "Cloudflare — parastina ji botan (Turnstile), gihandina malperê û rêkirina e-nameyan.",
+              "Google Analytics û Google Tag Manager — statîstîkên serdanan.",
+              "Yandex Metrica — statîstîkên serdanan, nexşeya klîkan û Webvisor. Webvisor çalakiyên li ser rûpelê tomar dike: tevgera nîşanderê, gerandin (scroll) û klîk. Tomar tenê ji bo analîzkirina hêsaniya bikaranîna malperê tên bikaranîn.",
+            ],
+          },
+          {
+            heading: "Em daneyan çiqas hildigirin",
+            bullets: [
+              "Pelên daxistî bi qasî saetekê piştî çêbûna xwe bi awayekî otomatîk ji serverê tên jêbirin. Em arşîveke vîdyoyên te hilnagirin.",
+              "Tomarên hewldanên daxistinê heta ku ji bo pêşîgirtina li îstîsmarê û lêkolîna daxwazan pêwîst be tên hilanîn.",
+              "Daneyên hesabê heta ku tu xizmetê bi kar tînî tên hilanîn û li ser daxwaza te tên jêbirin.",
+              "Tomarên serverê ji bo demeke sînorkirî tên hilanîn û bi zivirandina wan (rotation) re tên ser hev nivîsandin.",
+            ],
+          },
+          {
+            heading: "Dane li ku tên pêvajokirin",
+            body: [
+              "Serverên xizmetê li navendeke daneyan (data center) li ser axa Yekîtiya Ewropayê ne. Hin ji peydakerên li jor hatine rêzkirin dikarin li gorî polîtîkayên xwe daneyan li derveyî wê pêvajo bikin.",
+            ],
+          },
+          {
+            heading: "Mafên te",
+            body: [
+              `Mafê te heye ku agahiyan li ser pêvajokirina daneyên xwe bistînî, rastkirin an jêbirina wan bixwazî, razîbûna xwe paşve bistînî û li dijî pêvajoyê îtiraz bikî. Ji bo vê, ji wê navnîşana e-nameyê an ji wî hesabê Telegramê yê ku bi daxwazê ve girêdayî ye ji ${MAIL} re binivîse.`,
+              "Em di demeke maqûl de bersiv didin, bi gelemperî di nav sî rojên salnameyê de. Jêbirina hesabê dibe sedema jêbirina dîroka daxistinan a bi wî ve girêdayî.",
+            ],
+          },
+          {
+            heading: "Kesên temenbiçûk",
+            body: [
+              "Xizmet ne ji bo zarokên di bin 16 saliyê de ye û ne ji wan re tê arastekirin. Em bi zanebûn daneyên bikarhênerên wiha berhev nakin; heke ev bi şaşî qewimîbe, ji me re binivîse û dane dê bên jêbirin.",
+            ],
+          },
+          {
+            heading: "Guhertin",
+            body: [
+              "Em dikarin vê Polîtîkayê nû bikin. Dîroka guhertoya heyî li destpêka rûpelê hatiye nîşandan; em ê guhertinên girîng di xizmetê de diyar bikin.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Peymana Bikarhêner",
+        summary: `Qaîdeyên bikaranîna ${operator.site}: çi dibe, çi nabe û xizmet bi kîjan şertan dixebite.`,
+        sections: [
+          {
+            heading: "Hukmên giştî",
+            body: [
+              `Ev Peyman bikaranîna malpera ${operator.site} û bota Telegramê ${BOT} birêkûpêk dike. Xwedî û rêveberê xizmetê ${operator.nameKu} e.`,
+              "Bi destpêkirina bikaranîna xizmetê, tu piştrast dikî ku te şert xwendine û tu wan dipejirînî. Heke şertek ji te re ne guncav be, divê tu xizmetê bi kar neynî.",
+            ],
+          },
+          {
+            heading: "Xizmet belaş e",
+            body: [
+              "Hemû derfetên xizmetê belaş tên pêşkêşkirin. Abonetî, tarîfeyên bi pere, kalîteyên vîdyoyê yên bi pere û kirînên navxweyî tune ne.",
+              "Em reklaman nîşan nadin û lînkên hevkariyê (affiliate) bi cih nakin.",
+            ],
+          },
+          {
+            heading: "Şertên gihîştinê",
+            bullets: [
+              "Ji bo daxistinê li ser malperê ne hesab ne jî têketin pêwîst e. Bot bikarhêneran li gorî hesabê wan ê Telegramê ji hev cuda dike.",
+              "Sînorên teknîkî yên li ser frekansa daxwazan xizmetê ji barê zêde û îstîsmara otomatîk diparêzin.",
+              "Ji bo YouTube sînorekî trafîkê yê rojane heye: li ser malperê û di pêvekê de 10 GB di 24 saetan de ji bo torekê, û di botê de 25 GB di 24 saetan de ji bo hesabekî Telegramê. Ev sînor bandorê li platformên din nake.",
+              "Ji bo daxistinê bi botê abonetiya kanala me ne pêwîst e. Bot di nivîsa pelan de lînka kanala nûçeyan a projeyê zêde dike; abonebûna wê ne mecbûrî ye.",
+            ],
+          },
+          {
+            heading: "Xizmet çi dike",
+            body: [
+              "Xizmet navbeynkarekî teknîkî ye: bi lînka te ew xwe digihîne rûpeleke ku ji her kesî re vekirî ye, pelê medyayê werdigire û radestî te dike.",
+              "Em katalogeke vîdyoyan li cem xwe bi cih nakin, li naveroka kesên din lêgerînê nakin û pelên daxistî ji dema ku ji bo radestkirinê pêwîst e — bi qasî saetekê — dirêjtir hilnagirin.",
+              "Berdestbûna platformeke diyar bi biryarên wê yên teknîkî ve girêdayî ye û dikare bêyî hişyariyê biguhere.",
+            ],
+          },
+          {
+            heading: "Erkên bikarhêner",
+            body: [
+              "Tu bi xwe berpirsyarê awayê bikaranîna pelên ku te wergirtine yî û tu piştrast dikî ku mafê te yê vê yekê heye.",
+            ],
+            bullets: [
+              "Tenê wî materyalî daxîne ku mafên wî yên te ne, an jî bikaranîna wî ji aliyê xwediyê mafan an qanûnê ve hatiye destûrdan.",
+              "Xizmetê ji bo binpêkirina mafên nivîskariyê (copyright) û mafên girêdayî (related rights), belavkirina naveroka qedexe û binpêkirina mafên aliyên sêyem bi kar neyne.",
+              "Hewl nede ku sînorên teknîkî yên xizmetê derbas bikî, di nav de sînorên frekansa daxwazan û kontrola botan.",
+              "Barê otomatîk çênebike: daxwazên girseyî, skrîpt û parser (scraper) nayên qebûlkirin.",
+            ],
+          },
+          {
+            heading: "Weşandina lînkan di kanalê de",
+            body: [
+              "Bi daxistina vîdyoyê bi botê, tu dipejirînî ku lînka posta orîjînal dê di kanala me ya Telegramê de bê weşandin. Hişyariya li ser vê di botê de berî hilbijartina kalîteyê tê nîşandan — ango berî ku tu biryara daxistinê bidî.",
+              "Weşandin bênav e: lînka rûpeleke ku ji her kesî re vekirî ye, navê vîdyoyê û berga wê — heman wêneyê ku platform di pêşdîtina postê de nîşan dide — diçin kanalê. Kê vîdyo daxistiye nayê gotin. Pelê vîdyoyê bi xwe tu carî li tu derê nayê weşandin: tiştê ku tê belavkirin lînk e, ku platform bi xwe jî bi bişkoka “Parve bike” ya di bin her postê de belavkirina wê pêşniyar dikin.",
+              "Heman lînk ji carekê zêdetir nayê weşandin. Heke tu naxwazî lînk bigihîje kanalê, wê vîdyoyê bi xizmeta me danexîne.",
+              "Lînkên ji koman û postên ku bi hesabekî girêdayî hatine daxistin di kanalê de nayên weşandin."
+            ],
+          },
+          {
+            heading: "Girêdana hesabê xwe",
+            body: [
+              "Bi girêdana hesabê xwe yê li ser platformekê bi botê ve, tu piştrast dikî ku ev hesab yê te ye û mafê te heye ku wî bi kar bînî.",
+              "Platform daxistinên otomatîk napejirînin û dikarin hesabê girêdayî sînordar bikin an bloke bikin. Tu vê rîskê digirî ser xwe; em pêşniyar dikin ku tu hesabekî cuda, ne yê xwe yê sereke, girê bidî. Em ne berpirsyar in ji sînordarkirinên ku platform dê li ser hesabê te deynin.",
+              "Hesabê ku bi komekê ve hatiye girêdan ji bo daxistinên hemû endamên wê tê bikaranîn. Rêveberên komê biryar didin ka kî dikare hesaban girê bide, û dikarin her yek ji wan jê bibin.",
+            ],
+          },
+          {
+            heading: "Sînordarkirina berpirsyariyê",
+            body: [
+              "Xizmet li gorî prensîba “wek xwe” (as is) tê pêşkêşkirin. Em garantî nadin ku xizmet bê navber bixebite, ku platformeke diyar berdest be an ku pel ji bo armancên te guncav be.",
+              "Em ne berpirsyar in ji awayê ku te materyalê daxistî bi kar aniye, û ne jî ji encamên binpêkirina mafên aliyên sêyem ji aliyê te ve.",
+              "Mafê me heye ku derfetên xizmetê biguherînin, xebata wê ji bo lênêrînê rawestînin û xebata wê bi dawî bikin.",
+            ],
+          },
+          {
+            heading: "Sînordarkirina gihîştinê",
+            body: [
+              "Em dikarin gihîştina xizmetê sînordar bikin an bi dawî bikin heke ev şert bên binpêkirin, heke hewl were dayîn ku sînor bên derbaskirin, û herwiha dema ku giliyeke bi bingeh ji xwediyê mafan were.",
+            ],
+          },
+          {
+            heading: "Guhertin û qanûna derbasdar",
+            body: [
+              "Em dikarin şertan biguherînin; dîroka guhertoya derbasdar li destpêka rûpelê hatiye nîşandan. Heke tu piştî guhertinan bikaranîna xizmetê bidomînî, tu guhertoya nû dipejirînî.",
+              "Li ser têkiliyên aliyan qanûnên Komara Qazaxistanê tên sepandin. Alî hewl didin nakokiyan bi nameguhertinê çareser bikin, û heke li hev nekin — bi rêbaza ku qanûnên Komara Qazaxistanê destnîşan kirine.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Polîtîkaya Cookie",
+        summary: `${operator.site} kîjan pelên cookie bi kar tîne, ew ji bo çi ne û tu çawa dikarî wan red bikî.`,
+        sections: [
+          {
+            heading: "Cookie çi ne",
+            body: [
+              "Cookie pelên nivîsê yên piçûk in ku malper di geroka te de hildigire. Ew rê didin ku mîhengên te bên bîrbirin û statîstîkên serdanan ên bênavkirî bên berhevkirin.",
+              "Ligel cookie, di vê belgeyê de em teknolojiyên nêzîk jî vedibêjin — depoya herêmî ya gerokê (local storage) û pîkselên şopandinê.",
+            ],
+          },
+          {
+            heading: "Cookie yên pêwîst",
+            body: [
+              "Bêyî wan xizmet naxebite, ji ber vê yekê ew her tim tên danîn.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — kontrol dike ku lînk ji aliyê mirovekî ve tê şandin, ne ji aliyê skrîptekê ve.",
+              "Mîhengên navrûyê — ziman û temaya xuyangê ya ku te hilbijartiye.",
+            ],
+          },
+          {
+            heading: "Cookie yên analîtîkê",
+            body: [
+              "Ew alîkariya me dikin ku em fêm bikin kîjan rûpel tên bikaranîn û çewtî li ku derdikevin. Bi razîbûna te tên danîn û ji bo xebata xizmetê ne mecbûrî ne.",
+            ],
+            bullets: [
+              "Google Analytics û Google Tag Manager — hejmara serdanan û tevgera li ser malperê bi awayekî bênavkirî.",
+              "Yandex Metrica — hejmara serdanan, nexşeya klîkan û Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor a Yandex Metrica çalakiyên li ser rûpelê tomar dike: tevgera nîşanderê, gerandin (scroll), klîk û nivîsandina di qada lînkê de. Ev ji bo wê ye ku em bibînin navrû li ku derê mirovan tevlihev dike.",
+              "Em van tomaran ji bo şopandina kesên diyar bi kar naynin. Agahiyên ku tu naxwazî bên hilanîn di qadên malperê de nenivîse.",
+            ],
+          },
+          {
+            heading: "Çawa red bikî",
+            bullets: [
+              "Di geroka xwe de astengkirin an jêbirina cookie mîheng bike — ev rê ji bo hemû pergalên li vir hatine rêzkirin dixebite.",
+              "Google Analytics: pêveka fermî ya gerokê ku berhevkirinê neçalak dike li ser malpera Google heye.",
+              "Yandex Metrica: redkirin bi pêveka fermî ya Yandex gengaz e.",
+              "Neçalakkirina cookie yên pêwîst dê daxistinê ne gengaz bike.",
+            ],
+          },
+          {
+            heading: "Demên hilanînê",
+            body: [
+              "Cookie yên danişînê (session) bi girtina gerokê an bi qedandina dema danişînê tên jêbirin. Amûrên analîtîkê nasnameyên xwe di wan deman de hildigirin ku peydakerên wan diyar kirine.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Ji bo Xwediyên Mafan",
+        summary: "Helwesta xizmetê li ser mafên nivîskariyê (copyright) û rêbaza şandina giliyê li ser binpêkirinê.",
+        sections: [
+          {
+            heading: "Helwesta xizmetê",
+            body: [
+              "Xizmet vîdyoyan li cem xwe bi cih nake û katalogeke wan nahêle. Ew wekî navbeynkarekî teknîkî tevdigere: bi lînka ku bikarhêner nivîsandiye, xwe digihîne rûpeleke ku ji her kesî re vekirî ye û pelê radestî bikarhêner dike.",
+              "Pelên daxistî bi qasî saetekê li ser serverê dimînin û bi awayekî otomatîk tên jêbirin. Kopiyeke mayînde ya naveroka kesên din li cem me namîne.",
+              "Berpirsyariya bikaranîna materyalê daxistî li ser bikarhêner e — ev bi eşkereyî di Peymana Bikarhêner de hatiye destnîşankirin.",
+            ],
+          },
+          {
+            heading: "Heke mafên te hatibin binpêkirin",
+            body: [
+              `Heke tu xwediyê mafan an nûnerê wî yî û tu difikirî ku xizmet ji bo binpêkirina mafên te tê bikaranîn, ji ${MAIL} re binivîse. Em van daxwazan dinirxînin û tedbîran digirin.`,
+            ],
+          },
+          {
+            heading: "Di daxwazê de çi divê bê nivîsandin",
+            bullets: [
+              "Kîjan berhem bandor lê bûye û tu li ser kîjan bingehê xwediyê mafên wê yî.",
+              "Lînka materyalê û, heke tê zanîn, rewşa binpêkirinê.",
+              "Agahiyên te yên têkiliyê: nav an navê rêxistinê, navnîşan û navnîşana e-nameyê.",
+              "Heke tu li ser navê xwediyê mafan tevdigerî — belgeya ku desthilatdariya te piştrast dike.",
+              "Daxuyaniyek ku agahiyên di daxwazê de rast in û bikaranîna materyalê ji aliyê xwediyê mafan an qanûnê ve nehatiye destûrdan.",
+            ],
+          },
+          {
+            heading: "Em ê çi bikin",
+            body: [
+              "Em daxwazê di demeke maqûl de dinirxînin, bi gelemperî di nav sî rojên salnameyê de, û heke binpêkirin were piştrastkirin, em gihîştina materyalê bi rêya xizmetê sînordar dikin û, heke pêwîst be, gihîştina binpêker a xizmetê jî.",
+              "Em ê encama nirxandinê ji navnîşana e-nameyê ya ku te daye re ragihînin.",
+            ],
+          },
+          {
+            heading: "Daxwazên bi niyeta xerab",
+            body: [
+              "Daxwazeke ku bi zanebûn agahiyên nerast tê de hebin, dikare li gorî qanûnê berpirsyariyê ji bo daxwazkar çêbike. Mafê me heye ku nirxandina daxwazekê red bikin, heke bi wê ne xwediyê mafan ne jî materyalê nakok were destnîşankirin.",
             ],
           },
         ],

@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ku') || code.startsWith('kmr')) {
+      return (
+        'Silav! Te ev bot da destpêkirin, lê hîn te tiştek danexistiye — ' +
+        'dibe ku ne zelal be ji ku dest pê bikî.\n\n' +
+        'Tenê gavek: lînka vîdyoyekê li vir bişîne, ' +
+        'wek nimûne https://youtube.com/watch?v=jNQXAC9IVRw — û ez ê ' +
+        'pelê di nêzîkî nîv deqeyê de ji te re bişînim.\n\n' +
+        'Bi YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest û Threads re dixebite. Bi tevahî belaş e û bi her ' +
+        'kalîteyê — heta 4K, ji bo HD pereyê zêde tune.\n\n' +
+        'Heke tiştek nexebite, tenê li vir bersiv bide. Ev ' +
+        'tenê bîranîn e, ez ê êdî te aciz nekim.'
+      );
+    }
+
     if (code.startsWith('ckb')) {
       return (
         'سڵاو! ئەم بۆتەت دەستپێکرد، بەڵام هێشتا هیچت دانەگرتووە — ' +

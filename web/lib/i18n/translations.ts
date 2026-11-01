@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -54,6 +54,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   ro: "Română",
   ps: "پښتو",
   ckb: "کوردی (سۆرانی)",
+  ku: "Kurdî (Kurmancî)",
   tl: "Tagalog",
 };
 
@@ -13030,6 +13031,366 @@ const ckb: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const ku: Translations = {
+  nav: {
+    home: "Serrûpel",
+    downloaders: "Daxistin",
+    extension: "Pêvek",
+    blog: "Blog",
+    switchTheme: "Temayê biguherîne",
+    language: "Ziman",
+    comingSoon: "Di nêzîk de",
+  },
+  theme: {
+    light: "Ronî",
+    dark: "Tarî",
+    system: "Sîstem",
+  },
+  playlist: {
+    title: "Lîsteya vîdyoyan “{title}”: {count} vîdyo",
+    hint: "Vîdyo yek bi yek tên daxistin. Vê rûpelê vekirî bihêle; dibe ku geroka te destûrê bixwaze ji bo daxistina çend pelan.",
+    std: "720p",
+    hd: "Kalîteya herî baş",
+    audio: "Tenê deng (mp3)",
+    progress: "Vîdyo {index} ji {count}",
+    stats: "Hat daxistin: {done} · têk çû: {failed}",
+    stop: "Rawestîne",
+    stopped: "Hat rawestandin. {done} ji {count} hatin daxistin.",
+    finished: "Lîsteya vîdyoyan qediya: {done} ji {count}.",
+    again: "Dîsa hilbijêre",
+  },
+  footer: {
+    news: "Nûçeyên projeyê",
+    botCta: "Wekî bota Telegram jî heye:",
+    extension: "Pêveka gerokê",
+    developedBy: "Pêşxistin ji aliyê",
+    rights: "Hemû maf parastî ne.",
+  },
+  content: {
+    howToTitle: "Vîdyoyên {platform} çawa tên daxistin",
+    faqTitle: "Pirsên pir tên pirsîn",
+  },
+  auth: {
+    loginButton: "Bi Telegram têkeve",
+    signIn: "Têkeve",
+    logout: "Derkeve",
+    switchAccountHint: "Ne hesabê te ye?",
+    switchAccountLink: "Ji Telegram Web derkeve",
+  },
+  home: {
+    new: "Nû",
+    manyFeatures: "Gelek taybetmendiyên nû",
+    titleLine1: "Vîdyoyan daxîne",
+    titleLine2: "Bilez û Hêsan",
+    subtitle:
+      "Daxistineriya te ya gerdûnî ji bo YouTube, Instagram, TikTok û yên din. Her kalîteyê hilbijêre, ji HD heta ya guncav ji bo mobîlê.",
+    subtitleExtra: "Bê sînor, bê serêşî, tenê daxistin.",
+    placeholder: "Lînkê vîdyoyê ji her platformê li vir têxe...",
+    download: "Daxîne",
+  },
+  video: {
+    description: "Danasîn",
+    format: "Format",
+    selected: "Hilbijartî: {quality}",
+    videoTab: "vîdyo",
+    audioTab: "deng",
+    converting: "Tê veguherandin",
+    downloading: "Tê daxistin",
+    downloadAgain: "Dîsa daxîne",
+    startDownload: "Daxîne",
+    convertingBtn: "Tê veguherandin...",
+    downloadingBtn: "Tê daxistin...",
+    loginRequiredHint: "Ji bo daxistinê bi Telegram têkeve",
+    quotaExceededHint: "Sînorê rojane yê 20 daxistinan qediya — sibê vegere",
+    postFiles: "Di vê postê de {count} pel hene",
+    photoQuality: "Wêneyên orîjînal",
+    slideshowQuality: "Pêşandana wêneyan (vîdyo)",
+    galleryQuality: "Wêne + pêşandana wêneyan",
+    downloadAll: "Hemûyan daxîne",
+    downloadOne: "Tomar bike",
+    subtitlesTab: "binnivîs",
+    subtitlesHint: "Zimanekî hilbijêre — tu ê pelekî .srt bistînî ku her lêder vedike.",
+    subtitlesAuto: "otomatîk",
+    subtitlesDownload: "Binnivîsan daxîne",
+    subtitlesDownloading: "Binnivîs tên amadekirin...",
+  },
+  toast: {
+    enterUrl: "Ji kerema xwe lînkekî binivîse",
+    enterValidUrl: "Ji kerema xwe lînkekî derbasdar binivîse",
+    platformNotSupported: "Ev platform nayê piştgirîkirin",
+    urlNotSupported: "Ev lînk nayê piştgirîkirin",
+    enterValidPlatformUrl: "Ji kerema xwe lînkekî derbasdar ê {platform} binivîse",
+    captchaNotReady: "Ji kerema xwe hinekî bisekine heta kontrola ewlehiyê biqede, paşê dîsa biceribîne",
+    comingSoon: "Di nêzîk de! {name} hêj nayê piştgirîkirin",
+    selectQuality: "Ji kerema xwe kalîteyekê hilbijêre",
+    downloadStarted: "Daxistin dest pê kir!",
+    downloadCompleted: "Daxistin qediya!",
+    newsChannel: "Nûçeyên projeyê li ser Telegram in:",
+    downloadUrlNotReceived: "Lînkê daxistinê nehat wergirtin",
+    needsBrowser:
+      "Platformê ev vîdyo nedaye servera me: ew tenê ji bo bikarhênerên têketî heye, an jî gihîştin bi awayekî demkî sînordar e. Tu dikarî wê bi pêveka gerokê ya Videoner li ser komputerê daxînî — ew bi têketina te ya xwe dadixe.",
+    needsBrowserLink: "Pêvekê bistîne →",
+  },
+  platforms: {
+    youtube: {
+      description: "Vîdyoyan ji YouTube bi kalîteya HD daxîne",
+      news: "Niha bi piştgiriya vîdyo û Shorts",
+      titleLine1: "Vîdyoya YouTube",
+      titleLine2: "û Shorts daxîne",
+      pageDescription:
+        "Vîdyoyên YouTube, Shorts û deng bi formatên kalîteya bilind daxîne. Bilez, belaş û hêsan. Piştgiriya kalîteya 8K, 4K, HD û dengê MP3.",
+      placeholder: "Lînkê YouTube li vir têxe...",
+      howTo: [
+        "Lînkê vîdyoyê ji darika navnîşanê ya geroka xwe kopî bike, an jî di sepana YouTube de li ser Parve bike bitikîne.",
+        "Wî têxe qutiya li jor û li ser Daxîne bitikîne.",
+        "Kalîteyekê hilbijêre — heta 4K/8K ji bo vîdyoyê, an MP3 ji bo tenê deng.",
+        "Pelê te yekser dest bi daxistinê dike, têketin ne pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên YouTube bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Videoner hemû çareseriyên ku YouTube ji bo wê vîdyoyê dide pêşkêş dike — ji 360p heta 4K/8K li cihê ku hebe — û derxistina dengê MP3 jî." },
+        { q: "Ez dikarim vîdyoyên taybet an bi sînorê temenê daxînim?", a: "Tenê vîdyoyên YouTube yên giştî tên piştgirîkirin; naveroka taybet, ya ku ji te re ne vekirî ye an têketinê dixwaze nayê daxistin." },
+        { q: "Daxistina vîdyoyan ji YouTube qanûnî ye?", a: "Tenê vîdyoyên ku mafê te heye tomar bikî daxîne — naveroka te ya xwe, vîdyoyên bi lîsansa Creative Commons, an her tiştê ku afirîner destûr dide. Mercên Karûbarê yên YouTube û qanûna mafê telîfê bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pelên veguherandî nêzîkî saetekê li ser serverê dimînin, ji ber vê yekê piştî daxistinê yekser wan li cîhaza xwe tomar bike." },
+      ],
+    },
+    facebook: {
+      description: "Vîdyoyan ji post û reels-ên Facebook tomar bike",
+      news: "Niha bi piştgiriya reels",
+      titleLine1: "Vîdyoya Facebook",
+      titleLine2: "û Reels daxîne",
+      pageDescription:
+        "Vîdyo û reels-ên Facebook bi kalîteya bilind daxîne. Bilez, belaş û hêsan.",
+      placeholder: "Lînkê Facebook li vir têxe...",
+      howTo: [
+        "Vîdyo an reel-ê li Facebook veke û lînkê wê kopî bike (li ser sê xalan bitikîne → Lînkê kopî bike).",
+        "Lînkê li jor têxe û li ser Daxîne bitikîne.",
+        "Kalîteya MP4 hilbijêre an dengê wekî MP3 derxe.",
+        "Pel rasterast li cîhaza te tê daxistin — hesabê Facebook ne pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên Facebook bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Videoner kalîteya herî bilind a ku Facebook ji bo wê vîdyo an reel-ê dide, bi MP4, digire, û vebijêrka dengê MP3 jî heye." },
+        { q: "Ez dikarim vîdyoyên taybet daxînim?", a: "Tenê post, vîdyo û reels-ên giştî dixebitin — naveroka taybet an ya tenê ji bo hevalan nayê gihîştin." },
+        { q: "Daxistina vîdyoyan ji Facebook qanûnî ye?", a: "Tenê vîdyoyên ku destûra te heye tomar bikî daxîne; mafên afirîner û Mercên Karûbarê yên Facebook bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pel piştî veguherandinê nêzîkî saetekê tên hilanîn, paşê bi xweber tên jêbirin — zû daxîne." },
+      ],
+    },
+    instagram: {
+      description: "Reels, stories û postên Instagram daxîne",
+      news: "Niha bi piştgiriya reels û stories",
+      titleLine1: "Instagram Reels",
+      titleLine2: "û Stories daxîne",
+      pageDescription:
+        "Reels, stories û postên Instagram bi kalîteya bilind daxîne. Bilez, belaş û hêsan.",
+      placeholder: "Lînkê Instagram li vir têxe...",
+      howTo: [
+        "Reel, post an story-yê li Instagram veke û li ser îkona balafira kaxezî bitikîne → Lînkê kopî bike.",
+        "Lînkê têxe qutiya li jor.",
+        "Kalîte û formatê ku tu dixwazî hilbijêre.",
+        "Daxistin yekser dest pê dike — ne têketin û ne jî sazkirina sepanê pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina naveroka Instagram bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Kalîteya tevahî ya heyî ji bo reels, post û stories, bi MP4 an MP3." },
+        { q: "Ez dikarim ji hesabên taybet daxînim?", a: "Tenê hesab û postên Instagram yên giştî tên piştgirîkirin; naveroka hesabên taybet nayê daxistin." },
+        { q: "Daxistina vîdyoyan ji Instagram qanûnî ye?", a: "Tenê tiştê ku destûra te heye tomar bikî daxîne — afirîner û Mercên Karûbarê yên Instagram bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pel nêzîkî saetekê li ser serverê dimînin, paşê bi xweber tên jêbirin." },
+      ],
+    },
+    tiktok: {
+      description: "Vîdyoyên TikTok bê watermark daxîne",
+      news: "Niha bê watermark",
+      titleLine1: "Vîdyoya TikTok",
+      titleLine2: "bê watermark daxîne",
+      pageDescription:
+        "Vîdyoyên TikTok bê watermark bi kalîteya bilind daxîne. Bilez, belaş û hêsan.",
+      placeholder: "Lînkê TikTok li vir têxe...",
+      howTo: [
+        "Li ser vîdyoya TikTok li Parve bike bitikîne, paşê Lînkê kopî bike.",
+        "Lînkê li jor têxe û li ser Daxîne bitikîne.",
+        "MP4-a paqij bistîne — bê watermarka TikTok — an jî dengê MP3.",
+        "Rasterast li cîhaza xwe tomar bike.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên TikTok bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Kalîteya herî baş a ku TikTok ji bo wê vîdyoyê dide, bê watermarka TikTok, û dengê MP3 jî." },
+        { q: "Ez dikarim ji hesabên taybet daxînim?", a: "Tenê vîdyoyên hesabên TikTok yên giştî dikarin bên daxistin." },
+        { q: "Daxistina vîdyoyan ji TikTok qanûnî ye?", a: "Vîdyoyên ku mafê te heye tomar bikî daxîne, navê afirîner bide û Mercên Karûbarê yên TikTok bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pelên daxistî nêzîkî saetekê li ser serverê dimînin, paşê bi xweber tên jêbirin." },
+      ],
+    },
+    twitter: {
+      description: "Vîdyoyên Twitter daxîne",
+      news: "Niha bi piştgiriya vîdyoyên Twitter",
+      titleLine1: "Vîdyoya Twitter",
+      titleLine2: "daxîne",
+      pageDescription:
+        "Vîdyoyên Twitter bi kalîteya bilind daxîne. Bilez, belaş û hêsan.",
+      placeholder: "Lînkê Twitter li vir têxe...",
+      howTo: [
+        "Di bin tweetê de li Parve bike bitikîne û Lînkê kopî bike hilbijêre (an lînkê ji geroka xwe kopî bike).",
+        "Wî têxe qutiya li jor.",
+        "Kalîteya vîdyoyê ya ku tu dixwazî hilbijêre.",
+        "Daxistin yekser dest pê dike — hesabê X/Twitter ne pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên Twitter/X bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Her kalîteya ku X/Twitter ji bo wê vîdyoyê dide, bi MP4, û MP3 jî." },
+        { q: "Ez dikarim ji hesabên taybet daxînim?", a: "Tenê tweetên hesabên giştî dixebitin; hesabên parastî/taybet nayên piştgirîkirin." },
+        { q: "Daxistina vîdyoyan ji Twitter/X qanûnî ye?", a: "Naveroka ku mafê te heye tomar bikî daxîne, mafên weşaner û Mercên Karûbarê yên platformê bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pel nêzîkî saetekê piştî çêbûnê bi xweber tên jêbirin." },
+      ],
+    },
+    vimeo: {
+      description: "Vîdyoyan ji Vimeo bi kalîteya bilind daxîne",
+      news: "Niha bi piştgiriya Vimeo",
+      titleLine1: "Vîdyoya Vimeo",
+      titleLine2: "daxîne",
+      pageDescription:
+        "Vîdyoyên Vimeo bi kalîteya bilind daxîne. Bilez, belaş û hêsan.",
+      placeholder: "Lînkê Vimeo li vir têxe...",
+      howTo: [
+        "Vimeo veke û lînkê vîdyoyê kopî bike (an li ser mobîlê li Parve bike → Lînkê kopî bike bitikîne).",
+        "Lînkê têxe qutiya li jor û li ser Daxîne bitikîne.",
+        "Kalîteyekê û formatekî hilbijêre — MP4 ji bo vîdyoyê, MP3 heke tu tenê deng dixwazî.",
+        "Daxistina te yekser dest pê dike; ne hesab û ne jî sazkirina nermalavê pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên Vimeo bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Videoner her kalîteya ku Vimeo ji bo wê vîdyoyê peyda dike pêşkêş dike, heta çareseriya orîjînal a barkirinê, di nav de HD û 4K li cihê ku afirîner dabe." },
+        { q: "Ez dikarim vîdyoyên Vimeo yên taybet an bi şîfre parastî daxînim?", a: "Na — Videoner tenê bi lînkên Vimeo yên giştî dixebite. Vîdyoyên taybet, bi şîfre parastî an bi gihîştina sînordar nayên daxistin." },
+        { q: "Daxistina vîdyoyan ji Vimeo qanûnî ye?", a: "Daxistin ji bo vîdyoyên ku mafê te heye tomar bikî ye — naveroka te ya xwe, vîdyoyên bi lîsansa Creative Commons, an her tiştê ku afirîner bi eşkere destûra daxistinê daye. Mafê telîfê yê afirînerê orîjînal û mercên karûbarê yên Vimeo bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pel li gorî daxwazê tên çêkirin û nêzîkî saetekê li ser serverê tên hilanîn, paşê bi xweber tên jêbirin, ji ber vê yekê piştî ku daxistin qediya yekser wî li cîhaza xwe tomar bike." },
+      ],
+    },
+    vk: {
+      description: "Vîdyo û klîpan ji VK daxîne",
+      news: "Niha bi piştgiriya VK",
+      titleLine1: "Vîdyoya VK",
+      titleLine2: "û Klîpan daxîne",
+      pageDescription:
+        "Vîdyo û klîpên VK bi kalîteya bilind daxîne. Bilez, belaş û hêsan.",
+      placeholder: "Lînkê VK li vir têxe...",
+      howTo: [
+        "Vîdyo an klîpê li VK (vk.com an VK Video) veke û lînkê wê ji darika navnîşanê an bişkoka Parve bike kopî bike.",
+        "Lînkê li jor têxe û li ser Daxîne bitikîne.",
+        "Kalîte û formatê heyî hilbijêre.",
+        "Pel rasterast tê daxistin — ne pêwîst e tu li VK têketî bî.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên VK bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Hemû kalîteyên ku VK ji bo wê vîdyo an klîpê dide, û dengê MP3 jî." },
+        { q: "Divê ez li VK têkevim?", a: "Na — divê vîdyo giştî be. Videoner têketinê li VK nake, ji ber vê yekê vîdyoyên taybet, yên tenê ji bo hevalan an yên ku têketinê dixwazin nayên daxistin." },
+        { q: "Daxistina vîdyoyan ji VK qanûnî ye?", a: "Tenê vîdyoyên ku mafê te heye tomar bikî daxîne, Mercên Karûbarê yên VK û mafên barker bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pel nêzîkî saetekê li ser serverê tên hilanîn, paşê bi xweber tên jêbirin." },
+      ],
+    },
+    rutube: {
+      description: "Vîdyoyan ji Rutube daxîne",
+      news: "Niha bi piştgiriya Rutube",
+      titleLine1: "Vîdyoya Rutube",
+      titleLine2: "daxîne",
+      pageDescription:
+        "Vîdyoyên Rutube bi kalîteya bilind daxîne. Bilez, belaş û hêsan.",
+      placeholder: "Lînkê Rutube li vir têxe...",
+      howTo: [
+        "Vîdyoyê li Rutube veke û lînkê wê ji darika navnîşanê an bişkoka Parve bike kopî bike.",
+        "Wî têxe qutiya li jor.",
+        "Kalîte û formatê hilbijêre (vîdyo an deng).",
+        "Daxistin yekser dest pê dike, hesabê Rutube ne pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên Rutube bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Her kalîteya ku Rutube dide, bi MP4, û dengê MP3 jî." },
+        { q: "Divê ez li Rutube têkevim?", a: "Na — Videoner tenê bi vîdyoyên Rutube yên giştî dixebite; têketin nayê bikaranîn û ne pêwîst e." },
+        { q: "Daxistina vîdyoyan ji Rutube qanûnî ye?", a: "Tenê naveroka ku destûra te heye tomar bikî daxîne, Mercên Karûbarê yên Rutube û mafên afirîner bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pel nêzîkî saetekê li ser serverê dimînin, paşê bi xweber tên jêbirin." },
+      ],
+    },
+    okru: {
+      description: "Vîdyoyan ji OK.ru (Odnoklassniki) daxîne",
+      news: "Niha bi piştgiriya OK.ru",
+      titleLine1: "Vîdyoya OK.ru",
+      titleLine2: "daxîne",
+      pageDescription:
+        "Vîdyoyên OK.ru (Odnoklassniki) bi kalîteya bilind daxîne. Bilez, belaş û hêsan.",
+      placeholder: "Lînkê OK.ru li vir têxe...",
+      howTo: [
+        "Vîdyoyê li OK.ru (Odnoklassniki) veke û lînkê wê ji darika navnîşanê kopî bike.",
+        "Lînkê têxe qutiya li jor û li ser Daxîne bitikîne.",
+        "Kalîte û formatê xwe hilbijêre.",
+        "Daxistin yekser dest pê dike — têketina OK.ru ne pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên OK.ru bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê vîdyoyê daxînim?", a: "Hemû kalîteyên ku OK.ru ji bo wê vîdyoyê dide, û MP3 jî." },
+        { q: "Divê ez li OK.ru têkevim?", a: "Na — tenê vîdyoyên OK.ru (Odnoklassniki) yên giştî dixebitin. Videoner qet nakeve tu hesabî, ji ber vê yekê vîdyoyên taybet nayên gihîştin." },
+        { q: "Daxistina vîdyoyan ji OK.ru qanûnî ye?", a: "Tenê vîdyoyên ku mafê te heye tomar bikî daxîne, Mercên Karûbarê yên OK.ru û mafên barker bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pel nêzîkî saetekê piştî çêbûnê bi xweber tên jêbirin." },
+      ],
+    },
+    pinterest: {
+      description: "Vîdyoyan ji pinên Pinterest daxîne",
+      news: "Niha bi piştgiriya Pinterest",
+      titleLine1: "Vîdyoya Pinterest",
+      titleLine2: "û Pinan daxîne",
+      pageDescription:
+        "Vîdyoyan ji pinên Pinterest bi kalîteya bilind daxîne. Bilez, belaş û hêsan. Not: tenê pinên vîdyoyî dikarin bên daxistin — pinên ku tenê wêne ne nayên piştgirîkirin.",
+      placeholder: "Lînkê Pinterest li vir têxe...",
+      howTo: [
+        "Pinê li Pinterest veke û li Parve bike → Lînkê kopî bike bitikîne (an lînkê ji geroka xwe kopî bike).",
+        "Lînkê têxe qutiya li jor û li ser Daxîne bitikîne.",
+        "Kalîte û formatê ku tu dixwazî hilbijêre.",
+        "Pelê te yekser tê daxistin — hesab ne pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên Pinterest bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê daxînim?", a: "Videoner her kalîteya ku Pinterest ji bo vîdyoya wî pinî dide pêşkêş dike, û derxistina dengê MP3 jî." },
+        { q: "Ez dikarim wêne ji Pinterest daxînim?", a: "Na — tenê pinên vîdyoyî dikarin bên daxistin. Heke pin tenê wêne be, pelekî vîdyoyê tune ku were derxistin." },
+        { q: "Ez dikarim pinên taybet an yên bi sînorê panoyê daxînim?", a: "Tenê pinên giştî tên piştgirîkirin; panoyên taybet û naveroka ku têketinê dixwaze nayên daxistin." },
+        { q: "Daxistina vîdyoyan ji Pinterest qanûnî ye?", a: "Tenê pinên ku mafê te heye tomar bikî daxîne — naveroka te ya xwe an her tiştê ku afirîner destûr dide. Mercên Karûbarê yên Pinterest û qanûna mafê telîfê bi rêz bigire." },
+        { q: "Pelê min ê daxistî heta kengê heye?", a: "Pelên veguherandî nêzîkî saetekê li ser serverê dimînin, ji ber vê yekê piştî daxistinê yekser wan li cîhaza xwe tomar bike." },
+      ],
+    },
+    threads: {
+      description: "Vîdyoyan ji postên Threads daxîne",
+      news: "Niha bi piştgiriya Threads",
+      titleLine1: "Vîdyoya Threads",
+      titleLine2: "daxîne",
+      pageDescription:
+        "Vîdyoyan ji postên Threads daxîne. Bilez, belaş û hesabê Threads ne pêwîst e. Threads tenê yek guhertoya vîdyoyê dide, heta 720p — ev kalîteya herî bilind e ku platform peyda dike.",
+      placeholder: "Lînkê Threads li vir têxe...",
+      howTo: [
+        "Postê di Threads de veke, li ser îkona parvekirinê bitikîne, paşê Lînkê kopî bike.",
+        "Lînkê têxe qutiya li jor û li ser Daxîne bitikîne.",
+        "Formatê ku tu dixwazî hilbijêre — vîdyo an dengê MP3.",
+        "Pelê te yekser tê daxistin — hesab ne pêwîst e.",
+      ],
+      faq: [
+        { q: "Daxistina vîdyoyên Threads bi Videoner belaş e?", a: "Erê, bi tevahî belaş e: bê têketin, bê abonetî, bê reklam û bê sînorê rojane yê daxistinê. Tenê sînorek li ser trafîka YouTube heye — 10 GB rojê ji bo her torê — da ku xizmet ji îstîsmarê were parastin." },
+        { q: "Ji bo daxistinê hesab pêwîst e?", a: "Na. Daxistin ne hesab û ne jî têketinê dixwaze — tenê lînkê têxe û li ser Daxîne bitikîne." },
+        { q: "Ez dikarim bi kîjan kalîteyê daxînim?", a: "Threads ji bo her postê tam yek guhertoya vîdyoyê diweşîne, li aliyê kurttir herî zêde 720p — heta ku nivîskar 4K barkiribe jî. Videoner wî pelî wekî xwe dide te, û derxistina dengê MP3 jî. Tu daxistiner nikare zêdetir pêşkêş bike, ji ber ku çareseriyên bilindtir qet nayên dayîn." },
+        { q: "Lînkên threads.com û threads.net herdu jî dixebitin?", a: "Erê. Lînkên tevahî yên wekî threads.com/@user/post/CODE û lînkên kurt ên threads.net/t/CODE herdu jî tên piştgirîkirin." },
+        { q: "Ez dikarim wêneyan ji postekî Threads daxînim?", a: "Na — tenê vîdyo. Heke di postê de tenê wêne hebin, pelekî vîdyoyê tune ku were derxistin." },
+        { q: "Postekî bi çend vîdyoyan çi dibe?", a: "Vîdyoya yekem a postê tê daxistin. Karuselên Threads dikarin çend klîpan bihewînin, û tenê ya yekem tê tomarkirin." },
+        { q: "Ez dikarim postên taybet daxînim?", a: "Na. Tenê postên ku bi giştî xuya dibin dikarin bên daxistin; her tiştê li pişt hesabekî taybet an dîwarê têketinê ye nayê gihîştin." },
+        { q: "Daxistina vîdyoyan ji Threads qanûnî ye?", a: "Tenê tiştê ku mafê te heye tomar bikî daxîne — naveroka te ya xwe an her tiştê ku nivîskar destûr dide. Mercên Bikaranînê yên Threads û qanûna mafê telîfê bi rêz bigire." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -13390,4 +13751,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku };

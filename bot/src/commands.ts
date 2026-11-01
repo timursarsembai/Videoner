@@ -301,6 +301,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "ڕاگرتنی داگرتن و ڕیز" },
     { command: "language", description: "زمانی بۆت" },
   ],
+  ku: [
+    { command: "start", description: "Bot çawa tê bikaranîn" },
+    { command: "extension", description: "Pêveka gerokê" },
+    { command: "accounts", description: "Hesabên te ji bo story û postên taybet" },
+    { command: "connect", description: "Hesabekî bi koda ji pêvekê girê bide" },
+    { command: "stop", description: "Daxistin û rêzê rawestîne" },
+    { command: "language", description: "Zimanê botê" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -564,6 +572,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "بەستنەوەی هەژمار بەم گرووپەوە بە کۆدێک" },
     { command: "language", description: "زمانی بۆت لەم گرووپەدا (ئەدمینەکان)" },
     { command: "start", description: "بۆت چۆن لە گرووپدا کار دەکات" },
+  ],
+  ku: [
+    { command: "settings", description: "Mîhengên botê di vê komê de (ji bo rêveberan)" },
+    { command: "accounts", description: "Hesabên bi vê komê ve girêdayî" },
+    { command: "connect", description: "Hesabekî bi kodê bi vê komê ve girê bide" },
+    { command: "language", description: "Zimanê botê di vê komê de (ji bo rêveberan)" },
+    { command: "start", description: "Bot di komê de çawa dixebite" },
   ],
 };
 

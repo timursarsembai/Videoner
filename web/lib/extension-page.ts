@@ -1963,4 +1963,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "سەرەکی",
   },
+  ku: {
+    metaTitle: "Pêveka gerokê ya Videoner",
+    title: "Videoner ji bo geroka te",
+    summary:
+      "Pêvek bişkoka Daxîne li rûpelên vîdyoyan zêde dike û rasterast di geroka te de dadixe. Instagram, Facebook, TikTok û Threads bi têketina te ya xwe tên daxistin — ji ber vê yekê postên taybet ên ku tu di hesabê xwe de dibînî jî dixebitin, herwiha vîdyoyên ku platformê nedane servera me.",
+    failedVideo: "Vîdyoya ku li malperê an di botê de nehat daxistin:",
+    failedVideoHint:
+      "Pêvekê saz bike, di vê gerokê de li platformê têkeve, vîdyoyê veke û li quncika jêrîn a rastê li ser Daxîne bitikîne.",
+    openVideo: "Vîdyoyê veke",
+    version: "Guherto",
+    browsersTitle: "Li ku dixebite",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi û gerokên din ên li ser bingeha Chromium — li ser komputerê.",
+    mobile: "Telefon û tablet piştgiriya pêvekan nakin — li wir malperê an bota Telegram bi kar bîne.",
+    getcourseTitle: "Dersên GetCourse",
+    getcourse:
+      "Dersekê di dibistaneke GetCourse de bi têketina xwe veke: li quncika jorîn a rastê ya lêderê bişkoka Daxîne xuya dibe, û îkona Videoner hemû vîdyoyên dersê nîşan dide. Geroka te bi xwe dersê dadixe û wê dike mp4 — pel di servera me re derbas nabe. Heke ev bi ser nekeve, servera me dersê bi heman kalîteyê dadixe; wê demê ew lînkê vîdyoyê ji lêderê distîne.",
+    privacyTitle: "Têketina te li cem te dimîne",
+    privacy:
+      "Pêvek qet şîfreyê naxwaze: geroka te ya xwe daxwazê ji platformê re dişîne, û servera me tenê raporeke kurt ji bo statîstîkê distîne — lînk, mezinahiya pelê û sernav. Cookie tenê dema ku tu bi xwe li ser “Hesabê xwe bi botê ve girê bide” bitikînî diçin serverê — û tenê cookie-yên wê platformê, bi şîfrekirî.",
+    stepsTitle: "Çawa li Chrome, Yandex Browser, Edge û Opera saz bikî",
+    steps: [
+      "Arşîvê daxîne û veke — tu ê peldanka videoner-extension bi hejmara guhertoyê di navê wê de bistînî.",
+      "Rûpela pêvekan veke: di darika navnîşanê de chrome://extensions binivîse (li Edge edge://extensions, li Opera opera://extensions).",
+      "“Developer mode” vêxe — bişkoka li jora rûpelê.",
+      "Li ser “Load unpacked” bitikîne û wê peldankê hilbijêre — ya ku manifest.json tê de ye.",
+      "Temam: rûpelên vîdyoyan bişkoka Daxîne distînin, û îkona Videoner di darika amûran a gerokê de xuya dibe.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 an nûtir — herwiha li ser komputerê.",
+    firefoxSoon:
+      "Guhertoya Firefox di nêzîk de tê. Heta niha pêvek li Chrome, Yandex Browser, Edge, Opera û gerokên din ên li ser bingeha Chromium dixebite.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Arşîva .zip — di çend deqeyan de saz dibe",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Sazkirin bi yek tikandinê",
+    yourBrowser: "Geroka te",
+    soon: "Di nêzîk de",
+    firefoxStepsTitle: "Çawa li Firefox saz bikî",
+    firefoxSteps: [
+      "Li ser bişkoka Firefox li jora vê rûpelê bitikîne.",
+      "Firefox dipirse gelo destûrê bide videoner.download ku pêvekekê saz bike — li ser “Continue to Installation” bitikîne.",
+      "Di pencereya “Add Videoner?” de li ser “Add” bitikîne.",
+      "Temam: rûpelên vîdyoyan bişkoka Daxîne distînin, û îkona Videoner di darika amûran de xuya dibe. Firefox nûvekirinan bi xwe saz dike.",
+    ],
+    updateTitle: "Çawa li Chrome, Yandex Browser, Edge û Opera nû bikî",
+    updateSteps: [
+      "Dema guhertoyeke nû derdikeve, li ser îkona Videoner nîşana NEW xuya dibe û di pencereya wê de lînkek ji vir re heye.",
+      "Arşîvê bi bişkoka Chrome li jora vê rûpelê daxîne û wê di heman peldanka berê de veke, pelan biguherîne.",
+      "Rûpela pêvekan veke (chrome://extensions, li Yandex Browser browser://extensions, edge://extensions) û li ser “Reload” bitikîne — tîra dorpêç li ser karta Videoner.",
+    ],
+    back: "Serrûpel",
+  },
 };

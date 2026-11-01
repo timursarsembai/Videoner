@@ -18,7 +18,7 @@
   const ui = chrome.i18n.getUILanguage().toLowerCase();
   // Языки с письмом справа налево — как RTL_LANGS в shared.js.
   const RTL = ["ar", "fa", "ur", "ps", "ckb", "ug"];
-  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ky: "Жүктөп алуу", tg: "Боргирӣ", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", ps: "ښکته کول", ckb: "داگرتن", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", tl: "I-download", am: "አውርድ", om: "Buusi", ha: "Sauke", so: "Soo deji", az: "Yüklə", ms: "Muat turun", nl: "Downloaden", ro: "Descarcă", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ky: "Жүктөп алуу", tg: "Боргирӣ", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", ps: "ښکته کول", ckb: "داگرتن", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", tl: "I-download", am: "አውርድ", om: "Buusi", ha: "Sauke", so: "Soo deji", ku: "Daxîne", az: "Yüklə", ms: "Muat turun", nl: "Downloaden", ro: "Descarcă", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
@@ -52,13 +52,14 @@
     om: "Qabduu viidiyoo kana irratti dhoksi",
     ha: "Ɓoye maɓalli a wannan bidiyo",
     so: "Qari badhanka muuqaalkan",
+    ku: "Bişkokê li ser vê vîdyoyê veşêre",
     az: "Bu videoda düyməni gizlət",
     ms: "Sembunyikan butang pada video ini",
     nl: "Knop op deze video verbergen",
     ro: "Ascunde butonul pe acest videoclip",
     en: "Hide the button for this video",
   };
-  const base = { in: "id", fil: "tl", mo: "ro" }[ui.split("-")[0]] ?? ui.split("-")[0];
+  const base = { in: "id", fil: "tl", mo: "ro", kmr: "ku" }[ui.split("-")[0]] ?? ui.split("-")[0];
   const l = base in LABELS ? base : "en";
   const PANEL_WIDTH = 360;
 

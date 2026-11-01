@@ -522,6 +522,18 @@ export const blogUi: Record<
     readFull: "Lexoni artikullin e plotë në faqe",
     dateLocale: "sq-AL",
   },
+  bs: {
+    title: "Videoner blog",
+    description: "Novosti projekta: šta je novo u botu, na stranici i u proširenju te kako to koristiti.",
+    readMore: "Pročitaj",
+    back: "Sve objave",
+    allPosts: "Blog",
+    channel: "Novosti na Telegramu",
+    channelCta: "Novosti projekta su na Telegram kanalu @videonerdownload.",
+    readOnSite: "Pročitaj na stranici",
+    readFull: "Pročitajte cijelu objavu na stranici",
+    dateLocale: "bs-BA",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

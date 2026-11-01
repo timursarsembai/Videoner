@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "az", "id", "ms", "bs", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -59,6 +59,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   tk: "Türkmençe",
   tt: "Татарча",
   sq: "Shqip",
+  bs: "Bosanski",
   tl: "Tagalog",
 };
 
@@ -14835,6 +14836,366 @@ const sq: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const bs: Translations = {
+  nav: {
+    home: "Početna",
+    downloaders: "Preuzimanje",
+    extension: "Proširenje",
+    blog: "Blog",
+    switchTheme: "Promijeni temu",
+    language: "Jezik",
+    comingSoon: "Uskoro",
+  },
+  theme: {
+    light: "Svijetla",
+    dark: "Tamna",
+    system: "Sistemska",
+  },
+  playlist: {
+    title: `Lista za reprodukciju „{title}“ (videozapisa: {count})`,
+    hint: "Videozapisi se preuzimaju jedan po jedan. Ne zatvarajte ovu stranicu; preglednik može tražiti dozvolu za višestruka preuzimanja.",
+    std: "720p",
+    hd: "Najbolji kvalitet",
+    audio: "Samo audio (mp3)",
+    progress: "Video {index} od {count}",
+    stats: "Preuzeto: {done} · neuspješno: {failed}",
+    stop: "Zaustavi",
+    stopped: "Zaustavljeno. Preuzeto {done} od {count}.",
+    finished: "Lista za reprodukciju je gotova: {done} od {count}.",
+    again: "Odaberi ponovo",
+  },
+  footer: {
+    news: "Novosti projekta",
+    botCta: "Dostupno i kao Telegram bot:",
+    extension: "Proširenje preglednika",
+    developedBy: "Razvio",
+    rights: "Sva prava zadržana.",
+  },
+  content: {
+    howToTitle: "Kako preuzeti {platform} video",
+    faqTitle: "Često postavljana pitanja",
+  },
+  auth: {
+    loginButton: "Prijava putem Telegrama",
+    signIn: "Prijava",
+    logout: "Odjava",
+    switchAccountHint: "Nije vaš račun?",
+    switchAccountLink: "Odjavite se iz Telegram Weba",
+  },
+  home: {
+    new: "Novo",
+    manyFeatures: "Mnogo novih mogućnosti",
+    titleLine1: "Preuzmite video",
+    titleLine2: "brzo i jednostavno",
+    subtitle:
+      "Vaš univerzalni alat za preuzimanje videa sa YouTubea, Instagrama, TikToka i drugih platformi. Odaberite bilo koji kvalitet, od HD do verzije prilagođene mobitelu.",
+    subtitleExtra: "Bez ograničenja, bez muke, samo preuzimanje.",
+    placeholder: "Zalijepite link videa sa bilo koje platforme...",
+    download: "Preuzmi",
+  },
+  video: {
+    description: "Opis",
+    format: "Format",
+    selected: "Odabrano: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Konvertovanje",
+    downloading: "Preuzimanje",
+    downloadAgain: "Preuzmi ponovo",
+    startDownload: "Preuzmi",
+    convertingBtn: "Konvertovanje...",
+    downloadingBtn: "Preuzimanje...",
+    loginRequiredHint: "Prijavite se putem Telegrama da biste preuzeli",
+    quotaExceededHint: "Dostignuto je dnevno ograničenje od 20 preuzimanja — vratite se sutra",
+    postFiles: "Broj datoteka u ovoj objavi: {count}",
+    photoQuality: "Originalne fotografije",
+    slideshowQuality: "Prezentacija fotografija (video)",
+    galleryQuality: "Fotografije + prezentacija",
+    downloadAll: "Preuzmi sve",
+    downloadOne: "Sačuvaj",
+    subtitlesTab: "titlovi",
+    subtitlesHint: "Odaberite jezik — dobit ćete .srt datoteku koju otvara svaki plejer.",
+    subtitlesAuto: "auto",
+    subtitlesDownload: "Preuzmi titlove",
+    subtitlesDownloading: "Pripremanje titlova...",
+  },
+  toast: {
+    enterUrl: "Unesite link",
+    enterValidUrl: "Unesite ispravan link",
+    platformNotSupported: "Ova platforma nije podržana",
+    urlNotSupported: "Ovaj link nije podržan",
+    enterValidPlatformUrl: "Unesite ispravan {platform} link",
+    captchaNotReady: "Sačekajte trenutak da se završi sigurnosna provjera, a zatim pokušajte ponovo",
+    comingSoon: "Uskoro! {name} još nije podržan",
+    selectQuality: "Odaberite kvalitet",
+    downloadStarted: "Preuzimanje je počelo!",
+    downloadCompleted: "Preuzimanje je završeno!",
+    newsChannel: "Novosti projekta su na Telegramu:",
+    downloadUrlNotReceived: "Link za preuzimanje nije primljen",
+    needsBrowser:
+      "Platforma nije dala ovaj video našem serveru: dostupan je samo prijavljenim korisnicima ili je pristup privremeno ograničen. Možete ga preuzeti pomoću Videoner proširenja preglednika na računaru — ono preuzima koristeći vašu prijavu.",
+    needsBrowserLink: "Instalirajte proširenje →",
+  },
+  platforms: {
+    youtube: {
+      description: "Preuzmite video sa YouTubea u HD kvalitetu",
+      news: "Sada s podrškom za videozapise i Shorts",
+      titleLine1: "Preuzmi video sa YouTubea",
+      titleLine2: "i Shorts",
+      pageDescription:
+        "Preuzmite YouTube videozapise, Shorts i audio u visokom kvalitetu. Brzo, besplatno i jednostavno. Podrška za 8K, 4K, HD kvalitet i MP3 audio.",
+      placeholder: "Zalijepite YouTube link ovdje...",
+      howTo: [
+        "Kopirajte link videa iz adresne trake preglednika ili dodirnite Podijeli u YouTube aplikaciji.",
+        "Zalijepite ga u polje iznad i pritisnite Preuzmi.",
+        "Odaberite kvalitet — do 4K/8K za video ili MP3 samo za audio.",
+        "Datoteka se odmah počinje preuzimati, bez prijave.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje YouTube videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "Videoner nudi svaku rezoluciju koju YouTube pruža za taj video — od 360p do 4K/8K, gdje je dostupno — kao i izdvajanje audija u MP3." },
+        { q: "Mogu li preuzeti privatne videozapise ili one s dobnim ograničenjem?", a: "Podržani su samo javno dostupni YouTube videozapisi; privatni sadržaj, sadržaj koji vam nije dostupan ili sadržaj koji zahtijeva prijavu ne može se preuzeti." },
+        { q: "Da li je legalno preuzimati videozapise sa YouTubea?", a: "Preuzimajte samo videozapise koje imate pravo sačuvati — vlastiti sadržaj, videozapise pod Creative Commons licencom ili sve što autor dozvoljava. Poštujte YouTubeove Uslove korištenja i zakon o autorskim pravima." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Konvertovane datoteke ostaju na serveru otprilike sat vremena, zato ih sačuvajte na svoj uređaj odmah nakon preuzimanja." },
+      ],
+    },
+    facebook: {
+      description: "Sačuvajte videozapise iz Facebook objava i reelsa",
+      news: "Sada s podrškom za reels",
+      titleLine1: "Preuzmi video sa Facebooka",
+      titleLine2: "i reels",
+      pageDescription:
+        "Preuzmite Facebook videozapise i reels u visokom kvalitetu. Brzo, besplatno i jednostavno.",
+      placeholder: "Zalijepite Facebook link ovdje...",
+      howTo: [
+        "Otvorite video ili reel na Facebooku i kopirajte njegov link (dodirnite tri tačke → Kopiraj link).",
+        "Zalijepite link iznad i pritisnite Preuzmi.",
+        "Odaberite MP4 kvalitet ili izdvojite audio kao MP3.",
+        "Datoteka se preuzima direktno na vaš uređaj — Facebook račun nije potreban.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje Facebook videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "Videoner preuzima najviši kvalitet koji Facebook pruža za taj video ili reel, u MP4 formatu, uz opciju MP3 audija." },
+        { q: "Mogu li preuzeti privatne videozapise?", a: "Rade samo javne objave, videozapisi i reels — privatni sadržaj ili sadržaj samo za prijatelje nije dostupan." },
+        { q: "Da li je legalno preuzimati videozapise sa Facebooka?", a: "Preuzimajte samo videozapise za koje imate dozvolu; poštujte prava autora i Facebookove Uslove korištenja." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Datoteke se čuvaju otprilike sat vremena nakon konvertovanja, a zatim se automatski brišu — preuzmite ih na vrijeme." },
+      ],
+    },
+    instagram: {
+      description: "Preuzmite Instagram reels, priče i objave",
+      news: "Sada s podrškom za reels i priče",
+      titleLine1: "Preuzmi sa Instagrama",
+      titleLine2: "reels i priče",
+      pageDescription:
+        "Preuzmite Instagram reels, priče i objave u visokom kvalitetu. Brzo, besplatno i jednostavno.",
+      placeholder: "Zalijepite Instagram link ovdje...",
+      howTo: [
+        "Otvorite reel, objavu ili priču na Instagramu i dodirnite ikonu papirnog aviona → Kopiraj link.",
+        "Zalijepite link u polje iznad.",
+        "Odaberite željeni kvalitet i format.",
+        "Preuzimanje počinje odmah — bez prijave i instaliranja aplikacije.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje Instagram sadržaja putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "U punom dostupnom kvalitetu za reels, objave i priče, u MP4 ili MP3 formatu." },
+        { q: "Mogu li preuzimati sa privatnih računa?", a: "Podržani su samo javni Instagram računi i objave; sadržaj sa privatnih računa ne može se preuzeti." },
+        { q: "Da li je legalno preuzimati videozapise sa Instagrama?", a: "Preuzimajte samo ono što smijete sačuvati — poštujte autora i Instagramove Uslove korištenja." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Datoteke ostaju na serveru otprilike sat vremena prije automatskog brisanja." },
+      ],
+    },
+    tiktok: {
+      description: "Preuzmite TikTok video bez vodenog žiga",
+      news: "Sada bez vodenog žiga",
+      titleLine1: "Preuzmi TikTok video",
+      titleLine2: "bez vodenog žiga",
+      pageDescription:
+        "Preuzmite TikTok videozapise bez vodenog žiga u visokom kvalitetu. Brzo, besplatno i jednostavno.",
+      placeholder: "Zalijepite TikTok link ovdje...",
+      howTo: [
+        "Dodirnite Podijeli na TikTok videu, a zatim Kopiraj link.",
+        "Zalijepite link iznad i pritisnite Preuzmi.",
+        "Dobijte čist MP4 — bez TikTok vodenog žiga — ili MP3 audio.",
+        "Sačuvajte ga direktno na svoj uređaj.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje TikTok videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "U najboljem kvalitetu koji TikTok pruža za taj video, bez TikTok vodenog žiga, uz MP3 audio." },
+        { q: "Mogu li preuzimati sa privatnih računa?", a: "Mogu se preuzeti samo videozapisi sa javnih TikTok računa." },
+        { q: "Da li je legalno preuzimati videozapise sa TikToka?", a: "Preuzimajte videozapise koje imate pravo sačuvati, navedite autora i poštujte TikTokove Uslove korištenja." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Preuzete datoteke ostaju na serveru otprilike sat vremena, a zatim se automatski brišu." },
+      ],
+    },
+    twitter: {
+      description: "Preuzmite Twitter videozapise",
+      news: "Sada s podrškom za Twitter video",
+      titleLine1: "Preuzmi video",
+      titleLine2: "sa Twittera",
+      pageDescription:
+        "Preuzmite Twitter videozapise u visokom kvalitetu. Brzo, besplatno i jednostavno.",
+      placeholder: "Zalijepite Twitter link ovdje...",
+      howTo: [
+        "Dodirnite Podijeli ispod tweeta i odaberite Kopiraj link (ili kopirajte URL iz preglednika).",
+        "Zalijepite ga u polje iznad.",
+        "Odaberite željeni kvalitet videa.",
+        "Preuzimanje počinje odmah — X/Twitter račun nije potreban.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje Twitter/X videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "U svakom kvalitetu koji X/Twitter nudi za taj video, u MP4 formatu, uz MP3." },
+        { q: "Mogu li preuzimati sa privatnih računa?", a: "Rade samo tweetovi sa javnih računa; zaštićeni/privatni računi nisu podržani." },
+        { q: "Da li je legalno preuzimati videozapise sa Twittera/X-a?", a: "Preuzimajte sadržaj koji imate pravo sačuvati, poštujući prava autora objave i Uslove korištenja platforme." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Datoteke se automatski brišu otprilike sat vremena nakon kreiranja." },
+      ],
+    },
+    vimeo: {
+      description: "Preuzmite video sa Vimea u visokom kvalitetu",
+      news: "Sada s podrškom za Vimeo",
+      titleLine1: "Preuzmi video",
+      titleLine2: "sa Vimea",
+      pageDescription:
+        "Preuzmite Vimeo videozapise u visokom kvalitetu. Brzo, besplatno i jednostavno.",
+      placeholder: "Zalijepite Vimeo link ovdje...",
+      howTo: [
+        "Otvorite Vimeo i kopirajte link videa (ili na mobitelu dodirnite Podijeli → Kopiraj link).",
+        "Zalijepite link u polje iznad i pritisnite Preuzmi.",
+        "Odaberite kvalitet i format — MP4 za video, MP3 ako vam treba samo audio.",
+        "Preuzimanje počinje odmah; nisu potrebni račun ni instaliranje programa.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje Vimeo videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "Videoner nudi svaki kvalitet koji Vimeo omogućava za taj video, do originalne rezolucije, uključujući HD i 4K ako ih je autor postavio." },
+        { q: "Mogu li preuzeti privatne Vimeo videozapise ili one zaštićene lozinkom?", a: "Ne — Videoner radi samo s javno dostupnim Vimeo linkovima. Privatni videozapisi, oni zaštićeni lozinkom ili s ograničenim pristupom ne mogu se preuzeti." },
+        { q: "Da li je legalno preuzimati videozapise sa Vimea?", a: "Preuzimanje je namijenjeno videozapisima koje imate pravo sačuvati — vlastitom sadržaju, videozapisima pod Creative Commons licencom ili svemu što je autor izričito dozvolio za preuzimanje. Poštujte autorska prava originalnog autora i Vimeove uslove korištenja." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Datoteke se kreiraju na zahtjev i čuvaju na serveru otprilike sat vremena prije automatskog brisanja, zato ih sačuvajte na svoj uređaj čim se preuzimanje završi." },
+      ],
+    },
+    vk: {
+      description: "Preuzmite videozapise i klipove sa VK",
+      news: "Sada s podrškom za VK",
+      titleLine1: "Preuzmi video sa VK",
+      titleLine2: "i klipove",
+      pageDescription:
+        "Preuzmite VK videozapise i klipove u visokom kvalitetu. Brzo, besplatno i jednostavno.",
+      placeholder: "Zalijepite VK link ovdje...",
+      howTo: [
+        "Otvorite video ili klip na VK (vk.com ili VK Video) i kopirajte njegov link iz adresne trake ili pomoću dugmeta Podijeli.",
+        "Zalijepite link iznad i pritisnite Preuzmi.",
+        "Odaberite dostupni kvalitet i format.",
+        "Datoteka se preuzima direktno — ne morate biti prijavljeni na VK.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje VK videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "U svim kvalitetima koje VK pruža za taj video ili klip, uz MP3 audio." },
+        { q: "Da li se moram prijaviti na VK?", a: "Ne — video mora biti javan. Videoner se ne prijavljuje na VK, pa se privatni videozapisi, oni samo za prijatelje ili oni koji zahtijevaju prijavu ne mogu preuzeti." },
+        { q: "Da li je legalno preuzimati videozapise sa VK?", a: "Preuzimajte samo videozapise koje imate pravo sačuvati, poštujući VK-ove Uslove korištenja i prava osobe koja je postavila video." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Datoteke se čuvaju na serveru otprilike sat vremena, a zatim se automatski brišu." },
+      ],
+    },
+    rutube: {
+      description: "Preuzmite videozapise sa Rutubea",
+      news: "Sada s podrškom za Rutube",
+      titleLine1: "Preuzmi video",
+      titleLine2: "sa Rutubea",
+      pageDescription:
+        "Preuzmite Rutube videozapise u visokom kvalitetu. Brzo, besplatno i jednostavno.",
+      placeholder: "Zalijepite Rutube link ovdje...",
+      howTo: [
+        "Otvorite video na Rutubeu i kopirajte njegov link iz adresne trake ili pomoću dugmeta Podijeli.",
+        "Zalijepite ga u polje iznad.",
+        "Odaberite kvalitet i format (video ili audio).",
+        "Preuzimanje počinje odmah, Rutube račun nije potreban.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje Rutube videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "U svakom kvalitetu koji Rutube nudi, u MP4 formatu, uz MP3 audio." },
+        { q: "Da li se moram prijaviti na Rutube?", a: "Ne — Videoner radi samo s javno dostupnim Rutube videozapisima; prijava se ne koristi niti je potrebna." },
+        { q: "Da li je legalno preuzimati videozapise sa Rutubea?", a: "Preuzimajte samo sadržaj koji smijete sačuvati, poštujući Rutubeove Uslove korištenja i prava autora." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Datoteke ostaju na serveru otprilike sat vremena prije automatskog brisanja." },
+      ],
+    },
+    okru: {
+      description: "Preuzmite videozapise sa OK.ru (Odnoklassniki)",
+      news: "Sada s podrškom za OK.ru",
+      titleLine1: "Preuzmi video",
+      titleLine2: "sa OK.ru",
+      pageDescription:
+        "Preuzmite OK.ru (Odnoklassniki) videozapise u visokom kvalitetu. Brzo, besplatno i jednostavno.",
+      placeholder: "Zalijepite OK.ru link ovdje...",
+      howTo: [
+        "Otvorite video na OK.ru (Odnoklassniki) i kopirajte njegov link iz adresne trake.",
+        "Zalijepite link u polje iznad i pritisnite Preuzmi.",
+        "Odaberite kvalitet i format.",
+        "Preuzimanje počinje odmah — prijava na OK.ru nije potrebna.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje OK.ru videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzeti video?", a: "U punom rasponu kvaliteta koji OK.ru pruža za taj video, uz MP3." },
+        { q: "Da li se moram prijaviti na OK.ru?", a: "Ne — rade samo javni OK.ru (Odnoklassniki) videozapisi. Videoner se nikada ne prijavljuje na račun, pa privatni videozapisi nisu dostupni." },
+        { q: "Da li je legalno preuzimati videozapise sa OK.ru?", a: "Preuzimajte samo videozapise koje imate pravo sačuvati, poštujući OK.ru Uslove korištenja i prava osobe koja je postavila video." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Datoteke se automatski brišu otprilike sat vremena nakon kreiranja." },
+      ],
+    },
+    pinterest: {
+      description: "Preuzmite videozapise iz Pinterest pinova",
+      news: "Sada s podrškom za Pinterest",
+      titleLine1: "Preuzmi video sa Pinteresta",
+      titleLine2: "i pinove",
+      pageDescription:
+        "Preuzmite videozapise iz Pinterest pinova u visokom kvalitetu. Brzo, besplatno i jednostavno. Napomena: mogu se preuzeti samo video pinovi — pinovi samo s fotografijama nisu podržani.",
+      placeholder: "Zalijepite Pinterest link ovdje...",
+      howTo: [
+        "Otvorite pin na Pinterestu i dodirnite Podijeli → Kopiraj link (ili kopirajte URL iz preglednika).",
+        "Zalijepite link u polje iznad i pritisnite Preuzmi.",
+        "Odaberite željeni kvalitet i format.",
+        "Datoteka se odmah preuzima — račun nije potreban.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje Pinterest videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzimati?", a: "Videoner nudi svaki kvalitet koji Pinterest pruža za video iz tog pina, kao i izdvajanje audija u MP3." },
+        { q: "Mogu li preuzeti fotografije ili slike sa Pinteresta?", a: "Ne — mogu se preuzeti samo video pinovi. Ako pin sadrži samo fotografiju, nema video datoteke za izdvajanje." },
+        { q: "Mogu li preuzeti privatne pinove ili pinove s ograničenih ploča?", a: "Podržani su samo javno dostupni pinovi; privatne ploče i sadržaj koji zahtijeva prijavu ne mogu se preuzeti." },
+        { q: "Da li je legalno preuzimati videozapise sa Pinteresta?", a: "Preuzimajte samo pinove koje imate pravo sačuvati — vlastiti sadržaj ili sve što autor dozvoljava. Poštujte Pinterestove Uslove korištenja i zakon o autorskim pravima." },
+        { q: "Koliko dugo je preuzeta datoteka dostupna?", a: "Konvertovane datoteke ostaju na serveru otprilike sat vremena, zato ih sačuvajte na svoj uređaj odmah nakon preuzimanja." },
+      ],
+    },
+    threads: {
+      description: "Preuzmite videozapise iz Threads objava",
+      news: "Sada s podrškom za Threads",
+      titleLine1: "Preuzmi video",
+      titleLine2: "sa Threadsa",
+      pageDescription:
+        "Preuzmite videozapise iz Threads objava. Brzo, besplatno i bez Threads računa. Threads isporučuje samo jednu verziju videa, do 720p — to je najviši kvalitet koji platforma omogućava.",
+      placeholder: "Zalijepite Threads link ovdje...",
+      howTo: [
+        "Otvorite objavu u Threadsu i dodirnite ikonu za dijeljenje, zatim Kopiraj link.",
+        "Zalijepite link u polje iznad i pritisnite Preuzmi.",
+        "Odaberite željeni format — video ili MP3 audio.",
+        "Datoteka se odmah preuzima — račun nije potreban.",
+      ],
+      faq: [
+        { q: "Da li je preuzimanje Threads videa putem Videonera besplatno?", a: "Da, potpuno besplatno: bez prijave, bez pretplata, bez reklama i bez dnevnog ograničenja preuzimanja. Jedino ograničenje odnosi se na YouTube promet — 10 GB dnevno po mreži — kako bi se servis zaštitio od zloupotrebe." },
+        { q: "Da li mi je potreban račun za preuzimanje?", a: "Ne. Za preuzimanje nisu potrebni račun ni prijava — samo zalijepite link i pritisnite Preuzmi." },
+        { q: "U kojem kvalitetu mogu preuzimati?", a: "Threads objavljuje tačno jednu verziju videa po objavi, ograničenu na 720p po kraćoj strani — čak i kada je autor postavio 4K. Videoner vam daje tu datoteku onakvu kakva jeste, uz izdvajanje audija u MP3. Nijedan alat za preuzimanje ne može ponuditi više, jer se veće rezolucije jednostavno ne isporučuju." },
+        { q: "Rade li i threads.com i threads.net linkovi?", a: "Da. Podržani su i puni linkovi poput threads.com/@user/post/CODE i kratki linkovi threads.net/t/CODE." },
+        { q: "Mogu li preuzeti fotografije iz Threads objave?", a: "Ne — samo videozapise. Ako objava sadrži samo fotografije, nema video datoteke za izdvajanje." },
+        { q: "Šta ako objava ima više videozapisa?", a: "Preuzima se prvi video u objavi. Threads karuseli mogu sadržavati više klipova, a sačuva se samo prvi." },
+        { q: "Mogu li preuzeti privatne objave?", a: "Ne. Mogu se preuzeti samo javno vidljive objave; sve što se nalazi iza privatnog računa ili zahtijeva prijavu nije dostupno." },
+        { q: "Da li je legalno preuzimati videozapise sa Threadsa?", a: "Preuzimajte samo ono što imate pravo sačuvati — vlastiti sadržaj ili sve što autor dozvoljava. Poštujte Threadsove Uslove korištenja i zakon o autorskim pravima." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -15195,4 +15556,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq, bs };

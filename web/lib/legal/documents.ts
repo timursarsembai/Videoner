@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на сорока двух языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на сорока трёх языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -12383,6 +12383,308 @@ export const legal: LegalByLanguage = {
             heading: "Kërkesat në keqbesim",
             body: [
               "Një kërkesë që përmban informacion qëllimisht të rremë mund të sjellë përgjegjësi për paraqitësin e saj në përputhje me legjislacionin. Ne kemi të drejtë të refuzojmë shqyrtimin e një kërkese nëse ajo nuk lejon të identifikohet as mbajtësi i të drejtave, as materiali i kontestuar.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  bs: {
+    ui: {
+      updated: "Verzija od",
+      back: "Na početnu stranicu",
+      operatorHeading: "Operator usluge",
+      navHeading: "Ostali dokumenti",
+      labels: {
+        privacy: "Politika privatnosti",
+        terms: "Uslovi korištenja",
+        cookies: "Politika kolačića",
+        copyright: "Nosiocima prava",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Politika privatnosti",
+        summary: `Koje podatke prikuplja ${operator.site}, zašto su potrebni, koliko dugo se čuvaju i kako ih izbrisati.`,
+        sections: [
+          {
+            heading: "Opće odredbe",
+            body: [
+              `Ova Politika opisuje koje lične podatke obrađuje usluga ${operator.site} i u koju svrhu. Kontrolor podataka je ${operator.nameBs}.`,
+              "Korištenjem usluge pristajete na ovdje opisani način obrade. Ako se s njim ne slažete, molimo vas da ne koristite uslugu.",
+              "Obrada se vrši u skladu sa Zakonom Republike Kazahstan „O ličnim podacima i njihovoj zaštiti“, a u pogledu posjetilaca iz Evropskog ekonomskog prostora — uz uvažavanje zahtjeva GDPR-a.",
+            ],
+          },
+          {
+            heading: "Koje podatke obrađujemo",
+            body: [
+              "Svjesno ne prikupljamo ništa izvan onoga što je neophodno za rad usluge i ne tražimo lične dokumente, podatke o plaćanju niti adresu.",
+            ],
+            bullets: [
+              "Podaci Telegram računa koje bot dobija kada mu pišete: numerički identifikator, korisničko ime, ime i kod jezika.",
+              "Linkovi koje šaljete za preuzimanje i podaci o samom pokušaju: platforma, datum i vrijeme, odabrani kvalitet, ishod (uspjeh ili greška).",
+              "Tehnički podaci o konekciji: IP adresa, vrsta i verzija preglednika, jezik, stranica s koje ste došli. Oni se bilježe u serverskim zapisima (logovima) i u sistemima web-analitike.",
+              "Kolačići i identifikatori analitike — više o tome u Politici kolačića.",
+            ],
+          },
+          {
+            heading: "Zašto su nam ti podaci potrebni",
+            bullets: [
+              "Da bismo pružili samu uslugu: preuzeli video s vašeg linka i predali vam fajl.",
+              "Da bismo razlikovali vaš račun od tuđeg i suzbijali zloupotrebe.",
+              "Da bismo zaštitili uslugu od automatizovanih zloupotreba: provjera Cloudflare Turnstile prije slanja linka.",
+              "Da bismo razumjeli kako se stranica koristi i otklanjali greške — putem anonimizovane i zbirne statistike.",
+              "Da bismo odgovarali na vaše upite i upite nosilaca prava.",
+              "Da bismo vam povremeno pisali na Telegramu i pitali za vaše mišljenje o usluzi — naprimjer, ako ste je prestali koristiti. Odgovor nije obavezan; ako ne želite takve poruke, samo nam to recite i više vam nećemo pisati.",
+            ],
+          },
+          {
+            heading: "Pravni osnovi obrade",
+            body: [
+              "Podaci Telegram računa i podaci o preuzimanjima obrađuju se radi izvršenja Uslova korištenja, koje prihvatate kada počnete koristiti uslugu.",
+              "Analitički kolačići i snimanje radnji na stranici obrađuju se na osnovu vašeg pristanka, koji možete povući u bilo kojem trenutku — načini su opisani u Politici kolačića.",
+              "Serverski zapisi i zaštita od botova obrađuju se u okviru našeg legitimnog interesa da usluga ostane funkcionalna i zaštićena.",
+              "Pitanja o vašem mišljenju o usluzi — u okviru našeg legitimnog interesa da unapređujemo uslugu; od njih možete odustati u bilo kojem trenutku.",
+            ],
+          },
+          {
+            heading: "Povezani računi",
+            body: [
+              "Po želji možete s botom povezati svoj račun na platformi (Instagram, Facebook, YouTube, X, VK, TikTok) kako bi bot preuzimao sadržaj vidljiv samo prijavljenim korisnicima: priče (stories), privatne objave. U tu svrhu bot dobija kolačiće tog računa — od proširenja Videoner putem jednokratnog koda ili iz fajla koji ste poslali.",
+              "Čuvamo samo kolačiće odabrane platforme, a ostale odmah odbacujemo. Čuvaju se u šifrovanom obliku i koriste se samo za preuzimanja tamo gdje ste ih povezali. Kolačići povezani u privatnom razgovoru služe za vaša preuzimanja, uključujući vaše vlastite linkove u grupama u kojima nije povezan njihov račun; za tuđe linkove se ne koriste. Kolačići povezani s grupom služe za preuzimanja njenih članova i nigdje drugdje.",
+              "Pravni osnov je vaš pristanak: račun povezujete sami i možete ga ukloniti u bilo kojem trenutku komandom /accounts. Prilikom uklanjanja kolačići se trajno brišu. Ako platforma prestane prihvatati prijavu, bot će vas o tome obavijestiti.",
+              "Sadržaj preuzet putem povezanog računa ne objavljuje se na našem kanalu i ne isporučuje se drugim korisnicima iz zajedničke keš-memorije.",
+            ],
+          },
+          {
+            heading: "Usluge trećih strana",
+            body: [
+              "Ne prodajemo vaše podatke niti ih prenosimo trećim licima za njihove vlastite svrhe. Za rad usluge angažovani su sljedeći pružaoci usluga, od kojih svaki obrađuje podatke po vlastitim pravilima:",
+            ],
+            bullets: [
+              `Telegram — rad bota ${BOT}.`,
+              "Cloudflare — zaštita od botova (Turnstile), isporuka stranice i usmjeravanje e-pošte.",
+              "Google Analytics i Google Tag Manager — statistika posjeta.",
+              "Yandex Metrica — statistika posjeta, mapa klikova i Webvisor. Webvisor snima radnje na stranici: pomjeranje pokazivača, pomicanje stranice (scroll) i klikove. Snimci se koriste isključivo za analizu jednostavnosti korištenja stranice.",
+            ],
+          },
+          {
+            heading: "Koliko dugo čuvamo podatke",
+            bullets: [
+              "Preuzeti fajlovi automatski se brišu sa servera otprilike sat vremena nakon nastanka. Ne čuvamo arhivu vaših videozapisa.",
+              "Zapisi o pokušajima preuzimanja čuvaju se onoliko dugo koliko je potrebno za suzbijanje zloupotreba i rješavanje upita.",
+              "Podaci računa čuvaju se dok koristite uslugu i brišu se na vaš zahtjev.",
+              "Serverski zapisi čuvaju se ograničeno vrijeme i prepisuju se u toku rotacije.",
+            ],
+          },
+          {
+            heading: "Gdje se podaci obrađuju",
+            body: [
+              "Serveri usluge nalaze se u data centru na teritoriji Evropske unije. Neki od gore navedenih pružalaca usluga mogu obrađivati podatke izvan nje u skladu sa svojim politikama.",
+            ],
+          },
+          {
+            heading: "Vaša prava",
+            body: [
+              `Imate pravo dobiti informacije o obradi vaših podataka, zahtijevati njihovu ispravku ili brisanje, povući pristanak i uložiti prigovor na obradu. U tu svrhu pišite na ${MAIL} s adrese e-pošte ili Telegram računa koji su povezani sa zahtjevom.`,
+              "Odgovaramo u razumnom roku, u pravilu u roku od trideset kalendarskih dana. Brisanje računa povlači i brisanje historije preuzimanja povezane s njim.",
+            ],
+          },
+          {
+            heading: "Maloljetnici",
+            body: [
+              "Usluga nije namijenjena niti usmjerena djeci mlađoj od 16 godina. Svjesno ne prikupljamo podatke takvih korisnika; ako se to desilo greškom, pišite nam i podaci će biti izbrisani.",
+            ],
+          },
+          {
+            heading: "Izmjene",
+            body: [
+              "Ovu Politiku možemo ažurirati. Datum važeće verzije naveden je na početku stranice; o bitnim izmjenama obavještavat ćemo u okviru usluge.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Uslovi korištenja",
+        summary: `Pravila korištenja ${operator.site}: šta je dozvoljeno, šta nije i pod kojim uslovima usluga radi.`,
+        sections: [
+          {
+            heading: "Opće odredbe",
+            body: [
+              `Ovi Uslovi uređuju korištenje stranice ${operator.site} i Telegram bota ${BOT}. Vlasnik i administrator usluge je ${operator.nameBs}.`,
+              "Time što počinjete koristiti uslugu potvrđujete da ste pročitali uslove i da ih prihvatate. Ako vam neki od uslova ne odgovara, ne biste trebali koristiti uslugu.",
+            ],
+          },
+          {
+            heading: "Usluga je besplatna",
+            body: [
+              "Sve mogućnosti usluge pružaju se besplatno. Nemamo pretplate, plaćene pakete, plaćeni kvalitet videa niti kupovine unutar usluge.",
+              "Ne prikazujemo reklame i ne postavljamo partnerske (affiliate) linkove.",
+            ],
+          },
+          {
+            heading: "Uslovi pristupa",
+            bullets: [
+              "Za preuzimanje na stranici nisu potrebni ni korisnički račun ni prijava. Bot razlikuje korisnike po njihovom Telegram računu.",
+              "Uslugu od preopterećenja i automatizovanih zloupotreba štite tehnička ograničenja učestalosti zahtjeva.",
+              "Za YouTube važi dnevno ograničenje saobraćaja: 10 GB u 24 sata po jednoj mreži na stranici i u proširenju te 25 GB u 24 sata po jednom Telegram računu u botu. Ostale platforme to ograničenje ne obuhvata.",
+              "Za preuzimanje putem bota nije potrebna pretplata na naš kanal. U tekst uz fajlove bot dodaje link na kanal s novostima projekta; pretplata na njega nije obavezna.",
+            ],
+          },
+          {
+            heading: "Šta usluga radi",
+            body: [
+              "Usluga je tehnički posrednik: putem vašeg linka pristupa javno dostupnoj stranici, preuzima medijski fajl i prosljeđuje ga vama.",
+              "Ne držimo katalog videozapisa, ne pretražujemo tuđi sadržaj i ne čuvamo preuzete fajlove duže od vremena potrebnog za prijenos — otprilike sat vremena.",
+              "Dostupnost pojedine platforme zavisi od njenih tehničkih rješenja i može se promijeniti bez prethodne najave.",
+            ],
+          },
+          {
+            heading: "Obaveze korisnika",
+            body: [
+              "Sami snosite odgovornost za način na koji koristite dobijene fajlove i potvrđujete da na to imate pravo.",
+            ],
+            bullets: [
+              "Preuzimajte samo materijal na koji imate prava ili čije je korištenje dozvoljeno od strane nosioca prava ili zakonom.",
+              "Ne koristite uslugu za povredu autorskih i srodnih prava, širenje zabranjenog sadržaja niti za povredu prava trećih lica.",
+              "Ne pokušavajte zaobići tehnička ograničenja usluge, uključujući ograničenja učestalosti zahtjeva i provjeru na botove.",
+              "Ne stvarajte automatizovano opterećenje: masovni zahtjevi, skripte i parseri nisu dozvoljeni.",
+            ],
+          },
+          {
+            heading: "Objavljivanje linkova na kanalu",
+            body: [
+              "Preuzimanjem videa putem bota pristajete da link na izvornu objavu bude objavljen na našem Telegram kanalu. Upozorenje o tome prikazuje se u botu prije odabira kvaliteta — dakle prije nego što odlučite da preuzmete video.",
+              "Objavljivanje je anonimno: na kanal se šalju link na javno dostupnu stranicu, naziv videa i njegova naslovna slika — isti onaj kadar koji platforma prikazuje u pregledu objave. Ko je preuzeo video, ne navodi se. Sam video fajl ne objavljuje se nigdje i nikada: dijeli se link, koji i same platforme nude da se dijeli dugmetom „Podijeli“ ispod svake objave.",
+              "Isti link objavljuje se najviše jednom. Ako ne želite da link dospije na kanal, nemojte preuzimati taj video putem naše usluge.",
+              "Linkovi iz grupa i sadržaj preuzet putem povezanog računa ne objavljuju se na kanalu."
+            ],
+          },
+          {
+            heading: "Povezivanje vlastitog računa",
+            body: [
+              "Povezivanjem svog računa na platformi s botom potvrđujete da je to vaš račun i da imate pravo njime raspolagati.",
+              "Platforme ne odobravaju automatska preuzimanja i mogu ograničiti ili blokirati povezani račun. Taj rizik preuzimate na sebe; savjetujemo vam da povežete zaseban, a ne svoj glavni račun. Ne odgovaramo za ograničenja koja platforma nametne vašem računu.",
+              "Račun povezan s grupom koristi se za preuzimanja svih njenih članova. Administratori grupe odlučuju ko može povezivati račune i mogu ukloniti bilo koji od njih.",
+            ],
+          },
+          {
+            heading: "Ograničenje odgovornosti",
+            body: [
+              "Usluga se pruža po principu „kakva jeste“. Ne garantujemo neprekidan rad, dostupnost pojedine platforme niti podobnost fajla za vaše svrhe.",
+              "Ne snosimo odgovornost za to kako ste raspolagali preuzetim materijalom niti za posljedice povrede prava trećih lica s vaše strane.",
+              "Zadržavamo pravo da mijenjamo skup mogućnosti, privremeno obustavimo rad usluge radi održavanja i da prekinemo njen rad.",
+            ],
+          },
+          {
+            heading: "Ograničenje pristupa",
+            body: [
+              "Možemo ograničiti ili ukinuti pristup usluzi u slučaju kršenja ovih uslova, pokušaja zaobilaženja ograničenja, kao i po prijemu osnovane pritužbe nosioca prava.",
+            ],
+          },
+          {
+            heading: "Izmjene i mjerodavno pravo",
+            body: [
+              "Uslove možemo mijenjati; datum važeće verzije naveden je na početku stranice. Nastavkom korištenja usluge nakon izmjena prihvatate novu verziju.",
+              "Na odnose između strana primjenjuje se pravo Republike Kazahstan. Strane nastoje sporove riješiti prepiskom, a ako ne postignu dogovor — na način utvrđen zakonodavstvom Republike Kazahstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Politika kolačića",
+        summary: `Koje kolačiće koristi ${operator.site}, zašto su potrebni i kako ih odbiti.`,
+        sections: [
+          {
+            heading: "Šta su kolačići",
+            body: [
+              "Kolačići (cookies) su male tekstualne datoteke koje stranica pohranjuje u vašem pregledniku. Omogućavaju pamćenje vaših postavki i prikupljanje anonimizovane statistike posjeta.",
+              "Pored kolačića, u ovom dokumentu opisujemo i srodne tehnologije — lokalnu pohranu preglednika i brojače-piksele.",
+            ],
+          },
+          {
+            heading: "Neophodni",
+            body: [
+              "Bez njih usluga ne radi, pa se uvijek postavljaju.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — provjera da link šalje čovjek, a ne skripta.",
+              "Postavke interfejsa — odabrani jezik i tema prikaza.",
+            ],
+          },
+          {
+            heading: "Analitički",
+            body: [
+              "Pomažu nam da razumijemo koje se stranice koriste i gdje nastaju greške. Postavljaju se uz vaš pristanak i nisu neophodni za rad usluge.",
+            ],
+            bullets: [
+              "Google Analytics i Google Tag Manager — posjećenost i ponašanje na stranici u anonimizovanom obliku.",
+              "Yandex Metrica — posjećenost, mapa klikova i Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor servisa Yandex Metrica snima radnje na stranici: pomjeranje pokazivača, pomicanje stranice (scroll), klikove i unos u polje za link. To nam je potrebno da vidimo gdje interfejs zbunjuje korisnike.",
+              "Ove snimke ne koristimo za praćenje konkretnih osoba. Ne unosite u polja stranice podatke koje ne biste željeli da budu sačuvani.",
+            ],
+          },
+          {
+            heading: "Kako odbiti",
+            bullets: [
+              "Podesite blokiranje ili brisanje kolačića u svom pregledniku — ovaj način djeluje za sve navedene sisteme.",
+              "Google Analytics: zvanični dodatak za preglednik koji isključuje prikupljanje podataka dostupan je na Googleovoj stranici.",
+              "Yandex Metrica: odbijanje je moguće putem zvaničnog Yandexovog dodatka.",
+              "Isključivanje neophodnih kolačića onemogućit će preuzimanje.",
+            ],
+          },
+          {
+            heading: "Rokovi",
+            body: [
+              "Sesijski kolačići brišu se kada zatvorite preglednik ili kada istekne sesija. Analitički brojači čuvaju identifikatore tokom rokova koje su utvrdili njihovi pružaoci.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Nosiocima prava",
+        summary: "Stav usluge o autorskim pravima i postupak podnošenja pritužbe zbog povrede.",
+        sections: [
+          {
+            heading: "Stav usluge",
+            body: [
+              "Usluga ne pohranjuje videozapise i ne vodi njihov katalog. Ona djeluje kao tehnički posrednik: putem linka koji je unio korisnik pristupa javno dostupnoj stranici i prosljeđuje fajl korisniku.",
+              "Preuzeti fajlovi čuvaju se na serveru oko sat vremena i automatski se brišu. Kod nas ne ostaje trajna kopija tuđeg sadržaja.",
+              "Odgovornost za korištenje preuzetog materijala snosi korisnik — to je izričito utvrđeno u Uslovima korištenja.",
+            ],
+          },
+          {
+            heading: "Ako su vaša prava povrijeđena",
+            body: [
+              `Ako ste nosilac prava ili njegov zastupnik i smatrate da se usluga koristi za povredu vaših prava, pišite na ${MAIL}. Takve pritužbe razmatramo i preduzimamo mjere.`,
+            ],
+          },
+          {
+            heading: "Šta navesti u pritužbi",
+            bullets: [
+              "Koje je djelo pogođeno i na osnovu čega imate prava na njega.",
+              "Link na materijal i, ako su poznate, okolnosti povrede.",
+              "Vaše kontakt podatke: ime ili naziv, adresu i adresu e-pošte.",
+              "Ako djelujete u ime nosioca prava — dokaz o ovlaštenju.",
+              "Izjavu da su podaci u pritužbi tačni i da korištenje materijala nije dozvoljeno od strane nosioca prava niti zakonom.",
+            ],
+          },
+          {
+            heading: "Šta ćemo preduzeti",
+            body: [
+              "Pritužbu razmatramo u razumnom roku, u pravilu u roku od trideset kalendarskih dana, i ako se povreda potvrdi, ograničavamo pristup materijalu putem usluge, a po potrebi i pristup prekršioca usluzi.",
+              "O ishodu razmatranja obavijestit ćemo vas na adresu e-pošte koju ste naveli.",
+            ],
+          },
+          {
+            heading: "Nesavjesne pritužbe",
+            body: [
+              "Pritužba koja sadrži svjesno netačne podatke može povući odgovornost podnosioca u skladu sa zakonodavstvom. Zadržavamo pravo da odbijemo razmatranje pritužbe ako se na osnovu nje ne može utvrditi ni nosilac prava ni sporni materijal.",
             ],
           },
         ],

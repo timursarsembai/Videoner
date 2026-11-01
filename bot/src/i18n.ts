@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt" | "sq";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt" | "sq" | "bs";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -18,9 +18,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "bs", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча", sq: "Shqip" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча", sq: "Shqip", bs: "Bosanski" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -8844,6 +8844,236 @@ const sq: Messages = {
   settingsBack: "⬅️ Kthehu te cilësimet",
 };
 
+// Боснийский: три формы числа — 1, 21, 31… (one), 2–4, 22–24… (few)
+// и остальные, включая 11–14 (many).
+function bsPlural(n: number, one: string, few: string, many: string): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return few;
+  return many;
+}
+
+const bs: Messages = {
+  start: "Zdravo! Pošaljite mi link na video s YouTubea, TikToka, Instagrama, Facebooka, Twittera/X, Vimea, VK-a, Rutubea, OK.ru, Pinteresta ili Threadsa — pomoći ću vam da ga preuzmete.\n\n✨ Bez ograničenja kvaliteta: dobijate sve što platforma nudi, do 4K — sve dok fajl ne prelazi 2 GB, ograničenje Telegrama za botove. Ovdje nema plaćenih funkcija.\n\nPotpuno besplatno: bez pretplata, bez reklama, bez kupovina u aplikaciji.\n\n🧩 Preuzimate na računaru? Instalirajte proširenje preglednika — dugme „Preuzmi“ pojavljuje se direktno na stranici s videom: videoner.download/bs/extension\n\n👥 Dodajte me u grupu i objavljivat ću videozapise s linkova koje ljudi tamo dijele.\n\n⚡ Bez biranja kvaliteta: dodajte -audio iza linka za samo zvuk (mp3) ili -hd za najbolji kvalitet.\n\n📣 Novosti projekta: @videonerdownload\n\n🌐 Jezik bota: /language",
+  notLink: "Ovo ne liči na link. Pošaljite mi link na video.",
+  inviteGreeting: "Zdravo! Ja sam Videoner — besplatno preuzimam videozapise s YouTubea, TikToka, Instagrama i drugih platformi. Pripremam video koji vam je neko podijelio 👇",
+  inviteNotFound: "Nisam pronašao video za ovaj link-pozivnicu. Pošaljite mi link na video i preuzet ću ga.",
+  inviteUnavailable: "Nisam uspio otvoriti video s ovog linka — servis trenutno ne odgovara. Otvorite isti link ponovo za minutu.",
+  fetchingInfo: "🔍 Dobavljam podatke o videu...",
+  audioOnlyButton: "🎵 Samo audio (mp3)",
+  photoButton: "📷 Preuzmi fotografije",
+  slideshowButton: "🎞 Prezentacija fotografija (video)",
+  galleryButton: "📷+🎞 Fotografije i prezentacija",
+  chooseQuality: (title, duration) => `„${title}“${duration ? `\n⏱ ${duration}` : ""}\n\nOdaberite kvalitet:`,
+  sessionExpired: "Sesija je istekla — pošaljite link ponovo",
+  downloading: "⏬ Preuzimanje — ovo može potrajati nekoliko minuta...",
+  downloadFailed: "preuzimanje nije uspjelo",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Preuzimanje: ${percent}%${eta ? ` · preostalo ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Skoro gotovo — sastavljam fajl...",
+  converting: (percent) => `⚙️ Konverzija: ${percent}%`,
+  etaUnderMinute: "manje od minute",
+  etaMinutes: (minutes) => `~${minutes} min`,
+  etaHours: (hours, minutes) => `~${hours} h${minutes ? ` ${minutes} min` : ""}`,
+  downloadTimeout: "preuzimanje traje predugo — video je izgleda vrlo težak. Pokušajte s nižim kvalitetom.",
+  downloadInterrupted: "⚠️ Bot se ponovo pokreće zbog ažuriranja — vaše preuzimanje je prekinuto. Pošaljite link ponovo za minutu.",
+  fileTooBig: (mb, url) =>
+    `Fajl je ispao velik (${mb} MB) — Telegram ne dozvoljava botu da ga pošalje.\nPreuzmite ga ovdje: ${url}`,
+  sendingFile: "📤 Šaljem fajl...",
+  sendingAlbum: (count) => `📤 Ova objava ima nekoliko fajlova (${count}) — šaljem ih kao album...`,
+  failedPrefix: "❌ Nije uspjelo: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Izvor: ${sourceUrl}\n` +
+        "Sva prava na video pripadaju njegovom autoru.\n" +
+        "Besplatno preuzeto pomoću @VideonerBot",
+      `📣 Novosti projekta: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Podijeli: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Da biste preuzimali, pretplatite se na naš kanal ${channel} — to je jedini uslov, servis ostaje besplatan.\n\n` +
+    "Pretplatite se i pritisnite „Pretplatio/la sam se“.",
+  openChannelButton: "📣 Otvori kanal",
+  checkSubscriptionButton: "Pretplatio/la sam se",
+  subscribeThanks: "Hvala! Sada mi pošaljite link na video.",
+  subscribeThanksResuming: "Hvala! Već preuzimam vaš link.",
+  subscribeStillMissing: "Još ne vidim pretplatu. Pretplatite se i pritisnite ponovo.",
+  channelNotice: (channel) => `\n\nLink na ovu objavu pojavit će se na kanalu ${channel} — anonimno, bez vašeg imena.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Preuzmite ovaj i bilo koji drugi video besplatno: @VideonerBot",
+  errorStoryNeedsId:
+    "pošaljite link na konkretnu priču: otvorite je u aplikaciji Instagram i dodirnite Podijeli → Kopiraj link.",
+  errorInstagramStory:
+    "Instagram priče vide samo prijavljeni korisnici.",
+  errorLoginRequired:
+    "Ova objava nije dostupna bez prijave: platforma je prikazuje samo " +
+    "prijavljenim korisnicima. To se dešava s privatnim objavama, sadržajem s dobnim ograničenjem " +
+    "i objavama podijeljenim s ograničenom publikom.\n\n" +
+    "Javne objave se preuzimaju bez problema — pokušajte s drugim linkom.",
+  errorUnsupportedPlatform:
+    "Ne mogu prepoznati ovaj link — provjerite da li je to direktan link na video s YouTubea, TikToka, Instagrama, Facebooka, Twittera/X, Vimea, VK-a, Rutubea, OK.ru, Pinteresta ili Threadsa.",
+  errorFileTooLarge: "fajl je veći od 2 GB — Telegram ne dozvoljava botovima da šalju veće fajlove. Preuzmite ga na web-stranici ili pomoću proširenja preglednika — dugmad su ispod. Ili pošaljite link ponovo i odaberite niži kvalitet.",
+  siteButton: "🌐 Preuzmi na web-stranici",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Kvaliteti teži od ${limit} su sakriveni: Telegram ne dozvoljava botovima da šalju veće fajlove. Možete ih preuzeti na web-stranici ili pomoću proširenja preglednika — dugmad su ispod.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Ovaj video je pretežak za Telegram čak i u najnižem kvalitetu (~${smallest}): Telegram ne dozvoljava botovima da šalju fajlove veće od 2 GB. Ovdje možete dobiti samo audio; video — na web-stranici ili pomoću proširenja preglednika (dugmad su ispod).`,
+  errorFormatUnavailable: "Taj kvalitet nije dostupan za ovaj video. Pošaljite link ponovo — pokazat ću aktuelnu listu.",
+  errorNoVideoContent: "Na ovom linku nema videa za preuzimanje — izgleda da objava sadrži samo fotografije.",
+  errorRegionBlocked:
+    "Ovaj video je blokiran izvan autorove zemlje — platforma ga ne daje " +
+    "našem serveru. Zaobići se ne može: ograničenje je na njihovoj strani." +
+    "\n\nOstali linkovi se preuzimaju kao i obično.",
+  errorRateLimited: "Previše linkova zaredom — sačekajte malo i pošaljite ponovo.",
+  errorYoutubeDailyLimit: (gb) => `u posljednja 24 sata preuzeli ste više od ${gb} GB s YouTubea — to je dnevno ograničenje bota po osobi. Računa se posljednja 24 sata, pa ćete nove videozapise s YouTubea moći preuzeti malo kasnije. Ostale platforme rade kao i obično.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Lista za reprodukciju je zaustavljena: dostignuto je dnevno ograničenje za YouTube. Nepreuzeti videozapisi: ${dropped}. Pošaljite link na listu za reprodukciju ponovo kasnije.`,
+  errorPlatformRefused:
+    "platforma nije dala ovaj video našem serveru. To se dešava s privatnim " +
+    "objavama ili sadržajem s dobnim ograničenjem, a ponekad platforma jednostavno ograniči pristup " +
+    "na neko vrijeme. Pokušajte ponovo za nekoliko minuta.",
+  errorThreadsNoMedia:
+    "u ovoj objavi na Threadsu ne vidi se ni video ni fotografija. Ili je to objava samo s tekstom, ili " +
+    "Threads njen sadržaj prikazuje samo prijavljenim korisnicima — takve objave se ne mogu preuzeti bez prijave.",
+  extensionHint:
+    "\n\n💻 Možete ga preuzeti na računaru pomoću proširenja preglednika Videoner: " +
+    "ono preuzima uz vašu vlastitu prijavu na platformi, a nikakva lozinka ni kolačići ne napuštaju vaš preglednik.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Da biste preuzimali ovakve objave, povežite svoj ${platform} račun s botom — jednom. Nakon toga bot preuzima sve što vi možete vidjeti: privatne objave, reelse i priče, i s telefona. Dugme ispod pokazuje kako.${withExtension ? "\n\n💻 Ili ga preuzmite na računaru pomoću proširenja preglednika Videoner." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Vaš povezani ${platform} račun nije mogao otvoriti ovu objavu. Prijava je možda prestala raditi — povežite račun ponovo. Ili ovaj račun nema pristup objavi.${withExtension ? "\n\n💻 Možete ga preuzeti i na računaru pomoću proširenja preglednika Videoner." : ""}`,
+  connectAccountButton: "🔑 Poveži račun",
+  reconnectAccountButton: "🔑 Poveži ponovo",
+  extensionButton: "🧩 Preuzmi pomoću proširenja",
+  extensionCommand:
+    "🧩 Videoner za vaš preglednik: dugme „Preuzmi“ direktno na stranici s videom — YouTube, Instagram, TikTok, VK, privatni videozapisi s vašeg računa i GetCourse lekcije.\n\nZa Chrome, Edge, Operu, Yandex Browser i Firefox na računaru.",
+  extensionPageButton: "🧩 Instaliraj proširenje",
+  addToGroupButton: "👥 Dodaj u grupu",
+  newsButton: "📣 Novosti projekta",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novosti projekta: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Postavke bota za ovu grupu\n\n" +
+    `🗑 Brisanje poruke s linkom: ${s.deleteLinks ? "da" : "ne"}\n` +
+    "Kada se video pošalje, poruka koja je sadržavala samo link se briše — u chatu ostaje samo video s imenom osobe koja ga je podijelila.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Trenutno ne mogu brisati poruke: postavite me za administratora s pravom „Brisanje poruka“.\n"
+      : "") +
+    `\n✍️ Tekst ispod videa: ${{ full: "puni", short: "naslov i izvor", none: "bez teksta" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Kvalitet: ${s.quality === "max" ? "najviši koji Telegram prihvata" : "standardni (720p)"}\n` +
+    `\n⏱ Dugi videozapisi: ${s.longVideos ? "bilo koje dužine" : "samo do 15 minuta"}\n` +
+    `\n🔑 Ko može povezati svoje račune (za priče i privatne objave): ${s.cookiesBy === "all" ? "bilo koji član" : "samo administratori"}\n` +
+    `\n🌐 Jezik odgovora: ${s.language ? langName(s.language) : "jezik svakog člana"}\n` +
+    "\nPostavke mogu mijenjati samo administratori grupe.",
+  settingsDeleteButton: (on) => `🗑 Brisanje linkova: ${on ? "da" : "ne"}`,
+  settingsCaptionButton: (style) => `✍️ Tekst: ${{ full: "puni", short: "kratki", none: "bez" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Kvalitet: ${mode === "max" ? "najviši" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Dugi videozapisi: ${on ? "da" : "do 15 min"}`,
+  settingsDoneButton: "✅ Gotovo",
+  settingsAdminsOnly: "Postavke mogu mijenjati samo administratori grupe.",
+  settingsGroupsOnly: "Postavke su za grupe: dodajte me u grupu i tamo pošaljite /settings.",
+  settingsFailed: "Nije uspjelo spremanje postavki, pokušajte ponovo.",
+  settingsCookiesButton: (by) => `🔑 Povezivanje računa: ${by === "all" ? "svi" : "administratori"}`,
+  accountsIntro:
+    "🔑 Povezani računi\n\nBot može preuzeti ono što vide samo prijavljeni korisnici (Instagram priče, privatne objave) — pomoću vašeg računa. Prijava radi tamo gdje ste je povezali: ona u privatnom chatu služi za vaša preuzimanja, uključujući vaše vlastite linkove u grupama koje nemaju svoj račun; ona povezana s grupom služi svim njenim članovima.",
+  accountsHowTo:
+    "Kako povezati:\n1. Najlakše: proširenje Videoner na računaru — prijavite se na stranici platforme, otvorite prozor Videonera, pritisnite „🔑 Povežite svoj … račun s botom“ i pošaljite mi kod. Za grupu pošaljite /connect KOD u toj grupi.\n2. Ili mi pošaljite fajl cookies.txt (kolačići izvezeni iz preglednika) ili zalijepite njegov tekst kao poruku.\n3. S Android telefona — pomoću Firefoxa i dodatka Cookie-Editor: https://videoner.download/bs/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platforme ne vole automatsko preuzimanje i mogu ograničiti ili blokirati račun. Bolje povežite sporedni račun, a ne glavni. Kolačići se čuvaju šifrirani, koriste se samo za preuzimanje i uklanjaju se dugmadima ispod.",
+  accountsNone: "Još ništa nije povezano.",
+  accountsGroupTitle: "🔑 Računi povezani s ovom grupom",
+  accountsGroupHowTo:
+    "Da povežete račun za cijelu grupu: dobijte kod dugmetom „🔑 Povežite svoj … račun s botom“ u proširenju Videoner i ovdje pošaljite /connect KOD. Ako ste račun povezali samo u svom privatnom chatu, bot ga ovdje koristi za vaše vlastite linkove. Vaša povezivanja: /accounts u privatnom chatu s @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ prijava ne radi)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ prijava ne radi)"}`,
+  accountsWhereHere: "privatni chat",
+  accountsWhereGroup: (title) => `grupa „${title}“`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Ukloni sva moja povezivanja",
+  accountsDeleted: "Uklonjeno.",
+  accountsDeletedAll: (n) => `Uklonjena povezivanja: ${n}.`,
+  accountsNotAllowed: "Ukloniti ga može samo osoba koja ga je povezala ili administrator grupe.",
+  connectUsage:
+    "Pošaljite /connect KOD. Kod ćete dobiti dugmetom „🔑 Povežite svoj … račun s botom“ u proširenju Videoner na računaru. Vaša povezivanja: /accounts.",
+  connectOnlyAdmins: "Samo administratori mogu povezivati račune s ovom grupom (pogledajte /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} je povezan ${where}. Bot sada preuzima i ono što vide samo prijavljeni korisnici. Pregled ili uklanjanje: /accounts.\n\n⚠️ Platforma može ograničiti račun zbog automatskog preuzimanja — bolje koristite sporedni račun.`,
+  connectWhereGroup: "s ovom grupom",
+  connectWhereHere: "za vaša preuzimanja u privatnom chatu i inline načinu",
+  connectCodeNotFound: "Kod nije pronađen ili je istekao (kodovi važe 10 minuta). Dobijte novi u proširenju Videoner.",
+  connectRejectedNoSession: "U ovim kolačićima nema prijave. Prijavite se na stranici platforme i ponovo izvezite kolačiće.",
+  connectRejectedUnknown: "Nisu pronađeni kolačići podržanih platformi: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Povezivanje računa još nije dostupno.",
+  connectFailed: "Povezivanje nije uspjelo, pokušajte ponovo.",
+  connectFileTooBig: "Fajl je prevelik — izvezite kolačiće samo potrebne stranice.",
+  connectNotAnonymous: "Povežite račun kao vi, a ne anonimno u ime grupe: inače se povezivanja administratora izmiješaju. Uništio sam kod — dobijte novi.",
+  connectCodeInGroup:
+    "Kod za povezivanje objavljen u chatu grupe mogu vidjeti drugi — uništio sam ga i uklonio poruku. Dobijte novi i pošaljite ga sa /connect KOD: takvu poruku s komandom brišem odmah.",
+  groupWelcome:
+    "👋 Zdravo! Objavljujte u ovom chatu linkove na videozapise s TikToka, Instagrama, YouTubea, VK-a i drugih platformi — odgovorit ću samim videom.\n\n" +
+    "Klipove do 15 minuta preuzimam sam, bez ikakvih komandi, a inače šutim.\n\n⚙️ Administratori grupe mogu me podesiti pomoću /settings: brisanje poruka s linkovima, stil teksta, kvalitet, dugi videozapisi i jezik.\n\n⚡ Dodajte -audio iza linka da dobijete zvuk ili -hd za najbolji kvalitet.\n\n📣 Novosti projekta: @videonerdownload",
+  errorTooLong: "video je predug — tako duge videozapise još ne možemo preuzeti.",
+  errorUnknown: "nije uspjelo preuzimanje ovog videa. Pokušajte ponovo malo kasnije ili pošaljite drugi link.",
+  inlineHintButton: "Pošaljite link botu",
+  inlineResultTitle: "⬇️ Preuzmi video",
+  inlineResultDescription: "Video će biti objavljen direktno u ovom chatu",
+  inlinePlaceholder: "⏬ Preuzimanje — ovo može potrajati nekoliko minuta...",
+  inlineOpenBot: "Otvori bota",
+  inlineOnlySingleVideo:
+    "Ovaj način šalje jedan video. Za objave s više fajlova ili fotografije pošaljite link botu u privatnom chatu.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Da biste preuzimali, pretplatite se na ${channel} i pokušajte ponovo.`,
+  inlineRateLimited: "Previše zahtjeva zaredom. Sačekajte minutu i pokušajte ponovo.",
+  queueRest: (count) => `\n\n📋 Linkovi koji još čekaju u redu: ${count}. Pokazat ću ih jedan po jedan nakon ovog.`,
+  queuedOne: (position) =>
+    `📋 Link je dodan u red, br. ${position}. Prvo završimo trenutni — zatim ću za njega pokazati izbor kvaliteta.`,
+  queuedMany: (added, waiting) =>
+    `📋 Linkovi dodani u red: ${added}. Ukupno čeka: ${waiting}. Pokazat ću ih jedan po jedan nakon trenutnog.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Ovaj link je već u redu — ne dodajem ga dvaput."
+      : `Linkovi koji su već u redu ne dodaju se dvaput (ponavljanja: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Red prima najviše ${limit} ${bsPlural(limit, "link", "linka", "linkova")} — višak nije dodan (${rejected}). Pošaljite ih kada se red pomjeri.`,
+  skipButton: "✖️ Ne preuzimaj",
+  skipped: "⏭ Ovaj link je preskočen.",
+  chooseTimedOut: "⌛ Kvalitet nije odabran u roku od 30 minuta — preskačem ovaj link.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot se ponovo pokreće zbog ažuriranja — red je poništen (linkovi: ${count}). Pošaljite ih ponovo za minutu.`,
+  subtitlesButton: "📝 Titlovi",
+  subtitlesBack: "⬅️ Nazad na kvalitet",
+  subtitlesAuto: "auto",
+  subtitlesChoose: "Odaberite jezik titlova",
+  subtitlesPreparing: "📝 Pripremam titlove...",
+  subtitlesFailed: "Nije uspjelo preuzimanje titlova na ovom jeziku. Pokušajte s drugim jezikom.",
+  subtitlesBusy: "YouTube trenutno ne daje titlove — pokušajte ponovo za nekoliko minuta.",
+  playlistFound: (title, count) =>
+    `📃 Lista za reprodukciju${title ? ` „${title.slice(0, 150)}“` : ""}: ${count} ${bsPlural(count, "videozapis", "videozapisa", "videozapisa")}.\nPreuzet ću ih jedan po jedan. U kojem formatu?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Najbolji kvalitet",
+  playlistAudioButton: "🎵 Samo audio (mp3)",
+  playlistNoButton: "✖️ Ne, hvala",
+  playlistQueued: (count) =>
+    `📃 Videozapisi s liste za reprodukciju dodani u red: ${count}. Slat ću ih jedan po jedan. Zaustavite dugmetom ispod ili sa /stop.`,
+  playlistFailed: "Nije uspjelo otvaranje liste za reprodukciju — možda je privatna. Pošaljite link na pojedinačni video.",
+  stopButton: "⏹ Zaustavi",
+  stopped: (dropped) => `⏹ Zaustavljeno.${dropped ? ` Linkovi uklonjeni iz reda: ${dropped}.` : ""}`,
+  nothingToStop: "Trenutno se ništa ne preuzima.",
+  languageChoose: "🌐 Odaberite jezik bota. „Auto“ prati vaš Telegram.",
+  languageChooseGroup: "🌐 Jezik odgovora bota u ovoj grupi. „Auto“ — jezik Telegrama svakog člana.",
+  languageAuto: "Automatski — kao u Telegramu",
+  languageAutoGroup: "Auto — jezik svakog člana",
+  languageSaved: (name) => `✅ Jezik bota: ${name}. Promijenite ga pomoću /language.`,
+  languageSavedAuto: "✅ Bot prati jezik vašeg Telegrama. Promijenite ga pomoću /language.",
+  settingsLanguageButton: (name) => `🌐 Jezik: ${name ?? "auto"}`,
+  settingsBack: "⬅️ Nazad na postavke",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -9511,4 +9741,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq, bs };

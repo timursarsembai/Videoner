@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('bs')) {
+      return (
+        'Zdravo! Pokrenuli ste ovog bota, ali još niste ništa preuzeli — ' +
+        'možda nije jasno odakle početi.\n\n' +
+        'Samo jedan korak: pošaljite ovdje link videa, ' +
+        'na primjer https://youtube.com/watch?v=jNQXAC9IVRw — a ja ću vam ' +
+        'vratiti gotov fajl za otprilike pola minute.\n\n' +
+        'Radi sa YouTubeom, TikTokom, Instagramom, Facebookom, Twitterom/X, Vimeom, VK, ' +
+        'Rutubeom, OK.ru, Pinterestom i Threadsom. Potpuno besplatno i u bilo kojem ' +
+        'kvalitetu — do 4K, bez doplate za HD.\n\n' +
+        'Ako nešto ne radi, samo odgovorite ovdje. Ovo je ' +
+        'jedini podsjetnik, neću vas više uznemiravati.'
+      );
+    }
+
     if (code.startsWith('sq')) {
       return (
         'Përshëndetje! E keni nisur këtë bot, por ende nuk keni shkarkuar asgjë — ' +

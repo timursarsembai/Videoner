@@ -2223,4 +2223,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Kreu",
   },
+  bs: {
+    metaTitle: "Videoner proširenje preglednika",
+    title: "Videoner za vaš preglednik",
+    summary:
+      "Proširenje dodaje dugme „Preuzmi“ na stranice s videozapisima i preuzima direktno u vašem pregledniku. Instagram, Facebook, TikTok i Threads preuzimaju se pomoću vaše prijave — zato rade i privatne objave koje vidite na svom računu, kao i videozapisi koje platforma nije dala našem serveru.",
+    failedVideo: "Video koji se nije mogao preuzeti na stranici ili u botu:",
+    failedVideoHint:
+      "Instalirajte proširenje, prijavite se na platformu u ovom pregledniku, otvorite video i kliknite „Preuzmi“ u donjem desnom uglu.",
+    openVideo: "Otvori video",
+    version: "Verzija",
+    browsersTitle: "Gdje radi",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi i drugi preglednici zasnovani na Chromiumu — na računaru.",
+    mobile: "Telefoni i tableti ne podržavaju proširenja — tamo koristite web-stranicu ili Telegram bot.",
+    getcourseTitle: "Lekcije na GetCourseu",
+    getcourse:
+      "Otvorite lekciju u GetCourse školi dok ste prijavljeni: u gornjem desnom uglu plejera pojavit će se dugme „Preuzmi“, a ikona Videonera prikazuje sve videozapise u lekciji. Vaš preglednik sam preuzima lekciju i spaja je u jedan mp4 — datoteka ne prolazi kroz naš server. Ako to ne uspije, lekciju u istom kvalitetu preuzima naš server; u tom slučaju on dobija link videa iz plejera.",
+    privacyTitle: "Vaša prijava ostaje kod vas",
+    privacy:
+      "Proširenje nikada ne traži lozinku: zahtjev platformi šalje vaš preglednik, a naš server dobija samo kratak izvještaj za statistiku — link, veličinu datoteke i naslov. Kolačići se šalju na server samo ako sami pritisnete „Povežite račun s botom“ — i to samo kolačići te platforme, šifrovani.",
+    stepsTitle: "Kako instalirati u Chrome, Yandex Browser, Edge i Operu",
+    steps: [
+      "Preuzmite arhivu i raspakujte je — dobit ćete folder videoner-extension s brojem verzije u nazivu.",
+      "Otvorite stranicu proširenja: upišite chrome://extensions u adresnu traku (edge://extensions u Edgeu, opera://extensions u Operi).",
+      "Uključite „Developer mode“ — prekidač na vrhu stranice.",
+      "Kliknite „Load unpacked“ i odaberite taj folder — onaj koji sadrži manifest.json.",
+      "Gotovo: stranice s videozapisima dobijaju dugme „Preuzmi“, a ikona Videonera pojavljuje se na alatnoj traci preglednika.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 ili noviji — također na računaru.",
+    firefoxSoon:
+      "Verzija za Firefox stiže uskoro. Za sada proširenje radi u Chromeu, Yandex Browseru, Edgeu, Operi i drugim preglednicima zasnovanim na Chromiumu.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Arhiva .zip — instalira se za nekoliko minuta",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Instalacija jednim klikom",
+    yourBrowser: "Vaš preglednik",
+    soon: "Uskoro",
+    firefoxStepsTitle: "Kako instalirati u Firefox",
+    firefoxSteps: [
+      "Kliknite dugme Firefox na vrhu ove stranice.",
+      "Firefox pita da li da dozvoli stranici videoner.download da instalira dodatak — kliknite „Continue to Installation“.",
+      "U prozoru „Add Videoner?“ kliknite „Add“.",
+      "Gotovo: stranice s videozapisima dobijaju dugme „Preuzmi“, a ikona Videonera pojavljuje se na alatnoj traci. Firefox sam instalira ažuriranja.",
+    ],
+    updateTitle: "Kako ažurirati u Chromeu, Yandex Browseru, Edgeu i Operi",
+    updateSteps: [
+      "Kada izađe nova verzija, ikona Videonera prikazuje oznaku NEW, a njen prozor sadrži link do ove stranice.",
+      "Preuzmite arhivu pomoću dugmeta Chrome na vrhu ove stranice i raspakujte je u isti folder kao ranije, zamjenjujući datoteke.",
+      "Otvorite stranicu proširenja (chrome://extensions, browser://extensions u Yandex Browseru, edge://extensions) i pritisnite „Reload“ — kružnu strelicu na kartici Videonera.",
+    ],
+    back: "Početna",
+  },
 };

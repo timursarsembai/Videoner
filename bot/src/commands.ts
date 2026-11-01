@@ -341,6 +341,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Ndaloni shkarkimin dhe radhën" },
     { command: "language", description: "Gjuha e botit" },
   ],
+  bs: [
+    { command: "start", description: "Kako koristiti bota" },
+    { command: "extension", description: "Proširenje preglednika" },
+    { command: "accounts", description: "Vaši računi za priče i privatne objave" },
+    { command: "connect", description: "Povežite račun kodom iz proširenja" },
+    { command: "stop", description: "Zaustavite preuzimanje i red" },
+    { command: "language", description: "Jezik bota" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -639,6 +647,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Lidhni një llogari me këtë grup me kod" },
     { command: "language", description: "Gjuha e botit në këtë grup (për administratorët)" },
     { command: "start", description: "Si funksionon boti në grup" },
+  ],
+  bs: [
+    { command: "settings", description: "Postavke bota u ovoj grupi (za administratore)" },
+    { command: "accounts", description: "Računi povezani s ovom grupom" },
+    { command: "connect", description: "Povežite račun s ovom grupom kodom" },
+    { command: "language", description: "Jezik bota u ovoj grupi (za administratore)" },
+    { command: "start", description: "Kako bot radi u grupi" },
   ],
 };
 

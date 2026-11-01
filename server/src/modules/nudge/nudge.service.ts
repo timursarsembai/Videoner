@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ug')) {
+      return (
+        'ياخشىمۇسىز! بۇ بوتنى قوزغاتتىڭىز، ئەمما تېخى ھېچنېمە چۈشۈرمىدىڭىز — ' +
+        'بەلكىم نەدىن باشلاشنى بىلمىگەنسىز.\n\n' +
+        'پەقەت بىر قەدەم: بۇ يەرگە بىر ۋىدىيونىڭ ئۇلانمىسىنى يوللاڭ، ' +
+        'مەسىلەن https://youtube.com/watch?v=jNQXAC9IVRw — مەن ' +
+        'تەييار ھۆججەتنى تەخمىنەن يېرىم مىنۇت ئىچىدە قايتۇرىمەن.\n\n' +
+        'YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، ' +
+        'Rutube، OK.ru، Pinterest ۋە Threads ئىشلەيدۇ. پۈتۈنلەي ھەقسىز ۋە ھەر قانداق ' +
+        'سۈپەتتە — 4K غىچە، HD ئۈچۈن قوشۇمچە ھەق يوق.\n\n' +
+        'بىرەر نەرسە ئىشلىمىسە، بۇ يەردە جاۋاب يېزىڭ. بۇ ' +
+        'بىردىنبىر ئەسكەرتىش، ئەمدى ئاۋارە قىلمايمەن.'
+      );
+    }
+
     if (code.startsWith('ku') || code.startsWith('kmr')) {
       return (
         'Silav! Te ev bot da destpêkirin, lê hîn te tiştek danexistiye — ' +

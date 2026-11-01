@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base === 'fil' ? 'tl' : base === 'kmr' ? 'ku' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' || norm === 'so' || norm === 'az' || norm === 'ky' || norm === 'tg' || norm === 'ms' || norm === 'nl' || norm === 'ro' || norm === 'ps' || norm === 'ckb' || norm === 'ku' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' || norm === 'so' || norm === 'az' || norm === 'ky' || norm === 'tg' || norm === 'ms' || norm === 'nl' || norm === 'ro' || norm === 'ps' || norm === 'ckb' || norm === 'ku' || norm === 'ug' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -398,6 +398,7 @@ export class UserCookiesService {
       ps: forGroup ? 'د ګروپ لپاره' : 'ستاسو لپاره',
       ckb: forGroup ? 'بۆ گرووپێک' : 'بۆ تۆ',
       ku: forGroup ? 'ji bo komekê' : 'ji bo te',
+      ug: forGroup ? 'گۇرۇپپا ئۈچۈن' : 'سىز ئۈچۈن',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -438,6 +439,7 @@ export class UserCookiesService {
       ps: `⚠️ ستاسو وصل شوی ${name} ننوتنه (${where}) نور کار نه کوي: پلاتفورم یې نور نه مني. کېدای شي له حساب څخه وتلي یاست، یا حساب محدود شوی وي.\n\nد دې لپاره چې په دې سره ښکته کول دوام ورکړئ، حساب بیا وصل کړئ. ستاسو اړیکې: \u200E/accounts`,
       ckb: `⚠️ چوونەژوورەوەی بەستراوی ${name} (${where}) چیتر کار ناکات: پلاتفۆرمەکە چیتر وەریناگرێت. لەوانەیە لە هەژمارەکە چوویتە دەرەوە، یان هەژمارەکە سنووردار کراوە.\n\nبۆ ئەوەی بەردەوام بیت لە داگرتن پێی، هەژمارەکە دووبارە ببەستەوە. بەستنەوەکانت: \u200e/accounts`,
       ku: `⚠️ Têketina ${name} ya ku te girê dabû (${where}) êdî naxebite: platform êdî wê qebûl nake. Dibe ku tu ji hesab derketî, an jî hesab hatiye sînordarkirin.\n\nJi bo ku bi wê re daxistinê bidomînî, hesab dîsa girê bide. Girêdanên te: /accounts.`,
+      ug: `⚠️ باغلانغان ${name} كىرىشىڭىز (${where}) ئەمدى ئىشلىمەيدۇ: سۇپا ئۇنى ئەمدى قوبۇل قىلمايدۇ. بەلكىم ھېساباتتىن چېكىنىپ چىققانسىز ياكى ھېسابات چەكلەنگەن بولۇشى مۇمكىن.\n\nئۇنىڭ بىلەن چۈشۈرۈشنى داۋاملاشتۇرۇش ئۈچۈن ھېساباتنى قايتا باغلاڭ. باغلىنىشلىرىڭىز: \u200e/accounts`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

@@ -62,6 +62,7 @@ const SIZE_UNITS: Record<Lang, { locale: string; gb: string; mb: string }> = {
   ps: { locale: "ps-AF-u-nu-latn", gb: "GB", mb: "MB" },
   ckb: { locale: "ckb-IQ-u-nu-latn", gb: "GB", mb: "MB" },
   ku: { locale: "ku-TR", gb: "GB", mb: "MB" },
+  ug: { locale: "ug-CN-u-nu-latn", gb: "GB", mb: "MB" },
 };
 
 // «850 МБ», «1,2 ГБ» — для подписи на кнопках качества.

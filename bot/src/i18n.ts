@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -18,9 +18,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -7964,6 +7964,226 @@ const ku: Messages = {
   settingsBack: "⬅️ Vegere mîhengan",
 };
 
+const ug: Messages = {
+  start: "ياخشىمۇسىز! ماڭا YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، Rutube، OK.ru، Pinterest ياكى Threads تىكى ۋىدىيونىڭ ئۇلانمىسىنى يوللاڭ — ئۇنى چۈشۈرۈشىڭىزگە ياردەم بېرىمەن.\n\n✨ سۈپەت چەكلىمىسى يوق: سۇپا تەمىنلىگەن ھەرقانداق سۈپەتنى، 4K غىچە، ئالالايسىز — پەقەت ھۆججەت 2 GB دىن ئاشمىسىلا بولىدۇ؛ بۇ Telegram نىڭ بوتلار ئۈچۈن قويغان چەكلىمىسى. بۇ يەردە پۇللۇق ئىقتىدار يوق.\n\nپۈتۈنلەي ھەقسىز: مۇشتەرىلىك ھەققى يوق، ئېلان يوق، ئەپ ئىچىدە سېتىۋېلىش يوق.\n\n🧩 كومپيۇتېردا چۈشۈرەمسىز؟ توركۆرگۈ قىستۇرمىسىنى ئورنىتىڭ — ۋىدىيو بېتىدىلا «چۈشۈرۈش» كۇنۇپكىسى پەيدا بولىدۇ: videoner.download/ug/extension\n\n👥 مېنى گۇرۇپپىغا قوشۇڭ، ئەزالار ئۇ يەردە ھەمبەھىرلىگەن ئۇلانمىلارنىڭ ۋىدىيولىرىنى يوللاپ بېرىمەن.\n\n⚡ سۈپەت تاللاشتىن ئاتلاپ ئۆتۈڭ: پەقەت ئاۋاز (mp3) ئۈچۈن ئۇلانمىدىن كېيىن -audio، ئەڭ ياخشى سۈپەت ئۈچۈن -hd قوشۇڭ.\n\n📣 تۈر خەۋەرلىرى: ‎@videonerdownload\n\n🌐 بوت تىلى: ‎/language",
+  notLink: "بۇ ئۇلانمىغا ئوخشىمايدۇ. ماڭا ۋىدىيو ئۇلانمىسىنى يوللاڭ.",
+  inviteGreeting: "ياخشىمۇسىز! مەن Videoner — YouTube، TikTok، Instagram ۋە باشقا سۇپىلاردىن ۋىدىيولارنى ھەقسىز چۈشۈرىمەن. بىرسى سىزگە ھەمبەھىرلىگەن ۋىدىيونى تەييارلاۋاتىمەن 👇",
+  inviteNotFound: "بۇ تەكلىپ ئۇلانمىسى ئۈچۈن ۋىدىيو تاپالمىدىم. ماڭا ۋىدىيو ئۇلانمىسىنى يوللاڭ، ئۇنى چۈشۈرۈپ بېرىمەن.",
+  inviteUnavailable: "بۇ ئۇلانمىدىكى ۋىدىيونى ئاچالمىدىم — مۇلازىمەت ھازىر جاۋاب قايتۇرمايۋاتىدۇ. بىر مىنۇتتىن كېيىن شۇ ئۇلانمىنى قايتا ئېچىڭ.",
+  fetchingInfo: "🔍 ۋىدىيو ئۇچۇرى ئېلىنىۋاتىدۇ...",
+  audioOnlyButton: "🎵 پەقەت ئاۋاز (mp3)",
+  photoButton: "📷 رەسىملەرنى چۈشۈرۈش",
+  slideshowButton: "🎞 رەسىم كۆرسەتمىسى (ۋىدىيو)",
+  galleryButton: "📷+🎞 رەسىملەر ۋە رەسىم كۆرسەتمىسى",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nسۈپەتنى تاللاڭ:`,
+  sessionExpired: "سېئانس ۋاقتى توشتى — ئۇلانمىنى قايتا يوللاڭ",
+  downloading: "⏬ چۈشۈرۈلۈۋاتىدۇ، بۇ بىر-ئىككى مىنۇت ۋاقىت ئېلىشى مۇمكىن...",
+  downloadFailed: "چۈشۈرۈش مەغلۇپ بولدى",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ چۈشۈرۈلۈۋاتىدۇ: ${percent}%${eta ? ` · ${eta} قالدى` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ تاماملىنىشقا ئاز قالدى — ھۆججەت بىرىكتۈرۈلۈۋاتىدۇ...",
+  converting: (percent) => `⚙️ ئايلاندۇرۇلۇۋاتىدۇ: ${percent}%`,
+  etaUnderMinute: "بىر مىنۇتتىن ئاز",
+  etaMinutes: (minutes) => `~${minutes} مىنۇت`,
+  etaHours: (hours, minutes) => `~${hours} سائەت${minutes ? ` ${minutes} مىنۇت` : ""}`,
+  downloadTimeout: "چۈشۈرۈش بەك ئۇزۇن ۋاقىت ئالدى — ۋىدىيو ناھايىتى ئېغىردەك قىلىدۇ. تۆۋەنرەك سۈپەتنى سىناپ بېقىڭ.",
+  downloadInterrupted: "⚠️ بوت يېڭىلاش ئۈچۈن قايتا قوزغىلىۋاتىدۇ — چۈشۈرۈشىڭىز ئۈزۈلۈپ قالدى. بىر مىنۇتتىن كېيىن ئۇلانمىنى قايتا يوللاڭ.",
+  fileTooBig: (mb, url) =>
+    `ھۆججەت چوڭ چىقتى (${mb} MB) — Telegram بوتنىڭ ئۇنى يوللىشىغا يول قويمايدۇ.\nبۇ يەردىن چۈشۈرۈڭ: ${url}`,
+  sendingFile: "📤 ھۆججەت يوللىنىۋاتىدۇ...",
+  sendingAlbum: (count) => `📤 بۇ يوللانمىدا بىر قانچە ھۆججەت (${count}) بار — ئالبوم قىلىپ يوللاۋاتىمەن...`,
+  failedPrefix: "❌ مەغلۇپ بولدى: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `مەنبە: ${sourceUrl}\n` +
+        "ۋىدىيونىڭ بارلىق ھوقۇقى ئاپتورىغا مەنسۇپ.\n" +
+        "‎@VideonerBot ئارقىلىق ھەقسىز چۈشۈرۈلدى",
+      `📣 تۈر خەۋەرلىرى: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 ھەمبەھىرلەش: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `چۈشۈرۈش ئۈچۈن قانىلىمىزغا مۇشتەرى بولۇڭ: ${channel} — بۇ بىردىنبىر شەرت، مۇلازىمەت ھەقسىز بولۇپ قالىدۇ.\n\n` +
+    "مۇشتەرى بولۇپ، «مۇشتەرى بولدۇم» نى بېسىڭ.",
+  openChannelButton: "📣 قانالنى ئېچىش",
+  checkSubscriptionButton: "مۇشتەرى بولدۇم",
+  subscribeThanks: "رەھمەت! ئەمدى ماڭا ۋىدىيو ئۇلانمىسىنى يوللاڭ.",
+  subscribeThanksResuming: "رەھمەت! ئۇلانمىڭىزنى ھازىرلا بىر تەرەپ قىلىمەن.",
+  subscribeStillMissing: "مۇشتەرى بولغىنىڭىزنى تېخى كۆرمىدىم. مۇشتەرى بولۇپ، قايتا بېسىڭ.",
+  channelNotice: (channel) => `\n\nبۇ يوللانمىنىڭ ئۇلانمىسى ${channel} قانىلىدا كۆرۈنىدۇ — نامسىز، ئىسمىڭىز كۆرسىتىلمەيدۇ.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "بۇ ۋە باشقا ھەرقانداق ۋىدىيونى ھەقسىز چۈشۈرۈڭ: ‎@VideonerBot",
+  errorStoryNeedsId:
+    "مەلۇم بىر ھېكايىنىڭ ئۇلانمىسىنى يوللاڭ: ئۇنى Instagram ئەپىدە ئېچىپ، «ھەمبەھىرلەش ← ئۇلانمىنى كۆچۈرۈش» نى بېسىڭ.",
+  errorInstagramStory:
+    "Instagram ھېكايىلىرىنى پەقەت ھېساباتىغا كىرگەن كىشىلەرلا كۆرەلەيدۇ.",
+  errorLoginRequired:
+    "بۇ يوللانمىنى ھېساباتقا كىرمەي كۆرگىلى بولمايدۇ: سۇپا ئۇنى پەقەت " +
+    "ھېساباتىغا كىرگەن ئىشلەتكۈچىلەرگىلا كۆرسىتىدۇ. بۇ ئەھۋال شەخسىي يوللانمىلار، يېشى چەكلەنگەن مەزمۇنلار " +
+    "ۋە چەكلىك تاماشىبىنلار بىلەن ھەمبەھىرلەنگەن يوللانمىلاردا يۈز بېرىدۇ.\n\n" +
+    "ئاممىۋى يوللانمىلار ئاۋارىچىلىقسىز چۈشۈرۈلىدۇ — باشقا ئۇلانمىنى سىناپ بېقىڭ.",
+  errorUnsupportedPlatform:
+    "بۇ ئۇلانمىنى تونۇيالمىدىم — ئۇنىڭ YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، Rutube، OK.ru، Pinterest ياكى Threads تىكى ۋىدىيونىڭ بىۋاسىتە ئۇلانمىسى ئىكەنلىكىنى جەزملەڭ.",
+  errorFileTooLarge: "ھۆججەت 2 GB دىن چوڭ — Telegram بوتلارنىڭ ئۇنىڭدىن چوڭ ھۆججەت يوللىشىغا يول قويمايدۇ. ئۇنى تور بېكەتتە ياكى توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرۈڭ — كۇنۇپكىلار تۆۋەندە. ياكى ئۇلانمىنى قايتا يوللاپ، تۆۋەنرەك سۈپەتنى تاللاڭ.",
+  siteButton: "🌐 تور بېكەتتە چۈشۈرۈش",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ${limit} دىن ئېغىر سۈپەتلەر يوشۇرۇلدى: Telegram بوتلارنىڭ ئۇنىڭدىن چوڭ ھۆججەت يوللىشىغا يول قويمايدۇ. ئۇلارنى تور بېكەتتە ياكى توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرەلەيسىز — كۇنۇپكىلار تۆۋەندە.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ بۇ ۋىدىيو ئەڭ تۆۋەن سۈپەتتىمۇ (~${smallest}) Telegram ئۈچۈن بەك ئېغىر: Telegram بوتلارنىڭ 2 GB دىن چوڭ ھۆججەت يوللىشىغا يول قويمايدۇ. بۇ يەردە پەقەت ئاۋازىنىلا ئالالايسىز؛ ۋىدىيونى بولسا — تور بېكەتتە ياكى توركۆرگۈ قىستۇرمىسى ئارقىلىق (كۇنۇپكىلار تۆۋەندە).`,
+  errorFormatUnavailable: "بۇ ۋىدىيو ئۈچۈن بۇ سۈپەت يوق. ئۇلانمىنى قايتا يوللاڭ — نۆۋەتتىكى تىزىملىكنى كۆرسىتىمەن.",
+  errorNoVideoContent: "بۇ ئۇلانمىدا چۈشۈرگىلى بولىدىغان ۋىدىيو يوق — يوللانمىدا پەقەت رەسىملا باردەك قىلىدۇ.",
+  errorRegionBlocked:
+    "بۇ ۋىدىيو ئاپتورنىڭ دۆلىتىدىن سىرتتا چەكلەنگەن — سۇپا ئۇنى " +
+    "بىزنىڭ مۇلازىمېتىرىمىزغا بەرمەيدۇ. ئۇنى ئايلىنىپ ئۆتۈشنىڭ يولى يوق: چەكلىمە ئۇلار تەرەپتە." +
+    "\n\nباشقا ئۇلانمىلار ئادەتتىكىدەك چۈشۈرۈلىدۇ.",
+  errorRateLimited: "ئارقىمۇئارقا بەك كۆپ ئۇلانما — سەل ساقلاپ، قايتا يوللاڭ.",
+  errorYoutubeDailyLimit: (gb) => `سىز ئالدىنقى 24 سائەتتە YouTube تىن ${gb} GB دىن كۆپ چۈشۈردىڭىز — بۇ بوتنىڭ ھەر بىر ئادەم ئۈچۈن كۈندىلىك چەكلىمىسى. ئاخىرقى 24 سائەت ھېسابلىنىدۇ، شۇڭا سەل كېيىن YouTube نىڭ يېڭى ۋىدىيولىرىنى چۈشۈرەلەيسىز. باشقا سۇپىلار ئادەتتىكىدەك ئىشلەيدۇ.`,
+  playlistStoppedByLimit: (dropped) => `⏹ قويۇش تىزىملىكى توختىتىلدى: YouTube نىڭ كۈندىلىك چەكلىمىسىگە يەتتى. چۈشۈرۈلمىگەن ۋىدىيولار: ${dropped}. قويۇش تىزىملىكىنىڭ ئۇلانمىسىنى كېيىن قايتا يوللاڭ.`,
+  errorPlatformRefused:
+    "سۇپا بۇ ۋىدىيونى مۇلازىمېتىرىمىزغا بەرمىدى. بۇ ئەھۋال شەخسىي " +
+    "ياكى يېشى چەكلەنگەن يوللانمىلاردا يۈز بېرىدۇ، بەزىدە سۇپا " +
+    "زىيارەتنى ۋاقىتلىق چەكلەيدۇ. بىر قانچە مىنۇتتىن كېيىن قايتا سىناڭ.",
+  errorThreadsNoMedia:
+    "بۇ Threads يوللانمىسىدا ۋىدىيو ياكى رەسىم كۆرۈنمەيدۇ. ياكى بۇ پەقەت تېكىستلىك يوللانما، ياكى " +
+    "Threads ئۇنىڭ مېدىياسىنى پەقەت ھېساباتىغا كىرگەن ئىشلەتكۈچىلەرگىلا كۆرسىتىدۇ — بۇنداق يوللانمىلارنى ھېساباتقا كىرمەي چۈشۈرگىلى بولمايدۇ.",
+  extensionHint:
+    "\n\n💻 ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرەلەيسىز: " +
+    "ئۇ سۇپىدىكى ئۆز ھېساباتىڭىز ئارقىلىق چۈشۈرىدۇ، ھېچقانداق پارول ياكى cookies توركۆرگۈڭىزدىن سىرتقا چىقمايدۇ.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 بۇنداق يوللانمىلارنى چۈشۈرۈش ئۈچۈن ${platform} ھېساباتىڭىزنى بوتقا باغلاڭ — پەقەت بىر قېتىم. ئۇنىڭدىن كېيىن بوت سىز كۆرەلەيدىغان ھەممىنى چۈشۈرىدۇ: شەخسىي يوللانمىلار، Reels ۋە ھېكايىلەرنى، تېلېفونىڭىزدىنمۇ. قانداق قىلىشنى تۆۋەندىكى كۇنۇپكا كۆرسىتىدۇ.${withExtension ? "\n\n💻 ياكى ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرۈڭ." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ باغلانغان ${platform} ھېساباتىڭىز بۇ يوللانمىنى ئاچالمىدى. كىرىش ئىناۋەتسىز بولۇپ قالغان بولۇشى مۇمكىن — ھېساباتنى قايتا باغلاڭ. ياكى بۇ ھېساباتنىڭ بۇ يوللانمىنى كۆرۈش ھوقۇقى يوق.${withExtension ? "\n\n💻 ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىقمۇ چۈشۈرەلەيسىز." : ""}`,
+  connectAccountButton: "🔑 ھېسابات باغلاش",
+  reconnectAccountButton: "🔑 قايتا باغلاش",
+  extensionButton: "🧩 قىستۇرما ئارقىلىق چۈشۈرۈش",
+  extensionCommand:
+    "🧩 توركۆرگۈڭىز ئۈچۈن Videoner: ۋىدىيو بېتىدىلا «چۈشۈرۈش» كۇنۇپكىسى — YouTube، Instagram، TikTok، VK، ھېساباتىڭىزدىكى شەخسىي ۋىدىيولار ۋە GetCourse دەرسلىرى.\n\nكومپيۇتېردىكى Chrome، Edge، Opera، Yandex Browser ۋە Firefox ئۈچۈن.",
+  extensionPageButton: "🧩 قىستۇرمىنى ئورنىتىش",
+  addToGroupButton: "👥 گۇرۇپپىغا قوشۇش",
+  newsButton: "📣 تۈر خەۋەرلىرى",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 تۈر خەۋەرلىرى: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ بۇ گۇرۇپپىدىكى بوت تەڭشەكلىرى\n\n" +
+    `🗑 ئۇلانما ئۇچۇرىنى ئۆچۈرۈش: ${s.deleteLinks ? "ھەئە" : "ياق"}\n` +
+    "ۋىدىيو يوللانغاندىن كېيىن، پەقەت ئۇلانمىلا بار ئۇچۇر ئۆچۈرۈلىدۇ — سۆھبەتتە ھەمبەھىرلىگۈچىنىڭ ئىسمى بىلەن ۋىدىيولا قالىدۇ.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ ھازىر ئۇچۇرلارنى ئۆچۈرەلمەيمەن: مېنى «ئۇچۇرلارنى ئۆچۈرۈش» ھوقۇقى بار باشقۇرغۇچى قىلىڭ.\n"
+      : "") +
+    `\n✍️ ۋىدىيو ئاستىدىكى تېكىست: ${{ full: "تولۇق", short: "ماۋزۇ ۋە مەنبە", none: "تېكىستسىز" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 سۈپەت: ${s.quality === "max" ? "Telegram قوبۇل قىلىدىغان ئەڭ يۇقىرى سۈپەت" : "ئۆلچەملىك (720p)"}\n` +
+    `\n⏱ ئۇزۇن ۋىدىيولار: ${s.longVideos ? "ھەرقانداق ئۇزۇنلۇقتا" : "پەقەت 15 مىنۇتقىچە"}\n` +
+    `\n🔑 كىم ھېساباتىنى باغلىيالايدۇ (ھېكايىلەر ۋە شەخسىي يوللانمىلار ئۈچۈن): ${s.cookiesBy === "all" ? "ھەرقانداق ئەزا" : "پەقەت باشقۇرغۇچىلار"}\n` +
+    `\n🌐 جاۋاب تىلى: ${s.language ? langName(s.language) : "ھەر بىر ئەزانىڭ ئۆز تىلى"}\n` +
+    "\nتەڭشەكلەرنى پەقەت گۇرۇپپا باشقۇرغۇچىلىرىلا ئۆزگەرتەلەيدۇ.",
+  settingsDeleteButton: (on) => `🗑 ئۇلانمىلارنى ئۆچۈرۈش: ${on ? "ھەئە" : "ياق"}`,
+  settingsCaptionButton: (style) => `✍️ تېكىست: ${{ full: "تولۇق", short: "قىسقا", none: "يوق" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 سۈپەت: ${mode === "max" ? "ئەڭ يۇقىرى" : "720p"}`,
+  settingsLongButton: (on) => `⏱ ئۇزۇن ۋىدىيولار: ${on ? "ھەئە" : "15 مىنۇتقىچە"}`,
+  settingsDoneButton: "✅ تامام",
+  settingsAdminsOnly: "تەڭشەكلەرنى پەقەت گۇرۇپپا باشقۇرغۇچىلىرىلا ئۆزگەرتەلەيدۇ.",
+  settingsGroupsOnly: "تەڭشەكلەر گۇرۇپپىلار ئۈچۈن: مېنى گۇرۇپپىغا قوشۇپ، ئۇ يەردە ‎/settings يوللاڭ.",
+  settingsFailed: "تەڭشەكلەرنى ساقلىغىلى بولمىدى، قايتا سىناڭ.",
+  settingsCookiesButton: (by) => `🔑 ھېسابات باغلاش: ${by === "all" ? "ھەممەيلەن" : "باشقۇرغۇچىلار"}`,
+  accountsIntro:
+    "🔑 باغلانغان ھېساباتلار\n\nبوت پەقەت ھېساباتىغا كىرگەن كىشىلەرلا كۆرەلەيدىغان نەرسىلەرنى (Instagram ھېكايىلىرى، شەخسىي يوللانمىلار) ھېساباتىڭىز ئارقىلىق چۈشۈرەلەيدۇ. ھەر بىر كىرىش ئۇ باغلانغان جايدا ئىشلەيدۇ: شەخسىي سۆھبەتتە باغلانغىنى سىزنىڭ چۈشۈرۈشلىرىڭىز ئۈچۈن، جۈملىدىن ئۆز ھېساباتى يوق گۇرۇپپىلاردىكى ئۆزىڭىزنىڭ ئۇلانمىلىرى ئۈچۈن ئىشلەيدۇ؛ گۇرۇپپىغا باغلانغىنى شۇ گۇرۇپپىنىڭ بارلىق ئەزالىرى ئۈچۈن ئىشلەيدۇ.",
+  accountsHowTo:
+    "قانداق باغلاش:\n1. ئەڭ ئاسان يولى: كومپيۇتېردىكى Videoner قىستۇرمىسى — سۇپىنىڭ تور بېكىتىدە ھېساباتىڭىزغا كىرىڭ، Videoner كۆزنىكىنى ئېچىڭ، «🔑 … ھېساباتىڭىزنى بوتقا باغلاڭ» نى بېسىپ، كودنى ماڭا يوللاڭ. گۇرۇپپا ئۈچۈن شۇ گۇرۇپپىدا ‎/connect CODE يوللاڭ.\n2. ياكى ماڭا cookies.txt ھۆججىتىنى (توركۆرگۈدىن چىقىرىلغان cookies) يوللاڭ، ياكى ئۇنىڭ تېكىستىنى ئۇچۇر قىلىپ چاپلاڭ.\n3. Android تېلېفونىدىن — Firefox ۋە Cookie-Editor قىستۇرمىسى ئارقىلىق: https://videoner.download/ug/blog/android-firefox",
+  accountsWarning:
+    "⚠️ سۇپىلار ئاپتوماتىك چۈشۈرۈشنى ياقتۇرمايدۇ ۋە ھېساباتنى چەكلىشى ياكى توسۇۋېتىشى مۇمكىن. ئاساسلىق ھېساباتىڭىزنى ئەمەس، قوشۇمچە ھېساباتنى باغلىغىنىڭىز ياخشى. cookies شىفىرلانغان ھالدا ساقلىنىدۇ، پەقەت چۈشۈرۈش ئۈچۈنلا ئىشلىتىلىدۇ ۋە تۆۋەندىكى كۇنۇپكىلار ئارقىلىق ئۆچۈرۈلىدۇ.",
+  accountsNone: "تېخى ھېچنېمە باغلانمىغان.",
+  accountsGroupTitle: "🔑 بۇ گۇرۇپپىغا باغلانغان ھېساباتلار",
+  accountsGroupHowTo:
+    "پۈتۈن گۇرۇپپا ئۈچۈن ھېسابات باغلاش: Videoner قىستۇرمىسىدىكى «🔑 … ھېساباتىڭىزنى بوتقا باغلاڭ» كۇنۇپكىسى ئارقىلىق كود ئېلىپ، بۇ يەرگە ‎/connect CODE يوللاڭ. ئەگەر ھېساباتنى پەقەت شەخسىي سۆھبىتىڭىزدىلا باغلىغان بولسىڭىز، بوت ئۇنى بۇ يەردە ئۆزىڭىزنىڭ ئۇلانمىلىرى ئۈچۈن ئىشلىتىدۇ. باغلىنىشلىرىڭىز: ‎@VideonerBot بىلەن شەخسىي سۆھبەتتە ‎/accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ كىرىش ئىشلىمەيۋاتىدۇ)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ كىرىش ئىشلىمەيۋاتىدۇ)"}`,
+  accountsWhereHere: "شەخسىي سۆھبەت",
+  accountsWhereGroup: (title) => `«${title}» گۇرۇپپىسى`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 بارلىق باغلىنىشلىرىمنى ئۆچۈرۈش",
+  accountsDeleted: "ئۆچۈرۈلدى.",
+  accountsDeletedAll: (n) => `ئۆچۈرۈلگەن باغلىنىشلار: ${n}.`,
+  accountsNotAllowed: "ئۇنى پەقەت باغلىغان كىشى ياكى گۇرۇپپا باشقۇرغۇچىسىلا ئۆچۈرەلەيدۇ.",
+  connectUsage:
+    "‎/connect CODE يوللاڭ. كومپيۇتېردىكى Videoner قىستۇرمىسىدىكى «🔑 … ھېساباتىڭىزنى بوتقا باغلاڭ» كۇنۇپكىسى سىزگە كود بېرىدۇ. باغلىنىشلىرىڭىز: ‎/accounts.",
+  connectOnlyAdmins: "بۇ گۇرۇپپىغا پەقەت باشقۇرغۇچىلارلا ھېسابات باغلىيالايدۇ (قاراڭ: ‎/settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} باغلاندى. ئەمدى بوت پەقەت ھېساباتىغا كىرگەن كىشىلەرلا كۆرەلەيدىغان نەرسىلەرنىمۇ چۈشۈرىدۇ. كۆرۈش ياكى ئۆچۈرۈش: ‎/accounts.\n\n⚠️ سۇپا ئاپتوماتىك چۈشۈرۈش سەۋەبىدىن ھېساباتنى چەكلىشى مۇمكىن — قوشۇمچە ھېسابات ئىشلەتكىنىڭىز ياخشى.`,
+  connectWhereGroup: "بۇ گۇرۇپپىغا",
+  connectWhereHere: "شەخسىي سۆھبەت ۋە inline ھالىتىدىكى چۈشۈرۈشلىرىڭىز ئۈچۈن",
+  connectCodeNotFound: "كود تېپىلمىدى ياكى ۋاقتى ئۆتۈپ كەتتى (كودلار 10 مىنۇت كۈچكە ئىگە). Videoner قىستۇرمىسىدىن يېڭى كود ئېلىڭ.",
+  connectRejectedNoSession: "بۇ cookies ئىچىدە ھېساباتقا كىرىش ئۇچۇرى يوق. سۇپىنىڭ تور بېكىتىدە ھېساباتىڭىزغا كىرىپ، cookies ھۆججىتىنى قايتا چىقىرىڭ.",
+  connectRejectedUnknown: "قوللىنىدىغان سۇپىلارغا تەۋە cookies تېپىلمىدى: Instagram، Facebook، YouTube، X، VK، TikTok.",
+  connectUnavailable: "ھېسابات باغلاش ئىقتىدارى تېخى يوق.",
+  connectFailed: "باغلىغىلى بولمىدى، قايتا سىناڭ.",
+  connectFileTooBig: "ھۆججەت بەك چوڭ — پەقەت لازىملىق تور بېكەتكە تەۋە cookies نىلا چىقىرىڭ.",
+  connectNotAnonymous: "ھېساباتنى گۇرۇپپا نامىدا نامسىز ئەمەس، ئۆز نامىڭىزدا باغلاڭ: بولمىسا باشقۇرغۇچىلارنىڭ باغلىنىشلىرى ئارىلىشىپ كېتىدۇ. كودنى بىكار قىلدىم — يېڭىسىنى ئېلىڭ.",
+  connectCodeInGroup:
+    "گۇرۇپپا سۆھبىتىگە يوللانغان باغلاش كودىنى باشقىلارمۇ كۆرەلەيدۇ — ئۇنى بىكار قىلىپ، ئۇچۇرنى ئۆچۈرۈۋەتتىم. يېڭى كود ئېلىپ، ئۇنى ‎/connect CODE شەكلىدە يوللاڭ: بۇ بۇيرۇق ئۇچۇرىنى دەرھال ئۆچۈرىمەن.",
+  groupWelcome:
+    "👋 ياخشىمۇسىز! بۇ سۆھبەتكە TikTok، Instagram، YouTube، VK ۋە باشقا سۇپىلاردىكى ۋىدىيولارنىڭ ئۇلانمىسىنى يوللاڭ — ۋىدىيونىڭ ئۆزى بىلەن جاۋاب بېرىمەن.\n\n" +
+    "15 مىنۇتقىچە بولغان قىسقا ۋىدىيولارنى ھېچقانداق بۇيرۇقسىز ئۆزۈم چۈشۈرىمەن، باشقا ۋاقىتلاردا جىم تۇرىمەن.\n\n⚙️ گۇرۇپپا باشقۇرغۇچىلىرى مېنى ‎/settings ئارقىلىق تەڭشىيەلەيدۇ: ئۇلانما ئۇچۇرلىرىنى ئۆچۈرۈش، تېكىست ئۇسلۇبى، سۈپەت، ئۇزۇن ۋىدىيولار ۋە تىل.\n\n⚡ ئاۋازنى ئېلىش ئۈچۈن ئۇلانمىدىن كېيىن -audio، ئەڭ ياخشى سۈپەت ئۈچۈن -hd قوشۇڭ.\n\n📣 تۈر خەۋەرلىرى: ‎@videonerdownload",
+  errorTooLong: "ۋىدىيو بەك ئۇزۇن — بۇنداق ئۇزۇن ۋىدىيولارنى ھازىرچە چۈشۈرەلمەيمىز.",
+  errorUnknown: "بۇ ۋىدىيونى چۈشۈرگىلى بولمىدى. سەل كېيىن قايتا سىناڭ ياكى باشقا ئۇلانما يوللاڭ.",
+  inlineHintButton: "بوتقا ئۇلانما يوللاش",
+  inlineResultTitle: "⬇️ ۋىدىيو چۈشۈرۈش",
+  inlineResultDescription: "ۋىدىيو بىۋاسىتە مۇشۇ سۆھبەتكە يوللىنىدۇ",
+  inlinePlaceholder: "⏬ چۈشۈرۈلۈۋاتىدۇ، بۇ بىر-ئىككى مىنۇت ۋاقىت ئېلىشى مۇمكىن...",
+  inlineOpenBot: "بوتنى ئېچىش",
+  inlineOnlySingleVideo:
+    "بۇ ھالەت پەقەت بىرلا ۋىدىيو يوللايدۇ. كۆپ ھۆججەتلىك يوللانما ياكى رەسىملەر ئۈچۈن ئۇلانمىنى بوتقا شەخسىي سۆھبەتتە يوللاڭ.",
+  inlineSubscribeRequired: (channel: string) =>
+    `چۈشۈرۈش ئۈچۈن مۇشتەرى بولۇڭ: ${channel}، ئاندىن قايتا سىناڭ.`,
+  inlineRateLimited: "ئارقىمۇئارقا بەك كۆپ تەلەپ. بىر مىنۇت ساقلاپ، قايتا سىناڭ.",
+  queueRest: (count) => `\n\n📋 ئۆچىرەتتە قالغان ئۇلانمىلار: ${count}. بۇنىڭدىن كېيىن ئۇلارنى بىرمۇبىر كۆرسىتىمەن.`,
+  queuedOne: (position) =>
+    `📋 ئۇلانما ئۆچىرەتكە قوشۇلدى، نومۇرى ${position}. ئالدى بىلەن نۆۋەتتىكىسىنى تاماملايلى — ئاندىن ئۇنىڭ ئۈچۈن سۈپەت تاللاشنى كۆرسىتىمەن.`,
+  queuedMany: (added, waiting) =>
+    `📋 ئۆچىرەتكە قوشۇلغان ئۇلانمىلار: ${added}. جەمئىي ساقلاۋاتقانلىرى: ${waiting}. نۆۋەتتىكىسىدىن كېيىن ئۇلارنى بىرمۇبىر كۆرسىتىمەن.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "بۇ ئۇلانما ئاللىقاچان ئۆچىرەتتە — ئىككى قېتىم قوشمايمەن."
+      : `ئاللىقاچان ئۆچىرەتتە بار ئۇلانمىلار ئىككى قېتىم قوشۇلمايدۇ (تەكرارلار: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `ئۆچىرەتكە ئەڭ كۆپ بولغاندا ${limit} ئۇلانما سىغىدۇ — ئارتۇقلىرى قوشۇلمىدى (${rejected}). ئۆچىرەت ئىلگىرىلىگەندە ئۇلارنى يوللاڭ.`,
+  skipButton: "✖️ چۈشۈرمەسلىك",
+  skipped: "⏭ بۇ ئۇلانمىدىن ئاتلاپ ئۆتتۈم.",
+  chooseTimedOut: "⌛ 30 مىنۇت ئىچىدە سۈپەت تاللانمىدى — بۇ ئۇلانمىدىن ئاتلاپ ئۆتىمەن.",
+  queueLostOnRestart: (count) =>
+    `⚠️ بوت يېڭىلاش ئۈچۈن قايتا قوزغىلىۋاتىدۇ — ئۆچىرەت تازىلاندى (ئۇلانمىلار: ${count}). بىر مىنۇتتىن كېيىن ئۇلارنى قايتا يوللاڭ.`,
+  subtitlesButton: "📝 ئاستى خەت",
+  subtitlesBack: "⬅️ سۈپەتكە قايتىش",
+  subtitlesAuto: "ئاپتوماتىك",
+  subtitlesChoose: "ئاستى خەت تىلىنى تاللاڭ",
+  subtitlesPreparing: "📝 ئاستى خەت تەييارلىنىۋاتىدۇ...",
+  subtitlesFailed: "بۇ تىلدىكى ئاستى خەتنى چۈشۈرگىلى بولمىدى. باشقا تىلنى سىناڭ.",
+  subtitlesBusy: "YouTube ھازىر ئاستى خەت بەرمەيۋاتىدۇ — بىر قانچە مىنۇتتىن كېيىن قايتا سىناڭ.",
+  playlistFound: (title, count) =>
+    `📃 قويۇش تىزىملىكى${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} ۋىدىيو.\nئۇلارنى بىرمۇبىر چۈشۈرىمەن. قايسى فورماتتا؟`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 ئەڭ ياخشى سۈپەت",
+  playlistAudioButton: "🎵 پەقەت ئاۋاز (mp3)",
+  playlistNoButton: "✖️ ياق، رەھمەت",
+  playlistQueued: (count) =>
+    `📃 قويۇش تىزىملىكىدىن ئۆچىرەتكە قوشۇلغان ۋىدىيولار: ${count}. ئۇلارنى بىرمۇبىر يوللايمەن. تۆۋەندىكى كۇنۇپكا ياكى ‎/stop ئارقىلىق توختىتىڭ.`,
+  playlistFailed: "قويۇش تىزىملىكىنى ئاچقىلى بولمىدى — ئۇ شەخسىي بولۇشى مۇمكىن. يەككە ۋىدىيونىڭ ئۇلانمىسىنى يوللاڭ.",
+  stopButton: "⏹ توختىتىش",
+  stopped: (dropped) => `⏹ توختىتىلدى.${dropped ? ` ئۆچىرەتتىن ئۆچۈرۈلگەن ئۇلانمىلار: ${dropped}.` : ""}`,
+  nothingToStop: "ھازىر ھېچنېمە چۈشۈرۈلمەيۋاتىدۇ.",
+  languageChoose: "🌐 بوت تىلىنى تاللاڭ. «ئاپتوماتىك» Telegram تىلىڭىزغا ئەگىشىدۇ.",
+  languageChooseGroup: "🌐 بۇ گۇرۇپپىدىكى بوتنىڭ جاۋاب تىلى. «ئاپتوماتىك» — ھەر بىر ئەزانىڭ Telegram تىلى.",
+  languageAuto: "ئاپتوماتىك — Telegram دىكىدەك",
+  languageAutoGroup: "ئاپتوماتىك — ھەر بىر ئەزانىڭ ئۆز تىلى",
+  languageSaved: (name) => `✅ بوت تىلى: ${name}. ‎/language ئارقىلىق ئۆزگەرتىڭ.`,
+  languageSavedAuto: "✅ بوت Telegram تىلىڭىزغا ئەگىشىدۇ. ‎/language ئارقىلىق ئۆزگەرتىڭ.",
+  settingsLanguageButton: (name) => `🌐 تىل: ${name ?? "ئاپتوماتىك"}`,
+  settingsBack: "⬅️ تەڭشەكلەرگە قايتىش",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -8631,4 +8851,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug };

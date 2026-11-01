@@ -309,6 +309,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Daxistin û rêzê rawestîne" },
     { command: "language", description: "Zimanê botê" },
   ],
+  ug: [
+    { command: "start", description: "بوتنى قانداق ئىشلىتىش" },
+    { command: "extension", description: "توركۆرگۈ قىستۇرمىسى" },
+    { command: "accounts", description: "ھېكايىلەر ۋە شەخسىي يوللانمىلار ئۈچۈن ھېساباتلىرىڭىز" },
+    { command: "connect", description: "قىستۇرمىدىكى كود ئارقىلىق ھېسابات باغلاش" },
+    { command: "stop", description: "چۈشۈرۈش ۋە ئۆچىرەتنى توختىتىش" },
+    { command: "language", description: "بوت تىلى" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -579,6 +587,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Hesabekî bi kodê bi vê komê ve girê bide" },
     { command: "language", description: "Zimanê botê di vê komê de (ji bo rêveberan)" },
     { command: "start", description: "Bot di komê de çawa dixebite" },
+  ],
+  ug: [
+    { command: "settings", description: "بۇ گۇرۇپپىدىكى بوت تەڭشەكلىرى (باشقۇرغۇچىلار)" },
+    { command: "accounts", description: "بۇ گۇرۇپپىغا باغلانغان ھېساباتلار" },
+    { command: "connect", description: "كود ئارقىلىق بۇ گۇرۇپپىغا ھېسابات باغلاش" },
+    { command: "language", description: "بۇ گۇرۇپپىدىكى بوت تىلى (باشقۇرغۇچىلار)" },
+    { command: "start", description: "بوت گۇرۇپپىدا قانداق ئىشلەيدۇ" },
   ],
 };
 

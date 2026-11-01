@@ -475,6 +475,18 @@ export const blogUi: Record<
     readFull: "Hemû nivîsê li malperê bixwîne",
     dateLocale: "ku-TR",
   },
+  ug: {
+    title: "Videoner بلوگى",
+    description: "تۈر خەۋەرلىرى: بوت، تور بېكەت ۋە قىستۇرمىدا نېمە يېڭىلىق بار ۋە ئۇلارنى قانداق ئىشلىتىش.",
+    readMore: "ئوقۇش",
+    back: "بارلىق ماقالىلەر",
+    allPosts: "بلوگ",
+    channel: "Telegram دىكى خەۋەرلەر",
+    channelCta: "تۈر خەۋەرلىرى Telegram دىكى ‎@videonerdownload قانىلىدا.",
+    readOnSite: "تور بېكەتتە ئوقۇش",
+    readFull: "تولۇق ماقالىنى تور بېكەتتە ئوقۇڭ",
+    dateLocale: "ug-CN-u-nu-latn",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

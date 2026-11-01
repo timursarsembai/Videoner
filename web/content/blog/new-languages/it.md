@@ -1,27 +1,27 @@
 ---
-title: Videoner ora parla 14 lingue
-summary: Il sito, il bot e l’estensione per il browser ora parlano otto lingue in più: cinese, hindi, indonesiano, swahili, tedesco, francese, italiano e portoghese.
+title: Videoner ora parla 25 lingue
+summary: Il sito, il bot e l’estensione per browser ora parlano 19 lingue in più, dal cinese e dall’hindi al tedesco, al turco e al giapponese.
 date: 2026-11-01
 ---
-Videoner è ora disponibile in **14 lingue**. A inglese, spagnolo, russo, ucraino, kazako e arabo se ne aggiungono altre otto:
+Videoner è ora disponibile in **25 lingue**. A inglese, spagnolo, russo, ucraino, kazako e arabo se ne aggiungono altre 19:
 
-- **Cinese** (semplificato): [videoner.download/zh](https://videoner.download/zh)
-- **Hindi**: [videoner.download/hi](https://videoner.download/hi)
-- **Indonesiano**: [videoner.download/id](https://videoner.download/id)
-- **Swahili**: [videoner.download/sw](https://videoner.download/sw)
-- **Tedesco**: [videoner.download/de](https://videoner.download/de)
-- **Francese**: [videoner.download/fr](https://videoner.download/fr)
-- **Italiano**: [videoner.download/it](https://videoner.download/it)
-- **Portoghese** (brasiliano): [videoner.download/pt](https://videoner.download/pt)
+- **Asiatiche:** cinese (semplificato) — [/zh](https://videoner.download/zh), hindi — [/hi](https://videoner.download/hi), bengalese — [/bn](https://videoner.download/bn), urdu — [/ur](https://videoner.download/ur), giapponese — [/ja](https://videoner.download/ja), coreano — [/ko](https://videoner.download/ko), thailandese — [/th](https://videoner.download/th), vietnamita — [/vi](https://videoner.download/vi), indonesiano — [/id](https://videoner.download/id), tagalog — [/tl](https://videoner.download/tl)
+- **Asia centrale e Medio Oriente:** uzbeco — [/uz](https://videoner.download/uz), turco — [/tr](https://videoner.download/tr), persiano — [/fa](https://videoner.download/fa)
+- **Europee:** tedesco — [/de](https://videoner.download/de), francese — [/fr](https://videoner.download/fr), italiano — [/it](https://videoner.download/it), portoghese (brasiliano) — [/pt](https://videoner.download/pt), polacco — [/pl](https://videoner.download/pl)
+- **Africana:** swahili — [/sw](https://videoner.download/sw)
+
+Prima lo spagnolo c’era solo sul sito: ora lo parlano anche il bot e l’estensione.
 
 ## Cosa è tradotto
 
-- **Il sito**: tutte le pagine, gli articoli del blog e i documenti legali.
-- **Il bot**: tutti i messaggi, i pulsanti e il menu dei comandi. Se il tuo Telegram è impostato su una di queste lingue, il bot ti risponde da solo in quella lingua.
-- **L’estensione per il browser**: la finestra dell’estensione, il pulsante «Scarica» nelle pagine dei video e i messaggi di errore.
+- **Il sito**: tutte le pagine, gli articoli del blog e i documenti legali. Arabo, persiano e urdu vengono mostrati da destra a sinistra.
+- **Il bot**: tutti i messaggi, i pulsanti e il menu dei comandi. Se il tuo Telegram è impostato su una di queste lingue, il bot ti risponde automaticamente in quella lingua.
+- **L’estensione per browser**: la finestra dell’estensione, il pulsante «Scarica» nelle pagine dei video e i messaggi di errore.
 
 ## Come scegliere la lingua
 
 - Sul sito: il selettore della lingua nel menu in alto.
-- Nel bot: `/language`; in un gruppo, `/settings`.
+- Nel bot: `/language`; in un gruppo: `/settings`.
 - Nell’estensione: l’elenco delle lingue nella sua finestra.
+
+In tutti e tre i posti le lingue sono ora nello stesso ordine: in base al nome di ciascuna lingua nella lingua stessa.

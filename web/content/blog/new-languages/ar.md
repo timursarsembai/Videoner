@@ -1,27 +1,27 @@
 ---
-title: Videoner يتحدث الآن 14 لغة
-summary: أصبح الموقع والبوت وإضافة المتصفح متاحة بثماني لغات أخرى — الصينية والهندية والإندونيسية والسواحيلية والألمانية والفرنسية والإيطالية والبرتغالية.
+title: Videoner يتحدث الآن 25 لغة
+summary: أصبح الموقع والبوت وإضافة المتصفح تتحدث 19 لغة إضافية — من الصينية والهندية إلى الألمانية والتركية واليابانية.
 date: 2026-11-01
 ---
-أصبح Videoner متاحًا الآن بـ**14 لغة**. فإلى جانب الإنجليزية والإسبانية والروسية والأوكرانية والكازاخية والعربية، أُضيفت ثماني لغات أخرى:
+أصبح Videoner متاحًا الآن **بـ25 لغة**. فإلى جانب الإنجليزية والإسبانية والروسية والأوكرانية والكازاخية والعربية، أُضيفت 19 لغة أخرى:
 
-- **الصينية** (المبسّطة) — [videoner.download/zh](https://videoner.download/zh)
-- **الهندية** — [videoner.download/hi](https://videoner.download/hi)
-- **الإندونيسية** — [videoner.download/id](https://videoner.download/id)
-- **السواحيلية** — [videoner.download/sw](https://videoner.download/sw)
-- **الألمانية** — [videoner.download/de](https://videoner.download/de)
-- **الفرنسية** — [videoner.download/fr](https://videoner.download/fr)
-- **الإيطالية** — [videoner.download/it](https://videoner.download/it)
-- **البرتغالية** (البرازيلية) — [videoner.download/pt](https://videoner.download/pt)
+- **الآسيوية:** الصينية (المبسّطة) — [/zh](https://videoner.download/zh)، الهندية — [/hi](https://videoner.download/hi)، البنغالية — [/bn](https://videoner.download/bn)، الأردية — [/ur](https://videoner.download/ur)، اليابانية — [/ja](https://videoner.download/ja)، الكورية — [/ko](https://videoner.download/ko)، التايلاندية — [/th](https://videoner.download/th)، الفيتنامية — [/vi](https://videoner.download/vi)، الإندونيسية — [/id](https://videoner.download/id)، التاغالوغية — [/tl](https://videoner.download/tl)
+- **آسيا الوسطى والشرق الأوسط:** الأوزبكية — [/uz](https://videoner.download/uz)، التركية — [/tr](https://videoner.download/tr)، الفارسية — [/fa](https://videoner.download/fa)
+- **الأوروبية:** الألمانية — [/de](https://videoner.download/de)، الفرنسية — [/fr](https://videoner.download/fr)، الإيطالية — [/it](https://videoner.download/it)، البرتغالية (البرازيلية) — [/pt](https://videoner.download/pt)، البولندية — [/pl](https://videoner.download/pl)
+- **الأفريقية:** السواحيلية — [/sw](https://videoner.download/sw)
+
+كانت الإسبانية متاحة على الموقع فقط من قبل — والآن يتحدث بها البوت والإضافة أيضًا.
 
 ## ما الذي تُرجم
 
-- **الموقع** — جميع الصفحات ومقالات المدونة والمستندات القانونية.
-- **البوت** — جميع الرسائل والأزرار وقائمة الأوامر. إذا كانت لغة Telegram لديك إحدى هذه اللغات، فسيرد البوت بها تلقائيًا.
-- **إضافة المتصفح** — نافذة الإضافة وزر «تحميل» في صفحات الفيديو ورسائل الخطأ.
+- **الموقع** — كل الصفحات ومقالات المدونة والوثائق القانونية. تُعرض العربية والفارسية والأردية من اليمين إلى اليسار.
+- **البوت** — كل الرسائل والأزرار وقائمة الأوامر. إذا كانت لغة Telegram لديك إحدى هذه اللغات، فسيرد البوت بها تلقائيًا.
+- **إضافة المتصفح** — نافذة الإضافة، وزر «تحميل» في صفحات الفيديو، ورسائل الأخطاء.
 
 ## كيف تختار اللغة
 
-- في الموقع — مبدّل اللغة في القائمة العلوية.
+- على الموقع — مبدّل اللغة في القائمة العلوية.
 - في البوت — `/language`، وفي المجموعة — `/settings`.
 - في الإضافة — قائمة اللغات في نافذتها.
+
+أصبحت اللغات في الأماكن الثلاثة مرتبة بالترتيب نفسه: حسب اسم كل لغة بلغتها هي.

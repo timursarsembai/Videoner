@@ -1,23 +1,21 @@
 ---
-title: Videoner тепер 14 мовами
-summary: Сайт, бот і розширення для браузера заговорили ще вісьмома мовами — китайською, гінді, індонезійською, суахілі, німецькою, французькою, італійською та португальською.
+title: Videoner тепер розмовляє 25 мовами
+summary: Сайт, бот і розширення для браузера заговорили ще 19 мовами — від китайської та гінді до німецької, турецької та японської.
 date: 2026-11-01
 ---
-Videoner тепер доступний **14 мовами**. До англійської, іспанської, російської, української, казахської та арабської додалися ще вісім:
+Videoner тепер доступний **25 мовами**. До англійської, іспанської, російської, української, казахської та арабської додалися ще 19:
 
-- **китайська** (спрощена) — [videoner.download/zh](https://videoner.download/zh)
-- **гінді** — [videoner.download/hi](https://videoner.download/hi)
-- **індонезійська** — [videoner.download/id](https://videoner.download/id)
-- **суахілі** — [videoner.download/sw](https://videoner.download/sw)
-- **німецька** — [videoner.download/de](https://videoner.download/de)
-- **французька** — [videoner.download/fr](https://videoner.download/fr)
-- **італійська** — [videoner.download/it](https://videoner.download/it)
-- **португальська** (бразильська) — [videoner.download/pt](https://videoner.download/pt)
+- **азійські:** китайська (спрощена) — [/zh](https://videoner.download/zh), гінді — [/hi](https://videoner.download/hi), бенгальська — [/bn](https://videoner.download/bn), урду — [/ur](https://videoner.download/ur), японська — [/ja](https://videoner.download/ja), корейська — [/ko](https://videoner.download/ko), тайська — [/th](https://videoner.download/th), в'єтнамська — [/vi](https://videoner.download/vi), індонезійська — [/id](https://videoner.download/id), тагальська — [/tl](https://videoner.download/tl)
+- **Центральна Азія та Близький Схід:** узбецька — [/uz](https://videoner.download/uz), турецька — [/tr](https://videoner.download/tr), перська — [/fa](https://videoner.download/fa)
+- **європейські:** німецька — [/de](https://videoner.download/de), французька — [/fr](https://videoner.download/fr), італійська — [/it](https://videoner.download/it), португальська (бразильська) — [/pt](https://videoner.download/pt), польська — [/pl](https://videoner.download/pl)
+- **африканська:** суахілі — [/sw](https://videoner.download/sw)
+
+Іспанська раніше була лише на сайті — тепер нею розмовляють і бот, і розширення.
 
 ## Що перекладено
 
-- **Сайт** — усі сторінки, статті блогу та документи.
-- **Бот** — усі повідомлення, кнопки та меню команд. Якщо в Telegram вибрано одну з цих мов, бот сам відповідатиме нею.
+- **Сайт** — усі сторінки, статті блогу та юридичні документи. Арабська, перська та урду відображаються справа наліво.
+- **Бот** — усі повідомлення, кнопки та меню команд. Якщо у вашому Telegram вибрано одну з цих мов, бот сам відповідатиме нею.
 - **Розширення для браузера** — вікно розширення, кнопка «Завантажити» на сторінці відео та повідомлення про помилки.
 
 ## Як вибрати мову
@@ -25,3 +23,5 @@ Videoner тепер доступний **14 мовами**. До англійс�
 - На сайті — перемикач мови у верхньому меню.
 - У боті — `/language`, у групі — `/settings`.
 - У розширенні — список мов у його вікні.
+
+В усіх трьох місцях мови тепер ідуть в однаковому порядку: за назвою кожної мови нею самою.

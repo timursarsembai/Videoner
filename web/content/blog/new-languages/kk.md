@@ -1,23 +1,21 @@
 ---
-title: Videoner енді 14 тілде
-summary: Сайт, бот және браузер кеңейтімі тағы сегіз тілде сөйлей бастады — қытай, хинди, индонезия, суахили, неміс, француз, итальян және португал тілдерінде.
+title: Videoner енді 25 тілде сөйлейді
+summary: Сайт, бот және браузер кеңейтімі тағы 19 тілде сөйледі — қытай мен хиндиден неміс, түрік және жапон тілдеріне дейін.
 date: 2026-11-01
 ---
-Videoner енді **14 тілде** қолжетімді. Ағылшын, испан, орыс, украин, қазақ және араб тілдеріне тағы сегіз тіл қосылды:
+Videoner енді **25 тілде** қолжетімді. Ағылшын, испан, орыс, украин, қазақ және араб тілдеріне тағы 19 тіл қосылды:
 
-- **қытай тілі** (жеңілдетілген) — [videoner.download/zh](https://videoner.download/zh)
-- **хинди** — [videoner.download/hi](https://videoner.download/hi)
-- **индонезия тілі** — [videoner.download/id](https://videoner.download/id)
-- **суахили** — [videoner.download/sw](https://videoner.download/sw)
-- **неміс тілі** — [videoner.download/de](https://videoner.download/de)
-- **француз тілі** — [videoner.download/fr](https://videoner.download/fr)
-- **итальян тілі** — [videoner.download/it](https://videoner.download/it)
-- **португал тілі** (бразилиялық) — [videoner.download/pt](https://videoner.download/pt)
+- **Азия тілдері:** қытай (жеңілдетілген) — [/zh](https://videoner.download/zh), хинди — [/hi](https://videoner.download/hi), бенгал — [/bn](https://videoner.download/bn), урду — [/ur](https://videoner.download/ur), жапон — [/ja](https://videoner.download/ja), корей — [/ko](https://videoner.download/ko), тай — [/th](https://videoner.download/th), вьетнам — [/vi](https://videoner.download/vi), индонезия — [/id](https://videoner.download/id), тагал — [/tl](https://videoner.download/tl)
+- **Орталық Азия және Таяу Шығыс:** өзбек — [/uz](https://videoner.download/uz), түрік — [/tr](https://videoner.download/tr), парсы — [/fa](https://videoner.download/fa)
+- **Еуропа тілдері:** неміс — [/de](https://videoner.download/de), француз — [/fr](https://videoner.download/fr), итальян — [/it](https://videoner.download/it), португал (бразилиялық) — [/pt](https://videoner.download/pt), поляк — [/pl](https://videoner.download/pl)
+- **Африка тілі:** суахили — [/sw](https://videoner.download/sw)
+
+Испан тілі бұрын тек сайтта болатын — енді бот пен кеңейтім де осы тілде сөйлейді.
 
 ## Не аударылды
 
-- **Сайт** — барлық беттер, блог мақалалары және құжаттар.
-- **Бот** — барлық хабарламалар, батырмалар және командалар мәзірі. Telegram-да осы тілдердің бірі таңдалған болса, бот сол тілде өзі жауап береді.
+- **Сайт** — барлық беттер, блог мақалалары және құқықтық құжаттар. Араб, парсы және урду тілдері оңнан солға қарай көрсетіледі.
+- **Бот** — барлық хабарламалар, батырмалар және командалар мәзірі. Егер Telegram-ыңызда осы тілдердің бірі таңдалған болса, бот сол тілде өзі жауап береді.
 - **Браузер кеңейтімі** — кеңейтім терезесі, видео бетіндегі «Жүктеп алу» батырмасы және қате туралы хабарламалар.
 
 ## Тілді қалай таңдауға болады
@@ -25,3 +23,5 @@ Videoner енді **14 тілде** қолжетімді. Ағылшын, исп
 - Сайтта — жоғарғы мәзірдегі тіл ауыстырғышы.
 - Ботта — `/language`, топта — `/settings`.
 - Кеңейтімде — оның терезесіндегі тілдер тізімі.
+
+Үш жерде де тілдер енді бір ретпен тұр: әр тілдің өз тіліндегі атауы бойынша.

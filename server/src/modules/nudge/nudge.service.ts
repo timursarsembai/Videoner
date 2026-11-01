@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('am')) {
+      return (
+        'ሰላም! ይህን ቦት ጀምረዋል፣ ግን እስካሁን ምንም አላወረዱም — ' +
+        'ከየት እንደሚጀምሩ ግልጽ ላይሆን ይችላል።\n\n' +
+        'አንድ እርምጃ ብቻ ነው፦ የቪዲዮ ሊንክ እዚህ ይላኩ፣ ' +
+        'ለምሳሌ https://youtube.com/watch?v=jNQXAC9IVRw — እኔም ' +
+        'ፋይሉን በግማሽ ደቂቃ ገደማ እልክልዎታለሁ።\n\n' +
+        'YouTube፣ TikTok፣ Instagram፣ Facebook፣ Twitter/X፣ Vimeo፣ VK፣ ' +
+        'Rutube፣ OK.ru፣ Pinterest እና Threads ይሰራሉ። ሙሉ በሙሉ ነፃ ነው፣ በማንኛውም ' +
+        'ጥራት — እስከ 4K፣ ለHD ተጨማሪ ክፍያ የለም።\n\n' +
+        'የሆነ ነገር ካልሰራ በቀላሉ እዚሁ ይመልሱ። ይህ ' +
+        'ብቸኛው ማስታወሻ ነው፣ ከዚህ በኋላ አላስቸግርዎትም።'
+      );
+    }
+
     if (code.startsWith('tl') || code.startsWith('fil')) {
       return (
         'Hello! Sinimulan mo ang bot na ito pero wala ka pang na-download — ' +

@@ -205,6 +205,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Ihinto ang mga download at ang queue" },
     { command: "language", description: "Wika ng bot" },
   ],
+  am: [
+    { command: "start", description: "ቦቱን እንዴት መጠቀም እንደሚቻል" },
+    { command: "extension", description: "የአሳሽ ቅጥያ" },
+    { command: "accounts", description: "ለስቶሪዎች እና ለግል ልጥፎች የእርስዎ መለያዎች" },
+    { command: "connect", description: "ከቅጥያው በሚገኝ ኮድ መለያ ያገናኙ" },
+    { command: "stop", description: "ማውረዱን እና ወረፋውን ያቁሙ" },
+    { command: "language", description: "የቦቱ ቋንቋ" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -384,6 +392,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "I-connect ang account sa group na ito gamit ang code" },
     { command: "language", description: "Wika ng bot sa group na ito (para sa mga admin)" },
     { command: "start", description: "Paano gumagana ang bot sa group" },
+  ],
+  am: [
+    { command: "settings", description: "የዚህ ቡድን የቦት ቅንብሮች (ለአስተዳዳሪዎች)" },
+    { command: "accounts", description: "ከዚህ ቡድን ጋር የተገናኙ መለያዎች" },
+    { command: "connect", description: "በኮድ ከዚህ ቡድን ጋር መለያ ያገናኙ" },
+    { command: "language", description: "በዚህ ቡድን ውስጥ የቦቱ ቋንቋ (ለአስተዳዳሪዎች)" },
+    { command: "start", description: "ቦቱ በቡድን ውስጥ እንዴት እንደሚሰራ" },
   ],
 };
 

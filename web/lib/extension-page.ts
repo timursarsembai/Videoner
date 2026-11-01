@@ -1287,6 +1287,58 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "หน้าแรก",
   },
+  am: {
+    metaTitle: "የVideoner ብሮውዘር ኤክስቴንሽን",
+    title: "Videoner ለብሮውዘርዎ",
+    summary:
+      "ኤክስቴንሽኑ በቪዲዮ ገጾች ላይ «አውርድ» ቁልፍ ይጨምራል፤ በቀጥታም በብሮውዘርዎ ውስጥ ያወርዳል። Instagram፣ Facebook፣ TikTok እና Threads በራስዎ መግቢያ ይወርዳሉ — ስለዚህ በመለያዎ የሚያዩአቸው የግል ፖስቶችም ሆኑ ፕላትፎርሙ ለሰርቨራችን ያልሰጣቸው ቪዲዮዎች ይወርዳሉ።",
+    failedVideo: "በድረ-ገጹ ወይም በቦቱ ማውረድ ያልተቻለው ቪዲዮ፦",
+    failedVideoHint:
+      "ኤክስቴንሽኑን ይጫኑ፣ በዚሁ ብሮውዘር ወደ ፕላትፎርሙ ይግቡ፣ ቪዲዮውን ይክፈቱና ከታች በቀኝ ጥግ ያለውን «አውርድ» ይጫኑ።",
+    openVideo: "ቪዲዮውን ይክፈቱ",
+    version: "ስሪት",
+    browsersTitle: "የሚሰራባቸው ቦታዎች",
+    browsers:
+      "Google Chrome፣ Yandex Browser፣ Microsoft Edge፣ Opera፣ Brave፣ Vivaldi እና ሌሎች በChromium ላይ የተመሰረቱ ብሮውዘሮች — በኮምፒውተር ላይ።",
+    mobile: "ስልኮችና ታብሌቶች ኤክስቴንሽኖችን አይደግፉም — እዚያ ድረ-ገጹን ወይም የTelegram ቦቱን ይጠቀሙ።",
+    getcourseTitle: "የGetCourse ትምህርቶች",
+    getcourse:
+      "በGetCourse ትምህርት ቤት ውስጥ ገብተው አንድ ትምህርት ይክፈቱ፦ በማጫወቻው ላይኛው ቀኝ ጥግ «አውርድ» ቁልፍ ይታያል፣ የVideoner ምልክትም የትምህርቱን ሁሉንም ቪዲዮዎች ይዘረዝራል። ብሮውዘርዎ ራሱ ትምህርቱን አውርዶ ወደ mp4 ያቀናጀዋል — ፋይሉ በሰርቨራችን በኩል አያልፍም። ይህ ካልተሳካ፣ ሰርቨራችን ትምህርቱን በተመሳሳይ ጥራት ያወርደዋል፤ በዚህ ጊዜ የቪዲዮው ሊንክ ከማጫወቻው ወደ ሰርቨሩ ይላካል።",
+    privacyTitle: "መግቢያዎ ከእርስዎ ጋር ይቆያል",
+    privacy:
+      "ኤክስቴንሽኑ ፈጽሞ የይለፍ ቃል አይጠይቅም፦ ወደ ፕላትፎርሙ ጥያቄውን የሚልከው የራስዎ ብሮውዘር ነው፤ ሰርቨራችን የሚያገኘው ለስታቲስቲክስ የሚሆን አጭር ሪፖርት ብቻ ነው — ሊንኩን፣ የፋይሉን መጠንና ርዕሱን። ኩኪዎች ወደ ሰርቨሩ የሚላኩት እርስዎ ራስዎ «መለያዎን ከቦቱ ጋር ያገናኙ»ን ሲጫኑ ብቻ ነው — የዚያ ፕላትፎርም ኩኪዎች ብቻ፣ ተመስጥረው።",
+    stepsTitle: "በChrome፣ Yandex Browser፣ Edge እና Opera እንዴት እንደሚጫን",
+    steps: [
+      "አርካይቩን ያውርዱና ይክፈቱት (unzip) — በስሙ የስሪት ቁጥር ያለበት videoner-extension የሚባል ፎልደር ይመጣል።",
+      "የኤክስቴንሽኖች ገጽን ይክፈቱ፦ በአድራሻ መስመሩ ውስጥ chrome://extensions ይጻፉ (በEdge — edge://extensions፣ በOpera — opera://extensions)።",
+      "“Developer mode”ን ያብሩ — በገጹ ላይኛው ክፍል ያለው ማብሪያ/ማጥፊያ።",
+      "“Load unpacked”ን ይጫኑና ያንን ፎልደር ይምረጡ — manifest.json ፋይል ያለበትን።",
+      "ተጠናቋል፦ በቪዲዮ ገጾች ላይ «አውርድ» ቁልፍ ይታያል፣ የVideoner ምልክትም በብሮውዘሩ የመሣሪያ አሞሌ ላይ ይታያል።",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 ወይም ከዚያ በላይ — እሱም በኮምፒውተር ላይ።",
+    firefoxSoon:
+      "የFirefox ስሪት በቅርቡ ይወጣል። ለአሁን ኤክስቴንሽኑ በChrome፣ Yandex Browser፣ Edge፣ Opera እና ሌሎች በChromium ላይ የተመሰረቱ ብሮውዘሮች ይሰራል።",
+    chromeTitle: "Chrome፣ Yandex Browser፣ Edge፣ Opera",
+    chromeHint: ".zip አርካይቭ — በሁለት ደቂቃ ውስጥ ይጫናል",
+    firefoxTitle: "Firefox",
+    firefoxHint: "በአንድ ጠቅታ ይጫናል",
+    yourBrowser: "የእርስዎ ብሮውዘር",
+    soon: "በቅርቡ",
+    firefoxStepsTitle: "በFirefox እንዴት እንደሚጫን",
+    firefoxSteps: [
+      "በዚህ ገጽ ላይኛው ክፍል ያለውን የFirefox ቁልፍ ይጫኑ።",
+      "Firefox videoner.download ተጨማሪ (add-on) እንዲጭን ይፈቀድለት እንደሆነ ይጠይቃል — “Continue to Installation”ን ይጫኑ።",
+      "በ“Add Videoner?” መስኮት ውስጥ “Add”ን ይጫኑ።",
+      "ተጠናቋል፦ በቪዲዮ ገጾች ላይ «አውርድ» ቁልፍ ይታያል፣ የVideoner ምልክትም በመሣሪያ አሞሌው ላይ ይታያል። ማሻሻያዎችን Firefox ራሱ ይጭናል።",
+    ],
+    updateTitle: "በChrome፣ Yandex Browser፣ Edge እና Opera እንዴት እንደሚዘመን",
+    updateSteps: [
+      "አዲስ ስሪት ሲወጣ የVideoner ምልክት NEW የሚል ምልክት ያሳያል፣ በመስኮቱ ውስጥም ወደዚህ የሚያመጣ ሊንክ ይኖራል።",
+      "በዚህ ገጽ ላይኛው ክፍል ባለው የChrome ቁልፍ አርካይቩን ያውርዱና ከዚህ በፊት ወደከፈቱበት ተመሳሳይ ፎልደር ፋይሎቹን በመተካት ይክፈቱት።",
+      "የኤክስቴንሽኖች ገጽን ይክፈቱ (chrome://extensions፣ በYandex Browser — browser://extensions፣ edge://extensions) እና “Reload”ን ይጫኑ — በVideoner ካርድ ላይ ያለውን ክብ ቀስት።",
+    ],
+    back: "ወደ መነሻ",
+  },
   tl: {
     metaTitle: "Videoner browser extension",
     title: "Videoner para sa iyong browser",

@@ -307,6 +307,18 @@ export const blogUi: Record<
     readFull: "อ่านฉบับเต็มบนเว็บไซต์",
     dateLocale: "th-TH-u-nu-latn-ca-gregory",
   },
+  am: {
+    title: "የVideoner ብሎግ",
+    description: "የፕሮጀክቱ ዜናዎች፦ በቦቱ፣ በድረ-ገጹና በኤክስቴንሽኑ ምን አዲስ ነገር እንደመጣና እንዴት መጠቀም እንደሚቻል።",
+    readMore: "ያንብቡ",
+    back: "ሁሉም ጽሑፎች",
+    allPosts: "ብሎግ",
+    channel: "ዜናዎች በTelegram",
+    channelCta: "የፕሮጀክቱ ዜናዎች በTelegram ቻናል @videonerdownload ላይ ይገኛሉ።",
+    readOnSite: "በድረ-ገጹ ላይ ያንብቡ",
+    readFull: "ሙሉውን በድረ-ገጹ ላይ ያንብቡ",
+    dateLocale: "am-ET",
+  },
   tl: {
     title: "Videoner blog",
     description: "Mga balita ng proyekto: ano ang bago sa bot, sa website at sa extension, at kung paano ito gamitin.",

@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["id", "de", "en", "es", "fr", "it", "sw", "uz", "pl", "pt", "tl", "vi", "tr", "kk", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -5103,6 +5103,226 @@ const th: Messages = {
   settingsBack: "⬅️ กลับไปที่การตั้งค่า",
 };
 
+const am: Messages = {
+  start: "ሰላም! ከYouTube፣ TikTok፣ Instagram፣ Facebook፣ Twitter/X፣ Vimeo፣ VK፣ Rutube፣ OK.ru፣ Pinterest ወይም Threads የቪዲዮ ሊንክ ይላኩልኝ — ለማውረድ እረዳዎታለሁ።\n\n✨ የጥራት ገደብ የለም፦ መድረኩ የሚያቀርበውን ሁሉ እስከ 4K ድረስ ያገኛሉ — ፋይሉ ከ2 GB እስካልበለጠ ድረስ፤ ይህ Telegram ለቦቶች ያስቀመጠው ገደብ ነው። እዚህ ምንም የሚከፈልባቸው ባህሪያት የሉም።\n\nሙሉ በሙሉ ነፃ፦ ምዝገባ የለም፣ ማስታወቂያ የለም፣ በመተግበሪያ ውስጥ ግዢ የለም።\n\n🧩 በኮምፒውተር ላይ ነው የሚያወርዱት? የአሳሽ ቅጥያውን ይጫኑ — የማውረጃ ቁልፍ በቪዲዮው ገጽ ላይ በቀጥታ ይታያል፦ videoner.download/am/extension\n\n👥 ወደ ቡድን ያክሉኝ፤ ሰዎች እዚያ ለሚያጋሯቸው ሊንኮች ቪዲዮዎቹን እለጥፋለሁ።\n\n⚡ የጥራት ምርጫውን ይዝለሉ፦ ድምፅ ብቻ (mp3) ለማግኘት ከሊንኩ በኋላ -audio ይጨምሩ፤ ለምርጥ ጥራት ደግሞ -hd ይጨምሩ።\n\n📣 የፕሮጀክቱ ዜና፦ @videonerdownload\n\n🌐 የቦቱ ቋንቋ፦ /language",
+  notLink: "ይህ ሊንክ አይመስልም። እባክዎ የቪዲዮ ሊንክ ይላኩልኝ።",
+  inviteGreeting: "ሰላም! እኔ Videoner ነኝ — ከYouTube፣ TikTok፣ Instagram እና ከሌሎች መድረኮች ቪዲዮዎችን በነፃ አወርዳለሁ። አንድ ሰው ያጋራዎትን ቪዲዮ እያዘጋጀሁ ነው 👇",
+  inviteNotFound: "ለዚህ የግብዣ ሊንክ ቪዲዮ ማግኘት አልቻልኩም። የቪዲዮ ሊንክ ይላኩልኝ፣ አወርደዋለሁ።",
+  inviteUnavailable: "ከዚህ ሊንክ ቪዲዮውን መክፈት አልቻልኩም — አገልግሎቱ አሁን ምላሽ እየሰጠ አይደለም። ከአንድ ደቂቃ በኋላ ያንኑ ሊንክ እንደገና ይክፈቱ።",
+  fetchingInfo: "🔍 የቪዲዮውን መረጃ በማምጣት ላይ...",
+  audioOnlyButton: "🎵 ድምፅ ብቻ (mp3)",
+  photoButton: "📷 ፎቶዎችን ያውርዱ",
+  slideshowButton: "🎞 ስላይድ ትዕይንት (ቪዲዮ)",
+  galleryButton: "📷+🎞 ፎቶዎች እና ስላይድ ትዕይንት",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nጥራት ይምረጡ፦`,
+  sessionExpired: "ክፍለ ጊዜው አብቅቷል — ሊንኩን እንደገና ይላኩ",
+  downloading: "⏬ በማውረድ ላይ፣ ይህ ጥቂት ደቂቃዎች ሊወስድ ይችላል...",
+  downloadFailed: "ማውረዱ አልተሳካም",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ በማውረድ ላይ፦ ${percent}%${eta ? ` · የቀረው ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ ሊጠናቀቅ ነው — ፋይሉን በማቀናጀት ላይ...",
+  converting: (percent) => `⚙️ በመቀየር ላይ፦ ${percent}%`,
+  etaUnderMinute: "ከአንድ ደቂቃ ያነሰ",
+  etaMinutes: (minutes) => `~${minutes} ደቂቃ`,
+  etaHours: (hours, minutes) => `~${hours} ሰዓት${minutes ? ` ${minutes} ደቂቃ` : ""}`,
+  downloadTimeout: "ማውረዱ በጣም እየቆየ ነው — ቪዲዮው በጣም ከባድ ይመስላል። ዝቅተኛ ጥራት ይሞክሩ።",
+  downloadInterrupted: "⚠️ ቦቱ ለማዘመን እንደገና እየጀመረ ነው — ማውረድዎ ተቋርጧል። እባክዎ ከአንድ ደቂቃ በኋላ ሊንኩን እንደገና ይላኩ።",
+  fileTooBig: (mb, url) =>
+    `ፋይሉ ትልቅ ሆኗል (${mb} MB) — Telegram ቦቱ እንዲልከው አይፈቅድም።\nእዚህ ያውርዱት፦ ${url}`,
+  sendingFile: "📤 ፋይሉን በመላክ ላይ...",
+  sendingAlbum: (count) => `📤 ይህ ልጥፍ በርካታ ፋይሎች (${count}) አሉት — እንደ አልበም በመላክ ላይ...`,
+  failedPrefix: "❌ አልተሳካም፦ ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `ምንጭ፦ ${sourceUrl}\n` +
+        "የቪዲዮው መብቶች ሁሉ የደራሲው ናቸው።\n" +
+        "በ @VideonerBot በነፃ የወረደ",
+      `📣 የፕሮጀክቱ ዜና፦ ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 ያጋሩ፦ ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `ለማውረድ እባክዎ ቻናላችንን ${channel} ይቀላቀሉ — ይህ ብቸኛው ቅድመ ሁኔታ ነው፤ አገልግሎቱ ነፃ ሆኖ ይቀጥላል።\n\n` +
+    "ይቀላቀሉና «ተቀላቅያለሁ» የሚለውን ይጫኑ።",
+  openChannelButton: "📣 ቻናሉን ይክፈቱ",
+  checkSubscriptionButton: "ተቀላቅያለሁ",
+  subscribeThanks: "እናመሰግናለን! አሁን የቪዲዮ ሊንክ ይላኩልኝ።",
+  subscribeThanksResuming: "እናመሰግናለን! ሊንክዎን አሁን እቀጥላለሁ።",
+  subscribeStillMissing: "እስካሁን መቀላቀልዎን አላየሁም። ይቀላቀሉና እንደገና ይጫኑ።",
+  channelNotice: (channel) => `\n\nየዚህ ልጥፍ ሊንክ በ${channel} ላይ ይታያል — ስምዎ ሳይጠቀስ፣ ማንነትዎ ሳይገለጽ።`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "ይህንና ሌላ ማንኛውንም ቪዲዮ በነፃ ያውርዱ፦ @VideonerBot",
+  errorStoryNeedsId:
+    "የአንድን የተወሰነ ስቶሪ ሊንክ ይላኩ፦ በInstagram መተግበሪያ ውስጥ ይክፈቱትና Share → Copy link የሚለውን ይንኩ።",
+  errorInstagramStory:
+    "የInstagram ስቶሪዎች የሚታዩት ለገቡ (sign in ላደረጉ) ሰዎች ብቻ ነው።",
+  errorLoginRequired:
+    "ይህ ልጥፍ ሳይገቡ አይገኝም፦ መድረኩ የሚያቀርበው ለገቡ ተጠቃሚዎች ብቻ ነው። " +
+    "ይህ የሚሆነው በግል ልጥፎች፣ የዕድሜ ገደብ ባለባቸው ይዘቶች እና " +
+    "ለተወሰኑ ተመልካቾች በተጋሩ ልጥፎች ላይ ነው።\n\n" +
+    "ይፋዊ ልጥፎች ያለችግር ይወርዳሉ — ሌላ ሊንክ ይሞክሩ።",
+  errorUnsupportedPlatform:
+    "ይህን ሊንክ መለየት አልቻልኩም — ከYouTube፣ TikTok፣ Instagram፣ Facebook፣ Twitter/X፣ Vimeo፣ VK፣ Rutube፣ OK.ru፣ Pinterest ወይም Threads የመጣ ቀጥተኛ የቪዲዮ ሊንክ መሆኑን ያረጋግጡ።",
+  errorFileTooLarge: "ፋይሉ ከ2 GB ይበልጣል — Telegram ቦቶች ከዚህ የሚበልጡ ፋይሎችን እንዲልኩ አይፈቅድም። በድረ-ገጹ ላይ ወይም በአሳሽ ቅጥያው ያውርዱት — ቁልፎቹ ከታች ናቸው። ወይም ሊንኩን እንደገና ልከው ዝቅተኛ ጥራት ይምረጡ።",
+  siteButton: "🌐 በድረ-ገጹ ላይ ያውርዱ",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ከ${limit} የሚከብዱ ጥራቶች ተደብቀዋል፦ Telegram ቦቶች ከዚህ የሚበልጡ ፋይሎችን እንዲልኩ አይፈቅድም። በድረ-ገጹ ላይ ወይም በአሳሽ ቅጥያው ማውረድ ይችላሉ — ቁልፎቹ ከታች ናቸው።`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ ይህ ቪዲዮ በዝቅተኛው ጥራትም ቢሆን ለTelegram በጣም ከባድ ነው (~${smallest})፦ Telegram ቦቶች ከ2 GB በላይ የሆኑ ፋይሎችን እንዲልኩ አይፈቅድም። እዚህ ድምፁን ብቻ ማግኘት ይችላሉ፤ ቪዲዮውን ደግሞ — በድረ-ገጹ ላይ ወይም በአሳሽ ቅጥያው (ቁልፎቹ ከታች ናቸው)።`,
+  errorFormatUnavailable: "ይህ ጥራት ለዚህ ቪዲዮ አይገኝም። ሊንኩን እንደገና ይላኩ — ወቅታዊውን ዝርዝር አሳይዎታለሁ።",
+  errorNoVideoContent: "ይህ ሊንክ የሚወርድ ቪዲዮ የለውም — ልጥፉ ፎቶዎችን ብቻ የያዘ ይመስላል።",
+  errorRegionBlocked:
+    "ይህ ቪዲዮ ከደራሲው ሀገር ውጭ ታግዷል — መድረኩ ለአገልጋያችን " +
+    "አያቀርበውም። ማለፊያ መንገድ የለም፦ ገደቡ ያለው በእነሱ በኩል ነው።" +
+    "\n\nሌሎች ሊንኮች እንደተለመደው ይወርዳሉ።",
+  errorRateLimited: "በተከታታይ በጣም ብዙ ሊንኮች ልከዋል — ትንሽ ይጠብቁና እንደገና ይላኩ።",
+  errorYoutubeDailyLimit: (gb) => `ባለፉት 24 ሰዓታት ከYouTube ከ${gb} GB በላይ አውርደዋል — ይህ የቦቱ የአንድ ሰው የዕለት ገደብ ነው። ገደቡ የሚቆጠረው ባለፉት 24 ሰዓታት ውስጥ ስለሆነ፣ አዳዲስ የYouTube ቪዲዮዎችን ትንሽ ቆይተው ማውረድ ይችላሉ። ሌሎች መድረኮች እንደተለመደው ይሰራሉ።`,
+  playlistStoppedByLimit: (dropped) => `⏹ የአጫዋች ዝርዝሩ ቆሟል፦ የYouTube የዕለት ገደብ ደርሷል። ያልወረዱ ቪዲዮዎች፦ ${dropped}። የአጫዋች ዝርዝሩን ሊንክ በኋላ እንደገና ይላኩ።`,
+  errorPlatformRefused:
+    "መድረኩ ይህን ቪዲዮ ለአገልጋያችን አልሰጠም። ይህ የሚሆነው በግል " +
+    "ወይም የዕድሜ ገደብ ባለባቸው ልጥፎች ላይ ነው፤ አንዳንድ ጊዜ ደግሞ መድረኩ ለተወሰነ ጊዜ " +
+    "መዳረሻን ይገድባል። ከጥቂት ደቂቃዎች በኋላ እንደገና ይሞክሩ።",
+  errorThreadsNoMedia:
+    "በዚህ የThreads ልጥፍ ውስጥ ምንም ቪዲዮ ወይም ፎቶ አይታይም። ወይ ጽሑፍ ብቻ ያለው ልጥፍ ነው፣ ወይም " +
+    "Threads ሚዲያውን የሚያሳየው ለገቡ ተጠቃሚዎች ብቻ ነው — እንደዚህ ያሉ ልጥፎች ሳይገቡ ሊወርዱ አይችሉም።",
+  extensionHint:
+    "\n\n💻 በኮምፒውተር ላይ በVideoner የአሳሽ ቅጥያ ማውረድ ይችላሉ፦ " +
+    "በመድረኩ ላይ ያለዎትን የራስዎን መግቢያ ተጠቅሞ ያወርዳል፤ የይለፍ ቃልም ሆነ ኩኪዎች ከአሳሽዎ አይወጡም።",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 እንደዚህ ያሉ ልጥፎችን ለማውረድ የ${platform} መለያዎን ከቦቱ ጋር ያገናኙ — አንድ ጊዜ ብቻ። ከዚያ በኋላ ቦቱ እርስዎ ማየት የሚችሉትን ሁሉ ያወርዳል፦ የግል ልጥፎችን፣ ሪልሶችን እና ስቶሪዎችን፣ ከስልክዎም ጭምር። እንዴት እንደሆነ ከታች ያለው ቁልፍ ያሳያል።${withExtension ? "\n\n💻 ወይም በኮምፒውተር ላይ በVideoner የአሳሽ ቅጥያ ያውርዱት።" : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ ያገናኙት የ${platform} መለያ ይህን ልጥፍ መክፈት አልቻለም። መግቢያው መስራት አቁሞ ሊሆን ይችላል — መለያውን እንደገና ያገናኙ። ወይም ይህ መለያ ልጥፉን የማየት መዳረሻ የለውም።${withExtension ? "\n\n💻 እንዲሁም በኮምፒውተር ላይ በVideoner የአሳሽ ቅጥያ ማውረድ ይችላሉ።" : ""}`,
+  connectAccountButton: "🔑 መለያ ያገናኙ",
+  reconnectAccountButton: "🔑 እንደገና ያገናኙ",
+  extensionButton: "🧩 በቅጥያው ያውርዱ",
+  extensionCommand:
+    "🧩 Videoner ለአሳሽዎ፦ የማውረጃ ቁልፍ በቪዲዮው ገጽ ላይ በቀጥታ — YouTube፣ Instagram፣ TikTok፣ VK፣ ከመለያዎ የሚታዩ የግል ቪዲዮዎች እና የGetCourse ትምህርቶች።\n\nበኮምፒውተር ላይ ለChrome፣ Edge፣ Opera፣ Yandex Browser እና Firefox።",
+  extensionPageButton: "🧩 ቅጥያውን ይጫኑ",
+  addToGroupButton: "👥 ወደ ቡድን ያክሉ",
+  newsButton: "📣 የፕሮጀክቱ ዜና",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 የፕሮጀክቱ ዜና፦ ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ የዚህ ቡድን የቦት ቅንብሮች\n\n" +
+    `🗑 ሊንኩን የያዘውን መልዕክት መሰረዝ፦ ${s.deleteLinks ? "አዎ" : "አይ"}\n` +
+    "ቪዲዮው ከተላከ በኋላ ሊንክ ብቻ የያዘ መልዕክት ይሰረዛል — ቻቱ የሚይዘው ቪዲዮውን ከአጋሪው ስም ጋር ብቻ ነው።\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ አሁን መልዕክቶችን መሰረዝ አልችልም፦ «መልዕክቶችን መሰረዝ» (Delete messages) መብት ያለው አስተዳዳሪ ያድርጉኝ።\n"
+      : "") +
+    `\n✍️ ከቪዲዮው በታች ያለ መግለጫ ጽሑፍ፦ ${{ full: "ሙሉ", short: "ርዕስ እና ምንጭ", none: "መግለጫ ጽሑፍ የለም" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 ጥራት፦ ${s.quality === "max" ? "Telegram የሚቀበለው ከፍተኛው" : "መደበኛ (720p)"}\n` +
+    `\n⏱ ረጃጅም ቪዲዮዎች፦ ${s.longVideos ? "ማንኛውም ርዝመት" : "እስከ 15 ደቂቃ ብቻ"}\n` +
+    `\n🔑 መለያዎቻቸውን ማገናኘት የሚችሉት (ለስቶሪዎች እና ለግል ልጥፎች)፦ ${s.cookiesBy === "all" ? "ማንኛውም አባል" : "አስተዳዳሪዎች ብቻ"}\n` +
+    `\n🌐 የምላሽ ቋንቋ፦ ${s.language ? langName(s.language) : "የእያንዳንዱ አባል የራሱ"}\n` +
+    "\nቅንብሮቹን መቀየር የሚችሉት የቡድኑ አስተዳዳሪዎች ብቻ ናቸው።",
+  settingsDeleteButton: (on) => `🗑 ሊንኮችን መሰረዝ፦ ${on ? "አዎ" : "አይ"}`,
+  settingsCaptionButton: (style) => `✍️ መግለጫ ጽሑፍ፦ ${{ full: "ሙሉ", short: "አጭር", none: "የለም" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 ጥራት፦ ${mode === "max" ? "ከፍተኛ" : "720p"}`,
+  settingsLongButton: (on) => `⏱ ረጃጅም ቪዲዮዎች፦ ${on ? "አዎ" : "እስከ 15 ደቂቃ"}`,
+  settingsDoneButton: "✅ ተጠናቋል",
+  settingsAdminsOnly: "ቅንብሮቹን መቀየር የሚችሉት የቡድኑ አስተዳዳሪዎች ብቻ ናቸው።",
+  settingsGroupsOnly: "ቅንብሮች ለቡድኖች ናቸው፦ ወደ ቡድን ያክሉኝና እዚያ /settings ይላኩ።",
+  settingsFailed: "ቅንብሮቹን ማስቀመጥ አልተቻለም፣ እባክዎ እንደገና ይሞክሩ።",
+  settingsCookiesButton: (by) => `🔑 መለያ ማገናኘት፦ ${by === "all" ? "ሁሉም" : "አስተዳዳሪዎች"}`,
+  accountsIntro:
+    "🔑 የተገናኙ መለያዎች\n\nቦቱ ለገቡ ሰዎች ብቻ የሚታየውን (የInstagram ስቶሪዎችን፣ የግል ልጥፎችን) በእርስዎ መለያ ማውረድ ይችላል። መግቢያው የሚሰራው ባገናኙበት ቦታ ነው፦ በግል ቻት የተገናኘ መለያ ለእርስዎ ማውረዶች ያገለግላል፤ የራሳቸው መለያ በሌላቸው ቡድኖች ውስጥ የሚልኳቸውን ሊንኮችም ጨምሮ። ከቡድን ጋር የተገናኘ መለያ ደግሞ ለሁሉም የቡድኑ አባላት ያገለግላል።",
+  accountsHowTo:
+    "እንዴት እንደሚያገናኙ፦\n1. በጣም ቀላሉ፦ በኮምፒውተር ላይ የVideoner ቅጥያ — በመድረኩ ድረ-ገጽ ላይ ይግቡ፣ የVideoner ብቅ-ባይ መስኮትን ይክፈቱ፣ «🔑 የ… መለያዎን ከቦቱ ጋር ያገናኙ» የሚለውን ይጫኑና ኮዱን ይላኩልኝ። ለቡድን ከሆነ በዚያው ቡድን ውስጥ /connect ኮድ ይላኩ።\n2. ወይም የcookies.txt ፋይል (ከአሳሹ የተላኩ ኩኪዎች) ይላኩልኝ፣ ወይም ጽሑፉን እንደ መልዕክት ይለጥፉ።\n3. ከAndroid ስልክ — በFirefox እና በCookie-Editor ተጨማሪ፦ https://videoner.download/am/blog/android-firefox",
+  accountsWarning:
+    "⚠️ መድረኮች አውቶማቲክ ማውረዶችን አይወዱም፤ መለያውን ሊገድቡ ወይም ሊያግዱ ይችላሉ። ዋናውን መለያዎን ሳይሆን ሁለተኛ መለያ ቢያገናኙ ይሻላል። ኩኪዎች ተመስጥረው ይቀመጣሉ፣ ለማውረድ ብቻ ያገለግላሉ፣ እና ከታች ባሉት ቁልፎች ይሰረዛሉ።",
+  accountsNone: "እስካሁን ምንም አልተገናኘም።",
+  accountsGroupTitle: "🔑 ከዚህ ቡድን ጋር የተገናኙ መለያዎች",
+  accountsGroupHowTo:
+    "ለመላው ቡድን መለያ ለማገናኘት፦ በVideoner ቅጥያ ውስጥ ባለው «🔑 የ… መለያዎን ከቦቱ ጋር ያገናኙ» ቁልፍ ኮድ ያግኙና እዚህ /connect ኮድ ይላኩ። መለያን በግል ቻትዎ ብቻ ካገናኙ፣ ቦቱ እዚህ ለራስዎ ሊንኮች ይጠቀምበታል። የእርስዎ ግንኙነቶች፦ ከ@VideonerBot ጋር ባለው የግል ቻት ውስጥ /accounts።",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ መግቢያው አይሰራም)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ መግቢያው አይሰራም)"}`,
+  accountsWhereHere: "የግል ቻት",
+  accountsWhereGroup: (title) => `ቡድን «${title}»`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 ሁሉንም ግንኙነቶች ያስወግዱ",
+  accountsDeleted: "ተወግዷል።",
+  accountsDeletedAll: (n) => `የተወገዱ ግንኙነቶች፦ ${n}።`,
+  accountsNotAllowed: "ይህን ማስወገድ የሚችሉት ያገናኘው ሰው ወይም የቡድኑ አስተዳዳሪ ብቻ ናቸው።",
+  connectUsage:
+    "/connect ኮድ ይላኩ። ኮዱን በኮምፒውተር ላይ ባለው የVideoner ቅጥያ ውስጥ ያለው «🔑 የ… መለያዎን ከቦቱ ጋር ያገናኙ» ቁልፍ ይሰጥዎታል። የእርስዎ ግንኙነቶች፦ /accounts።",
+  connectOnlyAdmins: "ከዚህ ቡድን ጋር መለያ ማገናኘት የሚችሉት አስተዳዳሪዎች ብቻ ናቸው (/settings ይመልከቱ)።",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} ተገናኝቷል። ቦቱ አሁን ለገቡ ሰዎች ብቻ የሚታየውንም ያወርዳል። ለማየት ወይም ለማስወገድ፦ /accounts።\n\n⚠️ መድረኩ በአውቶማቲክ ማውረዶች ምክንያት መለያውን ሊገድብ ይችላል — ሁለተኛ መለያ ቢጠቀሙ ይሻላል።`,
+  connectWhereGroup: "ከዚህ ቡድን ጋር",
+  connectWhereHere: "በግል ቻት እና በinline ሁነታ ለሚያደርጓቸው ማውረዶች",
+  connectCodeNotFound: "ኮዱ አልተገኘም ወይም ጊዜው አልፏል (ኮዶች የሚቆዩት 10 ደቂቃ ነው)። በVideoner ቅጥያ ውስጥ አዲስ ኮድ ያግኙ።",
+  connectRejectedNoSession: "እነዚህ ኩኪዎች መግቢያ የላቸውም። በመድረኩ ድረ-ገጽ ላይ ይግቡና ኩኪዎቹን እንደገና ይላኩ (export ያድርጉ)።",
+  connectRejectedUnknown: "የሚደገፉ መድረኮች ኩኪዎች አልተገኙም፦ Instagram፣ Facebook፣ YouTube፣ X፣ VK፣ TikTok።",
+  connectUnavailable: "መለያዎችን ማገናኘት እስካሁን አይገኝም።",
+  connectFailed: "ማገናኘት አልተቻለም፣ እባክዎ እንደገና ይሞክሩ።",
+  connectFileTooBig: "ፋይሉ በጣም ትልቅ ነው — የሚፈልጉትን ድረ-ገጽ ኩኪዎች ብቻ ይላኩ (export ያድርጉ)።",
+  connectNotAnonymous: "መለያውን በራስዎ ስም ያገናኙ እንጂ በቡድኑ ስም ማንነትዎን ደብቀው አይደለም፦ አለበለዚያ የአስተዳዳሪዎች ግንኙነቶች ይደበላለቃሉ። ኮዱን አጥፍቼዋለሁ — አዲስ ኮድ ያግኙ።",
+  connectCodeInGroup:
+    "በቡድን ቻት ውስጥ የተለጠፈ የግንኙነት ኮድ በሌሎች ሊታይ ይችላል — ኮዱን አጥፍቼ መልዕክቱን አስወግጃለሁ። አዲስ ኮድ ያግኙና በ/connect ኮድ ይላኩት፦ ያንን የትዕዛዝ መልዕክት ወዲያውኑ እሰርዘዋለሁ።",
+  groupWelcome:
+    "👋 ሰላም! ከTikTok፣ Instagram፣ YouTube፣ VK እና ከሌሎች መድረኮች የቪዲዮ ሊንኮችን በዚህ ቻት ውስጥ ይለጥፉ — በቪዲዮው ራሱ እመልሳለሁ።\n\n" +
+    "እስከ 15 ደቂቃ የሚረዝሙ ቪዲዮዎችን ያለ ምንም ትዕዛዝ በራሴ አወርዳለሁ፤ በሌላ ጊዜ ዝም እላለሁ።\n\n⚙️ የቡድኑ አስተዳዳሪዎች በ/settings ሊያስተካክሉኝ ይችላሉ፦ የሊንክ መልዕክቶችን መሰረዝ፣ የመግለጫ ጽሑፍ ዓይነት፣ ጥራት፣ ረጃጅም ቪዲዮዎች እና ቋንቋ።\n\n⚡ ድምፁን ለማግኘት ከሊንኩ በኋላ -audio ይጨምሩ፤ ለምርጥ ጥራት ደግሞ -hd።\n\n📣 የፕሮጀክቱ ዜና፦ @videonerdownload",
+  errorTooLong: "ቪዲዮው በጣም ረጅም ነው — እንደዚህ ያሉ ረጃጅም ቪዲዮዎችን እስካሁን ማውረድ አንችልም።",
+  errorUnknown: "ይህን ቪዲዮ ማውረድ አልተቻለም። ትንሽ ቆይተው እንደገና ይሞክሩ ወይም ሌላ ሊንክ ይላኩ።",
+  inlineHintButton: "ሊንክ ወደ ቦቱ ይላኩ",
+  inlineResultTitle: "⬇️ ቪዲዮውን ያውርዱ",
+  inlineResultDescription: "ቪዲዮው በቀጥታ በዚህ ቻት ውስጥ ይለጠፋል",
+  inlinePlaceholder: "⏬ በማውረድ ላይ፣ ይህ ጥቂት ደቂቃዎች ሊወስድ ይችላል...",
+  inlineOpenBot: "ቦቱን ይክፈቱ",
+  inlineOnlySingleVideo:
+    "ይህ ሁነታ አንድ ቪዲዮ ብቻ ይልካል። በርካታ ፋይሎች ላሏቸው ልጥፎች ወይም ለፎቶዎች ሊንኩን በግል ቻት ወደ ቦቱ ይላኩ።",
+  inlineSubscribeRequired: (channel: string) =>
+    `ለማውረድ ${channel}ን ይቀላቀሉና እንደገና ይሞክሩ።`,
+  inlineRateLimited: "በተከታታይ በጣም ብዙ ጥያቄዎች። አንድ ደቂቃ ይጠብቁና እንደገና ይሞክሩ።",
+  queueRest: (count) => `\n\n📋 አሁንም በወረፋ ያሉ ሊንኮች፦ ${count}። ከዚህኛው በኋላ አንድ በአንድ አሳይዎታለሁ።`,
+  queuedOne: (position) =>
+    `📋 ሊንኩ ወረፋ ውስጥ ገብቷል፣ ቁ. ${position}። መጀመሪያ የአሁኑን እንጨርስ — ከዚያ ለእሱ የጥራት ምርጫን አሳይዎታለሁ።`,
+  queuedMany: (added, waiting) =>
+    `📋 ወደ ወረፋው የተጨመሩ ሊንኮች፦ ${added}። በአጠቃላይ የሚጠብቁ፦ ${waiting}። ከአሁኑ በኋላ አንድ በአንድ አሳይዎታለሁ።`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "ይህ ሊንክ አስቀድሞ በወረፋው ውስጥ አለ — ሁለት ጊዜ አልጨምረውም።"
+      : `አስቀድመው በወረፋው ውስጥ ያሉ ሊንኮች ሁለት ጊዜ አይጨመሩም (ድግግሞሾች፦ ${count})።`,
+  queueFull: (limit, rejected) =>
+    `ወረፋው ቢበዛ ${limit} ሊንኮችን ይይዛል — ትርፎቹ አልተጨመሩም (${rejected})። ወረፋው ሲንቀሳቀስ ይላኳቸው።`,
+  skipButton: "✖️ አያውርዱ",
+  skipped: "⏭ ይህን ሊንክ ዘልዬዋለሁ።",
+  chooseTimedOut: "⌛ በ30 ደቂቃ ውስጥ ምንም ጥራት አልተመረጠም — ይህን ሊንክ እዘላለሁ።",
+  queueLostOnRestart: (count) =>
+    `⚠️ ቦቱ ለማዘመን እንደገና እየጀመረ ነው — ወረፋው ተሰርዟል (ሊንኮች፦ ${count})። እባክዎ ከአንድ ደቂቃ በኋላ እንደገና ይላኳቸው።`,
+  subtitlesButton: "📝 የትርጉም ጽሑፎች",
+  subtitlesBack: "⬅️ ወደ ጥራት ይመለሱ",
+  subtitlesAuto: "ራስ-ሰር",
+  subtitlesChoose: "የትርጉም ጽሑፍ ቋንቋ ይምረጡ",
+  subtitlesPreparing: "📝 የትርጉም ጽሑፎችን በማዘጋጀት ላይ...",
+  subtitlesFailed: "በዚህ ቋንቋ የትርጉም ጽሑፎችን ማውረድ አልተቻለም። ሌላ ቋንቋ ይሞክሩ።",
+  subtitlesBusy: "YouTube አሁን የትርጉም ጽሑፎችን እየሰጠ አይደለም — ከጥቂት ደቂቃዎች በኋላ እንደገና ይሞክሩ።",
+  playlistFound: (title, count) =>
+    `📃 የአጫዋች ዝርዝር${title ? ` «${title.slice(0, 150)}»` : ""}፦ ${count} ቪዲዮዎች።\nአንድ በአንድ አወርዳቸዋለሁ። በየትኛው ቅርጸት?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 ምርጥ ጥራት",
+  playlistAudioButton: "🎵 ድምፅ ብቻ (mp3)",
+  playlistNoButton: "✖️ አይ፣ አመሰግናለሁ",
+  playlistQueued: (count) =>
+    `📃 ከአጫዋች ዝርዝሩ ወረፋ ውስጥ የገቡ ቪዲዮዎች፦ ${count}። አንድ በአንድ እልካቸዋለሁ። በታች ባለው ቁልፍ ወይም በ/stop ያቁሙ።`,
+  playlistFailed: "የአጫዋች ዝርዝሩን መክፈት አልተቻለም — የግል ሊሆን ይችላል። የአንድ ቪዲዮ ሊንክ ይላኩ።",
+  stopButton: "⏹ አቁም",
+  stopped: (dropped) => `⏹ ቆሟል።${dropped ? ` ከወረፋው የተወገዱ ሊንኮች፦ ${dropped}።` : ""}`,
+  nothingToStop: "አሁን ምንም እየወረደ አይደለም።",
+  languageChoose: "🌐 የቦቱን ቋንቋ ይምረጡ። «ራስ-ሰር» የTelegramዎን ቋንቋ ይከተላል።",
+  languageChooseGroup: "🌐 በዚህ ቡድን ውስጥ የቦቱ የምላሽ ቋንቋ። «ራስ-ሰር» — የእያንዳንዱ አባል የTelegram ቋንቋ።",
+  languageAuto: "ራስ-ሰር — እንደ Telegram",
+  languageAutoGroup: "ራስ-ሰር — የእያንዳንዱ አባል የራሱ",
+  languageSaved: (name) => `✅ የቦቱ ቋንቋ፦ ${name}። በ/language ይቀይሩት።`,
+  languageSavedAuto: "✅ ቦቱ የTelegramዎን ቋንቋ ይከተላል። በ/language ይቀይሩት።",
+  settingsLanguageButton: (name) => `🌐 ቋንቋ፦ ${name ?? "ራስ-ሰር"}`,
+  settingsBack: "⬅️ ወደ ቅንብሮች ይመለሱ",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -5770,4 +5990,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am };

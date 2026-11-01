@@ -767,4 +767,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Início",
   },
+  uz: {
+    metaTitle: "Videoner brauzer kengaytmasi",
+    title: "Brauzeringiz uchun Videoner",
+    summary:
+      "Kengaytma video sahifalariga «Yuklab olish» tugmasini qoʻshadi va videoni toʻgʻridan-toʻgʻri brauzeringizda yuklab oladi. Instagram, Facebook, TikTok va Threads sizning shu platformadagi akkauntingiz orqali yuklab olinadi — shuning uchun akkauntingizda koʻrinadigan yopiq postlar ham, platforma serverimizga bermagan videolar ham yuklanadi.",
+    failedVideo: "Saytda yoki botda yuklab boʻlmagan video:",
+    failedVideoHint:
+      "Kengaytmani oʻrnating, shu brauzerda platformaga kiring, videoni oching va oʻng pastki burchakdagi «Yuklab olish» tugmasini bosing.",
+    openVideo: "Videoni ochish",
+    version: "Versiya",
+    browsersTitle: "Qayerda ishlaydi",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi va Chromium asosidagi boshqa brauzerlar — kompyuterda.",
+    mobile: "Telefon va planshetlarda kengaytmalar ishlamaydi — u yerda sayt yoki Telegram-botdan foydalaning.",
+    getcourseTitle: "GetCourse darslari",
+    getcourse:
+      "GetCourse maktabidagi darsni oʻz akkauntingiz bilan oching: pleyerning oʻng yuqori burchagida «Yuklab olish» tugmasi paydo boʻladi, Videoner belgisi esa darsdagi barcha videolarni koʻrsatadi. Brauzer darsni oʻzi yuklab oladi va mp4 faylga yigʻadi — fayl serverimiz orqali oʻtmaydi. Agar brauzerda bu ishlamasa, darsni xuddi shu sifatda serverimiz yuklab oladi: bu holda unga pleyerdagi video havolasi yuboriladi.",
+    privacyTitle: "Akkauntingiz oʻzingizda qoladi",
+    privacy:
+      "Kengaytma hech qachon parol soʻramaydi: platformaga soʻrovni brauzeringizning oʻzi yuboradi, serverimiz esa statistika uchun faqat qisqa hisobot oladi — havola, fayl hajmi va nomi. Cookie fayllar serverga faqat «Akkauntni botga ulash» tugmasini oʻzingiz bossangizgina yuboriladi — va faqat oʻsha platformaning cookie fayllari, shifrlangan holda.",
+    stepsTitle: "Chrome, Yandex Browser, Edge va Operaʼga qanday oʻrnatiladi",
+    steps: [
+      "Arxivni yuklab oling va uni oching (zipdan chiqaring) — nomida versiya raqami boʻlgan videoner-extension papkasi paydo boʻladi.",
+      "Kengaytmalar sahifasini oching: manzil satriga chrome://extensions deb yozing (Edgeʼda — edge://extensions, Operaʼda — opera://extensions).",
+      "Sahifaning yuqorisidagi «Developer mode» (Dasturchi rejimi) tugmachasini yoqing.",
+      "«Load unpacked» (Ochilgan kengaytmani yuklash) tugmasini bosing va oʻsha papkani tanlang — ichida manifest.json fayli bor papkani.",
+      "Tayyor: video sahifalarida «Yuklab olish» tugmasi, brauzer panelida esa Videoner belgisi paydo boʻladi.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 va undan yangi versiyalar — ham kompyuterda.",
+    firefoxSoon:
+      "Firefox versiyasi tez orada chiqadi. Hozircha kengaytma Chrome, Yandex Browser, Edge, Opera va Chromium asosidagi boshqa brauzerlarda ishlaydi.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: ".zip arxiv — bir-ikki daqiqada oʻrnatiladi",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Bir bosishda oʻrnatish",
+    yourBrowser: "Sizning brauzeringiz",
+    soon: "Tez orada",
+    firefoxStepsTitle: "Firefoxʼga qanday oʻrnatiladi",
+    firefoxSteps: [
+      "Ushbu sahifaning yuqorisidagi Firefox tugmasini bosing.",
+      "Firefox videoner.download saytiga qoʻshimcha oʻrnatishga ruxsat berish-bermaslikni soʻraydi — «Continue to Installation» (Oʻrnatishni davom ettirish) tugmasini bosing.",
+      "«Add Videoner?» (Videoner qoʻshilsinmi?) oynasida «Add» (Qoʻshish) tugmasini bosing.",
+      "Tayyor: video sahifalarida «Yuklab olish» tugmasi, panelda esa Videoner belgisi paydo boʻladi. Yangilanishlarni Firefox oʻzi oʻrnatadi.",
+    ],
+    updateTitle: "Chrome, Yandex Browser, Edge va Operaʼda qanday yangilanadi",
+    updateSteps: [
+      "Yangi versiya chiqqanda Videoner belgisida NEW belgisi paydo boʻladi, oynachada esa shu sahifaga havola chiqadi.",
+      "Ushbu sahifaning yuqorisidagi Chrome tugmasi bilan arxivni yuklab oling va uni avvalgi papkaga fayllarni almashtirib oching.",
+      "Kengaytmalar sahifasini oching (chrome://extensions, Yandex Browserʼda browser://extensions, edge://extensions) va Videoner kartasidagi «Reload» (Yangilash) — aylana strelka tugmasini bosing.",
+    ],
+    back: "Bosh sahifa",
+  },
 };

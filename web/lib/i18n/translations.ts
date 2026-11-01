@@ -3,7 +3,7 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt"] as const;
+export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -26,6 +26,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   fr: "Français",
   it: "Italiano",
   pt: "Português",
+  uz: "Oʻzbekcha",
 };
 
 type PlatformStrings = {
@@ -5081,4 +5082,364 @@ const pt: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt };
+const uz: Translations = {
+  nav: {
+    home: "Bosh sahifa",
+    downloaders: "Yuklab olish",
+    extension: "Kengaytma",
+    blog: "Blog",
+    switchTheme: "Mavzuni almashtirish",
+    language: "Til",
+    comingSoon: "Tez orada",
+  },
+  theme: {
+    light: "Yorugʻ",
+    dark: "Qorongʻi",
+    system: "Tizim",
+  },
+  playlist: {
+    title: "«{title}» pleylisti: {count} ta video",
+    hint: "Videolar birma-bir yuklab olinadi. Sahifani yopmang; brauzer bir nechta faylni yuklab olishga ruxsat soʻrashi mumkin.",
+    std: "720p",
+    hd: "Eng yaxshi sifat",
+    audio: "Faqat ovoz (mp3)",
+    progress: "{count} tadan {index}-video",
+    stats: "Yuklab olindi: {done} · xato: {failed}",
+    stop: "Toʻxtatish",
+    stopped: "Toʻxtatildi. {count} tadan {done} tasi yuklab olindi.",
+    finished: "Pleylist tayyor: {count} tadan {done} tasi.",
+    again: "Qayta tanlash",
+  },
+  footer: {
+    news: "Loyiha yangiliklari",
+    botCta: "Telegram-bot sifatida ham mavjud:",
+    extension: "Brauzer kengaytmasi",
+    developedBy: "Ishlab chiquvchi",
+    rights: "Barcha huquqlar himoyalangan.",
+  },
+  content: {
+    howToTitle: "{platform} videolarini qanday yuklab olish mumkin",
+    faqTitle: "Koʻp beriladigan savollar",
+  },
+  auth: {
+    loginButton: "Telegram orqali kirish",
+    signIn: "Kirish",
+    logout: "Chiqish",
+    switchAccountHint: "Bu sizning akkauntingiz emasmi?",
+    switchAccountLink: "Telegram Webʼdan chiqish",
+  },
+  home: {
+    new: "Yangi",
+    manyFeatures: "Koʻplab yangi imkoniyatlar",
+    titleLine1: "Videolarni yuklab oling",
+    titleLine2: "Tez va oson",
+    subtitle:
+      "YouTube, Instagram, TikTok va boshqa platformalar uchun universal video yuklovchi. HDʼdan tortib mobil formatgacha istalgan sifatni tanlang.",
+    subtitleExtra: "Cheklovlarsiz, ortiqcha tashvishsiz — shunchaki yuklab oling.",
+    placeholder: "Istalgan platformadagi video havolasini qoʻying...",
+    download: "Yuklab olish",
+  },
+  video: {
+    description: "Tavsif",
+    format: "Format",
+    selected: "Tanlandi: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Konvertatsiya",
+    downloading: "Yuklab olinmoqda",
+    downloadAgain: "Qayta yuklab olish",
+    startDownload: "Yuklab olishni boshlash",
+    convertingBtn: "Konvertatsiya...",
+    downloadingBtn: "Yuklab olinmoqda...",
+    loginRequiredHint: "Yuklab olish uchun Telegram orqali kiring",
+    quotaExceededHint: "Kunlik 20 ta yuklab olish limiti tugadi — ertaga qayting",
+    postFiles: "Bu postda {count} ta fayl bor",
+    photoQuality: "Asl sifatdagi rasmlar",
+    slideshowQuality: "Slayd-shou (video)",
+    galleryQuality: "Rasmlar + slayd-shou",
+    downloadAll: "Hammasini yuklab olish",
+    downloadOne: "Saqlash",
+    subtitlesTab: "subtitrlar",
+    subtitlesHint: "Tilni tanlang — istalgan pleyer ochadigan .srt fayl olasiz.",
+    subtitlesAuto: "avto",
+    subtitlesDownload: "Subtitrlarni yuklab olish",
+    subtitlesDownloading: "Subtitrlar tayyorlanmoqda...",
+  },
+  toast: {
+    enterUrl: "Iltimos, havolani kiriting",
+    enterValidUrl: "Iltimos, toʻgʻri havolani kiriting",
+    platformNotSupported: "Bu platforma qoʻllab-quvvatlanmaydi",
+    urlNotSupported: "Bu havola qoʻllab-quvvatlanmaydi",
+    enterValidPlatformUrl: "Iltimos, toʻgʻri {platform} havolasini kiriting",
+    captchaNotReady: "Xavfsizlik tekshiruvi tugashini biroz kuting, soʻng qayta urinib koʻring",
+    comingSoon: "Tez orada! {name} hozircha qoʻllab-quvvatlanmaydi",
+    selectQuality: "Iltimos, sifatni tanlang",
+    downloadStarted: "Yuklab olish boshlandi!",
+    downloadCompleted: "Yuklab olish tugadi!",
+    newsChannel: "Loyiha yangiliklari Telegramʼda:",
+    downloadUrlNotReceived: "Yuklab olish havolasi olinmadi",
+    needsBrowser:
+      "Platforma bu videoni serverimizga bermadi: u faqat akkauntga kirgan foydalanuvchilar uchun ochiq yoki kirish vaqtincha cheklangan. Uni kompyuterda Videoner brauzer kengaytmasi orqali yuklab olishingiz mumkin — u sizning akkauntingiz orqali yuklab oladi.",
+    needsBrowserLink: "Kengaytmani oʻrnatish →",
+  },
+  platforms: {
+    youtube: {
+      description: "YouTube videolarini HD sifatda yuklab olish",
+      news: "Endi videolar va Shorts qoʻllab-quvvatlanadi",
+      titleLine1: "YouTube videolari va Shortsni",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "YouTube videolari, Shorts va audioni yuqori sifatda yuklab oling. Tez, bepul va oson. 8K, 4K, HD sifat va MP3 audio qoʻllab-quvvatlanadi.",
+      placeholder: "YouTube havolasini shu yerga qoʻying...",
+      howTo: [
+        "Video havolasini brauzerning manzil satridan nusxalang yoki YouTube ilovasida «Ulashish» tugmasini bosing.",
+        "Havolani yuqoridagi maydonga qoʻying va «Yuklab olish» tugmasini bosing.",
+        "Sifatni tanlang — video uchun 4K/8K gacha yoki faqat ovoz uchun MP3.",
+        "Fayl darhol yuklab olina boshlaydi, roʻyxatdan oʻtish shart emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali YouTube videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "Videoner YouTube shu video uchun taqdim etadigan barcha sifatlarni beradi — 360p dan mavjud boʻlsa 4K/8K gacha — hamda MP3 audioni ajratib olish imkoniyati bor." },
+        { q: "Yopiq yoki yosh cheklovi bor videolarni yuklab olsa boʻladimi?", a: "Faqat ommaga ochiq YouTube videolari qoʻllab-quvvatlanadi; yopiq, sizga ochilmagan yoki kirishni talab qiladigan kontentni yuklab boʻlmaydi." },
+        { q: "YouTubeʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga huquqingiz bor videolarni yuklab oling — oʻz kontentingiz, Creative Commons litsenziyasidagi videolar yoki muallif ruxsat bergan har qanday narsa. YouTube foydalanish shartlari va mualliflik huquqi qonunchiligini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Konvertatsiya qilingan fayllar serverda taxminan bir soat saqlanadi, shuning uchun yuklab olgach, ularni darhol qurilmangizga saqlang." },
+      ],
+    },
+    facebook: {
+      description: "Facebook post va Reels videolarini saqlash",
+      news: "Endi Reels qoʻllab-quvvatlanadi",
+      titleLine1: "Facebook videolari va Reelsni",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "Facebook videolari va Reelsni yuqori sifatda yuklab oling. Tez, bepul va oson.",
+      placeholder: "Facebook havolasini shu yerga qoʻying...",
+      howTo: [
+        "Facebookʼda video yoki Reelsni oching va havolasini nusxalang (uchta nuqta → «Havolani nusxalash»).",
+        "Havolani yuqoriga qoʻying va «Yuklab olish» tugmasini bosing.",
+        "MP4 sifatini tanlang yoki audioni MP3 sifatida ajratib oling.",
+        "Fayl toʻgʻridan-toʻgʻri qurilmangizga yuklanadi — Facebook akkaunti kerak emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali Facebook videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "Videoner Facebook shu video yoki Reels uchun beradigan eng yuqori sifatni MP4 formatida oladi, MP3 audio varianti ham bor." },
+        { q: "Yopiq videolarni yuklab olsa boʻladimi?", a: "Faqat ommaviy postlar, videolar va Reels ishlaydi — yopiq yoki faqat doʻstlar uchun ochiq kontentga kirish imkoni yoʻq." },
+        { q: "Facebookʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga ruxsatingiz bor videolarni yuklab oling; muallif huquqlari va Facebook foydalanish shartlarini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Fayllar konvertatsiyadan keyin taxminan bir soat saqlanadi, soʻng avtomatik oʻchiriladi — tezroq yuklab oling." },
+      ],
+    },
+    instagram: {
+      description: "Instagram Reels, hikoyalar va postlarni yuklab olish",
+      news: "Endi Reels va hikoyalar qoʻllab-quvvatlanadi",
+      titleLine1: "Instagram Reels va hikoyalarini",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "Instagram Reels, hikoyalar va postlarni yuqori sifatda yuklab oling. Tez, bepul va oson.",
+      placeholder: "Instagram havolasini shu yerga qoʻying...",
+      howTo: [
+        "Instagramʼda Reels, post yoki hikoyani oching va qogʻoz samolyot belgisini bosing → «Havolani nusxalash».",
+        "Havolani yuqoridagi maydonga qoʻying.",
+        "Kerakli sifat va formatni tanlang.",
+        "Yuklab olish darhol boshlanadi — kirish ham, ilova oʻrnatish ham shart emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali Instagram kontentini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "Reels, postlar va hikoyalar uchun mavjud toʻliq sifat, MP4 yoki MP3 formatida." },
+        { q: "Yopiq akkauntlardan yuklab olsa boʻladimi?", a: "Faqat ommaviy Instagram akkauntlari va postlari qoʻllab-quvvatlanadi; yopiq akkaunt kontentini yuklab boʻlmaydi." },
+        { q: "Instagramʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga ruxsat berilgan narsani yuklab oling — muallifni va Instagram foydalanish shartlarini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Fayllar serverda taxminan bir soat turadi, soʻng avtomatik oʻchiriladi." },
+      ],
+    },
+    tiktok: {
+      description: "TikTok videolarini suv belgisisiz yuklab olish",
+      news: "Endi suv belgisisiz",
+      titleLine1: "TikTok videolarini",
+      titleLine2: "suv belgisisiz yuklab olish",
+      pageDescription:
+        "TikTok videolarini suv belgisisiz, yuqori sifatda yuklab oling. Tez, bepul va oson.",
+      placeholder: "TikTok havolasini shu yerga qoʻying...",
+      howTo: [
+        "TikTok videosida «Ulashish» tugmasini bosing, soʻng «Havolani nusxalash»ni tanlang.",
+        "Havolani yuqoriga qoʻying va «Yuklab olish» tugmasini bosing.",
+        "TikTok suv belgisisiz toza MP4 yoki MP3 audio oling.",
+        "Faylni toʻgʻridan-toʻgʻri qurilmangizga saqlang.",
+      ],
+      faq: [
+        { q: "Videoner orqali TikTok videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "TikTok shu video uchun beradigan eng yaxshi sifat, TikTok suv belgisisiz, hamda MP3 audio." },
+        { q: "Yopiq akkauntlardan yuklab olsa boʻladimi?", a: "Faqat ommaviy TikTok akkauntlaridagi videolarni yuklab olish mumkin." },
+        { q: "TikTokʼdan video yuklab olish qonuniymi?", a: "Saqlashga huquqingiz bor videolarni yuklab oling, muallifni koʻrsating va TikTok foydalanish shartlarini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Yuklab olingan fayllar serverda taxminan bir soat turadi, soʻng avtomatik oʻchiriladi." },
+      ],
+    },
+    twitter: {
+      description: "Twitter videolarini yuklab olish",
+      news: "Endi Twitter videolari qoʻllab-quvvatlanadi",
+      titleLine1: "Twitter videolarini",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "Twitter videolarini yuqori sifatda yuklab oling. Tez, bepul va oson.",
+      placeholder: "Twitter havolasini shu yerga qoʻying...",
+      howTo: [
+        "Tvit ostidagi «Ulashish» tugmasini bosing va «Havolani nusxalash»ni tanlang (yoki havolani brauzerdan nusxalang).",
+        "Havolani yuqoridagi maydonga qoʻying.",
+        "Kerakli video sifatini tanlang.",
+        "Yuklab olish darhol boshlanadi — X/Twitter akkaunti kerak emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali Twitter/X videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "X/Twitter shu video uchun beradigan barcha sifatlar, MP4 formatida, hamda MP3." },
+        { q: "Yopiq akkauntlardan yuklab olsa boʻladimi?", a: "Faqat ommaviy akkauntlardagi tvitlar ishlaydi; himoyalangan/yopiq akkauntlar qoʻllab-quvvatlanmaydi." },
+        { q: "Twitter/Xʼdan video yuklab olish qonuniymi?", a: "Saqlashga huquqingiz bor kontentni yuklab oling, joylagan shaxsning huquqlari va platforma foydalanish shartlarini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Fayllar yaratilganidan taxminan bir soat oʻtib avtomatik oʻchiriladi." },
+      ],
+    },
+    vimeo: {
+      description: "Vimeo videolarini yuqori sifatda yuklab olish",
+      news: "Endi Vimeo qoʻllab-quvvatlanadi",
+      titleLine1: "Vimeo videolarini",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "Vimeo videolarini yuqori sifatda yuklab oling. Tez, bepul va oson.",
+      placeholder: "Vimeo havolasini shu yerga qoʻying...",
+      howTo: [
+        "Vimeoʼni oching va video havolasini nusxalang (yoki telefonda «Ulashish» → «Havolani nusxalash»).",
+        "Havolani yuqoridagi maydonga qoʻying va «Yuklab olish» tugmasini bosing.",
+        "Sifat va formatni tanlang — video uchun MP4, faqat ovoz kerak boʻlsa MP3.",
+        "Yuklab olish darhol boshlanadi; akkaunt ham, dastur oʻrnatish ham kerak emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali Vimeo videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "Videoner Vimeo shu video uchun taqdim etadigan barcha sifatlarni beradi — asl yuklangan oʻlchamgacha, muallif bergan boʻlsa HD va 4K ham." },
+        { q: "Yopiq yoki parol bilan himoyalangan Vimeo videolarini yuklab olsa boʻladimi?", a: "Yoʻq — Videoner faqat ommaga ochiq Vimeo havolalari bilan ishlaydi. Yopiq, parol bilan himoyalangan yoki kirish cheklangan videolarni yuklab boʻlmaydi." },
+        { q: "Vimeoʼdan video yuklab olish qonuniymi?", a: "Yuklab olish saqlashga huquqingiz bor videolar uchun moʻljallangan — oʻz kontentingiz, Creative Commons litsenziyasidagi videolar yoki muallif yuklab olishga aniq ruxsat bergan har qanday narsa. Asl muallifning mualliflik huquqi va Vimeo foydalanish shartlarini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Fayllar soʻrov boʻyicha yaratiladi va serverda taxminan bir soat saqlanadi, soʻng avtomatik oʻchiriladi, shuning uchun yuklab olish tugashi bilan faylni qurilmangizga saqlang." },
+      ],
+    },
+    vk: {
+      description: "VK videolari va kliplarini yuklab olish",
+      news: "Endi VK qoʻllab-quvvatlanadi",
+      titleLine1: "VK videolari va kliplarini",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "VK videolari va kliplarini yuqori sifatda yuklab oling. Tez, bepul va oson.",
+      placeholder: "VK havolasini shu yerga qoʻying...",
+      howTo: [
+        "VKʼda (vk.com yoki VK Video) video yoki klipni oching va havolasini manzil satridan yoki «Ulashish» tugmasi orqali nusxalang.",
+        "Havolani yuqoriga qoʻying va «Yuklab olish» tugmasini bosing.",
+        "Mavjud sifat va formatni tanlang.",
+        "Fayl toʻgʻridan-toʻgʻri yuklanadi — VKʼga kirish shart emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali VK videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "VK shu video yoki klip uchun beradigan barcha sifatlar, hamda MP3 audio." },
+        { q: "VKʼga kirishim kerakmi?", a: "Yoʻq — video ommaviy boʻlishi kerak. Videoner VKʼga kirmaydi, shuning uchun yopiq, faqat doʻstlar uchun yoki kirishni talab qiladigan videolarni yuklab boʻlmaydi." },
+        { q: "VKʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga huquqingiz bor videolarni yuklab oling, VK foydalanish shartlari va joylagan shaxsning huquqlarini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Fayllar serverda taxminan bir soat saqlanadi, soʻng avtomatik oʻchiriladi." },
+      ],
+    },
+    rutube: {
+      description: "Rutube videolarini yuklab olish",
+      news: "Endi Rutube qoʻllab-quvvatlanadi",
+      titleLine1: "Rutube videolarini",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "Rutube videolarini yuqori sifatda yuklab oling. Tez, bepul va oson.",
+      placeholder: "Rutube havolasini shu yerga qoʻying...",
+      howTo: [
+        "Rutubeʼda videoni oching va havolasini manzil satridan yoki «Ulashish» tugmasi orqali nusxalang.",
+        "Havolani yuqoridagi maydonga qoʻying.",
+        "Sifat va formatni tanlang (video yoki audio).",
+        "Yuklab olish darhol boshlanadi, Rutube akkaunti kerak emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali Rutube videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "Rutube taklif qiladigan barcha sifatlar, MP4 formatida, hamda MP3 audio." },
+        { q: "Rutubeʼga kirishim kerakmi?", a: "Yoʻq — Videoner faqat ommaga ochiq Rutube videolari bilan ishlaydi; akkauntga kirish ishlatilmaydi va talab qilinmaydi." },
+        { q: "Rutubeʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga ruxsat berilgan kontentni yuklab oling, Rutube foydalanish shartlari va muallif huquqlarini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Fayllar serverda taxminan bir soat turadi, soʻng avtomatik oʻchiriladi." },
+      ],
+    },
+    okru: {
+      description: "OK.ru (Odnoklassniki) videolarini yuklab olish",
+      news: "Endi OK.ru qoʻllab-quvvatlanadi",
+      titleLine1: "OK.ru videolarini",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "OK.ru (Odnoklassniki) videolarini yuqori sifatda yuklab oling. Tez, bepul va oson.",
+      placeholder: "OK.ru havolasini shu yerga qoʻying...",
+      howTo: [
+        "OK.ruʼda (Odnoklassniki) videoni oching va havolasini manzil satridan nusxalang.",
+        "Havolani yuqoridagi maydonga qoʻying va «Yuklab olish» tugmasini bosing.",
+        "Sifat va formatni tanlang.",
+        "Yuklab olish darhol boshlanadi — OK.ruʼga kirish shart emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali OK.ru videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "OK.ru shu video uchun beradigan barcha sifatlar, hamda MP3." },
+        { q: "OK.ruʼga kirishim kerakmi?", a: "Yoʻq — faqat ommaviy OK.ru (Odnoklassniki) videolari ishlaydi. Videoner hech qachon akkauntga kirmaydi, shuning uchun yopiq videolarga kirish imkoni yoʻq." },
+        { q: "OK.ruʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga huquqingiz bor videolarni yuklab oling, OK.ru foydalanish shartlari va joylagan shaxsning huquqlarini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Fayllar yaratilganidan taxminan bir soat oʻtib avtomatik oʻchiriladi." },
+      ],
+    },
+    pinterest: {
+      description: "Pinterest pinlaridagi videolarni yuklab olish",
+      news: "Endi Pinterest qoʻllab-quvvatlanadi",
+      titleLine1: "Pinterest videolari va pinlarini",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "Pinterest pinlaridagi videolarni yuqori sifatda yuklab oling. Tez, bepul va oson. Eslatma: faqat video pinlarni yuklab olish mumkin — faqat rasmdan iborat pinlar qoʻllab-quvvatlanmaydi.",
+      placeholder: "Pinterest havolasini shu yerga qoʻying...",
+      howTo: [
+        "Pinterestʼda pinni oching va «Ulashish» → «Havolani nusxalash»ni bosing (yoki havolani brauzerdan nusxalang).",
+        "Havolani yuqoridagi maydonga qoʻying va «Yuklab olish» tugmasini bosing.",
+        "Kerakli sifat va formatni tanlang.",
+        "Fayl darhol yuklanadi — akkaunt kerak emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali Pinterest videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish va mavjud sifatlarni tekshirish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "Videoner Pinterest shu pin videosi uchun beradigan barcha sifatlarni taklif qiladi, MP3 audioni ajratib olish ham mumkin." },
+        { q: "Pinterestʼdan rasm yoki suratlarni yuklab olsa boʻladimi?", a: "Yoʻq — faqat video pinlarni yuklab olish mumkin. Agar pin faqat rasmdan iborat boʻlsa, undan olinadigan video fayl yoʻq." },
+        { q: "Yopiq yoki doskasi cheklangan pinlarni yuklab olsa boʻladimi?", a: "Faqat ommaga ochiq pinlar qoʻllab-quvvatlanadi; yopiq doskalar va kirishni talab qiladigan kontentni yuklab boʻlmaydi." },
+        { q: "Pinterestʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga huquqingiz bor pinlarni yuklab oling — oʻz kontentingiz yoki muallif ruxsat bergan har qanday narsa. Pinterest foydalanish shartlari va mualliflik huquqi qonunchiligini hurmat qiling." },
+        { q: "Yuklab olingan fayl qancha vaqt mavjud boʻladi?", a: "Konvertatsiya qilingan fayllar serverda taxminan bir soat saqlanadi, shuning uchun yuklab olgach, ularni darhol qurilmangizga saqlang." },
+      ],
+    },
+    threads: {
+      description: "Threads postlaridagi videolarni yuklab olish",
+      news: "Endi Threads qoʻllab-quvvatlanadi",
+      titleLine1: "Threads videolarini",
+      titleLine2: "yuklab olish",
+      pageDescription:
+        "Threads postlaridagi videolarni yuklab oling. Tez, bepul va Threads akkaunti talab qilinmaydi. Threads videoni bitta variantda, 720p gacha beradi — bu platforma taqdim etadigan eng yuqori sifat.",
+      placeholder: "Threads havolasini shu yerga qoʻying...",
+      howTo: [
+        "Threadsʼda postni oching, ulashish belgisini bosing, soʻng «Havolani nusxalash»ni tanlang.",
+        "Havolani yuqoridagi maydonga qoʻying va «Yuklab olish» tugmasini bosing.",
+        "Kerakli formatni tanlang — video yoki MP3 audio.",
+        "Fayl darhol yuklanadi — akkaunt kerak emas.",
+      ],
+      faq: [
+        { q: "Videoner orqali Threads videolarini yuklab olish bepulmi?", a: "Ha — lekin avval Telegram orqali kirishingiz kerak (bitta bosish, parolsiz). Kuniga 20 ta yuklab olish beriladi, bu limit Telegram-botimiz bilan umumiy. Xizmat butunlay bepul: obuna ham, reklama ham yoʻq." },
+        { q: "Yuklab olish uchun akkaunt kerakmi?", a: "Yuklab olishni boshlashdan oldin Telegram akkauntingiz orqali kirishingiz kerak — bu bitta bosish, email yoki parol talab qilinmaydi. Sahifani koʻrish uchun kirish shart emas." },
+        { q: "Qanday sifatda yuklab olsa boʻladi?", a: "Threads har bir post uchun videoni faqat bitta variantda, qisqa tomoni boʻyicha 720p gacha cheklab chop etadi — muallif 4K yuklagan boʻlsa ham. Videoner sizga aynan shu faylni beradi, MP3 audioni ajratib olish ham mumkin. Hech bir yuklovchi bundan koʻprogʻini bera olmaydi, chunki yuqoriroq oʻlchamlar umuman berilmaydi." },
+        { q: "threads.com va threads.net havolalari ikkalasi ham ishlaydimi?", a: "Ha. threads.com/@user/post/CODE kabi toʻliq havolalar ham, threads.net/t/CODE kabi qisqa havolalar ham qoʻllab-quvvatlanadi." },
+        { q: "Threads postidagi rasmlarni yuklab olsa boʻladimi?", a: "Yoʻq — faqat videolarni. Agar postda faqat rasmlar boʻlsa, undan olinadigan video fayl yoʻq." },
+        { q: "Postda bir nechta video boʻlsa-chi?", a: "Postdagi birinchi video yuklab olinadi. Threads karuselida bir nechta klip boʻlishi mumkin, lekin faqat birinchisi saqlanadi." },
+        { q: "Yopiq postlarni yuklab olsa boʻladimi?", a: "Yoʻq. Faqat hammaga koʻrinadigan postlarni yuklab olish mumkin; yopiq akkauntdagi yoki kirishni talab qiladigan kontentga kirish imkoni yoʻq." },
+        { q: "Threadsʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga huquqingiz bor narsani yuklab oling — oʻz kontentingiz yoki muallif ruxsat bergan har qanday narsa. Threads foydalanish shartlari va mualliflik huquqi qonunchiligini hurmat qiling." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz };

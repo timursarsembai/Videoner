@@ -117,6 +117,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Detener la descarga y la cola" },
     { command: "language", description: "Idioma del bot" },
   ],
+  uz: [
+    { command: "start", description: "Botdan qanday foydalanish" },
+    { command: "extension", description: "Brauzer uchun kengaytma" },
+    { command: "accounts", description: "Storislar va yopiq postlar uchun akkauntlaringiz" },
+    { command: "connect", description: "Kengaytmadagi kod bilan akkauntni ulash" },
+    { command: "stop", description: "Yuklab olish va navbatni toʻxtatish" },
+    { command: "language", description: "Bot tili" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -219,6 +227,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Conectar una cuenta a este grupo con un código" },
     { command: "language", description: "Idioma del bot en este grupo (administradores)" },
     { command: "start", description: "Cómo funciona el bot en un grupo" },
+  ],
+  uz: [
+    { command: "settings", description: "Bu guruhdagi bot sozlamalari (adminlar)" },
+    { command: "accounts", description: "Bu guruhga ulangan akkauntlar" },
+    { command: "connect", description: "Kod bilan bu guruhga akkaunt ulash" },
+    { command: "language", description: "Bu guruhdagi bot tili (adminlar)" },
+    { command: "start", description: "Bot guruhda qanday ishlaydi" },
   ],
 };
 

@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -14,9 +14,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -2899,6 +2899,226 @@ const es: Messages = {
   settingsBack: "⬅️ Volver a la configuración",
 };
 
+const uz: Messages = {
+  start: "Assalomu alaykum! Menga YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest yoki Threads platformasidagi videoga havola yuboring — uni yuklab olishga yordam beraman.\n\n✨ Sifat cheklanmagan: platformada nima boʻlsa, 4K gacha beraman — faqat fayl 2 GB ga sigʻsin, bu Telegram botlar uchun belgilagan chegara. Bu yerda pullik funksiyalar umuman yoʻq.\n\nMutlaqo bepul: obunalarsiz, reklamasiz, ilova ichidagi xaridlarsiz.\n\n🧩 Kompyuterda yuklab olyapsizmi? Brauzer kengaytmasini oʻrnating — «Yuklab olish» tugmasi toʻgʻridan-toʻgʻri video sahifasida paydo boʻladi: videoner.download/uz/extension\n\n👥 Meni guruhga qoʻshing — u yerda ulashilgan havolalar boʻyicha videolarni oʻzim yuboraman.\n\n⚡ Sifat tanlamasdan: havoladan keyin -audio yozing — faqat ovoz (mp3), -hd — eng yaxshi sifatdagi video.\n\n📣 Loyiha yangiliklari: @videonerdownload\n\n🌐 Bot tili: /language",
+  notLink: "Bu havolaga oʻxshamaydi. Menga video havolasini yuboring.",
+  inviteGreeting: "Assalomu alaykum! Men Videoner — YouTube, TikTok, Instagram va boshqa platformalardan videolarni bepul yuklab olaman. Sizga ulashilgan videoni tayyorlayapman 👇",
+  inviteNotFound: "Bu taklif havolasi boʻyicha video topilmadi. Menga video havolasini yuboring — yuklab beraman.",
+  inviteUnavailable: "Bu havoladagi videoni ochib boʻlmadi — xizmat hozir javob bermayapti. Bir daqiqadan soʻng shu havolani qayta oching.",
+  fetchingInfo: "🔍 Video haqida maʼlumot olinmoqda...",
+  audioOnlyButton: "🎵 Faqat audio (mp3)",
+  photoButton: "📷 Rasmlarni yuklab olish",
+  slideshowButton: "🎞 Slayd-shou (video)",
+  galleryButton: "📷+🎞 Rasmlar va slayd-shou",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nSifatni tanlang:`,
+  sessionExpired: "Sessiya muddati tugadi — havolani qayta yuboring",
+  downloading: "⏬ Yuklab olinmoqda, bu bir-ikki daqiqa vaqt olishi mumkin...",
+  downloadFailed: "yuklab olib boʻlmadi",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Yuklab olinmoqda: ${percent}%${eta ? ` · yana ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Deyarli tayyor — fayl yigʻilmoqda...",
+  converting: (percent) => `⚙️ Konvertatsiya: ${percent}%`,
+  etaUnderMinute: "bir daqiqadan kam",
+  etaMinutes: (minutes) => `~${minutes} daq`,
+  etaHours: (hours, minutes) => `~${hours} soat${minutes ? ` ${minutes} daq` : ""}`,
+  downloadTimeout: "yuklab olish juda uzoq davom etmoqda — video juda ogʻir koʻrinadi. Pastroq sifatni tanlab koʻring.",
+  downloadInterrupted: "⚠️ Bot yangilanish uchun qayta ishga tushmoqda — yuklab olishingiz uzilib qoldi. Bir daqiqadan soʻng havolani qayta yuboring.",
+  fileTooBig: (mb, url) =>
+    `Fayl katta boʻlib chiqdi (${mb} MB) — Telegram botga uni yuborishga ruxsat bermaydi.\nBu yerdan yuklab oling: ${url}`,
+  sendingFile: "📤 Fayl yuborilmoqda...",
+  sendingAlbum: (count) => `📤 Bu postda bir nechta fayl bor (${count}) — ularni albom qilib yuboryapman...`,
+  failedPrefix: "❌ Xatolik: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Manba: ${sourceUrl}\n` +
+        "Videoga oid barcha huquqlar uning muallifiga tegishli.\n" +
+        "@VideonerBot orqali bepul yuklab olindi",
+      `📣 Loyiha yangiliklari: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Ulashish: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Yuklab olish uchun ${channel} kanalimizga obuna boʻling — bu yagona shart, xizmat bepulligicha qoladi.\n\n` +
+    "Obuna boʻling va «Obuna boʻldim» tugmasini bosing.",
+  openChannelButton: "📣 Kanalni ochish",
+  checkSubscriptionButton: "Obuna boʻldim",
+  subscribeThanks: "Rahmat! Endi menga video havolasini yuboring.",
+  subscribeThanksResuming: "Rahmat! Havolangizni hozir ishga olaman.",
+  subscribeStillMissing: "Obunani hali koʻrmayapman. Obuna boʻling va yana bosing.",
+  channelNotice: (channel) => `\n\nBu post havolasi ${channel} kanalida paydo boʻladi — anonim tarzda, ismingizsiz.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Bu va istalgan boshqa videoni bepul yuklab oling: @VideonerBot",
+  errorStoryNeedsId:
+    "aniq bir storisga havola yuboring: uni Instagram ilovasida oching va «Ulashish» → «Havolani nusxalash» tugmasini bosing.",
+  errorInstagramStory:
+    "Instagram storislarini faqat akkauntiga kirgan foydalanuvchilar koʻra oladi.",
+  errorLoginRequired:
+    "Bu postni akkauntga kirmasdan ochib boʻlmaydi: platforma uni faqat " +
+    "tizimga kirgan foydalanuvchilarga koʻrsatadi. Bu yopiq postlarda, yosh cheklovi bor kontentda va " +
+    "cheklangan auditoriya uchun ulashilgan postlarda boʻladi.\n\n" +
+    "Ochiq postlar muammosiz yuklab olinadi — boshqa havolani sinab koʻring.",
+  errorUnsupportedPlatform:
+    "Bu havolani aniqlab boʻlmadi — bu YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest yoki Threads platformasidagi videoga toʻgʻridan-toʻgʻri havola ekanini tekshiring.",
+  errorFileTooLarge: "fayl 2 GB dan katta — Telegram botlarga bundan katta fayllarni yuborishga ruxsat bermaydi. Uni saytda yoki brauzer kengaytmasi orqali yuklab oling — tugmalar quyida. Yoki havolani qayta yuborib, pastroq sifatni tanlang.",
+  siteButton: "🌐 Saytda yuklab olish",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ${limit} dan ogʻir sifatlar yashirildi: Telegram botlarga kattaroq fayllarni yuborishga ruxsat bermaydi. Ularni saytda yoki brauzer kengaytmasi orqali yuklab olishingiz mumkin — tugmalar quyida.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Bu video eng past sifatda ham Telegram uchun juda ogʻir (~${smallest}): Telegram botlarga 2 GB dan katta fayllarni yuborishga ruxsat bermaydi. Bu yerda faqat audioni olishingiz mumkin, videoni esa — saytda yoki brauzer kengaytmasi orqali (tugmalar quyida).`,
+  errorFormatUnavailable: "Bu video uchun bunday sifat mavjud emas. Havolani qayta yuboring — joriy roʻyxatni koʻrsataman.",
+  errorNoVideoContent: "Bu havolada yuklab olinadigan video yoʻq — post faqat rasmlardan iborat koʻrinadi.",
+  errorRegionBlocked:
+    "Bu video muallif mamlakatidan tashqarida bloklangan — platforma uni " +
+    "serverimizga bermaydi. Buni chetlab oʻtishning iloji yoʻq: cheklov ular tomonida." +
+    "\n\nBoshqa havolalar odatdagidek yuklab olinadi.",
+  errorRateLimited: "Ketma-ket juda koʻp havola — biroz kuting va qayta yuboring.",
+  errorYoutubeDailyLimit: (gb) => `soʻnggi 24 soatda YouTube platformasidan ${gb} GB dan koʻp yuklab oldingiz — bu botning bir kishi uchun kunlik limiti. Hisob soʻnggi 24 soat boʻyicha yuritiladi, shuning uchun yangi YouTube videolarini birozdan keyin yuklab olishingiz mumkin. Boshqa platformalar odatdagidek ishlaydi.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Pleylist toʻxtatildi: YouTube kunlik limitiga yetildi. Yuklab olinmagan videolar: ${dropped}. Pleylist havolasini keyinroq qayta yuboring.`,
+  errorPlatformRefused:
+    "platforma bu videoni serverimizga bermadi. Bu yopiq " +
+    "yoki yosh cheklovi bor postlarda boʻladi, baʼzan esa platforma kirishni shunchaki vaqtincha " +
+    "cheklaydi. Bir necha daqiqadan soʻng qayta urinib koʻring.",
+  errorThreadsNoMedia:
+    "bu Threads postida video ham, rasm ham koʻrinmayapti. Yo bu faqat matnli post, yoki " +
+    "Threads uning mediasini faqat tizimga kirgan foydalanuvchilarga koʻrsatadi — bunday postlarni akkauntga kirmasdan yuklab boʻlmaydi.",
+  extensionHint:
+    "\n\n💻 Uni kompyuterda Videoner brauzer kengaytmasi orqali yuklab olishingiz mumkin: " +
+    "u platformadagi oʻz akkauntingiz orqali yuklab oladi, parol ham, cookie fayllar ham brauzeringizdan tashqariga chiqmaydi.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Bunday postlarni yuklab olish uchun ${platform} akkauntingizni botga ulang — bir marta. Shundan soʻng bot siz koʻra oladigan hamma narsani yuklab oladi: yopiq postlar, reels va storislar, telefondan ham. Buni qanday qilish — quyidagi tugmada.${withExtension ? "\n\n💻 Yoki uni kompyuterda Videoner brauzer kengaytmasi orqali yuklab oling." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Ulangan ${platform} akkauntingiz bu postni ocha olmadi. Ehtimol, kirish ishlamay qolgan — akkauntni qayta ulang. Yoki bu akkauntda postga ruxsat yoʻq.${withExtension ? "\n\n💻 Uni kompyuterda Videoner brauzer kengaytmasi orqali ham yuklab olishingiz mumkin." : ""}`,
+  connectAccountButton: "🔑 Akkauntni ulash",
+  reconnectAccountButton: "🔑 Qayta ulash",
+  extensionButton: "🧩 Kengaytma orqali yuklab olish",
+  extensionCommand:
+    "🧩 Brauzer uchun Videoner: «Yuklab olish» tugmasi toʻgʻridan-toʻgʻri video sahifasida — YouTube, Instagram, TikTok, VK, akkauntingizdagi yopiq videolar va GetCourse darslari.\n\nKompyuterdagi Chrome, Edge, Opera, Yandex Browser va Firefox uchun.",
+  extensionPageButton: "🧩 Kengaytmani oʻrnatish",
+  addToGroupButton: "👥 Guruhga qoʻshish",
+  newsButton: "📣 Loyiha yangiliklari",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Loyiha yangiliklari: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Bu guruh uchun bot sozlamalari\n\n" +
+    `🗑 Havolali xabarni oʻchirish: ${s.deleteLinks ? "ha" : "yoʻq"}\n` +
+    "Video yuborilgach, faqat havoladan iborat xabar oʻchiriladi — chatda faqat video va uni ulashgan kishining ismi qoladi.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Hozir xabarlarni oʻchira olmayman: meni «Xabarlarni oʻchirish» huquqi bilan administrator qiling.\n"
+      : "") +
+    `\n✍️ Video ostidagi izoh: ${{ full: "toʻliq", short: "nomi va manba", none: "izohsiz" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Sifat: ${s.quality === "max" ? "Telegram qabul qiladigan eng yuqori" : "standart (720p)"}\n` +
+    `\n⏱ Uzun videolar: ${s.longVideos ? "istalgan uzunlikda" : "faqat 15 daqiqagacha"}\n` +
+    `\n🔑 Kim oʻz akkauntlarini ulay oladi (storislar va yopiq postlar uchun): ${s.cookiesBy === "all" ? "istalgan aʼzo" : "faqat adminlar"}\n` +
+    `\n🌐 Javob tili: ${s.language ? langName(s.language) : "har bir aʼzoning oʻz tili"}\n` +
+    "\nSozlamalarni faqat guruh adminlari oʻzgartira oladi.",
+  settingsDeleteButton: (on) => `🗑 Havolalarni oʻchirish: ${on ? "ha" : "yoʻq"}`,
+  settingsCaptionButton: (style) => `✍️ Izoh: ${{ full: "toʻliq", short: "qisqa", none: "yoʻq" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Sifat: ${mode === "max" ? "eng yuqori" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Uzun videolar: ${on ? "ha" : "15 daqiqagacha"}`,
+  settingsDoneButton: "✅ Tayyor",
+  settingsAdminsOnly: "Sozlamalarni faqat guruh adminlari oʻzgartira oladi.",
+  settingsGroupsOnly: "Sozlamalar guruhlar uchun: meni guruhga qoʻshing va u yerda /settings yuboring.",
+  settingsFailed: "Sozlamalarni saqlab boʻlmadi, qayta urinib koʻring.",
+  settingsCookiesButton: (by) => `🔑 Akkauntlarni ulash: ${by === "all" ? "hamma" : "adminlar"}`,
+  accountsIntro:
+    "🔑 Ulangan akkauntlar\n\nBot faqat tizimga kirganlar koʻradigan narsalarni (Instagram storislari, yopiq postlar) sizning akkauntingiz orqali yuklab olishi mumkin. Kirish qayerda ulangan boʻlsa, oʻsha yerda ishlaydi: shaxsiy chatda ulangani sizning yuklab olishlaringizga, jumladan oʻz akkaunti ulanmagan guruhlardagi oʻz havolalaringizga xizmat qiladi; guruhga ulangani esa uning barcha aʼzolariga xizmat qiladi.",
+  accountsHowTo:
+    "Qanday ulash mumkin:\n1. Eng osoni: kompyuterdagi Videoner kengaytmasi — platforma saytida akkauntingizga kiring, Videoner oynasini oching, «🔑 … akkauntingizni botga ulash» tugmasini bosing va menga kodni yuboring. Guruh uchun oʻsha guruhda /connect KOD yuboring.\n2. Yoki menga cookies.txt faylini (brauzerdan eksport qilingan cookie fayllar) yuboring yoki uning matnini xabar sifatida joylang.\n3. Android telefondan — Firefox va Cookie-Editor qoʻshimchasi orqali: https://videoner.download/uz/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platformalar avtomatik yuklab olishni yoqtirmaydi va akkauntni cheklashi yoki bloklashi mumkin. Asosiy emas, qoʻshimcha akkauntni ulagan maʼqul. Cookie fayllar shifrlangan holda saqlanadi, faqat yuklab olish uchun ishlatiladi va quyidagi tugmalar bilan oʻchiriladi.",
+  accountsNone: "Hozircha hech narsa ulanmagan.",
+  accountsGroupTitle: "🔑 Bu guruhga ulangan akkauntlar",
+  accountsGroupHowTo:
+    "Butun guruh uchun ulash: Videoner kengaytmasidagi «🔑 … akkauntingizni botga ulash» tugmasi orqali kod oling va shu yerda /connect KOD yuboring. Agar akkauntni faqat shaxsiy chatingizda ulagan boʻlsangiz, bot undan bu yerda ham oʻz havolalaringiz uchun foydalanadi. Ulanishlaringiz: @VideonerBot bilan shaxsiy chatda /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ kirish ishlamayapti)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ kirish ishlamayapti)"}`,
+  accountsWhereHere: "shaxsiy chat",
+  accountsWhereGroup: (title) => `«${title}» guruhi`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Barcha ulanishlarimni oʻchirish",
+  accountsDeleted: "Oʻchirildi.",
+  accountsDeletedAll: (n) => `Oʻchirilgan ulanishlar: ${n}.`,
+  accountsNotAllowed: "Uni faqat ulagan kishi yoki guruh admini oʻchira oladi.",
+  connectUsage:
+    "/connect KOD yuboring. Kodni kompyuterdagi Videoner kengaytmasidagi «🔑 … akkauntingizni botga ulash» tugmasi beradi. Ulanishlaringiz: /accounts.",
+  connectOnlyAdmins: "Bu guruhga akkauntlarni faqat adminlar ulay oladi (/settings ga qarang).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} ulandi. Endi bot faqat tizimga kirganlar koʻradigan narsalarni ham yuklab oladi. Koʻrish yoki oʻchirish: /accounts.\n\n⚠️ Platforma avtomatik yuklab olish uchun akkauntni cheklashi mumkin — qoʻshimcha akkauntdan foydalangan maʼqul.`,
+  connectWhereGroup: "bu guruhga",
+  connectWhereHere: "shaxsiy chatdagi va inline rejimdagi yuklab olishlaringiz uchun",
+  connectCodeNotFound: "Kod topilmadi yoki muddati tugagan (kodlar 10 daqiqa amal qiladi). Videoner kengaytmasida yangisini oling.",
+  connectRejectedNoSession: "Bu cookie fayllarda akkauntga kirish maʼlumotlari yoʻq. Platforma saytida akkauntingizga kiring va cookie fayllarni qayta eksport qiling.",
+  connectRejectedUnknown: "Qoʻllab-quvvatlanadigan platformalarning cookie fayllari topilmadi: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Akkauntlarni ulash hozircha mavjud emas.",
+  connectFailed: "Ulab boʻlmadi, qayta urinib koʻring.",
+  connectFileTooBig: "Fayl juda katta — faqat kerakli saytning cookie fayllarini eksport qiling.",
+  connectNotAnonymous: "Akkauntni guruh nomidan anonim tarzda emas, oʻz nomingizdan ulang: aks holda adminlarning ulanishlari aralashib ketadi. Kodni yoʻq qildim — yangisini oling.",
+  connectCodeInGroup:
+    "Guruh chatida yuborilgan ulanish kodini boshqalar ham koʻrishi mumkin — uni yoʻq qildim va xabarni oʻchirdim. Yangisini oling va /connect KOD bilan yuboring: bunday buyruqli xabarni darhol oʻchiraman.",
+  groupWelcome:
+    "👋 Assalomu alaykum! Bu chatga TikTok, Instagram, YouTube, VK va boshqa platformalardagi videolarga havolalar tashlang — men videoning oʻzi bilan javob beraman.\n\n" +
+    "15 daqiqagacha boʻlgan videolarni buyruqlarsiz oʻzim yuklab olaman, boshqa paytlarda jim turaman.\n\n⚙️ Guruh adminlari meni /settings orqali sozlashi mumkin: havolali xabarlarni oʻchirish, izoh uslubi, sifat, uzun videolar va til.\n\n⚡ Ovozni olish uchun havoladan keyin -audio, eng yaxshi sifat uchun -hd qoʻshing.\n\n📣 Loyiha yangiliklari: @videonerdownload",
+  errorTooLong: "video juda uzun — bunday uzun videolarni hozircha yuklab ololmaymiz.",
+  errorUnknown: "bu videoni yuklab boʻlmadi. Birozdan keyin qayta urinib koʻring yoki boshqa havola yuboring.",
+  inlineHintButton: "Botga havola yuborish",
+  inlineResultTitle: "⬇️ Videoni yuklab olish",
+  inlineResultDescription: "Video aynan shu chatga joylanadi",
+  inlinePlaceholder: "⏬ Yuklab olinmoqda, bu bir-ikki daqiqa vaqt olishi mumkin...",
+  inlineOpenBot: "Botni ochish",
+  inlineOnlySingleVideo:
+    "Bu rejim bitta video yuboradi. Bir nechta faylli postlar yoki rasmlar uchun havolani botga shaxsiy chatda yuboring.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Yuklab olish uchun ${channel} kanaliga obuna boʻling va qayta urinib koʻring.`,
+  inlineRateLimited: "Ketma-ket juda koʻp soʻrov. Bir daqiqa kuting va qayta urinib koʻring.",
+  queueRest: (count) => `\n\n📋 Navbatda yana havolalar bor: ${count}. Bundan keyin ularni birma-bir koʻrsataman.`,
+  queuedOne: (position) =>
+    `📋 Havola navbatga qoʻyildi, #${position}. Avval joriysini tugataylik — keyin uning uchun sifat tanlashni koʻrsataman.`,
+  queuedMany: (added, waiting) =>
+    `📋 Navbatga qoʻshilgan havolalar: ${added}. Jami kutmoqda: ${waiting}. Joriysidan keyin ularni birma-bir koʻrsataman.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Bu havola allaqachon navbatda — ikki marta qoʻshmayman."
+      : `Navbatda bor havolalar ikki marta qoʻshilmaydi (takrorlar: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Navbatga koʻpi bilan ${limit} ta havola sigʻadi — ortiqchalari qoʻshilmadi (${rejected}). Navbat siljigach, ularni yuboring.`,
+  skipButton: "✖️ Yuklab olmaslik",
+  skipped: "⏭ Bu havola oʻtkazib yuborildi.",
+  chooseTimedOut: "⌛ 30 daqiqa ichida sifat tanlanmadi — bu havola oʻtkazib yuborildi.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot yangilanish uchun qayta ishga tushmoqda — navbat tozalandi (havolalar: ${count}). Bir daqiqadan soʻng ularni qayta yuboring.`,
+  subtitlesButton: "📝 Subtitrlar",
+  subtitlesBack: "⬅️ Sifat tanlashga qaytish",
+  subtitlesAuto: "avto",
+  subtitlesChoose: "Subtitr tilini tanlang",
+  subtitlesPreparing: "📝 Subtitrlar tayyorlanmoqda...",
+  subtitlesFailed: "Bu tildagi subtitrlarni yuklab boʻlmadi. Boshqa tilni tanlab koʻring.",
+  subtitlesBusy: "YouTube hozir subtitrlarni bermayapti — bir necha daqiqadan soʻng qayta urinib koʻring.",
+  playlistFound: (title, count) =>
+    `📃 Pleylist${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} ta video.\nUlarni birma-bir yuklab olaman. Qaysi formatda?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Eng yaxshi sifat",
+  playlistAudioButton: "🎵 Faqat audio (mp3)",
+  playlistNoButton: "✖️ Yoʻq, rahmat",
+  playlistQueued: (count) =>
+    `📃 Pleylistdan navbatga qoʻyilgan videolar: ${count}. Ularni birma-bir yuboraman. Quyidagi tugma yoki /stop bilan toʻxtatishingiz mumkin.`,
+  playlistFailed: "Pleylistni ochib boʻlmadi — u yopiq boʻlishi mumkin. Bitta videoga havola yuboring.",
+  stopButton: "⏹ Toʻxtatish",
+  stopped: (dropped) => `⏹ Toʻxtatildi.${dropped ? ` Navbatdan olib tashlangan havolalar: ${dropped}.` : ""}`,
+  nothingToStop: "Hozir hech narsa yuklab olinmayapti.",
+  languageChoose: "🌐 Bot tilini tanlang. «Avto» — Telegram tilingizga moslashadi.",
+  languageChooseGroup: "🌐 Bu guruhda botning javob tili. «Avto» — har bir aʼzoning Telegram tili.",
+  languageAuto: "Avto — Telegram tili boʻyicha",
+  languageAutoGroup: "Avto — har bir aʼzoning oʻz tili",
+  languageSaved: (name) => `✅ Bot tili: ${name}. /language orqali oʻzgartirishingiz mumkin.`,
+  languageSavedAuto: "✅ Bot Telegram tilingizga moslashadi. /language orqali oʻzgartirishingiz mumkin.",
+  settingsLanguageButton: (name) => `🌐 Til: ${name ?? "avto"}`,
+  settingsBack: "⬅️ Sozlamalarga qaytish",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -3346,4 +3566,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz };

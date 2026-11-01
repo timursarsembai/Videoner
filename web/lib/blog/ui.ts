@@ -187,6 +187,18 @@ export const blogUi: Record<
     readFull: "Ler o artigo completo no site",
     dateLocale: "pt-BR",
   },
+  uz: {
+    title: "Videoner blogi",
+    description: "Loyiha yangiliklari: botda, saytda va kengaytmada nima yangi va undan qanday foydalanish kerak.",
+    readMore: "Oʻqish",
+    back: "Barcha maqolalar",
+    allPosts: "Blog",
+    channel: "Telegramʼdagi yangiliklar",
+    channelCta: "Loyiha yangiliklari — @videonerdownload Telegram kanalida.",
+    readOnSite: "Saytda oʻqish",
+    readFull: "Toʻliq maqolani saytda oʻqish",
+    dateLocale: "uz-Latn-UZ",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

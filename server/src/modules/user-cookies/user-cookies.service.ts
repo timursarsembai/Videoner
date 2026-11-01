@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -374,6 +374,7 @@ export class UserCookiesService {
       it: forGroup ? 'per un gruppo' : 'per te',
       pt: forGroup ? 'para um grupo' : 'para você',
       es: forGroup ? 'para un grupo' : 'para ti',
+      uz: forGroup ? 'guruh uchun' : 'siz uchun',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -390,6 +391,7 @@ export class UserCookiesService {
       it: `⚠️ L’accesso ${name} collegato (${where}) ha smesso di funzionare: la piattaforma non lo accetta più. Forse sei uscito dall’account, oppure l’account è stato limitato.\n\nPer continuare a scaricare con questo account, collegalo di nuovo. I tuoi collegamenti: /accounts.`,
       pt: `⚠️ O login conectado do ${name} (${where}) parou de funcionar: a plataforma não o aceita mais. Talvez você tenha saído da conta, ou a conta foi restringida.\n\nPara continuar baixando com ela, conecte a conta novamente. Suas conexões: /accounts.`,
       es: `⚠️ El inicio de sesión de ${name} conectado (${where}) dejó de funcionar: la plataforma ya no lo acepta. Puede que hayas cerrado sesión en la cuenta o que la cuenta haya sido restringida.\n\nPara seguir descargando con ella, vuelve a conectar la cuenta. Tus conexiones: /accounts.`,
+      uz: `⚠️ ${name} akkauntiga ulangan kirish (${where}) ishlamay qoldi: platforma uni endi qabul qilmaydi. Ehtimol, siz akkauntdan chiqib ketgansiz yoki akkaunt cheklangan.\n\nU orqali yana yuklab olish uchun akkauntni qaytadan ulang. Ulanishlar roʻyxati: /accounts.`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

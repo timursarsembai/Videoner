@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на четырнадцати языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на пятнадцати языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -4235,6 +4235,308 @@ export const legal: LegalByLanguage = {
             heading: "Reclamações de má-fé",
             body: [
               "Uma reclamação que contenha informações sabidamente falsas pode acarretar a responsabilidade do reclamante nos termos da legislação aplicável. Reservamo-nos o direito de recusar a análise de uma reclamação que não permita identificar nem o titular de direitos nem o material contestado.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  uz: {
+    ui: {
+      updated: "Tahrir sanasi",
+      back: "Bosh sahifaga",
+      operatorHeading: "Servis operatori",
+      navHeading: "Boshqa hujjatlar",
+      labels: {
+        privacy: "Maxfiylik siyosati",
+        terms: "Foydalanuvchi kelishuvi",
+        cookies: "Cookie siyosati",
+        copyright: "Huquq egalari uchun",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Maxfiylik siyosati",
+        summary: `${operator.site} qanday maʼlumotlarni yigʻishi, ular nima uchun kerakligi, qancha muddat saqlanishi va ularni qanday oʻchirish mumkinligi.`,
+        sections: [
+          {
+            heading: "Umumiy qoidalar",
+            body: [
+              `Ushbu Siyosat ${operator.site} servisi qanday shaxsga doir maʼlumotlarga va qanday maqsadda ishlov berishini belgilaydi. Maʼlumotlar operatori — ${operator.nameUz}.`,
+              "Servisdan foydalanish orqali siz bu yerda bayon etilgan ishlov berish tartibiga rozilik bildirasiz. Agar siz unga rozi boʻlmasangiz, iltimos, servisdan foydalanmang.",
+              "Ishlov berish Qozogʻiston Respublikasining «Shaxsga doir maʼlumotlar va ularni himoya qilish toʻgʻrisida»gi qonuniga muvofiq, Yevropa iqtisodiy hududidan tashrif buyuruvchilarga nisbatan esa GDPR talablarini hisobga olgan holda amalga oshiriladi.",
+            ],
+          },
+          {
+            heading: "Qanday maʼlumotlarga ishlov beramiz",
+            body: [
+              "Biz ataylab servis ishlashi uchun zarur boʻlganidan ortiq hech narsa yigʻmaymiz hamda hujjatlar, toʻlov maʼlumotlari yoki manzilni soʻramaymiz.",
+            ],
+            bullets: [
+              "Siz botga yozganingizda u oladigan Telegram hisob qaydnomasi maʼlumotlari: raqamli identifikator, foydalanuvchi nomi, ism va til kodi.",
+              "Yuklab olish uchun yuboradigan havolalaringiz va urinishning oʻzi haqidagi maʼlumotlar: platforma, sana va vaqt, tanlangan sifat, natija (muvaffaqiyat yoki xato).",
+              "Ulanishning texnik maʼlumotlari: IP-manzil, brauzer turi va versiyasi, til, oʻtish amalga oshirilgan sahifa. Ular server jurnallariga va veb-tahlil tizimlariga tushadi.",
+              "Cookie fayllari va tahlil identifikatorlari — batafsil maʼlumot Cookie siyosatida.",
+            ],
+          },
+          {
+            heading: "Bu maʼlumotlar nima uchun kerak",
+            bullets: [
+              "Xizmatning oʻzini koʻrsatish: havolangiz boʻyicha videoni olish va faylni sizga berish.",
+              "Hisob qaydnomangizni boshqalarnikidan farqlash va suiisteʼmolliklarga qarshi kurashish.",
+              "Servisni avtomatlashtirilgan suiisteʼmolliklardan himoya qilish: havola yuborilishidan oldin Cloudflare Turnstile tekshiruvi.",
+              "Saytdan qanday foydalanilayotganini tushunish va xatolarni bartaraf etish — anonimlashtirilgan va umumlashtirilgan statistika.",
+              "Sizning murojaatlaringizga va huquq egalarining murojaatlariga javob berish.",
+              "Vaqti-vaqti bilan servis haqidagi fikringizni bilish uchun sizga Telegramda yozish — masalan, agar siz undan foydalanishni toʻxtatgan boʻlsangiz. Javob berish majburiy emas; agar bunday xabarlar sizga kerak boʻlmasa, shunchaki bu haqda ayting va biz boshqa yozmaymiz.",
+            ],
+          },
+          {
+            heading: "Ishlov berish asoslari",
+            body: [
+              "Telegram hisob qaydnomasi maʼlumotlari va yuklab olishlar haqidagi maʼlumotlarga siz servisdan foydalanishni boshlash bilan qabul qiladigan Foydalanuvchi kelishuvini ijro etish uchun ishlov beriladi.",
+              "Tahliliy cookie fayllari va saytdagi harakatlarni yozib olishga sizning roziligingiz asosida ishlov beriladi, siz uni istalgan vaqtda qaytarib olishingiz mumkin — usullari Cookie siyosatida bayon etilgan.",
+              "Server jurnallariga ishlov berish va botlardan himoya servisni ishlaydigan va himoyalangan holatda saqlashdan iborat qonuniy manfaatimiz doirasida amalga oshiriladi.",
+              "Servis haqidagi fikringiz yuzasidan savollar servisni yaxshilashdan iborat qonuniy manfaatimiz doirasida beriladi; siz istalgan vaqtda ulardan voz kechishingiz mumkin.",
+            ],
+          },
+          {
+            heading: "Ulangan akkauntlar",
+            body: [
+              "Xohishingizga koʻra, bot faqat tizimga kirgan foydalanuvchilarga koʻrinadigan yozuvlarni — storislar va yopiq nashrlarni yuklab olishi uchun platformadagi akkauntingizni (Instagram, Facebook, YouTube, X, VK, TikTok) botga ulashingiz mumkin. Buning uchun bot ushbu akkauntning cookie fayllarini oladi — Videoner kengaytmasidan bir martalik kod orqali yoki siz yuborgan fayldan.",
+              "Biz faqat tanlangan platformaning cookie fayllarini saqlaymiz, qolganlarini darhol chiqarib tashlaymiz. Ular shifrlangan holda saqlanadi va faqat siz ularni ulagan joydagi yuklab olishlar uchun ishlatiladi. Shaxsiy chatda ulanganlari — sizning yuklab olishlaringiz uchun, shu jumladan oʻz akkaunti ulanmagan guruhlardagi oʻzingizning havolalaringiz uchun; ular boshqalarning havolalari uchun ishlatilmaydi. Guruhga ulanganlari — faqat uning aʼzolarining yuklab olishlari uchun va boshqa hech qayerda emas.",
+              "Asos — sizning roziligingiz: akkauntni oʻzingiz ulaysiz va uni istalgan vaqtda /accounts buyrugʻi bilan oʻchirishingiz mumkin. Oʻchirilganda cookie fayllari qaytarib boʻlmaydigan tarzda oʻchiriladi. Agar platforma kirishni qabul qilishni toʻxtatsa, bot bu haqda sizga xabar beradi.",
+              "Ulangan akkaunt orqali yuklab olingan yozuvlar kanalimizda eʼlon qilinmaydi va umumiy keshdan boshqa foydalanuvchilarga berilmaydi.",
+            ],
+          },
+          {
+            heading: "Uchinchi tomon servislari",
+            body: [
+              "Biz maʼlumotlaringizni sotmaymiz va ularni uchinchi shaxslarga ularning oʻz maqsadlari uchun bermaymiz. Servis ishlashi uchun quyidagi provayderlar jalb etilgan, ularning har biri maʼlumotlarga oʻz qoidalari boʻyicha ishlov beradi:",
+            ],
+            bullets: [
+              `Telegram — ${BOT} botining ishlashi.`,
+              "Cloudflare — botlardan himoya (Turnstile), saytni yetkazib berish va pochtani marshrutlash.",
+              "Google Analytics va Google Tag Manager — tashriflar statistikasi.",
+              "Yandex Metrica — tashriflar statistikasi, kliklar xaritasi va Webvisor. Webvisor sahifadagi harakatlarni yozib oladi: koʻrsatkich harakatlari, sahifani aylantirish va kliklar. Yozuvlar faqat sayt qulayligini tahlil qilish uchun ishlatiladi.",
+            ],
+          },
+          {
+            heading: "Maʼlumotlarni qancha saqlaymiz",
+            bullets: [
+              "Yuklab olingan fayllar yaratilganidan taxminan bir soat oʻtgach serverdan avtomatik ravishda oʻchiriladi. Biz videolaringiz arxivini saqlamaymiz.",
+              "Yuklab olishga urinishlar haqidagi yozuvlar suiisteʼmolliklarga qarshi kurashish va murojaatlarni koʻrib chiqish uchun zarur boʻlgan muddat davomida saqlanadi.",
+              "Hisob qaydnomasi maʼlumotlari siz servisdan foydalanayotgan vaqt davomida saqlanadi va soʻrovingizga koʻra oʻchiriladi.",
+              "Server jurnallari cheklangan muddat saqlanadi va rotatsiya jarayonida qayta yoziladi.",
+            ],
+          },
+          {
+            heading: "Maʼlumotlarga qayerda ishlov beriladi",
+            body: [
+              "Servis serverlari Yevropa Ittifoqi hududidagi maʼlumotlar markazida joylashgan. Yuqorida sanab oʻtilgan provayderlarning bir qismi oʻz siyosatlariga muvofiq maʼlumotlarga uning hududidan tashqarida ishlov berishi mumkin.",
+            ],
+          },
+          {
+            heading: "Sizning huquqlaringiz",
+            body: [
+              `Siz maʼlumotlaringizga ishlov berilishi haqida maʼlumot olish, ularni tuzatish yoki oʻchirishni talab qilish, roziligingizni qaytarib olish va ishlov berishga eʼtiroz bildirish huquqiga egasiz. Buning uchun murojaat bilan bogʻliq boʻlgan elektron pochta yoki Telegram akkauntidan ${MAIL} manziliga yozing.`,
+              "Biz oqilona muddatda, qoida tariqasida, oʻttiz kalendar kuni ichida javob beramiz. Hisob qaydnomasining oʻchirilishi u bilan bogʻliq yuklab olishlar tarixining ham oʻchirilishiga olib keladi.",
+            ],
+          },
+          {
+            heading: "Voyaga yetmaganlar",
+            body: [
+              "Servis 16 yoshga toʻlmagan bolalar uchun moʻljallanmagan va ularga qaratilmagan. Biz bunday foydalanuvchilarning maʼlumotlarini bila turib yigʻmaymiz; agar bu xato tufayli sodir boʻlgan boʻlsa, bizga yozing va maʼlumotlar oʻchiriladi.",
+            ],
+          },
+          {
+            heading: "Oʻzgartirishlar",
+            body: [
+              "Biz ushbu Siyosatni yangilashimiz mumkin. Amaldagi tahrir sanasi sahifaning boshida koʻrsatilgan; muhim oʻzgarishlarni servisda qayd etib boramiz.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Foydalanuvchi kelishuvi",
+        summary: `${operator.site} servisidan foydalanish qoidalari: nima mumkin, nima mumkin emas va servis qanday shartlarda ishlaydi.`,
+        sections: [
+          {
+            heading: "Umumiy qoidalar",
+            body: [
+              `Ushbu Kelishuv ${operator.site} saytidan va ${BOT} Telegram-botidan foydalanishni tartibga soladi. Servis egasi va maʼmuri — ${operator.nameUz}.`,
+              "Servisdan foydalanishni boshlash bilan siz shartlarni oʻqib chiqqaningizni va ularni qabul qilishingizni tasdiqlaysiz. Agar biror shart sizga mos kelmasa, servisdan foydalanmasligingiz lozim.",
+            ],
+          },
+          {
+            heading: "Servis bepul",
+            body: [
+              "Servisning barcha imkoniyatlari bepul taqdim etiladi. Bizda obunalar, pullik tariflar, pullik video sifatlari va ichki xaridlar yoʻq.",
+              "Biz reklama koʻrsatmaymiz va hamkorlik havolalarini joylashtirmaymiz.",
+            ],
+          },
+          {
+            heading: "Kirish shartlari",
+            bullets: [
+              "Saytda yuklab olish uchun na hisob qaydnomasi, na tizimga kirish talab etiladi. Bot foydalanuvchilarni ularning Telegram akkaunti boʻyicha farqlaydi.",
+              "Servisni ortiqcha yuklanish va avtomatlashtirilgan suiisteʼmolliklardan soʻrovlar chastotasiga qoʻyilgan texnik cheklovlar himoya qiladi.",
+              "YouTube uchun kunlik trafik limiti amal qiladi: saytda va kengaytmada bitta tarmoqdan 24 soatda 10 GB, botda esa bitta Telegram akkauntiga 24 soatda 25 GB. Boshqa platformalarga u taalluqli emas.",
+              "Bot orqali yuklab olish uchun kanalimizga obuna boʻlish talab etilmaydi. Bot fayllar izohiga loyihaning yangiliklar kanaliga havola qoʻshadi; unga obuna boʻlish majburiy emas.",
+            ],
+          },
+          {
+            heading: "Servis nima qiladi",
+            body: [
+              "Servis texnik vositachi hisoblanadi: havolangiz boʻyicha u ommaga ochiq sahifaga murojaat qiladi, media faylni oladi va uni sizga uzatadi.",
+              "Biz oʻzimizda video katalogini joylashtirmaymiz, boshqalarning kontenti boʻyicha qidiruv olib bormaymiz va yuklab olingan fayllarni uzatish uchun zarur boʻlgan vaqtdan — taxminan bir soatdan ortiq saqlamaymiz.",
+              "Muayyan platformaning mavjudligi uning texnik qarorlariga bogʻliq va ogohlantirishsiz oʻzgarishi mumkin.",
+            ],
+          },
+          {
+            heading: "Foydalanuvchining majburiyatlari",
+            body: [
+              "Olingan fayllardan qanday foydalanishingiz uchun siz mustaqil ravishda javobgarsiz va bunga huquqingiz borligini tasdiqlaysiz.",
+            ],
+            bullets: [
+              "Faqat huquqlari sizga tegishli boʻlgan yoki undan foydalanishga huquq egasi yoxud qonun ruxsat bergan materialni yuklab oling.",
+              "Servisdan mualliflik va turdosh huquqlarni buzish, taqiqlangan kontentni tarqatish va uchinchi shaxslarning huquqlarini buzish uchun foydalanmang.",
+              "Servisning texnik cheklovlarini, shu jumladan soʻrovlar chastotasi cheklovlari va botlarga qarshi tekshiruvni chetlab oʻtishga urinmang.",
+              "Avtomatlashtirilgan yuklama yaratmang: ommaviy soʻrovlar, skriptlar va parserlarga yoʻl qoʻyilmaydi.",
+            ],
+          },
+          {
+            heading: "Kanalda havolalarni eʼlon qilish",
+            body: [
+              "Bot orqali video yuklab olish bilan siz asl postga havola Telegram-kanalimizda eʼlon qilinishiga rozilik bildirasiz. Bu haqdagi ogohlantirish botda sifat tanlanishidan oldin — yaʼni siz yuklab olish toʻgʻrisida qaror qabul qilishingizdan oldin koʻrsatiladi.",
+              "Eʼlon qilish anonim tarzda amalga oshiriladi: kanalga ommaga ochiq sahifaga havola, rolik nomi va uning muqovasi — platforma post prevyusida koʻrsatadigan aynan oʻsha kadr yuboriladi. Videoni kim yuklab olgani koʻrsatilmaydi. Video faylning oʻzi hech qachon va hech qayerda eʼlon qilinmaydi: havola tarqatiladi, uni platformalarning oʻzi ham har bir post ostidagi «Ulashish» tugmasi orqali tarqatishni taklif qiladi.",
+              "Ayni bir havola koʻpi bilan bir marta eʼlon qilinadi. Agar havola kanalga tushishini istamasangiz, ushbu videoni bizning servis orqali yuklab olmang.",
+              "Guruhlardagi havolalar va ulangan akkaunt orqali yuklab olingan yozuvlar kanalda eʼlon qilinmaydi."
+            ],
+          },
+          {
+            heading: "Oʻz akkauntingizni ulash",
+            body: [
+              "Platformadagi akkauntingizni botga ulash bilan siz bu sizning akkauntingiz ekanini va uni tasarruf etishga haqli ekaningizni tasdiqlaysiz.",
+              "Platformalar avtomatik yuklab olishlarni maʼqullamaydi va ulangan akkauntni cheklashi yoki bloklashi mumkin. Bu xavfni siz oʻz zimmangizga olasiz; asosiy boʻlmagan, alohida akkauntni ulashni tavsiya qilamiz. Platforma akkauntingizga qoʻyadigan cheklovlar uchun biz javobgar emasmiz.",
+              "Guruhga ulangan akkaunt uning barcha aʼzolarining yuklab olishlari uchun ishlatiladi. Kim akkauntlarni ulashi mumkinligini guruh administratorlari hal qiladi va ular istalgan akkauntni oʻchirib tashlashi mumkin.",
+            ],
+          },
+          {
+            heading: "Javobgarlikni cheklash",
+            body: [
+              "Servis «qanday boʻlsa, shundayligicha» sharti asosida taqdim etiladi. Biz uzluksiz ishlashni, muayyan platformaning mavjudligini yoki faylning sizning maqsadlaringiz uchun yaroqliligini kafolatlamaymiz.",
+              "Yuklab olingan materialni qanday tasarruf etganingiz va uchinchi shaxslarning huquqlarini buzganingiz oqibatlari uchun biz javobgar emasmiz.",
+              "Biz imkoniyatlar tarkibini oʻzgartirish, texnik xizmat koʻrsatish uchun servis ishini toʻxtatib turish va uning faoliyatini tugatish huquqiga egamiz.",
+            ],
+          },
+          {
+            heading: "Kirishni cheklash",
+            body: [
+              "Ushbu shartlar buzilganda, cheklovlarni chetlab oʻtishga urinilganda, shuningdek huquq egasidan asoslantirilgan shikoyat kelib tushganda biz servisga kirishni cheklashimiz yoki toʻxtatishimiz mumkin.",
+            ],
+          },
+          {
+            heading: "Oʻzgartirishlar va qoʻllaniladigan huquq",
+            body: [
+              "Biz shartlarni oʻzgartirishimiz mumkin; amaldagi tahrir sanasi sahifaning boshida koʻrsatilgan. Oʻzgarishlardan keyin servisdan foydalanishni davom ettirish bilan siz yangi tahrirni qabul qilasiz.",
+              "Taraflar oʻrtasidagi munosabatlarga Qozogʻiston Respublikasi huquqi qoʻllaniladi. Taraflar nizolarni yozishmalar orqali hal qilishga intiladi, kelishuvga erishilmagan taqdirda esa — Qozogʻiston Respublikasi qonunchiligida belgilangan tartibda.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Cookie siyosati",
+        summary: `${operator.site} qanday cookie fayllaridan foydalanishi, ular nima uchun kerakligi va ulardan qanday voz kechish mumkinligi.`,
+        sections: [
+          {
+            heading: "Cookie nima",
+            body: [
+              "Cookie — sayt brauzeringizda saqlaydigan kichik matnli fayllar. Ular sozlamalaringizni eslab qolish va tashriflarning anonimlashtirilgan statistikasini yigʻish imkonini beradi.",
+              "Ushbu hujjatda cookie bilan birga unga yaqin texnologiyalar — brauzerning lokal xotirasi va piksel-hisoblagichlar ham bayon etiladi.",
+            ],
+          },
+          {
+            heading: "Zarur cookie fayllari",
+            body: [
+              "Ularsiz servis ishlamaydi, shuning uchun ular har doim oʻrnatiladi.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — havolani skript emas, inson yuborayotganini tekshirish.",
+              "Interfeys sozlamalari — tanlangan til va bezak mavzusi.",
+            ],
+          },
+          {
+            heading: "Tahliliy cookie fayllari",
+            body: [
+              "Ular qaysi sahifalardan foydalanilayotganini va xatolar qayerda yuzaga kelayotganini tushunishga yordam beradi. Ular sizning roziligingiz bilan oʻrnatiladi va servis ishlashi uchun majburiy emas.",
+            ],
+            bullets: [
+              "Google Analytics va Google Tag Manager — anonimlashtirilgan koʻrinishdagi tashriflar soni va saytdagi xatti-harakatlar.",
+              "Yandex Metrica — tashriflar soni, kliklar xaritasi va Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Yandex Metrica Webvisori sahifadagi harakatlarni yozib oladi: koʻrsatkich harakatlari, sahifani aylantirish, kliklar va havola maydoniga kiritilgan matn. Bu interfeys qayerda chalkashlikka sabab boʻlayotganini koʻrish uchun kerak.",
+              "Biz bu yozuvlardan muayyan shaxslarni kuzatish uchun foydalanmaymiz. Sayt maydonlariga saqlanishini istamaydigan maʼlumotlarni kiritmang.",
+            ],
+          },
+          {
+            heading: "Qanday voz kechish mumkin",
+            bullets: [
+              "Brauzeringizda cookie fayllarini bloklash yoki oʻchirishni sozlang — bu usul sanab oʻtilgan barcha tizimlar uchun ishlaydi.",
+              "Google Analytics: maʼlumot yigʻishni oʻchiradigan rasmiy brauzer qoʻshimchasi Google saytida mavjud.",
+              "Yandex Metrica: voz kechish Yandexning rasmiy qoʻshimchasi orqali mumkin.",
+              "Zarur cookie fayllarini oʻchirib qoʻyish yuklab olishni imkonsiz qiladi.",
+            ],
+          },
+          {
+            heading: "Saqlash muddatlari",
+            body: [
+              "Seans cookie fayllari brauzer yopilganda yoki seans muddati tugaganda oʻchiriladi. Tahliliy hisoblagichlar identifikatorlarni ularning provayderlari belgilagan muddatlar davomida saqlaydi.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Huquq egalari uchun",
+        summary: "Servisning mualliflik huquqiga oid pozitsiyasi va huquqbuzarlik yuzasidan shikoyat berish tartibi.",
+        sections: [
+          {
+            heading: "Servisning pozitsiyasi",
+            body: [
+              "Servis oʻzida video joylashtirmaydi va ularning katalogini yuritmaydi. U texnik vositachi sifatida ishlaydi: foydalanuvchi kiritgan havola boʻyicha ommaga ochiq sahifaga murojaat qiladi va faylni foydalanuvchiga uzatadi.",
+              "Yuklab olingan fayllar serverda taxminan bir soat saqlanadi va avtomatik ravishda oʻchiriladi. Bizda boshqalar kontentining doimiy nusxasi qolmaydi.",
+              "Yuklab olingan materialdan foydalanish uchun javobgarlik foydalanuvchining zimmasida — bu Foydalanuvchi kelishuvida bevosita mustahkamlab qoʻyilgan.",
+            ],
+          },
+          {
+            heading: "Agar huquqlaringiz buzilgan boʻlsa",
+            body: [
+              `Agar siz huquq egasi yoki uning vakili boʻlsangiz va servis huquqlaringizni buzish uchun ishlatilmoqda deb hisoblasangiz, ${MAIL} manziliga yozing. Biz bunday murojaatlarni koʻrib chiqamiz va choralar koʻramiz.`,
+            ],
+          },
+          {
+            heading: "Murojaatda nimalarni koʻrsatish kerak",
+            bullets: [
+              "Qaysi asarga daxl qilingani va qanday asosda unga nisbatan huquqlarga egaligingiz.",
+              "Materialga havola va, agar maʼlum boʻlsa, huquqbuzarlik holatlari.",
+              "Aloqa maʼlumotlaringiz: ism yoki nom, manzil va elektron pochta manzili.",
+              "Agar siz huquq egasi nomidan harakat qilsangiz — vakolatlaringizni tasdiqlovchi hujjat.",
+              "Murojaatdagi maʼlumotlar haqqoniy ekanligi, materialdan foydalanishga esa huquq egasi yoki qonun ruxsat bermaganligi toʻgʻrisidagi bayonot.",
+            ],
+          },
+          {
+            heading: "Biz nima qilamiz",
+            body: [
+              "Biz murojaatni oqilona muddatda, qoida tariqasida, oʻttiz kalendar kuni ichida koʻrib chiqamiz va huquqbuzarlik tasdiqlansa, servis orqali materialga kirishni, zarur hollarda esa huquqbuzarning servisga kirishini cheklaymiz.",
+              "Koʻrib chiqish natijalari haqida siz koʻrsatgan elektron pochta manziliga xabar beramiz.",
+            ],
+          },
+          {
+            heading: "Insofsiz murojaatlar",
+            body: [
+              "Bila turib notoʻgʻri maʼlumotlarni oʻz ichiga olgan murojaat qonunchilikka muvofiq arizachining javobgarligiga sabab boʻlishi mumkin. Agar murojaat huquq egasini ham, nizoli materialni ham aniqlash imkonini bermasa, biz uni koʻrib chiqishni rad etish huquqiga egamiz.",
             ],
           },
         ],

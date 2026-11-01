@@ -510,6 +510,18 @@ export const blogUi: Record<
     readFull: "Сайтта тулысынча уку",
     dateLocale: "tt-RU",
   },
+  sq: {
+    title: "Blogu i Videoner",
+    description: "Lajmet e projektit: çfarë ka të re në bot, në faqe dhe në shtesë, dhe si ta përdorni.",
+    readMore: "Lexo",
+    back: "Të gjithë artikujt",
+    allPosts: "Blogu",
+    channel: "Lajmet në Telegram",
+    channelCta: "Lajmet e projektit janë në kanalin e Telegram @videonerdownload.",
+    readOnSite: "Lexo në faqe",
+    readFull: "Lexoni artikullin e plotë në faqe",
+    dateLocale: "sq-AL",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

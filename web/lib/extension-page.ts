@@ -2171,4 +2171,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Баш биткә",
   },
+  sq: {
+    metaTitle: "Shtesa e shfletuesit Videoner",
+    title: "Videoner për shfletuesin tuaj",
+    summary:
+      "Shtesa shton butonin “Shkarko” në faqet e videove dhe shkarkon drejtpërdrejt në shfletuesin tuaj. Instagram, Facebook, TikTok dhe Threads shkarkohen me hyrjen tuaj — kështu funksionojnë edhe postimet private që i shihni në llogarinë tuaj, si dhe videot që platforma nuk ia dha serverit tonë.",
+    failedVideo: "Videoja që nuk u shkarkua dot në faqe ose në bot:",
+    failedVideoHint:
+      "Instaloni shtesën, hyni në platformë në këtë shfletues, hapni videon dhe klikoni “Shkarko” në këndin e poshtëm djathtas.",
+    openVideo: "Hapni videon",
+    version: "Versioni",
+    browsersTitle: "Ku funksionon",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi dhe shfletues të tjerë të bazuar në Chromium — në kompjuter.",
+    mobile: "Telefonat dhe tabletët nuk mbështesin shtesa — atje përdorni faqen ose botin në Telegram.",
+    getcourseTitle: "Mësimet në GetCourse",
+    getcourse:
+      "Hapni një mësim në një shkollë GetCourse me hyrjen tuaj: në këndin e sipërm djathtas të luajtësit shfaqet butoni “Shkarko”, ndërsa ikona e Videoner rendit të gjitha videot e mësimit. Shfletuesi juaj e shkarkon mësimin dhe e bashkon vetë në një mp4 — skedari nuk kalon përmes serverit tonë. Nëse kjo dështon, mësimin në të njëjtën cilësi e shkarkon serveri ynë; në këtë rast ai merr lidhjen e videos nga luajtësi.",
+    privacyTitle: "Hyrja juaj mbetet te ju",
+    privacy:
+      "Shtesa nuk ju kërkon kurrë fjalëkalim: kërkesën në platformë e bën vetë shfletuesi juaj, ndërsa serveri ynë merr vetëm një raport të shkurtër për statistika — lidhjen, madhësinë e skedarit dhe titullin. Cookies dërgohen në server vetëm nëse shtypni vetë “Lidhni llogarinë me botin” — dhe vetëm cookies e asaj platforme, të enkriptuara.",
+    stepsTitle: "Si ta instaloni në Chrome, Yandex Browser, Edge dhe Opera",
+    steps: [
+      "Shkarkoni arkivin dhe çarkivojeni — do të merrni dosjen videoner-extension me numrin e versionit në emër.",
+      "Hapni faqen e shtesave: shkruani chrome://extensions në shiritin e adresës (edge://extensions në Edge, opera://extensions në Opera).",
+      "Aktivizoni “Developer mode” — çelësin në krye të faqes.",
+      "Klikoni “Load unpacked” dhe zgjidhni atë dosje — atë që përmban manifest.json.",
+      "Gati: faqet e videove marrin butonin “Shkarko”, ndërsa ikona e Videoner shfaqet në shiritin e veglave të shfletuesit.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 ose më i ri — gjithashtu në kompjuter.",
+    firefoxSoon:
+      "Versioni për Firefox vjen së shpejti. Për momentin shtesa funksionon në Chrome, Yandex Browser, Edge, Opera dhe shfletues të tjerë të bazuar në Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Arkiv .zip — instalohet për disa minuta",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Instalim me një klik",
+    yourBrowser: "Shfletuesi juaj",
+    soon: "Së shpejti",
+    firefoxStepsTitle: "Si ta instaloni në Firefox",
+    firefoxSteps: [
+      "Klikoni butonin Firefox në krye të kësaj faqeje.",
+      "Firefox pyet nëse t’i lejojë videoner.download të instalojë një shtesë — klikoni “Continue to Installation”.",
+      "Në dritaren “Add Videoner?”, klikoni “Add”.",
+      "Gati: faqet e videove marrin butonin “Shkarko”, ndërsa ikona e Videoner shfaqet në shiritin e veglave. Firefox i instalon vetë përditësimet.",
+    ],
+    updateTitle: "Si ta përditësoni në Chrome, Yandex Browser, Edge dhe Opera",
+    updateSteps: [
+      "Kur del një version i ri, ikona e Videoner shfaq shenjën NEW dhe dritarja e saj ka një lidhje për këtu.",
+      "Shkarkoni arkivin me butonin Chrome në krye të kësaj faqeje dhe çarkivojeni në të njëjtën dosje si më parë, duke zëvendësuar skedarët.",
+      "Hapni faqen e shtesave (chrome://extensions, browser://extensions në Yandex Browser, edge://extensions) dhe shtypni “Reload” — shigjetën rrethore në kartën e Videoner.",
+    ],
+    back: "Kreu",
+  },
 };

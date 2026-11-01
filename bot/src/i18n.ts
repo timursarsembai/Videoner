@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt" | "sq";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -18,9 +18,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча", sq: "Shqip" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -8624,6 +8624,226 @@ const tt: Messages = {
   settingsBack: "⬅️ Көйләүләргә кире кайту",
 };
 
+const sq: Messages = {
+  start: "Përshëndetje! Më dërgoni një lidhje për një video nga YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ose Threads — do t’ju ndihmoj ta shkarkoni.\n\n✨ Pa kufizime cilësie: merrni çfarëdo që ofron platforma, deri në 4K — për sa kohë skedari nuk i kalon 2 GB, kufiri i Telegram për botët. Këtu nuk ka asnjë funksion me pagesë.\n\nPlotësisht falas: pa abonime, pa reklama, pa blerje brenda aplikacionit.\n\n🧩 Po shkarkoni në kompjuter? Instaloni shtesën e shfletuesit — butoni “Shkarko” shfaqet drejtpërdrejt në faqen e videos: videoner.download/sq/extension\n\n👥 Më shtoni në një grup dhe do të postoj videot e lidhjeve që ndahen atje.\n\n⚡ Pa zgjedhur cilësinë: shtoni -audio pas lidhjes për vetëm zërin (mp3), ose -hd për cilësinë më të mirë.\n\n📣 Lajmet e projektit: @videonerdownload\n\n🌐 Gjuha e botit: /language",
+  notLink: "Kjo nuk duket si lidhje. Më dërgoni një lidhje videoje.",
+  inviteGreeting: "Përshëndetje! Unë jam Videoner — shkarkoj falas video nga YouTube, TikTok, Instagram dhe platforma të tjera. Po përgatis videon që dikush ndau me ju 👇",
+  inviteNotFound: "Nuk gjeta asnjë video për këtë lidhje ftese. Më dërgoni një lidhje videoje dhe do ta shkarkoj.",
+  inviteUnavailable: "Nuk arrita ta hap videon nga kjo lidhje — shërbimi nuk po përgjigjet tani. Hapeni sërish të njëjtën lidhje pas një minute.",
+  fetchingInfo: "🔍 Po marr të dhënat e videos...",
+  audioOnlyButton: "🎵 Vetëm audio (mp3)",
+  photoButton: "📷 Shkarko fotot",
+  slideshowButton: "🎞 Shfaqje fotosh (video)",
+  galleryButton: "📷+🎞 Fotot dhe shfaqja e fotove",
+  chooseQuality: (title, duration) => `“${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nZgjidhni cilësinë:`,
+  sessionExpired: "Seanca skadoi — dërgojeni lidhjen sërish",
+  downloading: "⏬ Po shkarkohet, mund të zgjasë disa minuta...",
+  downloadFailed: "shkarkimi dështoi",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Po shkarkohet: ${percent}%${eta ? ` · edhe ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Gati përfundoi — po bashkoj skedarin...",
+  converting: (percent) => `⚙️ Po konvertohet: ${percent}%`,
+  etaUnderMinute: "më pak se një minutë",
+  etaMinutes: (minutes) => `~${minutes} min`,
+  etaHours: (hours, minutes) => `~${hours} orë${minutes ? ` ${minutes} min` : ""}`,
+  downloadTimeout: "shkarkimi po zgjat shumë — videoja duket shumë e rëndë. Provoni një cilësi më të ulët.",
+  downloadInterrupted: "⚠️ Boti po riniset për një përditësim — shkarkimi juaj u ndërpre. Ju lutemi dërgojeni lidhjen sërish pas një minute.",
+  fileTooBig: (mb, url) =>
+    `Skedari doli i madh (${mb} MB) — Telegram nuk e lejon botin ta dërgojë.\nShkarkojeni këtu: ${url}`,
+  sendingFile: "📤 Po dërgoj skedarin...",
+  sendingAlbum: (count) => `📤 Ky postim ka disa skedarë (${count}) — po i dërgoj si album...`,
+  failedPrefix: "❌ Dështoi: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Burimi: ${sourceUrl}\n` +
+        "Të gjitha të drejtat e videos i përkasin autorit të saj.\n" +
+        "Shkarkuar falas me @VideonerBot",
+      `📣 Lajmet e projektit: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Ndajeni: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Për të shkarkuar, ju lutemi abonohuni në kanalin tonë ${channel} — ky është i vetmi kusht, shërbimi mbetet falas.\n\n` +
+    "Abonohuni dhe shtypni “U abonova”.",
+  openChannelButton: "📣 Hapni kanalin",
+  checkSubscriptionButton: "U abonova",
+  subscribeThanks: "Faleminderit! Tani më dërgoni një lidhje videoje.",
+  subscribeThanksResuming: "Faleminderit! Po vazhdoj me lidhjen tuaj.",
+  subscribeStillMissing: "Ende nuk e shoh abonimin. Abonohuni dhe shtypni sërish.",
+  channelNotice: (channel) => `\n\nLidhja e këtij postimi do të shfaqet në ${channel} — në mënyrë anonime, pa emrin tuaj.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Shkarkoni falas këtë dhe çdo video tjetër: @VideonerBot",
+  errorStoryNeedsId:
+    "dërgoni lidhjen e një story-je të caktuar: hapeni në aplikacionin Instagram dhe prekni Share → Copy link.",
+  errorInstagramStory:
+    "Story-t e Instagram janë të dukshme vetëm për përdoruesit e identifikuar.",
+  errorLoginRequired:
+    "Ky postim nuk është i disponueshëm pa u identifikuar: platforma ua shërben vetëm " +
+    "përdoruesve të identifikuar. Kjo ndodh me postimet private, përmbajtjen me kufizim moshe dhe " +
+    "postimet e ndara me një audiencë të kufizuar.\n\n" +
+    "Postimet publike shkarkohen pa problem — provoni një lidhje tjetër.",
+  errorUnsupportedPlatform:
+    "Nuk e njoha këtë lidhje — sigurohuni që është një lidhje e drejtpërdrejtë videoje nga YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ose Threads.",
+  errorFileTooLarge: "skedari është më i madh se 2 GB — Telegram nuk i lejon botët të dërgojnë skedarë më të mëdhenj. Shkarkojeni në faqen e internetit ose me shtesën e shfletuesit — butonat më poshtë. Ose dërgojeni lidhjen sërish dhe zgjidhni një cilësi më të ulët.",
+  siteButton: "🌐 Shkarko në faqen e internetit",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Cilësitë më të rënda se ${limit} janë fshehur: Telegram nuk i lejon botët të dërgojnë skedarë më të mëdhenj. Mund t’i shkarkoni në faqen e internetit ose me shtesën e shfletuesit — butonat më poshtë.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Kjo video është shumë e rëndë për Telegram edhe në cilësinë më të ulët (~${smallest}): Telegram nuk i lejon botët të dërgojnë skedarë mbi 2 GB. Këtu mund të merrni vetëm audion; videon — në faqen e internetit ose me shtesën e shfletuesit (butonat më poshtë).`,
+  errorFormatUnavailable: "Kjo cilësi nuk është e disponueshme për këtë video. Dërgojeni lidhjen sërish — do t’ju tregoj listën aktuale.",
+  errorNoVideoContent: "Kjo lidhje nuk ka video për të shkarkuar — postimi duket se ka vetëm foto.",
+  errorRegionBlocked:
+    "Kjo video është e bllokuar jashtë vendit të autorit — platforma nuk ia shërben " +
+    "serverit tonë. Nuk ka rrugëdalje: kufizimi është nga ana e tyre." +
+    "\n\nLidhjet e tjera shkarkohen si zakonisht.",
+  errorRateLimited: "Shumë lidhje njëra pas tjetrës — prisni pak dhe dërgojeni sërish.",
+  errorYoutubeDailyLimit: (gb) => `keni shkarkuar më shumë se ${gb} GB nga YouTube në 24 orët e fundit — ky është kufiri ditor i botit për person. Llogariten 24 orët e fundit, kështu që mund të shkarkoni video të reja nga YouTube pak më vonë. Platformat e tjera funksionojnë si zakonisht.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Lista e luajtjes u ndal: u arrit kufiri ditor i YouTube. Video të pashkarkuara: ${dropped}. Dërgojeni sërish lidhjen e listës së luajtjes më vonë.`,
+  errorPlatformRefused:
+    "platforma nuk ia dha këtë video serverit tonë. Kjo ndodh me postimet private " +
+    "ose me kufizim moshe, dhe ndonjëherë platforma thjesht e kufizon qasjen për një " +
+    "kohë. Provoni sërish pas disa minutash.",
+  errorThreadsNoMedia:
+    "në këtë postim të Threads nuk duket asnjë video apo foto. Ose është postim vetëm me tekst, ose " +
+    "Threads ua shfaq median vetëm përdoruesve të identifikuar — postime të tilla nuk mund të shkarkohen pa u identifikuar.",
+  extensionHint:
+    "\n\n💻 Mund ta shkarkoni me shtesën e shfletuesit Videoner në kompjuter: " +
+    "ajo shkarkon me identifikimin tuaj në platformë, dhe asnjë fjalëkalim apo cookie nuk del nga shfletuesi juaj.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Për të shkarkuar postime të tilla, lidhni llogarinë tuaj ${platform} me botin — vetëm një herë. Pas kësaj boti shkarkon gjithçka që ju shihni: postime private, reels dhe story, edhe nga telefoni. Butoni më poshtë tregon si.${withExtension ? "\n\n💻 Ose shkarkojeni me shtesën e shfletuesit Videoner në kompjuter." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Llogaria juaj e lidhur ${platform} nuk arriti ta hapë këtë postim. Identifikimi mund të ketë pushuar së funksionuari — lidhni llogarinë sërish. Ose kjo llogari nuk ka qasje në postim.${withExtension ? "\n\n💻 Mund ta shkarkoni edhe me shtesën e shfletuesit Videoner në kompjuter." : ""}`,
+  connectAccountButton: "🔑 Lidhni llogarinë",
+  reconnectAccountButton: "🔑 Lidheni sërish",
+  extensionButton: "🧩 Shkarko me shtesën",
+  extensionCommand:
+    "🧩 Videoner për shfletuesin tuaj: butoni “Shkarko” drejtpërdrejt në faqen e videos — YouTube, Instagram, TikTok, VK, video private nga llogaria juaj dhe mësime GetCourse.\n\nPër Chrome, Edge, Opera, Yandex Browser dhe Firefox në kompjuter.",
+  extensionPageButton: "🧩 Instaloni shtesën",
+  addToGroupButton: "👥 Shtoje në grup",
+  newsButton: "📣 Lajmet e projektit",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Lajmet e projektit: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Cilësimet e botit për këtë grup\n\n" +
+    `🗑 Fshi mesazhin me lidhjen: ${s.deleteLinks ? "po" : "jo"}\n` +
+    "Pasi dërgohet videoja, mesazhi që përmbante vetëm lidhjen fshihet — në bisedë mbetet vetëm videoja me emrin e atij që e ndau.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Tani nuk mund të fshij mesazhe: më bëni administrator me të drejtën “Delete messages”.\n"
+      : "") +
+    `\n✍️ Teksti nën video: ${{ full: "i plotë", short: "titulli dhe burimi", none: "pa tekst" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Cilësia: ${s.quality === "max" ? "më e larta që pranon Telegram" : "standarde (720p)"}\n` +
+    `\n⏱ Video të gjata: ${s.longVideos ? "çdo gjatësi" : "vetëm deri në 15 minuta"}\n` +
+    `\n🔑 Kush mund të lidhë llogaritë (për story dhe postime private): ${s.cookiesBy === "all" ? "çdo anëtar" : "vetëm administratorët"}\n` +
+    `\n🌐 Gjuha e përgjigjeve: ${s.language ? langName(s.language) : "gjuha e secilit anëtar"}\n` +
+    "\nVetëm administratorët e grupit mund të ndryshojnë cilësimet.",
+  settingsDeleteButton: (on) => `🗑 Fshi lidhjet: ${on ? "po" : "jo"}`,
+  settingsCaptionButton: (style) => `✍️ Teksti: ${{ full: "i plotë", short: "i shkurtër", none: "pa tekst" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Cilësia: ${mode === "max" ? "më e larta" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Video të gjata: ${on ? "po" : "deri në 15 min"}`,
+  settingsDoneButton: "✅ Gati",
+  settingsAdminsOnly: "Vetëm administratorët e grupit mund të ndryshojnë cilësimet.",
+  settingsGroupsOnly: "Cilësimet janë për grupet: më shtoni në një grup dhe dërgoni atje /settings.",
+  settingsFailed: "Nuk arrita t’i ruaj cilësimet, ju lutemi provoni sërish.",
+  settingsCookiesButton: (by) => `🔑 Lidhja e llogarive: ${by === "all" ? "të gjithë" : "administratorët"}`,
+  accountsIntro:
+    "🔑 Llogaritë e lidhura\n\nBoti mund të shkarkojë atë që shohin vetëm përdoruesit e identifikuar (story të Instagram, postime private) — me llogarinë tuaj. Një identifikim funksionon aty ku e lidhët: ai në bisedën private shërben për shkarkimet tuaja, përfshirë lidhjet tuaja në grupet që nuk kanë llogari të vetën; ai i lidhur me një grup shërben për të gjithë anëtarët e tij.",
+  accountsHowTo:
+    "Si të lidhni një llogari:\n1. Më e lehta: shtesa Videoner në kompjuter — identifikohuni në faqen e platformës, hapni dritaren e Videoner, shtypni “🔑 Lidhni llogarinë tuaj … me botin” dhe më dërgoni kodin. Për një grup, dërgoni /connect KODI në atë grup.\n2. Ose më dërgoni një skedar cookies.txt (cookies të eksportuara nga shfletuesi), ose ngjitni tekstin e tij si mesazh.\n3. Nga një telefon Android — me Firefox dhe shtesën Cookie-Editor: https://videoner.download/sq/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platformat nuk i duan shkarkimet e automatizuara dhe mund ta kufizojnë ose bllokojnë llogarinë. Më mirë lidhni një llogari dytësore, jo atë kryesoren. Cookies ruhen të enkriptuara, përdoren vetëm për shkarkime dhe hiqen me butonat më poshtë.",
+  accountsNone: "Ende nuk është lidhur asgjë.",
+  accountsGroupTitle: "🔑 Llogaritë e lidhura me këtë grup",
+  accountsGroupHowTo:
+    "Për të lidhur një llogari për të gjithë grupin: merrni një kod me butonin “🔑 Lidhni llogarinë tuaj … me botin” në shtesën Videoner dhe dërgoni këtu /connect KODI. Nëse keni lidhur një llogari vetëm në bisedën tuaj private, boti e përdor këtu për lidhjet tuaja. Lidhjet tuaja: /accounts në bisedë private me @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ identifikimi nuk funksionon)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ identifikimi nuk funksionon)"}`,
+  accountsWhereHere: "bisedë private",
+  accountsWhereGroup: (title) => `grupi “${title}”`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Hiq të gjitha lidhjet e mia",
+  accountsDeleted: "U hoq.",
+  accountsDeletedAll: (n) => `Lidhje të hequra: ${n}.`,
+  accountsNotAllowed: "Vetëm ai që e lidhi ose një administrator i grupit mund ta heqë.",
+  connectUsage:
+    "Dërgoni /connect KODI. Kodin jua jep butoni “🔑 Lidhni llogarinë tuaj … me botin” në shtesën Videoner në kompjuter. Lidhjet tuaja: /accounts.",
+  connectOnlyAdmins: "Vetëm administratorët mund të lidhin llogari me këtë grup (shih /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} u lidh ${where}. Tani boti shkarkon edhe atë që shohin vetëm përdoruesit e identifikuar. Shikoni ose hiqni: /accounts.\n\n⚠️ Platforma mund ta kufizojë llogarinë për shkarkime të automatizuara — më mirë përdorni një llogari dytësore.`,
+  connectWhereGroup: "me këtë grup",
+  connectWhereHere: "për shkarkimet tuaja në bisedën private dhe në modalitetin inline",
+  connectCodeNotFound: "Kodi nuk u gjet ose ka skaduar (kodet vlejnë 10 minuta). Merrni një të ri në shtesën Videoner.",
+  connectRejectedNoSession: "Këto cookies nuk përmbajnë identifikim. Identifikohuni në faqen e platformës dhe eksportoni sërish cookies.",
+  connectRejectedUnknown: "Nuk u gjetën cookies të platformave të mbështetura: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Lidhja e llogarive nuk është ende e disponueshme.",
+  connectFailed: "Nuk arrita ta lidh, ju lutemi provoni sërish.",
+  connectFileTooBig: "Skedari është shumë i madh — eksportoni vetëm cookies të faqes që ju nevojitet.",
+  connectNotAnonymous: "Lidheni llogarinë si vetja juaj, jo në mënyrë anonime si grupi: përndryshe lidhjet e administratorëve ngatërrohen. E shkatërrova kodin — merrni një të ri.",
+  connectCodeInGroup:
+    "Një kod lidhjeje i postuar në bisedën e grupit mund të shihet nga të tjerët — e shkatërrova dhe e fshiva mesazhin. Merrni një të ri dhe dërgojeni me /connect KODI: atë mesazh me komandën e fshij menjëherë.",
+  groupWelcome:
+    "👋 Përshëndetje! Postoni në këtë bisedë lidhje për video nga TikTok, Instagram, YouTube, VK dhe platforma të tjera — do të përgjigjem me vetë videon.\n\n" +
+    "Klipet deri në 15 minuta i shkarkoj vetë, pa komanda, dhe përndryshe rri i heshtur.\n\n⚙️ Administratorët e grupit mund të më rregullojnë me /settings: fshirjen e mesazheve me lidhje, stilin e tekstit, cilësinë, videot e gjata dhe gjuhën.\n\n⚡ Shtoni -audio pas një lidhjeje për të marrë zërin, ose -hd për cilësinë më të mirë.\n\n📣 Lajmet e projektit: @videonerdownload",
+  errorTooLong: "videoja është shumë e gjatë — ende nuk mund të shkarkojmë video kaq të gjata.",
+  errorUnknown: "nuk arrita ta shkarkoj këtë video. Provoni sërish pak më vonë ose dërgoni një lidhje tjetër.",
+  inlineHintButton: "Dërgojini botit një lidhje",
+  inlineResultTitle: "⬇️ Shkarko videon",
+  inlineResultDescription: "Videoja do të postohet drejtpërdrejt në këtë bisedë",
+  inlinePlaceholder: "⏬ Po shkarkohet, mund të zgjasë disa minuta...",
+  inlineOpenBot: "Hapni botin",
+  inlineOnlySingleVideo:
+    "Ky modalitet dërgon një video të vetme. Për postime me disa skedarë ose foto, dërgojini botit lidhjen në bisedë private.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Për të shkarkuar, abonohuni në ${channel} dhe provoni sërish.`,
+  inlineRateLimited: "Shumë kërkesa njëra pas tjetrës. Prisni një minutë dhe provoni sërish.",
+  queueRest: (count) => `\n\n📋 Lidhje ende në radhë: ${count}. Do t’jua tregoj një nga një pas kësaj.`,
+  queuedOne: (position) =>
+    `📋 Lidhja u shtua në radhë, nr. ${position}. Le ta mbarojmë së pari atë aktuale — pastaj do t’ju tregoj zgjedhjen e cilësisë për të.`,
+  queuedMany: (added, waiting) =>
+    `📋 Lidhje të shtuara në radhë: ${added}. Gjithsej në pritje: ${waiting}. Do t’jua tregoj një nga një pas asaj aktuale.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Kjo lidhje është tashmë në radhë — nuk e shtoj dy herë."
+      : `Lidhjet që janë tashmë në radhë nuk shtohen dy herë (përsëritje: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Radha mban më së shumti ${limit} lidhje — ato të tepërtat nuk u shtuan (${rejected}). Dërgojini kur radha të ecë përpara.`,
+  skipButton: "✖️ Mos e shkarko",
+  skipped: "⏭ Kjo lidhje u anashkalua.",
+  chooseTimedOut: "⌛ Nuk u zgjodh asnjë cilësi brenda 30 minutave — po e anashkaloj këtë lidhje.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Boti po riniset për një përditësim — radha u rivendos (lidhje: ${count}). Ju lutemi dërgojini sërish pas një minute.`,
+  subtitlesButton: "📝 Titra",
+  subtitlesBack: "⬅️ Kthehu te cilësia",
+  subtitlesAuto: "automatike",
+  subtitlesChoose: "Zgjidhni gjuhën e titrave",
+  subtitlesPreparing: "📝 Po përgatis titrat...",
+  subtitlesFailed: "Nuk arrita të shkarkoj titra në këtë gjuhë. Provoni një gjuhë tjetër.",
+  subtitlesBusy: "YouTube nuk po jep titra tani — provoni sërish pas disa minutash.",
+  playlistFound: (title, count) =>
+    `📃 Listë luajtjeje${title ? ` “${title.slice(0, 150)}”` : ""}: ${count} video.\nDo t’i shkarkoj një nga një. Në cilin format?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Cilësia më e mirë",
+  playlistAudioButton: "🎵 Vetëm audio (mp3)",
+  playlistNoButton: "✖️ Jo, faleminderit",
+  playlistQueued: (count) =>
+    `📃 Video nga lista e luajtjes në radhë: ${count}. Do t’i dërgoj një nga një. Ndaleni me butonin më poshtë ose me /stop.`,
+  playlistFailed: "Nuk arrita ta hap listën e luajtjes — mund të jetë private. Dërgoni lidhjen e një videoje të vetme.",
+  stopButton: "⏹ Ndalo",
+  stopped: (dropped) => `⏹ U ndal.${dropped ? ` Lidhje të hequra nga radha: ${dropped}.` : ""}`,
+  nothingToStop: "Asgjë nuk po shkarkohet tani.",
+  languageChoose: "🌐 Zgjidhni gjuhën e botit. “Automatike” ndjek gjuhën e Telegram-it tuaj.",
+  languageChooseGroup: "🌐 Gjuha e përgjigjeve të botit në këtë grup. “Automatike” — gjuha e Telegram-it e secilit anëtar.",
+  languageAuto: "Automatike — si në Telegram",
+  languageAutoGroup: "Automatike — gjuha e secilit anëtar",
+  languageSaved: (name) => `✅ Gjuha e botit: ${name}. Ndryshojeni me /language.`,
+  languageSavedAuto: "✅ Boti ndjek gjuhën e Telegram-it tuaj. Ndryshojeni me /language.",
+  settingsLanguageButton: (name) => `🌐 Gjuha: ${name ?? "automatike"}`,
+  settingsBack: "⬅️ Kthehu te cilësimet",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -9291,4 +9511,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq };

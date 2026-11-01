@@ -333,6 +333,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Йөкләп алуны һәм чиратны туктату" },
     { command: "language", description: "Бот теле" },
   ],
+  sq: [
+    { command: "start", description: "Si të përdoret boti" },
+    { command: "extension", description: "Shtesa e shfletuesit" },
+    { command: "accounts", description: "Llogaritë tuaja për story dhe postime private" },
+    { command: "connect", description: "Lidhni një llogari me kodin nga shtesa" },
+    { command: "stop", description: "Ndaloni shkarkimin dhe radhën" },
+    { command: "language", description: "Gjuha e botit" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -624,6 +632,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Код белән бу төркемгә аккаунт тоташтыру" },
     { command: "language", description: "Бу төркемдәге бот теле (админнар өчен)" },
     { command: "start", description: "Бот төркемдә ничек эшли" },
+  ],
+  sq: [
+    { command: "settings", description: "Cilësimet e botit në këtë grup (për administratorët)" },
+    { command: "accounts", description: "Llogaritë e lidhura me këtë grup" },
+    { command: "connect", description: "Lidhni një llogari me këtë grup me kod" },
+    { command: "language", description: "Gjuha e botit në këtë grup (për administratorët)" },
+    { command: "start", description: "Si funksionon boti në grup" },
   ],
 };
 

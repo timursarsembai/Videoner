@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -58,6 +58,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   ug: "ئۇيغۇرچە",
   tk: "Türkmençe",
   tt: "Татарча",
+  sq: "Shqip",
   tl: "Tagalog",
 };
 
@@ -14474,6 +14475,366 @@ const tt: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const sq: Translations = {
+  nav: {
+    home: "Kreu",
+    downloaders: "Shkarkuesit",
+    extension: "Shtesa",
+    blog: "Blogu",
+    switchTheme: "Ndrysho temën",
+    language: "Gjuha",
+    comingSoon: "Së shpejti",
+  },
+  theme: {
+    light: "E çelët",
+    dark: "E errët",
+    system: "Sistemi",
+  },
+  playlist: {
+    title: `Lista e luajtjes “{title}”: {count} video`,
+    hint: "Videot shkarkohen një nga një. Mbajeni këtë faqe të hapur; shfletuesi mund t’ju kërkojë leje për shkarkime të shumëfishta.",
+    std: "720p",
+    hd: "Cilësia më e mirë",
+    audio: "Vetëm audio (mp3)",
+    progress: "Video {index} nga {count}",
+    stats: "Të shkarkuara: {done} · të dështuara: {failed}",
+    stop: "Ndalo",
+    stopped: "U ndal. U shkarkuan {done} nga {count}.",
+    finished: "Lista e luajtjes përfundoi: {done} nga {count}.",
+    again: "Zgjidhni përsëri",
+  },
+  footer: {
+    news: "Lajmet e projektit",
+    botCta: "E disponueshme edhe si bot në Telegram:",
+    extension: "Shtesë shfletuesi",
+    developedBy: "Zhvilluar nga",
+    rights: "Të gjitha të drejtat të rezervuara.",
+  },
+  content: {
+    howToTitle: "Si të shkarkoni video nga {platform}",
+    faqTitle: "Pyetje të shpeshta",
+  },
+  auth: {
+    loginButton: "Hyni me Telegram",
+    signIn: "Hyni",
+    logout: "Dilni",
+    switchAccountHint: "Nuk është llogaria juaj?",
+    switchAccountLink: "Dilni nga Telegram Web",
+  },
+  home: {
+    new: "E re",
+    manyFeatures: "Shumë veçori të reja",
+    titleLine1: "Shkarkoni video",
+    titleLine2: "shpejt dhe lehtë",
+    subtitle:
+      "Shkarkuesi juaj universal i videove për YouTube, Instagram, TikTok dhe më shumë. Zgjidhni çdo cilësi, nga HD deri te versioni për celular.",
+    subtitleExtra: "Pa kufizime, pa telashe, vetëm shkarkime.",
+    placeholder: "Ngjitni lidhjen e videos nga çdo platformë...",
+    download: "Shkarko",
+  },
+  video: {
+    description: "Përshkrimi",
+    format: "Formati",
+    selected: "E zgjedhur: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Po konvertohet",
+    downloading: "Po shkarkohet",
+    downloadAgain: "Shkarko përsëri",
+    startDownload: "Fillo shkarkimin",
+    convertingBtn: "Po konvertohet...",
+    downloadingBtn: "Po shkarkohet...",
+    loginRequiredHint: "Hyni me Telegram për të shkarkuar",
+    quotaExceededHint: "U arrit kufiri ditor prej 20 shkarkimesh — kthehuni nesër",
+    postFiles: "Ky postim ka {count} skedarë",
+    photoQuality: "Fotot origjinale",
+    slideshowQuality: "Shfaqje fotosh (video)",
+    galleryQuality: "Foto + shfaqje fotosh",
+    downloadAll: "Shkarko të gjitha",
+    downloadOne: "Ruaj",
+    subtitlesTab: "titra",
+    subtitlesHint: "Zgjidhni një gjuhë — do të merrni një skedar .srt që hapet në çdo luajtës.",
+    subtitlesAuto: "auto",
+    subtitlesDownload: "Shkarko titrat",
+    subtitlesDownloading: "Po përgatiten titrat...",
+  },
+  toast: {
+    enterUrl: "Ju lutemi, futni një lidhje",
+    enterValidUrl: "Ju lutemi, futni një lidhje të vlefshme",
+    platformNotSupported: "Kjo platformë nuk mbështetet",
+    urlNotSupported: "Kjo lidhje nuk mbështetet",
+    enterValidPlatformUrl: "Ju lutemi, futni një lidhje të vlefshme nga {platform}",
+    captchaNotReady: "Ju lutemi, prisni pak që të përfundojë kontrolli i sigurisë dhe provoni përsëri",
+    comingSoon: "Së shpejti! {name} nuk mbështetet ende",
+    selectQuality: "Ju lutemi, zgjidhni një cilësi",
+    downloadStarted: "Shkarkimi filloi!",
+    downloadCompleted: "Shkarkimi përfundoi!",
+    newsChannel: "Lajmet e projektit janë në Telegram:",
+    downloadUrlNotReceived: "Lidhja e shkarkimit nuk u mor",
+    needsBrowser:
+      "Platforma nuk ia dha këtë video serverit tonë: ajo është e disponueshme vetëm për përdoruesit e identifikuar ose qasja është kufizuar përkohësisht. Mund ta shkarkoni me shtesën e shfletuesit Videoner në kompjuter — ajo shkarkon duke përdorur hyrjen tuaj.",
+    needsBrowserLink: "Merrni shtesën →",
+  },
+  platforms: {
+    youtube: {
+      description: "Shkarkoni video nga YouTube në cilësi HD",
+      news: "Tani me mbështetje për video dhe Shorts",
+      titleLine1: "Shkarko video nga YouTube",
+      titleLine2: "dhe Shorts",
+      pageDescription:
+        "Shkarkoni video nga YouTube, Shorts dhe audio në formate me cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur. Mbështetje për cilësi 8K, 4K, HD dhe audio MP3.",
+      placeholder: "Ngjitni këtu lidhjen e YouTube...",
+      howTo: [
+        "Kopjoni lidhjen e videos nga shiriti i adresës së shfletuesit ose prekni Share në aplikacionin YouTube.",
+        "Ngjiteni në kutinë më sipër dhe shtypni Shkarko.",
+        "Zgjidhni një cilësi — deri në 4K/8K për video ose MP3 vetëm për audio.",
+        "Skedari juaj fillon të shkarkohet menjëherë, pa nevojë për hyrje.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga YouTube me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "Videoner ofron çdo rezolucion që YouTube jep për atë video — nga 360p deri në 4K/8K kur janë të disponueshme — si dhe nxjerrjen e audios në MP3." },
+        { q: "A mund të shkarkoj video private ose me kufizim moshe?", a: "Mbështeten vetëm videot publike të YouTube; përmbajtja private, e pashfaqur për ju ose që kërkon hyrje nuk mund të shkarkohet." },
+        { q: "A është e ligjshme të shkarkosh video nga YouTube?", a: "Shkarkoni vetëm videot që keni të drejtë t’i ruani — përmbajtjen tuaj, videot me licencë Creative Commons ose çdo gjë që krijuesi e lejon. Respektoni Kushtet e Shërbimit të YouTube dhe ligjin për të drejtën e autorit." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët e konvertuar qëndrojnë në server rreth një orë, prandaj ruajini në pajisjen tuaj menjëherë pas shkarkimit." },
+      ],
+    },
+    facebook: {
+      description: "Ruani video nga postimet dhe reels në Facebook",
+      news: "Tani me mbështetje për reels",
+      titleLine1: "Shkarko video nga Facebook",
+      titleLine2: "dhe Reels",
+      pageDescription:
+        "Shkarkoni video dhe reels nga Facebook në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur.",
+      placeholder: "Ngjitni këtu lidhjen e Facebook...",
+      howTo: [
+        "Hapni videon ose reel-in në Facebook dhe kopjoni lidhjen (prekni tre pikat → Copy Link).",
+        "Ngjitni lidhjen më sipër dhe shtypni Shkarko.",
+        "Zgjidhni cilësinë MP4 ose nxirrni audion si MP3.",
+        "Skedari shkarkohet drejtpërdrejt në pajisjen tuaj — pa nevojë për llogari Facebook.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga Facebook me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "Videoner merr cilësinë më të lartë që Facebook jep për atë video ose reel, në MP4, si dhe një opsion audio MP3." },
+        { q: "A mund të shkarkoj video private?", a: "Funksionojnë vetëm postimet, videot dhe reels publike — përmbajtja private ose vetëm për miqtë nuk është e qasshme." },
+        { q: "A është e ligjshme të shkarkosh video nga Facebook?", a: "Shkarkoni vetëm videot që keni leje t’i ruani; respektoni të drejtat e krijuesit dhe Kushtet e Shërbimit të Facebook." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët ruhen rreth një orë pas konvertimit, pastaj fshihen automatikisht — shkarkojini pa vonesë." },
+      ],
+    },
+    instagram: {
+      description: "Shkarkoni reels, stories dhe postime nga Instagram",
+      news: "Tani me mbështetje për reels dhe stories",
+      titleLine1: "Shkarko nga Instagram",
+      titleLine2: "Reels dhe Stories",
+      pageDescription:
+        "Shkarkoni reels, stories dhe postime nga Instagram në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur.",
+      placeholder: "Ngjitni këtu lidhjen e Instagram...",
+      howTo: [
+        "Hapni Reel-in, postimin ose story-n në Instagram dhe prekni ikonën e aeroplanit prej letre → Copy Link.",
+        "Ngjitni lidhjen në kutinë më sipër.",
+        "Zgjidhni cilësinë dhe formatin që preferoni.",
+        "Shkarkimi fillon menjëherë — pa hyrje dhe pa instaluar aplikacion.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i përmbajtjes nga Instagram me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "Cilësia e plotë e disponueshme për reels, postime dhe stories, në MP4 ose MP3." },
+        { q: "A mund të shkarkoj nga llogari private?", a: "Mbështeten vetëm llogaritë dhe postimet publike të Instagram; përmbajtja e llogarive private nuk mund të shkarkohet." },
+        { q: "A është e ligjshme të shkarkosh video nga Instagram?", a: "Shkarkoni vetëm atë që ju lejohet të ruani — respektoni krijuesin dhe Kushtet e Shërbimit të Instagram." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët qëndrojnë në server rreth një orë para se të fshihen automatikisht." },
+      ],
+    },
+    tiktok: {
+      description: "Shkarkoni video nga TikTok pa watermark",
+      news: "Tani pa watermark",
+      titleLine1: "Shkarko video nga TikTok",
+      titleLine2: "pa watermark",
+      pageDescription:
+        "Shkarkoni video nga TikTok pa watermark në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur.",
+      placeholder: "Ngjitni këtu lidhjen e TikTok...",
+      howTo: [
+        "Prekni Share te videoja në TikTok, pastaj Copy Link.",
+        "Ngjitni lidhjen më sipër dhe shtypni Shkarko.",
+        "Merrni MP4-ën e pastër — pa watermark të TikTok — ose audion MP3.",
+        "Ruajeni drejtpërdrejt në pajisjen tuaj.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga TikTok me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "Cilësia më e mirë që TikTok jep për atë video, pa watermark të TikTok, si dhe audio MP3." },
+        { q: "A mund të shkarkoj nga llogari private?", a: "Mund të shkarkohen vetëm videot nga llogaritë publike të TikTok." },
+        { q: "A është e ligjshme të shkarkosh video nga TikTok?", a: "Shkarkoni videot që keni të drejtë t’i ruani, përmendni krijuesin dhe respektoni Kushtet e Shërbimit të TikTok." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët e shkarkuar qëndrojnë në server afërsisht një orë, pastaj fshihen automatikisht." },
+      ],
+    },
+    twitter: {
+      description: "Shkarkoni video nga Twitter",
+      news: "Tani me mbështetje për video nga Twitter",
+      titleLine1: "Shkarko video",
+      titleLine2: "nga Twitter",
+      pageDescription:
+        "Shkarkoni video nga Twitter në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur.",
+      placeholder: "Ngjitni këtu lidhjen e Twitter...",
+      howTo: [
+        "Prekni Share poshtë tweet-it dhe zgjidhni Copy Link (ose kopjoni lidhjen nga shfletuesi).",
+        "Ngjiteni në kutinë më sipër.",
+        "Zgjidhni cilësinë e videos që dëshironi.",
+        "Shkarkimi fillon menjëherë — pa nevojë për llogari X/Twitter.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga Twitter/X me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "Çdo cilësi që X/Twitter ofron për atë video, në MP4, si dhe MP3." },
+        { q: "A mund të shkarkoj nga llogari private?", a: "Funksionojnë vetëm tweet-et nga llogaritë publike; llogaritë e mbrojtura/private nuk mbështeten." },
+        { q: "A është e ligjshme të shkarkosh video nga Twitter/X?", a: "Shkarkoni përmbajtje që keni të drejtë ta ruani, duke respektuar të drejtat e autorit të postimit dhe Kushtet e Shërbimit të platformës." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët fshihen automatikisht rreth një orë pasi krijohen." },
+      ],
+    },
+    vimeo: {
+      description: "Shkarkoni video nga Vimeo në cilësi të lartë",
+      news: "Tani me mbështetje për Vimeo",
+      titleLine1: "Shkarko video",
+      titleLine2: "nga Vimeo",
+      pageDescription:
+        "Shkarkoni video nga Vimeo në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur.",
+      placeholder: "Ngjitni këtu lidhjen e Vimeo...",
+      howTo: [
+        "Hapni Vimeo dhe kopjoni lidhjen e videos (ose prekni Share → Copy Link në celular).",
+        "Ngjitni lidhjen në kutinë më sipër dhe shtypni Shkarko.",
+        "Zgjidhni cilësinë dhe formatin — MP4 për video, MP3 nëse doni vetëm audion.",
+        "Shkarkimi fillon menjëherë; pa nevojë për llogari apo instalim programi.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga Vimeo me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "Videoner ofron çdo cilësi që Vimeo vë në dispozicion për atë video, deri në rezolucionin origjinal të ngarkimit, përfshirë HD dhe 4K kur krijuesi i ka dhënë." },
+        { q: "A mund të shkarkoj video private ose të mbrojtura me fjalëkalim nga Vimeo?", a: "Jo — Videoner funksionon vetëm me lidhje publike të Vimeo. Videot private, të mbrojtura me fjalëkalim ose me qasje të kufizuar nuk mund të shkarkohen." },
+        { q: "A është e ligjshme të shkarkosh video nga Vimeo?", a: "Shkarkimi është menduar për videot që keni të drejtë t’i ruani — përmbajtjen tuaj, videot me licencë Creative Commons ose çdo gjë që krijuesi e ka lejuar shprehimisht për shkarkim. Respektoni të drejtën e autorit të krijuesit origjinal dhe kushtet e shërbimit të Vimeo." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët krijohen sipas kërkesës dhe ruhen në server rreth një orë para se të fshihen automatikisht, prandaj ruajeni në pajisjen tuaj sapo të përfundojë shkarkimi." },
+      ],
+    },
+    vk: {
+      description: "Shkarkoni video dhe klipe nga VK",
+      news: "Tani me mbështetje për VK",
+      titleLine1: "Shkarko video",
+      titleLine2: "dhe klipe nga VK",
+      pageDescription:
+        "Shkarkoni video dhe klipe nga VK në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur.",
+      placeholder: "Ngjitni këtu lidhjen e VK...",
+      howTo: [
+        "Hapni videon ose klipin në VK (vk.com ose VK Video) dhe kopjoni lidhjen nga shiriti i adresës ose butoni Share.",
+        "Ngjitni lidhjen më sipër dhe shtypni Shkarko.",
+        "Zgjidhni cilësinë dhe formatin e disponueshëm.",
+        "Skedari shkarkohet drejtpërdrejt — nuk keni nevojë të jeni të identifikuar në VK.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga VK me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "Të gjitha cilësitë që VK jep për atë video ose klip, si dhe audio MP3." },
+        { q: "A duhet të hyj në VK?", a: "Jo — videoja duhet të jetë publike. Videoner nuk hyn në VK, prandaj videot private, vetëm për miqtë ose që kërkojnë hyrje nuk mund të shkarkohen." },
+        { q: "A është e ligjshme të shkarkosh video nga VK?", a: "Shkarkoni vetëm videot që keni të drejtë t’i ruani, duke respektuar Kushtet e Shërbimit të VK dhe të drejtat e atij që i ka ngarkuar." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët ruhen në server rreth një orë, pastaj fshihen automatikisht." },
+      ],
+    },
+    rutube: {
+      description: "Shkarkoni video nga Rutube",
+      news: "Tani me mbështetje për Rutube",
+      titleLine1: "Shkarko video",
+      titleLine2: "nga Rutube",
+      pageDescription:
+        "Shkarkoni video nga Rutube në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur.",
+      placeholder: "Ngjitni këtu lidhjen e Rutube...",
+      howTo: [
+        "Hapni videon në Rutube dhe kopjoni lidhjen nga shiriti i adresës ose butoni Share.",
+        "Ngjiteni në kutinë më sipër.",
+        "Zgjidhni cilësinë dhe formatin (video ose audio).",
+        "Shkarkimi fillon menjëherë, pa nevojë për llogari Rutube.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga Rutube me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "Çdo cilësi që ofron Rutube, në MP4, si dhe audio MP3." },
+        { q: "A duhet të hyj në Rutube?", a: "Jo — Videoner funksionon vetëm me videot publike të Rutube; asnjë hyrje nuk përdoret dhe as nuk kërkohet." },
+        { q: "A është e ligjshme të shkarkosh video nga Rutube?", a: "Shkarkoni vetëm përmbajtje që ju lejohet ta ruani, duke respektuar Kushtet e Shërbimit të Rutube dhe të drejtat e krijuesit." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët qëndrojnë në server rreth një orë para fshirjes automatike." },
+      ],
+    },
+    okru: {
+      description: "Shkarkoni video nga OK.ru (Odnoklassniki)",
+      news: "Tani me mbështetje për OK.ru",
+      titleLine1: "Shkarko video",
+      titleLine2: "nga OK.ru",
+      pageDescription:
+        "Shkarkoni video nga OK.ru (Odnoklassniki) në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur.",
+      placeholder: "Ngjitni këtu lidhjen e OK.ru...",
+      howTo: [
+        "Hapni videon në OK.ru (Odnoklassniki) dhe kopjoni lidhjen nga shiriti i adresës.",
+        "Ngjitni lidhjen në kutinë më sipër dhe shtypni Shkarko.",
+        "Zgjidhni cilësinë dhe formatin.",
+        "Shkarkimi fillon menjëherë — pa nevojë për hyrje në OK.ru.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga OK.ru me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund ta shkarkoj videon?", a: "E gjithë gama e cilësive që OK.ru jep për atë video, si dhe MP3." },
+        { q: "A duhet të hyj në OK.ru?", a: "Jo — funksionojnë vetëm videot publike të OK.ru (Odnoklassniki). Videoner nuk hyn kurrë në ndonjë llogari, prandaj videot private nuk janë të qasshme." },
+        { q: "A është e ligjshme të shkarkosh video nga OK.ru?", a: "Shkarkoni vetëm videot që keni të drejtë t’i ruani, duke respektuar Kushtet e Shërbimit të OK.ru dhe të drejtat e atij që i ka ngarkuar." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët fshihen automatikisht afërsisht një orë pasi krijohen." },
+      ],
+    },
+    pinterest: {
+      description: "Shkarkoni video nga pin-et e Pinterest",
+      news: "Tani me mbështetje për Pinterest",
+      titleLine1: "Shkarko video",
+      titleLine2: "nga Pinterest",
+      pageDescription:
+        "Shkarkoni video nga pin-et e Pinterest në cilësi të lartë. Shpejt, falas dhe lehtë për t’u përdorur. Shënim: mund të shkarkohen vetëm pin-et me video — pin-et vetëm me foto nuk mbështeten.",
+      placeholder: "Ngjitni këtu lidhjen e Pinterest...",
+      howTo: [
+        "Hapni pin-in në Pinterest dhe prekni Share → Copy Link (ose kopjoni lidhjen nga shfletuesi).",
+        "Ngjitni lidhjen në kutinë më sipër dhe shtypni Shkarko.",
+        "Zgjidhni cilësinë dhe formatin që preferoni.",
+        "Skedari shkarkohet menjëherë — pa nevojë për llogari.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga Pinterest me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund të shkarkoj?", a: "Videoner ofron çdo cilësi që Pinterest jep për videon e atij pin-i, si dhe nxjerrjen e audios në MP3." },
+        { q: "A mund të shkarkoj foto ose imazhe nga Pinterest?", a: "Jo — mund të shkarkohen vetëm pin-et me video. Nëse një pin ka vetëm foto, nuk ka skedar video për të nxjerrë." },
+        { q: "A mund të shkarkoj pin-e private ose nga borde të kufizuara?", a: "Mbështeten vetëm pin-et publike; bordet private dhe përmbajtja që kërkon hyrje nuk mund të shkarkohen." },
+        { q: "A është e ligjshme të shkarkosh video nga Pinterest?", a: "Shkarkoni vetëm pin-et që keni të drejtë t’i ruani — përmbajtjen tuaj ose çdo gjë që krijuesi e lejon. Respektoni Kushtet e Shërbimit të Pinterest dhe ligjin për të drejtën e autorit." },
+        { q: "Sa kohë mbetet i disponueshëm skedari i shkarkuar?", a: "Skedarët e konvertuar qëndrojnë në server rreth një orë, prandaj ruajini në pajisjen tuaj menjëherë pas shkarkimit." },
+      ],
+    },
+    threads: {
+      description: "Shkarkoni video nga postimet në Threads",
+      news: "Tani me mbështetje për Threads",
+      titleLine1: "Shkarko video",
+      titleLine2: "nga Threads",
+      pageDescription:
+        "Shkarkoni video nga postimet në Threads. Shpejt, falas dhe pa nevojë për llogari në Threads. Threads jep vetëm një version të videos, deri në 720p — kjo është cilësia më e lartë që platforma vë në dispozicion.",
+      placeholder: "Ngjitni këtu lidhjen e Threads...",
+      howTo: [
+        "Hapni postimin në Threads dhe prekni ikonën e ndarjes, pastaj Copy Link.",
+        "Ngjitni lidhjen në kutinë më sipër dhe shtypni Shkarko.",
+        "Zgjidhni formatin që dëshironi — video ose audio MP3.",
+        "Skedari shkarkohet menjëherë — pa nevojë për llogari.",
+      ],
+      faq: [
+        { q: "A është falas shkarkimi i videove nga Threads me Videoner?", a: "Po, plotësisht falas: pa hyrje, pa abonime, pa reklama dhe pa kufi ditor shkarkimesh. I vetmi kufi është për trafikun e YouTube — 10 GB në ditë për rrjet — për ta mbrojtur shërbimin nga abuzimi." },
+        { q: "A më duhet llogari për të shkarkuar?", a: "Jo. Shkarkimi nuk kërkon llogari apo hyrje — thjesht ngjitni lidhjen dhe shtypni Shkarko." },
+        { q: "Në çfarë cilësie mund të shkarkoj?", a: "Threads publikon saktësisht një version të videos për çdo postim, të kufizuar në 720p në anën më të shkurtër — edhe kur autori ka ngarkuar 4K. Videoner jua jep atë skedar ashtu siç është, si dhe nxjerrjen e audios në MP3. Asnjë shkarkues nuk mund të ofrojë më shumë, sepse rezolucionet më të larta thjesht nuk jepen." },
+        { q: "A funksionojnë lidhjet si threads.com, ashtu edhe threads.net?", a: "Po. Mbështeten si lidhjet e plota si threads.com/@user/post/CODE, ashtu edhe lidhjet e shkurtra threads.net/t/CODE." },
+        { q: "A mund të shkarkoj foto nga një postim në Threads?", a: "Jo — vetëm video. Nëse një postim ka vetëm foto, nuk ka skedar video për të nxjerrë." },
+        { q: "Po një postim me disa video?", a: "Shkarkohet videoja e parë e postimit. Karuselet e Threads mund të kenë disa klipe dhe ruhet vetëm i pari." },
+        { q: "A mund të shkarkoj postime private?", a: "Jo. Mund të shkarkohen vetëm postimet që shihen publikisht; çdo gjë pas një llogarie private ose që kërkon hyrje nuk është e qasshme." },
+        { q: "A është e ligjshme të shkarkosh video nga Threads?", a: "Shkarkoni vetëm atë që keni të drejtë të ruani — përmbajtjen tuaj ose çdo gjë që autori e lejon. Respektoni Kushtet e Përdorimit të Threads dhe ligjin për të drejtën e autorit." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -14834,4 +15195,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku, ug, tk, tt };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq };

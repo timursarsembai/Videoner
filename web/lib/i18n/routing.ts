@@ -48,6 +48,7 @@ export const OG_LOCALE: Record<Language, string> = {
   ug: "ug_CN",
   tk: "tk_TM",
   tt: "tt_RU",
+  sq: "sq_AL",
   tl: "tl_PH",
 };
 

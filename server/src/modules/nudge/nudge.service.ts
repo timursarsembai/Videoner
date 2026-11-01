@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('sq')) {
+      return (
+        'Përshëndetje! E keni nisur këtë bot, por ende nuk keni shkarkuar asgjë — ' +
+        'ndoshta nuk është e qartë nga t\'ia filloni.\n\n' +
+        'Vetëm një hap: dërgoni këtu lidhjen e një videoje, ' +
+        'për shembull https://youtube.com/watch?v=jNQXAC9IVRw — dhe unë ' +
+        'jua kthej skedarin gati brenda rreth gjysmë minute.\n\n' +
+        'Funksionon me YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest dhe Threads. Plotësisht falas dhe në çdo ' +
+        'cilësi — deri në 4K, pa pagesë shtesë për HD.\n\n' +
+        'Nëse diçka nuk funksionon, thjesht përgjigjuni këtu. Ky është ' +
+        'i vetmi kujtues, nuk do t\'ju shqetësoj më.'
+      );
+    }
+
     if (code.startsWith('tt')) {
       return (
         'Сәлам! Сез бу ботны җибәрдегез, ләкин әлегә бернәрсә дә йөкләмәдегез — ' +

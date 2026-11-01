@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на сорока одном языке. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на сорока двух языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -12081,6 +12081,308 @@ export const legal: LegalByLanguage = {
             heading: "Намуссыз мөрәҗәгатьләр",
             body: [
               "Белә торып дөрес булмаган белешмәләр булган мөрәҗәгать законнарга туры китереп мөрәҗәгать итүченең җаваплылыгына китерергә мөмкин. Әгәр мөрәҗәгать хокук иясен дә, бәхәсле материалны да билгеләргә мөмкинлек бирмәсә, без аны караудан баш тартырга хокуклы.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  sq: {
+    ui: {
+      updated: "Përditësuar më",
+      back: "Në faqen kryesore",
+      operatorHeading: "Operatori i shërbimit",
+      navHeading: "Dokumente të tjera",
+      labels: {
+        privacy: "Politika e privatësisë",
+        terms: "Marrëveshja e përdoruesit",
+        cookies: "Politika e cookie-ve",
+        copyright: "Për mbajtësit e të drejtave",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Politika e privatësisë",
+        summary: `Cilat të dhëna mbledh ${operator.site}, pse nevojiten, sa kohë ruhen dhe si mund t’i fshini.`,
+        sections: [
+          {
+            heading: "Dispozita të përgjithshme",
+            body: [
+              `Kjo Politikë përshkruan cilat të dhëna personale përpunon shërbimi ${operator.site} dhe për çfarë qëllimi. Kontrollues i të dhënave është ${operator.nameSq}.`,
+              "Duke përdorur shërbimin, ju pranoni mënyrën e përpunimit të përshkruar këtu. Nëse nuk jeni dakord me të, ju lutemi mos e përdorni shërbimin.",
+              "Përpunimi kryhet në përputhje me Ligjin e Republikës së Kazakistanit “Për të dhënat personale dhe mbrojtjen e tyre”, ndërsa për vizitorët nga Zona Ekonomike Evropiane — duke marrë parasysh kërkesat e GDPR.",
+            ],
+          },
+          {
+            heading: "Cilat të dhëna përpunojmë",
+            body: [
+              "Ne me vetëdije nuk mbledhim asgjë përtej asaj që është e nevojshme për funksionimin e shërbimit dhe nuk kërkojmë dokumente identifikimi, të dhëna pagese apo adresë.",
+            ],
+            bullets: [
+              "Të dhënat e llogarisë Telegram që boti merr kur i shkruani: identifikuesi numerik, emri i përdoruesit, emri dhe kodi i gjuhës.",
+              "Lidhjet që dërgoni për shkarkim dhe informacioni për vetë përpjekjen: platforma, data dhe ora, cilësia e zgjedhur dhe rezultati (sukses ose gabim).",
+              "Të dhënat teknike të lidhjes: adresa IP, lloji dhe versioni i shfletuesit, gjuha dhe faqja nga e cila keni ardhur. Këto ruhen në regjistrat e serverit dhe në sistemet e analitikës së uebit.",
+              "Cookie-t dhe identifikuesit e analitikës — për më shumë, shihni Politikën e cookie-ve.",
+            ],
+          },
+          {
+            heading: "Pse na nevojiten këto të dhëna",
+            bullets: [
+              "Për të ofruar vetë shërbimin: për të marrë videon nga lidhja juaj dhe për t’ju dorëzuar skedarin.",
+              "Për të dalluar llogarinë tuaj nga ajo e të tjerëve dhe për të parandaluar abuzimet.",
+              "Për të mbrojtur shërbimin nga abuzimet e automatizuara: verifikimi Cloudflare Turnstile para dërgimit të lidhjes.",
+              "Për të kuptuar si përdoret faqja dhe për të rregulluar gabimet — me statistika të anonimizuara dhe të agreguara.",
+              "Për t’iu përgjigjur kërkesave tuaja dhe kërkesave të mbajtësve të të drejtave.",
+              "Për t’ju shkruar herë pas here në Telegram për të mësuar mendimin tuaj për shërbimin — për shembull, nëse keni ndaluar së përdoruri atë. Përgjigjja nuk është e detyrueshme; nëse nuk dëshironi mesazhe të tilla, thjesht na e thoni dhe nuk do t’ju shkruajmë më.",
+            ],
+          },
+          {
+            heading: "Bazat ligjore të përpunimit",
+            body: [
+              "Të dhënat e llogarisë Telegram dhe informacioni për shkarkimet përpunohen për zbatimin e Marrëveshjes së përdoruesit, të cilën ju e pranoni kur filloni të përdorni shërbimin.",
+              "Cookie-t e analitikës dhe regjistrimi i veprimeve në faqe përpunohen mbi bazën e pëlqimit tuaj, të cilin mund ta tërhiqni në çdo kohë — mënyrat përshkruhen në Politikën e cookie-ve.",
+              "Regjistrat e serverit dhe mbrojtja nga botët përpunohen në kuadër të interesit tonë të ligjshëm për ta mbajtur shërbimin funksional dhe të sigurt.",
+              "Pyetjet për mendimin tuaj mbi shërbimin bëhen në kuadër të interesit tonë të ligjshëm për ta përmirësuar shërbimin; mund të hiqni dorë prej tyre në çdo kohë.",
+            ],
+          },
+          {
+            heading: "Llogaritë e lidhura",
+            body: [
+              "Nëse dëshironi, mund ta lidhni me botin llogarinë tuaj në një platformë (Instagram, Facebook, YouTube, X, VK, TikTok), që boti të shkarkojë postime të dukshme vetëm për përdoruesit e identifikuar: stories, postime private. Për këtë, boti merr cookie-t e asaj llogarie — nga shtesa Videoner me një kod njëpërdorimësh ose nga një skedar që na dërgoni.",
+              "Ne ruajmë vetëm cookie-t e platformës së zgjedhur dhe të tjerat i hedhim menjëherë. Ato ruhen të enkriptuara dhe përdoren vetëm për shkarkime aty ku i keni lidhur. Cookie-t e lidhura në bisedën private shërbejnë për shkarkimet tuaja, përfshirë lidhjet tuaja në grupet që nuk kanë llogari të vetën të lidhur; ato nuk përdoren kurrë për lidhjet e të tjerëve. Cookie-t e lidhura me një grup shërbejnë vetëm për shkarkimet e anëtarëve të tij dhe për asgjë tjetër.",
+              "Baza ligjore është pëlqimi juaj: ju e lidhni llogarinë vetë dhe mund ta hiqni në çdo kohë me komandën /accounts. Pas heqjes, cookie-t fshihen përfundimisht. Nëse platforma nuk e pranon më hyrjen, boti ju njofton.",
+              "Postimet e shkarkuara përmes një llogarie të lidhur nuk publikohen në kanalin tonë dhe nuk u jepen përdoruesve të tjerë nga memoria e përbashkët (cache).",
+            ],
+          },
+          {
+            heading: "Shërbimet e palëve të treta",
+            body: [
+              "Ne nuk i shesim dhe nuk ua kalojmë të dhënat tuaja palëve të treta për qëllimet e tyre. Për funksionimin e shërbimit përdoren ofruesit e mëposhtëm, secili prej të cilëve i përpunon të dhënat sipas rregullave të veta:",
+            ],
+            bullets: [
+              `Telegram — funksionimi i botit ${BOT}.`,
+              "Cloudflare — mbrojtja nga botët (Turnstile), shpërndarja e faqes dhe drejtimi i postës elektronike.",
+              "Google Analytics dhe Google Tag Manager — statistikat e vizitave.",
+              "Yandex Metrica — statistikat e vizitave, harta e klikimeve dhe Webvisor. Webvisor regjistron veprimet në faqe: lëvizjet e kursorit, lëvizjen nëpër faqe (scroll) dhe klikimet. Regjistrimet përdoren vetëm për të analizuar lehtësinë e përdorimit të faqes.",
+            ],
+          },
+          {
+            heading: "Sa kohë i ruajmë të dhënat",
+            bullets: [
+              "Skedarët e shkarkuar fshihen automatikisht nga serveri rreth një orë pas krijimit. Ne nuk mbajmë arkiv të videove tuaja.",
+              "Të dhënat për përpjekjet e shkarkimit ruhen për aq kohë sa nevojitet për parandalimin e abuzimeve dhe shqyrtimin e kërkesave.",
+              "Të dhënat e llogarisë ruhen për sa kohë që përdorni shërbimin dhe fshihen me kërkesën tuaj.",
+              "Regjistrat e serverit ruhen për një kohë të kufizuar dhe mbishkruhen gjatë rotacionit.",
+            ],
+          },
+          {
+            heading: "Ku përpunohen të dhënat",
+            body: [
+              "Serverët e shërbimit ndodhen në një qendër të dhënash brenda territorit të Bashkimit Evropian. Disa nga ofruesit e listuar më sipër mund t’i përpunojnë të dhënat jashtë tij, në përputhje me politikat e tyre.",
+            ],
+          },
+          {
+            heading: "Të drejtat tuaja",
+            body: [
+              `Ju keni të drejtë të merrni informacion për përpunimin e të dhënave tuaja, të kërkoni korrigjimin ose fshirjen e tyre, të tërhiqni pëlqimin dhe të kundërshtoni përpunimin. Për këtë, na shkruani në ${MAIL} nga adresa e postës elektronike ose llogaria Telegram me të cilën lidhet kërkesa.`,
+              "Ne përgjigjemi brenda një afati të arsyeshëm, zakonisht brenda tridhjetë ditëve kalendarike. Fshirja e llogarisë sjell edhe fshirjen e historikut të shkarkimeve që lidhet me të.",
+            ],
+          },
+          {
+            heading: "Të miturit",
+            body: [
+              "Shërbimi nuk është i destinuar dhe nuk u drejtohet fëmijëve nën 16 vjeç. Ne me vetëdije nuk mbledhim të dhëna të përdoruesve të tillë; nëse kjo ka ndodhur gabimisht, na shkruani dhe të dhënat do të fshihen.",
+            ],
+          },
+          {
+            heading: "Ndryshimet",
+            body: [
+              "Ne mund ta përditësojmë këtë Politikë. Data e versionit në fuqi tregohet në krye të faqes; ndryshimet thelbësore do t’i sinjalizojmë në shërbim.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Marrëveshja e përdoruesit",
+        summary: `Rregullat e përdorimit të ${operator.site}: çfarë lejohet, çfarë nuk lejohet dhe me cilat kushte funksionon shërbimi.`,
+        sections: [
+          {
+            heading: "Dispozita të përgjithshme",
+            body: [
+              `Kjo Marrëveshje rregullon përdorimin e faqes ${operator.site} dhe të botit të Telegram-it ${BOT}. Pronar dhe administrator i shërbimit është ${operator.nameSq}.`,
+              "Duke filluar të përdorni shërbimin, ju konfirmoni se i keni lexuar kushtet dhe i pranoni ato. Nëse ndonjë kusht nuk ju përshtatet, nuk duhet ta përdorni shërbimin.",
+            ],
+          },
+          {
+            heading: "Shërbimi është falas",
+            body: [
+              "Të gjitha mundësitë e shërbimit ofrohen falas. Nuk ka abonime, plane me pagesë, cilësi videoje me pagesë apo blerje brenda shërbimit.",
+              "Ne nuk shfaqim reklama dhe nuk vendosim lidhje partnere (affiliate).",
+            ],
+          },
+          {
+            heading: "Kushtet e qasjes",
+            bullets: [
+              "Për të shkarkuar në faqe nuk nevojitet as llogari, as hyrje. Boti i dallon përdoruesit sipas llogarisë së tyre Telegram.",
+              "Kufizimet teknike të shpeshtësisë së kërkesave e mbrojnë shërbimin nga mbingarkesa dhe abuzimet e automatizuara.",
+              "Për YouTube vlen një kufi ditor trafiku: 10 GB për 24 orë për një rrjet në faqe dhe në shtesë, dhe 25 GB për 24 orë për një llogari Telegram në bot. Platformat e tjera nuk preken.",
+              "Për të shkarkuar përmes botit nuk kërkohet abonimi në kanalin tonë. Në tekstin shoqërues të skedarëve boti shton një lidhje për kanalin e lajmeve të projektit; abonimi në të nuk është i detyrueshëm.",
+            ],
+          },
+          {
+            heading: "Çfarë bën shërbimi",
+            body: [
+              "Shërbimi vepron si ndërmjetës teknik: sipas lidhjes që jepni, ai i drejtohet një faqeje të aksesueshme publikisht, merr skedarin multimedial dhe jua kalon juve.",
+              "Ne nuk mbajmë katalog videosh, nuk kryejmë kërkime në përmbajtjen e të tjerëve dhe nuk i ruajmë skedarët e shkarkuar më gjatë se koha e nevojshme për dorëzimin — rreth një orë.",
+              "Disponueshmëria e një platforme të caktuar varet nga vendimet e saj teknike dhe mund të ndryshojë pa paralajmërim.",
+            ],
+          },
+          {
+            heading: "Detyrimet e përdoruesit",
+            body: [
+              "Ju jeni vetë përgjegjës për mënyrën se si i përdorni skedarët e marrë dhe konfirmoni se keni të drejtë ta bëni këtë.",
+            ],
+            bullets: [
+              "Shkarkoni vetëm materiale të drejtat mbi të cilat ju përkasin juve, ose përdorimi i të cilave lejohet nga mbajtësi i të drejtave ose nga ligji.",
+              "Mos e përdorni shërbimin për të shkelur të drejtat e autorit dhe të drejtat e përafërta, për të shpërndarë përmbajtje të ndaluar ose për të shkelur të drejtat e palëve të treta.",
+              "Mos u përpiqni t’i anashkaloni kufizimet teknike të shërbimit, përfshirë kufizimet e shpeshtësisë së kërkesave dhe verifikimin kundër botëve.",
+              "Mos krijoni ngarkesë të automatizuar: kërkesat masive, skriptet dhe parserët (scrapers) nuk lejohen.",
+            ],
+          },
+          {
+            heading: "Publikimi i lidhjeve në kanal",
+            body: [
+              "Duke shkarkuar një video përmes botit, ju pranoni që lidhja për postimin origjinal të publikohet në kanalin tonë në Telegram. Njoftimi për këtë shfaqet në bot para zgjedhjes së cilësisë — pra, para se të vendosni ta shkarkoni.",
+              "Publikimi është anonim: në kanal dërgohen lidhja për faqen e aksesueshme publikisht, titulli i videos dhe kopertina e saj — e njëjta pamje që platforma shfaq në parapamjen e postimit. Nuk tregohet se kush e ka shkarkuar videon. Vetë skedari i videos nuk publikohet askund dhe kurrë: shpërndahet lidhja, të cilën vetë platformat ftojnë ta shpërndani përmes butonit “Ndaj” nën çdo postim.",
+              "E njëjta lidhje publikohet jo më shumë se një herë. Nëse nuk dëshironi që lidhja të shfaqet në kanal, mos e shkarkoni atë video përmes shërbimit tonë.",
+              "Lidhjet nga grupet dhe postimet e shkarkuara përmes një llogarie të lidhur nuk publikohen në kanal."
+            ],
+          },
+          {
+            heading: "Lidhja e llogarisë suaj",
+            body: [
+              "Duke lidhur me botin llogarinë tuaj në një platformë, ju konfirmoni se kjo është llogaria juaj dhe se keni të drejtë ta përdorni në këtë mënyrë.",
+              "Platformat nuk i miratojnë shkarkimet e automatizuara dhe mund ta kufizojnë ose ta bllokojnë llogarinë e lidhur. Këtë rrezik e merrni përsipër ju; ju këshillojmë të lidhni një llogari të veçantë, jo atë kryesore. Ne nuk mbajmë përgjegjësi për kufizimet që platforma mund t’i vendosë llogarisë suaj.",
+              "Llogaria e lidhur me një grup përdoret për shkarkimet e të gjithë anëtarëve të tij. Administratorët e grupit vendosin se kush mund të lidhë llogari dhe mund të heqin cilëndo prej tyre.",
+            ],
+          },
+          {
+            heading: "Kufizimi i përgjegjësisë",
+            body: [
+              "Shërbimi ofrohet “siç është”. Ne nuk garantojmë funksionim të pandërprerë, disponueshmërinë e një platforme të caktuar apo përshtatshmërinë e skedarit për qëllimet tuaja.",
+              "Ne nuk mbajmë përgjegjësi për mënyrën se si e keni përdorur materialin e shkarkuar, as për pasojat e shkeljes nga ana juaj të të drejtave të palëve të treta.",
+              "Ne kemi të drejtë të ndryshojmë mundësitë e shërbimit, të pezullojmë funksionimin e tij për mirëmbajtje dhe ta ndërpresim atë.",
+            ],
+          },
+          {
+            heading: "Kufizimi i qasjes",
+            body: [
+              "Ne mund ta kufizojmë ose ta ndërpresim qasjen në shërbim në rast shkeljeje të këtyre kushteve, përpjekjesh për të anashkaluar kufizimet, si dhe me marrjen e një ankese të bazuar nga mbajtësi i të drejtave.",
+            ],
+          },
+          {
+            heading: "Ndryshimet dhe ligji i zbatueshëm",
+            body: [
+              "Ne mund t’i ndryshojmë kushtet; data e versionit në fuqi tregohet në krye të faqes. Duke vazhduar të përdorni shërbimin pas ndryshimeve, ju pranoni versionin e ri.",
+              "Marrëdhëniet ndërmjet palëve rregullohen nga ligji i Republikës së Kazakistanit. Palët përpiqen t’i zgjidhin mosmarrëveshjet me korrespondencë dhe, nëse nuk arrihet marrëveshje, sipas procedurës së përcaktuar nga legjislacioni i Republikës së Kazakistanit.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Politika e cookie-ve",
+        summary: `Cilat cookie përdor ${operator.site}, pse nevojiten dhe si mund t’i refuzoni.`,
+        sections: [
+          {
+            heading: "Çfarë janë cookie-t",
+            body: [
+              "Cookie-t janë skedarë të vegjël teksti që një faqe i ruan në shfletuesin tuaj. Ato bëjnë të mundur ruajtjen e cilësimeve tuaja dhe mbledhjen e statistikave të anonimizuara të vizitave.",
+              "Krahas cookie-ve, në këtë dokument përshkruajmë edhe teknologjitë e ngjashme — hapësirën lokale të ruajtjes së shfletuesit dhe pikselët gjurmues.",
+            ],
+          },
+          {
+            heading: "Të domosdoshme",
+            body: [
+              "Pa to shërbimi nuk funksionon, prandaj vendosen gjithmonë.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — verifikon që lidhja dërgohet nga një njeri dhe jo nga një skript.",
+              "Cilësimet e ndërfaqes — gjuha dhe tema e zgjedhur e pamjes.",
+            ],
+          },
+          {
+            heading: "Analitike",
+            body: [
+              "Ato na ndihmojnë të kuptojmë cilat faqe përdoren dhe ku ndodhin gabime. Vendosen me pëlqimin tuaj dhe nuk janë të domosdoshme për funksionimin e shërbimit.",
+            ],
+            bullets: [
+              "Google Analytics dhe Google Tag Manager — frekuentimi dhe sjellja në faqe në formë të anonimizuar.",
+              "Yandex Metrica — frekuentimi, harta e klikimeve dhe Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor i Yandex Metrica regjistron veprimet në faqe: lëvizjet e kursorit, lëvizjen nëpër faqe (scroll), klikimet dhe shkrimin në fushën e lidhjes. Kjo na nevojitet për të parë se ku ndërfaqja i ngatërron njerëzit.",
+              "Ne nuk i përdorim këto regjistrime për të gjurmuar persona konkretë. Mos vendosni në fushat e faqes informacion që nuk do të dëshironit të ruhej.",
+            ],
+          },
+          {
+            heading: "Si t’i refuzoni",
+            bullets: [
+              "Konfiguroni bllokimin ose fshirjen e cookie-ve në shfletuesin tuaj — kjo mënyrë funksionon për të gjitha sistemet e listuara.",
+              "Google Analytics: shtesa zyrtare e shfletuesit që çaktivizon mbledhjen e të dhënave ofrohet në faqen e Google.",
+              "Yandex Metrica: refuzimi është i mundur përmes shtesës zyrtare të Yandex.",
+              "Çaktivizimi i cookie-ve të domosdoshme e bën shkarkimin të pamundur.",
+            ],
+          },
+          {
+            heading: "Afatet e ruajtjes",
+            body: [
+              "Cookie-t e sesionit fshihen kur mbyllni shfletuesin ose kur skadon sesioni. Mjetet e analitikës i ruajnë identifikuesit e tyre për afatet e përcaktuara nga ofruesit e tyre.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Për mbajtësit e të drejtave",
+        summary: "Qëndrimi i shërbimit për të drejtat e autorit dhe procedura e paraqitjes së ankesës për shkelje.",
+        sections: [
+          {
+            heading: "Qëndrimi i shërbimit",
+            body: [
+              "Shërbimi nuk ruan video tek vetja dhe nuk mban katalog të tyre. Ai vepron si ndërmjetës teknik: sipas lidhjes që ka futur përdoruesi, i drejtohet një faqeje të aksesueshme publikisht dhe i kalon përdoruesit skedarin.",
+              "Skedarët e shkarkuar ruhen në server rreth një orë dhe fshihen automatikisht. Tek ne nuk mbetet asnjë kopje e përhershme e përmbajtjes së të tjerëve.",
+              "Përgjegjësia për përdorimin e materialit të shkarkuar bie mbi përdoruesin — kjo parashikohet shprehimisht në Marrëveshjen e përdoruesit.",
+            ],
+          },
+          {
+            heading: "Nëse ju shkelen të drejtat",
+            body: [
+              `Nëse jeni mbajtës i të drejtave ose përfaqësues i tij dhe mendoni se shërbimi përdoret për të shkelur të drejtat tuaja, na shkruani në ${MAIL}. Ne i shqyrtojmë kërkesa të tilla dhe marrim masa.`,
+            ],
+          },
+          {
+            heading: "Çfarë duhet të përmbajë kërkesa",
+            bullets: [
+              "Cila vepër preket dhe mbi çfarë baze i keni të drejtat mbi të.",
+              "Lidhjen për materialin dhe, nëse dihen, rrethanat e shkeljes.",
+              "Të dhënat tuaja të kontaktit: emrin ose emërtimin, adresën dhe adresën e postës elektronike.",
+              "Nëse veproni në emër të mbajtësit të të drejtave — dëshminë e autorizimit.",
+              "Deklaratën se informacioni në kërkesë është i vërtetë dhe se përdorimi i materialit nuk është i lejuar nga mbajtësi i të drejtave ose nga ligji.",
+            ],
+          },
+          {
+            heading: "Çfarë do të bëjmë",
+            body: [
+              "Ne e shqyrtojmë kërkesën brenda një afati të arsyeshëm, zakonisht brenda tridhjetë ditëve kalendarike, dhe nëse shkelja konfirmohet, kufizojmë qasjen në material përmes shërbimit dhe, kur është e nevojshme, qasjen e shkelësit në shërbim.",
+              "Për rezultatin e shqyrtimit do t’ju njoftojmë në adresën e postës elektronike që keni dhënë.",
+            ],
+          },
+          {
+            heading: "Kërkesat në keqbesim",
+            body: [
+              "Një kërkesë që përmban informacion qëllimisht të rremë mund të sjellë përgjegjësi për paraqitësin e saj në përputhje me legjislacionin. Ne kemi të drejtë të refuzojmë shqyrtimin e një kërkese nëse ajo nuk lejon të identifikohet as mbajtësi i të drejtave, as materiali i kontestuar.",
             ],
           },
         ],

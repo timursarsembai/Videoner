@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt" | "sq" | "bs" | "ce";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt" | "sq" | "bs" | "ce" | "inh";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -18,9 +18,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "bs", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ce", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "bs", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "inh", "kk", "ky", "ce", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча", sq: "Shqip", bs: "Bosanski", ce: "Нохчийн" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча", sq: "Shqip", bs: "Bosanski", ce: "Нохчийн", inh: "ГӀалгӀай" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -9294,6 +9294,226 @@ const ce: Messages = {
   settingsBack: "⬅️ Юха нисдаршка",
 };
 
+const inh: Messages = {
+  start: "Салам! Сона YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest е Threads тӀара видео ссылка дахийтал — из чуяккха аз гӀо дергда.\n\n✨ Качествон доза дац: платформа тӀа мел дола качество, 4K кхачалца, аз лургда — файл 2 ГБ сов ца яле: из Telegram боташта оттадаь доза да. Укхаз ахча деза функцеш цкъаккха яц.\n\nДеррига мехаза да: подпискаш яц, реклама яц, чура эцараш яц.\n\n🧩 Компьютер тӀа чуйоаккх Шо? Браузера расширени оттаде — «Чуяккха» кнопка видео оагӀув тӀа гучаьнна йоалаш хургья: videoner.download/inh/extension\n\n👥 Со тоабага тӀатохал — цига нахаз дахийта ссылкашца аз видеош дахийтаргья.\n\n⚡ Качество ца хьаржаш: ссылкал тӀехьа -audio тӀаяздел — аудио мара (mp3) дахийтаргдац аз, е -hd — эггара дикагӀа качество.\n\n📣 Проекта керда хоамаш: @videonerdownload\n\n🌐 Ботан мотт: /language",
+  notLink: "Из ссылка мо хеталац. Видео ссылка дахийтал.",
+  inviteGreeting: "Салам! Ер Videoner я — YouTube, TikTok, Instagram, кхыдола платформаш тӀара видеош аз мехаза чуйоаккх. Шоана цхьанне дахийта видео кийчъю 👇",
+  inviteNotFound: "Укх кхайкхама ссылкаца видео ца кораелар. Сона видео ссылка дахийтал — аз из чуяккхаргья.",
+  inviteUnavailable: "Укх ссылкаца видео дӀаделла ца ялар — сервисо хӀанз жоп лац. Цхьа минот яьлча цу ссылка кхы а цкъа дӀаелла.",
+  fetchingInfo: "🔍 Видео бӀарах хоам лох...",
+  audioOnlyButton: "🎵 Аудио мара (mp3)",
+  photoButton: "📷 Сурташ чуяккха",
+  slideshowButton: "🎞 Слайд-шоу (видео)",
+  galleryButton: "📷+🎞 Сурташ а слайд-шоу а",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nКачество хьаржал:`,
+  sessionExpired: "Сессен хан яьннай — ссылка кхы а цкъа дахийтал",
+  downloading: "⏬ Чуяккхар… цхьа-ши минот езаргья...",
+  downloadFailed: "чуяккха ца ялар",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Чуяккхар: ${percent}%${eta ? ` · дисад: ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Дукха дисадац — файл кийчъю...",
+  converting: (percent) => `⚙️ Формат хувц: ${percent}%`,
+  etaUnderMinute: "минотал кӀезига",
+  etaMinutes: (minutes) => `~${minutes} мин`,
+  etaHours: (hours, minutes) => `~${hours} сахь${minutes ? ` ${minutes} мин` : ""}`,
+  downloadTimeout: "чуяккхара дукха хан йоалл — видео даьла еза хет. ЛохагӀа качество хьаржал.",
+  downloadInterrupted: "⚠️ Бот обновлени деш юха доладу — Шун чуяккхар чакх ца даьлар. Цхьа минот яьлча ссылка кхы а цкъа дахийтал.",
+  fileTooBig: (mb, url) =>
+    `Файл йоккха хиннай (${mb} МБ) — Telegram ботага из дахийта йиш яц.\nУкхаза чуяккха мег: ${url}`,
+  sendingFile: "📤 Файл дахийт...",
+  sendingAlbum: (count) => `📤 Укх постаца масса файл я (${count}) — уж альбом мо дахийт...`,
+  failedPrefix: "❌ Ца ялар: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Хьост: ${sourceUrl}\n` +
+        "Видео бокъонаш деррига цун автора я.\n" +
+        "Мехаза чуяьккхай: @VideonerBot",
+      `📣 Проекта керда хоамаш: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 ДӀакъовса: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Чуяккха, тха канала подписка ел: ${channel} — из мара бокъо яц, сервис мехаза хургья.\n\n` +
+    "Подписка а еш, «Аз подписка яьй» тӀатаӀал.",
+  openChannelButton: "📣 Канал дӀаелла",
+  checkSubscriptionButton: "Аз подписка яьй",
+  subscribeThanks: "Баркал! ХӀанз сона видео ссылка дахийтал.",
+  subscribeThanksResuming: "Баркал! Шун ссылка аз хӀанз кийчъю.",
+  subscribeStillMissing: "Подписка хӀанзаллца сона гуш яц. Подписка а еш, кхы а цкъа тӀатаӀал.",
+  channelNotice: (channel) => `\n\nУкх поста ссылка каналага гучаяргья (${channel}) — цӀи йоацаш, Шун цӀи ца яьккхаш.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Ер а кхыдола моллагӀа видео а мехаза чуяккха: @VideonerBot",
+  errorStoryNeedsId:
+    "цхьа билгала сторис ссылка дахийтал: Instagram приложене чу из дӀа а елла, «Поделиться» → «Копировать ссылку» тӀатаӀал.",
+  errorInstagramStory:
+    "Instagram сторисаш аккаунта чу бола наха мара гуш яц.",
+  errorLoginRequired:
+    "Ер пост аккаунт йоацаш гуш яц: платформа из аккаунта чу бола наха " +
+    "мара хьахьокхац. Иштта хул къайла постаца, хана доза дола контентаца, " +
+    "кӀезига наха мара хьахьокха йоаца постаца.\n\n" +
+    "Массане гуш йола посташ халонаш йоацаш чуйоаккх — кхыйола ссылка дахийтал.",
+  errorUnsupportedPlatform:
+    "Ссылка ца йовзар — из YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest е Threads тӀара нийса видео ссылка юй хьажал.",
+  errorFileTooLarge: "файл 2 ГБ сов я — Telegram боташта цул йоккхагӀа файлаш дахийта йиш яц. Сайта тӀа е браузера расширени гӀонца чуяккха мег — кнопкаш кӀала я. Е ссылка кхы а цкъа дахийтал, лохагӀа качество а хьаржаш.",
+  siteButton: "🌐 Сайта тӀа чуяккха",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Еза файл хулача качествош хьахьокхаяц (доза: ${limit}): Telegram боташта цул йоккхагӀа файлаш дахийта йиш яц. Уж сайта тӀа е браузера расширени гӀонца чуяккха мег — кнопкаш кӀала я.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Ер видео эггара лохача качествой а (~${smallest}) Telegram-а дахийта даьла еза я: Telegram боташта 2 ГБ сов файлаш дахийта йиш яц. Укхаза аудио мара эца йиш яц; видео — сайта тӀа е браузера расширени гӀонца (кнопкаш кӀала я).`,
+  errorFormatUnavailable: "Укх видеон цу тайпара качество дац. Ссылка кхы а цкъа дахийтал — аз керда список хьахьокхаргья.",
+  errorNoVideoContent: "Укх ссылкаца чуяккха видео яц — пост сурташ мара йоацаш хет.",
+  errorRegionBlocked:
+    "Ер видео автора мехкал арахьа блок яь я — платформа из тха " +
+    "серверага лац. Цунна духьал дергдолча хӀама дац: доза царна агӀора да." +
+    "\n\nКхыдола ссылкаш даим мо чуйоаккх.",
+  errorRateLimited: "Цхьатарра дукха ссылкаш я — жимма собар а деш, кхы а цкъа дахийтал.",
+  errorYoutubeDailyLimit: (gb) => `тӀехьарча 24 сахьата YouTube тӀара ${gb} ГБ сов чуяьккхай Шо — из бота цхьа саг бӀарах оттадаь дийнахьа доза да. ТӀехьара 24 сахьт лорху, цудела YouTube тӀара керда видеош жимма тӀехьагӀа чуяккха мег. Кхыдола платформаш даим мо болх беш я.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Плейлист сецай: YouTube тӀара дийнахьа доза кхаьчай. Чуяккха ца яьй видеош: ${dropped}. Плейлиста ссылка тӀехьагӀа кхы а цкъа дахийтал.`,
+  errorPlatformRefused:
+    "платформа ер видео тха серверага ца елар. Иштта хул къайла е хана " +
+    "доза дола постаца, цхьаболча хана платформа цхьа ханна доступ " +
+    "дозаяь хул. Масса минот яьлча кхы а цкъа хьажал.",
+  errorThreadsNoMedia:
+    "укх Threads постаца видео а сурт а гуш дац. Е из текст мара йоаца пост я, е " +
+    "Threads медиа аккаунта чу бола наха мара хьахьокхац — иштта посташ аккаунт йоацаш чуяккха йиш яц.",
+  extensionHint:
+    "\n\n💻 Компьютер тӀа Videoner браузера расширени гӀонца чуяккха мег: " +
+    "из платформа тӀа Шоай аккаунтаца чуйоаккх, пароль а cookies а Шун браузерал арахьа долхац.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Иштта посташ чуяккха, Шун ${platform} аккаунт ботага тӀатохал — цкъа. Цул тӀехьа Шоана гуш дерригаш бота чуйоаккх: къайла посташ, рилсаш, сторисаш, телефона тӀара а. Мишта де деза кӀалара кнопка хьахьокх.${withExtension ? "\n\n💻 Е компьютер тӀа Videoner браузера расширени гӀонца чуяккха." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Шо тӀатехача ${platform} аккаунтаца ер пост дӀаелла ца ялар. Логин болх беш хила тарлац — аккаунт кхы а цкъа тӀатохал. Е укх аккаунта укх поста доступ яц.${withExtension ? "\n\n💻 Компьютер тӀа Videoner браузера расширени гӀонца а чуяккха мег." : ""}`,
+  connectAccountButton: "🔑 Аккаунт тӀатоха",
+  reconnectAccountButton: "🔑 Кхы а цкъа тӀатоха",
+  extensionButton: "🧩 Расширени гӀонца чуяккха",
+  extensionCommand:
+    "🧩 Браузера Videoner: «Чуяккха» кнопка видео оагӀув тӀа — YouTube, Instagram, TikTok, VK, Шун аккаунта тӀара къайла видеош, GetCourse урокаш а.\n\nКомпьютер тӀа Chrome, Edge, Opera, Яндекс Браузер, Firefox а.",
+  extensionPageButton: "🧩 Расширени оттаде",
+  addToGroupButton: "👥 Тоабага тӀатоха",
+  newsButton: "📣 Проекта керда хоамаш",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проекта керда хоамаш: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Укх тоаба чу ботан настройкаш\n\n" +
+    `🗑 Ссылка йола хоам дӀабаккха: ${s.deleteLinks ? "хӀаа" : "ца"}\n` +
+    "Видео дахийтача тӀехьа ссылка мара йоаца хоам дӀабоаккх — чата чу видео мара ца юсаш, из дахийтачун цӀи а йолаш.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ ХӀанз хоамаш дӀабаккха йиш яц сона: «Удаление сообщений» бокъо йола администратор де со.\n"
+      : "") +
+    `\n✍️ Видео кӀала текст: ${{ full: "дийнна", short: "цӀи а хьост а", none: "текст йоацаш" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Качество: ${s.quality === "max" ? "Telegram тӀаэц эггара лакхара" : "стандартни (720p)"}\n` +
+    `\n⏱ Еха видеош: ${s.longVideos ? "моллагӀа дохал" : "15 минот кхачалца мара"}\n` +
+    `\n🔑 Шоай аккаунташ мала тӀатоха мег (сторисашта а къайла постий а): ${s.cookiesBy === "all" ? "моллагӀа доакъашхо" : "администраторш мара"}\n` +
+    `\n🌐 Жоплургдолча мотт: ${s.language ? langName(s.language) : "хӀар доакъашхочун ший мотт"}\n` +
+    "\nНастройкаш тоаба администраторашта мара хувца йиш яц.",
+  settingsDeleteButton: (on) => `🗑 Ссылкаш дӀаяккха: ${on ? "хӀаа" : "ца"}`,
+  settingsCaptionButton: (style) => `✍️ Текст: ${{ full: "дийнна", short: "доаца", none: "яц" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Качество: ${mode === "max" ? "эггара лакхара" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Еха видеош: ${on ? "хӀаа" : "15 мин кхачалца"}`,
+  settingsDoneButton: "✅ Кийча я",
+  settingsAdminsOnly: "Настройкаш тоаба администраторашта мара хувца йиш яц.",
+  settingsGroupsOnly: "Настройкаш тоабашта я: со тоабага тӀатохал, цига /settings дахийтал.",
+  settingsFailed: "Настройкаш лорадо ца далар, кхы а цкъа хьажал.",
+  settingsCookiesButton: (by) => `🔑 Аккаунташ тӀатохар: ${by === "all" ? "массане" : "администраторашта"}`,
+  accountsIntro:
+    "🔑 ТӀатехаь аккаунташ\n\nАккаунта чу бола наха мара гуш доацар (Instagram сторисаш, къайла посташ) бота Шун аккаунтаца чуйоаккх. Логин из тӀатехача мара болх беш яц: ботаца чата чу тӀатехар Шун чуяккхарашта болх бу, ший аккаунт йоаца тоабашка Шун ссылкашта а; тоабага тӀатехар цу тоаба массайолча доакъашхошта болх бу.",
+  accountsHowTo:
+    "Мишта тӀатоха:\n1. Эггара атта: компьютер тӀа Videoner расширени — платформа сайта тӀа логин е, Videoner кор дӀаелла, «🔑 Шун … аккаунт ботага тӀатохал» кнопка тӀатаӀа, код сона дахийтал. Тоабана — цу тоаба чу /connect КОД дахийтал.\n2. Е сона cookies.txt файл (браузера тӀара экспорт яь cookies) дахийтал, е цун текст хоам мо чуоттаде.\n3. Android телефона тӀара — Firefox а Cookie-Editor дополнени а лелаеш: https://videoner.download/inh/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Платформашта автоматически чуяккхар дукхадезац, цар аккаунт дозаяккха е блок яккха мег. Коьрта аккаунт ма тӀатохал — шоллагӀа аккаунт тӀатохар дикагӀа да. Cookies шифр яь лорай, чуяккхарашта мара лелаеш яц, кӀалара кнопкашца дӀаяккха мег.",
+  accountsNone: "ХӀанзаллца цхьаккха хӀама тӀатехаб дац.",
+  accountsGroupTitle: "🔑 Укх тоабага тӀатехаь аккаунташ",
+  accountsGroupHowTo:
+    "Деррига тоабана тӀатоха: Videoner расширене чу «🔑 Шун … аккаунт ботага тӀатохал» кнопкаца код а эцаш, укхаза /connect КОД дахийтал. Шо аккаунт ботаца чата чу мара тӀа ца тохаяле, бота из укхаза Шун ссылкашта лелаергья. Шун тӀатохараш: @VideonerBot ботаца чата чу /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ логин болх беш яц)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ логин болх беш яц)"}`,
+  accountsWhereHere: "ботаца чат",
+  accountsWhereGroup: (title) => `«${title}» тоаба`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Са деррига тӀатохараш дӀаяккха",
+  accountsDeleted: "ДӀаяьккхай.",
+  accountsDeletedAll: (n) => `ДӀаяьккха тӀатохараш: ${n}.`,
+  accountsNotAllowed: "Из тӀатехачунна е тоаба администраторана мара дӀаяккха йиш яц.",
+  connectUsage:
+    "/connect КОД дахийтал. Код эца, компьютер тӀа Videoner расширене чу «🔑 Шун … аккаунт ботага тӀатохал» кнопка тӀатаӀал. Шун тӀатохараш: /accounts.",
+  connectOnlyAdmins: "Укх тоабага аккаунташ администраторашта мара тӀатоха йиш яц (хьажа /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} тӀатехаб: ${where}. ХӀанз аккаунта чу бола наха мара гуш доацар а бота чуйоаккх. Хьажа е дӀаяккха: /accounts.\n\n⚠️ Автоматически чуяккхара духьа платформа аккаунт дозаяккха мег — шоллагӀа аккаунт лелаяр дикагӀа да.`,
+  connectWhereGroup: "укх тоабага",
+  connectWhereHere: "ботаца чата чу а инлайн-режима чу а Шун чуяккхарашта",
+  connectCodeNotFound: "Код ца кораелар е цун хан яьннай (кода хан 10 минот я). Videoner расширене чу керда код эцал.",
+  connectRejectedNoSession: "Укх cookies чу логин яц. Платформа сайта тӀа логин е, cookies кхы а цкъа экспорт ел.",
+  connectRejectedUnknown: "Бот болх беш йола платформай cookies ца кораелар: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Аккаунташ тӀатоха хӀанз йиш яц.",
+  connectFailed: "ТӀатоха ца далар, кхы а цкъа хьажал.",
+  connectFileTooBig: "Файл даьла йоккха я — езача сайта cookies мара экспорт ма ел.",
+  connectNotAnonymous: "Аккаунт Шоай цӀерах тӀатохал, тоаба цӀерах анонимно ма тохал: цудаьдача администраторий тӀатохараш вӀашагӀйийлар хул. Код аз хӀаллакъяьй — керда код эцал.",
+  connectCodeInGroup:
+    "Тоаба чата чу яздаь тӀатохара код кхычарна гуш хила мег — аз из хӀаллакъяьй, хоам а дӀабаьккхаб. Керда код а эцаш, /connect КОД аьнна дахийтал: цу командан хоам аз сиха дӀабоаккх.",
+  groupWelcome:
+    "👋 Салам! Укх чата чу TikTok, Instagram, YouTube, VK а кхыдола платформаш а тӀара видео ссылкаш дахийтал — аз видео ший дахийтача жоп лургда.\n\n" +
+    "15 минот кхачалца йола видеош аз командаш йоацаш чуйоаккх, кхыдола хоамашта жоп лац.\n\n⚙️ Тоаба администраторашта /settings командаца со нийсаде мег: ссылкай хоамаш дӀабахар, текста кеп, качество, еха видеош, мотт.\n\n⚡ Аудио эца ссылкал тӀехьа -audio тӀаяздел, е эггара дикагӀа качествона — -hd.\n\n📣 Проекта керда хоамаш: @videonerdownload",
+  errorTooLong: "видео даьла еха я — иштта еха видеош хӀанзаллца чуяккха йиш яц тха.",
+  errorUnknown: "ер видео чуяккха ца ялар. Жимма тӀехьагӀа кхы а цкъа хьажал е кхыйола ссылка дахийтал.",
+  inlineHintButton: "Ботага ссылка дахийта",
+  inlineResultTitle: "⬇️ Видео чуяккха",
+  inlineResultDescription: "Видео укх чата чу дахийтаргья",
+  inlinePlaceholder: "⏬ Чуяккхар… цхьа-ши минот езаргья...",
+  inlineOpenBot: "Бот дӀаелла",
+  inlineOnlySingleVideo:
+    "Укх режимаца цхьа видео мара дахийтац. Масса файл йола посташ е сурташ чуяккха, ссылка ботаца чата чу дахийтал.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Чуяккха, канала подписка ел (${channel}) — тӀаккха кхы а цкъа хьажал.`,
+  inlineRateLimited: "Цхьатарра дукха дехараш да. Цхьа минот собар а деш, кхы а цкъа хьажал.",
+  queueRest: (count) => `\n\n📋 РогӀа чу йиса ссылкаш: ${count}. Укхал тӀехьа уж цхьацца хьахьокхаргья аз.`,
+  queuedOne: (position) =>
+    `📋 Ссылка рогӀа чу тӀатехай, #${position}. Хьалха хӀанзарйола чакхъяккхаргья — тӀехьа цун качество хьаржа аз хьахьокхаргда.`,
+  queuedMany: (added, waiting) =>
+    `📋 РогӀа чу тӀатеха ссылкаш: ${added}. Деррига а хьежаш я: ${waiting}. ХӀанзарйолчал тӀехьа уж цхьацца хьахьокхаргья аз.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Ер ссылка рогӀа чу йолаш я — шозза тӀа ца тох."
+      : `РогӀа чу йола ссылкаш шозза тӀа ца тох (шозза хиннараш: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `РогӀа чу ссылкаш ${limit} сов ца юцу — тӀехйисараш тӀа ца тоха (${rejected}). РогӀ хьалха яхача уж дахийтал.`,
+  skipButton: "✖️ Ма чуяккха",
+  skipped: "⏭ Ер ссылка юта.",
+  chooseTimedOut: "⌛ 30 минота чу качество ца хьаржаб — ер ссылка юта.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Бот обновлени деш юха доладу — рогӀ цӀенъяьй (ссылкаш: ${count}). Цхьа минот яьлча уж кхы а цкъа дахийтал.`,
+  subtitlesButton: "📝 Субтитраш",
+  subtitlesBack: "⬅️ Юха качествога",
+  subtitlesAuto: "авто",
+  subtitlesChoose: "Субтитрий мотт хьаржал",
+  subtitlesPreparing: "📝 Субтитраш кийчъю...",
+  subtitlesFailed: "Укх мотт тӀа субтитраш чуяккха ца ялар. Кхыбола мотт хьаржал.",
+  subtitlesBusy: "YouTube хӀанз субтитраш ловш дац — масса минот яьлча кхы а цкъа хьажал.",
+  playlistFound: (title, count) =>
+    `📃 Плейлист${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} видео.\nУж цхьацца чуяккхаргья аз. Фу формат?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Эггара дикагӀа качество",
+  playlistAudioButton: "🎵 Аудио мара (mp3)",
+  playlistNoButton: "✖️ Ца, баркал",
+  playlistQueued: (count) =>
+    `📃 Плейлиста тӀара рогӀа чу тӀатеха видеош: ${count}. Уж цхьацца дахийтаргья аз. КӀалара кнопкаца е /stop командаца сацаде мег.`,
+  playlistFailed: "Плейлист дӀаелла ца ялар — из къайла хила мег. Цхьа видео ссылка дахийтал.",
+  stopButton: "⏹ Сацаде",
+  stopped: (dropped) => `⏹ Сацадаьд.${dropped ? ` РогӀа чура дӀаяьккха ссылкаш: ${dropped}.` : ""}`,
+  nothingToStop: "ХӀанз цхьаккха хӀама чуйоаккхаш дац.",
+  languageChoose: "🌐 Ботан мотт хьаржал. «Авто» — Шун Telegram чу мо.",
+  languageChooseGroup: "🌐 Укх тоаба чу ботан жоплургдолча мотт. «Авто» — хӀар доакъашхочун Telegram чу бола мотт.",
+  languageAuto: "Авто — Telegram чу мо",
+  languageAutoGroup: "Авто — хӀар доакъашхочун ший мотт",
+  languageSaved: (name) => `✅ Ботан мотт: ${name}. Хувца мег: /language.`,
+  languageSavedAuto: "✅ Бота Шун Telegram чу бола мотт лелаю. Хувца мег: /language.",
+  settingsLanguageButton: (name) => `🌐 Мотт: ${name ?? "авто"}`,
+  settingsBack: "⬅️ Юха настройкашка",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -9961,4 +10181,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq, bs, ce };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq, bs, ce, inh };

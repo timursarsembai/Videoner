@@ -143,8 +143,9 @@ async function registerCommandMenus() {
     bot.api.setMyCommands(GROUP_COMMANDS.en, { scope: { type: "all_group_chats" } }),
   );
   // language_code в setMyCommands — только двухбуквенный ISO 639-1; у сорани
-  // (ckb) такого кода нет, ему меню ставится на чат при выборе языка (/language).
-  for (const lang of LANGS.filter((l): l is Exclude<Lang, "en" | "ckb"> => l !== "en" && l !== "ckb")) {
+  // (ckb) и ингушского (inh) такого кода нет, им меню ставится на чат при
+  // выборе языка (/language).
+  for (const lang of LANGS.filter((l): l is Exclude<Lang, "en" | "ckb" | "inh"> => l !== "en" && l !== "ckb" && l !== "inh")) {
     await setCommandsWithRetry(lang, () => bot.api.setMyCommands(COMMANDS[lang], { language_code: lang }));
     await setCommandsWithRetry(`groups ${lang}`, () =>
       bot.api.setMyCommands(GROUP_COMMANDS[lang], { scope: { type: "all_group_chats" }, language_code: lang }),

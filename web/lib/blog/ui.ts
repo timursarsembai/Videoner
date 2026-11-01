@@ -546,6 +546,18 @@ export const blogUi: Record<
     readFull: "Сайтехь дуьззина деша",
     dateLocale: "ru-RU",
   },
+  inh: {
+    title: "Videoner-блог",
+    description: "Проекта керда хоамаш: ботаца, сайта тӀа, расширене фу керда даьннад, из муха леладе.",
+    readMore: "Деша",
+    back: "Деррига статьяш",
+    allPosts: "Блог",
+    channel: "Керда хоамаш Telegram-е",
+    channelCta: "Проекта керда хоамаш — @videonerdownload Telegram-канала чу.",
+    readOnSite: "Сайта тӀа деша",
+    readFull: "Сайта тӀа деррига деша",
+    dateLocale: "ru-RU",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

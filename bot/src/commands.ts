@@ -357,6 +357,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Чуяккхар а, рогӀ а сацо" },
     { command: "language", description: "Ботан мотт" },
   ],
+  inh: [
+    { command: "start", description: "Бот мишта леладе" },
+    { command: "extension", description: "Браузера расширени" },
+    { command: "accounts", description: "Сторисашта а къайла постий а Шун аккаунташ" },
+    { command: "connect", description: "Расширене тӀара кодаца аккаунт тӀатоха" },
+    { command: "stop", description: "Чуяккхар а рогӀ а сацаде" },
+    { command: "language", description: "Ботан мотт" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -669,6 +677,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Кодаца хӀокху тобане аккаунт тӀетаса" },
     { command: "language", description: "ХӀокху тобанехь ботан мотт (администраторшна)" },
     { command: "start", description: "Бот тобанехь муха болх беш ю" },
+  ],
+  inh: [
+    { command: "settings", description: "Укх тоаба чу ботан настройкаш (администраторашта)" },
+    { command: "accounts", description: "Укх тоабага тӀатехаь аккаунташ" },
+    { command: "connect", description: "Кодаца укх тоабага аккаунт тӀатоха" },
+    { command: "language", description: "Укх тоаба чу ботан мотт (администраторашта)" },
+    { command: "start", description: "Бот тоаба чу мишта болх беш я" },
   ],
 };
 

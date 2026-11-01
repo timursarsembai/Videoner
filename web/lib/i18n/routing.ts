@@ -78,7 +78,7 @@ export function languageAlternates(path: string): Record<string, string> {
 // Убирает текущий локальный префикс из пути, чтобы построить ссылку на ту же
 // страницу под другой локалью.
 export function stripLocalePrefix(pathname: string): string {
-  const [, first, rest] = pathname.match(/^\/([a-z]{2})(\/.*)?$/) ?? [];
+  const [, first, rest] = pathname.match(/^\/([a-z]{2,3})(\/.*)?$/) ?? [];
   if (first && (PREFIXED_LOCALES as readonly string[]).includes(first)) return rest || "/";
   return pathname;
 }

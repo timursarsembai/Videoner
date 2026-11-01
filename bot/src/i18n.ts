@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -7083,6 +7083,226 @@ const nl: Messages = {
   settingsBack: "⬅️ Terug naar instellingen",
 };
 
+const ro: Messages = {
+  start: "Salut! Trimite-mi linkul unui videoclip de pe YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest sau Threads — te ajut să-l descarci.\n\n✨ Fără limite de calitate: primești tot ce oferă platforma, până la 4K — atâta timp cât fișierul încape în 2 GB, limita Telegram pentru boți. Aici nu există funcții plătite.\n\nComplet gratuit: fără abonamente, fără reclame, fără achiziții în aplicație.\n\n🧩 Descarci pe calculator? Instalează extensia de browser — un buton Descarcă apare chiar pe pagina videoclipului: videoner.download/ro/extension\n\n👥 Adaugă-mă într-un grup și voi posta videoclipurile pentru linkurile pe care le trimit oamenii acolo.\n\n⚡ Sari peste alegerea calității: adaugă -audio după link pentru doar sunet (mp3) sau -hd pentru cea mai bună calitate.\n\n📣 Noutățile proiectului: @videonerdownload\n\n🌐 Limba botului: /language",
+  notLink: "Asta nu pare a fi un link. Trimite-mi linkul unui videoclip.",
+  inviteGreeting: "Salut! Sunt Videoner — descarc gratuit videoclipuri de pe YouTube, TikTok, Instagram și alte platforme. Pregătesc videoclipul pe care ți l-a trimis cineva 👇",
+  inviteNotFound: "Nu am găsit niciun videoclip pentru acest link de invitație. Trimite-mi linkul unui videoclip și îl descarc.",
+  inviteUnavailable: "Nu am putut deschide videoclipul din acest link — serviciul nu răspunde acum. Deschide din nou același link peste un minut.",
+  fetchingInfo: "🔍 Obțin informațiile despre videoclip...",
+  audioOnlyButton: "🎵 Doar audio (mp3)",
+  photoButton: "📷 Descarcă fotografiile",
+  slideshowButton: "🎞 Prezentare foto (videoclip)",
+  galleryButton: "📷+🎞 Fotografii și prezentare foto",
+  chooseQuality: (title, duration) => `„${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nAlege calitatea:`,
+  sessionExpired: "Sesiunea a expirat — trimite din nou linkul",
+  downloading: "⏬ Se descarcă, poate dura câteva minute...",
+  downloadFailed: "descărcarea a eșuat",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Se descarcă: ${percent}%${eta ? ` · mai rămân ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Aproape gata — asamblez fișierul...",
+  converting: (percent) => `⚙️ Conversie: ${percent}%`,
+  etaUnderMinute: "sub un minut",
+  etaMinutes: (minutes) => `~${minutes} min`,
+  etaHours: (hours, minutes) => `~${hours} h${minutes ? ` ${minutes} min` : ""}`,
+  downloadTimeout: "descărcarea durează prea mult — videoclipul pare foarte mare. Încearcă o calitate mai mică.",
+  downloadInterrupted: "⚠️ Botul repornește pentru o actualizare — descărcarea ta a fost întreruptă. Trimite din nou linkul peste un minut.",
+  fileTooBig: (mb, url) =>
+    `Fișierul a ieșit mare (${mb} MB) — Telegram nu permite botului să-l trimită.\nDescarcă-l aici: ${url}`,
+  sendingFile: "📤 Trimit fișierul...",
+  sendingAlbum: (count) => `📤 Această postare are mai multe fișiere (${count}) — le trimit ca album...`,
+  failedPrefix: "❌ Eroare: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Sursa: ${sourceUrl}\n` +
+        "Toate drepturile asupra videoclipului aparțin autorului său.\n" +
+        "Descărcat gratuit cu @VideonerBot",
+      `📣 Noutățile proiectului: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Distribuie: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Ca să descarci, abonează-te la canalul nostru ${channel} — este singura condiție, serviciul rămâne gratuit.\n\n` +
+    "Abonează-te și apasă „M-am abonat”.",
+  openChannelButton: "📣 Deschide canalul",
+  checkSubscriptionButton: "M-am abonat",
+  subscribeThanks: "Mulțumesc! Acum trimite-mi linkul unui videoclip.",
+  subscribeThanksResuming: "Mulțumesc! Mă ocup acum de linkul tău.",
+  subscribeStillMissing: "Încă nu văd abonamentul. Abonează-te și apasă din nou.",
+  channelNotice: (channel) => `\n\nLinkul către această postare va apărea în ${channel} — anonim, fără numele tău.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Descarcă gratuit acest videoclip și oricare altul: @VideonerBot",
+  errorStoryNeedsId:
+    "trimite linkul unei anumite povești: deschide-o în aplicația Instagram și atinge Distribuie → Copiază linkul.",
+  errorInstagramStory:
+    "Poveștile Instagram sunt vizibile doar pentru cei conectați.",
+  errorLoginRequired:
+    "Această postare nu este disponibilă fără autentificare: platforma o oferă doar " +
+    "utilizatorilor conectați. Asta se întâmplă cu postările private, conținutul cu restricție de vârstă și " +
+    "postările distribuite unui public restrâns.\n\n" +
+    "Postările publice se descarcă fără probleme — încearcă alt link.",
+  errorUnsupportedPlatform:
+    "Nu am putut recunoaște acest link — asigură-te că este un link direct către un videoclip de pe YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest sau Threads.",
+  errorFileTooLarge: "fișierul depășește 2 GB — Telegram nu permite boților să trimită fișiere mai mari. Descarcă-l pe site sau cu extensia de browser — butoanele de mai jos. Sau trimite din nou linkul și alege o calitate mai mică.",
+  siteButton: "🌐 Descarcă pe site",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Calitățile mai mari de ${limit} sunt ascunse: Telegram nu permite boților să trimită fișiere mai mari. Le poți descărca pe site sau cu extensia de browser — butoanele de mai jos.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Acest videoclip este prea mare pentru Telegram chiar și la cea mai mică calitate (~${smallest}): Telegram nu permite boților să trimită fișiere de peste 2 GB. Aici poți primi doar sunetul; videoclipul — pe site sau cu extensia de browser (butoanele de mai jos).`,
+  errorFormatUnavailable: "Această calitate nu este disponibilă pentru acest videoclip. Trimite din nou linkul — îți arăt lista actuală.",
+  errorNoVideoContent: "La acest link nu există niciun videoclip de descărcat — postarea pare să conțină doar fotografii.",
+  errorRegionBlocked:
+    "Acest videoclip este blocat în afara țării autorului — platforma nu îl oferă " +
+    "serverului nostru. Nu există nicio cale de ocolire: restricția este de partea lor." +
+    "\n\nCelelalte linkuri se descarcă normal.",
+  errorRateLimited: "Prea multe linkuri la rând — așteaptă puțin și trimite din nou.",
+  errorYoutubeDailyLimit: (gb) => `ai descărcat peste ${gb} GB de pe YouTube în ultimele 24 de ore — aceasta este limita zilnică a botului per persoană. Se socotesc ultimele 24 de ore, așa că vei putea descărca videoclipuri noi de pe YouTube puțin mai târziu. Celelalte platforme funcționează normal.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Playlist oprit: s-a atins limita zilnică pentru YouTube. Videoclipuri nedescărcate: ${dropped}. Trimite din nou linkul playlistului mai târziu.`,
+  errorPlatformRefused:
+    "platforma nu a oferit acest videoclip serverului nostru. Asta se întâmplă cu postările private " +
+    "sau cu restricție de vârstă, iar uneori platforma pur și simplu limitează accesul pentru " +
+    "o vreme. Încearcă din nou peste câteva minute.",
+  errorThreadsNoMedia:
+    "în această postare Threads nu se vede niciun videoclip sau fotografie. Fie este o postare doar cu text, fie " +
+    "Threads își arată conținutul media doar utilizatorilor conectați — astfel de postări nu pot fi descărcate fără autentificare.",
+  extensionHint:
+    "\n\n💻 Îl poți descărca pe calculator cu extensia de browser Videoner: " +
+    "descarcă folosind propria ta autentificare pe platformă, iar nicio parolă sau cookie nu părăsește browserul tău.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Ca să descarci astfel de postări, conectează-ți contul ${platform} la bot — o singură dată. După aceea botul descarcă tot ce poți vedea tu: postări private, reels și povești, inclusiv de pe telefon. Butonul de mai jos îți arată cum.${withExtension ? "\n\n💻 Sau descarcă-l pe calculator cu extensia de browser Videoner." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Contul tău ${platform} conectat nu a putut deschide această postare. Probabil autentificarea nu mai funcționează — conectează din nou contul. Sau acest cont nu are acces la postare.${withExtension ? "\n\n💻 O poți descărca și pe calculator cu extensia de browser Videoner." : ""}`,
+  connectAccountButton: "🔑 Conectează contul",
+  reconnectAccountButton: "🔑 Reconectează",
+  extensionButton: "🧩 Descarcă cu extensia",
+  extensionCommand:
+    "🧩 Videoner pentru browserul tău: un buton Descarcă chiar pe pagina videoclipului — YouTube, Instagram, TikTok, VK, videoclipuri private din contul tău și lecții GetCourse.\n\nPentru Chrome, Edge, Opera, Yandex Browser și Firefox pe calculator.",
+  extensionPageButton: "🧩 Instalează extensia",
+  addToGroupButton: "👥 Adaugă într-un grup",
+  newsButton: "📣 Noutățile proiectului",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Noutățile proiectului: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Setările botului pentru acest grup\n\n" +
+    `🗑 Șterge mesajul cu linkul: ${s.deleteLinks ? "da" : "nu"}\n` +
+    "După ce videoclipul este trimis, mesajul care conținea doar linkul este șters — în chat rămâne doar videoclipul cu numele celui care l-a trimis.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Momentan nu pot șterge mesaje: fă-mă administrator cu dreptul „Ștergere mesaje”.\n"
+      : "") +
+    `\n✍️ Textul de sub videoclip: ${{ full: "complet", short: "titlul și sursa", none: "fără text" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Calitate: ${s.quality === "max" ? "cea mai mare acceptată de Telegram" : "standard (720p)"}\n` +
+    `\n⏱ Videoclipuri lungi: ${s.longVideos ? "de orice durată" : "doar până la 15 minute"}\n` +
+    `\n🔑 Cine își poate conecta conturile (pentru povești și postări private): ${s.cookiesBy === "all" ? "orice membru" : "doar administratorii"}\n` +
+    `\n🌐 Limba răspunsurilor: ${s.language ? langName(s.language) : "a fiecărui membru"}\n` +
+    "\nDoar administratorii grupului pot modifica setările.",
+  settingsDeleteButton: (on) => `🗑 Șterge linkurile: ${on ? "da" : "nu"}`,
+  settingsCaptionButton: (style) => `✍️ Text: ${{ full: "complet", short: "scurt", none: "fără" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Calitate: ${mode === "max" ? "maximă" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Videoclipuri lungi: ${on ? "da" : "până la 15 min"}`,
+  settingsDoneButton: "✅ Gata",
+  settingsAdminsOnly: "Doar administratorii grupului pot modifica setările.",
+  settingsGroupsOnly: "Setările sunt pentru grupuri: adaugă-mă într-un grup și trimite /settings acolo.",
+  settingsFailed: "Nu am putut salva setările, încearcă din nou.",
+  settingsCookiesButton: (by) => `🔑 Conectarea conturilor: ${by === "all" ? "toți" : "administratorii"}`,
+  accountsIntro:
+    "🔑 Conturi conectate\n\nBotul poate descărca ceea ce văd doar cei conectați (povești Instagram, postări private) — folosind contul tău. O autentificare funcționează acolo unde ai conectat-o: cea din chatul privat servește descărcările tale, inclusiv linkurile tale din grupurile care nu au un cont propriu; cea conectată la un grup servește toți membrii lui.",
+  accountsHowTo:
+    "Cum conectezi un cont:\n1. Cel mai simplu: extensia Videoner pe calculator — conectează-te pe site-ul platformei, deschide fereastra Videoner, apasă „🔑 Conectează-ți contul … la bot” și trimite-mi codul. Pentru un grup, trimite /connect COD în acel grup.\n2. Sau trimite-mi un fișier cookies.txt (cookie-uri exportate din browser) ori lipește textul lui într-un mesaj.\n3. De pe un telefon Android — cu Firefox și suplimentul Cookie-Editor: https://videoner.download/ro/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Platformele nu agreează descărcările automate și pot restricționa sau bloca contul. E mai bine să conectezi un cont secundar, nu pe cel principal. Cookie-urile sunt stocate criptat, folosite doar pentru descărcări și se șterg cu butoanele de mai jos.",
+  accountsNone: "Încă nu este nimic conectat.",
+  accountsGroupTitle: "🔑 Conturi conectate la acest grup",
+  accountsGroupHowTo:
+    "Ca să conectezi unul pentru tot grupul: obține un cod cu butonul „🔑 Conectează-ți contul … la bot” din extensia Videoner și trimite aici /connect COD. Dacă ai conectat un cont doar în chatul tău privat, botul îl folosește aici pentru linkurile tale. Conexiunile tale: /accounts într-un chat privat cu @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ autentificarea nu funcționează)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ autentificarea nu funcționează)"}`,
+  accountsWhereHere: "chat privat",
+  accountsWhereGroup: (title) => `grupul „${title}”`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Șterge toate conexiunile mele",
+  accountsDeleted: "Șters.",
+  accountsDeletedAll: (n) => `Conexiuni șterse: ${n}.`,
+  accountsNotAllowed: "Doar persoana care a conectat contul sau un administrator al grupului îl poate șterge.",
+  connectUsage:
+    "Trimite /connect COD. Codul îl primești cu butonul „🔑 Conectează-ți contul … la bot” din extensia Videoner pe calculator. Conexiunile tale: /accounts.",
+  connectOnlyAdmins: "Doar administratorii pot conecta conturi la acest grup (vezi /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} conectat ${where}. Acum botul descarcă și ceea ce văd doar cei conectați. Vezi sau șterge: /accounts.\n\n⚠️ Platforma poate restricționa contul pentru descărcări automate — e mai bine să folosești unul secundar.`,
+  connectWhereGroup: "la acest grup",
+  connectWhereHere: "pentru descărcările tale din chatul privat și din modul inline",
+  connectCodeNotFound: "Codul nu a fost găsit sau a expirat (codurile sunt valabile 10 minute). Obține unul nou în extensia Videoner.",
+  connectRejectedNoSession: "Aceste cookie-uri nu conțin nicio autentificare. Conectează-te pe site-ul platformei și exportă din nou cookie-urile.",
+  connectRejectedUnknown: "Nu am găsit cookie-uri ale platformelor acceptate: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Conectarea conturilor nu este disponibilă încă.",
+  connectFailed: "Nu am putut conecta contul, încearcă din nou.",
+  connectFileTooBig: "Fișierul este prea mare — exportă doar cookie-urile site-ului de care ai nevoie.",
+  connectNotAnonymous: "Conectează contul în nume propriu, nu anonim în numele grupului: altfel conexiunile administratorilor se amestecă. Am anulat codul — obține unul nou.",
+  connectCodeInGroup:
+    "Un cod de conectare postat în chatul grupului poate fi văzut de alții — l-am anulat și am șters mesajul. Obține unul nou și trimite-l cu /connect COD: șterg imediat mesajul cu această comandă.",
+  groupWelcome:
+    "👋 Salut! Postați în acest chat linkuri către videoclipuri de pe TikTok, Instagram, YouTube, VK și alte platforme — vă răspund cu videoclipul propriu-zis.\n\n" +
+    "Descarc singur clipurile de până la 15 minute, fără nicio comandă, iar în rest tac.\n\n⚙️ Administratorii grupului mă pot configura cu /settings: ștergerea mesajelor cu linkuri, stilul textului, calitatea, videoclipurile lungi și limba.\n\n⚡ Adaugă -audio după un link ca să primești sunetul sau -hd pentru cea mai bună calitate.\n\n📣 Noutățile proiectului: @videonerdownload",
+  errorTooLong: "videoclipul este prea lung — încă nu putem descărca videoclipuri atât de lungi.",
+  errorUnknown: "nu am putut descărca acest videoclip. Încearcă din nou puțin mai târziu sau trimite alt link.",
+  inlineHintButton: "Trimite un link botului",
+  inlineResultTitle: "⬇️ Descarcă videoclipul",
+  inlineResultDescription: "Videoclipul va fi postat chiar în acest chat",
+  inlinePlaceholder: "⏬ Se descarcă, poate dura câteva minute...",
+  inlineOpenBot: "Deschide botul",
+  inlineOnlySingleVideo:
+    "Acest mod trimite un singur videoclip. Pentru postări cu mai multe fișiere sau fotografii, trimite linkul botului într-un chat privat.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Ca să descarci, abonează-te la ${channel} și încearcă din nou.`,
+  inlineRateLimited: "Prea multe cereri la rând. Așteaptă un minut și încearcă din nou.",
+  queueRest: (count) => `\n\n📋 Linkuri rămase în coadă: ${count}. Ți le arăt pe rând după acesta.`,
+  queuedOne: (position) =>
+    `📋 Link adăugat în coadă, nr. ${position}. Mai întâi terminăm linkul curent — apoi îți arăt alegerea calității pentru acesta.`,
+  queuedMany: (added, waiting) =>
+    `📋 Linkuri adăugate în coadă: ${added}. În total așteaptă: ${waiting}. Ți le arăt pe rând după cel curent.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Acest link este deja în coadă — nu îl adaug de două ori."
+      : `Linkurile aflate deja în coadă nu se adaugă de două ori (repetări: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Coada cuprinde cel mult ${limit} linkuri — cele în plus nu au fost adăugate (${rejected}). Trimite-le după ce coada avansează.`,
+  skipButton: "✖️ Nu descărca",
+  skipped: "⏭ Am sărit peste acest link.",
+  chooseTimedOut: "⌛ Nu a fost aleasă nicio calitate în 30 de minute — sar peste acest link.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Botul repornește pentru o actualizare — coada a fost golită (linkuri: ${count}). Trimite-le din nou peste un minut.`,
+  subtitlesButton: "📝 Subtitrări",
+  subtitlesBack: "⬅️ Înapoi la calitate",
+  subtitlesAuto: "automate",
+  subtitlesChoose: "Alege limba subtitrărilor",
+  subtitlesPreparing: "📝 Pregătesc subtitrările...",
+  subtitlesFailed: "Nu am putut descărca subtitrările în această limbă. Încearcă altă limbă.",
+  subtitlesBusy: "YouTube nu oferă subtitrări momentan — încearcă din nou peste câteva minute.",
+  playlistFound: (title, count) =>
+    `📃 Playlist${title ? ` „${title.slice(0, 150)}”` : ""}: ${count} videoclipuri.\nLe descarc pe rând. Ce format?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Cea mai bună calitate",
+  playlistAudioButton: "🎵 Doar audio (mp3)",
+  playlistNoButton: "✖️ Nu, mulțumesc",
+  playlistQueued: (count) =>
+    `📃 Videoclipuri din playlist adăugate în coadă: ${count}. Ți le trimit pe rând. Oprește cu butonul de mai jos sau cu /stop.`,
+  playlistFailed: "Nu am putut deschide playlistul — poate fi privat. Trimite linkul unui singur videoclip.",
+  stopButton: "⏹ Oprește",
+  stopped: (dropped) => `⏹ Oprit.${dropped ? ` Linkuri eliminate din coadă: ${dropped}.` : ""}`,
+  nothingToStop: "Nu se descarcă nimic în acest moment.",
+  languageChoose: "🌐 Alege limba botului. „Automat” urmează limba din Telegram.",
+  languageChooseGroup: "🌐 Limba răspunsurilor botului în acest grup. „Automat” — limba din Telegram a fiecărui membru.",
+  languageAuto: "Automat — ca în Telegram",
+  languageAutoGroup: "Automat — a fiecărui membru",
+  languageSaved: (name) => `✅ Limba botului: ${name}. O poți schimba cu /language.`,
+  languageSavedAuto: "✅ Botul urmează limba din Telegram. O poți schimba cu /language.",
+  settingsLanguageButton: (name) => `🌐 Limbă: ${name ?? "automat"}`,
+  settingsBack: "⬅️ Înapoi la setări",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -7750,4 +7970,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro };

@@ -277,6 +277,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Downloaden en wachtrij stoppen" },
     { command: "language", description: "Taal van de bot" },
   ],
+  ro: [
+    { command: "start", description: "Cum folosești botul" },
+    { command: "extension", description: "Extensie de browser" },
+    { command: "accounts", description: "Conturile tale pentru povești și postări private" },
+    { command: "connect", description: "Conectează un cont cu un cod din extensie" },
+    { command: "stop", description: "Oprește descărcarea și coada" },
+    { command: "language", description: "Limba botului" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -519,6 +527,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Account aan deze groep koppelen met een code" },
     { command: "language", description: "Taal van de bot in deze groep (beheerders)" },
     { command: "start", description: "Hoe de bot in een groep werkt" },
+  ],
+  ro: [
+    { command: "settings", description: "Setările botului pentru acest grup (administratori)" },
+    { command: "accounts", description: "Conturi conectate la acest grup" },
+    { command: "connect", description: "Conectează un cont la acest grup cu un cod" },
+    { command: "language", description: "Limba botului în acest grup (administratori)" },
+    { command: "start", description: "Cum funcționează botul într-un grup" },
   ],
 };
 

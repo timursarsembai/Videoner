@@ -1807,4 +1807,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Laman Utama",
   },
+  ro: {
+    metaTitle: "Extensia de browser Videoner",
+    title: "Videoner pentru browserul tău",
+    summary:
+      "Extensia adaugă un buton Descarcă pe paginile cu videoclipuri și descarcă direct în browser. Instagram, Facebook, TikTok și Threads se descarcă folosind propria ta conectare — așa că funcționează și postările private pe care le vezi în contul tău, precum și videoclipurile pe care platforma nu le-a oferit serverului nostru.",
+    failedVideo: "Videoclipul care nu a putut fi descărcat pe site sau în bot:",
+    failedVideoHint:
+      "Instalează extensia, conectează-te la platformă în acest browser, deschide videoclipul și apasă Descarcă în colțul din dreapta jos.",
+    openVideo: "Deschide videoclipul",
+    version: "Versiunea",
+    browsersTitle: "Unde funcționează",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi și alte browsere bazate pe Chromium — pe calculator.",
+    mobile: "Telefoanele și tabletele nu acceptă extensii — acolo folosește site-ul sau botul Telegram.",
+    getcourseTitle: "Lecții GetCourse",
+    getcourse:
+      "Deschide o lecție într-o școală GetCourse, fiind conectat: în colțul din dreapta sus al playerului apare un buton Descarcă, iar pictograma Videoner afișează toate videoclipurile din lecție. Browserul tău descarcă lecția și o asamblează singur într-un fișier mp4 — fișierul nu trece prin serverul nostru. Dacă nu reușește, serverul nostru descarcă lecția la aceeași calitate; în acest caz primește linkul videoclipului din player.",
+    privacyTitle: "Conectarea ta rămâne la tine",
+    privacy:
+      "Extensia nu cere niciodată parola: propriul tău browser trimite cererea către platformă, iar serverul nostru primește doar un scurt raport pentru statistici — linkul, dimensiunea fișierului și titlul. Cookie-urile ajung la server doar dacă apeși tu însuți „Conectează-ți contul la bot” — și doar cookie-urile acelei platforme, criptate.",
+    stepsTitle: "Cum se instalează în Chrome, Yandex Browser, Edge și Opera",
+    steps: [
+      "Descarcă arhiva și dezarhiveaz-o — vei obține un folder videoner-extension cu numărul versiunii în nume.",
+      "Deschide pagina extensiilor: scrie chrome://extensions în bara de adrese (edge://extensions în Edge, opera://extensions în Opera).",
+      "Activează „Modul pentru dezvoltatori” — comutatorul din partea de sus a paginii.",
+      "Apasă „Încarcă extensia neîmpachetată” și alege acel folder — cel care conține manifest.json.",
+      "Gata: paginile cu videoclipuri primesc un buton Descarcă, iar pictograma Videoner apare în bara de instrumente a browserului.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 sau mai nou — tot pe calculator.",
+    firefoxSoon:
+      "Versiunea pentru Firefox apare în curând. Deocamdată extensia funcționează în Chrome, Yandex Browser, Edge, Opera și alte browsere bazate pe Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "O arhivă .zip — se instalează în câteva minute",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Instalare cu un clic",
+    yourBrowser: "Browserul tău",
+    soon: "În curând",
+    firefoxStepsTitle: "Cum se instalează în Firefox",
+    firefoxSteps: [
+      "Apasă butonul Firefox din partea de sus a acestei pagini.",
+      "Firefox întreabă dacă permiți ca videoner.download să instaleze un supliment — apasă „Continuă instalarea”.",
+      "În fereastra „Adaugi Videoner?”, apasă „Adaugă”.",
+      "Gata: paginile cu videoclipuri primesc un buton Descarcă, iar pictograma Videoner apare în bara de instrumente. Firefox instalează singur actualizările.",
+    ],
+    updateTitle: "Cum se actualizează în Chrome, Yandex Browser, Edge și Opera",
+    updateSteps: [
+      "Când apare o versiune nouă, pictograma Videoner afișează eticheta NEW, iar fereastra extensiei trimite aici.",
+      "Descarcă arhiva cu butonul Chrome din partea de sus a acestei pagini și dezarhiveaz-o în același folder ca înainte, înlocuind fișierele.",
+      "Deschide pagina extensiilor (chrome://extensions, browser://extensions în Yandex Browser, edge://extensions) și apasă „Reîncarcă” — săgeata circulară de pe cardul Videoner.",
+    ],
+    back: "Acasă",
+  },
 };

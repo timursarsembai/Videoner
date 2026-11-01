@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на тридцати четырёх языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на тридцати пяти языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -9969,6 +9969,308 @@ export const legal: LegalByLanguage = {
             heading: "Klachten te kwader trouw",
             body: [
               "Een klacht die willens en wetens onjuiste informatie bevat, kan leiden tot aansprakelijkheid van de indiener op grond van het toepasselijke recht. Wij kunnen weigeren een klacht in behandeling te nemen als daaruit noch de rechthebbende noch het betwiste materiaal kan worden vastgesteld.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  ro: {
+    ui: {
+      updated: "Versiunea din",
+      back: "Înapoi la pagina principală",
+      operatorHeading: "Operatorul serviciului",
+      navHeading: "Alte documente",
+      labels: {
+        privacy: "Politica de confidențialitate",
+        terms: "Termeni de utilizare",
+        cookies: "Politica privind cookie-urile",
+        copyright: "Pentru titularii de drepturi",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Politica de confidențialitate",
+        summary: `Ce date colectează ${operator.site}, de ce sunt necesare, cât timp sunt păstrate și cum puteți solicita ștergerea lor.`,
+        sections: [
+          {
+            heading: "Dispoziții generale",
+            body: [
+              `Prezenta Politică descrie ce date cu caracter personal prelucrează serviciul ${operator.site} și în ce scop. Operatorul de date este ${operator.nameRo}.`,
+              "Prin utilizarea serviciului, sunteți de acord cu modul de prelucrare descris aici. Dacă nu sunteți de acord cu acesta, vă rugăm să nu utilizați serviciul.",
+              "Prelucrarea se efectuează în conformitate cu Legea Republicii Kazahstan „Cu privire la datele cu caracter personal și protecția acestora”, iar în cazul vizitatorilor din Spațiul Economic European — ținând seama de cerințele RGPD (GDPR).",
+            ],
+          },
+          {
+            heading: "Ce date prelucrăm",
+            body: [
+              "În mod deliberat, nu colectăm nimic în plus față de ceea ce este necesar pentru funcționarea serviciului și nu solicităm acte de identitate, date de plată sau adresa poștală.",
+            ],
+            bullets: [
+              "Datele contului Telegram pe care botul le primește atunci când îi scrieți: identificatorul numeric, numele de utilizator, prenumele și codul limbii.",
+              "Linkurile pe care le trimiteți pentru descărcare și informațiile despre încercarea propriu-zisă: platforma, data și ora, calitatea aleasă, rezultatul (reușită sau eroare).",
+              "Datele tehnice ale conexiunii: adresa IP, tipul și versiunea browserului, limba, pagina de proveniență. Acestea ajung în jurnalele serverului și în sistemele de analiză web.",
+              "Cookie-uri și identificatori de analiză — detalii în Politica privind cookie-urile.",
+            ],
+          },
+          {
+            heading: "De ce sunt necesare aceste date",
+            bullets: [
+              "Pentru a furniza serviciul propriu-zis: a obține videoclipul de la linkul dumneavoastră și a vă transmite fișierul.",
+              "Pentru a deosebi contul dumneavoastră de alte conturi și a preveni abuzurile.",
+              "Pentru a proteja serviciul împotriva abuzurilor automatizate: verificarea Cloudflare Turnstile înainte de trimiterea linkului.",
+              "Pentru a înțelege cum este utilizat site-ul și a remedia erorile — statistici anonimizate și agregate.",
+              "Pentru a răspunde solicitărilor dumneavoastră și ale titularilor de drepturi.",
+              "Pentru a vă scrie ocazional pe Telegram, ca să aflăm părerea dumneavoastră despre serviciu — de exemplu, dacă ați încetat să îl utilizați. Răspunsul este opțional; dacă nu doriți astfel de mesaje, spuneți-ne pur și simplu și nu vă vom mai scrie.",
+            ],
+          },
+          {
+            heading: "Temeiurile prelucrării",
+            body: [
+              "Datele contului Telegram și informațiile despre descărcări sunt prelucrate în vederea executării Termenilor de utilizare, pe care îi acceptați atunci când începeți să utilizați serviciul.",
+              "Cookie-urile de analiză și înregistrarea acțiunilor pe site sunt prelucrate pe baza consimțământului dumneavoastră, pe care îl puteți retrage în orice moment — modalitățile sunt descrise în Politica privind cookie-urile.",
+              "Jurnalele serverului și protecția împotriva boților se întemeiază pe interesul nostru legitim de a menține serviciul funcțional și securizat.",
+              "Solicitarea părerii dumneavoastră despre serviciu se întemeiază pe interesul nostru legitim de a îmbunătăți serviciul; puteți renunța la aceste solicitări în orice moment.",
+            ],
+          },
+          {
+            heading: "Conturi conectate",
+            body: [
+              "Dacă doriți, puteți conecta la bot contul dumneavoastră de pe o platformă (Instagram, Facebook, YouTube, X, VK, TikTok), astfel încât botul să descarce postări vizibile doar utilizatorilor autentificați: stories, postări private. În acest scop, botul primește cookie-urile acelui cont — de la extensia Videoner, printr-un cod de unică folosință, sau dintr-un fișier pe care l-ați trimis.",
+              "Păstrăm doar cookie-urile platformei alese, iar pe celelalte le eliminăm imediat. Acestea sunt stocate în formă criptată și sunt utilizate doar pentru descărcări acolo unde le-ați conectat. Cookie-urile conectate în conversația privată servesc descărcărilor dumneavoastră, inclusiv propriilor linkuri în grupurile care nu au un cont conectat; nu sunt utilizate niciodată pentru linkurile altor persoane. Cookie-urile conectate la un grup servesc descărcărilor membrilor acestuia și nimic altceva.",
+              "Temeiul este consimțământul dumneavoastră: contul îl conectați chiar dumneavoastră și îl puteți elimina în orice moment cu comanda /accounts. La eliminare, cookie-urile sunt șterse definitiv. Dacă platforma nu mai acceptă autentificarea, botul vă anunță.",
+              "Postările descărcate prin intermediul unui cont conectat nu sunt publicate în canalul nostru și nu sunt furnizate altor utilizatori din memoria cache comună.",
+            ],
+          },
+          {
+            heading: "Servicii terțe",
+            body: [
+              "Nu vindem datele dumneavoastră și nu le transmitem terților în scopurile proprii ale acestora. Pentru funcționarea serviciului folosim următorii furnizori, fiecare dintre ei prelucrând datele conform propriilor reguli:",
+            ],
+            bullets: [
+              `Telegram — funcționarea botului ${BOT}.`,
+              "Cloudflare — protecția împotriva boților (Turnstile), livrarea site-ului și rutarea e-mailurilor.",
+              "Google Analytics și Google Tag Manager — statistici privind vizitele.",
+              "Yandex Metrica — statistici privind vizitele, harta clicurilor și Webvisor. Webvisor înregistrează acțiunile de pe pagină: mișcările cursorului, derularea și clicurile. Înregistrările sunt utilizate exclusiv pentru a analiza ușurința de utilizare a site-ului.",
+            ],
+          },
+          {
+            heading: "Cât timp păstrăm datele",
+            bullets: [
+              "Fișierele descărcate sunt șterse automat de pe server la aproximativ o oră după crearea lor. Nu păstrăm o arhivă a videoclipurilor dumneavoastră.",
+              "Înregistrările privind încercările de descărcare sunt păstrate atât timp cât este necesar pentru prevenirea abuzurilor și soluționarea solicitărilor.",
+              "Datele contului sunt păstrate cât timp utilizați serviciul și sunt șterse la cererea dumneavoastră.",
+              "Jurnalele serverului sunt păstrate o perioadă limitată și sunt suprascrise pe măsura rotației lor.",
+            ],
+          },
+          {
+            heading: "Unde sunt prelucrate datele",
+            body: [
+              "Serverele serviciului se află într-un centru de date pe teritoriul Uniunii Europene. Unii dintre furnizorii enumerați mai sus pot prelucra date în afara acesteia, în conformitate cu propriile politici.",
+            ],
+          },
+          {
+            heading: "Drepturile dumneavoastră",
+            body: [
+              `Aveți dreptul să obțineți informații despre prelucrarea datelor dumneavoastră, să solicitați rectificarea sau ștergerea acestora, să vă retrageți consimțământul și să vă opuneți prelucrării. Pentru aceasta, scrieți la ${MAIL} de pe adresa de e-mail sau din contul Telegram la care se referă solicitarea.`,
+              "Răspundem într-un termen rezonabil, de regulă în cel mult treizeci de zile calendaristice. Ștergerea contului atrage ștergerea istoricului de descărcări asociat acestuia.",
+            ],
+          },
+          {
+            heading: "Minori",
+            body: [
+              "Serviciul nu este destinat copiilor cu vârsta sub 16 ani și nu se adresează acestora. Nu colectăm în mod intenționat datele acestor utilizatori; dacă acest lucru s-a întâmplat din eroare, scrieți-ne, iar datele vor fi șterse.",
+            ],
+          },
+          {
+            heading: "Modificări",
+            body: [
+              "Putem actualiza prezenta Politică. Data versiunii în vigoare este indicată în partea de sus a paginii; modificările esențiale le vom semnala în cadrul serviciului.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Termeni de utilizare",
+        summary: `Regulile de utilizare a ${operator.site}: ce este permis, ce nu este permis și în ce condiții funcționează serviciul.`,
+        sections: [
+          {
+            heading: "Dispoziții generale",
+            body: [
+              `Prezenții Termeni reglementează utilizarea site-ului ${operator.site} și a botului Telegram ${BOT}. Proprietarul și administratorul serviciului este ${operator.nameRo}.`,
+              "Începând să utilizați serviciul, confirmați că ați citit prezenții Termeni și că îi acceptați. Dacă vreuna dintre condiții nu vă convine, vă rugăm să nu utilizați serviciul.",
+            ],
+          },
+          {
+            heading: "Serviciul este gratuit",
+            body: [
+              "Toate funcționalitățile serviciului sunt oferite gratuit. Nu există abonamente, planuri plătite, calități video plătite sau achiziții în cadrul serviciului.",
+              "Nu afișăm publicitate și nu plasăm linkuri de afiliere.",
+            ],
+          },
+          {
+            heading: "Condiții de acces",
+            bullets: [
+              "Pentru descărcarea pe site nu este nevoie nici de cont, nici de autentificare. Botul deosebește utilizatorii după contul lor Telegram.",
+              "Limitele tehnice privind frecvența solicitărilor protejează serviciul împotriva supraîncărcării și a abuzurilor automatizate.",
+              "Pentru YouTube se aplică o limită zilnică de trafic: 10 GB în 24 de ore per rețea pe site și în extensie și 25 GB în 24 de ore per cont Telegram în bot. Celelalte platforme nu sunt afectate.",
+              "Pentru a descărca prin bot nu este necesar abonamentul la canalul nostru. În textul care însoțește fișierele, botul adaugă un link către canalul de știri al proiectului; abonarea la acesta este opțională.",
+            ],
+          },
+          {
+            heading: "Ce face serviciul",
+            body: [
+              "Serviciul acționează ca intermediar tehnic: pe baza linkului furnizat de dumneavoastră, accesează o pagină publică, obține fișierul media și vi-l transmite.",
+              "Nu găzduim un catalog de videoclipuri, nu efectuăm căutări în conținutul altor persoane și nu păstrăm fișierele descărcate mai mult decât este necesar pentru transmitere — aproximativ o oră.",
+              "Disponibilitatea unei anumite platforme depinde de deciziile tehnice ale acesteia și se poate modifica fără preaviz.",
+            ],
+          },
+          {
+            heading: "Obligațiile utilizatorului",
+            body: [
+              "Sunteți singurul responsabil pentru modul în care utilizați fișierele obținute și confirmați că aveți dreptul să o faceți.",
+            ],
+            bullets: [
+              "Descărcați doar materiale asupra cărora dețineți drepturile sau a căror utilizare este permisă de titularul drepturilor ori de lege.",
+              "Nu utilizați serviciul pentru a încălca dreptul de autor sau drepturile conexe, pentru a distribui conținut interzis ori pentru a încălca drepturile terților.",
+              "Nu încercați să ocoliți limitele tehnice ale serviciului, inclusiv limitele privind frecvența solicitărilor și verificarea anti-bot.",
+              "Nu generați încărcare automatizată: solicitările în masă, scripturile și parserele nu sunt permise.",
+            ],
+          },
+          {
+            heading: "Publicarea linkurilor în canal",
+            body: [
+              "Descărcând un videoclip prin bot, sunteți de acord ca linkul către postarea originală să fie publicat în canalul nostru de Telegram. O notificare în acest sens este afișată în bot înainte de alegerea calității — adică înainte să decideți să descărcați.",
+              "Publicarea este anonimă: în canal ajung linkul către pagina publică, titlul videoclipului și coperta acestuia — chiar cadrul pe care platforma îl afișează în previzualizarea postării. Cine a descărcat videoclipul nu se menționează. Fișierul video propriu-zis nu este publicat niciodată, nicăieri: se distribuie linkul, pe care înseși platformele invită la distribuire prin butonul „Distribuie” de sub fiecare postare.",
+              "Același link este publicat cel mult o dată. Dacă nu doriți ca un link să ajungă în canal, nu descărcați acel videoclip prin serviciul nostru.",
+              "Linkurile din grupuri și postările descărcate prin intermediul unui cont conectat nu sunt publicate niciodată în canal."
+            ],
+          },
+          {
+            heading: "Conectarea contului dumneavoastră",
+            body: [
+              "Conectând la bot contul dumneavoastră de pe o platformă, confirmați că este contul dumneavoastră și că aveți dreptul să îl utilizați în acest mod.",
+              "Platformele nu aprobă descărcările automatizate și pot restricționa sau bloca un cont conectat. Vă asumați acest risc; vă recomandăm să conectați un cont secundar, nu pe cel principal. Nu răspundem pentru restricțiile pe care o platformă le impune contului dumneavoastră.",
+              "Un cont conectat la un grup este utilizat pentru descărcările tuturor membrilor acestuia. Administratorii grupului decid cine poate conecta conturi și pot elimina oricare dintre ele.",
+            ],
+          },
+          {
+            heading: "Limitarea răspunderii",
+            body: [
+              "Serviciul este furnizat „ca atare”. Nu garantăm funcționarea neîntreruptă, disponibilitatea unei anumite platforme sau adecvarea unui fișier scopurilor dumneavoastră.",
+              "Nu răspundem pentru modul în care ați utilizat materialele descărcate și nici pentru consecințele încălcării de către dumneavoastră a drepturilor terților.",
+              "Avem dreptul să modificăm funcționalitățile serviciului, să suspendăm funcționarea acestuia pentru mentenanță și să încetăm funcționarea acestuia.",
+            ],
+          },
+          {
+            heading: "Restricționarea accesului",
+            body: [
+              "Putem restricționa sau înceta accesul la serviciu în cazul încălcării prezenților Termeni, al încercărilor de a ocoli limitele, precum și la primirea unei plângeri întemeiate din partea unui titular de drepturi.",
+            ],
+          },
+          {
+            heading: "Modificări și legea aplicabilă",
+            body: [
+              "Putem modifica prezenții Termeni; data versiunii în vigoare este indicată în partea de sus a paginii. Continuarea utilizării serviciului după modificări înseamnă că acceptați noua versiune.",
+              "Raporturilor dintre părți li se aplică legislația Republicii Kazahstan. Părțile vor încerca să soluționeze litigiile prin corespondență, iar în lipsa unui acord — în modul stabilit de legislația Republicii Kazahstan.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Politica privind cookie-urile",
+        summary: `Ce cookie-uri utilizează ${operator.site}, la ce servesc și cum le puteți refuza.`,
+        sections: [
+          {
+            heading: "Ce sunt cookie-urile",
+            body: [
+              "Cookie-urile sunt fișiere text de mici dimensiuni pe care un site le stochează în browserul dumneavoastră. Ele permit memorarea setărilor dumneavoastră și colectarea de statistici anonimizate privind vizitele.",
+              "Pe lângă cookie-uri, în acest document descriem și tehnologii similare — stocarea locală a browserului și pixelii de urmărire.",
+            ],
+          },
+          {
+            heading: "Strict necesare",
+            body: [
+              "Fără acestea serviciul nu funcționează, de aceea ele sunt plasate întotdeauna.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — verifică faptul că linkul este trimis de o persoană, nu de un script.",
+              "Setările interfeței — limba și tema de culori alese.",
+            ],
+          },
+          {
+            heading: "De analiză",
+            body: [
+              "Acestea ne ajută să înțelegem ce pagini sunt utilizate și unde apar erori. Sunt plasate cu consimțământul dumneavoastră și nu sunt necesare pentru funcționarea serviciului.",
+            ],
+            bullets: [
+              "Google Analytics și Google Tag Manager — traficul și comportamentul pe site, în formă anonimizată.",
+              "Yandex Metrica — traficul, harta clicurilor și Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor din Yandex Metrica înregistrează acțiunile de pe pagină: mișcările cursorului, derularea, clicurile și textul introdus în câmpul pentru link. Acest lucru ne permite să vedem unde interfața îi derutează pe utilizatori.",
+              "Nu folosim aceste înregistrări pentru a urmări persoane anume. Vă rugăm să nu introduceți în câmpurile site-ului informații pe care nu ați dori să fie stocate.",
+            ],
+          },
+          {
+            heading: "Cum puteți refuza",
+            bullets: [
+              "Configurați blocarea sau ștergerea cookie-urilor în setările browserului dumneavoastră — această metodă funcționează pentru toate sistemele enumerate aici.",
+              "Google Analytics: suplimentul oficial de browser care dezactivează colectarea este disponibil pe site-ul Google.",
+              "Yandex Metrica: refuzul este posibil prin suplimentul oficial Yandex.",
+              "Dezactivarea cookie-urilor strict necesare va face imposibilă descărcarea.",
+            ],
+          },
+          {
+            heading: "Durata de stocare",
+            body: [
+              "Cookie-urile de sesiune sunt șterse la închiderea browserului sau la expirarea sesiunii. Instrumentele de analiză își păstrează identificatorii pe durata stabilită de furnizorii lor.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Pentru titularii de drepturi",
+        summary: "Poziția serviciului privind dreptul de autor și procedura de depunere a unei plângeri privind o încălcare.",
+        sections: [
+          {
+            heading: "Poziția serviciului",
+            body: [
+              "Serviciul nu găzduiește videoclipuri și nu ține un catalog al acestora. Acționează ca intermediar tehnic: pe baza linkului introdus de utilizator, accesează o pagină publică și îi transmite utilizatorului fișierul.",
+              "Fișierele descărcate sunt păstrate pe server aproximativ o oră și apoi sunt șterse automat. Nu rămâne la noi nicio copie permanentă a conținutului altor persoane.",
+              "Răspunderea pentru utilizarea materialelor descărcate revine utilizatorului — acest lucru este prevăzut în mod expres în Termenii de utilizare.",
+            ],
+          },
+          {
+            heading: "Dacă drepturile dumneavoastră sunt încălcate",
+            body: [
+              `Dacă sunteți titular de drepturi sau reprezentantul acestuia și considerați că serviciul este utilizat pentru a vă încălca drepturile, scrieți la ${MAIL}. Examinăm astfel de solicitări și luăm măsuri.`,
+            ],
+          },
+          {
+            heading: "Ce trebuie să conțină solicitarea",
+            bullets: [
+              "Ce operă este vizată și în temeiul cărui drept dețineți drepturi asupra acesteia.",
+              "Linkul către material și, dacă sunt cunoscute, împrejurările încălcării.",
+              "Datele dumneavoastră de contact: numele sau denumirea, adresa și adresa de e-mail.",
+              "Dacă acționați în numele titularului de drepturi — dovada împuternicirii.",
+              "O declarație că informațiile din solicitare sunt exacte, iar utilizarea materialului nu este autorizată de titularul drepturilor sau de lege.",
+            ],
+          },
+          {
+            heading: "Ce vom face",
+            body: [
+              "Examinăm solicitarea într-un termen rezonabil, de regulă în cel mult treizeci de zile calendaristice, iar dacă încălcarea se confirmă, restricționăm accesul la material prin intermediul serviciului și, dacă este necesar, accesul autorului încălcării la serviciu.",
+              "Vă vom comunica rezultatul examinării la adresa de e-mail indicată de dumneavoastră.",
+            ],
+          },
+          {
+            heading: "Solicitări de rea-credință",
+            body: [
+              "O solicitare care conține informații cu bună știință false poate atrage răspunderea solicitantului în conformitate cu legislația aplicabilă. Putem refuza examinarea unei solicitări care nu permite identificarea nici a titularului de drepturi, nici a materialului în litigiu.",
             ],
           },
         ],

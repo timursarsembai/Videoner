@@ -43,6 +43,7 @@ export const operator = {
   nameTg: "Соҳибкори инфиродӣ SARSEMBAYEV",
   nameMs: "Usahawan Perseorangan SARSEMBAYEV",
   nameNl: "Individueel ondernemer SARSEMBAYEV",
+  nameRo: "Întreprinzător individual SARSEMBAYEV",
   nameAr: "رائد الأعمال الفردي سارسيمباييف (SARSEMBAYEV)",
   directorRu: "Сарсембаев Тимур Сейпилович",
   directorEn: "Timur Sarsembayev",
@@ -110,6 +111,8 @@ export const operator = {
     "Notis permulaan aktiviti sebagai usahawan perseorangan No. KZ45UUZ00498687 bertarikh 22.07.2026",
   basisNl:
     "Kennisgeving van aanvang van activiteiten als individueel ondernemer nr. KZ45UUZ00498687 van 22.07.2026",
+  basisRo:
+    "Notificare privind începerea activității ca întreprinzător individual nr. KZ45UUZ00498687 din 22.07.2026",
   basisAr:
     "إشعار ببدء نشاط رائد الأعمال الفردي رقم KZ45UUZ00498687 بتاريخ 22.07.2026",
   basisUk:
@@ -179,6 +182,8 @@ export const operator = {
     "Republik Kazakhstan, Wilayah Almaty, Daerah Yenbekshikazakh, Daerah Luar Bandar Rakhat, Kampung Azat, PKST «Almagul-2», bangunan 117",
   addressNl:
     "Republiek Kazachstan, regio Almaty, district Enbekshikazakh, landelijk district Rakhat, dorp Azat, PKST «Almagul-2», gebouw 117",
+  addressRo:
+    "Republica Kazahstan, regiunea Almaty, districtul Enbekșikazah, districtul rural Rahat, satul Azat, PKST «Almagul-2», clădirea 117",
   addressAr:
     "جمهورية كازاخستان، منطقة ألماتي، مقاطعة إنبيكشيكازاخ، الدائرة الريفية راخات، قرية آزات، PKST «Almagul-2»، المبنى 117",
   addressEs:

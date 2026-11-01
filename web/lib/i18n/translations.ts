@@ -6,7 +6,7 @@ import { Platform } from "@/types";
 // Порядок — как в меню выбора языка: по названию языка на нём самом,
 // сначала латиница по алфавиту, затем кириллица, затем остальные письменности.
 // Тот же порядок в боте (bot/src/i18n.ts LANGS) и расширении (shared.js LANG_NAMES).
-export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
+export const LANGUAGES = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -48,6 +48,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   tg: "Тоҷикӣ",
   ms: "Bahasa Melayu",
   nl: "Nederlands",
+  ro: "Română",
   tl: "Tagalog",
 };
 
@@ -11944,6 +11945,366 @@ const nl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
+const ro: Translations = {
+  nav: {
+    home: "Acasă",
+    downloaders: "Descărcătoare",
+    extension: "Extensie",
+    blog: "Blog",
+    switchTheme: "Schimbă tema",
+    language: "Limbă",
+    comingSoon: "În curând",
+  },
+  theme: {
+    light: "Luminoasă",
+    dark: "Întunecată",
+    system: "Sistem",
+  },
+  playlist: {
+    title: `Playlist „{title}”: {count} videoclipuri`,
+    hint: "Videoclipurile se descarcă pe rând. Ține pagina deschisă; browserul poate cere permisiunea pentru descărcări multiple.",
+    std: "720p",
+    hd: "Cea mai bună calitate",
+    audio: "Doar audio (mp3)",
+    progress: "Videoclipul {index} din {count}",
+    stats: "Descărcate: {done} · eșuate: {failed}",
+    stop: "Oprește",
+    stopped: "Oprit. Descărcate {done} din {count}.",
+    finished: "Playlist terminat: {done} din {count}.",
+    again: "Alege din nou",
+  },
+  footer: {
+    news: "Noutățile proiectului",
+    botCta: "Disponibil și ca bot Telegram:",
+    extension: "Extensie de browser",
+    developedBy: "Dezvoltat de",
+    rights: "Toate drepturile rezervate.",
+  },
+  content: {
+    howToTitle: "Cum descarci videoclipuri {platform}",
+    faqTitle: "Întrebări frecvente",
+  },
+  auth: {
+    loginButton: "Conectează-te cu Telegram",
+    signIn: "Conectare",
+    logout: "Deconectare",
+    switchAccountHint: "Nu e contul tău?",
+    switchAccountLink: "Deconectează-te din Telegram Web",
+  },
+  home: {
+    new: "Nou",
+    manyFeatures: "Multe funcții noi",
+    titleLine1: "Descarcă videoclipuri",
+    titleLine2: "rapid și ușor",
+    subtitle:
+      "Descărcătorul tău universal de videoclipuri pentru YouTube, Instagram, TikTok și multe altele. Alege orice calitate, de la HD la variante potrivite pentru telefon.",
+    subtitleExtra: "Fără limite, fără bătăi de cap, doar descărcări.",
+    placeholder: "Lipește linkul videoclipului de pe orice platformă...",
+    download: "Descarcă",
+  },
+  video: {
+    description: "Descriere",
+    format: "Format",
+    selected: "Selectat: {quality}",
+    videoTab: "video",
+    audioTab: "audio",
+    converting: "Se convertește",
+    downloading: "Se descarcă",
+    downloadAgain: "Descarcă din nou",
+    startDownload: "Începe descărcarea",
+    convertingBtn: "Se convertește...",
+    downloadingBtn: "Se descarcă...",
+    loginRequiredHint: "Conectează-te cu Telegram pentru a descărca",
+    quotaExceededHint: "Ai atins limita zilnică de 20 de descărcări — revino mâine",
+    postFiles: "Această postare are {count} fișiere",
+    photoQuality: "Fotografii originale",
+    slideshowQuality: "Prezentare foto (videoclip)",
+    galleryQuality: "Fotografii + prezentare foto",
+    downloadAll: "Descarcă tot",
+    downloadOne: "Salvează",
+    subtitlesTab: "subtitrări",
+    subtitlesHint: "Alege o limbă — vei primi un fișier .srt pe care îl deschide orice player.",
+    subtitlesAuto: "auto",
+    subtitlesDownload: "Descarcă subtitrările",
+    subtitlesDownloading: "Se pregătesc subtitrările...",
+  },
+  toast: {
+    enterUrl: "Introdu un link",
+    enterValidUrl: "Introdu un link valid",
+    platformNotSupported: "Această platformă nu este acceptată",
+    urlNotSupported: "Acest link nu este acceptat",
+    enterValidPlatformUrl: "Introdu un link {platform} valid",
+    captchaNotReady: "Așteaptă puțin să se termine verificarea de securitate, apoi încearcă din nou",
+    comingSoon: "În curând! {name} nu este încă acceptat",
+    selectQuality: "Alege o calitate",
+    downloadStarted: "Descărcarea a început!",
+    downloadCompleted: "Descărcare finalizată!",
+    newsChannel: "Noutățile proiectului sunt pe Telegram:",
+    downloadUrlNotReceived: "Linkul de descărcare nu a fost primit",
+    needsBrowser:
+      "Platforma nu a oferit acest videoclip serverului nostru: este disponibil doar utilizatorilor conectați sau accesul este limitat temporar. Îl poți descărca pe calculator cu extensia de browser Videoner — descarcă folosind propria ta conectare.",
+    needsBrowserLink: "Instalează extensia →",
+  },
+  platforms: {
+    youtube: {
+      description: "Descarcă videoclipuri YouTube la calitate HD",
+      news: "Acum cu suport pentru videoclipuri și Shorts",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "YouTube și Shorts",
+      pageDescription:
+        "Descarcă videoclipuri YouTube, Shorts și audio în formate de înaltă calitate. Rapid, gratuit și ușor de folosit. Suport pentru calitate 8K, 4K, HD și audio MP3.",
+      placeholder: "Lipește aici linkul YouTube...",
+      howTo: [
+        "Copiază linkul videoclipului din bara de adrese a browserului sau apasă Distribuie în aplicația YouTube.",
+        "Lipește-l în caseta de mai sus și apasă Descarcă.",
+        "Alege calitatea — până la 4K/8K pentru video sau MP3 doar pentru audio.",
+        "Fișierul începe să se descarce imediat, fără conectare.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor YouTube cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "Videoner oferă toate rezoluțiile pe care YouTube le pune la dispoziție pentru acel videoclip — de la 360p până la 4K/8K, unde există — plus extragerea audio în MP3." },
+        { q: "Pot descărca videoclipuri private sau cu restricție de vârstă?", a: "Sunt acceptate doar videoclipurile YouTube publice; conținutul privat, nelistat pentru tine sau care necesită conectare nu poate fi descărcat." },
+        { q: "Este legal să descarc videoclipuri de pe YouTube?", a: "Descarcă doar videoclipuri pe care ai dreptul să le salvezi — propriul conținut, videoclipuri cu licență Creative Commons sau orice permite autorul. Respectă Termenii și condițiile YouTube și legislația privind drepturile de autor." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele convertite rămân pe server aproximativ o oră, așa că salvează-le pe dispozitiv imediat după descărcare." },
+      ],
+    },
+    facebook: {
+      description: "Salvează videoclipuri din postări și reels Facebook",
+      news: "Acum cu suport pentru reels",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "Facebook și Reels",
+      pageDescription:
+        "Descarcă videoclipuri și reels Facebook la calitate înaltă. Rapid, gratuit și ușor de folosit.",
+      placeholder: "Lipește aici linkul Facebook...",
+      howTo: [
+        "Deschide videoclipul sau reelul pe Facebook și copiază-i linkul (apasă pe cele trei puncte → Copiază linkul).",
+        "Lipește linkul mai sus și apasă Descarcă.",
+        "Alege calitatea MP4 sau extrage sunetul în MP3.",
+        "Fișierul se descarcă direct pe dispozitiv — nu ai nevoie de cont Facebook.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor Facebook cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "Videoner preia cea mai înaltă calitate pe care Facebook o oferă pentru acel videoclip sau reel, în MP4, plus opțiunea audio MP3." },
+        { q: "Pot descărca videoclipuri private?", a: "Funcționează doar postările, videoclipurile și reels publice — conținutul privat sau vizibil doar prietenilor nu este accesibil." },
+        { q: "Este legal să descarc videoclipuri de pe Facebook?", a: "Descarcă doar videoclipuri pe care ai permisiunea să le salvezi; respectă drepturile autorului și Termenii și condițiile Facebook." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele sunt păstrate aproximativ o oră după conversie, apoi sunt șterse automat — descarcă-le fără întârziere." },
+      ],
+    },
+    instagram: {
+      description: "Descarcă reels, stories și postări Instagram",
+      news: "Acum cu suport pentru reels și stories",
+      titleLine1: "Descarcă de pe Instagram",
+      titleLine2: "Reels și Stories",
+      pageDescription:
+        "Descarcă reels, stories și postări Instagram la calitate înaltă. Rapid, gratuit și ușor de folosit.",
+      placeholder: "Lipește aici linkul Instagram...",
+      howTo: [
+        "Deschide reelul, postarea sau povestea pe Instagram și apasă pictograma avion de hârtie → Copiază linkul.",
+        "Lipește linkul în caseta de mai sus.",
+        "Alege calitatea și formatul preferat.",
+        "Descărcarea începe imediat — fără conectare și fără să instalezi vreo aplicație.",
+      ],
+      faq: [
+        { q: "Descărcarea conținutului Instagram cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "La calitatea maximă disponibilă pentru reels, postări și stories, în MP4 sau MP3." },
+        { q: "Pot descărca de pe conturi private?", a: "Sunt acceptate doar conturile și postările Instagram publice; conținutul din conturile private nu poate fi descărcat." },
+        { q: "Este legal să descarc videoclipuri de pe Instagram?", a: "Descarcă doar ce ai voie să salvezi — respectă autorul și Termenii și condițiile Instagram." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele rămân pe server aproximativ o oră, apoi sunt șterse automat." },
+      ],
+    },
+    tiktok: {
+      description: "Descarcă videoclipuri TikTok fără watermark",
+      news: "Acum fără watermark",
+      titleLine1: "Descarcă TikTok",
+      titleLine2: "fără watermark",
+      pageDescription:
+        "Descarcă videoclipuri TikTok fără watermark la calitate înaltă. Rapid, gratuit și ușor de folosit.",
+      placeholder: "Lipește aici linkul TikTok...",
+      howTo: [
+        "Apasă Distribuie pe videoclipul TikTok, apoi Copiază linkul.",
+        "Lipește linkul mai sus și apasă Descarcă.",
+        "Primești MP4-ul curat — fără watermark TikTok — sau sunetul în MP3.",
+        "Salvează-l direct pe dispozitiv.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor TikTok cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "La cea mai bună calitate pe care TikTok o oferă pentru acel videoclip, fără watermark TikTok, plus audio MP3." },
+        { q: "Pot descărca de pe conturi private?", a: "Se pot descărca doar videoclipuri de pe conturi TikTok publice." },
+        { q: "Este legal să descarc videoclipuri de pe TikTok?", a: "Descarcă videoclipuri pe care ai dreptul să le salvezi, menționează autorul și respectă Termenii și condițiile TikTok." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele descărcate rămân pe server cam o oră, apoi sunt șterse automat." },
+      ],
+    },
+    twitter: {
+      description: "Descarcă videoclipuri Twitter",
+      news: "Acum cu suport pentru videoclipuri Twitter",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "de pe Twitter",
+      pageDescription:
+        "Descarcă videoclipuri Twitter la calitate înaltă. Rapid, gratuit și ușor de folosit.",
+      placeholder: "Lipește aici linkul Twitter...",
+      howTo: [
+        "Apasă Distribuie sub tweet și alege Copiază linkul (sau copiază adresa din browser).",
+        "Lipește-l în caseta de mai sus.",
+        "Alege calitatea video dorită.",
+        "Descărcarea începe imediat — nu ai nevoie de cont X/Twitter.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor Twitter/X cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "La orice calitate oferită de X/Twitter pentru acel videoclip, în MP4, plus MP3." },
+        { q: "Pot descărca de pe conturi private?", a: "Funcționează doar tweeturile de pe conturi publice; conturile protejate/private nu sunt acceptate." },
+        { q: "Este legal să descarc videoclipuri de pe Twitter/X?", a: "Descarcă conținut pe care ai dreptul să-l salvezi, respectând drepturile autorului postării și Termenii și condițiile platformei." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele sunt șterse automat la aproximativ o oră după ce au fost generate." },
+      ],
+    },
+    vimeo: {
+      description: "Descarcă videoclipuri Vimeo la calitate înaltă",
+      news: "Acum cu suport pentru Vimeo",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "de pe Vimeo",
+      pageDescription:
+        "Descarcă videoclipuri Vimeo la calitate înaltă. Rapid, gratuit și ușor de folosit.",
+      placeholder: "Lipește aici linkul Vimeo...",
+      howTo: [
+        "Deschide Vimeo și copiază linkul videoclipului (sau apasă Distribuie → Copiază linkul pe telefon).",
+        "Lipește linkul în caseta de mai sus și apasă Descarcă.",
+        "Alege calitatea și formatul — MP4 pentru video, MP3 dacă vrei doar sunetul.",
+        "Descărcarea începe imediat; nu ai nevoie de cont și nici de vreun program instalat.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor Vimeo cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "Videoner oferă toate calitățile pe care Vimeo le pune la dispoziție pentru acel videoclip, până la rezoluția originală încărcată, inclusiv HD și 4K, dacă autorul le-a furnizat." },
+        { q: "Pot descărca videoclipuri Vimeo private sau protejate cu parolă?", a: "Nu — Videoner funcționează doar cu linkuri Vimeo publice. Videoclipurile private, protejate cu parolă sau cu acces restricționat nu pot fi descărcate." },
+        { q: "Este legal să descarc videoclipuri de pe Vimeo?", a: "Descărcarea este destinată videoclipurilor pe care ai dreptul să le salvezi — propriul conținut, videoclipuri cu licență Creative Commons sau orice a permis explicit autorul pentru descărcare. Respectă drepturile de autor ale creatorului și Termenii și condițiile Vimeo." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele sunt generate la cerere și păstrate pe server aproximativ o oră înainte de a fi șterse automat, așa că salvează-l pe dispozitiv imediat după ce se termină descărcarea." },
+      ],
+    },
+    vk: {
+      description: "Descarcă videoclipuri și clipuri VK",
+      news: "Acum cu suport pentru VK",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "și clipuri VK",
+      pageDescription:
+        "Descarcă videoclipuri și clipuri VK la calitate înaltă. Rapid, gratuit și ușor de folosit.",
+      placeholder: "Lipește aici linkul VK...",
+      howTo: [
+        "Deschide videoclipul sau clipul pe VK (vk.com sau VK Video) și copiază-i linkul din bara de adrese sau din butonul Distribuie.",
+        "Lipește linkul mai sus și apasă Descarcă.",
+        "Alege calitatea și formatul disponibile.",
+        "Fișierul se descarcă direct — nu trebuie să fii conectat la VK.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor VK cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "La toate calitățile oferite de VK pentru acel videoclip sau clip, plus audio MP3." },
+        { q: "Trebuie să mă conectez la VK?", a: "Nu — videoclipul trebuie să fie public. Videoner nu se conectează la VK, așa că videoclipurile private, vizibile doar prietenilor sau care necesită conectare nu pot fi descărcate." },
+        { q: "Este legal să descarc videoclipuri de pe VK?", a: "Descarcă doar videoclipuri pe care ai dreptul să le salvezi, respectând Termenii și condițiile VK și drepturile celui care le-a încărcat." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele sunt păstrate pe server aproximativ o oră, apoi sunt șterse automat." },
+      ],
+    },
+    rutube: {
+      description: "Descarcă videoclipuri Rutube",
+      news: "Acum cu suport pentru Rutube",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "de pe Rutube",
+      pageDescription:
+        "Descarcă videoclipuri Rutube la calitate înaltă. Rapid, gratuit și ușor de folosit.",
+      placeholder: "Lipește aici linkul Rutube...",
+      howTo: [
+        "Deschide videoclipul pe Rutube și copiază-i linkul din bara de adrese sau din butonul Distribuie.",
+        "Lipește-l în caseta de mai sus.",
+        "Alege calitatea și formatul (video sau audio).",
+        "Descărcarea începe imediat, fără cont Rutube.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor Rutube cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "La orice calitate oferită de Rutube, în MP4, plus audio MP3." },
+        { q: "Trebuie să mă conectez la Rutube?", a: "Nu — Videoner funcționează doar cu videoclipuri Rutube publice; nu se folosește și nu este necesară nicio conectare." },
+        { q: "Este legal să descarc videoclipuri de pe Rutube?", a: "Descarcă doar conținut pe care ai voie să-l salvezi, respectând Termenii și condițiile Rutube și drepturile autorului." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele rămân pe server aproximativ o oră, apoi sunt șterse automat." },
+      ],
+    },
+    okru: {
+      description: "Descarcă videoclipuri de pe OK.ru (Odnoklassniki)",
+      news: "Acum cu suport pentru OK.ru",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "de pe OK.ru",
+      pageDescription:
+        "Descarcă videoclipuri OK.ru (Odnoklassniki) la calitate înaltă. Rapid, gratuit și ușor de folosit.",
+      placeholder: "Lipește aici linkul OK.ru...",
+      howTo: [
+        "Deschide videoclipul pe OK.ru (Odnoklassniki) și copiază-i linkul din bara de adrese.",
+        "Lipește linkul în caseta de mai sus și apasă Descarcă.",
+        "Alege calitatea și formatul.",
+        "Descărcarea începe imediat — nu trebuie să te conectezi la OK.ru.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor OK.ru cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca videoclipul?", a: "La toate calitățile oferite de OK.ru pentru acel videoclip, plus MP3." },
+        { q: "Trebuie să mă conectez la OK.ru?", a: "Nu — funcționează doar videoclipurile OK.ru (Odnoklassniki) publice. Videoner nu se conectează niciodată la vreun cont, așa că videoclipurile private nu sunt accesibile." },
+        { q: "Este legal să descarc videoclipuri de pe OK.ru?", a: "Descarcă doar videoclipuri pe care ai dreptul să le salvezi, respectând Termenii și condițiile OK.ru și drepturile celui care le-a încărcat." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele sunt șterse automat la aproximativ o oră după ce au fost generate." },
+      ],
+    },
+    pinterest: {
+      description: "Descarcă videoclipuri din pinuri Pinterest",
+      news: "Acum cu suport pentru Pinterest",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "și pinuri Pinterest",
+      pageDescription:
+        "Descarcă videoclipuri din pinuri Pinterest la calitate înaltă. Rapid, gratuit și ușor de folosit. Notă: se pot descărca doar pinurile video — pinurile care conțin doar fotografii nu sunt acceptate.",
+      placeholder: "Lipește aici linkul Pinterest...",
+      howTo: [
+        "Deschide pinul pe Pinterest și apasă Distribuie → Copiază linkul (sau copiază adresa din browser).",
+        "Lipește linkul în caseta de mai sus și apasă Descarcă.",
+        "Alege calitatea și formatul preferat.",
+        "Fișierul se descarcă imediat — nu ai nevoie de cont.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor Pinterest cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca?", a: "Videoner oferă toate calitățile pe care Pinterest le pune la dispoziție pentru videoclipul din acel pin, plus extragerea audio în MP3." },
+        { q: "Pot descărca fotografii sau imagini de pe Pinterest?", a: "Nu — se pot descărca doar pinurile video. Dacă un pin conține doar fotografii, nu există niciun fișier video de extras." },
+        { q: "Pot descărca pinuri private sau din panouri restricționate?", a: "Sunt acceptate doar pinurile publice; panourile private și conținutul care necesită conectare nu pot fi descărcate." },
+        { q: "Este legal să descarc videoclipuri de pe Pinterest?", a: "Descarcă doar pinuri pe care ai dreptul să le salvezi — propriul conținut sau orice permite autorul. Respectă Termenii și condițiile Pinterest și legislația privind drepturile de autor." },
+        { q: "Cât timp este disponibil fișierul descărcat?", a: "Fișierele convertite rămân pe server aproximativ o oră, așa că salvează-le pe dispozitiv imediat după descărcare." },
+      ],
+    },
+    threads: {
+      description: "Descarcă videoclipuri din postări Threads",
+      news: "Acum cu suport pentru Threads",
+      titleLine1: "Descarcă videoclipuri",
+      titleLine2: "de pe Threads",
+      pageDescription:
+        "Descarcă videoclipuri din postări Threads. Rapid, gratuit și fără cont Threads. Threads oferă o singură variantă a videoclipului, de până la 720p — aceasta este cea mai înaltă calitate pusă la dispoziție de platformă.",
+      placeholder: "Lipește aici linkul Threads...",
+      howTo: [
+        "Deschide postarea în Threads, apasă pictograma de distribuire, apoi Copiază linkul.",
+        "Lipește linkul în caseta de mai sus și apasă Descarcă.",
+        "Alege formatul dorit — video sau audio MP3.",
+        "Fișierul se descarcă imediat — nu ai nevoie de cont.",
+      ],
+      faq: [
+        { q: "Descărcarea videoclipurilor Threads cu Videoner este gratuită?", a: "Da, complet gratuită: fără conectare, fără abonamente, fără reclame și fără limită zilnică de descărcări. Singura limită este pentru traficul YouTube — 10 GB pe zi per rețea — pentru a proteja serviciul de abuzuri." },
+        { q: "Am nevoie de un cont pentru a descărca?", a: "Nu. Descărcarea nu necesită cont sau conectare — doar lipește un link și apasă Descarcă." },
+        { q: "La ce calitate pot descărca?", a: "Threads publică exact o variantă video per postare, limitată la 720p pe latura mai scurtă — chiar dacă autorul a încărcat 4K. Videoner îți oferă acel fișier așa cum este, plus extragerea audio în MP3. Niciun descărcător nu poate oferi mai mult, pentru că rezoluțiile mai mari pur și simplu nu sunt livrate." },
+        { q: "Funcționează atât linkurile threads.com, cât și threads.net?", a: "Da. Sunt acceptate atât linkurile complete de tipul threads.com/@user/post/CODE, cât și linkurile scurte threads.net/t/CODE." },
+        { q: "Pot descărca fotografii dintr-o postare Threads?", a: "Nu — doar videoclipuri. Dacă o postare conține doar fotografii, nu există niciun fișier video de extras." },
+        { q: "Ce se întâmplă cu o postare cu mai multe videoclipuri?", a: "Se descarcă primul videoclip din postare. Caruselele Threads pot conține mai multe clipuri și se salvează doar primul." },
+        { q: "Pot descărca postări private?", a: "Nu. Se pot descărca doar postările vizibile public; nimic din spatele unui cont privat sau al unei conectări obligatorii nu este accesibil." },
+        { q: "Este legal să descarc videoclipuri de pe Threads?", a: "Descarcă doar ce ai dreptul să salvezi — propriul conținut sau orice permite autorul. Respectă Termenii de utilizare Threads și legislația privind drepturile de autor." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
 const tl: Translations = {
   nav: {
     home: "Home",
@@ -12304,4 +12665,4 @@ const tl: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl };
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro };

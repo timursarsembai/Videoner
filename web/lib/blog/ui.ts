@@ -427,6 +427,18 @@ export const blogUi: Record<
     readFull: "Lees het volledige bericht op de website",
     dateLocale: "nl-NL",
   },
+  ro: {
+    title: "Blogul Videoner",
+    description: "Noutățile proiectului: ce a apărut nou în bot, pe site și în extensie și cum să le folosești.",
+    readMore: "Citește",
+    back: "Toate articolele",
+    allPosts: "Blog",
+    channel: "Noutăți pe Telegram",
+    channelCta: "Noutățile proiectului sunt pe canalul Telegram @videonerdownload.",
+    readOnSite: "Citește pe site",
+    readFull: "Citește articolul complet pe site",
+    dateLocale: "ro-RO",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

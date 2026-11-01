@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ro') || code.startsWith('mo')) {
+      return (
+        'Salut! Ai pornit acest bot, dar încă n-ai descărcat nimic — ' +
+        'poate nu e clar de unde să începi.\n\n' +
+        'E un singur pas: trimite aici linkul unui videoclip, ' +
+        'de exemplu https://youtube.com/watch?v=jNQXAC9IVRw — iar eu îți trimit ' +
+        'fișierul în aproximativ jumătate de minut.\n\n' +
+        'Funcționează cu YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest și Threads. Complet gratuit și la orice ' +
+        'calitate — până la 4K, fără plată în plus pentru HD.\n\n' +
+        'Dacă ceva nu merge, doar răspunde aici. Acesta e ' +
+        'singurul memento, nu te mai deranjez.'
+      );
+    }
+
     if (code.startsWith('nl')) {
       return (
         'Hoi! Je hebt deze bot gestart maar nog niets gedownload — ' +

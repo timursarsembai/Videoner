@@ -6,7 +6,7 @@ import { detectPlatform } from "@/lib/validations/url";
 // (lib/i18n/translations.ts): сюда словари не тянем, они тяжёлые. Здесь просто дописываем /en для дефолтных путей,
 // чтобы они попали в те же файлы app/[locale]/... — адресная строка у
 // пользователя не меняется (rewrite, не redirect).
-const PREFIXED_LOCALES = ["ru", "es", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja", "ko", "th", "tl", "am", "om", "ha", "so", "az", "ky"];
+const PREFIXED_LOCALES = ["ru", "es", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja", "ko", "th", "tl", "am", "om", "ha", "so", "az", "ky", "tg"];
 
 // Ссылка-префикс: videoner.download/<ЦЕЛИКОМ ИСХОДНАЯ ССЫЛКА>. Пользователь
 // дописывает наш домен перед своей ссылкой, попадает на страницу нужной
@@ -23,7 +23,7 @@ const PREFIXED_LOCALES = ["ru", "es", "uk", "kk", "ar", "zh", "hi", "id", "sw", 
 // Площадку определяем ТЕМ ЖЕ detectPlatform, что и сайт: заводить здесь
 // собственный список доменов — верный способ получить расхождение (эта
 // валидация уже дважды разъезжалась между веб- и серверной копией).
-const LOCALE_PREFIX = /^\/(ru|es|uk|kk|ar|zh|hi|id|sw|de|fr|it|pt|uz|tr|fa|vi|bn|ur|pl|ja|ko|th|tl|am|om|ha|so|az|ky)(?=\/)/;
+const LOCALE_PREFIX = /^\/(ru|es|uk|kk|ar|zh|hi|id|sw|de|fr|it|pt|uz|tr|fa|vi|bn|ur|pl|ja|ko|th|tl|am|om|ha|so|az|ky|tg)(?=\/)/;
 
 // Исходная ссылка из пути запроса: общий разбор для префикс-ссылки и
 // ссылки-приглашения в бота. null — в пути не ссылка.

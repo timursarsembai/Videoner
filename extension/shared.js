@@ -460,6 +460,91 @@ const TEXTS = {
     langAuto: "Авто",
     langLabel: "Тил",
   },
+  tg: {
+    loading: "Маълумот дар бораи видео гирифта мешавад…",
+    notVideoPage:
+      "Саҳифаи видеоро дар YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ё Threads кушоед ва нишонаро боз пахш кунед. Дарси GetCourse: агар саҳифаи дарс пеш аз насби васеъкунанда кушода шуда бошад, онро навсозӣ кунед.",
+    gcLesson: "Дарси GetCourse",
+    gcPick: "Дар дарс якчанд видео ҳаст — лозимашро интихоб кунед",
+    gcVideo: (n) => `Видео ${n}`,
+    gcNote: "Боргирӣ ва якҷоякуниро браузери Шумо иҷро мекунад. Тирезаро пӯшидан мумкин, браузерро — не.",
+    gcNoStream: "Видеоро аз плеер гирифтан нашуд. Саҳифаи дарсро навсозӣ кунед ва боз кӯшиш кунед.",
+    video: "Видео",
+    photo: "Аксҳо бо андозаи аслӣ",
+    slideshow: "Слайд-шоу (видео)",
+    gallery: "Аксҳо + слайд-шоу",
+    audioOnly: "Танҳо аудио (mp3)",
+    subtitles: "Субтитрҳо (.srt)",
+    subtitlesAuto: "худкор",
+    back: "Бозгашт",
+    starting: "Боргирӣ оғоз мешавад…",
+    waiting: "Интизори навбат дар сервер…",
+    downloading: "Боргирӣ шуда истодааст",
+    converting: "Коркард шуда истодааст",
+    left: (eta) => `${eta} монд`,
+    saving: "Дар ҷузвдони «Загрузки» нигоҳ дошта мешавад…",
+    done: "Тайёр — файл дар ҷузвдони «Загрузки».",
+    news: "📣 Хабарҳои лоиҳа: @videonerdownload",
+    again: "Боз боргирӣ кардан",
+    directDownload: "Боргирии видео (mp4)",
+    directPhoto: "Боргирии акс (jpg)",
+    directNote: "Бевосита аз браузер — бе навбат дар сервер",
+    moreOptions: "Сифатҳои дигар ва аудио",
+    fallback: "Аз браузер нашуд — тавассути сервер боргирӣ мекунам.",
+    openSite: "Кушодани videoner.download",
+    retry: "Боз кӯшиш кардан",
+    min: "дақ",
+    sec: "сон",
+    errNetwork: "Бо Videoner алоқа нест. Интернетро санҷед ва боз кӯшиш кунед.",
+    errRateLimit: "Дархостҳо пай дар пай аз ҳад зиёданд. Як дақиқа интизор шавед ва боз кӯшиш кунед.",
+    errUnsupported:
+      "Дар ин саҳифа видеое нест, ки Videoner онро боргирӣ карда тавонад. Саҳифаи видео ё пости мушаххасро кушоед.",
+    errYoutubeDaily: "Лимити шабонарӯзии YouTube барои шабакаи Шумо тамом шуд. Пагоҳ кӯшиш кунед.",
+    errTooLarge: "Файл дар ин сифат хеле калон аст. Сифати пасттарро интихоб кунед.",
+    errLogin:
+      "Ин пост танҳо барои онҳое дастрас аст, ки ба аккаунт ворид шудаанд. Постҳои кушода бе мушкил боргирӣ мешаванд.",
+    errRegion: "Муаллиф ин постро аз рӯи кишварҳо маҳдуд кардааст — боргирии он имконнопазир аст.",
+    errServerBlocked: "Платформа дастрасии сервери моро муваққатан маҳдуд кардааст. Баъдтар кӯшиш кунед.",
+    errFailed: "Боргирӣ нашуд. Боз кӯшиш кунед ё сифати дигарро интихоб кунед.",
+    errGeneric: "Чизе нодуруст шуд. Каме баъдтар боз кӯшиш кунед.",
+    acctButton: (p) => `🔑 Аккаунти ${p}-и худро ба бот пайваст кунед`,
+    acctWarn: (p) =>
+      `@VideonerBot метавонад бо аккаунти Шумо он чиро, ки дар ${p} танҳо ба воридшудагон намоён аст, боргирӣ кунад: сторис, постҳои пӯшида. Платформаҳо боргирии худкорро дӯст намедоранд ва метавонанд аккаунтро маҳдуд кунанд — беҳтар аст аккаунти иловагиро пайваст кунед. Браузер барои хондани cookie-ҳои ин сайт иҷозат мепурсад; ба сервер танҳо cookie-ҳои ${p} дар шакли рамзгузоришуда фиристода мешаванд.`,
+    acctConfirm: "Пайваст кардан",
+    acctCancel: "Бекор кардан",
+    acctSending: "Пайваст шуда истодааст…",
+    acctDenied: "Бе иҷозат ба cookie-ҳо аккаунтро пайваст кардан мумкин нест.",
+    acctNoLogin: (p) => `Шумо дар ин браузер ба ${p} ворид нашудаед. Дар сайт ворид шавед ва боз кӯшиш кунед.`,
+    acctFailed: "Нашуд. Каме баъдтар боз кӯшиш кунед.",
+    acctCodeTitle: (p) => `Код барои пайваст кардани ${p}:`,
+    acctCodeHelp:
+      "Онро ба @VideonerBot дар чати шахсӣ фиристед — барои боргириҳои худ. Барои гурӯҳ — дар гурӯҳ /connect КОД фиристед. Код 10 дақиқа эътибор дорад.",
+    acctCopy: "Нусха бардоштан",
+    acctCopied: "Нусха бардошта шуд",
+    acctOpenBot: "Кушодани бот",
+    acctNewCode: "Гирифтани коди нав",
+    acctList: "Пайвастҳои ман дар бот",
+    acctRevoke: "Бекор кардани иҷозати cookie",
+    acctRevoked:
+      "Иҷозати cookie бекор шуд — васеъкунанда дигар онҳоро намехонад. Аккаунтҳои аллакай пайвастшуда дар бот мемонанд: онҳоро дар «Пайвастҳои ман дар бот» хомӯш кунед.",
+    playlistOffer: "📃 Боргирии тамоми плейлист",
+    playlistTitle: (title, n) => `📃 Плейлист${title ? ` «${title}»` : ""}: ${n} видео`,
+    playlistHint: "Якто-якто, бо навбат боргирӣ мекунам. Тирезаро пӯшидан мумкин.",
+    playlist720: "Плейлист бо сифати 720p",
+    playlistBest: "Плейлист бо беҳтарин сифат",
+    playlistAudio: "Плейлист — танҳо аудио (mp3)",
+    playlistProgress: (i, n) => `Видео ${i} аз ${n}`,
+    playlistStats: (done, failed) => `Боргирӣ шуд: ${done}${failed ? ` · нашуд: ${failed}` : ""}`,
+    playlistStop: "⏹ Қатъ кардан",
+    playlistDone: (done, n) => `Плейлист боргирӣ шуд: ${done} аз ${n}.`,
+    playlistStopped: (done, n) => `Қатъ шуд. Боргирӣ шуд: ${done} аз ${n}.`,
+    playlistLoading: "Рӯйхати видеоҳо гирифта мешавад…",
+    close: "Пӯшидан",
+    updateAvailable: (v) => `Версияи нави ${v} баромад.`,
+    updateHow: "Чӣ тавр навсозӣ кардан",
+    langAuto: "Худкор",
+    langLabel: "Забон",
+  },
   // Арабский (MSA). ⁦…⁩ (LRI…PDI) и ⁨…⁩ (FSI…PDI) —
   // невидимые изоляты направления: без них в RTL-тексте «@VideonerBot» и
   // «/connect» показались бы как «VideonerBot@» и «connect/».
@@ -2781,13 +2866,13 @@ const TEXTS = {
 
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
-// казахский, кыргызский (ky, ky-KG → ky), арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
+// казахский, кыргызский (ky, ky-KG → ky), таджикский (tg, tg-TJ → tg), арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
 // коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), оромо (om, om-ET → om), хауса (ha, ha-NG → ha), сомали (so, so-SO → so), азербайджанский (az, az-AZ, az-Latn → az), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский, персидский и урду пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { om: "Afaan Oromoo", az: "Azərbaycanca", id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", ha: "Hausa", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", so: "Soomaali", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ky: "Кыргызча", ru: "Русский", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
+export const LANG_NAMES = { om: "Afaan Oromoo", az: "Azərbaycanca", id: "Bahasa Indonesia", de: "Deutsch", en: "English", es: "Español", fr: "Français", ha: "Hausa", it: "Italiano", sw: "Kiswahili", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", so: "Soomaali", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ky: "Кыргызча", ru: "Русский", tg: "Тоҷикӣ", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -2899,7 +2984,7 @@ export function formatSize(bytes) {
   // французскому — свои Go/Mo.
   const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am" || lang === "om" || lang === "ha" || lang === "so" || lang === "az";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ky: "ky-KG", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", ha: "ha-NG", so: "so-SO", az: "az-AZ", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ky: "ky-KG", tg: "tg-TJ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", ha: "ha-NG", so: "so-SO", az: "az-AZ", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

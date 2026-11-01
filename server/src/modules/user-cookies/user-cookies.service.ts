@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base === 'fil' ? 'tl' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' || norm === 'so' || norm === 'az' || norm === 'ky' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' || norm === 'th' || norm === 'tl' || norm === 'am' || norm === 'om' || norm === 'ha' || norm === 'so' || norm === 'az' || norm === 'ky' || norm === 'tg' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -391,6 +391,7 @@ export class UserCookiesService {
       so: forGroup ? 'koox ahaan' : 'adiga ahaan',
       az: forGroup ? 'qrup üçün' : 'sizin üçün',
       ky: forGroup ? 'топ үчүн' : 'сиз үчүн',
+      tg: forGroup ? 'барои гурӯҳ' : 'барои шумо',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -424,6 +425,7 @@ export class UserCookiesService {
       so: `⚠️ Gelitaanka ${name} ee aad ku xirtay (${where}) wuu joogsaday: barnaamijku mar dambe ma aqbalo. Waxaa laga yaabaa inaad ka baxday akoonka, ama akoonka waa la xaddiday.\n\nSi aad ugu sii wadato soo dejinta, mar kale ku xir akoonka. Xiriiradaada: /accounts.`,
       az: `⚠️ Qoşduğunuz ${name} girişi (${where}) artıq işləmir: platforma onu daha qəbul etmir. Ola bilsin, hesabdan çıxmısınız və ya hesab məhdudlaşdırılıb.\n\nOnunla yükləməyə davam etmək üçün hesabı yenidən qoşun. Qoşulmalarınız: /accounts.`,
       ky: `⚠️ Туташтырылган ${name} кирүүңүз (${where}) иштебей калды: платформа аны мындан ары кабыл албайт. Балким, аккаунттан чыгып кеткендирсиз же аккаунт чектелгендир.\n\nАл аркылуу жүктөп алууну улантуу үчүн аккаунтту кайра туташтырыңыз. Туташууларыңыз: /accounts.`,
+      tg: `⚠️ Вуруди пайвастшудаи ${name} (${where}) дигар кор намекунад: платформа онро дигар қабул намекунад. Шояд шумо аз аккаунт баромадаед ё аккаунт маҳдуд шудааст.\n\nБарои идомаи боргирӣ бо он аккаунтро аз нав пайваст кунед. Пайвастҳои шумо: /accounts.`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

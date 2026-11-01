@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "de", "en", "es", "fr", "ha", "it", "sw", "uz", "pl", "pt", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -6423,6 +6423,226 @@ const ky: Messages = {
   settingsBack: "⬅️ Жөндөөлөргө кайтуу",
 };
 
+const tg: Messages = {
+  start: "Салом! Ба ман пайванди видеоро аз YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ё Threads фиристед — дар боргирии он кӯмак мекунам.\n\n✨ Сифат маҳдуд нест: ҳар сифате, ки платформа дорад, то 4K медиҳам — фақат файл аз 2 ГБ зиёд набошад, ин маҳдудияти Telegram барои ботҳост. Дар ин ҷо ягон функсияи пулакӣ нест.\n\nПурра ройгон: бе обуна, бе реклама, бе харидҳои дохилӣ.\n\n🧩 Дар компютер боргирӣ мекунед? Васеъкунандаи браузерро насб кунед — тугмаи «Боргирӣ» рост дар саҳифаи видео пайдо мешавад: videoner.download/tg/extension\n\n👥 Маро ба гурӯҳ илова кунед — видеоҳоро аз рӯи пайвандҳое, ки дар он ҷо мубодила мешаванд, худам мефиристам.\n\n⚡ Бе интихоби сифат: баъди пайванд -audio нависед — фақат садо (mp3), ё -hd — беҳтарин сифат.\n\n📣 Хабарҳои лоиҳа: @videonerdownload\n\n🌐 Забони бот: /language",
+  notLink: "Ин ба пайванд монанд нест. Ба ман пайванди видеоро фиристед.",
+  inviteGreeting: "Салом! Ман Videoner ҳастам — видеоҳоро аз YouTube, TikTok, Instagram ва дигар платформаҳо ройгон боргирӣ мекунам. Видеоеро, ки бо Шумо мубодила карданд, омода карда истодаам 👇",
+  inviteNotFound: "Аз рӯи ин пайванди даъват видео ёфт нашуд. Ба ман пайванди видеоро фиристед — онро боргирӣ мекунам.",
+  inviteUnavailable: "Видеоро аз ин пайванд кушодан нашуд — хизматрасонӣ ҳоло ҷавоб намедиҳад. Баъд аз як дақиқа ҳамон пайвандро боз кушоед.",
+  fetchingInfo: "🔍 Маълумот дар бораи видео гирифта истодаам...",
+  audioOnlyButton: "🎵 Фақат аудио (mp3)",
+  photoButton: "📷 Боргирии аксҳо",
+  slideshowButton: "🎞 Слайд-шоу (видео)",
+  galleryButton: "📷+🎞 Аксҳо ва слайд-шоу",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nСифатро интихоб кунед:`,
+  sessionExpired: "Мӯҳлати сессия гузашт — пайвандро боз фиристед",
+  downloading: "⏬ Боргирӣ шуда истодааст, ин метавонад якчанд дақиқа тӯл кашад...",
+  downloadFailed: "боргирӣ нашуд",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Боргирӣ шуда истодааст: ${percent}%${eta ? ` · ${eta} монд` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Қариб тайёр — файлро ҷамъ карда истодаам...",
+  converting: (percent) => `⚙️ Табдил дода истодаам: ${percent}%`,
+  etaUnderMinute: "камтар аз як дақиқа",
+  etaMinutes: (minutes) => `~${minutes} дақ`,
+  etaHours: (hours, minutes) => `~${hours} соат${minutes ? ` ${minutes} дақ` : ""}`,
+  downloadTimeout: "боргирӣ хеле дер тӯл кашид — гӯё видео хеле вазнин аст. Сифати пасттарро интихоб кунед.",
+  downloadInterrupted: "⚠️ Бот барои навсозӣ аз нав оғоз мешавад — боргирии Шумо қатъ шуд. Лутфан, баъд аз як дақиқа пайвандро боз фиристед.",
+  fileTooBig: (mb, url) =>
+    `Файл калон баромад (${mb} МБ) — Telegram ба бот фиристодани онро иҷозат намедиҳад.\nОнро аз ин ҷо боргирӣ кунед: ${url}`,
+  sendingFile: "📤 Файлро фиристода истодаам...",
+  sendingAlbum: (count) => `📤 Дар ин пост якчанд файл ҳаст (${count}) — онҳоро ҳамчун албом мефиристам...`,
+  failedPrefix: "❌ Нашуд: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Манбаъ: ${sourceUrl}\n` +
+        "Ҳамаи ҳуқуқҳо ба видео ба муаллифи он тааллуқ доранд.\n" +
+        "Бо ёрии @VideonerBot ройгон боргирӣ шуд",
+      `📣 Хабарҳои лоиҳа: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Мубодила: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Барои боргирӣ, лутфан, ба канали мо ${channel} обуна шавед — ин ягона шарт аст, хизматрасонӣ ройгон мемонад.\n\n` +
+    "Обуна шавед ва тугмаи «Ман обуна шудам»-ро пахш кунед.",
+  openChannelButton: "📣 Кушодани канал",
+  checkSubscriptionButton: "Ман обуна шудам",
+  subscribeThanks: "Ташаккур! Акнун ба ман пайванди видеоро фиристед.",
+  subscribeThanksResuming: "Ташаккур! Ҳозир ба пайванди Шумо машғул мешавам.",
+  subscribeStillMissing: "Ҳоло обунаро намебинам. Обуна шавед ва боз пахш кунед.",
+  channelNotice: (channel) => `\n\nПайванди ин пост дар ${channel} пайдо мешавад — беном, бе номи Шумо.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Ин ва ҳар видеои дигарро ройгон боргирӣ кунед: @VideonerBot",
+  errorStoryNeedsId:
+    "пайванди сторисии мушаххасро фиристед: онро дар барномаи Instagram кушоед ва «Поделиться» (Мубодила) → «Копировать ссылку» (Нусха бардоштани пайванд)-ро пахш кунед.",
+  errorInstagramStory:
+    "Сторисҳои Instagram-ро танҳо касоне мебинанд, ки ба аккаунт ворид шудаанд.",
+  errorLoginRequired:
+    "Ин пост бе ворид шудан ба аккаунт дастрас нест: платформа онро танҳо ба " +
+    "корбарони воридшуда медиҳад. Ин бо постҳои пӯшида, мундариҷаи дорои маҳдудияти " +
+    "синну сол ва постҳое, ки барои доираи маҳдуди одамон нашр шудаанд, рух медиҳад.\n\n" +
+    "Постҳои кушода бе мушкил боргирӣ мешаванд — пайванди дигарро санҷед.",
+  errorUnsupportedPlatform:
+    "Пайвандро шинохта натавонистам — боварӣ ҳосил кунед, ки ин пайванди мустақими видео аз YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest ё Threads аст.",
+  errorFileTooLarge: "файл аз 2 ГБ калонтар аст — Telegram ба ботҳо фиристодани файлҳои калонтарро иҷозат намедиҳад. Онро дар сайт ё бо васеъкунандаи браузер боргирӣ кунед — тугмаҳо дар поён. Ё пайвандро боз фиристед ва сифати пасттарро интихоб кунед.",
+  siteButton: "🌐 Боргирӣ дар сайт",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Сифатҳои вазнинтар аз ${limit} пинҳон карда шуданд: Telegram ба ботҳо фиристодани файлҳои калонтарро иҷозат намедиҳад. Онҳоро дар сайт ё бо васеъкунандаи браузер боргирӣ кардан мумкин аст — тугмаҳо дар поён.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Ин видео ҳатто бо пасттарин сифат барои Telegram хеле вазнин аст (~${smallest}): Telegram ба ботҳо фиристодани файлҳои аз 2 ГБ калонтарро иҷозат намедиҳад. Дар ин ҷо фақат аудиоро гирифтан мумкин аст, видеоро — дар сайт ё бо васеъкунандаи браузер (тугмаҳо дар поён).`,
+  errorFormatUnavailable: "Барои ин видео чунин сифат дастрас нест. Пайвандро боз фиристед — рӯйхати ҷориро нишон медиҳам.",
+  errorNoVideoContent: "Дар ин пайванд видеое барои боргирӣ нест — гӯё дар пост фақат акс ҳаст.",
+  errorRegionBlocked:
+    "Ин видео берун аз кишвари муаллиф баста шудааст — платформа онро ба " +
+    "сервери мо намедиҳад. Роҳи гузаштан нест: маҳдудият аз ҷониби платформа аст." +
+    "\n\nПайвандҳои дигар мисли пештара боргирӣ мешаванд.",
+  errorRateLimited: "Пайвандҳо пай дар пай хеле зиёданд — каме сабр кунед ва боз фиристед.",
+  errorYoutubeDailyLimit: (gb) => `дар 24 соати охир Шумо аз YouTube зиёда аз ${gb} ГБ боргирӣ кардед — ин маҳдудияти шабонарӯзии бот барои як нафар аст. Он аз рӯи 24 соати охир ҳисоб мешавад, бинобар ин видеоҳои нави YouTube-ро каме баъдтар боргирӣ карда метавонед. Платформаҳои дигар мисли пештара кор мекунанд.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Плейлист қатъ шуд: маҳдудияти шабонарӯзии YouTube ба охир расид. Видеоҳои боргиринашуда: ${dropped}. Пайванди плейлистро дертар боз фиристед.`,
+  errorPlatformRefused:
+    "платформа ин видеоро ба сервери мо надод. Ин бо постҳои пӯшида ё дорои " +
+    "маҳдудияти синну сол рух медиҳад, баъзан платформа дастрасиро муваққатан " +
+    "маҳдуд мекунад. Баъд аз якчанд дақиқа боз кӯшиш кунед.",
+  errorThreadsNoMedia:
+    "дар ин пости Threads на видео намоён аст, на акс. Ё ин пости фақат матнӣ аст, ё " +
+    "Threads медиаи онро танҳо ба корбарони воридшуда нишон медиҳад — чунин постҳоро бе ворид шудан ба аккаунт боргирӣ кардан мумкин нест.",
+  extensionHint:
+    "\n\n💻 Онро дар компютер бо васеъкунандаи браузерии Videoner боргирӣ кардан мумкин аст: " +
+    "он бо воридшавии худи Шумо дар платформа боргирӣ мекунад ва на парол, на cookie аз браузери Шумо берун намебароянд.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Барои боргирии чунин постҳо аккаунти ${platform}-и худро як маротиба ба бот пайваст кунед. Баъд аз ин бот ҳар чизеро, ки Шумо мебинед, боргирӣ мекунад: постҳои пӯшида, рилсҳо ва сторисҳо, аз телефон ҳам. Чӣ тавр пайваст кардан — тугмаи поён нишон медиҳад.${withExtension ? "\n\n💻 Ё онро дар компютер бо васеъкунандаи браузерии Videoner боргирӣ кунед." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Аккаунти пайвастшудаи ${platform}-и Шумо ин постро кушода натавонист. Шояд воридшавӣ дигар кор намекунад — аккаунтро аз нав пайваст кунед. Ё ин аккаунт ба пост дастрасӣ надорад.${withExtension ? "\n\n💻 Инчунин онро дар компютер бо васеъкунандаи браузерии Videoner боргирӣ кардан мумкин аст." : ""}`,
+  connectAccountButton: "🔑 Пайваст кардани аккаунт",
+  reconnectAccountButton: "🔑 Аз нав пайваст кардан",
+  extensionButton: "🧩 Боргирӣ бо васеъкунанда",
+  extensionCommand:
+    "🧩 Videoner барои браузер: тугмаи «Боргирӣ» рост дар саҳифаи видео — YouTube, Instagram, TikTok, VK, видеоҳои пӯшидаи аккаунти Шумо ва дарсҳои GetCourse.\n\nБарои Chrome, Edge, Opera, Яндекс Браузер ва Firefox дар компютер.",
+  extensionPageButton: "🧩 Насб кардани васеъкунанда",
+  addToGroupButton: "👥 Илова кардан ба гурӯҳ",
+  newsButton: "📣 Хабарҳои лоиҳа",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Хабарҳои лоиҳа: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Танзимоти бот дар ин гурӯҳ\n\n" +
+    `🗑 Нест кардани паём бо пайванд: ${s.deleteLinks ? "ҳа" : "не"}\n` +
+    "Баъди фиристодани видео паёме, ки фақат пайванд дошт, нест карда мешавад — дар чат танҳо видео бо номи касе, ки онро мубодила кард, мемонад.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Ҳоло паёмҳоро нест карда наметавонам: маро бо ҳуқуқи «Удаление сообщений» (Нест кардани паёмҳо) админ кунед.\n"
+      : "") +
+    `\n✍️ Матн зери видео: ${{ full: "пурра", short: "ном ва манбаъ", none: "бе матн" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Сифат: ${s.quality === "max" ? "баландтарине, ки Telegram қабул мекунад" : "стандартӣ (720p)"}\n` +
+    `\n⏱ Видеоҳои дароз: ${s.longVideos ? "бо ҳар дарозӣ" : "фақат то 15 дақиқа"}\n` +
+    `\n🔑 Кӣ аккаунтҳоро пайваст карда метавонад (барои сторисҳо ва постҳои пӯшида): ${s.cookiesBy === "all" ? "ҳар узв" : "фақат админҳо"}\n` +
+    `\n🌐 Забони ҷавоб: ${s.language ? langName(s.language) : "забони худи ҳар узв"}\n` +
+    "\nТанзимотро танҳо админҳои гурӯҳ тағйир дода метавонанд.",
+  settingsDeleteButton: (on) => `🗑 Нест кардани пайвандҳо: ${on ? "ҳа" : "не"}`,
+  settingsCaptionButton: (style) => `✍️ Матн: ${{ full: "пурра", short: "кӯтоҳ", none: "нест" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Сифат: ${mode === "max" ? "баландтарин" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Видеоҳои дароз: ${on ? "ҳа" : "то 15 дақ"}`,
+  settingsDoneButton: "✅ Тайёр",
+  settingsAdminsOnly: "Танзимотро танҳо админҳои гурӯҳ тағйир дода метавонанд.",
+  settingsGroupsOnly: "Танзимот барои гурӯҳҳост: маро ба гурӯҳ илова кунед ва дар он ҷо /settings фиристед.",
+  settingsFailed: "Танзимотро нигоҳ доштан нашуд, лутфан, боз кӯшиш кунед.",
+  settingsCookiesButton: (by) => `🔑 Пайваст кардани аккаунтҳо: ${by === "all" ? "ҳама" : "админҳо"}`,
+  accountsIntro:
+    "🔑 Аккаунтҳои пайвастшуда\n\nБот метавонад он чиро, ки танҳо корбарони воридшуда мебинанд (сторисҳои Instagram, постҳои пӯшида), бо аккаунти Шумо боргирӣ кунад. Воридшавӣ дар ҳамон ҷое кор мекунад, ки онро пайваст кардед: аккаунти дар чати шахсӣ пайвастшуда барои боргириҳои Шумо, аз ҷумла пайвандҳои худатон дар гурӯҳҳое, ки аккаунти худро надоранд, хизмат мекунад; аккаунти ба гурӯҳ пайвастшуда ба ҳамаи узвҳои он хизмат мекунад.",
+  accountsHowTo:
+    "Чӣ тавр пайваст кардан:\n1. Осонтарин роҳ: васеъкунандаи Videoner дар компютер — ба сайти платформа ворид шавед, равзанаи Videoner-ро кушоед, тугмаи «🔑 Аккаунти …-и худро ба бот пайваст кунед»-ро пахш кунед ва кодро ба ман фиристед. Барои гурӯҳ дар ҳамон гурӯҳ /connect КОД фиристед.\n2. Ё ба ман файли cookies.txt (cookie-ҳое, ки аз браузер содир шудаанд) фиристед, ё матни онро ҳамчун паём гузоред.\n3. Аз телефони Android — бо Firefox ва иловаи Cookie-Editor: https://videoner.download/tg/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Платформаҳо боргириҳои худкорро дӯст намедоранд ва метавонанд аккаунтро маҳдуд ё баста кунанд. Беҳтар аст аккаунти иловагиро пайваст кунед, на асосиро. Cookie-ҳо рамзгузоришуда нигоҳ дошта мешаванд, танҳо барои боргирӣ истифода мешаванд ва бо тугмаҳои поён нест карда мешаванд.",
+  accountsNone: "Ҳоло ҳеҷ чиз пайваст нашудааст.",
+  accountsGroupTitle: "🔑 Аккаунтҳое, ки ба ин гурӯҳ пайваст шудаанд",
+  accountsGroupHowTo:
+    "Барои пайваст кардан ба тамоми гурӯҳ: бо тугмаи «🔑 Аккаунти …-и худро ба бот пайваст кунед» дар васеъкунандаи Videoner код гиред ва дар ин ҷо /connect КОД фиристед. Агар аккаунтро танҳо дар чати шахсии худ пайваст карда бошед, бот онро дар ин ҷо барои пайвандҳои худатон истифода мебарад. Пайвастҳои Шумо: /accounts дар чати шахсӣ бо @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ воридшавӣ кор намекунад)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ воридшавӣ кор намекунад)"}`,
+  accountsWhereHere: "чати шахсӣ",
+  accountsWhereGroup: (title) => `гурӯҳи «${title}»`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Нест кардани ҳамаи пайвастҳои ман",
+  accountsDeleted: "Нест карда шуд.",
+  accountsDeletedAll: (n) => `Пайвастҳои нестшуда: ${n}.`,
+  accountsNotAllowed: "Онро танҳо касе, ки пайваст кардааст, ё админи гурӯҳ нест карда метавонад.",
+  connectUsage:
+    "/connect КОД фиристед. Кодро тугмаи «🔑 Аккаунти …-и худро ба бот пайваст кунед» дар васеъкунандаи Videoner дар компютер медиҳад. Пайвастҳои Шумо: /accounts.",
+  connectOnlyAdmins: "Ба ин гурӯҳ аккаунтҳоро танҳо админҳо пайваст карда метавонанд (/settings-ро бинед).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} пайваст шуд. Акнун бот он чиро ҳам, ки танҳо корбарони воридшуда мебинанд, боргирӣ мекунад. Дидан ё нест кардан: /accounts.\n\n⚠️ Платформа метавонад аккаунтро барои боргириҳои худкор маҳдуд кунад — беҳтар аст аккаунти иловагиро истифода баред.`,
+  connectWhereGroup: "ба ин гурӯҳ",
+  connectWhereHere: "барои боргириҳои Шумо дар чати шахсӣ ва реҷаи inline",
+  connectCodeNotFound: "Код ёфт нашуд ё мӯҳлаташ гузаштааст (кодҳо 10 дақиқа амал мекунанд). Дар васеъкунандаи Videoner коди нав гиред.",
+  connectRejectedNoSession: "Дар ин cookie-ҳо воридшавӣ нест. Ба сайти платформа ворид шавед ва cookie-ҳоро аз нав содир кунед.",
+  connectRejectedUnknown: "Cookie-ҳои платформаҳои дастгиришаванда ёфт нашуданд: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Пайваст кардани аккаунтҳо ҳоло дастрас нест.",
+  connectFailed: "Пайваст кардан нашуд, лутфан, боз кӯшиш кунед.",
+  connectFileTooBig: "Файл хеле калон аст — танҳо cookie-ҳои сайти лозимиро содир кунед.",
+  connectNotAnonymous: "Аккаунтро аз номи худ пайваст кунед, на беном аз номи гурӯҳ: вагарна пайвастҳои админҳо омехта мешаванд. Кодро нест кардам — коди нав гиред.",
+  connectCodeInGroup:
+    "Коди пайвастро, ки дар чати гурӯҳ навишта шудааст, дигарон дида метавонанд — ман онро нест кардам ва паёмро пок кардам. Коди нав гиред ва онро бо /connect КОД фиристед: паёми дорои ин фармонро фавран нест мекунам.",
+  groupWelcome:
+    "👋 Салом! Дар ин чат пайвандҳои видеоро аз TikTok, Instagram, YouTube, VK ва дигар платформаҳо фиристед — ман бо худи видео ҷавоб медиҳам.\n\n" +
+    "Видеоҳои то 15 дақиқаро худам, бе фармон боргирӣ мекунам, дар дигар ҳолатҳо хомӯш мемонам.\n\n⚙️ Админҳои гурӯҳ метавонанд маро бо /settings танзим кунанд: нест кардани паёмҳо бо пайванд, намуди матн, сифат, видеоҳои дароз ва забон.\n\n⚡ Баъди пайванд -audio нависед — садоро мегиред, ё -hd — беҳтарин сифатро.\n\n📣 Хабарҳои лоиҳа: @videonerdownload",
+  errorTooLong: "видео хеле дароз аст — чунин видеоҳои дарозро ҳоло боргирӣ карда наметавонем.",
+  errorUnknown: "ин видеоро боргирӣ кардан нашуд. Каме баъдтар боз кӯшиш кунед ё пайванди дигар фиристед.",
+  inlineHintButton: "Фиристодани пайванд ба бот",
+  inlineResultTitle: "⬇️ Боргирии видео",
+  inlineResultDescription: "Видео рост дар ҳамин чат нашр мешавад",
+  inlinePlaceholder: "⏬ Боргирӣ шуда истодааст, ин метавонад якчанд дақиқа тӯл кашад...",
+  inlineOpenBot: "Кушодани бот",
+  inlineOnlySingleVideo:
+    "Ин реҷа танҳо як видео мефиристад. Барои постҳои аз якчанд файл иборат ё аксҳо пайвандро ба бот дар чати шахсӣ фиристед.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Барои боргирӣ ба ${channel} обуна шавед ва боз кӯшиш кунед.`,
+  inlineRateLimited: "Дархостҳо пай дар пай хеле зиёданд. Як дақиқа сабр кунед ва боз кӯшиш кунед.",
+  queueRest: (count) => `\n\n📋 Дар навбат боз пайвандҳо ҳастанд: ${count}. Баъди ин якто онҳоро як-як нишон медиҳам.`,
+  queuedOne: (position) =>
+    `📋 Пайванд ба навбат гузошта шуд, №${position}. Аввал ҷориро ба охир мерасонем — баъд барои он интихоби сифатро нишон медиҳам.`,
+  queuedMany: (added, waiting) =>
+    `📋 Пайвандҳои ба навбат иловашуда: ${added}. Ҳамагӣ дар интизорӣ: ${waiting}. Баъди ҷорӣ онҳоро як-як нишон медиҳам.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Ин пайванд аллакай дар навбат аст — ду бор илова намекунам."
+      : `Пайвандҳое, ки аллакай дар навбатанд, ду бор илова намешаванд (такрорҳо: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Дар навбат ҳадди аксар ${limit} пайванд ҷой мегирад — пайвандҳои зиёдатӣ илова нашуданд (${rejected}). Вақте навбат пеш равад, онҳоро фиристед.`,
+  skipButton: "✖️ Боргирӣ накардан",
+  skipped: "⏭ Ин пайванд гузаронида шуд.",
+  chooseTimedOut: "⌛ Дар давоми 30 дақиқа сифат интихоб нашуд — ин пайвандро мегузаронам.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Бот барои навсозӣ аз нав оғоз мешавад — навбат тоза шуд (пайвандҳо: ${count}). Лутфан, баъд аз як дақиқа онҳоро боз фиристед.`,
+  subtitlesButton: "📝 Субтитрҳо",
+  subtitlesBack: "⬅️ Бозгашт ба интихоби сифат",
+  subtitlesAuto: "худкор",
+  subtitlesChoose: "Забони субтитрҳоро интихоб кунед",
+  subtitlesPreparing: "📝 Субтитрҳоро омода карда истодаам...",
+  subtitlesFailed: "Субтитрҳоро бо ин забон боргирӣ кардан нашуд. Забони дигарро интихоб кунед.",
+  subtitlesBusy: "YouTube ҳоло субтитрҳоро намедиҳад — баъд аз якчанд дақиқа боз кӯшиш кунед.",
+  playlistFound: (title, count) =>
+    `📃 Плейлист${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} видео.\nОнҳоро як-як боргирӣ мекунам. Дар кадом формат?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Беҳтарин сифат",
+  playlistAudioButton: "🎵 Фақат аудио (mp3)",
+  playlistNoButton: "✖️ Не, ташаккур",
+  playlistQueued: (count) =>
+    `📃 Видеоҳои плейлист, ки ба навбат гузошта шуданд: ${count}. Онҳоро як-як мефиристам. Барои қатъ кардан тугмаи поёнро пахш кунед ё /stop фиристед.`,
+  playlistFailed: "Плейлистро кушодан нашуд — шояд он пӯшида бошад. Пайванди як видеоро фиристед.",
+  stopButton: "⏹ Қатъ кардан",
+  stopped: (dropped) => `⏹ Қатъ шуд.${dropped ? ` Пайвандҳои аз навбат хориҷшуда: ${dropped}.` : ""}`,
+  nothingToStop: "Ҳоло ҳеҷ чиз боргирӣ намешавад.",
+  languageChoose: "🌐 Забони ботро интихоб кунед. «Худкор» — мувофиқи забони Telegram-и Шумо.",
+  languageChooseGroup: "🌐 Забони ҷавобҳои бот дар ин гурӯҳ. «Худкор» — бо забони Telegram-и ҳар узв.",
+  languageAuto: "Худкор — мисли Telegram",
+  languageAutoGroup: "Худкор — забони худи ҳар кас",
+  languageSaved: (name) => `✅ Забони бот: ${name}. Тағйир додан: /language.`,
+  languageSavedAuto: "✅ Бот забони Telegram-и Шуморо истифода мебарад. Тағйир додан: /language.",
+  settingsLanguageButton: (name) => `🌐 Забон: ${name ?? "худкор"}`,
+  settingsBack: "⬅️ Бозгашт ба танзимот",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -7090,4 +7310,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg };

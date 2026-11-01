@@ -379,6 +379,18 @@ export const blogUi: Record<
     readFull: "Толугу менен сайттан окуу",
     dateLocale: "ky-KG",
   },
+  tg: {
+    title: "Блоги Videoner",
+    description: "Хабарҳои лоиҳа: дар бот, сайт ва васеъкунанда чӣ нав пайдо шуд ва чӣ тавр аз он истифода бурдан мумкин аст.",
+    readMore: "Хондан",
+    back: "Ҳамаи мақолаҳо",
+    allPosts: "Блог",
+    channel: "Хабарҳо дар Telegram",
+    channelCta: "Хабарҳои лоиҳа — дар Telegram-канали @videonerdownload.",
+    readOnSite: "Дар сайт хондан",
+    readFull: "Пурра дар сайт хондан",
+    dateLocale: "tg-TJ",
+  },
   tl: {
     title: "Videoner blog",
     description: "Mga balita ng proyekto: ano ang bago sa bot, sa website at sa extension, at kung paano ito gamitin.",

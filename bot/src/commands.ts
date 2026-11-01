@@ -253,6 +253,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Жүктөп алууну жана кезекти токтотуу" },
     { command: "language", description: "Боттун тили" },
   ],
+  tg: [
+    { command: "start", description: "Чӣ тавр аз бот истифода бурдан" },
+    { command: "extension", description: "Васеъкунандаи браузер" },
+    { command: "accounts", description: "Аккаунтҳои Шумо барои сторисҳо ва постҳои пӯшида" },
+    { command: "connect", description: "Пайваст кардани аккаунт бо коди васеъкунанда" },
+    { command: "stop", description: "Қатъ кардани боргирӣ ва навбат" },
+    { command: "language", description: "Забони бот" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -474,6 +482,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Код менен бул топко аккаунт туташтыруу" },
     { command: "language", description: "Бул топтогу боттун тили (администраторлор үчүн)" },
     { command: "start", description: "Бот топто кантип иштейт" },
+  ],
+  tg: [
+    { command: "settings", description: "Танзимоти бот дар ин гурӯҳ (барои админҳо)" },
+    { command: "accounts", description: "Аккаунтҳое, ки ба ин гурӯҳ пайваст шудаанд" },
+    { command: "connect", description: "Пайваст кардани аккаунт ба ин гурӯҳ бо код" },
+    { command: "language", description: "Забони бот дар ин гурӯҳ (барои админҳо)" },
+    { command: "start", description: "Бот дар гурӯҳ чӣ тавр кор мекунад" },
   ],
 };
 

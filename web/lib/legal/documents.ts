@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на пятнадцати языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на шестнадцати языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -4537,6 +4537,308 @@ export const legal: LegalByLanguage = {
             heading: "Insofsiz murojaatlar",
             body: [
               "Bila turib notoʻgʻri maʼlumotlarni oʻz ichiga olgan murojaat qonunchilikka muvofiq arizachining javobgarligiga sabab boʻlishi mumkin. Agar murojaat huquq egasini ham, nizoli materialni ham aniqlash imkonini bermasa, biz uni koʻrib chiqishni rad etish huquqiga egamiz.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  tr: {
+    ui: {
+      updated: "Son güncelleme",
+      back: "Ana sayfaya dön",
+      operatorHeading: "Hizmet işletmecisi",
+      navHeading: "Diğer belgeler",
+      labels: {
+        privacy: "Gizlilik Politikası",
+        terms: "Kullanım Koşulları",
+        cookies: "Çerez Politikası",
+        copyright: "Hak Sahipleri İçin",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Gizlilik Politikası",
+        summary: `${operator.site} hizmetinin hangi verileri topladığı, bunlara neden ihtiyaç duyulduğu, ne kadar süre saklandığı ve nasıl silinebileceği.`,
+        sections: [
+          {
+            heading: "Genel hükümler",
+            body: [
+              `İşbu Politika, ${operator.site} hizmetinin hangi kişisel verileri hangi amaçla işlediğini açıklar. Veri sorumlusu: ${operator.nameTr}.`,
+              "Hizmeti kullanarak burada açıklanan işleme usulünü kabul etmiş olursunuz. Bu usulü kabul etmiyorsanız lütfen hizmeti kullanmayınız.",
+              "İşleme faaliyetleri, Kazakistan Cumhuriyeti’nin “Kişisel Veriler ve Korunması Hakkında” Kanunu’na uygun olarak ve Avrupa Ekonomik Alanı’ndan gelen ziyaretçiler bakımından GDPR (Genel Veri Koruma Tüzüğü) gereklilikleri dikkate alınarak yürütülür.",
+            ],
+          },
+          {
+            heading: "Hangi verileri işliyoruz",
+            body: [
+              "Hizmetin işleyişi için gerekli olanın ötesinde hiçbir veriyi bilinçli olarak toplamıyoruz; kimlik belgesi, ödeme bilgisi veya adres talep etmiyoruz.",
+            ],
+            bullets: [
+              "Bota mesaj yazdığınızda botun aldığı Telegram hesap verileri: sayısal kimlik numarası, kullanıcı adı, ad ve dil kodu.",
+              "İndirmek üzere gönderdiğiniz bağlantılar ve indirme girişimine ilişkin bilgiler: platform, tarih ve saat, seçilen kalite, sonuç (başarılı veya hata).",
+              "Bağlantıya ilişkin teknik veriler: IP adresi, tarayıcı türü ve sürümü, dil, yönlendiren sayfa. Bu veriler sunucu kayıtlarına ve web analitiği sistemlerine aktarılır.",
+              "Çerezler ve analitik tanımlayıcılar — ayrıntılar için Çerez Politikası’na bakınız.",
+            ],
+          },
+          {
+            heading: "Bu verilere neden ihtiyaç duyuyoruz",
+            bullets: [
+              "Hizmetin kendisini sunmak: bağlantınızdaki videoyu almak ve dosyayı size iletmek.",
+              "Hesabınızı başkalarının hesaplarından ayırt etmek ve kötüye kullanımı önlemek.",
+              "Hizmeti otomatik kötüye kullanıma karşı korumak: bağlantı gönderilmeden önce Cloudflare Turnstile doğrulaması.",
+              "Sitenin nasıl kullanıldığını anlamak ve hataları gidermek — anonimleştirilmiş ve toplu istatistikler.",
+              "Sizin ve hak sahiplerinin başvurularını yanıtlamak.",
+              "Hizmet hakkındaki görüşünüzü öğrenmek için ara sıra size Telegram üzerinden yazmak — örneğin hizmeti kullanmayı bıraktıysanız. Yanıt vermek zorunlu değildir; bu tür mesajlar almak istemiyorsanız bunu bize bildirmeniz yeterlidir, size bir daha yazmayız.",
+            ],
+          },
+          {
+            heading: "İşlemenin hukuki dayanakları",
+            body: [
+              "Telegram hesap verileri ve indirmelere ilişkin bilgiler, hizmeti kullanmaya başlamakla kabul ettiğiniz Kullanım Koşulları’nın ifası için işlenir.",
+              "Analitik çerezler ve sitedeki işlemlerin kaydı, dilediğiniz zaman geri alabileceğiniz açık rızanıza dayanılarak işlenir — geri alma yolları Çerez Politikası’nda açıklanmıştır.",
+              "Sunucu kayıtları ve bot koruması, hizmetin çalışır ve güvenli durumda tutulmasına yönelik meşru menfaatimiz kapsamında işlenir.",
+              "Hizmet hakkındaki görüşünüzü sormak, hizmeti iyileştirmeye yönelik meşru menfaatimiz kapsamındadır; bundan dilediğiniz zaman vazgeçebilirsiniz.",
+            ],
+          },
+          {
+            heading: "Bağlı hesaplar",
+            body: [
+              "Dilerseniz bir platformdaki (Instagram, Facebook, YouTube, X, VK, TikTok) hesabınızı bota bağlayabilirsiniz; böylece bot yalnızca oturum açmış kullanıcıların görebildiği gönderileri, yani hikâyeleri ve gizli paylaşımları indirebilir. Bunun için bot, söz konusu hesabın çerezlerini Videoner uzantısından tek kullanımlık bir kodla veya gönderdiğiniz bir dosyadan alır.",
+              "Yalnızca seçilen platformun çerezlerini saklıyor, diğerlerini derhal siliyoruz. Çerezler şifrelenmiş biçimde saklanır ve yalnızca onları bağladığınız yerdeki indirmeler için kullanılır. Özel sohbette bağlanan çerezler sizin indirmelerinize, kendi hesabı bağlı olmayan gruplarda paylaştığınız kendi bağlantılarınız da dahil olmak üzere hizmet eder; başkalarının bağlantıları için kullanılmaz. Bir gruba bağlanan çerezler yalnızca o grubun üyelerinin indirmelerine hizmet eder, başka hiçbir yerde kullanılmaz.",
+              "Hukuki dayanak açık rızanızdır: hesabı kendiniz bağlarsınız ve /accounts komutuyla dilediğiniz zaman kaldırabilirsiniz. Kaldırılan çerezler geri dönülemez biçimde silinir. Platform oturum açmayı kabul etmemeye başlarsa bot sizi bilgilendirir.",
+              "Bağlı bir hesap aracılığıyla indirilen gönderiler kanalımızda yayımlanmaz ve ortak önbellekten diğer kullanıcılara sunulmaz.",
+            ],
+          },
+          {
+            heading: "Üçüncü taraf hizmetleri",
+            body: [
+              "Verilerinizi satmıyor ve üçüncü kişilere kendi amaçları için aktarmıyoruz. Hizmetin işleyişi için, her biri verileri kendi kurallarına göre işleyen aşağıdaki sağlayıcılardan yararlanılmaktadır:",
+            ],
+            bullets: [
+              `Telegram — ${BOT} botunun işleyişi.`,
+              "Cloudflare — bot koruması (Turnstile), sitenin sunulması ve e-posta yönlendirmesi.",
+              "Google Analytics ve Google Tag Manager — ziyaret istatistikleri.",
+              "Yandex Metrica — ziyaret istatistikleri, tıklama haritası ve Webvisor. Webvisor, sayfadaki işlemleri kaydeder: imleç hareketleri, kaydırma ve tıklamalar. Kayıtlar yalnızca sitenin kullanım kolaylığını analiz etmek için kullanılır.",
+            ],
+          },
+          {
+            heading: "Verileri ne kadar süre saklıyoruz",
+            bullets: [
+              "İndirilen dosyalar, oluşturulmalarından yaklaşık bir saat sonra sunucudan otomatik olarak silinir. Videolarınızın arşivini tutmuyoruz.",
+              "İndirme girişimlerine ilişkin kayıtlar, kötüye kullanımın önlenmesi ve başvuruların incelenmesi için gerekli olduğu sürece saklanır.",
+              "Hesap verileri, hizmeti kullandığınız sürece saklanır ve talebiniz üzerine silinir.",
+              "Sunucu kayıtları sınırlı bir süre saklanır ve döngüsel olarak üzerine yazılır.",
+            ],
+          },
+          {
+            heading: "Veriler nerede işlenir",
+            body: [
+              "Hizmetin sunucuları Avrupa Birliği sınırları içindeki bir veri merkezinde bulunmaktadır. Yukarıda sayılan sağlayıcıların bir kısmı, kendi politikalarına uygun olarak verileri Avrupa Birliği dışında işleyebilir.",
+            ],
+          },
+          {
+            heading: "Haklarınız",
+            body: [
+              `Verilerinizin işlenmesine ilişkin bilgi talep etme, verilerinizin düzeltilmesini veya silinmesini isteme, açık rızanızı geri alma ve işlemeye itiraz etme hakkına sahipsiniz. Bunun için başvurunun ilgili olduğu e-posta adresinden veya Telegram hesabından ${MAIL} adresine yazınız.`,
+              "Makul bir süre içinde, kural olarak otuz takvim günü içinde yanıt veririz. Hesabın silinmesi, hesaba bağlı indirme geçmişinin de silinmesi sonucunu doğurur.",
+            ],
+          },
+          {
+            heading: "Reşit olmayanlar",
+            body: [
+              "Hizmet 16 yaşından küçük çocuklara yönelik değildir ve onlara hitap etmez. Bu kullanıcıların verilerini bilerek toplamıyoruz; bu durum yanlışlıkla gerçekleşmişse bize yazınız, veriler silinecektir.",
+            ],
+          },
+          {
+            heading: "Değişiklikler",
+            body: [
+              "Bu Politikayı güncelleyebiliriz. Yürürlükteki sürümün tarihi sayfanın başında belirtilmiştir; önemli değişiklikleri hizmet içinde ayrıca belirteceğiz.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Kullanım Koşulları",
+        summary: `${operator.site} kullanım kuralları: neye izin verildiği, neyin yasak olduğu ve hizmetin hangi koşullarla çalıştığı.`,
+        sections: [
+          {
+            heading: "Genel hükümler",
+            body: [
+              `İşbu Koşullar, ${operator.site} web sitesinin ve ${BOT} Telegram botunun kullanımını düzenler. Hizmetin sahibi ve işletmecisi: ${operator.nameTr}.`,
+              "Hizmeti kullanmaya başlayarak bu Koşulları okuduğunuzu ve kabul ettiğinizi teyit edersiniz. Herhangi bir koşul size uygun değilse hizmeti kullanmamalısınız.",
+            ],
+          },
+          {
+            heading: "Hizmet ücretsizdir",
+            body: [
+              "Hizmetin tüm olanakları ücretsiz olarak sunulur. Abonelik, ücretli tarife, ücretli video kalitesi veya hizmet içi satın alma bulunmamaktadır.",
+              "Reklam göstermiyor ve satış ortaklığı (affiliate) bağlantıları yerleştirmiyoruz.",
+            ],
+          },
+          {
+            heading: "Erişim koşulları",
+            bullets: [
+              "Sitede indirme yapmak için hesap oluşturmak veya oturum açmak gerekmez. Bot, kullanıcıları Telegram hesaplarından ayırt eder.",
+              "Hizmet, aşırı yüklenmeye ve otomatik kötüye kullanıma karşı istek sıklığına ilişkin teknik sınırlamalarla korunmaktadır.",
+              "YouTube için günlük trafik sınırı uygulanır: sitede ve uzantıda tek bir ağ başına 24 saatte 10 GB, botta ise tek bir Telegram hesabı başına 24 saatte 25 GB. Bu sınır diğer platformları etkilemez.",
+              "Bot aracılığıyla indirme yapmak için kanalımıza abone olmak gerekmez. Bot, dosya açıklamalarına projenin haber kanalının bağlantısını ekler; bu kanala abone olmak isteğe bağlıdır.",
+            ],
+          },
+          {
+            heading: "Hizmet ne yapar",
+            body: [
+              "Hizmet teknik bir aracıdır: sağladığınız bağlantı üzerinden herkese açık bir sayfaya erişir, medya dosyasını alır ve size iletir.",
+              "Bünyemizde bir video kataloğu barındırmıyor, başkalarına ait içerikler üzerinde arama yapmıyor ve indirilen dosyaları iletim için gerekli süreden — yaklaşık bir saatten — daha uzun süre saklamıyoruz.",
+              "Belirli bir platformun kullanılabilirliği o platformun teknik kararlarına bağlıdır ve önceden bildirimde bulunulmaksızın değişebilir.",
+            ],
+          },
+          {
+            heading: "Kullanıcının yükümlülükleri",
+            body: [
+              "Edindiğiniz dosyaları nasıl kullandığınızdan yalnızca siz sorumlusunuz ve bunu yapmaya hakkınız olduğunu teyit edersiniz.",
+            ],
+            bullets: [
+              "Yalnızca haklarına sahip olduğunuz veya kullanımına hak sahibinin ya da kanunun izin verdiği materyalleri indiriniz.",
+              "Hizmeti telif hakları ve bağlantılı hakları ihlal etmek, yasaklanmış içerik yaymak veya üçüncü kişilerin haklarını ihlal etmek için kullanmayınız.",
+              "İstek sıklığı sınırlamaları ve bot doğrulaması dahil olmak üzere hizmetin teknik sınırlamalarını aşmaya çalışmayınız.",
+              "Otomatik yük oluşturmayınız: toplu istekler, betikler ve kazıyıcılar (scraper) kullanılamaz.",
+            ],
+          },
+          {
+            heading: "Bağlantıların kanalda yayımlanması",
+            body: [
+              "Bot aracılığıyla video indirerek, orijinal gönderinin bağlantısının Telegram kanalımızda yayımlanmasını kabul etmiş olursunuz. Bu konudaki uyarı, kalite seçiminden önce — yani indirme kararınızı vermeden önce — botta gösterilir.",
+              "Yayın anonimdir: kanala herkese açık sayfanın bağlantısı, videonun başlığı ve kapak görseli — platformun gönderi önizlemesinde gösterdiği kare — gönderilir. Videoyu kimin indirdiği belirtilmez. Video dosyasının kendisi hiçbir zaman ve hiçbir yerde yayımlanmaz: paylaşılan şey, platformların da her gönderinin altındaki “Paylaş” düğmesiyle paylaşılmasını önerdiği bağlantıdır.",
+              "Aynı bağlantı en fazla bir kez yayımlanır. Bir bağlantının kanala düşmesini istemiyorsanız o videoyu hizmetimiz aracılığıyla indirmeyiniz.",
+              "Gruplardan gelen bağlantılar ve bağlı bir hesap aracılığıyla indirilen gönderiler kanalda yayımlanmaz."
+            ],
+          },
+          {
+            heading: "Kendi hesabınızın bağlanması",
+            body: [
+              "Bir platformdaki hesabınızı bota bağlayarak, bunun sizin hesabınız olduğunu ve onu bu şekilde kullanmaya yetkili olduğunuzu teyit edersiniz.",
+              "Platformlar otomatik indirmeleri onaylamaz ve bağlanan hesabı kısıtlayabilir veya engelleyebilir. Bu riski üstlenmiş olursunuz; ana hesabınızı değil, ayrı bir hesabı bağlamanızı tavsiye ederiz. Platformun hesabınıza uygulayacağı kısıtlamalardan sorumlu değiliz.",
+              "Bir gruba bağlanan hesap, grubun tüm üyelerinin indirmeleri için kullanılır. Kimin hesap bağlayabileceğine grup yöneticileri karar verir ve bağlanan herhangi bir hesabı kaldırabilir.",
+            ],
+          },
+          {
+            heading: "Sorumluluğun sınırlandırılması",
+            body: [
+              "Hizmet “olduğu gibi” esasıyla sunulur. Kesintisiz çalışmayı, belirli bir platformun kullanılabilirliğini veya dosyanın amaçlarınıza uygunluğunu garanti etmiyoruz.",
+              "İndirdiğiniz materyali nasıl kullandığınızdan ve üçüncü kişilerin haklarını ihlal etmenizin sonuçlarından sorumlu değiliz.",
+              "Hizmetin sunduğu olanakları değiştirme, bakım için hizmeti askıya alma ve hizmetin işleyişine son verme hakkımız saklıdır.",
+            ],
+          },
+          {
+            heading: "Erişimin kısıtlanması",
+            body: [
+              "İşbu Koşulların ihlali, sınırlamaları aşma girişimleri veya hak sahibinden gerekçeli bir şikâyet alınması hâlinde hizmete erişimi kısıtlayabilir veya sona erdirebiliriz.",
+            ],
+          },
+          {
+            heading: "Değişiklikler ve uygulanacak hukuk",
+            body: [
+              "Koşulları değiştirebiliriz; yürürlükteki sürümün tarihi sayfanın başında belirtilmiştir. Değişikliklerden sonra hizmeti kullanmaya devam etmeniz, yeni sürümü kabul ettiğiniz anlamına gelir.",
+              "Taraflar arasındaki ilişkilere Kazakistan Cumhuriyeti hukuku uygulanır. Taraflar uyuşmazlıkları yazışma yoluyla çözmeye çalışır; uzlaşma sağlanamazsa uyuşmazlıklar Kazakistan Cumhuriyeti mevzuatında belirlenen usule göre çözülür.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Çerez Politikası",
+        summary: `${operator.site} hizmetinin hangi çerezleri kullandığı, bunların ne işe yaradığı ve nasıl reddedilebileceği.`,
+        sections: [
+          {
+            heading: "Çerez nedir",
+            body: [
+              "Çerezler, bir sitenin tarayıcınızda sakladığı küçük metin dosyalarıdır. Ayarlarınızın hatırlanmasını ve anonimleştirilmiş ziyaret istatistiklerinin toplanmasını sağlar.",
+              "Bu belgede çerezlerle birlikte bunlara yakın teknolojileri — tarayıcının yerel depolama alanını ve izleme piksellerini — de açıklıyoruz.",
+            ],
+          },
+          {
+            heading: "Zorunlu çerezler",
+            body: [
+              "Bunlar olmadan hizmet çalışmaz; bu nedenle her zaman yerleştirilirler.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — bağlantının bir betik tarafından değil, bir insan tarafından gönderildiğinin doğrulanması.",
+              "Arayüz ayarları — seçilen dil ve renk teması.",
+            ],
+          },
+          {
+            heading: "Analitik çerezler",
+            body: [
+              "Hangi sayfaların kullanıldığını ve hataların nerede ortaya çıktığını anlamamıza yardımcı olurlar. Açık rızanızla yerleştirilirler ve hizmetin çalışması için zorunlu değildirler.",
+            ],
+            bullets: [
+              "Google Analytics ve Google Tag Manager — anonimleştirilmiş biçimde ziyaret sayıları ve site içi davranış.",
+              "Yandex Metrica — ziyaret sayıları, tıklama haritası ve Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Yandex Metrica’nın Webvisor aracı sayfadaki işlemleri kaydeder: imleç hareketleri, kaydırma, tıklamalar ve bağlantı alanına yapılan girişler. Bu, arayüzün kullanıcıların kafasını nerede karıştırdığını görmek için gereklidir.",
+              "Bu kayıtları belirli kişileri izlemek için kullanmıyoruz. Sitenin alanlarına saklanmasını istemeyeceğiniz bilgileri girmeyiniz.",
+            ],
+          },
+          {
+            heading: "Nasıl reddedilir",
+            bullets: [
+              "Tarayıcınızda çerezlerin engellenmesini veya silinmesini ayarlayınız — bu yöntem burada sayılan tüm sistemler için geçerlidir.",
+              "Google Analytics: veri toplamayı devre dışı bırakan resmî tarayıcı eklentisi Google’ın sitesinde mevcuttur.",
+              "Yandex Metrica: Yandex’in resmî eklentisi aracılığıyla devre dışı bırakılabilir.",
+              "Zorunlu çerezlerin devre dışı bırakılması indirme yapılmasını imkânsız hâle getirir.",
+            ],
+          },
+          {
+            heading: "Saklama süreleri",
+            body: [
+              "Oturum çerezleri, tarayıcı kapatıldığında veya oturum süresi dolduğunda silinir. Analitik araçlar, tanımlayıcılarını sağlayıcılarının belirlediği süreler boyunca saklar.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Hak Sahipleri İçin",
+        summary: "Hizmetin telif haklarına ilişkin tutumu ve ihlal şikâyetinde bulunma usulü.",
+        sections: [
+          {
+            heading: "Hizmetin tutumu",
+            body: [
+              "Hizmet bünyesinde video barındırmaz ve video kataloğu tutmaz. Teknik bir aracı olarak çalışır: kullanıcının girdiği bağlantı üzerinden herkese açık bir sayfaya erişir ve dosyayı kullanıcıya iletir.",
+              "İndirilen dosyalar sunucuda yaklaşık bir saat saklanır ve otomatik olarak silinir. Başkalarına ait içeriğin kalıcı bir kopyası bizde kalmaz.",
+              "İndirilen materyalin kullanımından kullanıcı sorumludur — bu husus Kullanım Koşulları’nda açıkça düzenlenmiştir.",
+            ],
+          },
+          {
+            heading: "Haklarınız ihlal ediliyorsa",
+            body: [
+              `Hak sahibi veya temsilcisiyseniz ve hizmetin haklarınızı ihlal etmek için kullanıldığını düşünüyorsanız ${MAIL} adresine yazınız. Bu tür başvuruları inceler ve gerekli önlemleri alırız.`,
+            ],
+          },
+          {
+            heading: "Başvuruda belirtilmesi gerekenler",
+            bullets: [
+              "Hangi eserin etkilendiği ve bu eser üzerindeki haklarınızın hangi dayanağa sahip olduğu.",
+              "Materyalin bağlantısı ve biliniyorsa ihlalin koşulları.",
+              "İletişim bilgileriniz: adınız veya unvanınız, adresiniz ve e-posta adresiniz.",
+              "Hak sahibi adına hareket ediyorsanız yetkinizi gösteren belge.",
+              "Başvurudaki bilgilerin doğru olduğuna ve materyalin kullanımına hak sahibinin veya kanunun izin vermediğine dair beyan.",
+            ],
+          },
+          {
+            heading: "Ne yapacağız",
+            body: [
+              "Başvuruyu makul bir süre içinde, kural olarak otuz takvim günü içinde inceleriz; ihlalin teyit edilmesi hâlinde materyale hizmet üzerinden erişimi ve gerekirse ihlal edenin hizmete erişimini kısıtlarız.",
+              "İnceleme sonucunu belirttiğiniz e-posta adresine bildiririz.",
+            ],
+          },
+          {
+            heading: "Kötü niyetli başvurular",
+            body: [
+              "Bilerek gerçeğe aykırı bilgiler içeren bir başvuru, başvuru sahibinin mevzuat uyarınca sorumluluğunu doğurabilir. Ne hak sahibinin ne de uyuşmazlık konusu materyalin belirlenmesine imkân vermeyen bir başvuruyu incelemeyi reddetme hakkımız saklıdır.",
             ],
           },
         ],

@@ -3,7 +3,7 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz"] as const;
+export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz", "tr"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -27,6 +27,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   it: "Italiano",
   pt: "Português",
   uz: "Oʻzbekcha",
+  tr: "Türkçe",
 };
 
 type PlatformStrings = {
@@ -5442,4 +5443,364 @@ const uz: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz };
+const tr: Translations = {
+  nav: {
+    home: "Ana sayfa",
+    downloaders: "İndiriciler",
+    extension: "Eklenti",
+    blog: "Blog",
+    switchTheme: "Temayı değiştir",
+    language: "Dil",
+    comingSoon: "Çok yakında",
+  },
+  theme: {
+    light: "Açık",
+    dark: "Koyu",
+    system: "Sistem",
+  },
+  playlist: {
+    title: "“{title}” oynatma listesi: {count} video",
+    hint: "Videolar tek tek indirilir. Bu sayfayı açık tutun; tarayıcınız birden fazla dosya indirmeye izin vermenizi isteyebilir.",
+    std: "720p",
+    hd: "En iyi kalite",
+    audio: "Yalnızca ses (mp3)",
+    progress: "Video {index} / {count}",
+    stats: "İndirilen: {done} · başarısız: {failed}",
+    stop: "Durdur",
+    stopped: "Durduruldu. {count} videodan {done} tanesi indirildi.",
+    finished: "Oynatma listesi tamamlandı: {count} videodan {done} tanesi.",
+    again: "Yeniden seç",
+  },
+  footer: {
+    news: "Proje haberleri",
+    botCta: "Telegram botu olarak da kullanılabilir:",
+    extension: "Tarayıcı eklentisi",
+    developedBy: "Geliştiren",
+    rights: "Tüm hakları saklıdır.",
+  },
+  content: {
+    howToTitle: "{platform} videoları nasıl indirilir",
+    faqTitle: "Sıkça sorulan sorular",
+  },
+  auth: {
+    loginButton: "Telegram ile giriş yap",
+    signIn: "Giriş yap",
+    logout: "Çıkış yap",
+    switchAccountHint: "Bu sizin hesabınız değil mi?",
+    switchAccountLink: "Telegram Web'den çıkış yapın",
+  },
+  home: {
+    new: "Yeni",
+    manyFeatures: "Birçok yeni özellik",
+    titleLine1: "Video indirin",
+    titleLine2: "Hızlı ve kolay",
+    subtitle:
+      "YouTube, Instagram, TikTok ve daha fazlası için evrensel video indiriciniz. HD'den mobil uyumlu formata kadar istediğiniz kaliteyi seçin.",
+    subtitleExtra: "Sınır yok, uğraş yok — sadece indirin.",
+    placeholder: "Herhangi bir platformdan video bağlantısını yapıştırın...",
+    download: "İndir",
+  },
+  video: {
+    description: "Açıklama",
+    format: "Format",
+    selected: "Seçilen: {quality}",
+    videoTab: "video",
+    audioTab: "ses",
+    converting: "Dönüştürülüyor",
+    downloading: "İndiriliyor",
+    downloadAgain: "Tekrar indir",
+    startDownload: "İndirmeyi başlat",
+    convertingBtn: "Dönüştürülüyor...",
+    downloadingBtn: "İndiriliyor...",
+    loginRequiredHint: "İndirmek için Telegram ile giriş yapın",
+    quotaExceededHint: "Günlük 20 indirme sınırına ulaşıldı — yarın tekrar gelin",
+    postFiles: "Bu gönderide {count} dosya var",
+    photoQuality: "Orijinal fotoğraflar",
+    slideshowQuality: "Slayt gösterisi (video)",
+    galleryQuality: "Fotoğraflar + slayt gösterisi",
+    downloadAll: "Tümünü indir",
+    downloadOne: "Kaydet",
+    subtitlesTab: "altyazılar",
+    subtitlesHint: "Bir dil seçin — her oynatıcının açabildiği bir .srt dosyası alacaksınız.",
+    subtitlesAuto: "otomatik",
+    subtitlesDownload: "Altyazıları indir",
+    subtitlesDownloading: "Altyazılar hazırlanıyor...",
+  },
+  toast: {
+    enterUrl: "Lütfen bir bağlantı girin",
+    enterValidUrl: "Lütfen geçerli bir bağlantı girin",
+    platformNotSupported: "Bu platform desteklenmiyor",
+    urlNotSupported: "Bu bağlantı desteklenmiyor",
+    enterValidPlatformUrl: "Lütfen geçerli bir {platform} bağlantısı girin",
+    captchaNotReady: "Güvenlik kontrolünün tamamlanması için biraz bekleyin, ardından tekrar deneyin",
+    comingSoon: "Çok yakında! {name} henüz desteklenmiyor",
+    selectQuality: "Lütfen bir kalite seçin",
+    downloadStarted: "İndirme başladı!",
+    downloadCompleted: "İndirme tamamlandı!",
+    newsChannel: "Proje haberleri Telegram'da:",
+    downloadUrlNotReceived: "İndirme bağlantısı alınamadı",
+    needsBrowser:
+      "Platform bu videoyu sunucumuza vermedi: video yalnızca giriş yapmış kullanıcılara açık ya da erişim geçici olarak kısıtlanmış. Videoyu bilgisayarda Videoner tarayıcı eklentisiyle indirebilirsiniz — eklenti kendi oturumunuzu kullanarak indirir.",
+    needsBrowserLink: "Eklentiyi edinin →",
+  },
+  platforms: {
+    youtube: {
+      description: "YouTube'dan HD kalitede video indirin",
+      news: "Artık videolar ve Shorts destekleniyor",
+      titleLine1: "YouTube video",
+      titleLine2: "ve Shorts indir",
+      pageDescription:
+        "YouTube videolarını, Shorts'ları ve sesleri yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay. 8K, 4K, HD kalite ve MP3 ses desteği.",
+      placeholder: "YouTube bağlantısını buraya yapıştırın...",
+      howTo: [
+        "Video bağlantısını tarayıcınızın adres çubuğundan kopyalayın ya da YouTube uygulamasında Paylaş'a dokunun.",
+        "Bağlantıyı yukarıdaki kutuya yapıştırın ve İndir'e basın.",
+        "Bir kalite seçin — video için 4K/8K'ya kadar ya da yalnızca ses için MP3.",
+        "Dosyanız hemen inmeye başlar, giriş yapmanız gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile YouTube video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "Videoner, YouTube'un o video için sunduğu tüm çözünürlükleri sunar — 360p'den, mevcutsa 4K/8K'ya kadar — ayrıca MP3 ses çıkarma imkânı da vardır." },
+        { q: "Gizli veya yaş sınırlı videoları indirebilir miyim?", a: "Yalnızca herkese açık YouTube videoları desteklenir; gizli, size açık olmayan liste dışı ya da giriş gerektiren içerikler indirilemez." },
+        { q: "YouTube'dan video indirmek yasal mı?", a: "Yalnızca kaydetme hakkınız olan videoları indirin — kendi içeriğiniz, Creative Commons lisanslı videolar ya da içerik üreticisinin izin verdiği her şey. YouTube Hizmet Şartları'na ve telif hakkı yasalarına uyun." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dönüştürülen dosyalar sunucuda yaklaşık bir saat kalır, bu yüzden indirdikten hemen sonra cihazınıza kaydedin." },
+      ],
+    },
+    facebook: {
+      description: "Facebook gönderilerinden ve Reels'tan video kaydedin",
+      news: "Artık Reels destekleniyor",
+      titleLine1: "Facebook video",
+      titleLine2: "ve Reels indir",
+      pageDescription:
+        "Facebook videolarını ve Reels'ı yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay.",
+      placeholder: "Facebook bağlantısını buraya yapıştırın...",
+      howTo: [
+        "Facebook'ta videoyu veya Reels'ı açın ve bağlantısını kopyalayın (üç noktaya dokunun → Bağlantıyı kopyala).",
+        "Bağlantıyı yukarıya yapıştırın ve İndir'e basın.",
+        "MP4 kalitesini seçin ya da sesi MP3 olarak çıkarın.",
+        "Dosya doğrudan cihazınıza iner — Facebook hesabı gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile Facebook video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "Videoner, Facebook'un o video veya Reels için sunduğu en yüksek kaliteyi MP4 olarak alır, ayrıca MP3 ses seçeneği de vardır." },
+        { q: "Gizli videoları indirebilir miyim?", a: "Yalnızca herkese açık gönderiler, videolar ve Reels çalışır — gizli veya yalnızca arkadaşlara açık içeriklere erişilemez." },
+        { q: "Facebook'tan video indirmek yasal mı?", a: "Yalnızca kaydetme izniniz olan videoları indirin; içerik üreticisinin haklarına ve Facebook Hizmet Şartları'na saygı gösterin." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dosyalar dönüştürmeden sonra yaklaşık bir saat saklanır, ardından otomatik olarak silinir — vakit kaybetmeden indirin." },
+      ],
+    },
+    instagram: {
+      description: "Instagram Reels, hikâye ve gönderilerini indirin",
+      news: "Artık Reels ve hikâyeler destekleniyor",
+      titleLine1: "Instagram Reels",
+      titleLine2: "ve hikâye indir",
+      pageDescription:
+        "Instagram Reels, hikâye ve gönderilerini yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay.",
+      placeholder: "Instagram bağlantısını buraya yapıştırın...",
+      howTo: [
+        "Instagram'da Reels'ı, gönderiyi veya hikâyeyi açın ve kâğıt uçak simgesine dokunun → Bağlantıyı kopyala.",
+        "Bağlantıyı yukarıdaki kutuya yapıştırın.",
+        "İstediğiniz kaliteyi ve formatı seçin.",
+        "İndirme anında başlar — giriş yapmanız ya da uygulama yüklemeniz gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile Instagram içeriği indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "Reels, gönderi ve hikâyeler için mevcut en yüksek kalite, MP4 veya MP3 olarak." },
+        { q: "Gizli hesaplardan indirebilir miyim?", a: "Yalnızca herkese açık Instagram hesapları ve gönderileri desteklenir; gizli hesaplardaki içerikler indirilemez." },
+        { q: "Instagram'dan video indirmek yasal mı?", a: "Yalnızca kaydetmenize izin verilen içerikleri indirin — içerik üreticisine ve Instagram Kullanım Koşulları'na saygı gösterin." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dosyalar otomatik olarak silinmeden önce sunucuda yaklaşık bir saat kalır." },
+      ],
+    },
+    tiktok: {
+      description: "TikTok videolarını filigransız indirin",
+      news: "Artık filigransız",
+      titleLine1: "TikTok video indir",
+      titleLine2: "filigransız",
+      pageDescription:
+        "TikTok videolarını filigransız ve yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay.",
+      placeholder: "TikTok bağlantısını buraya yapıştırın...",
+      howTo: [
+        "TikTok videosunda Paylaş'a, ardından Bağlantıyı kopyala'ya dokunun.",
+        "Bağlantıyı yukarıya yapıştırın ve İndir'e basın.",
+        "TikTok filigranı olmadan temiz MP4'ü ya da MP3 sesini alın.",
+        "Doğrudan cihazınıza kaydedin.",
+      ],
+      faq: [
+        { q: "Videoner ile TikTok video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "TikTok'un o video için sunduğu en iyi kalite, TikTok filigranı olmadan, ayrıca MP3 ses." },
+        { q: "Gizli hesaplardan indirebilir miyim?", a: "Yalnızca herkese açık TikTok hesaplarındaki videolar indirilebilir." },
+        { q: "TikTok'tan video indirmek yasal mı?", a: "Kaydetme hakkınız olan videoları indirin, içerik üreticisini belirtin ve TikTok Hizmet Şartları'na uyun." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "İndirilen dosyalar sunucuda yaklaşık bir saat kalır, ardından otomatik olarak silinir." },
+      ],
+    },
+    twitter: {
+      description: "Twitter videolarını indirin",
+      news: "Artık Twitter videoları destekleniyor",
+      titleLine1: "Twitter video",
+      titleLine2: "indir",
+      pageDescription:
+        "Twitter videolarını yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay.",
+      placeholder: "Twitter bağlantısını buraya yapıştırın...",
+      howTo: [
+        "Tweet'in altındaki Paylaş'a dokunun ve Bağlantıyı kopyala'yı seçin (ya da URL'yi tarayıcınızdan kopyalayın).",
+        "Bağlantıyı yukarıdaki kutuya yapıştırın.",
+        "İstediğiniz video kalitesini seçin.",
+        "İndirme hemen başlar — X/Twitter hesabı gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile Twitter/X video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "X/Twitter'ın o video için sunduğu tüm kaliteler, MP4 olarak, ayrıca MP3." },
+        { q: "Gizli hesaplardan indirebilir miyim?", a: "Yalnızca herkese açık hesapların tweet'leri çalışır; korumalı/gizli hesaplar desteklenmez." },
+        { q: "Twitter/X'ten video indirmek yasal mı?", a: "Paylaşan kişinin haklarına ve platformun Hizmet Şartları'na saygı göstererek yalnızca kaydetme hakkınız olan içerikleri indirin." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dosyalar oluşturulduktan yaklaşık bir saat sonra otomatik olarak silinir." },
+      ],
+    },
+    vimeo: {
+      description: "Vimeo'dan yüksek kalitede video indirin",
+      news: "Artık Vimeo destekleniyor",
+      titleLine1: "Vimeo video",
+      titleLine2: "indir",
+      pageDescription:
+        "Vimeo videolarını yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay.",
+      placeholder: "Vimeo bağlantısını buraya yapıştırın...",
+      howTo: [
+        "Vimeo'yu açın ve video bağlantısını kopyalayın (mobilde Paylaş → Bağlantıyı kopyala'ya dokunun).",
+        "Bağlantıyı yukarıdaki kutuya yapıştırın ve İndir'e basın.",
+        "Bir kalite ve format seçin — video için MP4, yalnızca ses istiyorsanız MP3.",
+        "İndirmeniz hemen başlar; hesap ya da program kurulumu gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile Vimeo video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "Videoner, Vimeo'nun o video için sunduğu tüm kaliteleri, orijinal yükleme çözünürlüğüne kadar sunar; içerik üreticisi sağladıysa HD ve 4K da dahildir." },
+        { q: "Gizli veya şifre korumalı Vimeo videolarını indirebilir miyim?", a: "Hayır — Videoner yalnızca herkese açık Vimeo bağlantılarıyla çalışır. Gizli, şifre korumalı veya erişimi kısıtlı videolar indirilemez." },
+        { q: "Vimeo'dan video indirmek yasal mı?", a: "İndirme, kaydetme hakkınız olan videolar içindir — kendi içeriğiniz, Creative Commons lisanslı videolar ya da içerik üreticisinin indirilmesine açıkça izin verdiği her şey. Orijinal içerik üreticisinin telif hakkına ve Vimeo hizmet şartlarına saygı gösterin." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dosyalar istek üzerine oluşturulur ve otomatik olarak silinmeden önce sunucuda yaklaşık bir saat tutulur; bu yüzden indirme biter bitmez cihazınıza kaydedin." },
+      ],
+    },
+    vk: {
+      description: "VK'dan video ve klip indirin",
+      news: "Artık VK destekleniyor",
+      titleLine1: "VK video",
+      titleLine2: "ve klip indir",
+      pageDescription:
+        "VK video ve kliplerini yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay.",
+      placeholder: "VK bağlantısını buraya yapıştırın...",
+      howTo: [
+        "VK'da (vk.com veya VK Video) videoyu ya da klibi açın ve bağlantısını adres çubuğundan veya Paylaş düğmesinden kopyalayın.",
+        "Bağlantıyı yukarıya yapıştırın ve İndir'e basın.",
+        "Mevcut kalite ve formatı seçin.",
+        "Dosya doğrudan iner — VK'ya giriş yapmanız gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile VK video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "VK'nın o video veya klip için sunduğu tüm kaliteler, ayrıca MP3 ses." },
+        { q: "VK'ya giriş yapmam gerekiyor mu?", a: "Hayır — video herkese açık olmalıdır. Videoner VK'ya giriş yapmaz, bu nedenle gizli, yalnızca arkadaşlara açık veya giriş gerektiren videolar indirilemez." },
+        { q: "VK'dan video indirmek yasal mı?", a: "VK Hizmet Şartları'na ve yükleyenin haklarına saygı göstererek yalnızca kaydetme hakkınız olan videoları indirin." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dosyalar sunucuda yaklaşık bir saat tutulur, ardından otomatik olarak silinir." },
+      ],
+    },
+    rutube: {
+      description: "Rutube'dan video indirin",
+      news: "Artık Rutube destekleniyor",
+      titleLine1: "Rutube video",
+      titleLine2: "indir",
+      pageDescription:
+        "Rutube videolarını yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay.",
+      placeholder: "Rutube bağlantısını buraya yapıştırın...",
+      howTo: [
+        "Rutube'da videoyu açın ve bağlantısını adres çubuğundan veya Paylaş düğmesinden kopyalayın.",
+        "Bağlantıyı yukarıdaki kutuya yapıştırın.",
+        "Kaliteyi ve formatı (video veya ses) seçin.",
+        "İndirme hemen başlar, Rutube hesabı gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile Rutube video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "Rutube'un sunduğu tüm kaliteler, MP4 olarak, ayrıca MP3 ses." },
+        { q: "Rutube'a giriş yapmam gerekiyor mu?", a: "Hayır — Videoner yalnızca herkese açık Rutube videolarıyla çalışır; giriş kullanılmaz ve gerekmez." },
+        { q: "Rutube'dan video indirmek yasal mı?", a: "Rutube Hizmet Şartları'na ve içerik üreticisinin haklarına saygı göstererek yalnızca kaydetmenize izin verilen içerikleri indirin." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dosyalar otomatik olarak silinmeden önce sunucuda yaklaşık bir saat kalır." },
+      ],
+    },
+    okru: {
+      description: "OK.ru'dan (Odnoklassniki) video indirin",
+      news: "Artık OK.ru destekleniyor",
+      titleLine1: "OK.ru video",
+      titleLine2: "indir",
+      pageDescription:
+        "OK.ru (Odnoklassniki) videolarını yüksek kalitede indirin. Hızlı, ücretsiz ve kullanımı kolay.",
+      placeholder: "OK.ru bağlantısını buraya yapıştırın...",
+      howTo: [
+        "OK.ru'da (Odnoklassniki) videoyu açın ve bağlantısını adres çubuğundan kopyalayın.",
+        "Bağlantıyı yukarıdaki kutuya yapıştırın ve İndir'e basın.",
+        "Kaliteyi ve formatı seçin.",
+        "İndirme hemen başlar — OK.ru'ya giriş yapmanız gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile OK.ru video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi video kalitesini indirebilirim?", a: "OK.ru'nun o video için sunduğu tüm kalite seçenekleri, ayrıca MP3." },
+        { q: "OK.ru'ya giriş yapmam gerekiyor mu?", a: "Hayır — yalnızca herkese açık OK.ru (Odnoklassniki) videoları çalışır. Videoner hiçbir hesaba giriş yapmaz, bu nedenle gizli videolara erişilemez." },
+        { q: "OK.ru'dan video indirmek yasal mı?", a: "OK.ru Hizmet Şartları'na ve yükleyenin haklarına saygı göstererek yalnızca kaydetme hakkınız olan videoları indirin." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dosyalar oluşturulduktan yaklaşık bir saat sonra otomatik olarak silinir." },
+      ],
+    },
+    pinterest: {
+      description: "Pinterest pinlerinden video indirin",
+      news: "Artık Pinterest destekleniyor",
+      titleLine1: "Pinterest video",
+      titleLine2: "ve pin indir",
+      pageDescription:
+        "Pinterest pinlerinden yüksek kalitede video indirin. Hızlı, ücretsiz ve kullanımı kolay. Not: yalnızca video pinleri indirilebilir — yalnızca fotoğraf içeren pinler desteklenmez.",
+      placeholder: "Pinterest bağlantısını buraya yapıştırın...",
+      howTo: [
+        "Pinterest'te pini açın ve Paylaş → Bağlantıyı kopyala'ya dokunun (ya da URL'yi tarayıcınızdan kopyalayın).",
+        "Bağlantıyı yukarıdaki kutuya yapıştırın ve İndir'e basın.",
+        "İstediğiniz kaliteyi ve formatı seçin.",
+        "Dosyanız hemen iner — hesap gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile Pinterest video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak ve mevcut kaliteleri görmek için giriş yapmanız gerekmez." },
+        { q: "Hangi kalitede indirebilirim?", a: "Videoner, Pinterest'in o pinin videosu için sunduğu tüm kaliteleri sunar, ayrıca MP3 ses çıkarma imkânı da vardır." },
+        { q: "Pinterest'ten fotoğraf veya görsel indirebilir miyim?", a: "Hayır — yalnızca video pinleri indirilebilir. Pin yalnızca fotoğraftan oluşuyorsa çıkarılacak bir video dosyası yoktur." },
+        { q: "Gizli veya pano kısıtlamalı pinleri indirebilir miyim?", a: "Yalnızca herkese açık pinler desteklenir; gizli panolar ve giriş gerektiren içerikler indirilemez." },
+        { q: "Pinterest'ten video indirmek yasal mı?", a: "Yalnızca kaydetme hakkınız olan pinleri indirin — kendi içeriğiniz ya da içerik üreticisinin izin verdiği her şey. Pinterest Hizmet Şartları'na ve telif hakkı yasalarına uyun." },
+        { q: "İndirdiğim dosya ne kadar süre erişilebilir kalır?", a: "Dönüştürülen dosyalar sunucuda yaklaşık bir saat kalır, bu yüzden indirdikten hemen sonra cihazınıza kaydedin." },
+      ],
+    },
+    threads: {
+      description: "Threads gönderilerinden video indirin",
+      news: "Artık Threads destekleniyor",
+      titleLine1: "Threads video",
+      titleLine2: "indir",
+      pageDescription:
+        "Threads gönderilerinden video indirin. Hızlı, ücretsiz ve Threads hesabı gerektirmez. Threads tek bir video sürümü sunar, en fazla 720p — platformun sağladığı en yüksek kalite budur.",
+      placeholder: "Threads bağlantısını buraya yapıştırın...",
+      howTo: [
+        "Gönderiyi Threads'te açın, paylaş simgesine ve ardından Bağlantıyı kopyala'ya dokunun.",
+        "Bağlantıyı yukarıdaki kutuya yapıştırın ve İndir'e basın.",
+        "İstediğiniz formatı seçin — video veya MP3 ses.",
+        "Dosyanız hemen iner — hesap gerekmez.",
+      ],
+      faq: [
+        { q: "Videoner ile Threads video indirmek ücretsiz mi?", a: "Evet — ancak önce Telegram ile giriş yapmanız gerekir (tek tık, şifre yok). Telegram botumuzla ortak olarak günde 20 indirme hakkınız vardır. Hizmet tamamen ücretsizdir: abonelik ve reklam yok." },
+        { q: "İndirmek için hesap gerekiyor mu?", a: "İndirmeyi başlatmadan önce Telegram hesabınızla giriş yapmanız gerekir — tek tık yeterli, e-posta ya da şifre gerekmez. Sayfaya göz atmak için giriş yapmanız gerekmez." },
+        { q: "Hangi kalitede indirebilirim?", a: "Threads her gönderi için tam olarak tek bir video sürümü yayınlar ve kısa kenarı 720p ile sınırlıdır — yazar 4K yüklemiş olsa bile. Videoner bu dosyayı olduğu gibi verir, ayrıca MP3 ses çıkarma imkânı da sunar. Hiçbir indirici daha fazlasını sunamaz, çünkü daha yüksek çözünürlükler hiç sunulmaz." },
+        { q: "Hem threads.com hem threads.net bağlantıları çalışıyor mu?", a: "Evet. threads.com/@user/post/CODE gibi tam bağlantılar ve threads.net/t/CODE gibi kısa bağlantılar desteklenir." },
+        { q: "Threads gönderisinden fotoğraf indirebilir miyim?", a: "Hayır — yalnızca videolar. Gönderide yalnızca fotoğraf varsa çıkarılacak bir video dosyası yoktur." },
+        { q: "Birden fazla video içeren gönderiler ne olacak?", a: "Gönderideki ilk video indirilir. Threads karuselleri birkaç klip içerebilir ve yalnızca ilki kaydedilir." },
+        { q: "Gizli gönderileri indirebilir miyim?", a: "Hayır. Yalnızca herkese açık gönderiler indirilebilir; gizli hesapların arkasındaki ya da giriş gerektiren içeriklere erişilemez." },
+        { q: "Threads'ten video indirmek yasal mı?", a: "Yalnızca kaydetme hakkınız olan içerikleri indirin — kendi içeriğiniz ya da yazarın izin verdiği her şey. Threads Kullanım Koşulları'na ve telif hakkı yasalarına uyun." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr };

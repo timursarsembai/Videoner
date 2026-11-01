@@ -199,6 +199,18 @@ export const blogUi: Record<
     readFull: "Toʻliq maqolani saytda oʻqish",
     dateLocale: "uz-Latn-UZ",
   },
+  tr: {
+    title: "Videoner blogu",
+    description: "Proje haberleri: botta, sitede ve eklentide neler yeni ve nasıl kullanılır.",
+    readMore: "Oku",
+    back: "Tüm yazılar",
+    allPosts: "Blog",
+    channel: "Telegram'da haberler",
+    channelCta: "Proje haberleri Telegram kanalı @videonerdownload'da.",
+    readOnSite: "Sitede oku",
+    readFull: "Yazının tamamını sitede okuyun",
+    dateLocale: "tr-TR",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

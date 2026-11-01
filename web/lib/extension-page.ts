@@ -767,6 +767,58 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Início",
   },
+  tr: {
+    metaTitle: "Videoner tarayıcı eklentisi",
+    title: "Tarayıcınız için Videoner",
+    summary:
+      "Eklenti, video sayfalarına bir İndir düğmesi ekler ve indirmeyi doğrudan tarayıcınızda yapar. Instagram, Facebook, TikTok ve Threads kendi oturumunuzla indirilir — böylece hesabınızda görebildiğiniz gizli gönderiler ve platformun sunucumuza vermediği videolar da indirilebilir.",
+    failedVideo: "Sitede veya botta indirilemeyen video:",
+    failedVideoHint:
+      "Eklentiyi yükleyin, bu tarayıcıda platforma giriş yapın, videoyu açın ve sağ alt köşedeki “İndir” düğmesine tıklayın.",
+    openVideo: "Videoyu aç",
+    version: "Sürüm",
+    browsersTitle: "Nerede çalışır",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi ve Chromium tabanlı diğer tarayıcılar — bilgisayarda.",
+    mobile: "Telefonlar ve tabletler eklentileri desteklemez — orada web sitesini veya Telegram botunu kullanın.",
+    getcourseTitle: "GetCourse dersleri",
+    getcourse:
+      "Giriş yapmışken bir GetCourse okulunda ders açın: oynatıcının sağ üst köşesinde bir İndir düğmesi belirir, Videoner simgesi ise dersteki tüm videoları listeler. Tarayıcınız dersi kendisi indirir ve tek bir mp4 dosyasında birleştirir — dosya sunucumuzdan geçmez. Bu başarısız olursa dersi aynı kalitede sunucumuz indirir; bu durumda video bağlantısını oynatıcıdan alır.",
+    privacyTitle: "Oturumunuz sizde kalır",
+    privacy:
+      "Eklenti hiçbir zaman şifre istemez: platforma isteği kendi tarayıcınız gönderir, sunucumuz ise istatistik için yalnızca kısa bir rapor alır — bağlantı, dosya boyutu ve başlık. Çerezler sunucuya yalnızca “Hesabı bota bağla” düğmesine kendiniz bastığınızda gönderilir — ve yalnızca o platformun çerezleri, şifrelenmiş olarak.",
+    stepsTitle: "Chrome, Yandex Browser, Edge ve Opera'ya nasıl yüklenir",
+    steps: [
+      "Arşivi indirin ve açın — adında sürüm numarası olan bir videoner-extension klasörü oluşur.",
+      "Eklentiler sayfasını açın: adres çubuğuna chrome://extensions yazın (Edge'de edge://extensions, Opera'da opera://extensions).",
+      "Sayfanın üst kısmındaki anahtarla “Geliştirici modu”nu açın.",
+      "“Paketlenmemiş öğe yükle”ye tıklayın ve o klasörü seçin — içinde manifest.json bulunan klasörü.",
+      "Hepsi bu: video sayfalarında bir İndir düğmesi belirir, Videoner simgesi de tarayıcı araç çubuğunda görünür.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 veya üzeri — yine bilgisayarda.",
+    firefoxSoon:
+      "Firefox sürümü çok yakında geliyor. Şimdilik eklenti Chrome, Yandex Browser, Edge, Opera ve Chromium tabanlı diğer tarayıcılarda çalışıyor.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Bir .zip arşivi — birkaç dakikada yüklenir",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Tek tıkla kurulum",
+    yourBrowser: "Tarayıcınız",
+    soon: "Çok yakında",
+    firefoxStepsTitle: "Firefox'a nasıl yüklenir",
+    firefoxSteps: [
+      "Bu sayfanın üst kısmındaki Firefox düğmesine tıklayın.",
+      "Firefox, videoner.download sitesinin bir eklenti yüklemesine izin verilip verilmeyeceğini sorar — “Kuruluma devam et”e tıklayın.",
+      "“Videoner eklensin mi?” penceresinde “Ekle”ye tıklayın.",
+      "Hepsi bu: video sayfalarında bir İndir düğmesi belirir, Videoner simgesi de araç çubuğunda görünür. Firefox güncellemeleri kendisi yükler.",
+    ],
+    updateTitle: "Chrome, Yandex Browser, Edge ve Opera'da nasıl güncellenir",
+    updateSteps: [
+      "Yeni bir sürüm çıktığında Videoner simgesinde NEW etiketi görünür ve açılır pencere buraya bağlantı verir.",
+      "Arşivi bu sayfanın üst kısmındaki Chrome düğmesiyle indirin ve dosyaların üzerine yazarak öncekiyle aynı klasöre açın.",
+      "Eklentiler sayfasını açın (chrome://extensions, Yandex Browser'da browser://extensions, edge://extensions) ve “Yeniden yükle”ye basın — Videoner kartındaki dairesel ok.",
+    ],
+    back: "Ana sayfa",
+  },
   uz: {
     metaTitle: "Videoner brauzer kengaytmasi",
     title: "Brauzeringiz uchun Videoner",

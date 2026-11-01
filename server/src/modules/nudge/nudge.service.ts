@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('tr')) {
+      return (
+        'Merhaba! Bu botu başlattınız ama henüz hiçbir şey indirmediniz — ' +
+        'belki nereden başlayacağınız net değildi.\n\n' +
+        'Tek adım yeterli: buraya bir video bağlantısı gönderin, ' +
+        'örneğin https://youtube.com/watch?v=jNQXAC9IVRw — ben de dosyayı ' +
+        'yaklaşık yarım dakika içinde size geri göndereyim.\n\n' +
+        'YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest ve Threads ile çalışır. Tamamen ücretsiz ve istediğiniz ' +
+        'kalitede — 4K\'ya kadar, HD için ek ücret yok.\n\n' +
+        'Bir şey çalışmazsa buraya yanıt yazmanız yeterli. Bu ' +
+        'tek hatırlatma, sizi bir daha rahatsız etmeyeceğim.'
+      );
+    }
+
     if (code.startsWith('uz')) {
       return (
         'Assalomu alaykum! Siz bu botni ishga tushirdingiz, lekin hali hech narsa yuklab olmadingiz — ' +

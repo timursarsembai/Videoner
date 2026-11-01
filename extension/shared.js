@@ -1318,6 +1318,91 @@ const TEXTS = {
     langAuto: "Avto",
     langLabel: "Til",
   },
+  tr: {
+    loading: "Video bilgileri alınıyor…",
+    notVideoPage:
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest veya Threads'te bir video sayfası açın ve simgeye tekrar tıklayın. GetCourse dersi: ders sayfası eklenti yüklenmeden önce açıldıysa sayfayı yenileyin.",
+    gcLesson: "GetCourse dersi",
+    gcPick: "Bu derste birkaç video var — birini seçin",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Videoyu tarayıcınız indirip birleştirir. Bu pencereyi kapatabilirsiniz, tarayıcıyı değil.",
+    gcNoStream: "Video oynatıcıdan alınamadı. Ders sayfasını yenileyin ve tekrar deneyin.",
+    video: "Video",
+    photo: "Orijinal boyutta fotoğraflar",
+    slideshow: "Slayt gösterisi (video)",
+    gallery: "Fotoğraflar + slayt gösterisi",
+    audioOnly: "Yalnızca ses (mp3)",
+    subtitles: "Altyazılar (.srt)",
+    subtitlesAuto: "otomatik",
+    back: "Geri",
+    starting: "İndirme başlatılıyor…",
+    waiting: "Sunucuda boş yer bekleniyor…",
+    downloading: "İndiriliyor",
+    converting: "İşleniyor",
+    left: (eta) => `${eta} kaldı`,
+    saving: "İndirilenler'e kaydediliyor…",
+    done: "Hazır — dosya İndirilenler klasörünüzde.",
+    news: "📣 Proje haberleri: @videonerdownload",
+    again: "Başka bir video indir",
+    directDownload: "Videoyu indir (mp4)",
+    directPhoto: "Fotoğrafı indir (jpg)",
+    directNote: "Doğrudan tarayıcınızdan — sunucu sırası yok",
+    moreOptions: "Diğer kaliteler ve ses",
+    fallback: "Tarayıcıda indirilemedi — sunucu üzerinden indiriliyor.",
+    openSite: "videoner.download'u aç",
+    retry: "Tekrar dene",
+    min: "dk",
+    sec: "sn",
+    errNetwork: "Videoner'a bağlanılamıyor. İnternet bağlantınızı kontrol edip tekrar deneyin.",
+    errRateLimit: "Arka arkaya çok fazla istek. Bir dakika bekleyip tekrar deneyin.",
+    errUnsupported:
+      "Bu sayfada Videoner'ın indirebileceği bir video yok. Belirli bir videonun veya gönderinin sayfasını açın.",
+    errYoutubeDaily: "Ağınız için günlük YouTube sınırı doldu. Yarın tekrar deneyin.",
+    errTooLarge: "Bu kalitede dosya çok büyük. Daha düşük bir kalite seçin.",
+    errLogin:
+      "Bu gönderi yalnızca giriş yapmış kullanıcılara açık. Herkese açık gönderiler sorunsuz indirilir.",
+    errRegion: "Yazar bu gönderiyi ülkeye göre kısıtlamış, bu yüzden indirilemiyor.",
+    errServerBlocked: "Platform sunucumuzu geçici olarak kısıtlıyor. Lütfen daha sonra tekrar deneyin.",
+    errFailed: "İndirilemedi. Tekrar deneyin veya başka bir kalite seçin.",
+    errGeneric: "Bir şeyler ters gitti. Lütfen biraz sonra tekrar deneyin.",
+    acctButton: (p) => `🔑 ${p} hesabınızı bota bağlayın`,
+    acctWarn: (p) =>
+      `@VideonerBot, hesabınızı kullanarak ${p} platformunda yalnızca giriş yapanların gördüğü içerikleri indirebilecek: hikâyeler, gizli gönderiler. Platformlar otomatik indirmeyi sevmez ve hesabı kısıtlayabilir — ikincil bir hesap bağlamanız daha iyi olur. Tarayıcı bu sitenin çerezlerini okumak için izin isteyecek; sunucuya yalnızca ${p} çerezleri şifrelenmiş olarak gönderilir.`,
+    acctConfirm: "Bağla",
+    acctCancel: "İptal",
+    acctSending: "Bağlanıyor…",
+    acctDenied: "Çerez izni olmadan hesap bağlanamaz.",
+    acctNoLogin: (p) => `Bu tarayıcıda ${p} hesabınıza giriş yapmamışsınız. Sitede giriş yapıp tekrar deneyin.`,
+    acctFailed: "Olmadı. Biraz sonra tekrar deneyin.",
+    acctCodeTitle: (p) => `${p} bağlantı kodu:`,
+    acctCodeHelp:
+      "Kodu @VideonerBot'a özel sohbette gönderin — kendi indirmeleriniz için. Bir grup için grupta /connect CODE gönderin. Kod 10 dakika geçerlidir.",
+    acctCopy: "Kopyala",
+    acctCopied: "Kopyalandı",
+    acctOpenBot: "Botu aç",
+    acctNewCode: "Yeni kod al",
+    acctList: "Bottaki bağlantılarım",
+    acctRevoke: "Çerez erişimini iptal et",
+    acctRevoked:
+      "Çerez erişimi iptal edildi — eklenti artık onları okumuyor. Bağladığınız hesaplar botta kalır: onları “Bottaki bağlantılarım” bölümünden kaldırın.",
+    playlistOffer: "📃 Tüm oynatma listesini indir",
+    playlistTitle: (title, n) => `📃 Oynatma listesi${title ? ` "${title}"` : ""}: ${n} video`,
+    playlistHint: "Videoları tek tek indireceğim. Bu pencereyi kapatabilirsiniz.",
+    playlist720: "Oynatma listesi 720p",
+    playlistBest: "Oynatma listesi en iyi kalitede",
+    playlistAudio: "Oynatma listesi — yalnızca ses (mp3)",
+    playlistProgress: (i, n) => `Video ${i} / ${n}`,
+    playlistStats: (done, failed) => `İndirilen: ${done}${failed ? ` · hata: ${failed}` : ""}`,
+    playlistStop: "⏹ Durdur",
+    playlistDone: (done, n) => `Oynatma listesi indirildi: ${done} / ${n}.`,
+    playlistStopped: (done, n) => `Durduruldu. İndirilen: ${done} / ${n}.`,
+    playlistLoading: "Video listesi alınıyor…",
+    close: "Kapat",
+    updateAvailable: (v) => `${v} sürümü çıktı.`,
+    updateHow: "Nasıl güncellenir",
+    langAuto: "Otomatik",
+    langLabel: "Dil",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -1408,12 +1493,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -1520,11 +1605,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому и узбекскому — латинские GB/MB, как и цифры (ar-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому и турецкому — латинские GB/MB, как и цифры (ar-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

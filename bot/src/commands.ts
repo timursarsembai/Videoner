@@ -125,6 +125,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Yuklab olish va navbatni toʻxtatish" },
     { command: "language", description: "Bot tili" },
   ],
+  tr: [
+    { command: "start", description: "Bot nasıl kullanılır" },
+    { command: "extension", description: "Tarayıcı uzantısı" },
+    { command: "accounts", description: "Hikayeler ve gizli gönderiler için hesaplarınız" },
+    { command: "connect", description: "Uzantıdan alınan kodla hesap bağlayın" },
+    { command: "stop", description: "İndirmeyi ve kuyruğu durdurun" },
+    { command: "language", description: "Bot dili" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -234,6 +242,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Kod bilan bu guruhga akkaunt ulash" },
     { command: "language", description: "Bu guruhdagi bot tili (adminlar)" },
     { command: "start", description: "Bot guruhda qanday ishlaydi" },
+  ],
+  tr: [
+    { command: "settings", description: "Bu gruptaki bot ayarları (yöneticiler)" },
+    { command: "accounts", description: "Bu gruba bağlı hesaplar" },
+    { command: "connect", description: "Kodla bu gruba hesap bağlayın" },
+    { command: "language", description: "Bu gruptaki bot dili (yöneticiler)" },
+    { command: "start", description: "Bot grupta nasıl çalışır" },
   ],
 };
 

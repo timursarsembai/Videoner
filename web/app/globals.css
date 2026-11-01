@@ -117,3 +117,23 @@
   direction: ltr;
   unicode-bidi: isolate;
 }
+
+/* Тонкая полоса прокрутки в цветах темы — для длинных выпадающих списков
+   (меню языков: их больше трёх десятков, во весь экран список не влезает). */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--muted-foreground) / 0.35) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--muted-foreground) / 0.35);
+  border-radius: 9999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(var(--muted-foreground) / 0.6);
+}

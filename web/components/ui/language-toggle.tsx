@@ -14,11 +14,26 @@ import { localizedHref, stripLocalePrefix } from "@/lib/i18n/routing";
 import { LANGUAGES, LANGUAGE_LABELS } from "@/lib/i18n/translations";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
+import { useRef } from "react";
 
 export function LanguageToggle() {
   const { language, setLanguage, t } = useLanguage();
   const pathname = usePathname();
   const router = useRouter();
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Меню открывается с текущим языком в поле зрения, а не с начала списка.
+  // Ждём два кадра: Radix сначала монтирует и позиционирует содержимое.
+  const scrollToCurrent = (open: boolean) => {
+    if (!open) return;
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        const box = contentRef.current;
+        const item = box?.querySelector<HTMLElement>("[data-current]");
+        if (box && item) box.scrollTop = item.offsetTop - (box.clientHeight - item.offsetHeight) / 2;
+      }),
+    );
+  };
 
   const switchLanguage = (lang: (typeof LANGUAGES)[number]) => {
     setLanguage(lang);
@@ -26,7 +41,7 @@ export function LanguageToggle() {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={scrollToCurrent}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -38,12 +53,19 @@ export function LanguageToggle() {
           <span className="sr-only">{t("nav.language")}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      {/* Языков больше трёх десятков: список прокручивается внутри меню и
+          не выходит за край экрана (Radix сообщает доступную высоту). */}
+      <DropdownMenuContent
+        ref={contentRef}
+        align="end"
+        className="scrollbar-thin max-h-[min(28rem,var(--radix-dropdown-menu-content-available-height))] overflow-y-auto overscroll-contain"
+      >
         {LANGUAGES.map((lang) => (
           <DropdownMenuItem
             key={lang}
             onClick={() => switchLanguage(lang)}
             className="gap-2"
+            data-current={language === lang || undefined}
           >
             <Check
               className={cn(

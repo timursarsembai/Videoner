@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('tt')) {
+      return (
+        'Сәлам! Сез бу ботны җибәрдегез, ләкин әлегә бернәрсә дә йөкләмәдегез — ' +
+        'бәлки, кайдан башларга икәне аңлашылмагандыр.\n\n' +
+        'Бары бер адым: монда видеоның сылтамасын җибәрегез, ' +
+        'мәсәлән https://youtube.com/watch?v=jNQXAC9IVRw — ә мин әзер ' +
+        'файлны якынча ярты минутта кайтарам.\n\n' +
+        'YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest һәм Threads эшли. Тулысынча бушлай һәм теләсә нинди ' +
+        'сыйфатта — 4K га кадәр, HD өчен өстәмә түләү кирәкми.\n\n' +
+        'Берәр нәрсә эшләмәсә, монда җавап язып җибәрегез. Бу ' +
+        'бердәнбер искәртү, башка борчымыйм.'
+      );
+    }
+
     if (code.startsWith('tk')) {
       return (
         'Salam! Siz bu boty açdyňyz, emma entek hiç zat ýüklemediňiz — ' +

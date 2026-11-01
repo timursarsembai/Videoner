@@ -325,6 +325,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Ýüklemäni we nobaty saklaň" },
     { command: "language", description: "Botuň dili" },
   ],
+  tt: [
+    { command: "start", description: "Ботны ничек кулланырга" },
+    { command: "extension", description: "Браузер киңәйтмәсе" },
+    { command: "accounts", description: "Сторислар һәм ябык язмалар өчен аккаунтларыгыз" },
+    { command: "connect", description: "Киңәйтмәдәге код белән аккаунтны тоташтыру" },
+    { command: "stop", description: "Йөкләп алуны һәм чиратны туктату" },
+    { command: "language", description: "Бот теле" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -609,6 +617,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Kod bilen bu topara hasap birikdiriň" },
     { command: "language", description: "Bu topardaky botuň dili (adminler üçin)" },
     { command: "start", description: "Bot toparda nähili işleýär" },
+  ],
+  tt: [
+    { command: "settings", description: "Бу төркемдәге бот көйләүләре (админнар өчен)" },
+    { command: "accounts", description: "Бу төркемгә тоташтырылган аккаунтлар" },
+    { command: "connect", description: "Код белән бу төркемгә аккаунт тоташтыру" },
+    { command: "language", description: "Бу төркемдәге бот теле (админнар өчен)" },
+    { command: "start", description: "Бот төркемдә ничек эшли" },
   ],
 };
 

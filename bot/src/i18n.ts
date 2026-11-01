@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -18,9 +18,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "tk", "kk", "ky", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -8404,6 +8404,226 @@ const tk: Messages = {
   settingsBack: "⬅️ Sazlamalara dolan",
 };
 
+const tt: Messages = {
+  start: "Сәлам! Миңа YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest яки Threads видеосына сылтама җибәрегез — аны йөкләп алырга булышырмын.\n\n✨ Сыйфат берни белән дә чикләнми: платформада булган һәр сыйфатны, 4K сыйфатына кадәр бирәм — файл 2 ГБ чигеннән артмаса гына, моннан зуррак файлны Telegram ботка җибәрергә рөхсәт итми. Монда түләүле функцияләр бөтенләй юк.\n\nТулысынча бушлай: язылуларсыз, рекламасыз, кушымта эчендәге сатып алуларсыз.\n\n🧩 Компьютерда йөклисезме? Браузер киңәйтмәсен урнаштырыгыз — «Йөкләү» төймәсе турыдан-туры видео битендә барлыкка килә: videoner.download/tt/extension\n\n👥 Мине төркемгә өстәгез — анда бүлешкән сылтамалар буенча видеоларны үзем җибәреп торырмын.\n\n⚡ Сыйфат сайламыйча: сылтамадан соң -audio языгыз — тавышны гына (mp3) җибәрәм, -hd — видеоны иң яхшы сыйфатта.\n\n📣 Проект яңалыклары: @videonerdownload\n\n🌐 Бот теле: /language",
+  notLink: "Бу сылтамага охшамаган. Миңа видеога сылтама җибәрегез.",
+  inviteGreeting: "Сәлам! Мин Videoner — YouTube, TikTok, Instagram һәм башка платформалардан видеоларны бушлай йөкләп алам. Сезнең белән бүлешкән видеоны хәзер әзерлим 👇",
+  inviteNotFound: "Бу чакыру сылтамасы буенча видео табылмады. Миңа видеога сылтама җибәрегез — мин аны йөкләп алырмын.",
+  inviteUnavailable: "Сылтама буенча видеоны ачып булмады — сервис хәзер җавап бирми. Шул ук сылтаманы бер минуттан соң яңадан ачыгыз.",
+  fetchingInfo: "🔍 Видео турында мәгълүмат алам...",
+  audioOnlyButton: "🎵 Аудио гына (mp3)",
+  photoButton: "📷 Фотоларны йөкләп алу",
+  slideshowButton: "🎞 Слайд-шоу (видео)",
+  galleryButton: "📷+🎞 Фотолар һәм слайд-шоу",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nСыйфатны сайлагыз:`,
+  sessionExpired: "Сессия искерде — сылтаманы яңадан җибәрегез",
+  downloading: "⏬ Йөкләнә, бу берничә минут алырга мөмкин...",
+  downloadFailed: "йөкләп алу хата белән тәмамланды",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Йөкләнә: ${percent}%${eta ? ` · калды: ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Бераз калды — файлны җыям...",
+  converting: (percent) => `⚙️ Конвертлыйм: ${percent}%`,
+  etaUnderMinute: "бер минуттан да азрак",
+  etaMinutes: (minutes) => `~${minutes} мин`,
+  etaHours: (hours, minutes) => `~${hours} сәг${minutes ? ` ${minutes} мин` : ""}`,
+  downloadTimeout: "йөкләп алу бик озакка сузыла — видео, күрәсең, бик авыр. Түбәнрәк сыйфатны сайлап карагыз.",
+  downloadInterrupted: "⚠️ Бот яңартыла һәм яңадан кабызылырга тиеш — йөкләп алу өзелде. Сылтаманы бер минуттан соң яңадан җибәрегез.",
+  fileTooBig: (mb, url) =>
+    `Файл зур булып чыкты (${mb} МБ) — Telegram ботка аны җибәрергә рөхсәт итми.\nСылтама буенча йөкләп алыгыз: ${url}`,
+  sendingFile: "📤 Файлны җибәрәм...",
+  sendingAlbum: (count) => `📤 Бу постта берничә файл (${count}) — альбом итеп җибәрәм...`,
+  failedPrefix: "❌ Булмады: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Чыганак: ${sourceUrl}\n` +
+        "Видеога хокуклар аның авторыныкы.\n" +
+        "@VideonerBot аша бушлай йөкләп алынды",
+      `📣 Проект яңалыклары: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Бүлешү: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Йөкләп алу өчен безнең каналга язылыгыз: ${channel} — бу бердәнбер шарт, сервис бушлай булып кала.\n\n` +
+    "Язылыгыз һәм «Мин язылдым» төймәсенә басыгыз.",
+  openChannelButton: "📣 Каналны ачу",
+  checkSubscriptionButton: "Мин язылдым",
+  subscribeThanks: "Рәхмәт! Хәзер видеога сылтама җибәрегез.",
+  subscribeThanksResuming: "Рәхмәт! Сезнең сылтама белән эшне дәвам итәм.",
+  subscribeStillMissing: "Язылу әлегә күренми. Язылыгыз һәм тагын бер тапкыр басыгыз.",
+  channelNotice: (channel) => `\n\nБу постка сылтама каналда күренәчәк (${channel}) — аноним рәвештә, сезнең исемегезсез.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Бу һәм теләсә нинди башка видеоны бушлай йөкләп алыгыз: @VideonerBot",
+  errorStoryNeedsId:
+    "конкрет бер сторис сылтамасын җибәрегез: аны Instagram кушымтасында ачыгыз һәм «Поделиться» (Уртаклашу) → «Копировать ссылку» (Сылтаманы күчерү) төймәсенә басыгыз.",
+  errorInstagramStory:
+    "Instagram сторислары аккаунтка кергән кешеләргә генә күренә.",
+  errorLoginRequired:
+    "Бу пост аккаунтка кермичә ачылмый: платформа аны бары тик " +
+    "авторизацияләнгән кулланучыларга гына бирә. Бу ябык постлар, яшь чикләүләре " +
+    "һәм чикләнгән аудитория өчен постлар белән була.\n\n" +
+    "Ачык постлар проблемасыз йөкләнә — башка сылтаманы җибәреп карагыз.",
+  errorUnsupportedPlatform:
+    "Сылтаманы таный алмадым — бу YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest яки Threads платформасындагы видеога туры сылтама икәнен тикшерегез.",
+  errorFileTooLarge: "файл 2 ГБ чигеннән авыррак булып чыкты — моннан зуррак файлларны Telegram ботларга җибәрергә рөхсәт итми. Аны сайтта яки браузер киңәйтмәсе аша йөкләп алыгыз — төймәләр астарак. Яисә сылтаманы яңадан җибәреп, түбәнрәк сыйфатны сайлагыз.",
+  siteButton: "🌐 Сайтта йөкләп алу",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Күләме ${limit} чигеннән зуррак сыйфатлар күрсәтелмәде: андый файлларны Telegram ботларга җибәрергә рөхсәт итми. Аларны сайтта яки браузер киңәйтмәсе аша йөкләп алырга мөмкин — төймәләр астарак.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Видео иң түбән сыйфатта да Telegram өчен артык авыр (~${smallest}): 2 ГБ чигеннән зуррак файлларны Telegram ботларга җибәрергә рөхсәт итми. Монда тавышны гына, ә видеоны сайтта яки браузер киңәйтмәсе аша йөкләп алырга мөмкин (төймәләр астарак).`,
+  errorFormatUnavailable: "Бу видео өчен мондый сыйфат юк. Сылтаманы яңадан җибәрегез — хәзерге исемлекне күрсәтәм.",
+  errorNoVideoContent: "Бу сылтама буенча йөкләп алырлык видео юк — постта фотолар гына булса кирәк.",
+  errorRegionBlocked:
+    "Бу видеоны авторның иленнән читтә карап булмый — платформа аны " +
+    "безнең серверга бирми. Моны әйләнеп узып булмый: чикләү платформа ягында." +
+    "\n\nБашка сылтамалар гадәттәгечә йөкләнә.",
+  errorRateLimited: "Рәттән артык күп сылтама — бераз көтеп торыгыз һәм яңадан җибәрегез.",
+  errorYoutubeDailyLimit: (gb) => `соңгы тәүлектә сез YouTube платформасыннан ${gb} ГБ чигеннән артыграк йөкләп алдыгыз — бу ботның бер кешегә тәүлеклек лимиты. Лимит соңгы 24 сәгать өчен исәпләнә: яңа YouTube видеоларын соңрак йөкләп алырга мөмкин булачак. Башка платформалар гадәттәгечә эшли.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Плейлист туктатылды: YouTube өчен тәүлеклек лимитка ирешелде. Йөкләп алынмаган видеолар: ${dropped}. Плейлистка сылтаманы соңрак җибәрегез.`,
+  errorPlatformRefused:
+    "платформа бу видеоны безнең серверга бирмәде. Бу ябык яки яшь чикләүле " +
+    "постлар белән була, ә кайвакыт платформа вакытлыча керү мөмкинлеген " +
+    "чикли. Берничә минуттан соң яңадан карагыз.",
+  errorThreadsNoMedia:
+    "бу Threads постында видео да, фото да күренми. Йә бу текстлы пост, йә " +
+    "Threads аның медиасын аккаунтка кергән кешеләргә генә күрсәтә — мондый постларны аккаунтка кермичә йөкләп алып булмый.",
+  extensionHint:
+    "\n\n💻 Мондый видеоны компьютерда Videoner браузер киңәйтмәсе белән йөкләп алырга мөмкин: " +
+    "ул платформадагы сезнең аккаунт аша йөкли, серсүз һәм cookie файллары браузердан беркая да китми.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Мондый постны йөкләп алу өчен ботка ${platform} аккаунтыгызны тоташтырыгыз — бер тапкыр. Аннары бот сезгә күренгәннәрнең барысын да үзе йөкләп ала: ябык постларны, рилсларны һәм сторисларны, шул исәптән телефоннан да. Ничек эшләргә икәнен астагы төймә күрсәтәчәк.${withExtension ? "\n\n💻 Яисә бу постны компьютерда Videoner браузер киңәйтмәсе белән йөкләп алыгыз." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Тоташтырылган ${platform} аккаунтыгыз бу постны ача алмады. Бәлки, керү эшләүдән туктагандыр — аккаунтны яңадан тоташтырыгыз. Яисә бу аккаунтның постка керү мөмкинлеге юк.${withExtension ? "\n\n💻 Шулай ук аны компьютерда Videoner браузер киңәйтмәсе белән йөкләп алырга мөмкин." : ""}`,
+  connectAccountButton: "🔑 Аккаунтны тоташтыру",
+  reconnectAccountButton: "🔑 Яңадан тоташтыру",
+  extensionButton: "🧩 Киңәйтмә аша йөкләп алу",
+  extensionCommand:
+    "🧩 Браузер өчен Videoner: «Йөкләү» төймәсе турыдан-туры видео битендә — YouTube, Instagram, TikTok, VK, аккаунтыгыздагы ябык видеолар һәм GetCourse дәресләре.\n\nКомпьютердагы Chrome, Яндекс Браузер, Edge, Opera һәм Firefox өчен.",
+  extensionPageButton: "🧩 Киңәйтмәне урнаштыру",
+  addToGroupButton: "👥 Төркемгә өстәү",
+  newsButton: "📣 Проект яңалыклары",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проект яңалыклары: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Бу төркемдәге бот көйләүләре\n\n" +
+    `🗑 Сылтамалы хәбәрне бетерү: ${s.deleteLinks ? "әйе" : "юк"}\n` +
+    "Видео җибәрелгәч, сылтама гына булган хәбәр бетерелә — чатта аны җибәргән кешенең исеме белән видео гына кала.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Хәзер мин хәбәрләрне бетерә алмыйм: мине «Удаление сообщений» (Хәбәрләрне бетерү) хокукы булган администратор итегез.\n"
+      : "") +
+    `\n✍️ Видео астындагы текст: ${{ full: "тулы", short: "исем һәм чыганак", none: "тексттан башка" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Сыйфат: ${s.quality === "max" ? "Telegram кабул итә торган иң югары сыйфат" : "гадәти (720p)"}\n` +
+    `\n⏱ Озын видеолар: ${s.longVideos ? "теләсә нинди озынлыкта" : "15 минутка кадәр генә"}\n` +
+    `\n🔑 Үз аккаунтларын кем тоташтыра ала (сторислар һәм ябык постлар өчен): ${s.cookiesBy === "all" ? "теләсә кайсы әгъза" : "администраторлар гына"}\n` +
+    `\n🌐 Җаваплар теле: ${s.language ? langName(s.language) : "һәр әгъзага — аның үз телендә"}\n` +
+    "\nКөйләүләрне төркем администраторлары гына үзгәртә ала.",
+  settingsDeleteButton: (on) => `🗑 Сылтамаларны бетерү: ${on ? "әйе" : "юк"}`,
+  settingsCaptionButton: (style) => `✍️ Текст: ${{ full: "тулы", short: "кыска", none: "юк" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Сыйфат: ${mode === "max" ? "иң югары" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Озын видеолар: ${on ? "әйе" : "15 минутка кадәр"}`,
+  settingsDoneButton: "✅ Әзер",
+  settingsAdminsOnly: "Көйләүләрне төркем администраторлары гына үзгәртә ала.",
+  settingsGroupsOnly: "Көйләүләр — төркемнәр өчен: мине төркемгә өстәгез һәм анда /settings җибәрегез.",
+  settingsFailed: "Көйләүләрне саклап булмады, яңадан карагыз.",
+  settingsCookiesButton: (by) => `🔑 Аккаунтларны тоташтыру: ${by === "all" ? "барысы" : "админнар"}`,
+  accountsIntro:
+    "🔑 Тоташтырылган аккаунтлар\n\nБот аккаунтка кергән кешеләргә генә күренгәнне (Instagram сторислары, ябык постлар) сезнең аккаунт аша йөкләп ала ала. Керү сез аны кайда тоташтырсагыз, шунда эшли: шәхси чатта тоташтырылганы — сезнең йөкләүләр өчен, шул исәптән үз аккаунты тоташтырылмаган төркемнәрдәге сезнең үз сылтамаларыгыз өчен дә; төркемгә тоташтырылганы — аның барлык әгъзалары өчен.",
+  accountsHowTo:
+    "Ничек тоташтырырга:\n1. Иң җиңеле — компьютердагы Videoner киңәйтмәсе: платформа сайтына керегез, Videoner тәрәзәсен ачыгыз, «🔑 … аккаунтыгызны ботка тоташтырыгыз» төймәсенә басыгыз һәм кодны миңа җибәрегез. Төркем өчен — шул төркемдә /connect КОД җибәрегез.\n2. Яисә миңа cookies.txt файлын (браузердан экспортланган cookie файллары) җибәрегез — яки аның текстын хәбәр итеп куегыз.\n3. Android телефоныннан — Firefox һәм Cookie-Editor өстәмәсе аша: https://videoner.download/tt/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Платформалар автоматик йөкләүләрне яратмый һәм аккаунтны чикли яки блоклый ала. Төп аккаунтны түгел, аерым аккаунтны тоташтыру яхшырак. Cookie файллары шифрланган килеш саклана, йөкләп алу өчен генә кулланыла һәм астагы төймәләр белән бетерелә.",
+  accountsNone: "Әлегә бернәрсә дә тоташтырылмаган.",
+  accountsGroupTitle: "🔑 Бу төркемгә тоташтырылган аккаунтлар",
+  accountsGroupHowTo:
+    "Бөтен төркем өчен тоташтыру: Videoner киңәйтмәсендәге «🔑 … аккаунтыгызны ботка тоташтырыгыз» төймәсе белән код алыгыз һәм монда /connect КОД җибәрегез. Әгәр аккаунт шәхси чатыгызда гына тоташтырылган булса, бот аның аша монда да сезнең үз сылтамаларыгызны йөкләп ала. Сезнең тоташтыруларыгыз — @VideonerBot белән шәхси чатта: /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ керү эшләми)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ керү эшләми)"}`,
+  accountsWhereHere: "шәхси чатта",
+  accountsWhereGroup: (title) => `«${title}» төркеме`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Минем барлык тоташтыруларымны бетерү",
+  accountsDeleted: "Бетерелде.",
+  accountsDeletedAll: (n) => `Бетерелгән тоташтырулар: ${n}.`,
+  accountsNotAllowed: "Аны тоташтырган кеше яки төркем администраторы гына бетерә ала.",
+  connectUsage:
+    "/connect КОД җибәрегез. Кодны компьютердагы Videoner киңәйтмәсендәге «🔑 … аккаунтыгызны ботка тоташтырыгыз» төймәсе бирә. Тоташтырулар исемлеге — /accounts.",
+  connectOnlyAdmins: "Бу төркемгә аккаунтларны администраторлар гына тоташтыра ала (/settings көйләүләрендә).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} тоташтырылды: ${where}. Хәзер бот аккаунтка кергән кешеләргә генә күренгәнне дә йөкләп ала. Карау яки бетерү — /accounts.\n\n⚠️ Платформа автоматик йөкләүләр өчен аккаунтны чикли ала — төп булмаган аккаунтны куллану яхшырак.`,
+  connectWhereGroup: "бу төркемгә",
+  connectWhereHere: "шәхси чатта һәм инлайн-режимда сезнең йөкләүләр өчен",
+  connectCodeNotFound: "Код табылмады яки искерде (код 10 минут яши). Videoner киңәйтмәсендә яңасын алыгыз.",
+  connectRejectedNoSession: "Бу cookie файлларында аккаунтка керү юк. Платформа сайтына керегез һәм cookie файлларын яңадан экспортлагыз.",
+  connectRejectedUnknown: "Ярдәм ителгән платформаларның cookie файллары табылмады: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Аккаунтларны тоташтыру әлегә мөмкин түгел.",
+  connectFailed: "Тоташтырып булмады, яңадан карагыз.",
+  connectFileTooBig: "Файл артык зур — кирәкле сайтның гына cookie файлларын экспортлагыз.",
+  connectNotAnonymous: "Аккаунтны төркем исеменнән аноним рәвештә түгел, үз исемегездән тоташтырыгыз: югыйсә админнарның тоташтырулары бутала. Кодны юк иттем — яңасын алыгыз.",
+  connectCodeInGroup:
+    "Гомуми чатта язылган тоташтыру кодын башкалар күрә ала — мин аны юк иттем һәм хәбәрне бетердем. Яңасын алыгыз һәм /connect КОД командасы белән җибәрегез: командалы хәбәрне мин шунда ук бетерәм.",
+  groupWelcome:
+    "👋 Сәлам! Бу чатка TikTok, Instagram, YouTube, VK һәм башка платформалардагы видеоларга сылтамалар җибәрегез — мин видеоның үзе белән җавап бирермен.\n\n" +
+    "15 минутка кадәрле роликларны командаларсыз үзем йөкләп алам, башка хәбәрләргә җавап бирмим.\n\n⚙️ Төркем админнары мине /settings командасы белән көйли ала: сылтамалы хәбәрләрне бетерү, текст төре, сыйфат, озын видеолар һәм тел.\n\n⚡ Сылтамадан соң -audio языгыз — тавышны җибәрәм, -hd — иң яхшы сыйфатны.\n\n📣 Проект яңалыклары: @videonerdownload",
+  errorTooLong: "видео артык озын — мондый озын видеоларны әлегә йөкләп ала алмыйбыз.",
+  errorUnknown: "бу видеоны йөкләп алып булмады. Бераз соңрак яңадан карагыз яки башка сылтама җибәрегез.",
+  inlineHintButton: "Ботка сылтама җибәрегез",
+  inlineResultTitle: "⬇️ Видеоны йөкләп алу",
+  inlineResultDescription: "Видео турыдан-туры бу чатка киләчәк",
+  inlinePlaceholder: "⏬ Йөкләнә, бу берничә минут алырга мөмкин...",
+  inlineOpenBot: "Ботны ачу",
+  inlineOnlySingleVideo:
+    "Бу режимда бер видео гына җибәрелә. Берничә файллы пост яки фотолар өчен сылтаманы ботка шәхси чатта җибәрегез.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Йөкләп алу өчен язылыгыз: ${channel} — һәм яңадан карагыз.`,
+  inlineRateLimited: "Рәттән артык күп сорау. Бер минут көтеп торыгыз һәм яңадан карагыз.",
+  queueRest: (count) => `\n\n📋 Чираттагы сылтамалар: ${count}. Монысын тәмамлагач, аларны берәм-берәм күрсәтәм.`,
+  queuedOne: (position) =>
+    `📋 Сылтама чиратка куелды, урыны: ${position}. Башта хәзергесен тәмамлыйк — аннары аның өчен сыйфат сайлауны күрсәтәм.`,
+  queuedMany: (added, waiting) =>
+    `📋 Чиратка өстәлгән сылтамалар: ${added}. Барлыгы көтә: ${waiting}. Хәзергесен тәмамлагач, аларны берәм-берәм күрсәтәм.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Бу сылтама инде чиратта — икенче тапкыр өстәмим."
+      : `Чиратта булган сылтамаларны икенче тапкыр өстәмим (кабатлаулар: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Чиратта иң күбе ${limit} сылтама була ала — артыклары өстәлмәде (${rejected}). Чират алга киткәч, аларны җибәрегез.`,
+  skipButton: "✖️ Йөкләп алмаска",
+  skipped: "⏭ Бу сылтаманы калдырдым.",
+  chooseTimedOut: "⌛ 30 минут эчендә сыйфат сайланмады — бу сылтаманы калдырам.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Бот яңарту өчен яңадан кабызыла — чират бушатылды (сылтамалар: ${count}). Аларны бер минуттан соң яңадан җибәрегез.`,
+  subtitlesButton: "📝 Субтитрлар",
+  subtitlesBack: "⬅️ Сыйфатка кире кайту",
+  subtitlesAuto: "авто",
+  subtitlesChoose: "Субтитрлар телен сайлагыз",
+  subtitlesPreparing: "📝 Субтитрларны әзерлим...",
+  subtitlesFailed: "Бу телдә субтитрларны йөкләп алып булмады. Башка телне сайлап карагыз.",
+  subtitlesBusy: "YouTube хәзер субтитрларны бирми — берничә минуттан соң яңадан карагыз.",
+  playlistFound: (title, count) =>
+    `📃 Плейлист${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} видео.\nАларны берәм-берәм, чират буенча йөкләп алырмын. Нинди форматта?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Иң яхшы сыйфат",
+  playlistAudioButton: "🎵 Аудио гына (mp3)",
+  playlistNoButton: "✖️ Кирәкми, рәхмәт",
+  playlistQueued: (count) =>
+    `📃 Плейлисттан чиратка куелган видеолар: ${count}. Берәм-берәм җибәрәм. Туктату — астагы төймә яки /stop командасы белән.`,
+  playlistFailed: "Плейлистны ачып булмады — бәлки, ул ябыктыр. Аерым видеога сылтама җибәрегез.",
+  stopButton: "⏹ Туктату",
+  stopped: (dropped) => `⏹ Туктаттым.${dropped ? ` Чираттан бетерелгән сылтамалар: ${dropped}.` : ""}`,
+  nothingToStop: "Хәзер берни дә йөкләнми.",
+  languageChoose: "🌐 Бот телен сайлагыз. «Авто» — сезнең Telegram телендәге кебек.",
+  languageChooseGroup: "🌐 Бу төркемдә бот җавапларының теле. «Авто» — һәр әгъзага аның Telegram телендә.",
+  languageAuto: "Авто — Telegram телендәге кебек",
+  languageAutoGroup: "Авто — һәр әгъзага үз телендә",
+  languageSaved: (name) => `✅ Бот теле: ${name}. Үзгәртү — /language.`,
+  languageSavedAuto: "✅ Бот сезнең Telegram телендә сөйләшә. Үзгәртү — /language.",
+  settingsLanguageButton: (name) => `🌐 Тел: ${name ?? "авто"}`,
+  settingsBack: "⬅️ Көйләүләргә кире кайту",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -9071,4 +9291,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt };

@@ -498,6 +498,18 @@ export const blogUi: Record<
     readFull: "Saýtda doly oka",
     dateLocale: "tk-TM",
   },
+  tt: {
+    title: "Videoner блогы",
+    description: "Проект яңалыклары: ботта, сайтта һәм киңәйтмәдә нәрсә яңа һәм аны ничек кулланырга.",
+    readMore: "Уку",
+    back: "Барлык мәкаләләр",
+    allPosts: "Блог",
+    channel: "Telegram-дагы яңалыклар",
+    channelCta: "Проект яңалыклары — @videonerdownload Telegram-каналында.",
+    readOnSite: "Сайтта уку",
+    readFull: "Сайтта тулысынча уку",
+    dateLocale: "tt-RU",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

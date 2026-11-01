@@ -1131,4 +1131,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Strona główna",
   },
+  ja: {
+    metaTitle: "Videoner ブラウザ拡張機能",
+    title: "ブラウザで使える Videoner",
+    summary:
+      "拡張機能を入れると、動画ページに「ダウンロード」ボタンが追加され、ブラウザ上で直接ダウンロードできます。Instagram、Facebook、TikTok、Threads はご自身のログイン状態でダウンロードするため、アカウントで閲覧できる非公開投稿や、プラットフォームが当サーバーに提供しなかった動画も保存できます。",
+    failedVideo: "サイトやボットでダウンロードできなかった動画：",
+    failedVideoHint:
+      "拡張機能をインストールし、同じブラウザでプラットフォームにログインしてから動画を開き、右下の「ダウンロード」をクリックしてください。",
+    openVideo: "動画を開く",
+    version: "バージョン",
+    browsersTitle: "対応ブラウザ",
+    browsers:
+      "Google Chrome、Yandex Browser、Microsoft Edge、Opera、Brave、Vivaldi など、Chromium ベースのブラウザ（パソコン版）に対応しています。",
+    mobile: "スマートフォンやタブレットは拡張機能に対応していません。サイトまたは Telegram ボットをご利用ください。",
+    getcourseTitle: "GetCourse のレッスン",
+    getcourse:
+      "ログインした状態で GetCourse のスクールのレッスンを開くと、プレーヤーの右上に「ダウンロード」ボタンが表示され、Videoner のアイコンからレッスン内のすべての動画を確認できます。レッスンのダウンロードと mp4 への結合はブラウザ自身が行うため、ファイルが当サーバーを経由することはありません。うまくいかなかった場合は、当サーバーが同じ画質でレッスンをダウンロードします。その際、プレーヤーの動画リンクがサーバーに送信されます。",
+    privacyTitle: "ログイン情報はお手元に残ります",
+    privacy:
+      "拡張機能がパスワードを尋ねることはありません。プラットフォームへのリクエストはお使いのブラウザ自身が行い、当サーバーに送られるのは統計用の簡単なレポート（リンク、ファイルサイズ、タイトル）だけです。Cookie がサーバーに送られるのは、ご自身で「アカウントをボットに接続」を押した場合のみで、そのプラットフォームの Cookie だけが暗号化して送信されます。",
+    stepsTitle: "Chrome、Yandex Browser、Edge、Opera へのインストール方法",
+    steps: [
+      "アーカイブをダウンロードして展開します。名前にバージョン番号が入った videoner-extension フォルダが作成されます。",
+      "拡張機能のページを開きます。アドレスバーに chrome://extensions と入力します（Edge では edge://extensions、Opera では opera://extensions）。",
+      "ページ上部のスイッチで「デベロッパー モード」をオンにします。",
+      "「パッケージ化されていない拡張機能を読み込む」をクリックし、そのフォルダ（manifest.json が入っているフォルダ）を選択します。",
+      "完了です。動画ページに「ダウンロード」ボタンが表示され、ブラウザのツールバーに Videoner のアイコンが追加されます。",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 以降（パソコン版）にも対応しています。",
+    firefoxSoon:
+      "Firefox 版は近日公開予定です。現在は Chrome、Yandex Browser、Edge、Opera などの Chromium ベースのブラウザで動作します。",
+    chromeTitle: "Chrome、Yandex Browser、Edge、Opera",
+    chromeHint: ".zip アーカイブ — 数分でインストールできます",
+    firefoxTitle: "Firefox",
+    firefoxHint: "ワンクリックでインストール",
+    yourBrowser: "お使いのブラウザ",
+    soon: "近日公開",
+    firefoxStepsTitle: "Firefox へのインストール方法",
+    firefoxSteps: [
+      "このページ上部の Firefox ボタンをクリックします。",
+      "videoner.download にアドオンのインストールを許可するか尋ねられるので、「インストールを続行」をクリックします。",
+      "「Videoner を追加しますか？」と表示されたら「追加」をクリックします。",
+      "完了です。動画ページに「ダウンロード」ボタンが表示され、ツールバーに Videoner のアイコンが追加されます。アップデートは Firefox が自動でインストールします。",
+    ],
+    updateTitle: "Chrome、Yandex Browser、Edge、Opera での更新方法",
+    updateSteps: [
+      "新しいバージョンが公開されると、Videoner のアイコンに NEW バッジが表示され、ポップアップにこのページへのリンクが表示されます。",
+      "このページ上部の Chrome ボタンでアーカイブをダウンロードし、以前と同じフォルダに展開してファイルを上書きします。",
+      "拡張機能のページ（chrome://extensions、Yandex Browser では browser://extensions、edge://extensions）を開き、Videoner のカードにある円形の矢印「再読み込み」をクリックします。",
+    ],
+    back: "ホームへ",
+  },
 };

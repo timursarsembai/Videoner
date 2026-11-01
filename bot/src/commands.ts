@@ -173,6 +173,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Zatrzymaj pobieranie i kolejkę" },
     { command: "language", description: "Język bota" },
   ],
+  ja: [
+    { command: "start", description: "ボットの使い方" },
+    { command: "extension", description: "ブラウザ拡張機能" },
+    { command: "accounts", description: "ストーリーや非公開の投稿用のアカウント" },
+    { command: "connect", description: "拡張機能のコードでアカウントを接続" },
+    { command: "stop", description: "ダウンロードとキューを停止" },
+    { command: "language", description: "ボットの言語" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -324,6 +332,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Połącz konto z tą grupą kodem" },
     { command: "language", description: "Język bota w tej grupie (dla administratorów)" },
     { command: "start", description: "Jak bot działa w grupie" },
+  ],
+  ja: [
+    { command: "settings", description: "このグループでのボットの設定（管理者用）" },
+    { command: "accounts", description: "このグループに接続されたアカウント" },
+    { command: "connect", description: "コードでこのグループにアカウントを接続" },
+    { command: "language", description: "このグループでのボットの言語（管理者用）" },
+    { command: "start", description: "グループでのボットの使い方" },
   ],
 };
 

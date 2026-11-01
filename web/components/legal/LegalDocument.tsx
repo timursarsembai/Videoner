@@ -32,10 +32,11 @@ const localeTag: Record<Language, string> = {
   bn: "bn-BD",
   ur: "ur-PK",
   pl: "pl-PL",
+  ja: "ja-JP",
 };
 
 function operatorLines(lang: Language) {
-  const name = { en: operator.nameEn, ru: operator.nameRu, es: operator.nameEs, uk: operator.nameUk, kk: operator.nameKk, ar: operator.nameAr, zh: operator.nameZh, hi: operator.nameHi, id: operator.nameId, sw: operator.nameSw, de: operator.nameDe, fr: operator.nameFr, it: operator.nameIt, pt: operator.namePt, uz: operator.nameUz, tr: operator.nameTr, fa: operator.nameFa, vi: operator.nameVi, bn: operator.nameBn, ur: operator.nameUr, pl: operator.namePl }[lang];
+  const name = { en: operator.nameEn, ru: operator.nameRu, es: operator.nameEs, uk: operator.nameUk, kk: operator.nameKk, ar: operator.nameAr, zh: operator.nameZh, hi: operator.nameHi, id: operator.nameId, sw: operator.nameSw, de: operator.nameDe, fr: operator.nameFr, it: operator.nameIt, pt: operator.namePt, uz: operator.nameUz, tr: operator.nameTr, fa: operator.nameFa, vi: operator.nameVi, bn: operator.nameBn, ur: operator.nameUr, pl: operator.namePl, ja: operator.nameJa }[lang];
   const address = {
     en: operator.addressEn,
     ru: operator.addressRu,
@@ -58,9 +59,10 @@ function operatorLines(lang: Language) {
     bn: operator.addressBn,
     ur: operator.addressUr,
     pl: operator.addressPl,
+    ja: operator.addressJa,
   }[lang];
-  const basis = { en: operator.basisEn, ru: operator.basisRu, es: operator.basisEs, uk: operator.basisUk, kk: operator.basisKk, ar: operator.basisAr, zh: operator.basisZh, hi: operator.basisHi, id: operator.basisId, sw: operator.basisSw, de: operator.basisDe, fr: operator.basisFr, it: operator.basisIt, pt: operator.basisPt, uz: operator.basisUz, tr: operator.basisTr, fa: operator.basisFa, vi: operator.basisVi, bn: operator.basisBn, ur: operator.basisUr, pl: operator.basisPl }[lang];
-  const binLabel = { en: "BIN/IIN", ru: "БИН/ИИН", es: "BIN/IIN", uk: "БІН/ІІН", kk: "БСН/ЖСН", ar: "BIN/IIN", zh: "BIN/IIN", hi: "BIN/IIN", id: "BIN/IIN", sw: "BIN/IIN", de: "BIN/IIN", fr: "BIN/IIN", it: "BIN/IIN", pt: "BIN/IIN", uz: "BIN/IIN", tr: "BIN/IIN", fa: "BIN/IIN", vi: "BIN/IIN", bn: "BIN/IIN", ur: "BIN/IIN", pl: "BIN/IIN" }[lang];
+  const basis = { en: operator.basisEn, ru: operator.basisRu, es: operator.basisEs, uk: operator.basisUk, kk: operator.basisKk, ar: operator.basisAr, zh: operator.basisZh, hi: operator.basisHi, id: operator.basisId, sw: operator.basisSw, de: operator.basisDe, fr: operator.basisFr, it: operator.basisIt, pt: operator.basisPt, uz: operator.basisUz, tr: operator.basisTr, fa: operator.basisFa, vi: operator.basisVi, bn: operator.basisBn, ur: operator.basisUr, pl: operator.basisPl, ja: operator.basisJa }[lang];
+  const binLabel = { en: "BIN/IIN", ru: "БИН/ИИН", es: "BIN/IIN", uk: "БІН/ІІН", kk: "БСН/ЖСН", ar: "BIN/IIN", zh: "BIN/IIN", hi: "BIN/IIN", id: "BIN/IIN", sw: "BIN/IIN", de: "BIN/IIN", fr: "BIN/IIN", it: "BIN/IIN", pt: "BIN/IIN", uz: "BIN/IIN", tr: "BIN/IIN", fa: "BIN/IIN", vi: "BIN/IIN", bn: "BIN/IIN", ur: "BIN/IIN", pl: "BIN/IIN", ja: "BIN/IIN" }[lang];
   return [name, `${binLabel}: ${operator.bin}`, basis, address];
 }
 

@@ -30,6 +30,7 @@ export const operator = {
   nameBn: "একক উদ্যোক্তা SARSEMBAYEV (সারসেমবায়েভ)",
   nameUr: "انفرادی کاروباری SARSEMBAYEV (سارسیمبایف)",
   namePl: "Przedsiębiorca indywidualny SARSEMBAYEV",
+  nameJa: "個人事業主 SARSEMBAYEV（サルセンバエフ）",
   nameAr: "رائد الأعمال الفردي سارسيمباييف (SARSEMBAYEV)",
   directorRu: "Сарсембаев Тимур Сейпилович",
   directorEn: "Timur Sarsembayev",
@@ -71,6 +72,8 @@ export const operator = {
     "انفرادی کاروباری سرگرمی شروع کرنے کا نوٹس نمبر KZ45UUZ00498687، مورخہ 22.07.2026",
   basisPl:
     "Zawiadomienie o rozpoczęciu działalności przedsiębiorcy indywidualnego nr KZ45UUZ00498687 z dnia 22.07.2026",
+  basisJa:
+    "個人事業主としての事業開始届 第KZ45UUZ00498687号（2026年7月22日付）",
   basisAr:
     "إشعار ببدء نشاط رائد الأعمال الفردي رقم KZ45UUZ00498687 بتاريخ 22.07.2026",
   basisUk:
@@ -114,6 +117,8 @@ export const operator = {
     "جمہوریہ قازقستان، علاقہ الماتی، ضلع ینبیکشیقازاق، دیہی ضلع راخات، گاؤں آزات، PKST «Almagul-2»، عمارت 117",
   addressPl:
     "Republika Kazachstanu, obwód ałmacki, rejon jenbekszykazachski, okręg wiejski Rachat, wieś Azat, PKST «Almagul-2», budynek 117",
+  addressJa:
+    "カザフスタン共和国 アルマティ州 エンベクシカザフ地区 ラハト村管区 アザト村 PKST «Almagul-2» 117号棟",
   addressAr:
     "جمهورية كازاخستان، منطقة ألماتي، مقاطعة إنبيكشيكازاخ، الدائرة الريفية راخات، قرية آزات، PKST «Almagul-2»، المبنى 117",
   addressEs:

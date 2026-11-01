@@ -5,13 +5,13 @@ import { orderTracks, SUBTITLE_BUTTONS } from "./subtitles.js";
 const track = (lang: string, auto = false) => ({ lang, name: lang, auto });
 
 test("русский, английский и казахский — первыми, остальные в порядке площадки", () => {
-  const ordered = orderTracks([track("ja"), track("en"), track("ko-KR"), track("kk"), track("ru")]);
-  assert.deepEqual(ordered.map((t) => t.lang), ["ru", "en", "kk", "ja", "ko-KR"]);
+  const ordered = orderTracks([track("nl"), track("en"), track("ko-KR"), track("kk"), track("ru")]);
+  assert.deepEqual(ordered.map((t) => t.lang), ["ru", "en", "kk", "nl", "ko-KR"]);
 });
 
 test("распознанная речь ранжируется по своему языку", () => {
-  const ordered = orderTracks([track("ja"), track("ru-orig", true)]);
-  assert.deepEqual(ordered.map((t) => t.lang), ["ru-orig", "ja"]);
+  const ordered = orderTracks([track("nl"), track("ru-orig", true)]);
+  assert.deepEqual(ordered.map((t) => t.lang), ["ru-orig", "nl"]);
 });
 
 test("кнопок не больше предела", () => {
@@ -20,7 +20,7 @@ test("кнопок не больше предела", () => {
 });
 
 test("исходный список не меняется", () => {
-  const source = [track("ja"), track("ru")];
+  const source = [track("nl"), track("ru")];
   orderTracks(source);
-  assert.deepEqual(source.map((t) => t.lang), ["ja", "ru"]);
+  assert.deepEqual(source.map((t) => t.lang), ["nl", "ru"]);
 });

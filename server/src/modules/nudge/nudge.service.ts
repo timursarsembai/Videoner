@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ja')) {
+      return (
+        'こんにちは！このボットを起動されましたが、まだ何もダウンロードされていません。' +
+        '何から始めればよいか分かりにくかったかもしれません。\n\n' +
+        '手順は1つだけです。ここに動画のリンクを送ってください。' +
+        '例: https://youtube.com/watch?v=jNQXAC9IVRw ——約30秒で' +
+        'ファイルをお返しします。\n\n' +
+        'YouTube、TikTok、Instagram、Facebook、Twitter/X、Vimeo、VK、' +
+        'Rutube、OK.ru、Pinterest、Threads に対応しています。完全無料で、どの' +
+        '画質でも——4K まで、HD の追加料金はありません。\n\n' +
+        'うまくいかない場合は、ここに返信してください。' +
+        'お知らせはこの1回だけで、今後ご連絡することはありません。'
+      );
+    }
+
     if (code.startsWith('pl')) {
       return (
         'Cześć! Uruchomiłeś tego bota, ale jeszcze nic nie pobrałeś — ' +

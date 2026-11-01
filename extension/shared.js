@@ -1835,6 +1835,94 @@ const TEXTS = {
     langAuto: "Auto",
     langLabel: "Język",
   },
+  // Японский, вежливый стиль (です/ます), японская пунктуация (、。「」).
+  // Латиница (названия площадок, @VideonerBot, /connect), цифры и GB/MB —
+  // как в английском.
+  ja: {
+    loading: "動画情報を取得しています…",
+    notVideoPage:
+      "YouTube、TikTok、Instagram、Facebook、X、Vimeo、VK、Rutube、OK.ru、Pinterest、Threads の動画ページを開いて、もう一度アイコンをクリックしてください。GetCourse のレッスン：拡張機能をインストールする前からレッスンページを開いていた場合は、ページを再読み込みしてください。",
+    gcLesson: "GetCourse のレッスン",
+    gcPick: "このレッスンには動画が複数あります。1 つ選んでください",
+    gcVideo: (n) => `動画 ${n}`,
+    gcNote: "ブラウザがダウンロードして結合します。このウィンドウは閉じても構いませんが、ブラウザは閉じないでください。",
+    gcNoStream: "プレーヤーから動画を取得できませんでした。レッスンページを再読み込みして、もう一度お試しください。",
+    video: "動画",
+    photo: "元のサイズの写真",
+    slideshow: "スライドショー（動画）",
+    gallery: "写真 + スライドショー",
+    audioOnly: "音声のみ（mp3）",
+    subtitles: "字幕（.srt）",
+    subtitlesAuto: "自動生成",
+    back: "戻る",
+    starting: "ダウンロードを開始しています…",
+    waiting: "サーバーの空きを待っています…",
+    downloading: "ダウンロード中",
+    converting: "処理中",
+    left: (eta) => `残り ${eta}`,
+    saving: "「ダウンロード」に保存しています…",
+    done: "完了しました。ファイルは「ダウンロード」にあります。",
+    news: "📣 プロジェクトのお知らせ：@videonerdownload",
+    again: "別の動画をダウンロード",
+    directDownload: "動画をダウンロード（mp4）",
+    directPhoto: "写真をダウンロード（jpg）",
+    directNote: "ブラウザから直接ダウンロード、サーバーの順番待ちなし",
+    moreOptions: "その他の画質と音声",
+    fallback: "ブラウザでのダウンロードに失敗したため、サーバー経由でダウンロードします。",
+    openSite: "videoner.download を開く",
+    retry: "もう一度試す",
+    min: "分",
+    sec: "秒",
+    errNetwork: "Videoner に接続できません。インターネット接続を確認して、もう一度お試しください。",
+    errRateLimit: "連続したリクエストが多すぎます。1 分ほど待ってから、もう一度お試しください。",
+    errUnsupported:
+      "このページには Videoner でダウンロードできる動画がありません。個別の動画や投稿のページを開いてください。",
+    errYoutubeDaily: "お使いのネットワークの YouTube の 1 日の上限に達しました。明日もう一度お試しください。",
+    errTooLarge: "この画質ではファイルが大きすぎます。より低い画質を選んでください。",
+    errLogin:
+      "この投稿はログインしたユーザーしか見られません。公開されている投稿は問題なくダウンロードできます。",
+    errRegion: "投稿者がこの投稿の閲覧を国・地域で制限しているため、ダウンロードできません。",
+    errServerBlocked: "プラットフォームが一時的にサーバーへのアクセスを制限しています。しばらくしてから、もう一度お試しください。",
+    errFailed: "ダウンロードに失敗しました。もう一度試すか、別の画質を選んでください。",
+    errGeneric: "問題が発生しました。少し時間をおいて、もう一度お試しください。",
+    acctButton: (p) => `🔑 ${p} アカウントをボットに接続`,
+    acctWarn: (p) =>
+      `@VideonerBot があなたのアカウントを使って、${p} でログインしたユーザーにしか見えないもの（ストーリーズ、非公開の投稿）をダウンロードできるようになります。プラットフォームは自動ダウンロードを好まず、アカウントを制限することがあるため、サブアカウントの接続をおすすめします。ブラウザがこのサイトの Cookie を読み取る許可を求めます。サーバーに送られるのは ${p} の Cookie だけで、暗号化されます。`,
+    acctConfirm: "接続する",
+    acctCancel: "キャンセル",
+    acctSending: "接続しています…",
+    acctDenied: "Cookie の許可がないと、アカウントを接続できません。",
+    acctNoLogin: (p) => `このブラウザで ${p} にログインしていません。サイトでログインしてから、もう一度お試しください。`,
+    acctFailed: "うまくいきませんでした。少し時間をおいて、もう一度お試しください。",
+    acctCodeTitle: (p) => `${p} の接続コード：`,
+    acctCodeHelp:
+      "ご自身のダウンロード用には、@VideonerBot との個人チャットに送信してください。グループ用には、グループで /connect コード を送信してください。コードの有効期限は 10 分です。",
+    acctCopy: "コピー",
+    acctCopied: "コピーしました",
+    acctOpenBot: "ボットを開く",
+    acctNewCode: "新しいコードを取得",
+    acctList: "ボットでの接続一覧",
+    acctRevoke: "Cookie へのアクセスを取り消す",
+    acctRevoked:
+      "Cookie へのアクセスを取り消しました。拡張機能が Cookie を読み取ることはもうありません。接続済みのアカウントはボットに残ります。「ボットでの接続一覧」から削除してください。",
+    playlistOffer: "📃 再生リストをすべてダウンロード",
+    playlistTitle: (title, n) => `📃 再生リスト${title ? `「${title}」` : ""}：動画 ${n} 本`,
+    playlistHint: "1 本ずつ順番にダウンロードします。このウィンドウは閉じても構いません。",
+    playlist720: "再生リスト（720p）",
+    playlistBest: "再生リスト（最高画質）",
+    playlistAudio: "再生リスト — 音声のみ（mp3）",
+    playlistProgress: (i, n) => `動画 ${i} / ${n}`,
+    playlistStats: (done, failed) => `ダウンロード済み：${done}${failed ? ` · 失敗：${failed}` : ""}`,
+    playlistStop: "⏹ 停止",
+    playlistDone: (done, n) => `再生リストのダウンロードが完了しました：${done} / ${n}。`,
+    playlistStopped: (done, n) => `停止しました。${done} / ${n} 本をダウンロードしました。`,
+    playlistLoading: "動画の一覧を取得しています…",
+    close: "閉じる",
+    updateAvailable: (v) => `バージョン ${v} が公開されました。`,
+    updateHow: "更新方法",
+    langAuto: "自動",
+    langLabel: "言語",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -1925,12 +2013,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский, персидский и урду пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -2037,11 +2125,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду и польскому — латинские GB/MB, как и цифры (ar-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому и японскому — латинские GB/MB, как и цифры (ar-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

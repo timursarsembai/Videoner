@@ -271,6 +271,18 @@ export const blogUi: Record<
     readFull: "Przeczytaj cały wpis na stronie",
     dateLocale: "pl-PL",
   },
+  ja: {
+    title: "Videoner ブログ",
+    description: "プロジェクトのお知らせ：ボット、サイト、拡張機能の新機能とその使い方をご紹介します。",
+    readMore: "読む",
+    back: "すべての記事",
+    allPosts: "ブログ",
+    channel: "Telegram でお知らせ",
+    channelCta: "プロジェクトのお知らせは Telegram チャンネル @videonerdownload で配信しています。",
+    readOnSite: "サイトで読む",
+    readFull: "サイトで全文を読む",
+    dateLocale: "ja-JP",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

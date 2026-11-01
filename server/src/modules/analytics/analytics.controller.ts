@@ -22,6 +22,16 @@ export class AnalyticsController {
     );
   }
 
+  // Пользователи бота и скачивания по языкам интерфейса за days дней
+  // (вкладка «Языки» на дашборде).
+  @Get('languages')
+  languages(@Query('days') days?: string) {
+    const parsed = parseInt(days ?? '30', 10);
+    return this.analyticsService.languages(
+      Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 366) : 30,
+    );
+  }
+
   @Get('traffic/daily')
   trafficDaily(@Query('days') days?: string) {
     const parsed = parseInt(days ?? '30', 10);

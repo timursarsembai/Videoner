@@ -199,8 +199,8 @@ export const VideoInfoSection = ({
     try {
       const response =
         activeTab === "video"
-          ? await api.downloadVideo(url, selectedQuality, selectedExtension)
-          : await api.downloadAudio(url, selectedQuality, selectedExtension);
+          ? await api.downloadVideo(url, selectedQuality, selectedExtension, language)
+          : await api.downloadAudio(url, selectedQuality, selectedExtension, language);
 
       setDownloadState((prev) => ({
         ...prev,

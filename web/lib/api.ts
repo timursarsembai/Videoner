@@ -69,10 +69,13 @@ class ApiClient {
     }
   }
 
+  // lang — язык интерфейса сайта, только для статистики по языкам на
+  // дашборде (сервер пишет его в Download.lang).
   async downloadVideo(
     url: string,
     quality: string,
-    extension: string
+    extension: string,
+    lang?: string
   ): Promise<DownloadResponse> {
     try {
       const response = await this.client.post<DownloadResponse>(
@@ -82,6 +85,7 @@ class ApiClient {
           quality,
           extension,
           source: "WEB",
+          lang,
         }
       );
       return response.data;
@@ -93,7 +97,8 @@ class ApiClient {
   async downloadAudio(
     url: string,
     quality: string,
-    extension: string
+    extension: string,
+    lang?: string
   ): Promise<DownloadResponse> {
     try {
       const response = await this.client.post<DownloadResponse>(
@@ -103,6 +108,7 @@ class ApiClient {
           quality,
           extension,
           source: "WEB",
+          lang,
         }
       );
       return response.data;

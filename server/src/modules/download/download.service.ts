@@ -60,6 +60,7 @@ import {
   photoTargets,
   playlistEntries,
 } from 'src/lib/playlist';
+import { parseUiLang } from 'src/lib/languages';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -76,6 +77,10 @@ export interface DownloadRequestMeta {
   cookieScope?: string;
   // В группе — личный вход того, кто прислал ссылку, если у группы своего нет.
   cookieFallbackScope?: string;
+  // Язык интерфейса сайта или расширения (только статистика). Проверяется
+  // parseUiLang перед записью: не подходит — пишем null. У субтитров в этом
+  // же поле приезжает код дорожки, но записи Download они не создают.
+  lang?: unknown;
 }
 
 // Пределы для отчёта расширения (reportClientDownload). Длина ссылки — как у
@@ -407,6 +412,7 @@ export class DownloadService {
           telegramFileId: hit.telegramFileId,
           fromCache: true,
           clientIpHash: hashClientIp(meta.clientIp),
+          lang: parseUiLang(meta.lang),
         },
       });
     };
@@ -597,6 +603,7 @@ export class DownloadService {
     videoDuration?: number;
     cacheKey?: string | null;
     clientIp?: string;
+    lang?: unknown;
   }) {
     return this.prisma.download.create({
       data: {
@@ -611,6 +618,7 @@ export class DownloadService {
         videoDuration: data.videoDuration,
         cacheKey: data.cacheKey ?? null,
         clientIpHash: hashClientIp(data.clientIp),
+        lang: parseUiLang(data.lang),
       },
     });
   }
@@ -675,6 +683,7 @@ export class DownloadService {
         fileSize,
         clientIpHash: hashClientIp(meta.clientIp),
         clientSide: true,
+        lang: parseUiLang(meta.lang),
       },
     });
     return { ok: true };
@@ -1328,6 +1337,7 @@ export class DownloadService {
           videoDuration: info.duration,
           cacheKey,
           clientIp: meta.clientIp,
+          lang: meta.lang,
         });
       };
       const download = meta.telegramId
@@ -1551,6 +1561,7 @@ export class DownloadService {
           videoDuration: info.duration,
           cacheKey,
           clientIp: meta.clientIp,
+          lang: meta.lang,
         });
       };
       const download = meta.telegramId

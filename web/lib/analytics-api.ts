@@ -155,6 +155,22 @@ export interface BlockedData {
   users: BlockedUser[];
 }
 
+// Строка статистики по языкам за период. lang — код языка интерфейса
+// (как в LANGUAGES), "other" — язык вне списка, "unknown" — не известен
+// (скачивания сайта и расширения до начала записи языка, бот без
+// пользователя). Пользователи — только бота: язык выбранный вручную, иначе
+// по языку Telegram. Скачивания — только успешные.
+export interface LanguageStatsRow {
+  lang: string;
+  usersTotal: number;
+  usersActive: number;
+  usersNew: number;
+  botDownloads: number;
+  webDownloads: number;
+  extensionDownloads: number;
+  totalDownloads: number;
+}
+
 export interface AnalyticsSnapshot {
   overview: OverviewData;
   platforms: PlatformDatum[];
@@ -170,6 +186,7 @@ export interface AnalyticsSnapshot {
   activeWeekly: ActiveWeeklyPoint[];
   activeMonthly: ActiveMonthlyPoint[];
   blocked: BlockedData;
+  languages: LanguageStatsRow[];
 }
 
 // Ходит на СВОЙ Next.js-прокси (app/api/dashboard/[...path]/route.ts), а не
@@ -228,6 +245,7 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     activeWeekly,
     activeMonthly,
     blocked,
+    languages,
   ] = await Promise.all([
     get<OverviewData>(`/overview?days=${days}`),
     get<PlatformDatum[]>("/platforms"),
@@ -243,6 +261,7 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     get<ActiveWeeklyPoint[]>("/users/active/weekly?weeks=26"),
     get<ActiveMonthlyPoint[]>("/users/active/monthly"),
     get<BlockedData>(`/users/blocked?days=${days}`),
+    get<LanguageStatsRow[]>(`/languages?days=${days}`),
   ]);
 
   return {
@@ -260,6 +279,7 @@ export async function fetchAnalyticsSnapshot(days: number = 30): Promise<Analyti
     activeWeekly,
     activeMonthly,
     blocked,
+    languages,
   };
 }
 

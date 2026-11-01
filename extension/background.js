@@ -11,6 +11,7 @@ import {
   getAllJobs,
   getJob,
   LANG_KEY,
+  lang as uiLang,
   loadLang,
   safeFileName,
   setJob,
@@ -18,7 +19,9 @@ import {
 
 // Тексты ошибок пишутся здесь и показываются в окошке как есть — поэтому
 // язык тот же, что выбран в окошке (shared.js loadLang), и меняется вместе
-// с выбором.
+// с выбором. Он же (uiLang) уходит серверу вместе со скачиваниями — для
+// статистики по языкам на дашборде (Download.lang). В запрос субтитров не
+// кладём: там поле lang — код дорожки.
 void loadLang();
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && LANG_KEY in changes) void loadLang();
@@ -185,6 +188,7 @@ async function serverDownload({ url, apiUrl, title, kind, quality }, extra = {})
       url: apiUrl ?? url,
       quality,
       extension: kind === "audio" ? "mp3" : "mp4",
+      lang: uiLang,
     });
   } catch (e) {
     await setJob(url, { ...job, state: "error", error: friendlyError(e) });
@@ -235,7 +239,7 @@ async function startDirect({ url, tabId, media }) {
 
     // Отчёт — только для статистики: его сбой не должен портить человеку
     // скачанный файл.
-    api("/download/report", { url, fileSize: size, title }).catch((e) => console.warn("Videoner: report", e));
+    api("/download/report", { url, fileSize: size, title, lang: uiLang }).catch((e) => console.warn("Videoner: report", e));
     await updateJob(url, (job) => ({ ...job, state: "done", progress: null }));
   } finally {
     active.delete(url);
@@ -454,7 +458,7 @@ async function getCourseDone({ key, href, size }) {
     if (!isBrowserGetCourse(job)) return;
     await updateJob(key, (current) => ({ ...current, state: "saving", progress: null }));
     await chromeDownload(href, `${safeFileName(job.title)}.mp4`, key);
-    api("/download/report", { url: reportUrl(job.gc.master), fileSize: size, title: job.title }).catch((e) =>
+    api("/download/report", { url: reportUrl(job.gc.master), fileSize: size, title: job.title, lang: uiLang }).catch((e) =>
       console.warn("Videoner: report", e)
     );
     await updateJob(key, (current) => ({ ...current, state: "done", progress: null }));
@@ -681,7 +685,7 @@ async function downloadPlaylistItem(key, runId, mode, entry) {
   const quality = audio ? "128Kbps" : mode === "hd" ? "2160p" : "720p";
   if (!(await playlistRunning(key, runId))) return "stopped";
   const start = (q) =>
-    api(`/download/${audio ? "audio" : "video"}`, { url: entry.url, quality: q, extension: audio ? "mp3" : "mp4" });
+    api(`/download/${audio ? "audio" : "video"}`, { url: entry.url, quality: q, extension: audio ? "mp3" : "mp4", lang: uiLang });
   let started;
   try {
     started = await start(quality);

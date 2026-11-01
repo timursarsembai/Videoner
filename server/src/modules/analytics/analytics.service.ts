@@ -1,6 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { DownloadSource, DownloadStatus, Downloaders } from '@prisma/client';
+import {
+  downloadLanguage,
+  effectiveBotLanguage,
+  UNKNOWN_LANGUAGE,
+} from 'src/lib/languages';
+
+// Строка статистики по языкам (см. AnalyticsService.languages).
+export interface LanguageStatsRow {
+  lang: string;
+  usersTotal: number;
+  usersActive: number;
+  usersNew: number;
+  botDownloads: number;
+  webDownloads: number;
+  extensionDownloads: number;
+  totalDownloads: number;
+}
 
 // NULL и явное значение enum (например 'OTHER') должны схлопываться в одну
 // группу при агрегации по nullable-полю — иначе они приходят как два разных
@@ -71,6 +88,115 @@ export class AnalyticsService {
       // а не только до бота, по-прежнему полезно.
       webLoginUsers,
     };
+  }
+
+  // Статистика по языкам за days дней: пользователи бота и успешные
+  // скачивания из бота, с сайта и из расширения.
+  //   Язык человека в боте — выбранный вручную (BotUser.language), иначе по
+  //   языку Telegram (languageCode); вне списка 46 языков — «other». Группируем
+  //   в SQL по двум сырым колонкам (разных пар немного), а сводим к языку в
+  //   JS — правила те же, что у бота (src/lib/languages.ts).
+  //   Активный — lastSeenAt в периоде, как в карточках DAU/WAU/MAU
+  //   (usersActivity); новый — firstSeenAt в периоде.
+  //   Скачивания бота — по языку его пользователя (запись без пользователя —
+  //   «unknown»), сайта и расширения — по Download.lang, который они
+  //   присылают с выката записи языка; раньше там null — «unknown».
+  //   Успешные — COMPLETED и EXPIRED, как в overview().
+  async languages(days: number): Promise<LanguageStatsRow[]> {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+    const [users, botDownloads, clientDownloads] = await Promise.all([
+      this.prisma.$queryRaw<
+        {
+          language: string | null;
+          languageCode: string | null;
+          total: number;
+          active: number;
+          newUsers: number;
+        }[]
+      >`
+        SELECT language, "languageCode",
+               COUNT(*)::int AS total,
+               COUNT(*) FILTER (WHERE "lastSeenAt" >= ${since})::int AS active,
+               COUNT(*) FILTER (WHERE "firstSeenAt" >= ${since})::int AS "newUsers"
+        FROM "BotUser"
+        GROUP BY language, "languageCode"
+      `,
+      this.prisma.$queryRaw<
+        {
+          hasUser: boolean;
+          language: string | null;
+          languageCode: string | null;
+          count: number;
+        }[]
+      >`
+        SELECT (u.id IS NOT NULL) AS "hasUser", u.language, u."languageCode",
+               COUNT(*)::int AS count
+        FROM "Download" d
+        LEFT JOIN "BotUser" u ON u.id = d."botUserId"
+        WHERE d.source = 'BOT'
+          AND d.status IN ('COMPLETED', 'EXPIRED')
+          AND d."createdAt" >= ${since}
+        GROUP BY 1, 2, 3
+      `,
+      this.prisma.download.groupBy({
+        by: ['source', 'lang'],
+        where: {
+          source: { in: [DownloadSource.WEB, DownloadSource.EXTENSION] },
+          status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
+          createdAt: { gte: since },
+        },
+        _count: { _all: true },
+      }),
+    ]);
+
+    const rows = new Map<string, LanguageStatsRow>();
+    const row = (lang: string) => {
+      let r = rows.get(lang);
+      if (!r) {
+        r = {
+          lang,
+          usersTotal: 0,
+          usersActive: 0,
+          usersNew: 0,
+          botDownloads: 0,
+          webDownloads: 0,
+          extensionDownloads: 0,
+          totalDownloads: 0,
+        };
+        rows.set(lang, r);
+      }
+      return r;
+    };
+
+    for (const u of users) {
+      const r = row(effectiveBotLanguage(u.language, u.languageCode));
+      r.usersTotal += u.total;
+      r.usersActive += u.active;
+      r.usersNew += u.newUsers;
+    }
+    for (const d of botDownloads) {
+      const lang = d.hasUser
+        ? effectiveBotLanguage(d.language, d.languageCode)
+        : UNKNOWN_LANGUAGE;
+      const r = row(lang);
+      r.botDownloads += d.count;
+      r.totalDownloads += d.count;
+    }
+    for (const d of clientDownloads) {
+      const r = row(downloadLanguage(d.lang));
+      const count = d._count._all;
+      if (d.source === DownloadSource.WEB) r.webDownloads += count;
+      else r.extensionDownloads += count;
+      r.totalDownloads += count;
+    }
+
+    return Array.from(rows.values()).sort(
+      (a, b) =>
+        b.totalDownloads - a.totalDownloads ||
+        b.usersActive - a.usersActive ||
+        b.usersTotal - a.usersTotal ||
+        a.lang.localeCompare(b.lang),
+    );
   }
 
   async platforms() {

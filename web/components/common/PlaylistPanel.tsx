@@ -42,7 +42,7 @@ const MAX_WAIT_MS = 60 * 60_000;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function PlaylistPanel({ playlist }: { playlist: Playlist }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [run, setRun] = useState<RunState | null>(null);
   const stopRef = useRef(false);
   const n = playlist.entries.length;
@@ -56,7 +56,9 @@ export function PlaylistPanel({ playlist }: { playlist: Playlist }) {
   // предела сервера — пробуем 720p. 403/429 — стоп всего плейлиста.
   async function startOne(entry: Playlist["entries"][number], mode: Mode) {
     const attempt = (quality: string) =>
-      mode === "audio" ? api.downloadAudio(entry.url, "128Kbps", "mp3") : api.downloadVideo(entry.url, quality, "mp4");
+      mode === "audio"
+        ? api.downloadAudio(entry.url, "128Kbps", "mp3", language)
+        : api.downloadVideo(entry.url, quality, "mp4", language);
     try {
       return await attempt(mode === "hd" ? "2160p" : "720p");
     } catch (error) {

@@ -135,6 +135,14 @@ export class DownloadVideoDto extends RequestMetaDto {
   // включить строгий режим и узаконить сломанный вход.
   @IsIn(['mp4', 'mkv', 'webm', 'flv', 'ogg'])
   extension?: VideoFormat;
+
+  // Язык интерфейса сайта или расширения — только для статистики по языкам
+  // на дашборде. Не в RequestMetaDto: у субтитров поле lang уже занято кодом
+  // дорожки. Настоящая проверка — parseUiLang (src/lib/languages.ts).
+  @ApiProperty({ description: 'UI language of the website or extension, e.g. "uk"', required: false })
+  @IsOptional()
+  @Matches(/^[a-z]{2,3}$/)
+  lang?: string;
 }
 
 export class DownloadAudioDto extends RequestMetaDto {
@@ -164,6 +172,14 @@ export class DownloadAudioDto extends RequestMetaDto {
   // extReg в getOutputPath не знает, и скачивание падает на имени файла.
   @IsIn(['mp3', 'm4a', 'aac', 'flac', 'opus', 'vorbis', 'wav'])
   extension?: AudioFormat;
+
+  // Язык интерфейса сайта или расширения — только для статистики по языкам
+  // на дашборде. Не в RequestMetaDto: у субтитров поле lang уже занято кодом
+  // дорожки. Настоящая проверка — parseUiLang (src/lib/languages.ts).
+  @ApiProperty({ description: 'UI language of the website or extension, e.g. "uk"', required: false })
+  @IsOptional()
+  @Matches(/^[a-z]{2,3}$/)
+  lang?: string;
 }
 
 export class DownloadSubtitlesDto extends RequestMetaDto {
@@ -249,4 +265,12 @@ export class ReportClientDownloadDto extends RequestMetaDto {
   @IsOptional()
   @IsString()
   title?: string;
+
+  // Язык интерфейса сайта или расширения — только для статистики по языкам
+  // на дашборде. Не в RequestMetaDto: у субтитров поле lang уже занято кодом
+  // дорожки. Настоящая проверка — parseUiLang (src/lib/languages.ts).
+  @ApiProperty({ description: 'UI language of the website or extension, e.g. "uk"', required: false })
+  @IsOptional()
+  @Matches(/^[a-z]{2,3}$/)
+  lang?: string;
 }

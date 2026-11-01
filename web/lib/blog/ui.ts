@@ -295,6 +295,18 @@ export const blogUi: Record<
     readFull: "사이트에서 전체 글 읽기",
     dateLocale: "ko-KR",
   },
+  th: {
+    title: "บล็อก Videoner",
+    description: "ข่าวสารของโปรเจกต์: มีอะไรใหม่ในบอท บนเว็บไซต์ และในส่วนขยาย พร้อมวิธีใช้งาน",
+    readMore: "อ่าน",
+    back: "บทความทั้งหมด",
+    allPosts: "บล็อก",
+    channel: "ข่าวสารบน Telegram",
+    channelCta: "ติดตามข่าวสารของโปรเจกต์ได้ที่ช่อง Telegram @videonerdownload",
+    readOnSite: "อ่านบนเว็บไซต์",
+    readFull: "อ่านฉบับเต็มบนเว็บไซต์",
+    dateLocale: "th-TH-u-nu-latn-ca-gregory",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

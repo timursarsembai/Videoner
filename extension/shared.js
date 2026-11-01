@@ -2010,6 +2010,93 @@ const TEXTS = {
     langAuto: "자동",
     langLabel: "언어",
   },
+  // Тайский, вежливый дружелюбный тон (без ครับ/ค่ะ). Латиница (названия
+  // площадок, @VideonerBot, /connect), цифры (th-TH-u-nu-latn) и GB/MB — как в английском.
+  th: {
+    loading: "กำลังดึงข้อมูลวิดีโอ…",
+    notVideoPage:
+      "เปิดหน้าวิดีโอบน YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest หรือ Threads แล้วคลิกไอคอนอีกครั้ง บทเรียน GetCourse: หากเปิดหน้าบทเรียนไว้ก่อนติดตั้งส่วนขยาย ให้โหลดหน้านั้นใหม่",
+    gcLesson: "บทเรียน GetCourse",
+    gcPick: "บทเรียนนี้มีวิดีโอหลายรายการ เลือกหนึ่งรายการ",
+    gcVideo: (n) => `วิดีโอ ${n}`,
+    gcNote: "เบราว์เซอร์ของคุณจะดาวน์โหลดและรวมไฟล์ให้ ปิดหน้าต่างนี้ได้ แต่อย่าปิดเบราว์เซอร์",
+    gcNoStream: "ดึงวิดีโอจากเพลเยอร์ไม่ได้ โหลดหน้าบทเรียนใหม่แล้วลองอีกครั้ง",
+    video: "วิดีโอ",
+    photo: "รูปภาพขนาดต้นฉบับ",
+    slideshow: "สไลด์โชว์ (วิดีโอ)",
+    gallery: "รูปภาพ + สไลด์โชว์",
+    audioOnly: "เฉพาะเสียง (mp3)",
+    subtitles: "ซับไตเติล (.srt)",
+    subtitlesAuto: "สร้างอัตโนมัติ",
+    back: "ย้อนกลับ",
+    starting: "กำลังเริ่มดาวน์โหลด…",
+    waiting: "กำลังรอคิวบนเซิร์ฟเวอร์…",
+    downloading: "กำลังดาวน์โหลด",
+    converting: "กำลังประมวลผล",
+    left: (eta) => `เหลืออีก ${eta}`,
+    saving: "กำลังบันทึกลงในโฟลเดอร์ดาวน์โหลด…",
+    done: "เสร็จแล้ว ไฟล์อยู่ในโฟลเดอร์ดาวน์โหลดของคุณ",
+    news: "📣 ข่าวสารโปรเจกต์: @videonerdownload",
+    again: "ดาวน์โหลดวิดีโออื่น",
+    directDownload: "ดาวน์โหลดวิดีโอ (mp4)",
+    directPhoto: "ดาวน์โหลดรูปภาพ (jpg)",
+    directNote: "ดาวน์โหลดจากเบราว์เซอร์โดยตรง ไม่ต้องรอคิวเซิร์ฟเวอร์",
+    moreOptions: "คุณภาพอื่นและเสียง",
+    fallback: "ดาวน์โหลดผ่านเบราว์เซอร์ไม่สำเร็จ กำลังดาวน์โหลดผ่านเซิร์ฟเวอร์แทน",
+    openSite: "เปิด videoner.download",
+    retry: "ลองอีกครั้ง",
+    min: "นาที",
+    sec: "วินาที",
+    errNetwork: "เชื่อมต่อ Videoner ไม่ได้ ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองอีกครั้ง",
+    errRateLimit: "ส่งคำขอติดต่อกันมากเกินไป รอสักครู่แล้วลองอีกครั้ง",
+    errUnsupported:
+      "หน้านี้ไม่มีวิดีโอที่ Videoner ดาวน์โหลดได้ เปิดหน้าของวิดีโอหรือโพสต์ที่ต้องการ",
+    errYoutubeDaily: "โควตา YouTube รายวันสำหรับเครือข่ายของคุณหมดแล้ว ลองใหม่พรุ่งนี้",
+    errTooLarge: "ไฟล์ในคุณภาพนี้ใหญ่เกินไป เลือกคุณภาพที่ต่ำกว่า",
+    errLogin:
+      "โพสต์นี้ดูได้เฉพาะผู้ที่เข้าสู่ระบบแล้ว โพสต์สาธารณะดาวน์โหลดได้ตามปกติ",
+    errRegion: "ผู้โพสต์จำกัดการเข้าถึงโพสต์นี้ตามประเทศ จึงดาวน์โหลดไม่ได้",
+    errServerBlocked: "แพลตฟอร์มกำลังจำกัดการเข้าถึงของเซิร์ฟเวอร์เราชั่วคราว ลองใหม่ภายหลัง",
+    errFailed: "ดาวน์โหลดไม่สำเร็จ ลองอีกครั้งหรือเลือกคุณภาพอื่น",
+    errGeneric: "เกิดข้อผิดพลาด ลองใหม่อีกครั้งในภายหลัง",
+    acctButton: (p) => `🔑 เชื่อมต่อบัญชี ${p} ของคุณกับบอท`,
+    acctWarn: (p) =>
+      `@VideonerBot จะดาวน์โหลดเนื้อหาบน ${p} ที่ดูได้เฉพาะผู้ที่เข้าสู่ระบบผ่านบัญชีของคุณได้ เช่น สตอรี่ โพสต์ส่วนตัว แพลตฟอร์มไม่ชอบการดาวน์โหลดอัตโนมัติและอาจจำกัดบัญชี จึงควรเชื่อมต่อบัญชีสำรอง เบราว์เซอร์จะขอสิทธิ์อ่านคุกกี้ของเว็บไซต์นี้ และจะส่งเฉพาะคุกกี้ของ ${p} ไปยังเซิร์ฟเวอร์แบบเข้ารหัส`,
+    acctConfirm: "เชื่อมต่อ",
+    acctCancel: "ยกเลิก",
+    acctSending: "กำลังเชื่อมต่อ…",
+    acctDenied: "เชื่อมต่อบัญชีไม่ได้หากไม่อนุญาตให้เข้าถึงคุกกี้",
+    acctNoLogin: (p) => `คุณยังไม่ได้เข้าสู่ระบบ ${p} ในเบราว์เซอร์นี้ เข้าสู่ระบบบนเว็บไซต์แล้วลองอีกครั้ง`,
+    acctFailed: "ไม่สำเร็จ ลองใหม่อีกครั้งในภายหลัง",
+    acctCodeTitle: (p) => `รหัสสำหรับเชื่อมต่อ ${p}:`,
+    acctCodeHelp:
+      "ส่งรหัสนี้ให้ @VideonerBot ในแชตส่วนตัวสำหรับการดาวน์โหลดของคุณเอง สำหรับกลุ่ม ให้ส่ง /connect รหัส ในกลุ่มนั้น รหัสใช้ได้ 10 นาที",
+    acctCopy: "คัดลอก",
+    acctCopied: "คัดลอกแล้ว",
+    acctOpenBot: "เปิดบอท",
+    acctNewCode: "รับรหัสใหม่",
+    acctList: "การเชื่อมต่อของฉันในบอท",
+    acctRevoke: "เพิกถอนสิทธิ์เข้าถึงคุกกี้",
+    acctRevoked:
+      "เพิกถอนสิทธิ์เข้าถึงคุกกี้แล้ว ส่วนขยายจะไม่อ่านคุกกี้อีก บัญชีที่เชื่อมต่อไว้แล้วยังอยู่ในบอท ลบได้ที่ “การเชื่อมต่อของฉันในบอท”",
+    playlistOffer: "📃 ดาวน์โหลดทั้งเพลย์ลิสต์",
+    playlistTitle: (title, n) => `📃 เพลย์ลิสต์${title ? ` “${title}”` : ""}: ${n} วิดีโอ`,
+    playlistHint: "จะดาวน์โหลดทีละรายการตามลำดับ ปิดหน้าต่างนี้ได้",
+    playlist720: "เพลย์ลิสต์ 720p",
+    playlistBest: "เพลย์ลิสต์คุณภาพสูงสุด",
+    playlistAudio: "เพลย์ลิสต์ — เฉพาะเสียง (mp3)",
+    playlistProgress: (i, n) => `วิดีโอ ${i}/${n}`,
+    playlistStats: (done, failed) => `ดาวน์โหลดแล้ว: ${done}${failed ? ` · ไม่สำเร็จ: ${failed}` : ""}`,
+    playlistStop: "⏹ หยุด",
+    playlistDone: (done, n) => `ดาวน์โหลดเพลย์ลิสต์แล้ว: ${done}/${n}`,
+    playlistStopped: (done, n) => `หยุดแล้ว ดาวน์โหลดไป ${done} จาก ${n}`,
+    playlistLoading: "กำลังดึงรายการวิดีโอ…",
+    close: "ปิด",
+    updateAvailable: (v) => `เวอร์ชัน ${v} ออกแล้ว`,
+    updateHow: "วิธีอัปเดต",
+    langAuto: "อัตโนมัติ",
+    langLabel: "ภาษา",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -2100,12 +2187,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский, персидский и урду пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -2212,11 +2299,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому и корейскому — латинские GB/MB, как и цифры (ar-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, польскому, японскому, корейскому и тайскому — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

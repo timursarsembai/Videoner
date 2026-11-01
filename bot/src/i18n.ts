@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -14,9 +14,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja", "ko"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja", "ko", "th"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -4880,6 +4880,226 @@ const ko: Messages = {
   settingsBack: "⬅️ 설정으로 돌아가기",
 };
 
+const th: Messages = {
+  start: "สวัสดี! ส่งลิงก์วิดีโอจาก YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest หรือ Threads มาได้เลย แล้วเราจะช่วยดาวน์โหลดให้\n\n✨ ไม่จำกัดคุณภาพ: ได้ตามที่แพลตฟอร์มมีให้ สูงสุดถึง 4K ขอแค่ไฟล์ไม่เกิน 2 GB ซึ่งเป็นขีดจำกัดของ Telegram สำหรับบอท ที่นี่ไม่มีฟีเจอร์แบบเสียเงิน\n\nฟรีทั้งหมด: ไม่มีการสมัครสมาชิก ไม่มีโฆษณา ไม่มีการซื้อในแอป\n\n🧩 ดาวน์โหลดบนคอมพิวเตอร์ใช่ไหม? ติดตั้งส่วนขยายเบราว์เซอร์ แล้วปุ่มดาวน์โหลดจะขึ้นบนหน้าวิดีโอเลย: videoner.download/th/extension\n\n👥 เพิ่มเราเข้ากลุ่ม แล้วเราจะโพสต์วิดีโอจากลิงก์ที่สมาชิกแชร์ในกลุ่มให้\n\n⚡ ข้ามการเลือกคุณภาพได้: พิมพ์ -audio ต่อท้ายลิงก์เพื่อเอาแค่เสียง (mp3) หรือ -hd เพื่อคุณภาพดีที่สุด\n\n📣 ข่าวสารโปรเจกต์: @videonerdownload\n\n🌐 ภาษาของบอท: /language",
+  notLink: "ข้อความนี้ดูไม่เหมือนลิงก์ ลองส่งลิงก์วิดีโอมาอีกครั้งนะ",
+  inviteGreeting: "สวัสดี! เราคือ Videoner ดาวน์โหลดวิดีโอจาก YouTube, TikTok, Instagram และแพลตฟอร์มอื่น ๆ ได้ฟรี กำลังเตรียมวิดีโอที่มีคนแชร์ให้คุณ 👇",
+  inviteNotFound: "ไม่พบวิดีโอสำหรับลิงก์เชิญนี้ ส่งลิงก์วิดีโอมา แล้วเราจะดาวน์โหลดให้",
+  inviteUnavailable: "เปิดวิดีโอจากลิงก์นี้ไม่ได้ เพราะตอนนี้บริการไม่ตอบสนอง ลองเปิดลิงก์เดิมอีกครั้งในอีกสักนาทีนะ",
+  fetchingInfo: "🔍 กำลังดึงข้อมูลวิดีโอ...",
+  audioOnlyButton: "🎵 เฉพาะเสียง (mp3)",
+  photoButton: "📷 ดาวน์โหลดรูปภาพ",
+  slideshowButton: "🎞 สไลด์โชว์ (วิดีโอ)",
+  galleryButton: "📷+🎞 รูปภาพและสไลด์โชว์",
+  chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\nเลือกคุณภาพ:`,
+  sessionExpired: "เซสชันหมดอายุแล้ว ส่งลิงก์มาอีกครั้งนะ",
+  downloading: "⏬ กำลังดาวน์โหลด อาจใช้เวลาสักสองสามนาที...",
+  downloadFailed: "ดาวน์โหลดไม่สำเร็จ",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ กำลังดาวน์โหลด: ${percent}%${eta ? ` · เหลืออีก ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ ใกล้เสร็จแล้ว กำลังรวมไฟล์...",
+  converting: (percent) => `⚙️ กำลังแปลงไฟล์: ${percent}%`,
+  etaUnderMinute: "ไม่ถึงหนึ่งนาที",
+  etaMinutes: (minutes) => `~${minutes} นาที`,
+  etaHours: (hours, minutes) => `~${hours} ชม.${minutes ? ` ${minutes} นาที` : ""}`,
+  downloadTimeout: "การดาวน์โหลดใช้เวลานานเกินไป ดูเหมือนวิดีโอจะใหญ่มาก ลองเลือกคุณภาพที่ต่ำลง",
+  downloadInterrupted: "⚠️ บอทกำลังรีสตาร์ทเพื่ออัปเดต การดาวน์โหลดของคุณถูกขัดจังหวะ ส่งลิงก์มาอีกครั้งในอีกสักนาทีนะ",
+  fileTooBig: (mb, url) =>
+    `ไฟล์มีขนาดใหญ่ (${mb} MB) Telegram ไม่ยอมให้บอทส่งไฟล์นี้\nดาวน์โหลดได้ที่นี่: ${url}`,
+  sendingFile: "📤 กำลังส่งไฟล์...",
+  sendingAlbum: (count) => `📤 โพสต์นี้มีหลายไฟล์ (${count}) กำลังส่งเป็นอัลบั้ม...`,
+  failedPrefix: "❌ ไม่สำเร็จ: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `ที่มา: ${sourceUrl}\n` +
+        "ลิขสิทธิ์ทั้งหมดของวิดีโอเป็นของผู้สร้าง\n" +
+        "ดาวน์โหลดฟรีด้วย @VideonerBot",
+      `📣 ข่าวสารโปรเจกต์: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 แชร์: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `หากต้องการดาวน์โหลด กรุณาติดตามช่อง ${channel} ของเรา นี่เป็นเงื่อนไขเดียว และบริการยังคงฟรีเหมือนเดิม\n\n` +
+    "ติดตามแล้วกด «ติดตามแล้ว»",
+  openChannelButton: "📣 เปิดช่อง",
+  checkSubscriptionButton: "ติดตามแล้ว",
+  subscribeThanks: "ขอบคุณ! ส่งลิงก์วิดีโอมาได้เลย",
+  subscribeThanksResuming: "ขอบคุณ! กำลังจัดการลิงก์ของคุณต่อ",
+  subscribeStillMissing: "ยังไม่เห็นการติดตาม ติดตามช่องแล้วกดอีกครั้งนะ",
+  channelNotice: (channel) => `\n\nลิงก์ของโพสต์นี้จะปรากฏใน ${channel} แบบไม่ระบุตัวตน ไม่มีชื่อของคุณ`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "ดาวน์โหลดวิดีโอนี้และวิดีโออื่น ๆ ได้ฟรี: @VideonerBot",
+  errorStoryNeedsId:
+    "ส่งลิงก์ของสตอรี่ที่ต้องการ: เปิดสตอรี่ในแอป Instagram แล้วแตะ แชร์ → คัดลอกลิงก์",
+  errorInstagramStory:
+    "สตอรี่ Instagram จะเห็นได้เฉพาะคนที่ล็อกอินอยู่เท่านั้น",
+  errorLoginRequired:
+    "โพสต์นี้ดูไม่ได้หากไม่ล็อกอิน: แพลตฟอร์มแสดงให้เฉพาะ " +
+    "ผู้ใช้ที่ล็อกอินอยู่ ซึ่งเกิดขึ้นกับโพสต์ส่วนตัว เนื้อหาที่จำกัดอายุ " +
+    "และโพสต์ที่แชร์ให้ผู้ชมกลุ่มจำกัด\n\n" +
+    "โพสต์สาธารณะดาวน์โหลดได้ไม่มีปัญหา ลองลิงก์อื่นดูนะ",
+  errorUnsupportedPlatform:
+    "ไม่รู้จักลิงก์นี้ ตรวจสอบว่าเป็นลิงก์วิดีโอโดยตรงจาก YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest หรือ Threads",
+  errorFileTooLarge: "ไฟล์ใหญ่กว่า 2 GB และ Telegram ไม่ยอมให้บอทส่งไฟล์ที่ใหญ่กว่านี้ ดาวน์โหลดได้บนเว็บไซต์หรือด้วยส่วนขยายเบราว์เซอร์ (ปุ่มด้านล่าง) หรือส่งลิงก์มาอีกครั้งแล้วเลือกคุณภาพที่ต่ำลง",
+  siteButton: "🌐 ดาวน์โหลดบนเว็บไซต์",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ซ่อนคุณภาพที่ใหญ่กว่า ${limit} ไว้: Telegram ไม่ยอมให้บอทส่งไฟล์ที่ใหญ่กว่านี้ ดาวน์โหลดได้บนเว็บไซต์หรือด้วยส่วนขยายเบราว์เซอร์ (ปุ่มด้านล่าง)`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ วิดีโอนี้ใหญ่เกินไปสำหรับ Telegram แม้ในคุณภาพต่ำสุด (~${smallest}): Telegram ไม่ยอมให้บอทส่งไฟล์เกิน 2 GB ที่นี่รับได้เฉพาะเสียง ส่วนวิดีโอดาวน์โหลดได้บนเว็บไซต์หรือด้วยส่วนขยายเบราว์เซอร์ (ปุ่มด้านล่าง)`,
+  errorFormatUnavailable: "วิดีโอนี้ไม่มีคุณภาพที่เลือก ส่งลิงก์มาอีกครั้ง แล้วเราจะแสดงรายการล่าสุดให้",
+  errorNoVideoContent: "ลิงก์นี้ไม่มีวิดีโอให้ดาวน์โหลด ดูเหมือนโพสต์จะมีแค่รูปภาพ",
+  errorRegionBlocked:
+    "วิดีโอนี้ถูกบล็อกนอกประเทศของผู้สร้าง แพลตฟอร์มจึงไม่ส่ง " +
+    "ให้เซิร์ฟเวอร์ของเรา ไม่มีทางเลี่ยงได้ เพราะข้อจำกัดอยู่ที่ฝั่งแพลตฟอร์ม" +
+    "\n\nลิงก์อื่นยังดาวน์โหลดได้ตามปกติ",
+  errorRateLimited: "ส่งลิงก์ติดกันมากเกินไป รอสักครู่แล้วส่งใหม่นะ",
+  errorYoutubeDailyLimit: (gb) => `คุณดาวน์โหลดจาก YouTube เกิน ${gb} GB ใน 24 ชั่วโมงที่ผ่านมา ซึ่งเป็นขีดจำกัดรายวันต่อคนของบอท ระบบนับย้อนหลัง 24 ชั่วโมง จึงดาวน์โหลดวิดีโอ YouTube ใหม่ได้อีกในภายหลัง แพลตฟอร์มอื่นยังใช้ได้ตามปกติ`,
+  playlistStoppedByLimit: (dropped) => `⏹ หยุดเพลย์ลิสต์แล้ว: ถึงขีดจำกัด YouTube รายวัน วิดีโอที่ยังไม่ได้ดาวน์โหลด: ${dropped} ส่งลิงก์เพลย์ลิสต์มาใหม่ภายหลังนะ`,
+  errorPlatformRefused:
+    "แพลตฟอร์มไม่ส่งวิดีโอนี้ให้เซิร์ฟเวอร์ของเรา ซึ่งเกิดขึ้นกับโพสต์ส่วนตัว " +
+    "หรือโพสต์ที่จำกัดอายุ และบางครั้งแพลตฟอร์มก็จำกัดการเข้าถึง " +
+    "ชั่วคราว ลองใหม่อีกครั้งในอีกไม่กี่นาที",
+  errorThreadsNoMedia:
+    "ไม่พบวิดีโอหรือรูปภาพในโพสต์ Threads นี้ อาจเป็นโพสต์ข้อความล้วน หรือ " +
+    "Threads แสดงสื่อให้เฉพาะผู้ใช้ที่ล็อกอินอยู่ โพสต์แบบนี้ดาวน์โหลดไม่ได้หากไม่ล็อกอิน",
+  extensionHint:
+    "\n\n💻 ดาวน์โหลดได้ด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์: " +
+    "ส่วนขยายจะดาวน์โหลดโดยใช้การล็อกอินของคุณบนแพลตฟอร์ม และรหัสผ่านหรือคุกกี้จะไม่ออกไปจากเบราว์เซอร์ของคุณ",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 หากต้องการดาวน์โหลดโพสต์แบบนี้ ให้เชื่อมต่อบัญชี ${platform} ของคุณกับบอทเพียงครั้งเดียว หลังจากนั้นบอทจะดาวน์โหลดทุกอย่างที่คุณเห็นได้ ทั้งโพสต์ส่วนตัว รีล และสตอรี่ จากมือถือก็ได้ ดูวิธีได้ที่ปุ่มด้านล่าง${withExtension ? "\n\n💻 หรือดาวน์โหลดด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์" : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ บัญชี ${platform} ที่เชื่อมต่อไว้เปิดโพสต์นี้ไม่ได้ การล็อกอินอาจใช้งานไม่ได้แล้ว ลองเชื่อมต่อบัญชีใหม่อีกครั้ง หรือบัญชีนี้อาจไม่มีสิทธิ์เข้าถึงโพสต์${withExtension ? "\n\n💻 หรือดาวน์โหลดด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์ก็ได้" : ""}`,
+  connectAccountButton: "🔑 เชื่อมต่อบัญชี",
+  reconnectAccountButton: "🔑 เชื่อมต่อใหม่",
+  extensionButton: "🧩 ดาวน์โหลดด้วยส่วนขยาย",
+  extensionCommand:
+    "🧩 Videoner สำหรับเบราว์เซอร์: ปุ่มดาวน์โหลดบนหน้าวิดีโอโดยตรง รองรับ YouTube, Instagram, TikTok, VK, วิดีโอส่วนตัวจากบัญชีของคุณ และบทเรียน GetCourse\n\nสำหรับ Chrome, Edge, Opera, Yandex Browser และ Firefox บนคอมพิวเตอร์",
+  extensionPageButton: "🧩 ติดตั้งส่วนขยาย",
+  addToGroupButton: "👥 เพิ่มเข้ากลุ่ม",
+  newsButton: "📣 ข่าวสารโปรเจกต์",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 ข่าวสารโปรเจกต์: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ การตั้งค่าบอทสำหรับกลุ่มนี้\n\n" +
+    `🗑 ลบข้อความที่มีลิงก์: ${s.deleteLinks ? "ใช่" : "ไม่"}\n` +
+    "เมื่อส่งวิดีโอแล้ว ข้อความที่มีแค่ลิงก์จะถูกลบ ในแชตจะเหลือแค่วิดีโอพร้อมชื่อของคนที่แชร์\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ ตอนนี้เราลบข้อความไม่ได้: ตั้งเราเป็นแอดมินพร้อมสิทธิ์ \"ลบข้อความ\"\n"
+      : "") +
+    `\n✍️ คำบรรยายใต้วิดีโอ: ${{ full: "แบบเต็ม", short: "ชื่อและที่มา", none: "ไม่มีคำบรรยาย" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 คุณภาพ: ${s.quality === "max" ? "สูงสุดที่ Telegram รับได้" : "มาตรฐาน (720p)"}\n` +
+    `\n⏱ วิดีโอยาว: ${s.longVideos ? "ทุกความยาว" : "ไม่เกิน 15 นาทีเท่านั้น"}\n` +
+    `\n🔑 ใครเชื่อมต่อบัญชีได้ (สำหรับสตอรี่และโพสต์ส่วนตัว): ${s.cookiesBy === "all" ? "สมาชิกทุกคน" : "แอดมินเท่านั้น"}\n` +
+    `\n🌐 ภาษาที่ใช้ตอบ: ${s.language ? langName(s.language) : "ตามภาษาของสมาชิกแต่ละคน"}\n` +
+    "\nเฉพาะแอดมินของกลุ่มเท่านั้นที่เปลี่ยนการตั้งค่าได้",
+  settingsDeleteButton: (on) => `🗑 ลบลิงก์: ${on ? "ใช่" : "ไม่"}`,
+  settingsCaptionButton: (style) => `✍️ คำบรรยาย: ${{ full: "เต็ม", short: "สั้น", none: "ไม่มี" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 คุณภาพ: ${mode === "max" ? "สูงสุด" : "720p"}`,
+  settingsLongButton: (on) => `⏱ วิดีโอยาว: ${on ? "ใช่" : "ไม่เกิน 15 นาที"}`,
+  settingsDoneButton: "✅ เสร็จสิ้น",
+  settingsAdminsOnly: "เฉพาะแอดมินของกลุ่มเท่านั้นที่เปลี่ยนการตั้งค่าได้",
+  settingsGroupsOnly: "การตั้งค่านี้ใช้สำหรับกลุ่ม: เพิ่มเราเข้ากลุ่มแล้วส่ง /settings ในกลุ่มนั้น",
+  settingsFailed: "บันทึกการตั้งค่าไม่สำเร็จ ลองอีกครั้งนะ",
+  settingsCookiesButton: (by) => `🔑 การเชื่อมต่อบัญชี: ${by === "all" ? "ทุกคน" : "แอดมิน"}`,
+  accountsIntro:
+    "🔑 บัญชีที่เชื่อมต่อไว้\n\nบอทดาวน์โหลดเนื้อหาที่เห็นได้เฉพาะคนที่ล็อกอิน (สตอรี่ Instagram, โพสต์ส่วนตัว) ได้โดยใช้บัญชีของคุณ การล็อกอินจะใช้ได้ในที่ที่คุณเชื่อมต่อไว้: บัญชีที่เชื่อมต่อในแชตส่วนตัวใช้กับการดาวน์โหลดของคุณ รวมถึงลิงก์ที่คุณส่งในกลุ่มที่ไม่มีบัญชีของตัวเอง ส่วนบัญชีที่เชื่อมต่อกับกลุ่มใช้ได้กับสมาชิกทุกคนในกลุ่มนั้น",
+  accountsHowTo:
+    "วิธีเชื่อมต่อ:\n1. ง่ายที่สุด: ใช้ส่วนขยาย Videoner บนคอมพิวเตอร์ ล็อกอินบนเว็บไซต์ของแพลตฟอร์ม เปิดป๊อปอัป Videoner กด «🔑 เชื่อมต่อบัญชี … ของคุณกับบอท» แล้วส่งรหัสมาให้เรา หากเป็นกลุ่ม ให้ส่ง /connect รหัส ในกลุ่มนั้น\n2. หรือส่งไฟล์ cookies.txt (คุกกี้ที่ส่งออกจากเบราว์เซอร์) หรือวางเนื้อหาของไฟล์เป็นข้อความ\n3. จากมือถือ Android ใช้ Firefox กับส่วนเสริม Cookie-Editor: https://videoner.download/th/blog/android-firefox",
+  accountsWarning:
+    "⚠️ แพลตฟอร์มไม่ชอบการดาวน์โหลดอัตโนมัติ และอาจจำกัดหรือแบนบัญชีได้ ควรเชื่อมต่อบัญชีสำรอง ไม่ใช่บัญชีหลัก คุกกี้จะถูกเก็บแบบเข้ารหัส ใช้เพื่อดาวน์โหลดเท่านั้น และลบได้ด้วยปุ่มด้านล่าง",
+  accountsNone: "ยังไม่มีบัญชีที่เชื่อมต่อ",
+  accountsGroupTitle: "🔑 บัญชีที่เชื่อมต่อกับกลุ่มนี้",
+  accountsGroupHowTo:
+    "หากต้องการเชื่อมต่อสำหรับทั้งกลุ่ม: รับรหัสด้วยปุ่ม «🔑 เชื่อมต่อบัญชี … ของคุณกับบอท» ในส่วนขยาย Videoner แล้วส่ง /connect รหัส ที่นี่ หากคุณเชื่อมต่อบัญชีไว้เฉพาะในแชตส่วนตัว บอทจะใช้บัญชีนั้นที่นี่กับลิงก์ของคุณเอง การเชื่อมต่อของคุณ: /accounts ในแชตส่วนตัวกับ @VideonerBot",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ ล็อกอินใช้งานไม่ได้)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ ล็อกอินใช้งานไม่ได้)"}`,
+  accountsWhereHere: "แชตส่วนตัว",
+  accountsWhereGroup: (title) => `กลุ่ม "${title}"`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 ลบการเชื่อมต่อทั้งหมดของฉัน",
+  accountsDeleted: "ลบแล้ว",
+  accountsDeletedAll: (n) => `ลบการเชื่อมต่อแล้ว: ${n}`,
+  accountsNotAllowed: "เฉพาะคนที่เชื่อมต่อไว้หรือแอดมินของกลุ่มเท่านั้นที่ลบได้",
+  connectUsage:
+    "ส่ง /connect รหัส โดยรับรหัสได้จากปุ่ม «🔑 เชื่อมต่อบัญชี … ของคุณกับบอท» ในส่วนขยาย Videoner บนคอมพิวเตอร์ การเชื่อมต่อของคุณ: /accounts",
+  connectOnlyAdmins: "เฉพาะแอดมินเท่านั้นที่เชื่อมต่อบัญชีกับกลุ่มนี้ได้ (ดู /settings)",
+  connectDone: (platform, where) =>
+    `✅ เชื่อมต่อ ${platform} ${where}แล้ว ตอนนี้บอทดาวน์โหลดเนื้อหาที่เห็นได้เฉพาะคนที่ล็อกอินได้ด้วย ดูหรือลบได้ที่: /accounts\n\n⚠️ แพลตฟอร์มอาจจำกัดบัญชีเพราะการดาวน์โหลดอัตโนมัติ ควรใช้บัญชีสำรอง`,
+  connectWhereGroup: "กับกลุ่มนี้",
+  connectWhereHere: "สำหรับการดาวน์โหลดของคุณในแชตส่วนตัวและโหมดอินไลน์",
+  connectCodeNotFound: "ไม่พบรหัสหรือรหัสหมดอายุแล้ว (รหัสใช้ได้ 10 นาที) รับรหัสใหม่ได้ในส่วนขยาย Videoner",
+  connectRejectedNoSession: "คุกกี้เหล่านี้ไม่มีข้อมูลการล็อกอิน ล็อกอินบนเว็บไซต์ของแพลตฟอร์มแล้วส่งออกคุกกี้อีกครั้ง",
+  connectRejectedUnknown: "ไม่พบคุกกี้ของแพลตฟอร์มที่รองรับ: Instagram, Facebook, YouTube, X, VK, TikTok",
+  connectUnavailable: "ยังเชื่อมต่อบัญชีไม่ได้ในตอนนี้",
+  connectFailed: "เชื่อมต่อไม่สำเร็จ ลองอีกครั้งนะ",
+  connectFileTooBig: "ไฟล์ใหญ่เกินไป ส่งออกเฉพาะคุกกี้ของเว็บไซต์ที่ต้องการ",
+  connectNotAnonymous: "เชื่อมต่อบัญชีในนามของคุณเอง ไม่ใช่แบบไม่ระบุตัวตนในนามกลุ่ม ไม่อย่างนั้นการเชื่อมต่อของแอดมินจะปนกัน เราทำลายรหัสนี้แล้ว รับรหัสใหม่ได้เลย",
+  connectCodeInGroup:
+    "รหัสเชื่อมต่อที่โพสต์ในแชตกลุ่มอาจถูกคนอื่นเห็น เราจึงทำลายรหัสและลบข้อความแล้ว รับรหัสใหม่แล้วส่งด้วย /connect รหัส เราจะลบข้อความคำสั่งนั้นทันที",
+  groupWelcome:
+    "👋 สวัสดี! โพสต์ลิงก์วิดีโอจาก TikTok, Instagram, YouTube, VK และแพลตฟอร์มอื่น ๆ ในแชตนี้ได้เลย แล้วเราจะตอบกลับด้วยตัววิดีโอ\n\n" +
+    "เราดาวน์โหลดคลิปยาวไม่เกิน 15 นาทีให้เองโดยไม่ต้องใช้คำสั่ง และจะไม่รบกวนในเรื่องอื่น\n\n⚙️ แอดมินของกลุ่มปรับแต่งเราได้ด้วย /settings: ลบข้อความลิงก์ รูปแบบคำบรรยาย คุณภาพ วิดีโอยาว และภาษา\n\n⚡ พิมพ์ -audio ต่อท้ายลิงก์เพื่อเอาแค่เสียง หรือ -hd เพื่อคุณภาพดีที่สุด\n\n📣 ข่าวสารโปรเจกต์: @videonerdownload",
+  errorTooLong: "วิดีโอยาวเกินไป ตอนนี้เรายังดาวน์โหลดวิดีโอยาวขนาดนี้ไม่ได้",
+  errorUnknown: "ดาวน์โหลดวิดีโอนี้ไม่ได้ ลองใหม่ภายหลังหรือส่งลิงก์อื่นมานะ",
+  inlineHintButton: "ส่งลิงก์ให้บอท",
+  inlineResultTitle: "⬇️ ดาวน์โหลดวิดีโอ",
+  inlineResultDescription: "วิดีโอจะถูกโพสต์ในแชตนี้โดยตรง",
+  inlinePlaceholder: "⏬ กำลังดาวน์โหลด อาจใช้เวลาสักสองสามนาที...",
+  inlineOpenBot: "เปิดบอท",
+  inlineOnlySingleVideo:
+    "โหมดนี้ส่งได้ทีละหนึ่งวิดีโอ สำหรับโพสต์ที่มีหลายไฟล์หรือรูปภาพ ให้ส่งลิงก์ให้บอทในแชตส่วนตัว",
+  inlineSubscribeRequired: (channel: string) =>
+    `หากต้องการดาวน์โหลด ให้ติดตาม ${channel} แล้วลองอีกครั้ง`,
+  inlineRateLimited: "ส่งคำขอติดกันมากเกินไป รอสักนาทีแล้วลองอีกครั้ง",
+  queueRest: (count) => `\n\n📋 ลิงก์ที่ยังอยู่ในคิว: ${count} เราจะแสดงทีละลิงก์หลังจากลิงก์นี้`,
+  queuedOne: (position) =>
+    `📋 เพิ่มลิงก์เข้าคิวแล้ว ลำดับที่ ${position} ขอจัดการลิงก์ปัจจุบันให้เสร็จก่อน แล้วจะแสดงตัวเลือกคุณภาพของลิงก์นี้`,
+  queuedMany: (added, waiting) =>
+    `📋 เพิ่มลิงก์เข้าคิวแล้ว: ${added} รอทั้งหมด: ${waiting} เราจะแสดงทีละลิงก์หลังจากลิงก์ปัจจุบัน`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "ลิงก์นี้อยู่ในคิวแล้ว จะไม่เพิ่มซ้ำ"
+      : `ลิงก์ที่อยู่ในคิวแล้วจะไม่ถูกเพิ่มซ้ำ (ซ้ำ: ${count})`,
+  queueFull: (limit, rejected) =>
+    `คิวรับได้สูงสุด ${limit} ลิงก์ ลิงก์ที่เกินมาไม่ได้ถูกเพิ่ม (${rejected}) ส่งมาใหม่เมื่อคิวขยับแล้วนะ`,
+  skipButton: "✖️ ไม่ต้องดาวน์โหลด",
+  skipped: "⏭ ข้ามลิงก์นี้แล้ว",
+  chooseTimedOut: "⌛ ไม่ได้เลือกคุณภาพภายใน 30 นาที ข้ามลิงก์นี้",
+  queueLostOnRestart: (count) =>
+    `⚠️ บอทกำลังรีสตาร์ทเพื่ออัปเดต คิวถูกรีเซ็ต (ลิงก์: ${count}) ส่งลิงก์มาอีกครั้งในอีกสักนาทีนะ`,
+  subtitlesButton: "📝 ซับไตเติล",
+  subtitlesBack: "⬅️ กลับไปเลือกคุณภาพ",
+  subtitlesAuto: "อัตโนมัติ",
+  subtitlesChoose: "เลือกภาษาซับไตเติล",
+  subtitlesPreparing: "📝 กำลังเตรียมซับไตเติล...",
+  subtitlesFailed: "ดาวน์โหลดซับไตเติลภาษานี้ไม่ได้ ลองเลือกภาษาอื่น",
+  subtitlesBusy: "ตอนนี้ YouTube ไม่ส่งซับไตเติลให้ ลองใหม่ในอีกไม่กี่นาที",
+  playlistFound: (title, count) =>
+    `📃 เพลย์ลิสต์${title ? ` "${title.slice(0, 150)}"` : ""}: ${count} วิดีโอ\nเราจะดาวน์โหลดให้ทีละรายการ เลือกรูปแบบไหนดี?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 คุณภาพดีที่สุด",
+  playlistAudioButton: "🎵 เฉพาะเสียง (mp3)",
+  playlistNoButton: "✖️ ไม่ล่ะ ขอบคุณ",
+  playlistQueued: (count) =>
+    `📃 เพิ่มวิดีโอจากเพลย์ลิสต์เข้าคิวแล้ว: ${count} เราจะส่งให้ทีละรายการ หยุดได้ด้วยปุ่มด้านล่างหรือ /stop`,
+  playlistFailed: "เปิดเพลย์ลิสต์ไม่ได้ อาจเป็นเพลย์ลิสต์ส่วนตัว ส่งลิงก์ของวิดีโอเดียวมาแทนนะ",
+  stopButton: "⏹ หยุด",
+  stopped: (dropped) => `⏹ หยุดแล้ว${dropped ? ` ลบลิงก์ออกจากคิว: ${dropped}` : ""}`,
+  nothingToStop: "ตอนนี้ไม่มีอะไรกำลังดาวน์โหลด",
+  languageChoose: "🌐 เลือกภาษาของบอท \"อัตโนมัติ\" จะใช้ตามภาษา Telegram ของคุณ",
+  languageChooseGroup: "🌐 ภาษาที่บอทใช้ตอบในกลุ่มนี้ \"อัตโนมัติ\" คือตามภาษา Telegram ของสมาชิกแต่ละคน",
+  languageAuto: "อัตโนมัติ — ตาม Telegram",
+  languageAutoGroup: "อัตโนมัติ — ตามภาษาของแต่ละคน",
+  languageSaved: (name) => `✅ ภาษาของบอท: ${name} เปลี่ยนได้ด้วย /language`,
+  languageSavedAuto: "✅ บอทจะใช้ภาษาตาม Telegram ของคุณ เปลี่ยนได้ด้วย /language",
+  settingsLanguageButton: (name) => `🌐 ภาษา: ${name ?? "อัตโนมัติ"}`,
+  settingsBack: "⬅️ กลับไปที่การตั้งค่า",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -5327,4 +5547,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th };

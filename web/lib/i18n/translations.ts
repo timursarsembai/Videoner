@@ -3,7 +3,7 @@
 // те же ключи).
 import { Platform } from "@/types";
 
-export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz", "tr", "fa"] as const;
+export const LANGUAGES = ["en", "es", "ru", "uk", "kk", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "uz", "tr", "fa", "vi"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 // Языки с письмом справа налево: для них вёрстка зеркалится (dir="rtl").
@@ -29,6 +29,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   uz: "Oʻzbekcha",
   tr: "Türkçe",
   fa: "فارسی",
+  vi: "Tiếng Việt",
 };
 
 type PlatformStrings = {
@@ -6164,4 +6165,364 @@ const fa: Translations = {
   } satisfies Record<Platform, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa };
+const vi: Translations = {
+  nav: {
+    home: "Trang chủ",
+    downloaders: "Công cụ tải",
+    extension: "Tiện ích",
+    blog: "Blog",
+    switchTheme: "Đổi giao diện",
+    language: "Ngôn ngữ",
+    comingSoon: "Sắp ra mắt",
+  },
+  theme: {
+    light: "Sáng",
+    dark: "Tối",
+    system: "Theo hệ thống",
+  },
+  playlist: {
+    title: "Danh sách phát “{title}”: {count} video",
+    hint: "Các video được tải lần lượt từng cái một. Hãy giữ trang này mở; trình duyệt có thể hỏi bạn cho phép tải nhiều tệp cùng lúc.",
+    std: "720p",
+    hd: "Chất lượng tốt nhất",
+    audio: "Chỉ âm thanh (mp3)",
+    progress: "Video {index} / {count}",
+    stats: "Đã tải: {done} · lỗi: {failed}",
+    stop: "Dừng",
+    stopped: "Đã dừng. Đã tải {done} / {count}.",
+    finished: "Đã tải xong danh sách phát: {done} / {count}.",
+    again: "Chọn lại",
+  },
+  footer: {
+    news: "Tin tức dự án",
+    botCta: "Cũng có bot Telegram:",
+    extension: "Tiện ích trình duyệt",
+    developedBy: "Phát triển bởi",
+    rights: "Bảo lưu mọi quyền.",
+  },
+  content: {
+    howToTitle: "Cách tải video {platform}",
+    faqTitle: "Câu hỏi thường gặp",
+  },
+  auth: {
+    loginButton: "Đăng nhập bằng Telegram",
+    signIn: "Đăng nhập",
+    logout: "Đăng xuất",
+    switchAccountHint: "Không phải tài khoản của bạn?",
+    switchAccountLink: "Đăng xuất khỏi Telegram Web",
+  },
+  home: {
+    new: "Mới",
+    manyFeatures: "Nhiều tính năng mới",
+    titleLine1: "Tải video",
+    titleLine2: "nhanh và dễ dàng",
+    subtitle:
+      "Công cụ tải video đa năng cho YouTube, Instagram, TikTok và nhiều nền tảng khác. Chọn chất lượng bất kỳ, từ HD đến bản nhẹ cho điện thoại.",
+    subtitleExtra: "Không giới hạn, không rắc rối — chỉ việc tải.",
+    placeholder: "Dán link video từ bất kỳ nền tảng nào...",
+    download: "Tải xuống",
+  },
+  video: {
+    description: "Mô tả",
+    format: "Định dạng",
+    selected: "Đã chọn: {quality}",
+    videoTab: "video",
+    audioTab: "âm thanh",
+    converting: "Đang chuyển đổi",
+    downloading: "Đang tải",
+    downloadAgain: "Tải lại",
+    startDownload: "Bắt đầu tải",
+    convertingBtn: "Đang chuyển đổi...",
+    downloadingBtn: "Đang tải...",
+    loginRequiredHint: "Đăng nhập bằng Telegram để tải",
+    quotaExceededHint: "Bạn đã dùng hết 20 lượt tải hôm nay — hãy quay lại vào ngày mai",
+    postFiles: "Bài đăng này có {count} tệp",
+    photoQuality: "Ảnh gốc",
+    slideshowQuality: "Trình chiếu (video)",
+    galleryQuality: "Ảnh + trình chiếu",
+    downloadAll: "Tải tất cả",
+    downloadOne: "Lưu",
+    subtitlesTab: "phụ đề",
+    subtitlesHint: "Chọn ngôn ngữ — bạn sẽ nhận được tệp .srt mà trình phát nào cũng mở được.",
+    subtitlesAuto: "tự động",
+    subtitlesDownload: "Tải phụ đề",
+    subtitlesDownloading: "Đang chuẩn bị phụ đề...",
+  },
+  toast: {
+    enterUrl: "Vui lòng nhập link",
+    enterValidUrl: "Vui lòng nhập link hợp lệ",
+    platformNotSupported: "Nền tảng này chưa được hỗ trợ",
+    urlNotSupported: "Link này không được hỗ trợ",
+    enterValidPlatformUrl: "Vui lòng nhập link {platform} hợp lệ",
+    captchaNotReady: "Vui lòng chờ một chút để quá trình kiểm tra bảo mật hoàn tất, rồi thử lại",
+    comingSoon: "Sắp ra mắt! {name} hiện chưa được hỗ trợ",
+    selectQuality: "Vui lòng chọn chất lượng",
+    downloadStarted: "Đã bắt đầu tải!",
+    downloadCompleted: "Tải xong!",
+    newsChannel: "Tin tức dự án có trên Telegram:",
+    downloadUrlNotReceived: "Không nhận được link tải",
+    needsBrowser:
+      "Nền tảng không cho máy chủ của chúng tôi tải video này: video chỉ dành cho người đã đăng nhập, hoặc quyền truy cập đang tạm thời bị giới hạn. Bạn có thể tải video bằng tiện ích trình duyệt Videoner trên máy tính — tiện ích tải bằng chính tài khoản đăng nhập của bạn.",
+    needsBrowserLink: "Cài tiện ích →",
+  },
+  platforms: {
+    youtube: {
+      description: "Tải video YouTube chất lượng HD",
+      news: "Đã hỗ trợ video và Shorts",
+      titleLine1: "Tải video YouTube",
+      titleLine2: "và Shorts",
+      pageDescription:
+        "Tải video YouTube, Shorts và âm thanh với chất lượng cao. Nhanh, miễn phí và dễ dùng. Hỗ trợ 8K, 4K, HD và âm thanh MP3.",
+      placeholder: "Dán link YouTube vào đây...",
+      howTo: [
+        "Sao chép link video từ thanh địa chỉ của trình duyệt, hoặc nhấn Chia sẻ trong ứng dụng YouTube.",
+        "Dán link vào ô phía trên và nhấn Tải xuống.",
+        "Chọn chất lượng — tối đa 4K/8K cho video, hoặc MP3 nếu chỉ cần âm thanh.",
+        "Tệp bắt đầu tải ngay, không cần đăng nhập YouTube.",
+      ],
+      faq: [
+        { q: "Tải video YouTube bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Videoner cung cấp mọi độ phân giải mà YouTube có cho video đó — từ 360p đến 4K/8K nếu có — cùng với tách âm thanh MP3." },
+        { q: "Tôi có thể tải video riêng tư hoặc giới hạn độ tuổi không?", a: "Chỉ hỗ trợ video YouTube công khai; không thể tải video riêng tư, video không công khai mà bạn không có quyền xem, hoặc nội dung yêu cầu đăng nhập." },
+        { q: "Tải video từ YouTube có hợp pháp không?", a: "Chỉ tải những video bạn có quyền lưu — nội dung của chính bạn, video theo giấy phép Creative Commons, hoặc những gì tác giả cho phép. Hãy tôn trọng Điều khoản dịch vụ của YouTube và luật bản quyền." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp đã chuyển đổi được lưu trên máy chủ khoảng một giờ, vì vậy hãy lưu về thiết bị ngay sau khi tải." },
+      ],
+    },
+    facebook: {
+      description: "Tải video từ bài đăng và Reels Facebook",
+      news: "Đã hỗ trợ Reels",
+      titleLine1: "Tải video và Reels",
+      titleLine2: "Facebook",
+      pageDescription:
+        "Tải video và Reels Facebook với chất lượng cao. Nhanh, miễn phí và dễ dùng.",
+      placeholder: "Dán link Facebook vào đây...",
+      howTo: [
+        "Mở video hoặc Reel trên Facebook và sao chép link (nhấn dấu ba chấm → Sao chép liên kết).",
+        "Dán link vào ô phía trên và nhấn Tải xuống.",
+        "Chọn chất lượng MP4 hoặc tách âm thanh thành MP3.",
+        "Tệp được tải thẳng về thiết bị của bạn — không cần tài khoản Facebook.",
+      ],
+      faq: [
+        { q: "Tải video Facebook bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Videoner lấy chất lượng cao nhất mà Facebook cung cấp cho video hoặc Reel đó, ở định dạng MP4, kèm tùy chọn âm thanh MP3." },
+        { q: "Tôi có thể tải video riêng tư không?", a: "Chỉ tải được bài đăng, video và Reels công khai — nội dung riêng tư hoặc chỉ dành cho bạn bè thì không truy cập được." },
+        { q: "Tải video từ Facebook có hợp pháp không?", a: "Chỉ tải những video bạn được phép lưu; hãy tôn trọng quyền của tác giả và Điều khoản dịch vụ của Facebook." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp được giữ khoảng một giờ sau khi chuyển đổi, sau đó tự động bị xóa — hãy tải về ngay." },
+      ],
+    },
+    instagram: {
+      description: "Tải Reels, Stories và bài đăng Instagram",
+      news: "Đã hỗ trợ Reels và Stories",
+      titleLine1: "Tải Instagram",
+      titleLine2: "Reels và Stories",
+      pageDescription:
+        "Tải Reels, Stories và bài đăng Instagram với chất lượng cao. Nhanh, miễn phí và dễ dùng.",
+      placeholder: "Dán link Instagram vào đây...",
+      howTo: [
+        "Mở Reel, bài đăng hoặc Story trên Instagram và nhấn biểu tượng máy bay giấy → Sao chép liên kết.",
+        "Dán link vào ô phía trên.",
+        "Chọn chất lượng và định dạng bạn muốn.",
+        "Tệp bắt đầu tải ngay — không cần đăng nhập hay cài ứng dụng.",
+      ],
+      faq: [
+        { q: "Tải nội dung Instagram bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Chất lượng đầy đủ hiện có cho Reels, bài đăng và Stories, ở định dạng MP4 hoặc MP3." },
+        { q: "Tôi có thể tải từ tài khoản riêng tư không?", a: "Chỉ hỗ trợ tài khoản và bài đăng Instagram công khai; không thể tải nội dung từ tài khoản riêng tư." },
+        { q: "Tải video từ Instagram có hợp pháp không?", a: "Chỉ tải những gì bạn được phép lưu — hãy tôn trọng tác giả và Điều khoản dịch vụ của Instagram." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp nằm trên máy chủ khoảng một giờ trước khi tự động bị xóa." },
+      ],
+    },
+    tiktok: {
+      description: "Tải video TikTok không logo",
+      news: "Giờ đã không còn logo",
+      titleLine1: "Tải video TikTok",
+      titleLine2: "không logo",
+      pageDescription:
+        "Tải video TikTok không logo với chất lượng cao. Nhanh, miễn phí và dễ dùng.",
+      placeholder: "Dán link TikTok vào đây...",
+      howTo: [
+        "Nhấn Chia sẻ trên video TikTok, rồi chọn Sao chép liên kết.",
+        "Dán link vào ô phía trên và nhấn Tải xuống.",
+        "Nhận tệp MP4 sạch — không có logo TikTok — hoặc âm thanh MP3.",
+        "Lưu thẳng về thiết bị của bạn.",
+      ],
+      faq: [
+        { q: "Tải video TikTok bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Chất lượng tốt nhất mà TikTok cung cấp cho video đó, không có logo TikTok, kèm âm thanh MP3." },
+        { q: "Tôi có thể tải từ tài khoản riêng tư không?", a: "Chỉ tải được video từ tài khoản TikTok công khai." },
+        { q: "Tải video từ TikTok có hợp pháp không?", a: "Hãy tải những video bạn có quyền lưu, ghi nguồn tác giả và tôn trọng Điều khoản dịch vụ của TikTok." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp đã tải nằm trên máy chủ khoảng một giờ, sau đó tự động bị xóa." },
+      ],
+    },
+    twitter: {
+      description: "Tải video Twitter",
+      news: "Đã hỗ trợ video Twitter",
+      titleLine1: "Tải video",
+      titleLine2: "Twitter",
+      pageDescription:
+        "Tải video Twitter với chất lượng cao. Nhanh, miễn phí và dễ dùng.",
+      placeholder: "Dán link Twitter vào đây...",
+      howTo: [
+        "Nhấn Chia sẻ dưới tweet và chọn Sao chép liên kết (hoặc sao chép link từ trình duyệt).",
+        "Dán link vào ô phía trên.",
+        "Chọn chất lượng video bạn muốn.",
+        "Tệp bắt đầu tải ngay — không cần tài khoản X/Twitter.",
+      ],
+      faq: [
+        { q: "Tải video Twitter/X bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Mọi chất lượng mà X/Twitter cung cấp cho video đó, ở định dạng MP4, kèm MP3." },
+        { q: "Tôi có thể tải từ tài khoản riêng tư không?", a: "Chỉ tải được tweet từ tài khoản công khai; tài khoản được bảo vệ/riêng tư không được hỗ trợ." },
+        { q: "Tải video từ Twitter/X có hợp pháp không?", a: "Hãy tải nội dung bạn có quyền lưu, tôn trọng quyền của người đăng và Điều khoản dịch vụ của nền tảng." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp tự động bị xóa khoảng một giờ sau khi được tạo." },
+      ],
+    },
+    vimeo: {
+      description: "Tải video Vimeo chất lượng cao",
+      news: "Đã hỗ trợ Vimeo",
+      titleLine1: "Tải video",
+      titleLine2: "Vimeo",
+      pageDescription:
+        "Tải video Vimeo với chất lượng cao. Nhanh, miễn phí và dễ dùng.",
+      placeholder: "Dán link Vimeo vào đây...",
+      howTo: [
+        "Mở Vimeo và sao chép link video (hoặc nhấn Chia sẻ → Sao chép liên kết trên điện thoại).",
+        "Dán link vào ô phía trên và nhấn Tải xuống.",
+        "Chọn chất lượng và định dạng — MP4 cho video, MP3 nếu bạn chỉ cần âm thanh.",
+        "Tệp bắt đầu tải ngay; không cần tài khoản hay cài phần mềm.",
+      ],
+      faq: [
+        { q: "Tải video Vimeo bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Videoner cung cấp mọi chất lượng mà Vimeo có cho video đó, tối đa bằng độ phân giải gốc khi tải lên, bao gồm HD và 4K nếu tác giả cung cấp." },
+        { q: "Tôi có thể tải video Vimeo riêng tư hoặc có mật khẩu không?", a: "Không — Videoner chỉ hoạt động với link Vimeo công khai. Không thể tải video riêng tư, có mật khẩu hoặc bị giới hạn quyền truy cập." },
+        { q: "Tải video từ Vimeo có hợp pháp không?", a: "Tính năng tải dành cho những video bạn có quyền lưu — nội dung của chính bạn, video theo giấy phép Creative Commons, hoặc những gì tác giả cho phép tải rõ ràng. Hãy tôn trọng bản quyền của tác giả và điều khoản dịch vụ của Vimeo." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp được tạo theo yêu cầu và giữ trên máy chủ khoảng một giờ trước khi tự động bị xóa, vì vậy hãy lưu về thiết bị ngay khi tải xong." },
+      ],
+    },
+    vk: {
+      description: "Tải video và clip từ VK",
+      news: "Đã hỗ trợ VK",
+      titleLine1: "Tải video và clip",
+      titleLine2: "VK",
+      pageDescription:
+        "Tải video và clip VK với chất lượng cao. Nhanh, miễn phí và dễ dùng.",
+      placeholder: "Dán link VK vào đây...",
+      howTo: [
+        "Mở video hoặc clip trên VK (vk.com hoặc VK Video) và sao chép link từ thanh địa chỉ hoặc nút Chia sẻ.",
+        "Dán link vào ô phía trên và nhấn Tải xuống.",
+        "Chọn chất lượng và định dạng có sẵn.",
+        "Tệp được tải trực tiếp — bạn không cần đăng nhập VK.",
+      ],
+      faq: [
+        { q: "Tải video VK bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Mọi chất lượng mà VK cung cấp cho video hoặc clip đó, kèm âm thanh MP3." },
+        { q: "Tôi có cần đăng nhập VK không?", a: "Không — video phải ở chế độ công khai. Videoner không đăng nhập vào VK, nên không thể tải video riêng tư, chỉ dành cho bạn bè hoặc yêu cầu đăng nhập." },
+        { q: "Tải video từ VK có hợp pháp không?", a: "Chỉ tải những video bạn có quyền lưu, tôn trọng Điều khoản dịch vụ của VK và quyền của người đăng tải." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp được giữ trên máy chủ khoảng một giờ, sau đó tự động bị xóa." },
+      ],
+    },
+    rutube: {
+      description: "Tải video từ Rutube",
+      news: "Đã hỗ trợ Rutube",
+      titleLine1: "Tải video",
+      titleLine2: "Rutube",
+      pageDescription:
+        "Tải video Rutube với chất lượng cao. Nhanh, miễn phí và dễ dùng.",
+      placeholder: "Dán link Rutube vào đây...",
+      howTo: [
+        "Mở video trên Rutube và sao chép link từ thanh địa chỉ hoặc nút Chia sẻ.",
+        "Dán link vào ô phía trên.",
+        "Chọn chất lượng và định dạng (video hoặc âm thanh).",
+        "Tệp bắt đầu tải ngay, không cần tài khoản Rutube.",
+      ],
+      faq: [
+        { q: "Tải video Rutube bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Mọi chất lượng mà Rutube cung cấp, ở định dạng MP4, kèm âm thanh MP3." },
+        { q: "Tôi có cần đăng nhập Rutube không?", a: "Không — Videoner chỉ hoạt động với video Rutube công khai; không dùng và không cần đăng nhập." },
+        { q: "Tải video từ Rutube có hợp pháp không?", a: "Chỉ tải nội dung bạn được phép lưu, tôn trọng Điều khoản dịch vụ của Rutube và quyền của tác giả." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp nằm trên máy chủ khoảng một giờ trước khi tự động bị xóa." },
+      ],
+    },
+    okru: {
+      description: "Tải video từ OK.ru (Odnoklassniki)",
+      news: "Đã hỗ trợ OK.ru",
+      titleLine1: "Tải video",
+      titleLine2: "OK.ru",
+      pageDescription:
+        "Tải video OK.ru (Odnoklassniki) với chất lượng cao. Nhanh, miễn phí và dễ dùng.",
+      placeholder: "Dán link OK.ru vào đây...",
+      howTo: [
+        "Mở video trên OK.ru (Odnoklassniki) và sao chép link từ thanh địa chỉ.",
+        "Dán link vào ô phía trên và nhấn Tải xuống.",
+        "Chọn chất lượng và định dạng.",
+        "Tệp bắt đầu tải ngay — không cần đăng nhập OK.ru.",
+      ],
+      faq: [
+        { q: "Tải video OK.ru bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải video với chất lượng nào?", a: "Toàn bộ các mức chất lượng mà OK.ru cung cấp cho video đó, kèm MP3." },
+        { q: "Tôi có cần đăng nhập OK.ru không?", a: "Không — chỉ tải được video OK.ru (Odnoklassniki) công khai. Videoner không bao giờ đăng nhập vào tài khoản nào, nên không truy cập được video riêng tư." },
+        { q: "Tải video từ OK.ru có hợp pháp không?", a: "Chỉ tải những video bạn có quyền lưu, tôn trọng Điều khoản dịch vụ của OK.ru và quyền của người đăng tải." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp tự động bị xóa khoảng một giờ sau khi được tạo." },
+      ],
+    },
+    pinterest: {
+      description: "Tải video từ ghim Pinterest",
+      news: "Đã hỗ trợ Pinterest",
+      titleLine1: "Tải video và ghim",
+      titleLine2: "Pinterest",
+      pageDescription:
+        "Tải video từ ghim Pinterest với chất lượng cao. Nhanh, miễn phí và dễ dùng. Lưu ý: chỉ tải được ghim video — ghim chỉ có ảnh không được hỗ trợ.",
+      placeholder: "Dán link Pinterest vào đây...",
+      howTo: [
+        "Mở ghim trên Pinterest và nhấn Chia sẻ → Sao chép liên kết (hoặc sao chép link từ trình duyệt).",
+        "Dán link vào ô phía trên và nhấn Tải xuống.",
+        "Chọn chất lượng và định dạng bạn muốn.",
+        "Tệp được tải ngay — không cần tài khoản.",
+      ],
+      faq: [
+        { q: "Tải video Pinterest bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang và kiểm tra các chất lượng có sẵn thì không cần đăng nhập." },
+        { q: "Tôi có thể tải với chất lượng nào?", a: "Videoner cung cấp mọi chất lượng mà Pinterest có cho video của ghim đó, cùng với tách âm thanh MP3." },
+        { q: "Tôi có thể tải ảnh từ Pinterest không?", a: "Không — chỉ tải được ghim video. Nếu ghim chỉ có ảnh thì không có tệp video nào để tải." },
+        { q: "Tôi có thể tải ghim riêng tư hoặc trong bảng bị giới hạn không?", a: "Chỉ hỗ trợ ghim công khai; không thể tải bảng riêng tư và nội dung yêu cầu đăng nhập." },
+        { q: "Tải video từ Pinterest có hợp pháp không?", a: "Chỉ tải những ghim bạn có quyền lưu — nội dung của chính bạn hoặc những gì tác giả cho phép. Hãy tôn trọng Điều khoản dịch vụ của Pinterest và luật bản quyền." },
+        { q: "Tệp đã tải được lưu trong bao lâu?", a: "Tệp đã chuyển đổi được lưu trên máy chủ khoảng một giờ, vì vậy hãy lưu về thiết bị ngay sau khi tải." },
+      ],
+    },
+    threads: {
+      description: "Tải video từ bài đăng Threads",
+      news: "Đã hỗ trợ Threads",
+      titleLine1: "Tải video",
+      titleLine2: "Threads",
+      pageDescription:
+        "Tải video từ bài đăng Threads. Nhanh, miễn phí và không cần tài khoản Threads. Threads chỉ cung cấp một phiên bản video, tối đa 720p — đó là chất lượng cao nhất mà nền tảng này có.",
+      placeholder: "Dán link Threads vào đây...",
+      howTo: [
+        "Mở bài đăng trong Threads, nhấn biểu tượng chia sẻ, rồi chọn Sao chép liên kết.",
+        "Dán link vào ô phía trên và nhấn Tải xuống.",
+        "Chọn định dạng bạn muốn — video hoặc âm thanh MP3.",
+        "Tệp được tải ngay — không cần tài khoản.",
+      ],
+      faq: [
+        { q: "Tải video Threads bằng Videoner có miễn phí không?", a: "Có — nhưng trước tiên bạn cần đăng nhập bằng Telegram (một cú nhấp, không cần mật khẩu). Bạn có 20 lượt tải mỗi ngày, dùng chung với bot Telegram của chúng tôi. Dịch vụ hoàn toàn miễn phí: không gói đăng ký, không quảng cáo." },
+        { q: "Tôi có cần tài khoản để tải không?", a: "Bạn cần đăng nhập bằng tài khoản Telegram trước khi bắt đầu tải — chỉ một cú nhấp, không cần email hay mật khẩu. Xem trang thì không cần đăng nhập." },
+        { q: "Tôi có thể tải với chất lượng nào?", a: "Threads chỉ phát hành đúng một phiên bản video cho mỗi bài đăng, tối đa 720p ở cạnh ngắn — kể cả khi tác giả tải lên 4K. Videoner trả cho bạn nguyên tệp đó, cùng với tách âm thanh MP3. Không công cụ tải nào có thể cho chất lượng cao hơn, vì độ phân giải cao hơn đơn giản là không được cung cấp." },
+        { q: "Link threads.com và threads.net đều dùng được chứ?", a: "Có. Cả link đầy đủ dạng threads.com/@user/post/CODE lẫn link rút gọn threads.net/t/CODE đều được hỗ trợ." },
+        { q: "Tôi có thể tải ảnh từ bài đăng Threads không?", a: "Không — chỉ tải được video. Nếu bài đăng chỉ có ảnh thì không có tệp video nào để tải." },
+        { q: "Còn bài đăng có nhiều video thì sao?", a: "Video đầu tiên trong bài đăng sẽ được tải. Băng chuyền Threads có thể chứa nhiều clip, và chỉ clip đầu tiên được lưu." },
+        { q: "Tôi có thể tải bài đăng riêng tư không?", a: "Không. Chỉ tải được bài đăng hiển thị công khai; nội dung của tài khoản riêng tư hoặc yêu cầu đăng nhập thì không truy cập được." },
+        { q: "Tải video từ Threads có hợp pháp không?", a: "Chỉ tải những gì bạn có quyền lưu — nội dung của chính bạn hoặc những gì tác giả cho phép. Hãy tôn trọng Điều khoản sử dụng của Threads và luật bản quyền." },
+      ],
+    },
+  } satisfies Record<Platform, PlatformStrings>,
+};
+
+export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi };

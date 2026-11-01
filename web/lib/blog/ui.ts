@@ -223,6 +223,18 @@ export const blogUi: Record<
     readFull: "خواندن کامل مطلب در سایت",
     dateLocale: "fa-IR-u-nu-latn-ca-gregory",
   },
+  vi: {
+    title: "Blog Videoner",
+    description: "Tin tức dự án: có gì mới trong bot, trên trang web và trong tiện ích, và cách sử dụng.",
+    readMore: "Đọc",
+    back: "Tất cả bài viết",
+    allPosts: "Blog",
+    channel: "Tin tức trên Telegram",
+    channelCta: "Tin tức dự án có trên kênh Telegram @videonerdownload.",
+    readOnSite: "Đọc trên trang web",
+    readFull: "Đọc toàn bộ bài viết trên trang web",
+    dateLocale: "vi-VN",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

@@ -141,6 +141,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "توقف دانلود و صف" },
     { command: "language", description: "زبان ربات" },
   ],
+  vi: [
+    { command: "start", description: "Cách dùng bot" },
+    { command: "extension", description: "Tiện ích trình duyệt" },
+    { command: "accounts", description: "Tài khoản của bạn cho story và bài đăng riêng tư" },
+    { command: "connect", description: "Kết nối tài khoản bằng mã từ tiện ích" },
+    { command: "stop", description: "Dừng tải và hàng đợi" },
+    { command: "language", description: "Ngôn ngữ của bot" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -264,6 +272,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "اتصال حساب به این گروه با کد" },
     { command: "language", description: "زبان ربات در این گروه (ادمین‌ها)" },
     { command: "start", description: "ربات در گروه چطور کار می‌کند" },
+  ],
+  vi: [
+    { command: "settings", description: "Cài đặt bot trong nhóm này (quản trị viên)" },
+    { command: "accounts", description: "Tài khoản đã kết nối với nhóm này" },
+    { command: "connect", description: "Kết nối tài khoản với nhóm này bằng mã" },
+    { command: "language", description: "Ngôn ngữ của bot trong nhóm này (quản trị viên)" },
+    { command: "start", description: "Bot hoạt động trong nhóm như thế nào" },
   ],
 };
 

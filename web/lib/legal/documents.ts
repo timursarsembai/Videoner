@@ -1,7 +1,7 @@
 import { operator } from "./operator";
 import { LegalByLanguage } from "./types";
 
-// Тексты документов на семнадцати языках. Держим отдельно от lib/i18n/translations.ts:
+// Тексты документов на восемнадцати языках. Держим отдельно от lib/i18n/translations.ts:
 // тот файл и так за тысячу строк, а документы правятся своим ритмом — вместе
 // они превратились бы в файл, в котором ничего не найти.
 //
@@ -5139,6 +5139,308 @@ export const legal: LegalByLanguage = {
             heading: "درخواست‌های با سوءنیت",
             body: [
               "درخواستی که حاوی اطلاعات آگاهانه نادرست باشد، ممکن است مطابق قوانین موجب مسئولیت درخواست‌کننده شود. ما حق داریم از رسیدگی به درخواستی که نه صاحب حق و نه محتوای مورد اختلاف را مشخص می‌کند خودداری کنیم.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  vi: {
+    ui: {
+      updated: "Cập nhật lần cuối",
+      back: "Về trang chủ",
+      operatorHeading: "Đơn vị vận hành dịch vụ",
+      navHeading: "Các tài liệu khác",
+      labels: {
+        privacy: "Chính sách quyền riêng tư",
+        terms: "Điều khoản sử dụng",
+        cookies: "Chính sách cookie",
+        copyright: "Dành cho chủ sở hữu quyền",
+      },
+    },
+    docs: {
+      privacy: {
+        title: "Chính sách quyền riêng tư",
+        summary: `${operator.site} thu thập những dữ liệu nào, vì sao cần chúng, lưu giữ trong bao lâu và cách yêu cầu xóa.`,
+        sections: [
+          {
+            heading: "Quy định chung",
+            body: [
+              `Chính sách này mô tả những dữ liệu cá nhân mà dịch vụ ${operator.site} xử lý và mục đích xử lý. Bên kiểm soát dữ liệu là ${operator.nameVi}.`,
+              "Khi sử dụng dịch vụ, bạn đồng ý với cách thức xử lý được mô tả tại đây. Nếu bạn không đồng ý, vui lòng không sử dụng dịch vụ.",
+              "Việc xử lý được thực hiện theo Luật của Cộng hòa Kazakhstan “Về dữ liệu cá nhân và bảo vệ dữ liệu cá nhân”, và đối với khách truy cập từ Khu vực Kinh tế Châu Âu, có tính đến các yêu cầu của GDPR.",
+            ],
+          },
+          {
+            heading: "Chúng tôi xử lý những dữ liệu nào",
+            body: [
+              "Chúng tôi chủ động không thu thập bất cứ điều gì vượt quá mức cần thiết cho hoạt động của dịch vụ và không yêu cầu giấy tờ tùy thân, thông tin thanh toán hay địa chỉ.",
+            ],
+            bullets: [
+              "Dữ liệu tài khoản Telegram mà bot nhận được khi bạn nhắn tin cho bot: mã định danh dạng số, tên người dùng, tên và mã ngôn ngữ.",
+              "Các liên kết bạn gửi để tải xuống và thông tin về chính lần tải đó: nền tảng, ngày và giờ, chất lượng đã chọn, kết quả (thành công hoặc lỗi).",
+              "Dữ liệu kỹ thuật về kết nối: địa chỉ IP, loại và phiên bản trình duyệt, ngôn ngữ, trang giới thiệu. Các dữ liệu này được ghi vào nhật ký máy chủ và các hệ thống phân tích web.",
+              "Cookie và mã định danh phân tích — xem chi tiết trong Chính sách cookie.",
+            ],
+          },
+          {
+            heading: "Vì sao cần những dữ liệu này",
+            bullets: [
+              "Để cung cấp chính dịch vụ: lấy video theo liên kết của bạn và chuyển tệp cho bạn.",
+              "Để phân biệt tài khoản của bạn với tài khoản của người khác và ngăn chặn hành vi lạm dụng.",
+              "Để bảo vệ dịch vụ khỏi hành vi lạm dụng tự động: kiểm tra Cloudflare Turnstile trước khi gửi liên kết.",
+              "Để hiểu cách trang web được sử dụng và khắc phục lỗi — thông qua số liệu thống kê đã được ẩn danh hóa và tổng hợp.",
+              "Để trả lời yêu cầu của bạn và của các chủ sở hữu quyền.",
+              "Để thỉnh thoảng nhắn tin cho bạn trên Telegram nhằm hỏi ý kiến của bạn về dịch vụ — ví dụ, nếu bạn đã ngừng sử dụng dịch vụ. Bạn không bắt buộc phải trả lời; nếu không muốn nhận những tin nhắn như vậy, bạn chỉ cần cho chúng tôi biết và chúng tôi sẽ không nhắn tin nữa.",
+            ],
+          },
+          {
+            heading: "Cơ sở pháp lý của việc xử lý",
+            body: [
+              "Dữ liệu tài khoản Telegram và thông tin về các lần tải xuống được xử lý để thực hiện Điều khoản sử dụng mà bạn chấp nhận khi bắt đầu sử dụng dịch vụ.",
+              "Cookie phân tích và việc ghi lại thao tác trên trang web được xử lý trên cơ sở sự đồng ý của bạn; bạn có thể rút lại sự đồng ý bất cứ lúc nào — cách thức được mô tả trong Chính sách cookie.",
+              "Nhật ký máy chủ và cơ chế chống bot được xử lý trên cơ sở lợi ích hợp pháp của chúng tôi trong việc duy trì hoạt động ổn định và an toàn của dịch vụ.",
+              "Việc hỏi ý kiến của bạn về dịch vụ dựa trên lợi ích hợp pháp của chúng tôi trong việc cải thiện dịch vụ; bạn có thể từ chối bất cứ lúc nào.",
+            ],
+          },
+          {
+            heading: "Tài khoản được kết nối",
+            body: [
+              "Nếu muốn, bạn có thể kết nối tài khoản của mình trên một nền tảng (Instagram, Facebook, YouTube, X, VK, TikTok) với bot để bot tải xuống những bài đăng chỉ người dùng đã đăng nhập mới xem được: story, bài đăng riêng tư. Để làm việc này, bot nhận cookie của tài khoản đó — từ tiện ích mở rộng Videoner thông qua mã dùng một lần, hoặc từ tệp do bạn gửi.",
+              "Chúng tôi chỉ lưu cookie của nền tảng đã chọn và loại bỏ ngay phần còn lại. Cookie được lưu trữ ở dạng mã hóa và chỉ được dùng để tải xuống tại nơi bạn đã kết nối chúng. Cookie được kết nối trong cuộc trò chuyện riêng phục vụ các lần tải xuống của bạn, kể cả các liên kết của chính bạn trong những nhóm chưa kết nối tài khoản riêng; chúng không được dùng cho liên kết của người khác. Cookie được kết nối với một nhóm chỉ phục vụ các lần tải xuống của thành viên nhóm đó và không được dùng ở bất kỳ nơi nào khác.",
+              "Cơ sở pháp lý là sự đồng ý của bạn: bạn tự kết nối tài khoản và có thể xóa tài khoản bất cứ lúc nào bằng lệnh /accounts. Khi bị xóa, cookie sẽ bị xóa vĩnh viễn. Nếu nền tảng không còn chấp nhận việc đăng nhập, bot sẽ thông báo cho bạn.",
+              "Các bài đăng được tải xuống qua tài khoản được kết nối không được đăng trên kênh của chúng tôi và không được cung cấp cho người dùng khác từ bộ nhớ đệm chung.",
+            ],
+          },
+          {
+            heading: "Dịch vụ của bên thứ ba",
+            body: [
+              "Chúng tôi không bán và không chuyển giao dữ liệu của bạn cho bên thứ ba vì mục đích riêng của họ. Dịch vụ sử dụng các nhà cung cấp sau đây, mỗi nhà cung cấp xử lý dữ liệu theo quy định riêng của mình:",
+            ],
+            bullets: [
+              `Telegram — vận hành bot ${BOT}.`,
+              "Cloudflare — chống bot (Turnstile), phân phối trang web và định tuyến thư điện tử.",
+              "Google Analytics và Google Tag Manager — thống kê lượt truy cập.",
+              "Yandex Metrica — thống kê lượt truy cập, bản đồ nhấp chuột và Webvisor. Webvisor ghi lại thao tác trên trang: di chuyển con trỏ, cuộn trang và nhấp chuột. Các bản ghi chỉ được dùng để phân tích mức độ thuận tiện của trang web.",
+            ],
+          },
+          {
+            heading: "Thời hạn lưu trữ dữ liệu",
+            bullets: [
+              "Các tệp đã tải xuống được tự động xóa khỏi máy chủ khoảng một giờ sau khi được tạo. Chúng tôi không lưu trữ kho video của bạn.",
+              "Thông tin về các lần tải xuống được lưu giữ trong thời gian cần thiết để ngăn chặn hành vi lạm dụng và xem xét các yêu cầu.",
+              "Dữ liệu tài khoản được lưu giữ trong thời gian bạn sử dụng dịch vụ và được xóa theo yêu cầu của bạn.",
+              "Nhật ký máy chủ được lưu giữ trong một thời gian giới hạn và bị ghi đè trong quá trình luân chuyển nhật ký.",
+            ],
+          },
+          {
+            heading: "Nơi xử lý dữ liệu",
+            body: [
+              "Máy chủ của dịch vụ đặt tại một trung tâm dữ liệu trên lãnh thổ Liên minh Châu Âu. Một số nhà cung cấp nêu trên có thể xử lý dữ liệu bên ngoài lãnh thổ này theo chính sách riêng của họ.",
+            ],
+          },
+          {
+            heading: "Quyền của bạn",
+            body: [
+              `Bạn có quyền nhận thông tin về việc xử lý dữ liệu của mình, yêu cầu chỉnh sửa hoặc xóa dữ liệu, rút lại sự đồng ý và phản đối việc xử lý. Để thực hiện các quyền này, hãy gửi thư đến ${MAIL} từ địa chỉ email hoặc tài khoản Telegram có liên quan đến yêu cầu.`,
+              "Chúng tôi phản hồi trong thời hạn hợp lý, thông thường trong vòng ba mươi ngày theo lịch. Việc xóa tài khoản đồng thời xóa lịch sử tải xuống gắn với tài khoản đó.",
+            ],
+          },
+          {
+            heading: "Trẻ vị thành niên",
+            body: [
+              "Dịch vụ không dành cho và không hướng tới trẻ em dưới 16 tuổi. Chúng tôi không cố ý thu thập dữ liệu của những người dùng này; nếu việc đó xảy ra do nhầm lẫn, hãy liên hệ với chúng tôi và dữ liệu sẽ bị xóa.",
+            ],
+          },
+          {
+            heading: "Thay đổi",
+            body: [
+              "Chúng tôi có thể cập nhật Chính sách này. Ngày của phiên bản hiện hành được ghi ở đầu trang; những thay đổi quan trọng sẽ được chúng tôi thông báo trong dịch vụ.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Điều khoản sử dụng",
+        summary: `Quy tắc sử dụng ${operator.site}: điều gì được phép, điều gì không và dịch vụ hoạt động theo những điều kiện nào.`,
+        sections: [
+          {
+            heading: "Quy định chung",
+            body: [
+              `Điều khoản này điều chỉnh việc sử dụng trang web ${operator.site} và bot Telegram ${BOT}. Chủ sở hữu và đơn vị quản trị dịch vụ là ${operator.nameVi}.`,
+              "Khi bắt đầu sử dụng dịch vụ, bạn xác nhận rằng bạn đã đọc và chấp nhận Điều khoản này. Nếu có bất kỳ điều kiện nào không phù hợp với bạn, bạn không nên sử dụng dịch vụ.",
+            ],
+          },
+          {
+            heading: "Dịch vụ miễn phí",
+            body: [
+              "Mọi tính năng của dịch vụ đều được cung cấp miễn phí. Không có gói đăng ký, gói trả phí, chất lượng video trả phí hay giao dịch mua trong dịch vụ.",
+              "Chúng tôi không hiển thị quảng cáo và không đặt liên kết tiếp thị liên kết.",
+            ],
+          },
+          {
+            heading: "Điều kiện truy cập",
+            bullets: [
+              "Để tải xuống trên trang web, bạn không cần tài khoản hay đăng nhập. Bot phân biệt người dùng theo tài khoản Telegram của họ.",
+              "Các giới hạn kỹ thuật về tần suất yêu cầu bảo vệ dịch vụ khỏi tình trạng quá tải và hành vi lạm dụng tự động.",
+              "Đối với YouTube có áp dụng giới hạn lưu lượng hằng ngày: 10 GB trong 24 giờ cho mỗi mạng trên trang web và trong tiện ích mở rộng, và 25 GB trong 24 giờ cho mỗi tài khoản Telegram trong bot. Giới hạn này không áp dụng cho các nền tảng khác.",
+              "Không cần đăng ký theo dõi kênh của chúng tôi để tải xuống qua bot. Bot thêm liên kết đến kênh tin tức của dự án vào chú thích của tệp; việc theo dõi kênh này là không bắt buộc.",
+            ],
+          },
+          {
+            heading: "Dịch vụ làm gì",
+            body: [
+              "Dịch vụ là bên trung gian kỹ thuật: theo liên kết bạn cung cấp, dịch vụ truy cập trang công khai, lấy tệp phương tiện và chuyển cho bạn.",
+              "Chúng tôi không lưu trữ danh mục video, không thực hiện tìm kiếm trong nội dung của người khác và không lưu giữ tệp đã tải xuống lâu hơn thời gian cần thiết để chuyển giao — khoảng một giờ.",
+              "Khả năng hoạt động với một nền tảng cụ thể phụ thuộc vào các quyết định kỹ thuật của nền tảng đó và có thể thay đổi mà không cần báo trước.",
+            ],
+          },
+          {
+            heading: "Nghĩa vụ của người dùng",
+            body: [
+              "Bạn tự chịu trách nhiệm về cách sử dụng các tệp nhận được và xác nhận rằng bạn có quyền làm như vậy.",
+            ],
+            bullets: [
+              "Chỉ tải xuống những tài liệu mà bạn là chủ sở hữu quyền, hoặc việc sử dụng chúng được chủ sở hữu quyền hoặc pháp luật cho phép.",
+              "Không sử dụng dịch vụ để xâm phạm quyền tác giả và quyền liên quan, phát tán nội dung bị cấm hoặc xâm phạm quyền của bên thứ ba.",
+              "Không tìm cách vượt qua các giới hạn kỹ thuật của dịch vụ, bao gồm giới hạn tần suất yêu cầu và cơ chế kiểm tra bot.",
+              "Không tạo tải tự động: không được phép gửi yêu cầu hàng loạt, sử dụng script và công cụ thu thập dữ liệu (parser).",
+            ],
+          },
+          {
+            heading: "Đăng liên kết trên kênh",
+            body: [
+              "Khi tải video qua bot, bạn đồng ý rằng liên kết đến bài đăng gốc sẽ được đăng trên kênh Telegram của chúng tôi. Thông báo về việc này được hiển thị trong bot trước khi bạn chọn chất lượng — tức là trước khi bạn quyết định tải xuống.",
+              "Việc đăng là ẩn danh: kênh nhận được liên kết đến trang công khai, tiêu đề video và ảnh bìa — chính khung hình mà nền tảng hiển thị trong bản xem trước của bài đăng. Không nêu rõ ai đã tải video. Bản thân tệp video không bao giờ được đăng ở bất kỳ đâu: thứ được chia sẻ là liên kết, vốn chính các nền tảng cũng khuyến khích chia sẻ bằng nút “Chia sẻ” bên dưới mỗi bài đăng.",
+              "Mỗi liên kết chỉ được đăng không quá một lần. Nếu bạn không muốn liên kết xuất hiện trên kênh, đừng tải video đó qua dịch vụ của chúng tôi.",
+              "Liên kết từ các nhóm và bài đăng được tải xuống qua tài khoản được kết nối không được đăng trên kênh."
+            ],
+          },
+          {
+            heading: "Kết nối tài khoản của bạn",
+            body: [
+              "Khi kết nối tài khoản của mình trên một nền tảng với bot, bạn xác nhận rằng đó là tài khoản của bạn và bạn có quyền sử dụng tài khoản theo cách này.",
+              "Các nền tảng không chấp thuận việc tải xuống tự động và có thể hạn chế hoặc khóa tài khoản được kết nối. Bạn tự chịu rủi ro này; chúng tôi khuyên bạn nên kết nối một tài khoản phụ thay vì tài khoản chính. Chúng tôi không chịu trách nhiệm về các hạn chế mà nền tảng áp dụng đối với tài khoản của bạn.",
+              "Tài khoản được kết nối với một nhóm được dùng cho các lần tải xuống của tất cả thành viên nhóm đó. Quản trị viên nhóm quyết định ai có thể kết nối tài khoản và có thể xóa bất kỳ tài khoản nào trong số đó.",
+            ],
+          },
+          {
+            heading: "Giới hạn trách nhiệm",
+            body: [
+              "Dịch vụ được cung cấp theo nguyên trạng (“as is”). Chúng tôi không bảo đảm dịch vụ hoạt động liên tục, khả năng truy cập một nền tảng cụ thể hoặc sự phù hợp của tệp với mục đích của bạn.",
+              "Chúng tôi không chịu trách nhiệm về cách bạn sử dụng tài liệu đã tải xuống, cũng như về hậu quả của việc bạn xâm phạm quyền của bên thứ ba.",
+              "Chúng tôi có quyền thay đổi các tính năng của dịch vụ, tạm ngừng dịch vụ để bảo trì và chấm dứt hoạt động của dịch vụ.",
+            ],
+          },
+          {
+            heading: "Hạn chế truy cập",
+            body: [
+              "Chúng tôi có thể hạn chế hoặc chấm dứt quyền truy cập dịch vụ khi Điều khoản này bị vi phạm, khi có hành vi tìm cách vượt qua các giới hạn, hoặc khi nhận được khiếu nại có căn cứ của chủ sở hữu quyền.",
+            ],
+          },
+          {
+            heading: "Thay đổi và luật áp dụng",
+            body: [
+              "Chúng tôi có thể sửa đổi Điều khoản này; ngày của phiên bản hiện hành được ghi ở đầu trang. Việc tiếp tục sử dụng dịch vụ sau khi có thay đổi đồng nghĩa với việc bạn chấp nhận phiên bản mới.",
+              "Quan hệ giữa các bên được điều chỉnh bởi pháp luật của Cộng hòa Kazakhstan. Các bên sẽ cố gắng giải quyết tranh chấp thông qua trao đổi thư từ, và nếu không đạt được thỏa thuận, theo trình tự do pháp luật của Cộng hòa Kazakhstan quy định.",
+            ],
+          },
+        ],
+      },
+      cookies: {
+        title: "Chính sách cookie",
+        summary: `${operator.site} sử dụng những cookie nào, chúng dùng để làm gì và cách từ chối chúng.`,
+        sections: [
+          {
+            heading: "Cookie là gì",
+            body: [
+              "Cookie là những tệp văn bản nhỏ mà trang web lưu trong trình duyệt của bạn. Chúng cho phép ghi nhớ các cài đặt của bạn và thu thập số liệu thống kê truy cập đã được ẩn danh hóa.",
+              "Ngoài cookie, tài liệu này cũng mô tả các công nghệ tương tự — bộ nhớ cục bộ của trình duyệt và pixel theo dõi.",
+            ],
+          },
+          {
+            heading: "Cookie thiết yếu",
+            body: [
+              "Thiếu các cookie này, dịch vụ không thể hoạt động, vì vậy chúng luôn được thiết lập.",
+            ],
+            bullets: [
+              "Cloudflare Turnstile — kiểm tra rằng liên kết được gửi bởi con người chứ không phải bởi script.",
+              "Cài đặt giao diện — ngôn ngữ và giao diện màu đã chọn.",
+            ],
+          },
+          {
+            heading: "Cookie phân tích",
+            body: [
+              "Các cookie này giúp chúng tôi hiểu những trang nào được sử dụng và lỗi phát sinh ở đâu. Chúng được thiết lập khi có sự đồng ý của bạn và không bắt buộc cho hoạt động của dịch vụ.",
+            ],
+            bullets: [
+              "Google Analytics và Google Tag Manager — lưu lượng truy cập và hành vi trên trang web ở dạng ẩn danh.",
+              "Yandex Metrica — lưu lượng truy cập, bản đồ nhấp chuột và Webvisor.",
+            ],
+          },
+          {
+            heading: "Webvisor",
+            body: [
+              "Webvisor của Yandex Metrica ghi lại thao tác trên trang: di chuyển con trỏ, cuộn trang, nhấp chuột và nội dung nhập vào ô liên kết. Mục đích là để thấy được chỗ nào giao diện gây khó hiểu cho người dùng.",
+              "Chúng tôi không sử dụng các bản ghi này để theo dõi những cá nhân cụ thể. Vui lòng không nhập vào các ô trên trang web những thông tin mà bạn không muốn bị lưu lại.",
+            ],
+          },
+          {
+            heading: "Cách từ chối",
+            bullets: [
+              "Thiết lập chặn hoặc xóa cookie trong cài đặt trình duyệt của bạn — cách này áp dụng được cho tất cả các hệ thống nêu trên.",
+              "Google Analytics: tiện ích bổ sung chính thức cho trình duyệt để tắt việc thu thập dữ liệu có sẵn trên trang web của Google.",
+              "Yandex Metrica: có thể từ chối thông qua tiện ích bổ sung chính thức của Yandex.",
+              "Việc tắt cookie thiết yếu sẽ khiến bạn không thể tải xuống.",
+            ],
+          },
+          {
+            heading: "Thời hạn lưu trữ",
+            body: [
+              "Cookie phiên bị xóa khi bạn đóng trình duyệt hoặc khi phiên hết hạn. Các công cụ phân tích lưu giữ mã định danh trong thời hạn do nhà cung cấp của chúng quy định.",
+            ],
+          },
+        ],
+      },
+      copyright: {
+        title: "Dành cho chủ sở hữu quyền",
+        summary: "Quan điểm của dịch vụ về quyền tác giả và trình tự gửi khiếu nại về hành vi xâm phạm.",
+        sections: [
+          {
+            heading: "Quan điểm của dịch vụ",
+            body: [
+              "Dịch vụ không lưu trữ video và không duy trì danh mục video. Dịch vụ đóng vai trò bên trung gian kỹ thuật: theo liên kết do người dùng nhập, dịch vụ truy cập trang công khai và chuyển tệp cho người dùng đó.",
+              "Các tệp đã tải xuống được lưu trên máy chủ khoảng một giờ và sau đó tự động bị xóa. Chúng tôi không giữ lại bản sao lâu dài nào đối với nội dung của người khác.",
+              "Trách nhiệm về việc sử dụng tài liệu đã tải xuống thuộc về người dùng — điều này được quy định rõ ràng trong Điều khoản sử dụng.",
+            ],
+          },
+          {
+            heading: "Nếu quyền của bạn bị xâm phạm",
+            body: [
+              `Nếu bạn là chủ sở hữu quyền hoặc người đại diện của chủ sở hữu quyền và cho rằng dịch vụ đang bị sử dụng để xâm phạm quyền của bạn, hãy gửi thư đến ${MAIL}. Chúng tôi xem xét các khiếu nại như vậy và có biện pháp xử lý.`,
+            ],
+          },
+          {
+            heading: "Nội dung cần nêu trong khiếu nại",
+            bullets: [
+              "Tác phẩm nào bị ảnh hưởng và trên cơ sở nào bạn nắm giữ quyền đối với tác phẩm đó.",
+              "Liên kết đến tài liệu và, nếu biết, các tình tiết của hành vi xâm phạm.",
+              "Thông tin liên hệ của bạn: họ tên hoặc tên tổ chức, địa chỉ và địa chỉ email.",
+              "Nếu bạn hành động thay mặt chủ sở hữu quyền — tài liệu xác nhận thẩm quyền đại diện.",
+              "Tuyên bố rằng thông tin trong khiếu nại là chính xác và việc sử dụng tài liệu không được chủ sở hữu quyền hoặc pháp luật cho phép.",
+            ],
+          },
+          {
+            heading: "Chúng tôi sẽ làm gì",
+            body: [
+              "Chúng tôi xem xét khiếu nại trong thời hạn hợp lý, thông thường trong vòng ba mươi ngày theo lịch, và khi hành vi xâm phạm được xác nhận, chúng tôi hạn chế quyền truy cập tài liệu thông qua dịch vụ và, khi cần thiết, hạn chế quyền truy cập dịch vụ của người vi phạm.",
+              "Chúng tôi sẽ thông báo kết quả xem xét đến địa chỉ email bạn đã cung cấp.",
+            ],
+          },
+          {
+            heading: "Khiếu nại không thiện chí",
+            body: [
+              "Khiếu nại chứa thông tin mà người gửi biết rõ là sai sự thật có thể khiến người khiếu nại phải chịu trách nhiệm theo quy định của pháp luật. Chúng tôi có quyền từ chối xem xét khiếu nại nếu khiếu nại đó không cho phép xác định được chủ sở hữu quyền cũng như tài liệu bị tranh chấp.",
             ],
           },
         ],

@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('vi')) {
+      return (
+        'Xin chào! Bạn đã khởi động bot này nhưng chưa tải xuống gì — ' +
+        'có lẽ bạn chưa rõ nên bắt đầu từ đâu.\n\n' +
+        'Chỉ cần một bước: gửi liên kết video vào đây, ' +
+        'ví dụ https://youtube.com/watch?v=jNQXAC9IVRw — và mình sẽ gửi lại ' +
+        'tệp trong khoảng nửa phút.\n\n' +
+        'Hỗ trợ YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest và Threads. Hoàn toàn miễn phí và với mọi ' +
+        'chất lượng — lên đến 4K, không mất thêm phí cho HD.\n\n' +
+        'Nếu có gì không hoạt động, bạn chỉ cần trả lời tại đây. Đây là ' +
+        'lời nhắc duy nhất, mình sẽ không làm phiền nữa.'
+      );
+    }
+
     if (code.startsWith('fa')) {
       return (
         'سلام! شما این ربات را راه‌اندازی کردید، اما هنوز چیزی دانلود نکرده‌اید — ' +

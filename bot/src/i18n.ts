@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -14,9 +14,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz", "tr", "fa"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz", "tr", "fa", "vi"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -3559,6 +3559,226 @@ const fa: Messages = {
   settingsBack: "⬅️ بازگشت به تنظیمات",
 };
 
+const vi: Messages = {
+  start: "Chào bạn! Gửi cho mình link video từ YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest hoặc Threads — mình sẽ giúp bạn tải về.\n\n✨ Không giới hạn chất lượng: nền tảng có gì bạn nhận nấy, lên đến 4K — miễn là file không vượt quá 2 GB, giới hạn của Telegram dành cho bot. Ở đây không có tính năng trả phí nào.\n\nHoàn toàn miễn phí: không gói đăng ký, không quảng cáo, không mua hàng trong ứng dụng.\n\n🧩 Bạn tải trên máy tính? Hãy cài tiện ích trình duyệt — nút Tải xuống sẽ xuất hiện ngay trên trang video: videoner.download/vi/extension\n\n👥 Thêm mình vào nhóm, mình sẽ gửi video theo các link mọi người chia sẻ ở đó.\n\n⚡ Bỏ qua bước chọn chất lượng: thêm -audio sau link để chỉ lấy âm thanh (mp3), hoặc -hd để có chất lượng tốt nhất.\n\n📣 Tin tức dự án: @videonerdownload\n\n🌐 Ngôn ngữ của bot: /language",
+  notLink: "Đây có vẻ không phải là link. Hãy gửi cho mình link video.",
+  inviteGreeting: "Chào bạn! Mình là Videoner — mình tải video từ YouTube, TikTok, Instagram và các nền tảng khác miễn phí. Đang chuẩn bị video mà người ta đã chia sẻ với bạn 👇",
+  inviteNotFound: "Mình không tìm thấy video cho link mời này. Hãy gửi cho mình link video, mình sẽ tải về.",
+  inviteUnavailable: "Mình không mở được video từ link này — dịch vụ hiện chưa phản hồi. Hãy mở lại chính link đó sau một phút.",
+  fetchingInfo: "🔍 Đang lấy thông tin video...",
+  audioOnlyButton: "🎵 Chỉ âm thanh (mp3)",
+  photoButton: "📷 Tải ảnh",
+  slideshowButton: "🎞 Trình chiếu (video)",
+  galleryButton: "📷+🎞 Ảnh và trình chiếu",
+  chooseQuality: (title, duration) => `“${title}”${duration ? `\n⏱ ${duration}` : ""}\n\nChọn chất lượng:`,
+  sessionExpired: "Phiên đã hết hạn — hãy gửi lại link",
+  downloading: "⏬ Đang tải, có thể mất vài phút...",
+  downloadFailed: "tải về không thành công",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Đang tải: ${percent}%${eta ? ` · còn ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Sắp xong — đang ghép file...",
+  converting: (percent) => `⚙️ Đang chuyển đổi: ${percent}%`,
+  etaUnderMinute: "chưa đến một phút",
+  etaMinutes: (minutes) => `~${minutes} phút`,
+  etaHours: (hours, minutes) => `~${hours} giờ${minutes ? ` ${minutes} phút` : ""}`,
+  downloadTimeout: "việc tải mất quá nhiều thời gian — video có vẻ rất nặng. Hãy thử chất lượng thấp hơn.",
+  downloadInterrupted: "⚠️ Bot đang khởi động lại để cập nhật — lượt tải của bạn đã bị gián đoạn. Hãy gửi lại link sau một phút nhé.",
+  fileTooBig: (mb, url) =>
+    `File khá lớn (${mb} MB) — Telegram không cho bot gửi file này.\nBạn có thể tải tại đây: ${url}`,
+  sendingFile: "📤 Đang gửi file...",
+  sendingAlbum: (count) => `📤 Bài đăng này có nhiều file (${count}) — đang gửi dưới dạng album...`,
+  failedPrefix: "❌ Không thành công: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Nguồn: ${sourceUrl}\n` +
+        "Mọi quyền đối với video thuộc về tác giả.\n" +
+        "Tải miễn phí bằng @VideonerBot",
+      `📣 Tin tức dự án: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Chia sẻ: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Để tải về, bạn hãy đăng ký kênh ${channel} của chúng mình — đó là điều kiện duy nhất, dịch vụ vẫn miễn phí.\n\n` +
+    "Đăng ký rồi bấm “Mình đã đăng ký”.",
+  openChannelButton: "📣 Mở kênh",
+  checkSubscriptionButton: "Mình đã đăng ký",
+  subscribeThanks: "Cảm ơn bạn! Giờ hãy gửi cho mình link video.",
+  subscribeThanksResuming: "Cảm ơn bạn! Mình đang xử lý link của bạn.",
+  subscribeStillMissing: "Mình chưa thấy bạn đăng ký. Hãy đăng ký rồi bấm lại.",
+  channelNotice: (channel) => `\n\nLink tới bài đăng này sẽ xuất hiện trên ${channel} — ẩn danh, không kèm tên bạn.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Tải video này và mọi video khác miễn phí: @VideonerBot",
+  errorStoryNeedsId:
+    "hãy gửi link tới một story cụ thể: mở story trong ứng dụng Instagram và bấm Chia sẻ → Sao chép liên kết.",
+  errorInstagramStory:
+    "Story trên Instagram chỉ hiển thị với người đã đăng nhập.",
+  errorLoginRequired:
+    "Bài đăng này không xem được nếu chưa đăng nhập: nền tảng chỉ hiển thị nó cho " +
+    "người dùng đã đăng nhập. Điều này xảy ra với bài đăng riêng tư, nội dung giới hạn độ tuổi và " +
+    "bài đăng chỉ chia sẻ với một nhóm người nhất định.\n\n" +
+    "Bài đăng công khai tải về bình thường — hãy thử link khác.",
+  errorUnsupportedPlatform:
+    "Mình không nhận ra link này — hãy kiểm tra đó là link trực tiếp tới video từ YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest hoặc Threads.",
+  errorFileTooLarge: "file lớn hơn 2 GB — Telegram không cho bot gửi file lớn hơn. Bạn có thể tải trên trang web hoặc bằng tiện ích trình duyệt — các nút ở bên dưới. Hoặc gửi lại link và chọn chất lượng thấp hơn.",
+  siteButton: "🌐 Tải trên trang web",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Các chất lượng nặng hơn ${limit} đã được ẩn: Telegram không cho bot gửi file lớn hơn. Bạn có thể tải chúng trên trang web hoặc bằng tiện ích trình duyệt — các nút ở bên dưới.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Video này quá nặng với Telegram ngay cả ở chất lượng thấp nhất (~${smallest}): Telegram không cho bot gửi file trên 2 GB. Ở đây bạn chỉ lấy được âm thanh; còn video — trên trang web hoặc bằng tiện ích trình duyệt (các nút bên dưới).`,
+  errorFormatUnavailable: "Chất lượng này không có cho video này. Hãy gửi lại link — mình sẽ hiện danh sách mới nhất.",
+  errorNoVideoContent: "Link này không có video để tải — có vẻ bài đăng chỉ có ảnh.",
+  errorRegionBlocked:
+    "Video này bị chặn bên ngoài quốc gia của tác giả — nền tảng không cung cấp " +
+    "nó cho máy chủ của chúng mình. Không có cách nào vượt qua: giới hạn nằm ở phía họ." +
+    "\n\nCác link khác vẫn tải về bình thường.",
+  errorRateLimited: "Bạn gửi quá nhiều link liên tiếp — hãy chờ một chút rồi gửi lại.",
+  errorYoutubeDailyLimit: (gb) => `bạn đã tải hơn ${gb} GB từ YouTube trong 24 giờ qua — đó là giới hạn mỗi ngày của bot cho mỗi người. Giới hạn tính theo 24 giờ gần nhất, nên một lúc sau bạn có thể tải video YouTube mới. Các nền tảng khác vẫn hoạt động bình thường.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Đã dừng playlist: đã đạt giới hạn YouTube trong ngày. Số video chưa tải: ${dropped}. Hãy gửi lại link playlist sau.`,
+  errorPlatformRefused:
+    "nền tảng không cung cấp video này cho máy chủ của chúng mình. Điều này xảy ra với bài đăng riêng tư " +
+    "hoặc giới hạn độ tuổi, và đôi khi nền tảng chỉ tạm thời hạn chế truy cập " +
+    "một lúc. Hãy thử lại sau vài phút.",
+  errorThreadsNoMedia:
+    "bài đăng Threads này không có video hay ảnh nào hiển thị. Có thể đó là bài chỉ có chữ, hoặc " +
+    "Threads chỉ hiển thị nội dung cho người đã đăng nhập — những bài như vậy không thể tải nếu không đăng nhập.",
+  extensionHint:
+    "\n\n💻 Bạn có thể tải video này bằng tiện ích trình duyệt Videoner trên máy tính: " +
+    "tiện ích tải bằng chính phiên đăng nhập của bạn trên nền tảng, mật khẩu và cookie không rời khỏi trình duyệt của bạn.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Để tải những bài đăng như thế này, hãy kết nối tài khoản ${platform} của bạn với bot — chỉ một lần. Sau đó bot tải được mọi thứ bạn xem được: bài đăng riêng tư, reels và story, cả trên điện thoại. Nút bên dưới sẽ hướng dẫn cách làm.${withExtension ? "\n\n💻 Hoặc tải bằng tiện ích trình duyệt Videoner trên máy tính." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Tài khoản ${platform} bạn đã kết nối không mở được bài đăng này. Có thể phiên đăng nhập đã hết hiệu lực — hãy kết nối lại tài khoản. Hoặc tài khoản này không có quyền xem bài đăng.${withExtension ? "\n\n💻 Bạn cũng có thể tải bằng tiện ích trình duyệt Videoner trên máy tính." : ""}`,
+  connectAccountButton: "🔑 Kết nối tài khoản",
+  reconnectAccountButton: "🔑 Kết nối lại",
+  extensionButton: "🧩 Tải bằng tiện ích",
+  extensionCommand:
+    "🧩 Videoner cho trình duyệt của bạn: nút Tải xuống ngay trên trang video — YouTube, Instagram, TikTok, VK, video riêng tư từ tài khoản của bạn và bài học GetCourse.\n\nDành cho Chrome, Edge, Opera, Yandex Browser và Firefox trên máy tính.",
+  extensionPageButton: "🧩 Cài tiện ích",
+  addToGroupButton: "👥 Thêm vào nhóm",
+  newsButton: "📣 Tin tức dự án",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Tin tức dự án: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Cài đặt bot cho nhóm này\n\n" +
+    `🗑 Xóa tin nhắn chứa link: ${s.deleteLinks ? "có" : "không"}\n` +
+    "Sau khi gửi video, tin nhắn chỉ chứa link sẽ bị xóa — trong chat chỉ còn video kèm tên người đã chia sẻ.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Hiện mình không xóa được tin nhắn: hãy đặt mình làm quản trị viên với quyền “Xóa tin nhắn”.\n"
+      : "") +
+    `\n✍️ Chú thích dưới video: ${{ full: "đầy đủ", short: "tiêu đề và nguồn", none: "không có chú thích" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Chất lượng: ${s.quality === "max" ? "cao nhất mà Telegram chấp nhận" : "tiêu chuẩn (720p)"}\n` +
+    `\n⏱ Video dài: ${s.longVideos ? "mọi độ dài" : "chỉ tối đa 15 phút"}\n` +
+    `\n🔑 Ai được kết nối tài khoản (cho story và bài đăng riêng tư): ${s.cookiesBy === "all" ? "mọi thành viên" : "chỉ quản trị viên"}\n` +
+    `\n🌐 Ngôn ngữ trả lời: ${s.language ? langName(s.language) : "theo ngôn ngữ của từng thành viên"}\n` +
+    "\nChỉ quản trị viên nhóm mới được thay đổi cài đặt.",
+  settingsDeleteButton: (on) => `🗑 Xóa link: ${on ? "có" : "không"}`,
+  settingsCaptionButton: (style) => `✍️ Chú thích: ${{ full: "đầy đủ", short: "ngắn", none: "không có" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Chất lượng: ${mode === "max" ? "cao nhất" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Video dài: ${on ? "có" : "tối đa 15 phút"}`,
+  settingsDoneButton: "✅ Xong",
+  settingsAdminsOnly: "Chỉ quản trị viên nhóm mới được thay đổi cài đặt.",
+  settingsGroupsOnly: "Cài đặt dành cho nhóm: hãy thêm mình vào nhóm và gửi /settings ở đó.",
+  settingsFailed: "Không lưu được cài đặt, bạn hãy thử lại.",
+  settingsCookiesButton: (by) => `🔑 Kết nối tài khoản: ${by === "all" ? "mọi người" : "quản trị viên"}`,
+  accountsIntro:
+    "🔑 Tài khoản đã kết nối\n\nBot có thể tải những nội dung chỉ người đã đăng nhập mới xem được (story Instagram, bài đăng riêng tư) — bằng tài khoản của bạn. Phiên đăng nhập có tác dụng ở nơi bạn kết nối: kết nối trong chat riêng phục vụ lượt tải của bạn, kể cả link của chính bạn trong các nhóm chưa có tài khoản riêng; kết nối với một nhóm phục vụ mọi thành viên của nhóm đó.",
+  accountsHowTo:
+    "Cách kết nối:\n1. Dễ nhất: tiện ích Videoner trên máy tính — đăng nhập trên trang của nền tảng, mở cửa sổ Videoner, bấm «🔑 Kết nối tài khoản … của bạn với bot» rồi gửi mã cho mình. Với nhóm, hãy gửi /connect MÃ ngay trong nhóm đó.\n2. Hoặc gửi cho mình file cookies.txt (cookie xuất từ trình duyệt), hoặc dán nội dung của nó thành tin nhắn.\n3. Từ điện thoại Android — dùng Firefox và tiện ích Cookie-Editor: https://videoner.download/vi/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Các nền tảng không thích việc tải tự động và có thể hạn chế hoặc khóa tài khoản. Tốt hơn hãy kết nối tài khoản phụ, không phải tài khoản chính. Cookie được lưu ở dạng mã hóa, chỉ dùng để tải về và có thể xóa bằng các nút bên dưới.",
+  accountsNone: "Chưa có kết nối nào.",
+  accountsGroupTitle: "🔑 Tài khoản đã kết nối với nhóm này",
+  accountsGroupHowTo:
+    "Để kết nối cho cả nhóm: lấy mã bằng nút «🔑 Kết nối tài khoản … của bạn với bot» trong tiện ích Videoner rồi gửi /connect MÃ tại đây. Nếu bạn chỉ kết nối tài khoản trong chat riêng, bot sẽ dùng nó ở đây cho link của chính bạn. Các kết nối của bạn: /accounts trong chat riêng với @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ phiên đăng nhập không hoạt động)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ phiên đăng nhập không hoạt động)"}`,
+  accountsWhereHere: "chat riêng",
+  accountsWhereGroup: (title) => `nhóm “${title}”`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Xóa mọi kết nối của mình",
+  accountsDeleted: "Đã xóa.",
+  accountsDeletedAll: (n) => `Đã xóa kết nối: ${n}.`,
+  accountsNotAllowed: "Chỉ người đã kết nối hoặc quản trị viên nhóm mới xóa được.",
+  connectUsage:
+    "Hãy gửi /connect MÃ. Mã được lấy bằng nút «🔑 Kết nối tài khoản … của bạn với bot» trong tiện ích Videoner trên máy tính. Các kết nối của bạn: /accounts.",
+  connectOnlyAdmins: "Chỉ quản trị viên mới được kết nối tài khoản với nhóm này (xem /settings).",
+  connectDone: (platform, where) =>
+    `✅ Đã kết nối ${platform} ${where}. Giờ bot còn tải được cả nội dung chỉ người đã đăng nhập mới xem được. Xem hoặc xóa: /accounts.\n\n⚠️ Nền tảng có thể hạn chế tài khoản vì tải tự động — tốt hơn hãy dùng tài khoản phụ.`,
+  connectWhereGroup: "với nhóm này",
+  connectWhereHere: "cho lượt tải của bạn trong chat riêng và chế độ inline",
+  connectCodeNotFound: "Không tìm thấy mã hoặc mã đã hết hạn (mã có hiệu lực 10 phút). Hãy lấy mã mới trong tiện ích Videoner.",
+  connectRejectedNoSession: "Các cookie này không có phiên đăng nhập. Hãy đăng nhập trên trang của nền tảng rồi xuất lại cookie.",
+  connectRejectedUnknown: "Không tìm thấy cookie của nền tảng được hỗ trợ: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Tính năng kết nối tài khoản hiện chưa khả dụng.",
+  connectFailed: "Không kết nối được, bạn hãy thử lại.",
+  connectFileTooBig: "File quá lớn — chỉ xuất cookie của trang web cần thiết thôi.",
+  connectNotAnonymous: "Hãy kết nối tài khoản bằng chính bạn, không phải ẩn danh dưới tên nhóm: nếu không, kết nối của các quản trị viên sẽ bị lẫn lộn. Mình đã hủy mã — hãy lấy mã mới.",
+  connectCodeInGroup:
+    "Mã kết nối đăng trong chat nhóm thì người khác đều thấy được — mình đã hủy mã và xóa tin nhắn. Hãy lấy mã mới và gửi bằng /connect MÃ: mình sẽ xóa tin nhắn lệnh đó ngay lập tức.",
+  groupWelcome:
+    "👋 Chào cả nhà! Hãy đăng link video từ TikTok, Instagram, YouTube, VK và các nền tảng khác trong chat này — mình sẽ trả lời bằng chính video đó.\n\n" +
+    "Mình tự tải các clip dài tối đa 15 phút, không cần lệnh nào, và ngoài ra thì giữ im lặng.\n\n⚙️ Quản trị viên nhóm có thể tùy chỉnh mình bằng /settings: xóa tin nhắn chứa link, kiểu chú thích, chất lượng, video dài và ngôn ngữ.\n\n⚡ Thêm -audio sau link để lấy âm thanh, hoặc -hd để có chất lượng tốt nhất.\n\n📣 Tin tức dự án: @videonerdownload",
+  errorTooLong: "video quá dài — hiện chúng mình chưa tải được video dài như vậy.",
+  errorUnknown: "không tải được video này. Hãy thử lại sau một chút hoặc gửi link khác.",
+  inlineHintButton: "Gửi link cho bot",
+  inlineResultTitle: "⬇️ Tải video",
+  inlineResultDescription: "Video sẽ được đăng ngay trong chat này",
+  inlinePlaceholder: "⏬ Đang tải, có thể mất vài phút...",
+  inlineOpenBot: "Mở bot",
+  inlineOnlySingleVideo:
+    "Chế độ này chỉ gửi một video. Với bài đăng nhiều file hoặc ảnh, hãy gửi link cho bot trong chat riêng.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Để tải về, hãy đăng ký ${channel} rồi thử lại.`,
+  inlineRateLimited: "Quá nhiều yêu cầu liên tiếp. Hãy chờ một phút rồi thử lại.",
+  queueRest: (count) => `\n\n📋 Link còn trong hàng đợi: ${count}. Mình sẽ lần lượt hiện từng link sau link này.`,
+  queuedOne: (position) =>
+    `📋 Đã thêm link vào hàng đợi, vị trí #${position}. Xong link hiện tại trước đã — sau đó mình sẽ hiện phần chọn chất lượng cho link này.`,
+  queuedMany: (added, waiting) =>
+    `📋 Đã thêm link vào hàng đợi: ${added}. Tổng số đang chờ: ${waiting}. Mình sẽ lần lượt hiện từng link sau link hiện tại.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Link này đã có trong hàng đợi — mình không thêm lần nữa."
+      : `Các link đã có trong hàng đợi sẽ không được thêm lần nữa (trùng lặp: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Hàng đợi chứa tối đa ${limit} link — các link thừa chưa được thêm (${rejected}). Hãy gửi lại khi hàng đợi đã vơi bớt.`,
+  skipButton: "✖️ Không tải",
+  skipped: "⏭ Đã bỏ qua link này.",
+  chooseTimedOut: "⌛ Không có chất lượng nào được chọn trong 30 phút — bỏ qua link này.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Bot đang khởi động lại để cập nhật — hàng đợi đã bị xóa (số link: ${count}). Hãy gửi lại sau một phút nhé.`,
+  subtitlesButton: "📝 Phụ đề",
+  subtitlesBack: "⬅️ Quay lại chọn chất lượng",
+  subtitlesAuto: "tự động",
+  subtitlesChoose: "Chọn ngôn ngữ phụ đề",
+  subtitlesPreparing: "📝 Đang chuẩn bị phụ đề...",
+  subtitlesFailed: "Không tải được phụ đề bằng ngôn ngữ này. Hãy thử ngôn ngữ khác.",
+  subtitlesBusy: "YouTube hiện không cung cấp phụ đề — hãy thử lại sau vài phút.",
+  playlistFound: (title, count) =>
+    `📃 Playlist${title ? ` “${title.slice(0, 150)}”` : ""}: ${count} video.\nMình sẽ tải lần lượt từng video. Bạn chọn định dạng nào?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Chất lượng tốt nhất",
+  playlistAudioButton: "🎵 Chỉ âm thanh (mp3)",
+  playlistNoButton: "✖️ Không, cảm ơn",
+  playlistQueued: (count) =>
+    `📃 Đã thêm video từ playlist vào hàng đợi: ${count}. Mình sẽ gửi lần lượt từng video. Dừng bằng nút bên dưới hoặc /stop.`,
+  playlistFailed: "Không mở được playlist — có thể playlist ở chế độ riêng tư. Hãy gửi link tới một video riêng lẻ.",
+  stopButton: "⏹ Dừng",
+  stopped: (dropped) => `⏹ Đã dừng.${dropped ? ` Số link đã xóa khỏi hàng đợi: ${dropped}.` : ""}`,
+  nothingToStop: "Hiện không có gì đang tải.",
+  languageChoose: "🌐 Chọn ngôn ngữ cho bot. “Tự động” sẽ theo ngôn ngữ Telegram của bạn.",
+  languageChooseGroup: "🌐 Ngôn ngữ trả lời của bot trong nhóm này. “Tự động” — theo ngôn ngữ Telegram của từng thành viên.",
+  languageAuto: "Tự động — theo Telegram",
+  languageAutoGroup: "Tự động — theo từng thành viên",
+  languageSaved: (name) => `✅ Ngôn ngữ của bot: ${name}. Đổi bằng /language.`,
+  languageSavedAuto: "✅ Bot sẽ theo ngôn ngữ Telegram của bạn. Đổi bằng /language.",
+  settingsLanguageButton: (name) => `🌐 Ngôn ngữ: ${name ?? "tự động"}`,
+  settingsBack: "⬅️ Quay lại cài đặt",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -4006,4 +4226,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi };

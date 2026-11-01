@@ -16,7 +16,7 @@
   // uiLang) или язык браузера. Выбор читается асинхронно, поэтому сначала
   // подпись по браузеру, потом — по выбору.
   const ui = chrome.i18n.getUILanguage().toLowerCase();
-  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
@@ -34,6 +34,7 @@
     uz: "Bu video uchun tugmani yashirish",
     tr: "Bu videoda düğmeyi gizle",
     fa: "پنهان کردن دکمه برای این ویدیو",
+    vi: "Ẩn nút trên video này",
     en: "Hide the button for this video",
   };
   const base = ui.split("-")[0] === "in" ? "id" : ui.split("-")[0];

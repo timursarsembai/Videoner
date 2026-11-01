@@ -923,4 +923,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "صفحه اصلی",
   },
+  vi: {
+    metaTitle: "Tiện ích trình duyệt Videoner",
+    title: "Videoner cho trình duyệt của bạn",
+    summary:
+      "Tiện ích thêm nút “Tải xuống” vào các trang video và tải ngay trong trình duyệt của bạn. Instagram, Facebook, TikTok và Threads được tải bằng chính tài khoản đăng nhập của bạn — vì vậy tải được cả bài đăng riêng tư mà bạn xem được trong tài khoản, lẫn những video mà nền tảng không cho máy chủ của chúng tôi tải.",
+    failedVideo: "Video không tải được trên trang web hoặc trong bot:",
+    failedVideoHint:
+      "Cài tiện ích, đăng nhập vào nền tảng trên chính trình duyệt này, mở video và nhấn “Tải xuống” ở góc dưới bên phải.",
+    openVideo: "Mở video",
+    version: "Phiên bản",
+    browsersTitle: "Hoạt động ở đâu",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi và các trình duyệt khác dựa trên Chromium — trên máy tính.",
+    mobile: "Điện thoại và máy tính bảng không hỗ trợ tiện ích — trên đó hãy dùng trang web hoặc bot Telegram.",
+    getcourseTitle: "Bài học GetCourse",
+    getcourse:
+      "Mở một bài học trong trường GetCourse khi đã đăng nhập: nút “Tải xuống” sẽ xuất hiện ở góc trên bên phải trình phát, và biểu tượng Videoner sẽ liệt kê mọi video trong bài học. Trình duyệt của bạn tự tải bài học và ghép thành tệp mp4 — tệp không đi qua máy chủ của chúng tôi. Nếu không tải được trong trình duyệt, máy chủ của chúng tôi sẽ tải bài học với cùng chất lượng; khi đó máy chủ nhận link video từ trình phát.",
+    privacyTitle: "Thông tin đăng nhập vẫn ở lại với bạn",
+    privacy:
+      "Tiện ích không bao giờ hỏi mật khẩu: chính trình duyệt của bạn gửi yêu cầu đến nền tảng, còn máy chủ của chúng tôi chỉ nhận một báo cáo ngắn để thống kê — link, dung lượng tệp và tiêu đề. Cookie chỉ được gửi lên máy chủ khi chính bạn nhấn “Kết nối tài khoản với bot” — và chỉ cookie của nền tảng đó, ở dạng mã hóa.",
+    stepsTitle: "Cách cài đặt trên Chrome, Yandex Browser, Edge và Opera",
+    steps: [
+      "Tải tệp nén về và giải nén — sẽ xuất hiện thư mục videoner-extension có số phiên bản trong tên.",
+      "Mở trang tiện ích: gõ chrome://extensions vào thanh địa chỉ (trên Edge là edge://extensions, trên Opera là opera://extensions).",
+      "Bật “Chế độ dành cho nhà phát triển” — công tắc ở đầu trang.",
+      "Nhấn “Tải tiện ích đã giải nén” và chọn thư mục đó — thư mục có chứa tệp manifest.json.",
+      "Xong: trên các trang video sẽ có nút “Tải xuống”, và biểu tượng Videoner xuất hiện trên thanh công cụ của trình duyệt.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 trở lên — cũng trên máy tính.",
+    firefoxSoon:
+      "Phiên bản cho Firefox sắp ra mắt. Hiện tại tiện ích hoạt động trên Chrome, Yandex Browser, Edge, Opera và các trình duyệt khác dựa trên Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Tệp nén .zip — cài đặt trong vài phút",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Cài đặt bằng một cú nhấp",
+    yourBrowser: "Trình duyệt của bạn",
+    soon: "Sắp ra mắt",
+    firefoxStepsTitle: "Cách cài đặt trên Firefox",
+    firefoxSteps: [
+      "Nhấn nút Firefox ở đầu trang này.",
+      "Firefox sẽ hỏi có cho phép videoner.download cài tiện ích hay không — nhấn “Tiếp tục cài đặt”.",
+      "Trong hộp thoại “Thêm Videoner?”, nhấn “Thêm”.",
+      "Xong: trên các trang video sẽ có nút “Tải xuống”, và biểu tượng Videoner xuất hiện trên thanh công cụ. Firefox sẽ tự cài các bản cập nhật.",
+    ],
+    updateTitle: "Cách cập nhật trên Chrome, Yandex Browser, Edge và Opera",
+    updateSteps: [
+      "Khi có phiên bản mới, biểu tượng Videoner sẽ hiện nhãn NEW và cửa sổ tiện ích có link dẫn đến đây.",
+      "Tải tệp nén bằng nút Chrome ở đầu trang này và giải nén vào đúng thư mục cũ, ghi đè các tệp.",
+      "Mở trang tiện ích (chrome://extensions, browser://extensions trên Yandex Browser, edge://extensions) và nhấn “Tải lại” — mũi tên vòng tròn trên thẻ Videoner.",
+    ],
+    back: "Trang chủ",
+  },
 };

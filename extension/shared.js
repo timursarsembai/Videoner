@@ -1491,6 +1491,92 @@ const TEXTS = {
     langAuto: "خودکار",
     langLabel: "زبان",
   },
+  // Вьетнамский, обращение «bạn».
+  vi: {
+    loading: "Đang lấy thông tin video…",
+    notVideoPage:
+      "Mở trang video trên YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest hoặc Threads rồi nhấn lại vào biểu tượng. Bài học GetCourse: nếu trang bài học đã mở trước khi cài tiện ích, hãy tải lại trang.",
+    gcLesson: "Bài học GetCourse",
+    gcPick: "Bài học này có nhiều video — hãy chọn một",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Trình duyệt của bạn sẽ tải và ghép video. Bạn có thể đóng cửa sổ này, nhưng đừng đóng trình duyệt.",
+    gcNoStream: "Không lấy được video từ trình phát. Hãy tải lại trang bài học và thử lại.",
+    video: "Video",
+    photo: "Ảnh kích thước gốc",
+    slideshow: "Trình chiếu (video)",
+    gallery: "Ảnh + trình chiếu",
+    audioOnly: "Chỉ âm thanh (mp3)",
+    subtitles: "Phụ đề (.srt)",
+    subtitlesAuto: "tự động",
+    back: "Quay lại",
+    starting: "Đang bắt đầu tải…",
+    waiting: "Đang chờ chỗ trống trên máy chủ…",
+    downloading: "Đang tải",
+    converting: "Đang xử lý",
+    left: (eta) => `còn ${eta}`,
+    saving: "Đang lưu vào Tệp tải xuống…",
+    done: "Xong — tệp đã nằm trong Tệp tải xuống.",
+    news: "📣 Tin tức dự án: @videonerdownload",
+    again: "Tải video khác",
+    directDownload: "Tải video (mp4)",
+    directPhoto: "Tải ảnh (jpg)",
+    directNote: "Trực tiếp từ trình duyệt — không qua hàng đợi máy chủ",
+    moreOptions: "Chất lượng khác và âm thanh",
+    fallback: "Không tải được trong trình duyệt — đang tải qua máy chủ.",
+    openSite: "Mở videoner.download",
+    retry: "Thử lại",
+    min: "phút",
+    sec: "giây",
+    errNetwork: "Không kết nối được với Videoner. Hãy kiểm tra kết nối mạng và thử lại.",
+    errRateLimit: "Quá nhiều yêu cầu liên tiếp. Hãy đợi một phút rồi thử lại.",
+    errUnsupported:
+      "Trang này không có video nào Videoner tải được. Hãy mở trang của một video hoặc bài đăng cụ thể.",
+    errYoutubeDaily: "Đã hết giới hạn YouTube trong ngày cho mạng của bạn. Hãy thử lại vào ngày mai.",
+    errTooLarge: "Tệp ở chất lượng này quá lớn. Hãy chọn chất lượng thấp hơn.",
+    errLogin:
+      "Bài đăng này chỉ dành cho người đã đăng nhập. Bài đăng công khai tải bình thường.",
+    errRegion: "Tác giả đã giới hạn bài đăng này theo quốc gia nên không thể tải.",
+    errServerBlocked: "Nền tảng đang tạm thời hạn chế máy chủ của chúng tôi. Vui lòng thử lại sau.",
+    errFailed: "Tải không thành công. Hãy thử lại hoặc chọn chất lượng khác.",
+    errGeneric: "Đã xảy ra lỗi. Vui lòng thử lại sau ít phút.",
+    acctButton: (p) => `🔑 Kết nối tài khoản ${p} của bạn với bot`,
+    acctWarn: (p) =>
+      `@VideonerBot sẽ dùng tài khoản của bạn để tải những gì trên ${p} chỉ người đã đăng nhập mới xem được: story, bài đăng riêng tư. Các nền tảng không thích tải tự động và có thể hạn chế tài khoản — tốt hơn hãy kết nối một tài khoản phụ. Trình duyệt sẽ xin quyền đọc cookie của trang này; chỉ cookie của ${p} được gửi lên máy chủ, đã mã hóa.`,
+    acctConfirm: "Kết nối",
+    acctCancel: "Hủy",
+    acctSending: "Đang kết nối…",
+    acctDenied: "Không thể kết nối tài khoản khi chưa cấp quyền đọc cookie.",
+    acctNoLogin: (p) => `Bạn chưa đăng nhập ${p} trong trình duyệt này. Hãy đăng nhập trên trang web rồi thử lại.`,
+    acctFailed: "Không thành công. Hãy thử lại sau ít phút.",
+    acctCodeTitle: (p) => `Mã kết nối ${p}:`,
+    acctCodeHelp:
+      "Gửi mã cho @VideonerBot trong chat riêng — để tải cho chính bạn. Với nhóm, hãy gửi /connect MÃ trong nhóm. Mã có hiệu lực 10 phút.",
+    acctCopy: "Sao chép",
+    acctCopied: "Đã sao chép",
+    acctOpenBot: "Mở bot",
+    acctNewCode: "Lấy mã mới",
+    acctList: "Kết nối của tôi trong bot",
+    acctRevoke: "Thu hồi quyền đọc cookie",
+    acctRevoked:
+      "Đã thu hồi quyền đọc cookie — tiện ích không còn đọc chúng nữa. Các tài khoản đã kết nối vẫn còn trong bot: hãy xóa chúng trong “Kết nối của tôi trong bot”.",
+    playlistOffer: "📃 Tải cả danh sách phát",
+    playlistTitle: (title, n) => `📃 Danh sách phát${title ? ` "${title}"` : ""}: ${n} video`,
+    playlistHint: "Mình sẽ tải lần lượt từng video. Bạn có thể đóng cửa sổ này.",
+    playlist720: "Danh sách phát 720p",
+    playlistBest: "Danh sách phát chất lượng cao nhất",
+    playlistAudio: "Danh sách phát — chỉ âm thanh (mp3)",
+    playlistProgress: (i, n) => `Video ${i} / ${n}`,
+    playlistStats: (done, failed) => `Đã tải: ${done}${failed ? ` · lỗi: ${failed}` : ""}`,
+    playlistStop: "⏹ Dừng",
+    playlistDone: (done, n) => `Đã tải danh sách phát: ${done} / ${n}.`,
+    playlistStopped: (done, n) => `Đã dừng. Đã tải: ${done} / ${n}.`,
+    playlistLoading: "Đang lấy danh sách video…",
+    close: "Đóng",
+    updateAvailable: (v) => `Đã có phiên bản ${v}.`,
+    updateHow: "Cách cập nhật",
+    langAuto: "Tự động",
+    langLabel: "Ngôn ngữ",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -1581,12 +1667,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский и персидский пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -1693,11 +1779,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому и персидскому — латинские GB/MB, как и цифры (ar-u-nu-latn, fa-IR-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому и вьетнамскому — латинские GB/MB, как и цифры (ar-u-nu-latn, fa-IR-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

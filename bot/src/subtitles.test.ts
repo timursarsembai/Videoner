@@ -5,8 +5,8 @@ import { orderTracks, SUBTITLE_BUTTONS } from "./subtitles.js";
 const track = (lang: string, auto = false) => ({ lang, name: lang, auto });
 
 test("русский, английский и казахский — первыми, остальные в порядке площадки", () => {
-  const ordered = orderTracks([track("nl"), track("en"), track("ko-KR"), track("kk"), track("ru")]);
-  assert.deepEqual(ordered.map((t) => t.lang), ["ru", "en", "kk", "nl", "ko-KR"]);
+  const ordered = orderTracks([track("nl"), track("en"), track("sv-SE"), track("kk"), track("ru")]);
+  assert.deepEqual(ordered.map((t) => t.lang), ["ru", "en", "kk", "nl", "sv-SE"]);
 });
 
 test("распознанная речь ранжируется по своему языку", () => {

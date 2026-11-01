@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ko')) {
+      return (
+        '안녕하세요! 이 봇을 시작하셨지만 아직 아무것도 다운로드하지 않으셨어요. ' +
+        '어디서부터 시작해야 할지 몰랐을 수도 있어요.\n\n' +
+        '한 단계면 충분해요. 여기에 동영상 링크를 보내 주세요. ' +
+        '예: https://youtube.com/watch?v=jNQXAC9IVRw — 약 30초 안에 ' +
+        '파일을 보내 드릴게요.\n\n' +
+        'YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest, Threads를 지원해요. 완전히 무료이고 어떤 ' +
+        '화질이든 — 4K까지, HD도 추가 요금이 없어요.\n\n' +
+        '문제가 있으면 여기에 답장만 해 주세요. 이번이 ' +
+        '유일한 안내이며, 다시 연락드리지 않을게요.'
+      );
+    }
+
     if (code.startsWith('ja')) {
       return (
         'こんにちは！このボットを起動されましたが、まだ何もダウンロードされていません。' +

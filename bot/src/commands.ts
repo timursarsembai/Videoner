@@ -181,6 +181,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "ダウンロードとキューを停止" },
     { command: "language", description: "ボットの言語" },
   ],
+  ko: [
+    { command: "start", description: "봇 사용 방법" },
+    { command: "extension", description: "브라우저 확장 프로그램" },
+    { command: "accounts", description: "스토리와 비공개 게시물용 내 계정" },
+    { command: "connect", description: "확장 프로그램의 코드로 계정 연결" },
+    { command: "stop", description: "다운로드와 대기열 중지" },
+    { command: "language", description: "봇 언어" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -339,6 +347,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "コードでこのグループにアカウントを接続" },
     { command: "language", description: "このグループでのボットの言語（管理者用）" },
     { command: "start", description: "グループでのボットの使い方" },
+  ],
+  ko: [
+    { command: "settings", description: "이 그룹의 봇 설정 (관리자용)" },
+    { command: "accounts", description: "이 그룹에 연결된 계정" },
+    { command: "connect", description: "코드로 이 그룹에 계정 연결" },
+    { command: "language", description: "이 그룹의 봇 언어 (관리자용)" },
+    { command: "start", description: "그룹에서 봇이 작동하는 방식" },
   ],
 };
 

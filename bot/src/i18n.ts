@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -14,9 +14,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es", "uz", "tr", "fa", "vi", "bn", "ur", "pl", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -4660,6 +4660,226 @@ const ja: Messages = {
   settingsBack: "⬅️ 設定に戻る",
 };
 
+const ko: Messages = {
+  start: "안녕하세요! YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, Threads의 동영상 링크를 보내 주세요. 다운로드를 도와드릴게요.\n\n✨ 화질 제한이 없어요. 플랫폼이 제공하는 화질 그대로 최대 4K까지 받을 수 있어요. 단, 파일이 Telegram 봇 전송 한도인 2 GB 이내여야 해요. 유료 기능은 전혀 없어요.\n\n완전히 무료예요. 구독도, 광고도, 인앱 결제도 없어요.\n\n🧩 컴퓨터에서 다운로드하시나요? 브라우저 확장 프로그램을 설치하면 동영상 페이지에 바로 다운로드 버튼이 나타나요: videoner.download/ko/extension\n\n👥 저를 그룹에 추가하면 그곳에서 공유된 링크의 동영상을 올려 드려요.\n\n⚡ 화질 선택을 건너뛸 수 있어요. 링크 뒤에 -audio를 붙이면 소리만(mp3), -hd를 붙이면 최고 화질로 받아요.\n\n📣 프로젝트 소식: @videonerdownload\n\n🌐 봇 언어: /language",
+  notLink: "링크가 아닌 것 같아요. 동영상 링크를 보내 주세요.",
+  inviteGreeting: "안녕하세요! 저는 Videoner예요. YouTube, TikTok, Instagram 등 여러 플랫폼의 동영상을 무료로 다운로드해 드려요. 공유받은 동영상을 준비하고 있어요 👇",
+  inviteNotFound: "이 초대 링크에 해당하는 동영상을 찾지 못했어요. 동영상 링크를 보내 주시면 다운로드해 드릴게요.",
+  inviteUnavailable: "이 링크의 동영상을 열지 못했어요. 지금 서비스가 응답하지 않아요. 1분 뒤에 같은 링크를 다시 열어 주세요.",
+  fetchingInfo: "🔍 동영상 정보를 가져오는 중이에요...",
+  audioOnlyButton: "🎵 오디오만 (mp3)",
+  photoButton: "📷 사진 다운로드",
+  slideshowButton: "🎞 슬라이드쇼 (동영상)",
+  galleryButton: "📷+🎞 사진과 슬라이드쇼",
+  chooseQuality: (title, duration) => `"${title}"${duration ? `\n⏱ ${duration}` : ""}\n\n화질을 선택해 주세요:`,
+  sessionExpired: "세션이 만료되었어요. 링크를 다시 보내 주세요",
+  downloading: "⏬ 다운로드 중이에요. 몇 분 정도 걸릴 수 있어요...",
+  downloadFailed: "다운로드에 실패했어요",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ 다운로드 중: ${percent}%${eta ? ` · ${eta} 남음` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ 거의 다 됐어요. 파일을 합치는 중이에요...",
+  converting: (percent) => `⚙️ 변환 중: ${percent}%`,
+  etaUnderMinute: "1분 미만",
+  etaMinutes: (minutes) => `약 ${minutes}분`,
+  etaHours: (hours, minutes) => `약 ${hours}시간${minutes ? ` ${minutes}분` : ""}`,
+  downloadTimeout: "다운로드가 너무 오래 걸려요. 동영상 용량이 매우 큰 것 같아요. 더 낮은 화질로 시도해 보세요.",
+  downloadInterrupted: "⚠️ 업데이트를 위해 봇을 다시 시작하고 있어서 다운로드가 중단되었어요. 1분 뒤에 링크를 다시 보내 주세요.",
+  fileTooBig: (mb, url) =>
+    `파일이 너무 커요 (${mb} MB). Telegram에서 봇이 보낼 수 없는 크기예요.\n여기에서 다운로드하세요: ${url}`,
+  sendingFile: "📤 파일을 보내는 중이에요...",
+  sendingAlbum: (count) => `📤 이 게시물에는 파일이 여러 개(${count}개) 있어요. 앨범으로 보내는 중이에요...`,
+  failedPrefix: "❌ 실패: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `출처: ${sourceUrl}\n` +
+        "동영상의 모든 권리는 원작자에게 있어요.\n" +
+        "@VideonerBot으로 무료 다운로드",
+      `📣 프로젝트 소식: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 공유: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `다운로드하려면 채널 ${channel}을(를) 구독해 주세요. 조건은 이것뿐이고, 서비스는 계속 무료예요.\n\n` +
+    "구독한 뒤 «구독했어요»를 눌러 주세요.",
+  openChannelButton: "📣 채널 열기",
+  checkSubscriptionButton: "구독했어요",
+  subscribeThanks: "감사합니다! 이제 동영상 링크를 보내 주세요.",
+  subscribeThanksResuming: "감사합니다! 보내 주신 링크를 바로 처리할게요.",
+  subscribeStillMissing: "아직 구독이 확인되지 않아요. 구독한 뒤 다시 눌러 주세요.",
+  channelNotice: (channel) => `\n\n이 게시물의 링크는 ${channel}에 이름 없이 익명으로 올라가요.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "이 동영상과 다른 동영상도 무료로 다운로드하세요: @VideonerBot",
+  errorStoryNeedsId:
+    "특정 스토리의 링크를 보내 주세요. Instagram 앱에서 스토리를 열고 공유 → 링크 복사를 눌러 주세요.",
+  errorInstagramStory:
+    "Instagram 스토리는 로그인한 사용자에게만 보여요.",
+  errorLoginRequired:
+    "이 게시물은 로그인하지 않으면 볼 수 없어요. 플랫폼이 로그인한 사용자에게만 " +
+    "보여 주기 때문이에요. 비공개 게시물, 연령 제한 콘텐츠, " +
+    "일부 사람에게만 공유된 게시물이 이런 경우예요.\n\n" +
+    "공개 게시물은 문제없이 다운로드돼요. 다른 링크로 시도해 보세요.",
+  errorUnsupportedPlatform:
+    "이 링크를 인식하지 못했어요. YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, Threads의 동영상으로 바로 연결되는 링크인지 확인해 주세요.",
+  errorFileTooLarge: "파일이 2 GB보다 커요. Telegram에서는 봇이 이보다 큰 파일을 보낼 수 없어요. 웹사이트나 브라우저 확장 프로그램으로 다운로드하세요(아래 버튼). 또는 링크를 다시 보내고 더 낮은 화질을 선택해 주세요.",
+  siteButton: "🌐 웹사이트에서 다운로드",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ${limit}보다 큰 화질은 숨겼어요. Telegram에서는 봇이 이보다 큰 파일을 보낼 수 없기 때문이에요. 웹사이트나 브라우저 확장 프로그램으로 다운로드할 수 있어요(아래 버튼).`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ 이 동영상은 가장 낮은 화질(약 ${smallest})로도 Telegram에 보내기에는 너무 커요. Telegram에서는 봇이 2 GB가 넘는 파일을 보낼 수 없어요. 여기에서는 오디오만 받을 수 있고, 동영상은 웹사이트나 브라우저 확장 프로그램으로 받으세요(아래 버튼).`,
+  errorFormatUnavailable: "이 동영상에서는 해당 화질을 사용할 수 없어요. 링크를 다시 보내 주시면 최신 목록을 보여 드릴게요.",
+  errorNoVideoContent: "이 링크에는 다운로드할 동영상이 없어요. 사진만 있는 게시물인 것 같아요.",
+  errorRegionBlocked:
+    "이 동영상은 작성자의 국가 밖에서 차단되어 있어서 플랫폼이 " +
+    "저희 서버에 제공하지 않아요. 제한이 플랫폼 쪽에 있어서 우회할 방법이 없어요." +
+    "\n\n다른 링크는 평소처럼 다운로드돼요.",
+  errorRateLimited: "연속으로 보낸 링크가 너무 많아요. 잠시 기다린 뒤 다시 보내 주세요.",
+  errorYoutubeDailyLimit: (gb) => `최근 24시간 동안 YouTube에서 ${gb} GB 넘게 다운로드했어요. 이것이 봇의 1인당 하루 한도예요. 최근 24시간 기준으로 계산하니 조금 뒤에 새 YouTube 동영상을 다시 다운로드할 수 있어요. 다른 플랫폼은 평소처럼 이용할 수 있어요.`,
+  playlistStoppedByLimit: (dropped) => `⏹ 재생목록을 중지했어요. YouTube 하루 한도에 도달했어요. 다운로드하지 못한 동영상: ${dropped}개. 나중에 재생목록 링크를 다시 보내 주세요.`,
+  errorPlatformRefused:
+    "플랫폼이 이 동영상을 저희 서버에 제공하지 않았어요. 비공개 게시물이나 " +
+    "연령 제한 게시물에서 이런 일이 생기고, 가끔은 플랫폼이 잠시 접근을 " +
+    "제한하기도 해요. 몇 분 뒤에 다시 시도해 보세요.",
+  errorThreadsNoMedia:
+    "이 Threads 게시물에는 동영상이나 사진이 보이지 않아요. 텍스트만 있는 게시물이거나, " +
+    "Threads가 로그인한 사용자에게만 미디어를 보여 주는 게시물이에요. 이런 게시물은 로그인하지 않으면 다운로드할 수 없어요.",
+  extensionHint:
+    "\n\n💻 컴퓨터에서 Videoner 브라우저 확장 프로그램으로 다운로드할 수 있어요. " +
+    "플랫폼에 로그인된 내 계정으로 다운로드하며, 비밀번호나 쿠키는 브라우저 밖으로 나가지 않아요.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 이런 게시물을 다운로드하려면 ${platform} 계정을 봇에 한 번만 연결해 주세요. 그러면 내가 볼 수 있는 비공개 게시물, 릴스, 스토리를 휴대폰에서도 봇이 다운로드해 드려요. 방법은 아래 버튼에서 확인하세요.${withExtension ? "\n\n💻 또는 컴퓨터에서 Videoner 브라우저 확장 프로그램으로 다운로드하세요." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ 연결된 ${platform} 계정으로 이 게시물을 열지 못했어요. 로그인이 만료되었을 수 있으니 계정을 다시 연결해 주세요. 또는 이 계정에 게시물을 볼 권한이 없는 경우예요.${withExtension ? "\n\n💻 컴퓨터에서 Videoner 브라우저 확장 프로그램으로 다운로드할 수도 있어요." : ""}`,
+  connectAccountButton: "🔑 계정 연결",
+  reconnectAccountButton: "🔑 다시 연결",
+  extensionButton: "🧩 확장 프로그램으로 다운로드",
+  extensionCommand:
+    "🧩 브라우저용 Videoner: 동영상 페이지에 바로 다운로드 버튼이 생겨요. YouTube, Instagram, TikTok, VK, 내 계정의 비공개 동영상, GetCourse 강의를 지원해요.\n\n컴퓨터의 Chrome, Edge, Opera, Yandex Browser, Firefox에서 사용할 수 있어요.",
+  extensionPageButton: "🧩 확장 프로그램 설치",
+  addToGroupButton: "👥 그룹에 추가",
+  newsButton: "📣 프로젝트 소식",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 프로젝트 소식: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ 이 그룹의 봇 설정\n\n" +
+    `🗑 링크 메시지 삭제: ${s.deleteLinks ? "예" : "아니요"}\n` +
+    "동영상을 보낸 뒤 링크만 있던 메시지를 삭제해요. 채팅에는 공유한 사람의 이름이 붙은 동영상만 남아요.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ 지금은 메시지를 삭제할 수 없어요. \"메시지 삭제\" 권한이 있는 관리자로 지정해 주세요.\n"
+      : "") +
+    `\n✍️ 동영상 캡션: ${{ full: "전체", short: "제목과 출처", none: "캡션 없음" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 화질: ${s.quality === "max" ? "Telegram이 허용하는 최고 화질" : "표준 (720p)"}\n` +
+    `\n⏱ 긴 동영상: ${s.longVideos ? "길이 제한 없음" : "15분 이하만"}\n` +
+    `\n🔑 계정을 연결할 수 있는 사람 (스토리와 비공개 게시물용): ${s.cookiesBy === "all" ? "모든 멤버" : "관리자만"}\n` +
+    `\n🌐 답장 언어: ${s.language ? langName(s.language) : "멤버별 언어"}\n` +
+    "\n설정은 그룹 관리자만 변경할 수 있어요.",
+  settingsDeleteButton: (on) => `🗑 링크 삭제: ${on ? "예" : "아니요"}`,
+  settingsCaptionButton: (style) => `✍️ 캡션: ${{ full: "전체", short: "짧게", none: "없음" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 화질: ${mode === "max" ? "최고" : "720p"}`,
+  settingsLongButton: (on) => `⏱ 긴 동영상: ${on ? "예" : "15분 이하"}`,
+  settingsDoneButton: "✅ 완료",
+  settingsAdminsOnly: "설정은 그룹 관리자만 변경할 수 있어요.",
+  settingsGroupsOnly: "설정은 그룹용이에요. 저를 그룹에 추가하고 그곳에서 /settings를 보내 주세요.",
+  settingsFailed: "설정을 저장하지 못했어요. 다시 시도해 주세요.",
+  settingsCookiesButton: (by) => `🔑 계정 연결: ${by === "all" ? "모두" : "관리자"}`,
+  accountsIntro:
+    "🔑 연결된 계정\n\n봇은 로그인한 사람만 볼 수 있는 콘텐츠(Instagram 스토리, 비공개 게시물)를 내 계정으로 다운로드할 수 있어요. 로그인은 연결한 곳에서 작동해요. 개인 채팅에서 연결한 계정은 내 다운로드에 쓰이고, 자체 계정이 없는 그룹에서 내가 보낸 링크에도 쓰여요. 그룹에 연결한 계정은 그 그룹의 모든 멤버에게 쓰여요.",
+  accountsHowTo:
+    "연결 방법:\n1. 가장 쉬운 방법은 컴퓨터의 Videoner 확장 프로그램이에요. 플랫폼 사이트에 로그인하고 Videoner 팝업을 열어 «🔑 내 … 계정을 봇에 연결»을 누른 뒤 코드를 저에게 보내 주세요. 그룹이라면 해당 그룹에서 /connect 코드 를 보내 주세요.\n2. 또는 cookies.txt 파일(브라우저에서 내보낸 쿠키)을 보내거나, 그 내용을 메시지로 붙여 넣어 주세요.\n3. Android 휴대폰에서는 Firefox와 Cookie-Editor 부가 기능으로 할 수 있어요: https://videoner.download/ko/blog/android-firefox",
+  accountsWarning:
+    "⚠️ 플랫폼은 자동 다운로드를 싫어해서 계정을 제한하거나 정지할 수 있어요. 주 계정 말고 보조 계정을 연결하는 것이 좋아요. 쿠키는 암호화되어 저장되고, 다운로드에만 쓰이며, 아래 버튼으로 삭제할 수 있어요.",
+  accountsNone: "아직 연결된 계정이 없어요.",
+  accountsGroupTitle: "🔑 이 그룹에 연결된 계정",
+  accountsGroupHowTo:
+    "그룹 전체용으로 연결하려면 Videoner 확장 프로그램의 «🔑 내 … 계정을 봇에 연결» 버튼으로 코드를 받아 여기에서 /connect 코드 를 보내 주세요. 개인 채팅에서만 계정을 연결했다면, 봇은 여기서도 내가 보낸 링크에 그 계정을 사용해요. 내 연결 관리: @VideonerBot과의 개인 채팅에서 /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ 로그인 작동 안 함)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ 로그인 작동 안 함)"}`,
+  accountsWhereHere: "개인 채팅",
+  accountsWhereGroup: (title) => `"${title}" 그룹`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 내 연결 모두 삭제",
+  accountsDeleted: "삭제했어요.",
+  accountsDeletedAll: (n) => `삭제한 연결: ${n}개.`,
+  accountsNotAllowed: "연결한 본인이나 그룹 관리자만 삭제할 수 있어요.",
+  connectUsage:
+    "/connect 코드 를 보내 주세요. 코드는 컴퓨터의 Videoner 확장 프로그램에서 «🔑 내 … 계정을 봇에 연결» 버튼을 누르면 받을 수 있어요. 내 연결 관리: /accounts.",
+  connectOnlyAdmins: "이 그룹에는 관리자만 계정을 연결할 수 있어요 (/settings 참고).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} 계정을 ${where} 연결했어요. 이제 봇이 로그인한 사람만 볼 수 있는 콘텐츠도 다운로드해요. 확인 및 삭제: /accounts.\n\n⚠️ 자동 다운로드 때문에 플랫폼이 계정을 제한할 수 있어요. 보조 계정을 사용하는 것이 좋아요.`,
+  connectWhereGroup: "이 그룹에",
+  connectWhereHere: "개인 채팅과 인라인 모드의 다운로드용으로",
+  connectCodeNotFound: "코드를 찾을 수 없거나 만료되었어요 (코드는 10분 동안 유효해요). Videoner 확장 프로그램에서 새 코드를 받아 주세요.",
+  connectRejectedNoSession: "이 쿠키에는 로그인 정보가 없어요. 플랫폼 사이트에 로그인한 뒤 쿠키를 다시 내보내 주세요.",
+  connectRejectedUnknown: "지원하는 플랫폼의 쿠키를 찾지 못했어요: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "계정 연결은 아직 사용할 수 없어요.",
+  connectFailed: "연결하지 못했어요. 다시 시도해 주세요.",
+  connectFileTooBig: "파일이 너무 커요. 필요한 사이트의 쿠키만 내보내 주세요.",
+  connectNotAnonymous: "그룹 이름으로 익명으로 말고, 본인 계정으로 연결해 주세요. 그렇지 않으면 관리자들의 연결이 섞여요. 코드는 폐기했으니 새 코드를 받아 주세요.",
+  connectCodeInGroup:
+    "그룹 채팅에 올린 연결 코드는 다른 사람도 볼 수 있어요. 코드를 폐기하고 메시지를 삭제했어요. 새 코드를 받아 /connect 코드 로 보내 주세요. 그 명령 메시지는 바로 삭제해 드려요.",
+  groupWelcome:
+    "👋 안녕하세요! 이 채팅에 TikTok, Instagram, YouTube, VK 등 여러 플랫폼의 동영상 링크를 올려 주세요. 동영상으로 바로 답장해 드릴게요.\n\n" +
+    "15분 이하의 영상은 명령 없이 알아서 다운로드하고, 그 외에는 조용히 있을게요.\n\n⚙️ 그룹 관리자는 /settings로 저를 설정할 수 있어요: 링크 메시지 삭제, 캡션 형식, 화질, 긴 동영상, 언어.\n\n⚡ 링크 뒤에 -audio를 붙이면 소리만, -hd를 붙이면 최고 화질로 받아요.\n\n📣 프로젝트 소식: @videonerdownload",
+  errorTooLong: "동영상이 너무 길어요. 이렇게 긴 동영상은 아직 다운로드할 수 없어요.",
+  errorUnknown: "이 동영상을 다운로드하지 못했어요. 잠시 뒤에 다시 시도하거나 다른 링크를 보내 주세요.",
+  inlineHintButton: "봇에 링크 보내기",
+  inlineResultTitle: "⬇️ 동영상 다운로드",
+  inlineResultDescription: "동영상이 이 채팅에 바로 올라가요",
+  inlinePlaceholder: "⏬ 다운로드 중이에요. 몇 분 정도 걸릴 수 있어요...",
+  inlineOpenBot: "봇 열기",
+  inlineOnlySingleVideo:
+    "이 모드에서는 동영상 하나만 보낼 수 있어요. 파일이 여러 개인 게시물이나 사진은 개인 채팅에서 봇에 링크를 보내 주세요.",
+  inlineSubscribeRequired: (channel: string) =>
+    `다운로드하려면 ${channel}을(를) 구독한 뒤 다시 시도해 주세요.`,
+  inlineRateLimited: "연속 요청이 너무 많아요. 1분 정도 기다린 뒤 다시 시도해 주세요.",
+  queueRest: (count) => `\n\n📋 대기열에 남은 링크: ${count}개. 이 링크 다음에 하나씩 보여 드릴게요.`,
+  queuedOne: (position) =>
+    `📋 링크를 대기열에 추가했어요 (${position}번째). 지금 처리 중인 링크를 먼저 끝낸 뒤 이 링크의 화질 선택을 보여 드릴게요.`,
+  queuedMany: (added, waiting) =>
+    `📋 대기열에 추가한 링크: ${added}개. 전체 대기: ${waiting}개. 지금 링크가 끝나면 하나씩 보여 드릴게요.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "이 링크는 이미 대기열에 있어요. 중복으로 추가하지 않을게요."
+      : `이미 대기열에 있는 링크는 중복으로 추가하지 않아요 (중복: ${count}개).`,
+  queueFull: (limit, rejected) =>
+    `대기열에는 링크를 최대 ${limit}개까지 넣을 수 있어요. 초과한 링크는 추가되지 않았어요 (${rejected}개). 대기열이 줄어든 뒤 보내 주세요.`,
+  skipButton: "✖️ 다운로드 안 함",
+  skipped: "⏭ 이 링크를 건너뛰었어요.",
+  chooseTimedOut: "⌛ 30분 동안 화질을 선택하지 않아서 이 링크를 건너뛸게요.",
+  queueLostOnRestart: (count) =>
+    `⚠️ 업데이트를 위해 봇을 다시 시작하고 있어서 대기열이 초기화되었어요 (링크: ${count}개). 1분 뒤에 다시 보내 주세요.`,
+  subtitlesButton: "📝 자막",
+  subtitlesBack: "⬅️ 화질 선택으로 돌아가기",
+  subtitlesAuto: "자동",
+  subtitlesChoose: "자막 언어를 선택해 주세요",
+  subtitlesPreparing: "📝 자막을 준비하는 중이에요...",
+  subtitlesFailed: "이 언어의 자막을 다운로드하지 못했어요. 다른 언어를 선택해 보세요.",
+  subtitlesBusy: "지금 YouTube가 자막을 제공하지 않아요. 몇 분 뒤에 다시 시도해 주세요.",
+  playlistFound: (title, count) =>
+    `📃 재생목록${title ? ` "${title.slice(0, 150)}"` : ""}: 동영상 ${count}개.\n하나씩 다운로드할게요. 어떤 형식으로 받을까요?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 최고 화질",
+  playlistAudioButton: "🎵 오디오만 (mp3)",
+  playlistNoButton: "✖️ 괜찮아요",
+  playlistQueued: (count) =>
+    `📃 재생목록의 동영상을 대기열에 추가했어요: ${count}개. 하나씩 보내 드릴게요. 멈추려면 아래 버튼이나 /stop을 사용하세요.`,
+  playlistFailed: "재생목록을 열지 못했어요. 비공개일 수 있어요. 동영상 하나의 링크를 보내 주세요.",
+  stopButton: "⏹ 중지",
+  stopped: (dropped) => `⏹ 중지했어요.${dropped ? ` 대기열에서 삭제한 링크: ${dropped}개.` : ""}`,
+  nothingToStop: "지금 다운로드 중인 것이 없어요.",
+  languageChoose: "🌐 봇 언어를 선택해 주세요. \"자동\"은 Telegram 언어를 따라요.",
+  languageChooseGroup: "🌐 이 그룹에서 봇이 답장하는 언어예요. \"자동\"은 멤버마다 각자의 Telegram 언어를 따라요.",
+  languageAuto: "자동 — Telegram과 같게",
+  languageAutoGroup: "자동 — 멤버별 언어",
+  languageSaved: (name) => `✅ 봇 언어: ${name}. /language로 변경할 수 있어요.`,
+  languageSavedAuto: "✅ 봇이 Telegram 언어를 따라요. /language로 변경할 수 있어요.",
+  settingsLanguageButton: (name) => `🌐 언어: ${name ?? "자동"}`,
+  settingsBack: "⬅️ 설정으로 돌아가기",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -5107,4 +5327,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko };

@@ -1183,4 +1183,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "ホームへ",
   },
+  ko: {
+    metaTitle: "Videoner 브라우저 확장 프로그램",
+    title: "브라우저에서 쓰는 Videoner",
+    summary:
+      "확장 프로그램을 설치하면 동영상 페이지에 '다운로드' 버튼이 생기고 브라우저에서 바로 다운로드할 수 있어요. Instagram, Facebook, TikTok, Threads는 회원님의 로그인 상태로 다운로드하기 때문에, 내 계정에서 볼 수 있는 비공개 게시물은 물론 플랫폼이 저희 서버에 제공하지 않은 동영상도 받을 수 있어요.",
+    failedVideo: "사이트나 봇에서 다운로드하지 못한 동영상:",
+    failedVideoHint:
+      "확장 프로그램을 설치하고 같은 브라우저에서 해당 플랫폼에 로그인한 다음, 동영상을 열고 오른쪽 아래의 '다운로드'를 클릭하세요.",
+    openVideo: "동영상 열기",
+    version: "버전",
+    browsersTitle: "지원 환경",
+    browsers:
+      "컴퓨터의 Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi 및 기타 Chromium 기반 브라우저에서 작동해요.",
+    mobile: "휴대폰과 태블릿에서는 확장 프로그램을 지원하지 않아요. 모바일에서는 웹사이트나 Telegram 봇을 이용하세요.",
+    getcourseTitle: "GetCourse 강의",
+    getcourse:
+      "GetCourse 스쿨에 로그인한 상태로 강의를 열면 플레이어 오른쪽 위에 '다운로드' 버튼이 나타나고, Videoner 아이콘에서 강의의 모든 동영상을 볼 수 있어요. 브라우저가 직접 강의를 다운로드해 mp4로 합치기 때문에 파일이 저희 서버를 거치지 않아요. 브라우저에서 실패하면 저희 서버가 같은 화질로 강의를 대신 다운로드하며, 이때 플레이어의 동영상 링크가 서버로 전달돼요.",
+    privacyTitle: "로그인 정보는 회원님에게만 있어요",
+    privacy:
+      "확장 프로그램은 비밀번호를 묻지 않아요. 플랫폼에 보내는 요청은 회원님의 브라우저가 직접 처리하고, 저희 서버에는 통계용 간단한 보고(링크, 파일 크기, 제목)만 전송돼요. 쿠키는 회원님이 직접 '봇에 계정 연결'을 누를 때만 서버로 전송되며, 해당 플랫폼의 쿠키만 암호화된 상태로 전달돼요.",
+    stepsTitle: "Chrome, Yandex Browser, Edge, Opera에 설치하는 방법",
+    steps: [
+      "아카이브를 다운로드해 압축을 푸세요. 이름에 버전 번호가 들어간 videoner-extension 폴더가 생겨요.",
+      "확장 프로그램 페이지를 여세요. 주소창에 chrome://extensions를 입력하세요 (Edge에서는 edge://extensions, Opera에서는 opera://extensions).",
+      "페이지 상단의 스위치로 '개발자 모드'를 켜세요.",
+      "'압축해제된 확장 프로그램을 로드합니다'를 클릭하고 그 폴더, 즉 manifest.json 파일이 들어 있는 폴더를 선택하세요.",
+      "완료! 동영상 페이지에 '다운로드' 버튼이 생기고 브라우저 툴바에 Videoner 아이콘이 표시돼요.",
+    ],
+    browsersFirefox: "컴퓨터의 Mozilla Firefox 128 이상에서도 작동해요.",
+    firefoxSoon:
+      "Firefox 버전은 곧 출시될 예정이에요. 지금은 Chrome, Yandex Browser, Edge, Opera 및 기타 Chromium 기반 브라우저에서 작동해요.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: ".zip 아카이브 — 몇 분이면 설치 완료",
+    firefoxTitle: "Firefox",
+    firefoxHint: "클릭 한 번으로 설치",
+    yourBrowser: "사용 중인 브라우저",
+    soon: "출시 예정",
+    firefoxStepsTitle: "Firefox에 설치하는 방법",
+    firefoxSteps: [
+      "이 페이지 상단의 Firefox 버튼을 클릭하세요.",
+      "videoner.download의 부가 기능 설치를 허용할지 Firefox가 물어보면 '설치 계속'을 클릭하세요.",
+      "'Videoner을(를) 추가하시겠습니까?' 창이 뜨면 '추가'를 클릭하세요.",
+      "완료! 동영상 페이지에 '다운로드' 버튼이 생기고 툴바에 Videoner 아이콘이 표시돼요. 업데이트는 Firefox가 자동으로 설치해요.",
+    ],
+    updateTitle: "Chrome, Yandex Browser, Edge, Opera에서 업데이트하는 방법",
+    updateSteps: [
+      "새 버전이 나오면 Videoner 아이콘에 NEW 배지가 표시되고 팝업에 이 페이지로 가는 링크가 나타나요.",
+      "이 페이지 상단의 Chrome 버튼으로 아카이브를 다운로드한 다음, 이전과 같은 폴더에 압축을 풀어 파일을 덮어쓰세요.",
+      "확장 프로그램 페이지(chrome://extensions, Yandex Browser에서는 browser://extensions, edge://extensions)를 열고 Videoner 카드의 원형 화살표 '새로고침'을 누르세요.",
+    ],
+    back: "홈으로",
+  },
 };

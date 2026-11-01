@@ -356,7 +356,7 @@ export class UserCookiesService {
     const code = (lang ?? '').toLowerCase();
     const base = code.split('-')[0];
     const norm = base === 'in' ? 'id' : base;
-    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' ? norm : 'en';
+    const l = norm === 'uk' || norm === 'ru' || norm === 'kk' || norm === 'ar' || norm === 'zh' || norm === 'hi' || norm === 'id' || norm === 'sw' || norm === 'de' || norm === 'fr' || norm === 'it' || norm === 'pt' || norm === 'es' || norm === 'uz' || norm === 'tr' || norm === 'fa' || norm === 'vi' || norm === 'bn' || norm === 'ur' || norm === 'pl' || norm === 'ja' || norm === 'ko' ? norm : 'en';
     const name = { instagram: 'Instagram', facebook: 'Facebook', youtube: 'YouTube', twitter: 'X', vk: 'VK', tiktok: 'TikTok' }[platform] ?? platform;
     const forGroup = scope.startsWith('chat:');
     const where = {
@@ -382,6 +382,7 @@ export class UserCookiesService {
       ur: forGroup ? 'ایک گروپ کے لیے' : 'آپ کے لیے',
       pl: forGroup ? 'dla grupy' : 'dla ciebie',
       ja: forGroup ? 'グループ用' : 'あなた用',
+      ko: forGroup ? '그룹용' : '내 계정',
     }[l];
     const text = {
       ru: `⚠️ Подключённый вход ${name} (${where}) перестал работать: площадка его больше не принимает. Возможно, вы вышли из аккаунта или его ограничили.\n\nЧтобы снова скачивать с ним, подключите аккаунт заново. Список подключений — /accounts.`,
@@ -406,6 +407,7 @@ export class UserCookiesService {
       ur: `⚠️ جوڑا گیا ${name} لاگ اِن (${where}) اب کام نہیں کر رہا: پلیٹ فارم اسے اب قبول نہیں کرتا۔ شاید آپ اکاؤنٹ سے لاگ آؤٹ ہو گئے ہیں یا اکاؤنٹ محدود کر دیا گیا ہے۔\n\nاس سے دوبارہ ڈاؤن لوڈ کرنے کے لیے اکاؤنٹ دوبارہ جوڑیں۔ کنکشنز کی فہرست: \u200e/accounts`,
       pl: `⚠️ Połączone logowanie ${name} (${where}) przestało działać: platforma już go nie akceptuje. Być może wylogowałeś się z konta albo konto zostało ograniczone.\n\nAby dalej z nim pobierać, połącz konto ponownie. Twoje połączenia: /accounts.`,
       ja: `⚠️ 接続済みの ${name} ログイン（${where}）が使えなくなりました。プラットフォームが受け付けなくなっています。アカウントからログアウトしたか、アカウントが制限された可能性があります。\n\n引き続きこのアカウントでダウンロードするには、もう一度接続してください。接続の一覧: /accounts`,
+      ko: `⚠️ 연결된 ${name} 로그인(${where})이 더 이상 작동하지 않아요. 플랫폼이 더는 받아들이지 않아요. 계정에서 로그아웃했거나 계정이 제한되었을 수 있어요.\n\n이 계정으로 계속 다운로드하려면 계정을 다시 연결해 주세요. 연결 목록: /accounts`,
     }[l];
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',

@@ -1063,6 +1063,91 @@ const TEXTS = {
     langAuto: "Auto",
     langLabel: "Lingua",
   },
+  pt: {
+    loading: "Buscando informações do vídeo…",
+    notVideoPage:
+      "Abra a página de um vídeo no YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ou Threads e clique no ícone de novo. Aula do GetCourse: se a página da aula estava aberta antes de instalar a extensão, recarregue-a.",
+    gcLesson: "Aula do GetCourse",
+    gcPick: "Esta aula tem vários vídeos — escolha um",
+    gcVideo: (n) => `Vídeo ${n}`,
+    gcNote: "Seu navegador baixa e junta o vídeo. Você pode fechar esta janela, mas não o navegador.",
+    gcNoStream: "Não foi possível obter o vídeo do player. Recarregue a aula e tente de novo.",
+    video: "Vídeo",
+    photo: "Fotos em tamanho original",
+    slideshow: "Slideshow (vídeo)",
+    gallery: "Fotos + slideshow",
+    audioOnly: "Só áudio (mp3)",
+    subtitles: "Legendas (.srt)",
+    subtitlesAuto: "automáticas",
+    back: "Voltar",
+    starting: "Iniciando o download…",
+    waiting: "Aguardando uma vaga no servidor…",
+    downloading: "Baixando",
+    converting: "Processando",
+    left: (eta) => `faltam ${eta}`,
+    saving: "Salvando em Downloads…",
+    done: "Pronto — o arquivo está em Downloads.",
+    news: "📣 Novidades do projeto: @videonerdownload",
+    again: "Baixar outro",
+    directDownload: "Baixar vídeo (mp4)",
+    directPhoto: "Baixar foto (jpg)",
+    directNote: "Direto do navegador — sem fila no servidor",
+    moreOptions: "Outras qualidades e áudio",
+    fallback: "O download pelo navegador falhou — baixando pelo servidor.",
+    openSite: "Abrir videoner.download",
+    retry: "Tentar de novo",
+    min: "min",
+    sec: "s",
+    errNetwork: "Não foi possível acessar o Videoner. Verifique sua conexão e tente de novo.",
+    errRateLimit: "Muitas solicitações seguidas. Espere um minuto e tente de novo.",
+    errUnsupported:
+      "Não há nesta página nenhum vídeo que o Videoner consiga baixar. Abra a página de um vídeo ou post específico.",
+    errYoutubeDaily: "O limite diário do YouTube para sua rede acabou. Tente de novo amanhã.",
+    errTooLarge: "O arquivo é grande demais nesta qualidade. Escolha uma menor.",
+    errLogin:
+      "Este post só está disponível para quem fez login. Posts públicos são baixados sem problema.",
+    errRegion: "O autor restringiu este post por país, então ele não pode ser baixado.",
+    errServerBlocked: "A plataforma está limitando nosso servidor temporariamente. Tente de novo mais tarde.",
+    errFailed: "O download falhou. Tente de novo ou escolha outra qualidade.",
+    errGeneric: "Algo deu errado. Tente de novo daqui a pouco.",
+    acctButton: (p) => `🔑 Conectar sua conta do ${p} ao bot`,
+    acctWarn: (p) =>
+      `O @VideonerBot poderá baixar com sua conta do ${p} o que só quem fez login vê: stories, posts privados. As plataformas não gostam de downloads automáticos e podem restringir a conta — melhor conectar uma secundária. O navegador vai pedir permissão para ler os cookies deste site; só os cookies do ${p} vão para o servidor, criptografados.`,
+    acctConfirm: "Conectar",
+    acctCancel: "Cancelar",
+    acctSending: "Conectando…",
+    acctDenied: "Não é possível conectar a conta sem a permissão de acesso aos cookies.",
+    acctNoLogin: (p) => `Você não está logado no ${p} neste navegador. Faça login no site e tente de novo.`,
+    acctFailed: "Não deu certo. Tente de novo daqui a pouco.",
+    acctCodeTitle: (p) => `Código para conectar o ${p}:`,
+    acctCodeHelp:
+      "Envie-o ao @VideonerBot no chat privado — para seus próprios downloads. Para um grupo, envie /connect CODE no grupo. O código vale por 10 minutos.",
+    acctCopy: "Copiar",
+    acctCopied: "Copiado",
+    acctOpenBot: "Abrir o bot",
+    acctNewCode: "Gerar um novo código",
+    acctList: "Minhas conexões no bot",
+    acctRevoke: "Revogar acesso aos cookies",
+    acctRevoked:
+      "Acesso aos cookies revogado — a extensão não os lê mais. As contas já conectadas continuam no bot: remova-as em “Minhas conexões no bot”.",
+    playlistOffer: "📃 Baixar a playlist inteira",
+    playlistTitle: (title, n) => `📃 Playlist${title ? ` “${title}”` : ""}: ${n} vídeos`,
+    playlistHint: "Vou baixar um por um. Você pode fechar esta janela.",
+    playlist720: "Playlist em 720p",
+    playlistBest: "Playlist na melhor qualidade",
+    playlistAudio: "Playlist — só áudio (mp3)",
+    playlistProgress: (i, n) => `Vídeo ${i} de ${n}`,
+    playlistStats: (done, failed) => `Baixados: ${done}${failed ? ` · com falha: ${failed}` : ""}`,
+    playlistStop: "⏹ Parar",
+    playlistDone: (done, n) => `Playlist baixada: ${done} de ${n}.`,
+    playlistStopped: (done, n) => `Parado. Baixados: ${done} de ${n}.`,
+    playlistLoading: "Obtendo a lista de vídeos…",
+    close: "Fechar",
+    updateAvailable: (v) => `A versão ${v} está disponível.`,
+    updateHow: "Como atualizar",
+    langAuto: "Auto",
+    langLabel: "Idioma",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -1153,12 +1238,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -1265,11 +1350,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому и итальянскому — латинские GB/MB, как и цифры (ar-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому и португальскому — латинские GB/MB, как и цифры (ar-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

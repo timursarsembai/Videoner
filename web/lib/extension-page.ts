@@ -715,4 +715,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Home",
   },
+  pt: {
+    metaTitle: "Extensão Videoner para navegador",
+    title: "Videoner para o seu navegador",
+    summary:
+      "A extensão adiciona um botão Baixar às páginas de vídeo e baixa direto no navegador. Instagram, Facebook, TikTok e Threads são baixados com o seu próprio login — assim funcionam também as publicações privadas que você vê na sua conta e os vídeos que a plataforma não liberou para o nosso servidor.",
+    failedVideo: "O vídeo que não foi possível baixar no site ou no bot:",
+    failedVideoHint:
+      "Instale a extensão, entre na plataforma neste navegador, abra o vídeo e clique em “Baixar” no canto inferior direito.",
+    openVideo: "Abrir o vídeo",
+    version: "Versão",
+    browsersTitle: "Onde funciona",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi e outros navegadores baseados em Chromium — no computador.",
+    mobile: "Celulares e tablets não suportam extensões — neles, use o site ou o bot do Telegram.",
+    getcourseTitle: "Aulas do GetCourse",
+    getcourse:
+      "Abra uma aula de uma escola no GetCourse com o seu login: o botão “Baixar” aparece no canto superior direito do player, e o ícone do Videoner lista todos os vídeos da aula. O próprio navegador baixa a aula e a junta em um mp4 — o arquivo não passa pelo nosso servidor. Se isso não der certo, o nosso servidor baixa a aula na mesma qualidade; nesse caso, ele recebe o link do vídeo a partir do player.",
+    privacyTitle: "Seu login fica com você",
+    privacy:
+      "A extensão nunca pede senha: é o seu próprio navegador que faz a requisição à plataforma, e o nosso servidor recebe só um breve relatório para estatísticas — o link, o tamanho do arquivo e o título. Os cookies só vão para o servidor se você mesmo clicar em “Conectar a conta ao bot” — e apenas os cookies daquela plataforma, criptografados.",
+    stepsTitle: "Como instalar no Chrome, Yandex Browser, Edge e Opera",
+    steps: [
+      "Baixe o arquivo e descompacte — vai aparecer uma pasta videoner-extension com o número da versão no nome.",
+      "Abra a página de extensões: digite chrome://extensions na barra de endereços (edge://extensions no Edge, opera://extensions no Opera).",
+      "Ative o “Modo do desenvolvedor” — o botão no topo da página.",
+      "Clique em “Carregar sem compactação” e escolha essa pasta — a que contém o manifest.json.",
+      "Pronto: as páginas de vídeo ganham um botão Baixar, e o ícone do Videoner aparece na barra de ferramentas do navegador.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 ou mais recente — também no computador.",
+    firefoxSoon:
+      "A versão para Firefox chega em breve. Por enquanto, a extensão funciona no Chrome, Yandex Browser, Edge, Opera e outros navegadores baseados em Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Arquivo .zip — instala em poucos minutos",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Instalação com um clique",
+    yourBrowser: "Seu navegador",
+    soon: "Em breve",
+    firefoxStepsTitle: "Como instalar no Firefox",
+    firefoxSteps: [
+      "Clique no botão Firefox no topo desta página.",
+      "O Firefox pergunta se deve permitir que videoner.download instale um complemento — clique em “Continuar a instalação”.",
+      "Na janela “Adicionar Videoner?”, clique em “Adicionar”.",
+      "Pronto: as páginas de vídeo ganham um botão Baixar, e o ícone do Videoner aparece na barra de ferramentas. O Firefox instala as atualizações sozinho.",
+    ],
+    updateTitle: "Como atualizar no Chrome, Yandex Browser, Edge e Opera",
+    updateSteps: [
+      "Quando sai uma versão nova, o ícone do Videoner mostra o selo NEW e a janela da extensão leva para esta página.",
+      "Baixe o arquivo com o botão Chrome no topo desta página e descompacte na mesma pasta de antes, substituindo os arquivos.",
+      "Abra a página de extensões (chrome://extensions, browser://extensions no Yandex Browser, edge://extensions) e clique em “Recarregar” — a seta circular no card do Videoner.",
+    ],
+    back: "Início",
+  },
 };

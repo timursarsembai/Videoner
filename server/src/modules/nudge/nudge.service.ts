@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('pl')) {
+      return (
+        'Cześć! Uruchomiłeś tego bota, ale jeszcze nic nie pobrałeś — ' +
+        'może nie było jasne, od czego zacząć.\n\n' +
+        'Wystarczy jeden krok: wyślij tu link do filmu, ' +
+        'na przykład https://youtube.com/watch?v=jNQXAC9IVRw — a ja odeślę ' +
+        'gotowy plik w mniej więcej pół minuty.\n\n' +
+        'Działa z YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest i Threads. Całkowicie za darmo i w dowolnej ' +
+        'jakości — do 4K, za HD nic nie dopłacasz.\n\n' +
+        'Jeśli coś nie działa, po prostu odpisz tutaj. To ' +
+        'jedyne przypomnienie, więcej nie będę przeszkadzać.'
+      );
+    }
+
     if (code.startsWith('ur')) {
       return (
         'السلام علیکم! آپ نے یہ بوٹ شروع کیا تھا، لیکن ابھی تک کچھ ڈاؤن لوڈ نہیں کیا — ' +

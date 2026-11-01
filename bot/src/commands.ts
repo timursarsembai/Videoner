@@ -165,6 +165,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "ڈاؤن لوڈ اور قطار روکیں" },
     { command: "language", description: "بوٹ کی زبان" },
   ],
+  pl: [
+    { command: "start", description: "Jak korzystać z bota" },
+    { command: "extension", description: "Rozszerzenie do przeglądarki" },
+    { command: "accounts", description: "Twoje konta do relacji i prywatnych postów" },
+    { command: "connect", description: "Połącz konto kodem z rozszerzenia" },
+    { command: "stop", description: "Zatrzymaj pobieranie i kolejkę" },
+    { command: "language", description: "Język bota" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -309,6 +317,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "کوڈ سے اس گروپ میں اکاؤنٹ جوڑیں" },
     { command: "language", description: "اس گروپ میں بوٹ کی زبان (ایڈمنز)" },
     { command: "start", description: "گروپ میں بوٹ کیسے کام کرتا ہے" },
+  ],
+  pl: [
+    { command: "settings", description: "Ustawienia bota w tej grupie (dla administratorów)" },
+    { command: "accounts", description: "Konta połączone z tą grupą" },
+    { command: "connect", description: "Połącz konto z tą grupą kodem" },
+    { command: "language", description: "Język bota w tej grupie (dla administratorów)" },
+    { command: "start", description: "Jak bot działa w grupie" },
   ],
 };
 

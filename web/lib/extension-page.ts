@@ -1079,4 +1079,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "ہوم پیج",
   },
+  pl: {
+    metaTitle: "Rozszerzenie Videoner do przeglądarki",
+    title: "Videoner w twojej przeglądarce",
+    summary:
+      "Rozszerzenie dodaje przycisk „Pobierz” na stronach z filmami i pobiera je bezpośrednio w przeglądarce. Z Instagrama, Facebooka, TikToka i Threads pobiera z użyciem twojego własnego logowania — działa więc też z prywatnymi postami, które widzisz na swoim koncie, i z filmami, których platforma nie udostępniła naszemu serwerowi.",
+    failedVideo: "Film, którego nie udało się pobrać na stronie ani w bocie:",
+    failedVideoHint:
+      "Zainstaluj rozszerzenie, zaloguj się na platformie w tej samej przeglądarce, otwórz film i kliknij „Pobierz” w prawym dolnym rogu.",
+    openVideo: "Otwórz film",
+    version: "Wersja",
+    browsersTitle: "Gdzie działa",
+    browsers:
+      "Google Chrome, Yandex Browser, Microsoft Edge, Opera, Brave, Vivaldi i inne przeglądarki oparte na Chromium — na komputerze.",
+    mobile: "Telefony i tablety nie obsługują rozszerzeń — tam korzystaj ze strony albo z bota w Telegramie.",
+    getcourseTitle: "Lekcje GetCourse",
+    getcourse:
+      "Otwórz lekcję w szkole na GetCourse, będąc zalogowanym: w prawym górnym rogu odtwarzacza pojawi się przycisk „Pobierz”, a ikona Videoner pokaże wszystkie filmy z lekcji. Przeglądarka sama pobiera lekcję i składa ją w plik mp4 — plik nie przechodzi przez nasz serwer. Jeśli to się nie uda, lekcję w tej samej jakości pobierze nasz serwer; wtedy otrzymuje on link do filmu z odtwarzacza.",
+    privacyTitle: "Twoje logowanie zostaje u ciebie",
+    privacy:
+      "Rozszerzenie nigdy nie pyta o hasło: zapytanie do platformy wysyła twoja własna przeglądarka, a nasz serwer dostaje tylko krótki raport do statystyk — link, rozmiar pliku i tytuł. Pliki cookie trafiają na serwer tylko wtedy, gdy sam klikniesz „Połącz konto z botem” — i tylko cookie tej platformy, zaszyfrowane.",
+    stepsTitle: "Jak zainstalować w Chrome, Yandex Browser, Edge i Operze",
+    steps: [
+      "Pobierz archiwum i rozpakuj je — pojawi się folder videoner-extension z numerem wersji w nazwie.",
+      "Otwórz stronę rozszerzeń: wpisz chrome://extensions w pasku adresu (w Edge — edge://extensions, w Operze — opera://extensions).",
+      "Włącz „Tryb dewelopera” — przełącznik u góry strony.",
+      "Kliknij „Załaduj rozpakowane” i wybierz ten folder — ten, w którym jest plik manifest.json.",
+      "Gotowe: na stronach z filmami pojawi się przycisk „Pobierz”, a ikona Videoner — na pasku narzędzi przeglądarki.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 lub nowszy — również na komputerze.",
+    firefoxSoon:
+      "Wersja dla Firefoksa pojawi się wkrótce. Na razie rozszerzenie działa w Chrome, Yandex Browser, Edge, Operze i innych przeglądarkach opartych na Chromium.",
+    chromeTitle: "Chrome, Yandex Browser, Edge, Opera",
+    chromeHint: "Archiwum .zip — instalacja w kilka minut",
+    firefoxTitle: "Firefox",
+    firefoxHint: "Instalacja jednym kliknięciem",
+    yourBrowser: "Twoja przeglądarka",
+    soon: "Wkrótce",
+    firefoxStepsTitle: "Jak zainstalować w Firefoksie",
+    firefoxSteps: [
+      "Kliknij przycisk Firefox u góry tej strony.",
+      "Firefox zapyta, czy pozwolić stronie videoner.download zainstalować dodatek — kliknij „Kontynuuj instalację”.",
+      "W okienku „Dodać Videoner?” kliknij „Dodaj”.",
+      "Gotowe: na stronach z filmami pojawi się przycisk „Pobierz”, a ikona Videoner — na pasku narzędzi. Aktualizacje Firefox instaluje sam.",
+    ],
+    updateTitle: "Jak zaktualizować w Chrome, Yandex Browser, Edge i Operze",
+    updateSteps: [
+      "Gdy wychodzi nowa wersja, na ikonie Videoner pojawia się znaczek NEW, a w okienku — link do tej strony.",
+      "Pobierz archiwum przyciskiem Chrome u góry tej strony i rozpakuj je do tego samego folderu co wcześniej, zastępując pliki.",
+      "Otwórz stronę rozszerzeń (chrome://extensions, browser://extensions w Yandex Browser, edge://extensions) i kliknij „Załaduj ponownie” — okrągłą strzałkę na karcie Videoner.",
+    ],
+    back: "Strona główna",
+  },
 };

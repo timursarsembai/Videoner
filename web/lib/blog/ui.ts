@@ -259,6 +259,18 @@ export const blogUi: Record<
     readFull: "پورا مضمون سائٹ پر پڑھیں",
     dateLocale: "ur-PK-u-nu-latn",
   },
+  pl: {
+    title: "Blog Videoner",
+    description: "Aktualności projektu: co nowego w bocie, na stronie i w rozszerzeniu oraz jak z tego korzystać.",
+    readMore: "Czytaj",
+    back: "Wszystkie wpisy",
+    allPosts: "Blog",
+    channel: "Aktualności na Telegramie",
+    channelCta: "Aktualności projektu znajdziesz na kanale @videonerdownload na Telegramie.",
+    readOnSite: "Czytaj na stronie",
+    readFull: "Przeczytaj cały wpis na stronie",
+    dateLocale: "pl-PL",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

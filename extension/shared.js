@@ -1749,6 +1749,94 @@ const TEXTS = {
     langAuto: "اتوماتیک",
     langLabel: "ژبه",
   },
+  // Курдский сорани (ckb, письмо Курдистана Ирака: ێ ۆ ڕ ڵ ڤ ە), справа
+  // налево, как арабский/персидский/урду/пушту; обращение на «تۆ»; латиница
+  // (@VideonerBot, /connect, .srt) изолирована знаками направления, как в fa/ur/ps.
+  ckb: {
+    loading: "زانیاریی ڤیدیۆکە وەردەگیرێت…",
+    notVideoPage:
+      "لە YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest یان Threads پەڕەی ڤیدیۆیەک بکەرەوە و دووبارە کرتە لە ئایکۆنەکە بکە. وانەی GetCourse: ئەگەر پەڕەی وانەکە پێش دامەزراندنی پێوەکراوەکە کرابووەوە، نوێی بکەرەوە.",
+    gcLesson: "وانەی GetCourse",
+    gcPick: "ئەم وانەیە چەند ڤیدیۆیەکی تێدایە — یەکێکیان هەڵبژێرە",
+    gcVideo: (n) => `ڤیدیۆی ${n}`,
+    gcNote: "وێبگەڕەکەت ڤیدیۆکە دادەگرێت و پێکەوەی دەلکێنێت. دەتوانیت ئەم پەنجەرەیە دابخەیت، بەڵام وێبگەڕەکە دامەخە.",
+    gcNoStream: "نەتوانرا ڤیدیۆکە لە پلەیەرەکە وەربگیرێت. پەڕەی وانەکە نوێ بکەرەوە و دووبارە هەوڵ بدەرەوە.",
+    video: "ڤیدیۆ",
+    photo: "وێنەکان بە قەبارەی ڕەسەن",
+    slideshow: "سلایدشۆ (ڤیدیۆ)",
+    gallery: "وێنەکان + سلایدشۆ",
+    audioOnly: "تەنها دەنگ (mp3)",
+    subtitles: "ژێرنووس (⁦.srt⁩)",
+    subtitlesAuto: "خۆکار",
+    back: "گەڕانەوە",
+    starting: "داگرتن دەست پێدەکات…",
+    waiting: "چاوەڕێی ڕیز لە سێرڤەرەکە…",
+    downloading: "دادەگیرێت",
+    converting: "پرۆسێس دەکرێت",
+    left: (eta) => `${eta} ماوە`,
+    saving: "لە «Downloads» پاشەکەوت دەکرێت…",
+    done: "تەواو بوو — فایلەکە لە «Downloads» دایە.",
+    news: "📣 هەواڵەکانی پڕۆژە: ⁦@videonerdownload⁩",
+    again: "ڤیدیۆیەکی تر دابگرە",
+    directDownload: "داگرتنی ڤیدیۆ (mp4)",
+    directPhoto: "داگرتنی وێنە (jpg)",
+    directNote: "ڕاستەوخۆ لە وێبگەڕەکەتەوە — بێ ڕیزی سێرڤەر",
+    moreOptions: "کوالیتیی تر و دەنگ",
+    fallback: "داگرتن لە وێبگەڕدا سەرنەکەوت — لە ڕێگەی سێرڤەرەوە دادەگیرێت.",
+    openSite: "videoner.download بکەرەوە",
+    retry: "دووبارە هەوڵ بدەرەوە",
+    min: "خولەک",
+    sec: "چرکە",
+    errNetwork: "پەیوەندی بە Videoner ناکرێت. ئینتەرنێتەکەت بپشکنە و دووبارە هەوڵ بدەرەوە.",
+    errRateLimit: "داواکارییەکی زۆر لە یەک کاتدا نێردرا. خولەکێک چاوەڕێ بکە و دووبارە هەوڵ بدەرەوە.",
+    errUnsupported:
+      "لەم پەڕەیەدا هیچ ڤیدیۆیەک نییە کە Videoner بتوانێت دایبگرێت. پەڕەی ڤیدیۆ یان پۆستێکی دیاریکراو بکەرەوە.",
+    errYoutubeDaily: "سنووری ڕۆژانەی YouTube بۆ تۆڕەکەت تەواو بوو. سبەی دووبارە هەوڵ بدەرەوە.",
+    errTooLarge: "فایلەکە بەم کوالیتییە زۆر گەورەیە. کوالیتییەکی نزمتر هەڵبژێرە.",
+    errLogin:
+      "ئەم پۆستە تەنها بۆ ئەو کەسانەیە کە چوونەتە ناو هەژمارەکەیانەوە. پۆستە گشتییەکان بێ کێشە دادەگیرێن.",
+    errRegion: "نووسەر ئەم پۆستەی بەپێی وڵات سنووردار کردووە، بۆیە ناتوانرێت دابگیرێت.",
+    errServerBlocked: "پلاتفۆرمەکە بە شێوەیەکی کاتی سێرڤەرەکەمانی سنووردار کردووە. تکایە دواتر دووبارە هەوڵ بدەرەوە.",
+    errFailed: "داگرتن سەرنەکەوت. دووبارە هەوڵ بدەرەوە یان کوالیتییەکی تر هەڵبژێرە.",
+    errGeneric: "هەڵەیەک ڕوویدا. تکایە کەمێکی تر دووبارە هەوڵ بدەرەوە.",
+    acctButton: (p) => `🔑 هەژماری ${p} بە بۆتەوە ببەستەوە`,
+    acctWarn: (p) =>
+      `⁦@VideonerBot⁩ دەتوانێت لە ڕێگەی هەژمارەکەتەوە ئەو شتانە دابگرێت کە لە ${p} تەنها بەکارهێنەرانی چووەژوورەوە دەیبینن: ستۆری و پۆستە تایبەتەکان. پلاتفۆرمەکان داگرتنی خۆکاریان پێ خۆش نییە و لەوانەیە هەژمارەکە سنووردار بکەن — باشترە هەژمارێکی یەدەگ ببەستیتەوە. وێبگەڕ مۆڵەتی خوێندنەوەی کووکییەکانی ئەم ماڵپەڕە داوا دەکات؛ تەنها کووکییەکانی ${p} بە شێوەی شفرەکراو دەنێردرێن بۆ سێرڤەر.`,
+    acctConfirm: "ببەستەوە",
+    acctCancel: "پاشگەزبوونەوە",
+    acctSending: "دەبەسترێتەوە…",
+    acctDenied: "بەبێ مۆڵەتی کووکی ناتوانرێت هەژمارەکە ببەسترێتەوە.",
+    acctNoLogin: (p) => `لەم وێبگەڕەدا نەچوویتەتە ناو ${p}. لە ماڵپەڕەکەدا بچۆ ژوورەوە و دووبارە هەوڵ بدەرەوە.`,
+    acctFailed: "سەرنەکەوت. کەمێکی تر دووبارە هەوڵ بدەرەوە.",
+    acctCodeTitle: (p) => `کۆدی بەستنەوەی ${p}:`,
+    acctCodeHelp:
+      "ئەم کۆدە لە چاتی تایبەتدا بۆ ⁦@VideonerBot⁩ بنێرە — بۆ داگرتنەکانی خۆت. بۆ گرووپ، لە هەمان گرووپدا ⁦/connect کۆد⁩ بنێرە. کۆدەکە 10 خولەک کار دەکات.",
+    acctCopy: "کۆپی بکە",
+    acctCopied: "کۆپی کرا",
+    acctOpenBot: "بۆتەکە بکەرەوە",
+    acctNewCode: "کۆدێکی نوێ وەربگرە",
+    acctList: "هەژمارە بەستراوەکانم لە بۆتدا",
+    acctRevoke: "مۆڵەتی کووکی هەڵبوەشێنەوە",
+    acctRevoked:
+      "مۆڵەتی کووکی هەڵوەشێنرایەوە — پێوەکراوەکە چیتر نایانخوێنێتەوە. ئەو هەژمارانەی پێشتر بەستووتەتەوە لە بۆتدا دەمێننەوە: لە «هەژمارە بەستراوەکانم لە بۆتدا» لایان ببە.",
+    playlistOffer: "📃 هەموو پلەیلیستەکە دابگرە",
+    playlistTitle: (title, n) => `📃 پلەیلیست${title ? ` «⁨${title}⁩»` : ""}: ${n} ڤیدیۆ`,
+    playlistHint: "یەک لە دوای یەک دایاندەگرم. دەتوانیت ئەم پەنجەرەیە دابخەیت.",
+    playlist720: "پلەیلیست بە 720p",
+    playlistBest: "پلەیلیست بە باشترین کوالیتی",
+    playlistAudio: "پلەیلیست — تەنها دەنگ (mp3)",
+    playlistProgress: (i, n) => `ڤیدیۆی ${i} لە ${n}`,
+    playlistStats: (done, failed) => `داگیراو: ${done}${failed ? ` · سەرنەکەوتوو: ${failed}` : ""}`,
+    playlistStop: "⏹ ڕاگرتن",
+    playlistDone: (done, n) => `پلەیلیست داگیرا: ${done} لە ${n}.`,
+    playlistStopped: (done, n) => `ڕاگیرا. داگیراو: ${done} لە ${n}.`,
+    playlistLoading: "لیستی ڤیدیۆکان وەردەگیرێت…",
+    close: "داخستن",
+    updateAvailable: (v) => `وەشانی ${v} بڵاو کرایەوە.`,
+    updateHow: "چۆن نوێی بکەمەوە",
+    langAuto: "خۆکار",
+    langLabel: "زمان",
+  },
   // Вьетнамский, обращение «bạn».
   vi: {
     loading: "Đang lấy thông tin video…",
@@ -3210,12 +3298,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, кыргызский (ky, ky-KG → ky), таджикский (tg, tg-TJ → tg), арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), пушту (ps, ps-AF → ps), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), оромо (om, om-ET → om), хауса (ha, ha-NG → ha), сомали (so, so-SO → so), азербайджанский (az, az-AZ, az-Latn → az), малайский (ms, ms-MY → ms), нидерландский (nl, nl-NL, nl-BE → nl), румынский (ro, ro-RO, ro-MD и старый код mo → ro), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), узбекский (uz, uz-UZ, uz-Latn → uz), турецкий (tr, tr-TR → tr), персидский (fa, fa-IR → fa), вьетнамский (vi, vi-VN → vi), бенгальский (bn, bn-BD, bn-IN → bn), урду (ur, ur-PK, ur-IN → ur), пушту (ps, ps-AF → ps), курдский сорани (ckb, ckb-IQ → ckb), польский (pl, pl-PL → pl), японский (ja, ja-JP → ja), корейский (ko, ko-KR → ko), тайский (th, th-TH → th), тагальский/филиппинский (tl, tl-PH, fil, fil-PH → tl), амхарский (am, am-ET → am), оромо (om, om-ET → om), хауса (ha, ha-NG → ha), сомали (so, so-SO → so), азербайджанский (az, az-AZ, az-Latn → az), малайский (ms, ms-MY → ms), нидерландский (nl, nl-NL, nl-BE → nl), румынский (ro, ro-RO, ro-MD и старый код mo → ro), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
-// loadLang() меняет их до первой отрисовки окошка. Арабский, персидский, урду и пушту пишутся справа
+// loadLang() меняет их до первой отрисовки окошка. Арабский, персидский, урду, пушту и курдский сорани пишутся справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { om: "Afaan Oromoo", az: "Azərbaycanca", id: "Bahasa Indonesia", ms: "Bahasa Melayu", de: "Deutsch", en: "English", es: "Español", fr: "Français", ha: "Hausa", it: "Italiano", sw: "Kiswahili", nl: "Nederlands", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", ro: "Română", so: "Soomaali", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ky: "Кыргызча", ru: "Русский", tg: "Тоҷикӣ", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", ps: "پښتو", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
+export const LANG_NAMES = { om: "Afaan Oromoo", az: "Azərbaycanca", id: "Bahasa Indonesia", ms: "Bahasa Melayu", de: "Deutsch", en: "English", es: "Español", fr: "Français", ha: "Hausa", it: "Italiano", sw: "Kiswahili", nl: "Nederlands", uz: "Oʻzbekcha", pl: "Polski", pt: "Português", ro: "Română", so: "Soomaali", tl: "Tagalog", vi: "Tiếng Việt", tr: "Türkçe", kk: "Қазақша", ky: "Кыргызча", ru: "Русский", tg: "Тоҷикӣ", uk: "Українська", ar: "العربية", ur: "اردو", fa: "فارسی", ps: "پښتو", ckb: "کوردی (سۆرانی)", hi: "हिन्दी", bn: "বাংলা", th: "ไทย", am: "አማርኛ", zh: "中文", ja: "日本語", ko: "한국어" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -3325,11 +3413,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, пушту, польскому, японскому, корейскому, тайскому, тагальскому, амхарскому, оромо, хауса, сомали, азербайджанскому, малайскому, нидерландскому и румынскому — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn, ps-AF-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому, испанскому, узбекскому, турецкому, персидскому, вьетнамскому, бенгальскому, урду, пушту, курдскому сорани, польскому, японскому, корейскому, тайскому, тагальскому, амхарскому, оромо, хауса, сомали, азербайджанскому, малайскому, нидерландскому и румынскому — латинские GB/MB, как и цифры (ar-u-nu-latn, th-TH-u-nu-latn, fa-IR-u-nu-latn, bn-BD-u-nu-latn, ur-PK-u-nu-latn, ps-AF-u-nu-latn, ckb-IQ-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "ps" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am" || lang === "om" || lang === "ha" || lang === "so" || lang === "az" || lang === "ms" || lang === "nl" || lang === "ro";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es" || lang === "uz" || lang === "tr" || lang === "fa" || lang === "vi" || lang === "bn" || lang === "ur" || lang === "ps" || lang === "ckb" || lang === "pl" || lang === "ja" || lang === "ko" || lang === "th" || lang === "tl" || lang === "am" || lang === "om" || lang === "ha" || lang === "so" || lang === "az" || lang === "ms" || lang === "nl" || lang === "ro";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ky: "ky-KG", tg: "tg-TJ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", ps: "ps-AF-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", ha: "ha-NG", so: "so-SO", az: "az-AZ", ms: "ms-MY", nl: "nl-NL", ro: "ro-RO", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ky: "ky-KG", tg: "tg-TJ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", uz: "uz-Latn-UZ", tr: "tr-TR", fa: "fa-IR-u-nu-latn", vi: "vi-VN", bn: "bn-BD-u-nu-latn", ur: "ur-PK-u-nu-latn", ps: "ps-AF-u-nu-latn", ckb: "ckb-IQ-u-nu-latn", pl: "pl-PL", ja: "ja-JP", ko: "ko-KR", th: "th-TH-u-nu-latn", tl: "fil-PH", am: "am-ET", om: "om-ET", ha: "ha-NG", so: "so-SO", az: "az-AZ", ms: "ms-MY", nl: "nl-NL", ro: "ro-RO", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

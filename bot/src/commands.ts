@@ -293,6 +293,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "ښکته کول او کتار ودروئ" },
     { command: "language", description: "د بوټ ژبه" },
   ],
+  ckb: [
+    { command: "start", description: "چۆنیەتی بەکارهێنانی بۆت" },
+    { command: "extension", description: "پێوەکراوی وێبگەڕ" },
+    { command: "accounts", description: "هەژمارەکانت بۆ ستۆری و پۆستی تایبەت" },
+    { command: "connect", description: "بەستنەوەی هەژمار بە کۆدێک لە پێوەکراوەکەوە" },
+    { command: "stop", description: "ڕاگرتنی داگرتن و ڕیز" },
+    { command: "language", description: "زمانی بۆت" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -549,6 +557,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "د کوډ په واسطه له دې ګروپ سره حساب وصل کړئ" },
     { command: "language", description: "په دې ګروپ کې د بوټ ژبه (اډمینان)" },
     { command: "start", description: "بوټ په ګروپ کې څنګه کار کوي" },
+  ],
+  ckb: [
+    { command: "settings", description: "ڕێکخستنەکانی بۆت لەم گرووپەدا (ئەدمینەکان)" },
+    { command: "accounts", description: "ئەو هەژمارانەی بەم گرووپەوە بەستراونەتەوە" },
+    { command: "connect", description: "بەستنەوەی هەژمار بەم گرووپەوە بە کۆدێک" },
+    { command: "language", description: "زمانی بۆت لەم گرووپەدا (ئەدمینەکان)" },
+    { command: "start", description: "بۆت چۆن لە گرووپدا کار دەکات" },
   ],
 };
 

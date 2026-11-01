@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -7523,6 +7523,226 @@ const ps: Messages = {
   settingsBack: "⬅️ تنظیماتو ته بېرته",
 };
 
+const ckb: Messages = {
+  start: "سڵاو! بەستەری ڤیدیۆیەک لە YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، Rutube، OK.ru، Pinterest یان Threads بۆم بنێرە — یارمەتیت دەدەم دایبگریت.\n\n✨ هیچ سنوورێکی کوالیتی نییە: هەر کوالیتییەک پلاتفۆرمەکە پێشکەشی بکات، تا 4K، وەریدەگریت — بە مەرجێک فایلەکە لە 2 GB گەورەتر نەبێت؛ ئەمە ئەو سنوورەیە کە Telegram بۆ بۆتەکان دایناوە. لێرە هیچ تایبەتمەندییەکی پارەدار نییە.\n\nبە تەواوی بە خۆڕایی: نە بەشداریکردن، نە ڕیکلام، نە کڕینی ناو ئەپ.\n\n🧩 لەسەر کۆمپیوتەر دادەگریت؟ پێوەکراوی وێبگەڕ دابمەزرێنە — دوگمەی «داگرتن» ڕاستەوخۆ لە پەڕەی ڤیدیۆکەدا دەردەکەوێت: videoner.download/ckb/extension\n\n👥 زیادم بکە بۆ گرووپێک و ڤیدیۆی ئەو بەستەرانە دەنێرم کە ئەندامان لەوێ هاوبەشی دەکەن.\n\n⚡ هەڵبژاردنی کوالیتی تێپەڕێنە: لە دوای بەستەرەکە -audio بنووسە بۆ تەنها دەنگ (mp3)، یان -hd بۆ باشترین کوالیتی.\n\n📣 هەواڵەکانی پڕۆژە: ‎@videonerdownload\n\n🌐 زمانی بۆت: ‎/language",
+  notLink: "ئەمە وەک بەستەر دیار نییە. بەستەری ڤیدیۆیەک بۆم بنێرە.",
+  inviteGreeting: "سڵاو! من Videoner ـم — ڤیدیۆ لە YouTube، TikTok، Instagram و پلاتفۆرمەکانی تر بە خۆڕایی دادەگرم. ئەو ڤیدیۆیەی کەسێک بۆی ناردوویت ئامادە دەکەم 👇",
+  inviteNotFound: "هیچ ڤیدیۆیەکم بۆ ئەم بەستەری بانگهێشتە نەدۆزییەوە. بەستەری ڤیدیۆیەک بۆم بنێرە و دایدەگرم.",
+  inviteUnavailable: "نەمتوانی ڤیدیۆی ئەم بەستەرە بکەمەوە — خزمەتگوزارییەکە ئێستا وەڵام ناداتەوە. دوای خولەکێک هەمان بەستەر دووبارە بکەرەوە.",
+  fetchingInfo: "🔍 زانیاریی ڤیدیۆکە وەردەگیرێت...",
+  audioOnlyButton: "🎵 تەنها دەنگ (mp3)",
+  photoButton: "📷 داگرتنی وێنەکان",
+  slideshowButton: "🎞 سلایدشۆ (ڤیدیۆ)",
+  galleryButton: "📷+🎞 وێنەکان و سلایدشۆ",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nکوالیتی هەڵبژێرە:`,
+  sessionExpired: "کاتی دانیشتنەکە بەسەرچوو — بەستەرەکە دووبارە بنێرە",
+  downloading: "⏬ دادەگیرێت، لەوانەیە چەند خولەکێک بخایەنێت...",
+  downloadFailed: "داگرتن سەرکەوتوو نەبوو",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ دادەگیرێت: ${percent}%${eta ? ` · ${eta} ماوە` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ خەریکە تەواو دەبێت — فایلەکە کۆدەکرێتەوە...",
+  converting: (percent) => `⚙️ گۆڕین: ${percent}%`,
+  etaUnderMinute: "کەمتر لە خولەکێک",
+  etaMinutes: (minutes) => `~${minutes} خولەک`,
+  etaHours: (hours, minutes) => `~${hours} کاتژمێر${minutes ? ` ${minutes} خولەک` : ""}`,
+  downloadTimeout: "داگرتنەکە زۆر دەخایەنێت — وا دیارە ڤیدیۆکە زۆر قورسە. کوالیتییەکی نزمتر تاقی بکەرەوە.",
+  downloadInterrupted: "⚠️ بۆتەکە بۆ نوێکردنەوە دەستپێدەکاتەوە — داگرتنەکەت پچڕا. تکایە دوای خولەکێک بەستەرەکە دووبارە بنێرە.",
+  fileTooBig: (mb, url) =>
+    `فایلەکە گەورە دەرچوو (${mb} MB) — Telegram ڕێگە بە بۆتەکە نادات بینێرێت.\nلێرە دایبگرە: ${url}`,
+  sendingFile: "📤 فایلەکە دەنێردرێت...",
+  sendingAlbum: (count) => `📤 ئەم پۆستە چەند فایلێکی تێدایە (${count}) — وەک ئەلبووم دەیاننێرم...`,
+  failedPrefix: "❌ سەرکەوتوو نەبوو: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `سەرچاوە: ${sourceUrl}\n` +
+        "هەموو مافەکانی ڤیدیۆکە هی خاوەنەکەیەتی.\n" +
+        "بە خۆڕایی بە ‎@VideonerBot داگیراوە",
+      `📣 هەواڵەکانی پڕۆژە: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 هاوبەشکردن: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `بۆ داگرتن، تکایە بەشداری کەناڵەکەمان ${channel} بکە — ئەمە تاکە مەرجە، خزمەتگوزارییەکە بە خۆڕایی دەمێنێتەوە.\n\n` +
+    "بەشداری بکە و کرتە لە «بەشداریم کرد» بکە.",
+  openChannelButton: "📣 کردنەوەی کەناڵەکە",
+  checkSubscriptionButton: "بەشداریم کرد",
+  subscribeThanks: "سوپاس! ئێستا بەستەری ڤیدیۆیەک بۆم بنێرە.",
+  subscribeThanksResuming: "سوپاس! ئێستا دەست بە بەستەرەکەت دەکەم.",
+  subscribeStillMissing: "هێشتا بەشداریکردنەکەت نابینم. بەشداری بکە و دووبارە کرتە بکە.",
+  channelNotice: (channel) => `\n\nبەستەری ئەم پۆستە لە ${channel} دا دەردەکەوێت — بێ ناو، بەبێ ئەوەی ناوی تۆ دیار بێت.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "ئەمە و هەر ڤیدیۆیەکی تر بە خۆڕایی دابگرە: ‎@VideonerBot",
+  errorStoryNeedsId:
+    "بەستەری ستۆرییەکی دیاریکراو بنێرە: لە ئەپی Instagram بیکەرەوە و کرتە لە «هاوبەشکردن ← کۆپیکردنی بەستەر» بکە.",
+  errorInstagramStory:
+    "ستۆرییەکانی Instagram تەنها بۆ ئەو کەسانە دیارن کە چوونەتە ژوورەوە.",
+  errorLoginRequired:
+    "ئەم پۆستە بەبێ چوونەژوورەوە بەردەست نییە: پلاتفۆرمەکە تەنها پیشانی " +
+    "ئەو بەکارهێنەرانەی دەدات کە چوونەتە ژوورەوە. ئەمە بۆ پۆستە تایبەتەکان، ناوەڕۆکی سنووردار بە تەمەن " +
+    "و ئەو پۆستانە ڕوودەدات کە لەگەڵ بینەرانێکی سنووردار هاوبەش کراون.\n\n" +
+    "پۆستە گشتییەکان بەبێ کێشە دادەگیرێن — بەستەرێکی تر تاقی بکەرەوە.",
+  errorUnsupportedPlatform:
+    "ئەم بەستەرەم نەناسییەوە — دڵنیا بەرەوە کە بەستەری ڕاستەوخۆی ڤیدیۆیە لە YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، Rutube، OK.ru، Pinterest یان Threads.",
+  errorFileTooLarge: "فایلەکە لە 2 GB گەورەترە — Telegram ڕێگە بە بۆتەکان نادات فایلی گەورەتر بنێرن. لە ماڵپەڕەکە یان بە پێوەکراوی وێبگەڕ دایبگرە — دوگمەکان لە خوارەوەن. یان بەستەرەکە دووبارە بنێرە و کوالیتییەکی نزمتر هەڵبژێرە.",
+  siteButton: "🌐 داگرتن لە ماڵپەڕ",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ ئەو کوالیتییانەی لە ${limit} قورسترن شاردراونەتەوە: Telegram ڕێگە بە بۆتەکان نادات فایلی گەورەتر بنێرن. دەتوانیت لە ماڵپەڕەکە یان بە پێوەکراوی وێبگەڕ دایانبگریت — دوگمەکان لە خوارەوەن.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ ئەم ڤیدیۆیە تەنانەت بە نزمترین کوالیتیش (~${smallest}) بۆ Telegram زۆر قورسە: Telegram ڕێگە بە بۆتەکان نادات فایلی سەرووی 2 GB بنێرن. لێرە دەتوانیت تەنها دەنگەکە وەربگریت؛ ڤیدیۆکەش — لە ماڵپەڕەکە یان بە پێوەکراوی وێبگەڕ (دوگمەکان لە خوارەوەن).`,
+  errorFormatUnavailable: "ئەم کوالیتییە بۆ ئەم ڤیدیۆیە بەردەست نییە. بەستەرەکە دووبارە بنێرە — لیستی نوێت پیشان دەدەم.",
+  errorNoVideoContent: "ئەم بەستەرە هیچ ڤیدیۆیەکی تێدا نییە بۆ داگرتن — وا دیارە پۆستەکە تەنها وێنەیە.",
+  errorRegionBlocked:
+    "ئەم ڤیدیۆیە لە دەرەوەی وڵاتی خاوەنەکەی بلۆک کراوە — پلاتفۆرمەکە " +
+    "نایداتە سێرڤەرەکەمان. هیچ ڕێگەیەک نییە بۆ تێپەڕاندنی: سنووردارکردنەکە لە لایەن ئەوانەوەیە." +
+    "\n\nبەستەرەکانی تر وەک هەمیشە دادەگیرێن.",
+  errorRateLimited: "بەستەری زۆر لە دوای یەک — کەمێک چاوەڕێ بکە و دووبارە بینێرە.",
+  errorYoutubeDailyLimit: (gb) => `لە 24 کاتژمێری ڕابردوودا زیاتر لە ${gb} GB لە YouTube داگرتووە — ئەمە سنووری ڕۆژانەی بۆتەکەیە بۆ هەر کەسێک. 24 کاتژمێری کۆتایی دەژمێردرێت، بۆیە کەمێکی تر دەتوانیت ڤیدیۆی نوێی YouTube دابگریت. پلاتفۆرمەکانی تر وەک هەمیشە کار دەکەن.`,
+  playlistStoppedByLimit: (dropped) => `⏹ پلەیلیستەکە ڕاگیرا: سنووری ڕۆژانەی YouTube پڕ بووەوە. ئەو ڤیدیۆیانەی دانەگیران: ${dropped}. دواتر بەستەری پلەیلیستەکە دووبارە بنێرە.`,
+  errorPlatformRefused:
+    "پلاتفۆرمەکە ئەم ڤیدیۆیەی نەدایە سێرڤەرەکەمان. ئەمە بۆ پۆستە تایبەتەکان " +
+    "یان سنووردار بە تەمەن ڕوودەدات، و هەندێک جار پلاتفۆرمەکە تەنها " +
+    "بۆ ماوەیەک دەستگەیشتن سنووردار دەکات. دوای چەند خولەکێک دووبارە هەوڵ بدەرەوە.",
+  errorThreadsNoMedia:
+    "هیچ ڤیدیۆ یان وێنەیەک لەم پۆستەی Threads دا دیار نییە. یان پۆستێکی تەنها دەقە، یان " +
+    "Threads میدیاکەی تەنها بۆ ئەو بەکارهێنەرانە پیشان دەدات کە چوونەتە ژوورەوە — ئەم جۆرە پۆستانە بەبێ چوونەژوورەوە داناگیرێن.",
+  extensionHint:
+    "\n\n💻 دەتوانیت لەسەر کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگریت: " +
+    "بە چوونەژوورەوەی خۆت لە پلاتفۆرمەکە دایدەگرێت، و هیچ وشەی نهێنی یان cookies لە وێبگەڕەکەت دەرناچێت.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 بۆ داگرتنی ئەم جۆرە پۆستانە، هەژماری ${platform} بە بۆتەوە ببەستەوە — تەنها یەک جار. دوای ئەوە بۆتەکە هەر شتێک دادەگرێت کە تۆ دەیبینیت: پۆستە تایبەتەکان، ڕیلز و ستۆرییەکان، لە مۆبایلیشەوە. دوگمەی خوارەوە ڕێگاکەی پیشان دەدات.${withExtension ? "\n\n💻 یان لەسەر کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگرە." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ هەژمارە بەستراوەکەی ${platform} نەیتوانی ئەم پۆستە بکاتەوە. لەوانەیە چوونەژوورەوەکە ئیتر کار نەکات — هەژمارەکە دووبارە ببەستەوە. یان ئەم هەژمارە دەستی بەم پۆستە ناگات.${withExtension ? "\n\n💻 هەروەها دەتوانیت لەسەر کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگریت." : ""}`,
+  connectAccountButton: "🔑 بەستنەوەی هەژمار",
+  reconnectAccountButton: "🔑 دووبارە بەستنەوە",
+  extensionButton: "🧩 داگرتن بە پێوەکراو",
+  extensionCommand:
+    "🧩 Videoner بۆ وێبگەڕەکەت: دوگمەی «داگرتن» ڕاستەوخۆ لە پەڕەی ڤیدیۆکەدا — YouTube، Instagram، TikTok، VK، ڤیدیۆ تایبەتەکان لە هەژمارەکەتەوە و وانەکانی GetCourse.\n\nبۆ Chrome، Edge، Opera، Yandex Browser و Firefox لەسەر کۆمپیوتەر.",
+  extensionPageButton: "🧩 دامەزراندنی پێوەکراو",
+  addToGroupButton: "👥 زیادکردن بۆ گرووپ",
+  newsButton: "📣 هەواڵەکانی پڕۆژە",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 هەواڵەکانی پڕۆژە: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ ڕێکخستنەکانی بۆت بۆ ئەم گرووپە\n\n" +
+    `🗑 سڕینەوەی نامەی بەستەرەکە: ${s.deleteLinks ? "بەڵێ" : "نەخێر"}\n` +
+    "دوای ناردنی ڤیدیۆکە، ئەو نامەیەی تەنها بەستەرەکەی تێدا بوو دەسڕدرێتەوە — لە چاتەکەدا تەنها ڤیدیۆکە لەگەڵ ناوی ئەو کەسەی هاوبەشی کردووە دەمێنێتەوە.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ ئێستا ناتوانم نامەکان بسڕمەوە: بمکە بە ئەدمین بە مافی «سڕینەوەی نامەکان».\n"
+      : "") +
+    `\n✍️ دەقی ژێر ڤیدیۆ: ${{ full: "تەواو", short: "ناونیشان و سەرچاوە", none: "بێ دەق" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 کوالیتی: ${s.quality === "max" ? "بەرزترین کە Telegram وەریدەگرێت" : "ستاندارد (720p)"}\n` +
+    `\n⏱ ڤیدیۆی درێژ: ${s.longVideos ? "هەر درێژییەک" : "تەنها تا 15 خولەک"}\n` +
+    `\n🔑 کێ دەتوانێت هەژمارەکانی ببەستێتەوە (بۆ ستۆری و پۆستی تایبەت): ${s.cookiesBy === "all" ? "هەر ئەندامێک" : "تەنها ئەدمینەکان"}\n` +
+    `\n🌐 زمانی وەڵامەکان: ${s.language ? langName(s.language) : "زمانی خودی هەر ئەندامێک"}\n` +
+    "\nتەنها ئەدمینەکانی گرووپ دەتوانن ڕێکخستنەکان بگۆڕن.",
+  settingsDeleteButton: (on) => `🗑 سڕینەوەی بەستەرەکان: ${on ? "بەڵێ" : "نەخێر"}`,
+  settingsCaptionButton: (style) => `✍️ دەق: ${{ full: "تەواو", short: "کورت", none: "هیچ" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 کوالیتی: ${mode === "max" ? "بەرزترین" : "720p"}`,
+  settingsLongButton: (on) => `⏱ ڤیدیۆی درێژ: ${on ? "بەڵێ" : "تا 15 خولەک"}`,
+  settingsDoneButton: "✅ تەواو",
+  settingsAdminsOnly: "تەنها ئەدمینەکانی گرووپ دەتوانن ڕێکخستنەکان بگۆڕن.",
+  settingsGroupsOnly: "ڕێکخستنەکان بۆ گرووپەکانن: زیادم بکە بۆ گرووپێک و لەوێ ‎/settings بنێرە.",
+  settingsFailed: "نەتوانرا ڕێکخستنەکان پاشەکەوت بکرێن، تکایە دووبارە هەوڵ بدەرەوە.",
+  settingsCookiesButton: (by) => `🔑 بەستنەوەی هەژمار: ${by === "all" ? "هەمووان" : "ئەدمینەکان"}`,
+  accountsIntro:
+    "🔑 هەژمارە بەستراوەکان\n\nبۆتەکە دەتوانێت ئەو شتانەی تەنها کەسانی چووەژوورەوە دەیبینن (ستۆرییەکانی Instagram، پۆستە تایبەتەکان) بە هەژمارەکەی تۆ دابگرێت. هەر چوونەژوورەوەیەک لەو شوێنە کار دەکات کە لێی بەستراوەتەوە: ئەوەی لە چاتی تایبەتدا بەستراوەتەوە بۆ داگرتنەکانی خۆتە، لەوانەش بەستەرەکانی خۆت لەو گرووپانەی هەژماری خۆیان نییە؛ ئەوەی بە گرووپێکەوە بەستراوەتەوە بۆ هەموو ئەندامەکانی ئەو گرووپە کار دەکات.",
+  accountsHowTo:
+    "چۆن ببەستیتەوە:\n1. ئاسانترین ڕێگا: پێوەکراوی Videoner لەسەر کۆمپیوتەر — لە ماڵپەڕی پلاتفۆرمەکە بچۆ ژوورەوە، پەنجەرەی Videoner بکەرەوە، کرتە لە «🔑 هەژماری … بە بۆتەوە ببەستەوە» بکە و کۆدەکەم بۆ بنێرە. بۆ گرووپ، لە هەمان گرووپدا ‎/connect CODE بنێرە.\n2. یان فایلی cookies.txt (cookies هەناردەکراو لە وێبگەڕەوە) بۆم بنێرە، یان دەقەکەی وەک نامەیەک بلکێنە.\n3. بە مۆبایلێکی Android — بە Firefox و پێوەکراوی Cookie-Editor: https://videoner.download/ckb/blog/android-firefox",
+  accountsWarning:
+    "⚠️ پلاتفۆرمەکان حەزیان لە داگرتنی خۆکاری نییە و لەوانەیە هەژمارەکە سنووردار یان قەدەغە بکەن. باشترە هەژمارێکی لاوەکی ببەستیتەوە، نەک هەژمارە سەرەکییەکەت. cookies بە شێوەی شفرەکراو هەڵدەگیرێن، تەنها بۆ داگرتن بەکاردەهێنرێن، و بە دوگمەکانی خوارەوە دەسڕدرێنەوە.",
+  accountsNone: "هێشتا هیچ شتێک نەبەستراوەتەوە.",
+  accountsGroupTitle: "🔑 ئەو هەژمارانەی بەم گرووپەوە بەستراونەتەوە",
+  accountsGroupHowTo:
+    "بۆ بەستنەوەی هەژمارێک بۆ هەموو گرووپەکە: بە دوگمەی «🔑 هەژماری … بە بۆتەوە ببەستەوە» لە پێوەکراوی Videoner کۆدێک وەربگرە و لێرە ‎/connect CODE بنێرە. ئەگەر هەژمارێکت تەنها لە چاتی تایبەتی خۆت بەستووەتەوە، بۆتەکە لێرە بۆ بەستەرەکانی خۆت بەکاری دەهێنێت. بەستنەوەکانت: ‎/accounts لە چاتی تایبەت لەگەڵ ‎@VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ چوونەژوورەوە کار ناکات)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ چوونەژوورەوە کار ناکات)"}`,
+  accountsWhereHere: "چاتی تایبەت",
+  accountsWhereGroup: (title) => `گرووپی «${title}»`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 سڕینەوەی هەموو بەستنەوەکانم",
+  accountsDeleted: "سڕایەوە.",
+  accountsDeletedAll: (n) => `بەستنەوە سڕاوەکان: ${n}.`,
+  accountsNotAllowed: "تەنها ئەو کەسەی بەستوویەتەوە یان ئەدمینێکی گرووپ دەتوانێت بیسڕێتەوە.",
+  connectUsage:
+    "‎/connect CODE بنێرە. دوگمەی «🔑 هەژماری … بە بۆتەوە ببەستەوە» لە پێوەکراوی Videoner لەسەر کۆمپیوتەر کۆدەکەت دەداتێ. بەستنەوەکانت: ‎/accounts.",
+  connectOnlyAdmins: "تەنها ئەدمینەکان دەتوانن هەژمار بەم گرووپەوە ببەستنەوە (بڕوانە ‎/settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} بەسترایەوە. ئێستا بۆتەکە ئەو شتانەش دادەگرێت کە تەنها کەسانی چووەژوورەوە دەیبینن. بینین یان سڕینەوە: ‎/accounts.\n\n⚠️ لەوانەیە پلاتفۆرمەکە بەهۆی داگرتنی خۆکارییەوە هەژمارەکە سنووردار بکات — باشترە هەژمارێکی لاوەکی بەکاربهێنیت.`,
+  connectWhereGroup: "بەم گرووپەوە",
+  connectWhereHere: "بۆ داگرتنەکانت لە چاتی تایبەت و دۆخی inline",
+  connectCodeNotFound: "کۆدەکە نەدۆزرایەوە یان ماوەی بەسەرچووە (کۆدەکان 10 خولەک کار دەکەن). کۆدێکی نوێ لە پێوەکراوی Videoner وەربگرە.",
+  connectRejectedNoSession: "لەم cookies ـانەدا هیچ چوونەژوورەوەیەک نییە. لە ماڵپەڕی پلاتفۆرمەکە بچۆ ژوورەوە و cookies دووبارە هەناردە بکە.",
+  connectRejectedUnknown: "هیچ cookies لە پلاتفۆرمە پشتگیریکراوەکان نەدۆزرایەوە: Instagram، Facebook، YouTube، X، VK، TikTok.",
+  connectUnavailable: "بەستنەوەی هەژمار هێشتا بەردەست نییە.",
+  connectFailed: "نەتوانرا ببەسترێتەوە، تکایە دووبارە هەوڵ بدەرەوە.",
+  connectFileTooBig: "فایلەکە زۆر گەورەیە — تەنها cookies لەو ماڵپەڕەی پێویستە هەناردە بکە.",
+  connectNotAnonymous: "هەژمارەکە بە ناوی خۆتەوە ببەستەوە، نەک بێ ناو وەک گرووپەکە: ئەگینا بەستنەوەکانی ئەدمینەکان تێکەڵ دەبن. کۆدەکەم لەناوبرد — کۆدێکی نوێ وەربگرە.",
+  connectCodeInGroup:
+    "کۆدی بەستنەوە کە لە چاتی گرووپدا بڵاو بکرێتەوە، کەسانی تریش دەتوانن بیبینن — لەناوم برد و نامەکەم سڕییەوە. کۆدێکی نوێ وەربگرە و بە ‎/connect CODE بینێرە: نامەی ئەو فەرمانە یەکسەر دەسڕمەوە.",
+  groupWelcome:
+    "👋 سڵاو! لەم چاتەدا بەستەری ڤیدیۆ لە TikTok، Instagram، YouTube، VK و پلاتفۆرمەکانی تر بنێرە — بە خودی ڤیدیۆکە وەڵام دەدەمەوە.\n\n" +
+    "کلیپی تا 15 خولەک خۆم دادەگرم، بەبێ هیچ فەرمانێک، و جگە لەوە بێدەنگ دەمێنم.\n\n⚙️ ئەدمینەکانی گرووپ دەتوانن بە ‎/settings ڕێکم بخەن: سڕینەوەی نامەی بەستەرەکان، شێوەی دەق، کوالیتی، ڤیدیۆی درێژ و زمان.\n\n⚡ لە دوای بەستەرێک -audio بنووسە بۆ وەرگرتنی دەنگ، یان -hd بۆ باشترین کوالیتی.\n\n📣 هەواڵەکانی پڕۆژە: ‎@videonerdownload",
+  errorTooLong: "ڤیدیۆکە زۆر درێژە — هێشتا ناتوانین ڤیدیۆی ئەوەندە درێژ دابگرین.",
+  errorUnknown: "نەتوانرا ئەم ڤیدیۆیە دابگیرێت. کەمێکی تر دووبارە هەوڵ بدەرەوە یان بەستەرێکی تر بنێرە.",
+  inlineHintButton: "بەستەرێک بۆ بۆتەکە بنێرە",
+  inlineResultTitle: "⬇️ داگرتنی ڤیدیۆ",
+  inlineResultDescription: "ڤیدیۆکە ڕاستەوخۆ لەم چاتەدا دەنێردرێت",
+  inlinePlaceholder: "⏬ دادەگیرێت، لەوانەیە چەند خولەکێک بخایەنێت...",
+  inlineOpenBot: "کردنەوەی بۆت",
+  inlineOnlySingleVideo:
+    "ئەم دۆخە تەنها یەک ڤیدیۆ دەنێرێت. بۆ پۆستی چەند فایلی یان وێنە، بەستەرەکە لە چاتی تایبەتدا بۆ بۆتەکە بنێرە.",
+  inlineSubscribeRequired: (channel: string) =>
+    `بۆ داگرتن، بەشداری ${channel} بکە و دووبارە هەوڵ بدەرەوە.`,
+  inlineRateLimited: "داواکاریی زۆر لە دوای یەک. خولەکێک چاوەڕێ بکە و دووبارە هەوڵ بدەرەوە.",
+  queueRest: (count) => `\n\n📋 بەستەرەکانی ماوە لە ڕیزدا: ${count}. دوای ئەمە یەک بە یەک پیشانیان دەدەم.`,
+  queuedOne: (position) =>
+    `📋 بەستەرەکە خرایە ڕیزەوە، ژمارە ${position}. با سەرەتا ئەمەی ئێستا تەواو بکەین — پاشان هەڵبژاردنی کوالیتیت بۆ پیشان دەدەم.`,
+  queuedMany: (added, waiting) =>
+    `📋 بەستەری زیادکراو بۆ ڕیز: ${added}. کۆی چاوەڕوانکراو: ${waiting}. دوای ئەمەی ئێستا یەک بە یەک پیشانیان دەدەم.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "ئەم بەستەرە پێشتر لە ڕیزدایە — دوو جار زیادی ناکەم."
+      : `ئەو بەستەرانەی پێشتر لە ڕیزدان دوو جار زیاد ناکرێن (دووبارەکان: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `ڕیزەکە زۆرترین ${limit} بەستەر دەگرێت — بەستەرە زیادەکان زیاد نەکران (${rejected}). کاتێک ڕیزەکە پێشکەوت بیاننێرە.`,
+  skipButton: "✖️ دایمەگرە",
+  skipped: "⏭ ئەم بەستەرە تێپەڕێنرا.",
+  chooseTimedOut: "⌛ لە ماوەی 30 خولەکدا هیچ کوالیتییەک هەڵنەبژێردرا — ئەم بەستەرە تێدەپەڕێنم.",
+  queueLostOnRestart: (count) =>
+    `⚠️ بۆتەکە بۆ نوێکردنەوە دەستپێدەکاتەوە — ڕیزەکە سفر کرایەوە (بەستەرەکان: ${count}). تکایە دوای خولەکێک دووبارە بیاننێرە.`,
+  subtitlesButton: "📝 ژێرنووس",
+  subtitlesBack: "⬅️ گەڕانەوە بۆ کوالیتی",
+  subtitlesAuto: "خۆکار",
+  subtitlesChoose: "زمانی ژێرنووس هەڵبژێرە",
+  subtitlesPreparing: "📝 ژێرنووس ئامادە دەکرێت...",
+  subtitlesFailed: "نەتوانرا ژێرنووس بەم زمانە دابگیرێت. زمانێکی تر تاقی بکەرەوە.",
+  subtitlesBusy: "YouTube ئێستا ژێرنووس نادات — دوای چەند خولەکێک دووبارە هەوڵ بدەرەوە.",
+  playlistFound: (title, count) =>
+    `📃 پلەیلیست${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} ڤیدیۆ.\nیەک بە یەک دایاندەگرم. بە چ فۆرماتێک؟`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 باشترین کوالیتی",
+  playlistAudioButton: "🎵 تەنها دەنگ (mp3)",
+  playlistNoButton: "✖️ نەخێر، سوپاس",
+  playlistQueued: (count) =>
+    `📃 ڤیدیۆکانی پلەیلیست کە خرانە ڕیزەوە: ${count}. یەک بە یەک دەیاننێرم. بە دوگمەی خوارەوە یان ‎/stop ڕایبگرە.`,
+  playlistFailed: "نەتوانرا پلەیلیستەکە بکرێتەوە — لەوانەیە تایبەت بێت. بەستەری تاکە ڤیدیۆیەک بنێرە.",
+  stopButton: "⏹ ڕاگرتن",
+  stopped: (dropped) => `⏹ ڕاگیرا.${dropped ? ` بەستەرە لابراوەکان لە ڕیز: ${dropped}.` : ""}`,
+  nothingToStop: "لە ئێستادا هیچ داگرتنێک لە ئارادا نییە.",
+  languageChoose: "🌐 زمانی بۆت هەڵبژێرە. «خۆکار» شوێن زمانی Telegram ـەکەت دەکەوێت.",
+  languageChooseGroup: "🌐 زمانی وەڵامەکانی بۆت لەم گرووپەدا. «خۆکار» — زمانی Telegram ـی هەر ئەندامێک.",
+  languageAuto: "خۆکار — وەک لە Telegram",
+  languageAutoGroup: "خۆکار — زمانی خودی هەر ئەندامێک",
+  languageSaved: (name) => `✅ زمانی بۆت: ${name}. بە ‎/language بیگۆڕە.`,
+  languageSavedAuto: "✅ بۆتەکە شوێن زمانی Telegram ـەکەت دەکەوێت. بە ‎/language بیگۆڕە.",
+  settingsLanguageButton: (name) => `🌐 زمان: ${name ?? "خۆکار"}`,
+  settingsBack: "⬅️ گەڕانەوە بۆ ڕێکخستنەکان",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -8190,4 +8410,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb };

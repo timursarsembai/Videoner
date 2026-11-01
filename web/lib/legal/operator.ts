@@ -45,6 +45,7 @@ export const operator = {
   nameNl: "Individueel ondernemer SARSEMBAYEV",
   nameRo: "Întreprinzător individual SARSEMBAYEV",
   namePs: "انفرادي سوداګر SARSEMBAYEV",
+  nameCkb: "بازرگانی تاک SARSEMBAYEV",
   nameAr: "رائد الأعمال الفردي سارسيمباييف (SARSEMBAYEV)",
   directorRu: "Сарсембаев Тимур Сейпилович",
   directorEn: "Timur Sarsembayev",
@@ -116,6 +117,8 @@ export const operator = {
     "Notificare privind începerea activității ca întreprinzător individual nr. KZ45UUZ00498687 din 22.07.2026",
   basisPs:
     "د انفرادي سوداګر په توګه د فعالیت د پیل خبرتیا، شمېره KZ45UUZ00498687، نېټه 22.07.2026",
+  basisCkb:
+    "ئاگادارکردنەوەی دەستپێکردنی چالاکی وەک بازرگانی تاک، ژمارە KZ45UUZ00498687، بەرواری 22.07.2026",
   basisAr:
     "إشعار ببدء نشاط رائد الأعمال الفردي رقم KZ45UUZ00498687 بتاريخ 22.07.2026",
   basisUk:
@@ -189,6 +192,8 @@ export const operator = {
     "Republica Kazahstan, regiunea Almaty, districtul Enbekșikazah, districtul rural Rahat, satul Azat, PKST «Almagul-2», clădirea 117",
   addressPs:
     "د قزاقستان جمهوریت، د الماتي سیمه، د ینبکشي‌قزاق ولسوالۍ، د رخت کلیوالې ولسوالۍ، د آزات کلی، PKST «Almagul-2»، ودانۍ 117",
+  addressCkb:
+    "کۆماری کازاخستان، پارێزگای ئالماتی، قەزای یەنبەکشیقازاق، ناحیەی گوندنشینی ڕاخات، گوندی ئازات، PKST «Almagul-2»، بینای 117",
   addressAr:
     "جمهورية كازاخستان، منطقة ألماتي، مقاطعة إنبيكشيكازاخ، الدائرة الريفية راخات، قرية آزات، PKST «Almagul-2»، المبنى 117",
   addressEs:

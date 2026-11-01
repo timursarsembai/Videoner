@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Bot, GrammyError, InlineKeyboard } from "grammy";
-import { LANGS, NEWS_CHANNEL, messages, sitePath } from "./i18n.js";
+import { LANGS, NEWS_CHANNEL, messages, sitePath, type Lang } from "./i18n.js";
 import { langOf } from "./language.js";
 import { COMMANDS, GROUP_COMMANDS } from "./commands.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
@@ -142,7 +142,9 @@ async function registerCommandMenus() {
   await setCommandsWithRetry("groups en", () =>
     bot.api.setMyCommands(GROUP_COMMANDS.en, { scope: { type: "all_group_chats" } }),
   );
-  for (const lang of LANGS.filter((l) => l !== "en")) {
+  // language_code в setMyCommands — только двухбуквенный ISO 639-1; у сорани
+  // (ckb) такого кода нет, ему меню ставится на чат при выборе языка (/language).
+  for (const lang of LANGS.filter((l): l is Exclude<Lang, "en" | "ckb"> => l !== "en" && l !== "ckb")) {
     await setCommandsWithRetry(lang, () => bot.api.setMyCommands(COMMANDS[lang], { language_code: lang }));
     await setCommandsWithRetry(`groups ${lang}`, () =>
       bot.api.setMyCommands(GROUP_COMMANDS[lang], { scope: { type: "all_group_chats" }, language_code: lang }),

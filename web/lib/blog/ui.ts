@@ -451,6 +451,18 @@ export const blogUi: Record<
     readFull: "بشپړه لیکنه په سایټ کې ولولئ",
     dateLocale: "ps-AF-u-nu-latn",
   },
+  ckb: {
+    title: "بلۆگی Videoner",
+    description: "هەواڵەکانی پڕۆژە: چی نوێ هاتووە لە بۆت، ماڵپەڕ و پێوەکراوەکەدا و چۆن بەکاریان بهێنیت.",
+    readMore: "خوێندنەوە",
+    back: "هەموو بابەتەکان",
+    allPosts: "بلۆگ",
+    channel: "هەواڵەکان لە Telegram",
+    channelCta: "هەواڵەکانی پڕۆژە لە کەناڵی ‎@videonerdownload لە Telegram.",
+    readOnSite: "خوێندنەوە لە ماڵپەڕ",
+    readFull: "هەموو بابەتەکە لە ماڵپەڕ بخوێنەوە",
+    dateLocale: "ckb-IQ-u-nu-latn",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

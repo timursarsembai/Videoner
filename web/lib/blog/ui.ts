@@ -558,6 +558,18 @@ export const blogUi: Record<
     readFull: "Сайта тӀа деррига деша",
     dateLocale: "ru-RU",
   },
+  av: {
+    title: "Videoner-алъул блог",
+    description: "Проекталъул хабарал: боталда, сайталда ва расширениялда щиб цӀияб бахъараб ва гьелдаса кин пайда босилеб.",
+    readMore: "ЦӀализе",
+    back: "ТӀолго макъалаби",
+    allPosts: "Блог",
+    channel: "Хабарал Telegram-алда",
+    channelCta: "Проекталъул хабарал — @videonerdownload Telegram-каналалда.",
+    readOnSite: "Сайталда цӀализе",
+    readFull: "Сайталда тӀубанго цӀализе",
+    dateLocale: "ru-RU",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

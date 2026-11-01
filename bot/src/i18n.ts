@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt" | "sq" | "bs" | "ce" | "inh";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps" | "ckb" | "ku" | "ug" | "tk" | "tt" | "sq" | "bs" | "ce" | "inh" | "av";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -18,9 +18,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "bs", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "inh", "kk", "ky", "ce", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "bs", "de", "en", "es", "fr", "ha", "it", "sw", "ku", "nl", "uz", "pl", "pt", "ro", "sq", "so", "tl", "vi", "tr", "tk", "av", "inh", "kk", "ky", "ce", "ru", "tt", "tg", "uk", "ar", "ur", "fa", "ps", "ckb", "ug", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча", sq: "Shqip", bs: "Bosanski", ce: "Нохчийн", inh: "ГӀалгӀай" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو", ckb: "کوردی (سۆرانی)", ku: "Kurdî (Kurmancî)", ug: "ئۇيغۇرچە", tk: "Türkmençe", tt: "Татарча", sq: "Shqip", bs: "Bosanski", ce: "Нохчийн", inh: "ГӀалгӀай", av: "Авар мацӀ" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -9514,6 +9514,226 @@ const inh: Messages = {
   settingsBack: "⬅️ Юха настройкашка",
 };
 
+const av: Messages = {
+  start: "Салам! Дие видеоялъул ссылка битӀе: YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest яги Threads — дица гьеб босизе кумек гьабила.\n\n✨ Сипаталъе лимит гьечӀо: платформаялда бугеб щибаб сипат, 4K щвезегӀан, нужее щвела — файл 2 ГБ-гӀан бугони: гьеб Telegram ботазе лъураб лимит буго. Гьаниб мухь кьезе кколел функциял гьечӀо.\n\nТӀолабго мухьгьечӀого: подпискаби гьечӀо, реклама гьечӀо, жаниб мухь кьезе кколеб жо гьечӀо.\n\n🧩 Компьютералда босулищ? Браузералъул расширение лъе — «Босизе» кнопка видеоялъул гьумералдаго бихьила: videoner.download/av/extension\n\n👥 Дун къокъаялде жубай — гьенире битӀарал ссылкабазул видеоял дица битӀила.\n\n⚡ Сипат тӀаса бищичӀого: ссылкаялда хадуб -audio хъвай — гьаракь гурони битӀиларо (mp3), яги -hd — бищунго лъикӀаб сипат.\n\n📣 Проекталъул хабарал: @videonerdownload\n\n🌐 Боталъул мацӀ: /language",
+  notLink: "Гьеб ссылкаялда релъараб гьечӀо. Видеоялъул ссылка битӀе.",
+  inviteGreeting: "Салам! Дир цӀар Videoner — YouTube, TikTok, Instagram ва цогидал платформабаздаса видеоял дица мухьгьечӀого росула. Нужее щивалиго битӀараб видео хӀадур гьабулеб буго 👇",
+  inviteNotFound: "Гьаб ахӀиялъул ссылкаялъ видео батичӀо. Дие видеоялъул ссылка битӀе — дица гьеб босила.",
+  inviteUnavailable: "Гьаб ссылкаялъ видео рагьизе кӀвечӀо — сервисалъ гьанже жаваб кьолеб гьечӀо. Цо минуталдасан гьеб ссылка цӀидасан рагье.",
+  fetchingInfo: "🔍 Видеоялъул баян балагьулеб буго...",
+  audioOnlyButton: "🎵 Аудио гурони (mp3)",
+  photoButton: "📷 Суратал росизе",
+  slideshowButton: "🎞 Слайд-шоу (видео)",
+  galleryButton: "📷+🎞 Суратал ва слайд-шоу",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nСипат тӀаса бище:`,
+  sessionExpired: "Сессиялъул заман лъугӀана — ссылка цӀидасан битӀе",
+  downloading: "⏬ Босулеб буго… цо-кӀиго минут ккезе бегьула...",
+  downloadFailed: "босизе кӀвечӀо",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Босулеб буго: ${percent}%${eta ? ` · хутӀана: ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ ЦӀакъго дагьаб хутӀана — файл хӀадур гьабулеб буго...",
+  converting: (percent) => `⚙️ Формат хисулеб буго: ${percent}%`,
+  etaUnderMinute: "минуталдаса дагь",
+  etaMinutes: (minutes) => `~${minutes} мин`,
+  etaHours: (hours, minutes) => `~${hours} сагӀ${minutes ? ` ${minutes} мин` : ""}`,
+  downloadTimeout: "босизе цӀакъ халатаб заман ккола — видео цӀакъ бакӀаб букӀин бегьула. Гъоркьиаб сипат тӀаса бище.",
+  downloadInterrupted: "⚠️ Бот обновлениялъе цӀидасан рагьулеб буго — нужер видео босизе кӀвечӀо. Цо минуталдасан ссылка цӀидасан битӀе.",
+  fileTooBig: (mb, url) =>
+    `Файл кӀудияб бахъана (${mb} МБ) — Telegram ботазе гьеб битӀизе изну кьоларо.\nГьаниса босизе бегьула: ${url}`,
+  sendingFile: "📤 Файл битӀулеб буго...",
+  sendingAlbum: (count) => `📤 Гьаб посталда файлал цӀикӀкӀун руго (${count}) — гьел альбомалъун битӀулел руго...`,
+  failedPrefix: "❌ КӀвечӀо: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Бусен: ${sourceUrl}\n` +
+        "Видеоялде бугеб ихтияр гьелъул авторасул буго.\n" +
+        "МухьгьечӀого босана: @VideonerBot",
+      `📣 Проекталъул хабарал: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Цогидазе битӀизе: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Босизе, нижер каналалде подписка гьабе: ${channel} — гьеб гурони шарт гьечӀо, сервис мухьгьечӀого хутӀила.\n\n` +
+    "Подписка гьабун, «Дица подписка гьабуна» кнопкаялда квер бай.",
+  openChannelButton: "📣 Канал рагьизе",
+  checkSubscriptionButton: "Дица подписка гьабуна",
+  subscribeThanks: "Баркала! Гьанже дие видеоялъул ссылка битӀе.",
+  subscribeThanksResuming: "Баркала! Нужер ссылка гьанже хӀадур гьабулеб буго.",
+  subscribeStillMissing: "Подписка гьанжеги дие бихьулеб гьечӀо. Подписка гьабун, цӀидасан квер бай.",
+  channelNotice: (channel) => `\n\nГьаб посталъул ссылка каналалда загьир лъугьина (${channel}) — цӀар гьечӀого, нужер цӀар бихьизабичӀого.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Гьаб ва цогидабги щибаб видео мухьгьечӀого босе: @VideonerBot",
+  errorStoryNeedsId:
+    "цо хасаб сторисалъул ссылка битӀе: гьеб Instagram приложениялда рагьун, «Поделиться» → «Копировать ссылку» кнопкабазда квер бай.",
+  errorInstagramStory:
+    "Instagram сторисал аккаунталде жаниве лъугьарал гӀадамазе гурони рихьуларо.",
+  errorLoginRequired:
+    "Гьаб пост аккаунталде жаниве лъугьичӀого бихьуларо: платформаялъ гьеб " +
+    "жаниве лъугьарал гӀадамазе гурони бихьизабуларо. Гьедин ккола къалъарал постазда, " +
+    "гӀумруялъул лимит бугеб контенталда ва дагьал гӀадамазе гурони бихьизабулареб постазда.\n\n" +
+    "ТӀолабго гӀадамазе рихьулел постал захӀмалъи гьечӀого росула — цогидаб ссылка битӀе.",
+  errorUnsupportedPlatform:
+    "Ссылка лъай кӀвечӀо — гьеб YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest яги Threads платформабаздаса битӀаб видеоялъул ссылка бугищали хал гьабе.",
+  errorFileTooLarge: "файл 2 ГБ-алдаса кӀудияб буго — Telegram ботазе гьелдаса кӀудиял файлал битӀизе изну кьоларо. Гьеб сайталда яги браузералъул расширениялдалъун босизе бегьула — кнопкаби гъоркь руго. Яги ссылка цӀидасан битӀе ва гъоркьиаб сипат тӀаса бище.",
+  siteButton: "🌐 Сайталда босизе",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Файл бакӀаб кколел сипатал бахчун руго (лимит: ${limit}): Telegram ботазе гьелдаса кӀудиял файлал битӀизе изну кьоларо. Гьел сайталда яги браузералъул расширениялдалъун росизе бегьула — кнопкаби гъоркь руго.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Гьаб видео бищунго гъоркьиаб сипаталдаги (~${smallest}) Telegram-алде битӀизе цӀакъ бакӀаб буго: Telegram ботазе 2 ГБ-алдаса кӀудиял файлал битӀизе изну кьоларо. Гьаниб аудио гурони босизе бегьуларо; видео — сайталда яги браузералъул расширениялдалъун (кнопкаби гъоркь руго).`,
+  errorFormatUnavailable: "Гьаб видеоялъе гьединаб сипат гьечӀо. Ссылка цӀидасан битӀе — дица цӀияб сияхӀ бихьизабила.",
+  errorNoVideoContent: "Гьаб ссылкаялда босизе видео гьечӀо — посталда суратал гурони гьечӀин бихьулеб буго.",
+  errorRegionBlocked:
+    "Гьаб видео авторасул улкаялдаса къватӀир блок гьабун буго — платформаялъ гьеб " +
+    "нижер сервералде кьоларо. Гьелъие гьабизе жо гьечӀо: лимит гьезул рахъалдаса буго." +
+    "\n\nЦогидал ссылкаби гӀадатаб куцалда росула.",
+  errorRateLimited: "Цоцада хадуб ссылкаби цӀикӀкӀана — дагьаб сабру гьабун, цӀидасан битӀе.",
+  errorYoutubeDailyLimit: (gb) => `ахирисел 24 сагӀаталъ нужеца YouTube-алдаса ${gb} ГБ-алдаса цӀикӀкӀун босана — гьеб гьар чиясе лъураб боталъул къоялъул лимит буго. Ахирисел 24 сагӀат рикӀкӀуна, гьединлъидал YouTube-алдаса цӀиял видеоял дагьаб хадуб росизе бегьула. Цогидал платформаби гӀадатаб куцалда хӀалтӀулел руго.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Плейлист чӀезабуна: YouTube-алъул къоялъул лимит тӀубана. РосичӀел видеоял: ${dropped}. Плейлисталъул ссылка хадуб цӀидасан битӀе.`,
+  errorPlatformRefused:
+    "платформаялъ гьаб видео нижер сервералде кьечӀо. Гьедин ккола къалъарал яги " +
+    "гӀумруялъул лимит бугел постазда, цо-цо мехалъ платформаялъ доступ цо заманалъ " +
+    "лимит гьабула. Цо-цо минуталдасан цӀидасан хӀалбихье.",
+  errorThreadsNoMedia:
+    "гьаб Threads посталда видеоги суратги бихьулеб гьечӀо. Яги гьеб текст гурони гьечӀеб пост буго, яги " +
+    "Threads медиа аккаунталде жаниве лъугьарал гӀадамазе гурони бихьизабуларо — гьединал постал аккаунталде жаниве лъугьичӀого росизе кӀоларо.",
+  extensionHint:
+    "\n\n💻 Компьютералда Videoner браузералъул расширениялдалъун босизе бегьула: " +
+    "гьелъ платформаялда нужер аккаунталдалъун босула, пароль ва cookies нужер браузералдаса къватӀире инаро.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Гьединал постал росизе, нужер ${platform} аккаунт боталда бухьинабе — цо нухалъ. Гьелдаса хадуб нужее бихьулеб тӀолабго жо боталъ босила: къалъарал постал, рилсал ва сторисал, телефоналдасаги. Кин гьабизе кколебали гъоркь бугеб кнопкаялъ бихьизабула.${withExtension ? "\n\n💻 Яги компьютералда Videoner браузералъул расширениялдалъун босе." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Нужер бухьинабураб ${platform} аккаунталдалъун гьаб пост рагьизе кӀвечӀо. Логин хӀалтӀулеб гьечӀеб букӀин бегьула — аккаунт цӀидасан бухьинабе. Яги гьаб аккаунталъе гьаб посталде доступ гьечӀо.${withExtension ? "\n\n💻 Компьютералда Videoner браузералъул расширениялдалъунги босизе бегьула." : ""}`,
+  connectAccountButton: "🔑 Аккаунт бухьинабизе",
+  reconnectAccountButton: "🔑 ЦӀидасан бухьинабизе",
+  extensionButton: "🧩 Расширениялдалъун босизе",
+  extensionCommand:
+    "🧩 Браузералъе Videoner: «Босизе» кнопка видеоялъул гьумералдаго — YouTube, Instagram, TikTok, VK, нужер аккаунталдаса къалъарал видеоял ва GetCourse дарсал.\n\nКомпьютералда: Chrome, Edge, Opera, Яндекс Браузер ва Firefox.",
+  extensionPageButton: "🧩 Расширение лъезе",
+  addToGroupButton: "👥 Къокъаялде жубазе",
+  newsButton: "📣 Проекталъул хабарал",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проекталъул хабарал: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Гьаб къокъаялда боталъул настройкаби\n\n" +
+    `🗑 Ссылка бугеб кагъат бахъизе: ${s.deleteLinks ? "гьо" : "гуро"}\n` +
+    "Видео битӀун хадуб ссылка гурони гьечӀеб кагъат бахъула — чаталда хутӀула видео гурони, гьеб битӀарав чиясул цӀаргун.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Гьанже дида кагъатал рахъизе кӀоларо: «Удаление сообщений» ихтияр бугев администратор гьабе дун.\n"
+      : "") +
+    `\n✍️ Видеоялда гъоркь текст: ${{ full: "тӀубараб", short: "цӀар ва бусен", none: "текст гьечӀого" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Сипат: ${s.quality === "max" ? "Telegram кьабул гьабулеб бищунго борхатаб" : "стандарт (720p)"}\n` +
+    `\n⏱ Халатал видеоял: ${s.longVideos ? "щибаб халалъиялъул" : "15 минуталде щвезегӀан гурони"}\n` +
+    `\n🔑 Жидерго аккаунтал бухьинабизе бегьулел (сторисазе ва къалъарал постазе): ${s.cookiesBy === "all" ? "щибав гӀахьалчи" : "администраторал гурони"}\n` +
+    `\n🌐 Жавабазул мацӀ: ${s.language ? langName(s.language) : "гьар гӀахьалчиясул жиндирго"}\n` +
+    "\nНастройкаби хисизе къокъаялъул администраторазе гурони бегьуларо.",
+  settingsDeleteButton: (on) => `🗑 Ссылкаби рахъизе: ${on ? "гьо" : "гуро"}`,
+  settingsCaptionButton: (style) => `✍️ Текст: ${{ full: "тӀубараб", short: "къокъаб", none: "гьечӀо" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Сипат: ${mode === "max" ? "бищунго борхатаб" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Халатал видеоял: ${on ? "гьо" : "15 мин щвезегӀан"}`,
+  settingsDoneButton: "✅ ХӀадур",
+  settingsAdminsOnly: "Настройкаби хисизе къокъаялъул администраторазе гурони бегьуларо.",
+  settingsGroupsOnly: "Настройкаби къокъабазе руго: дун къокъаялде жубай ва гьениб /settings битӀе.",
+  settingsFailed: "Настройкаби цӀунизе кӀвечӀо, цӀидасан хӀалбихье.",
+  settingsCookiesButton: (by) => `🔑 Аккаунтал бухьинаби: ${by === "all" ? "киназего" : "администраторазе"}`,
+  accountsIntro:
+    "🔑 Бухьинабурал аккаунтал\n\nАккаунталде жаниве лъугьарал гӀадамазе гурони рихьулареб жо (Instagram сторисал, къалъарал постал) боталъ нужер аккаунталдалъун босула. Логин хӀалтӀула гьеб бухьинабураб бакӀалда гурони: боталгун чаталда бухьинабураб — нужер босиязе, жидерго аккаунт гьечӀел къокъабазда нужер ссылкабазеги; къокъаялда бухьинабураб — гьелъул тӀолабго гӀахьалчагӀазе.",
+  accountsHowTo:
+    "Кин бухьинабизе:\n1. Бищунго бигьаяб: компьютералда Videoner расширение — платформаялъул сайталда аккаунталде жаниве лъугьа, Videoner-алъул окно рагье, «🔑 Нужер … аккаунт боталда бухьинабе» кнопкаялда квер бай ва код дие битӀе. Къокъаялъе — гьеб къокъаялда /connect КОД битӀе.\n2. Яги дие cookies.txt файл (браузералдаса экспорт гьабурал cookies) битӀе, яги гьелъул текст кагъаталъун битӀе.\n3. Android телефоналдаса — Firefox ва Cookie-Editor дополнение хӀалтӀизабун: https://videoner.download/av/blog/android-firefox",
+  accountsWarning:
+    "⚠️ Платформаби автоматикаялъ босиялда рази гьечӀо, гьез аккаунталъе лимит лъезе яги гьеб блок гьабизе бегьула. Аслияб аккаунт бухьинабуге — кӀиабилеб аккаунт бухьинаби лъикӀаб буго. Cookies шифр гьабун цӀунула, босиязе гурони хӀалтӀизаруларо, гъоркь ругел кнопкабаздалъун рахъизе бегьула.",
+  accountsNone: "Гьанжеги щибниги бухьинабун гьечӀо.",
+  accountsGroupTitle: "🔑 Гьаб къокъаялда бухьинабурал аккаунтал",
+  accountsGroupHowTo:
+    "ТӀолабго къокъаялъе бухьинабизе: Videoner расширениялда «🔑 Нужер … аккаунт боталда бухьинабе» кнопкаялдалъун код босун, гьаниб /connect КОД битӀе. Нужеца аккаунт боталгун чаталда гурони бухьинабичӀони, боталъ гьеб гьаниб нужер ссылкабазе хӀалтӀизабула. Нужер бухьинабиял: @VideonerBot боталгун чаталда /accounts.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ логин хӀалтӀулеб гьечӀо)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ логин хӀалтӀулеб гьечӀо)"}`,
+  accountsWhereHere: "боталгун чат",
+  accountsWhereGroup: (title) => `«${title}» къокъа`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Дир тӀолабго бухьинабиял рахъизе",
+  accountsDeleted: "Бахъана.",
+  accountsDeletedAll: (n) => `Рахъарал бухьинабиял: ${n}.`,
+  accountsNotAllowed: "Гьеб бухьинабурав чиясе яги къокъаялъул администраторасе гурони бахъизе бегьуларо.",
+  connectUsage:
+    "/connect КОД битӀе. Код босизе, компьютералда Videoner расширениялда «🔑 Нужер … аккаунт боталда бухьинабе» кнопкаялда квер бай. Нужер бухьинабиял: /accounts.",
+  connectOnlyAdmins: "Гьаб къокъаялда аккаунтал администраторазе гурони бухьинабизе бегьуларо (/settings балагье).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} бухьинабуна: ${where}. Гьанже аккаунталде жаниве лъугьарал гӀадамазе гурони рихьулареб жоги боталъ босула. Балагьизе яги бахъизе: /accounts.\n\n⚠️ Автоматикаялъ босиялъухъ платформаялъ аккаунталъе лимит лъезе бегьула — кӀиабилеб аккаунт хӀалтӀизаби лъикӀаб буго.`,
+  connectWhereGroup: "гьаб къокъаялда",
+  connectWhereHere: "боталгун чаталда ва инлайн-режималда нужер босиязе",
+  connectCodeNotFound: "Код батичӀо яги гьелъул заман лъугӀана (кодалъул заман 10 минут буго). Videoner расширениялда цӀияб код босе.",
+  connectRejectedNoSession: "Гьал cookies-азда логин гьечӀо. Платформаялъул сайталда аккаунталде жаниве лъугьа ва cookies цӀидасан экспорт гьабе.",
+  connectRejectedUnknown: "Бот хӀалтӀулел платформабазул cookies батичӀо: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Аккаунтал бухьинабизе гьанжеги бегьуларо.",
+  connectFailed: "Бухьинабизе кӀвечӀо, цӀидасан хӀалбихье.",
+  connectFileTooBig: "Файл цӀакъ кӀудияб буго — хӀажатаб сайталъул cookies гурони экспорт гьабуге.",
+  connectNotAnonymous: "Аккаунт нужерго цӀаралдасан бухьинабе, къокъаялъул цӀаралдасан анонимно гуреб: гьедин гьечӀони администраторазул бухьинабиял жубала. Дица код тӀагӀинабуна — цӀияб босе.",
+  connectCodeInGroup:
+    "Къокъаялъул чаталда хъвараб бухьинабиялъул код цогидазеги бихьизе бегьула — дица гьеб тӀагӀинабуна ва кагъатги бахъана. ЦӀияб код босун, /connect КОД абун битӀе: гьеб командаялъул кагъат дица гьебсагӀат бахъула.",
+  groupWelcome:
+    "👋 Салам! Гьаб чаталда TikTok, Instagram, YouTube, VK ва цогидал платформабаздаса видеоялъул ссылкаби битӀе — дица жаваб видеоялдалъунго кьела.\n\n" +
+    "15 минуталде щвезегӀан халатал видеоял дица командаби гьечӀого росула, цогидал кагъатазе жаваб кьоларо.\n\n⚙️ Къокъаялъул администраторазе /settings командаялдалъун дун рекъезабизе бегьула: ссылкабазул кагъатал рахъи, текст, сипат, халатал видеоял ва мацӀ.\n\n⚡ Гьаракь босизе ссылкаялда хадуб -audio хъвай, яги бищунго лъикӀаб сипаталъе — -hd.\n\n📣 Проекталъул хабарал: @videonerdownload",
+  errorTooLong: "видео цӀакъ халатаб буго — гьедигӀан халатал видеоял гьанжеги росизе кӀоларо.",
+  errorUnknown: "гьаб видео босизе кӀвечӀо. Дагьаб хадуб цӀидасан хӀалбихье яги цогидаб ссылка битӀе.",
+  inlineHintButton: "Боталъе ссылка битӀизе",
+  inlineResultTitle: "⬇️ Видео босизе",
+  inlineResultDescription: "Видео гьаб чаталдаго битӀила",
+  inlinePlaceholder: "⏬ Босулеб буго… цо-кӀиго минут ккезе бегьула...",
+  inlineOpenBot: "Бот рагьизе",
+  inlineOnlySingleVideo:
+    "Гьаб режималда цо видео гурони битӀуларо. Цо-цо файл бугел постал яги суратал росизе, ссылка боталгун чаталда битӀе.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Босизе, каналалде подписка гьабе (${channel}) — хадуб цӀидасан хӀалбихье.`,
+  inlineRateLimited: "Цоцада хадуб гьариял цӀикӀкӀана. Цо минут сабру гьабун, цӀидасан хӀалбихье.",
+  queueRest: (count) => `\n\n📋 Черхалда хутӀарал ссылкаби: ${count}. Гьелда хадуб гьел цо-цо дица бихьизарила.`,
+  queuedOne: (position) =>
+    `📋 Ссылка черхалде жубана, #${position}. Цебе гьанжесеб лъугӀизабила — хадуб гьелъул сипат тӀаса бищи дица бихьизабила.`,
+  queuedMany: (added, waiting) =>
+    `📋 Черхалде жубарал ссылкаби: ${added}. ТӀолабго черхалда руго: ${waiting}. Гьанжесеб хадуб гьел цо-цо дица бихьизарила.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Гьаб ссылка черхалда буго — кӀиго нухалъ жубаларо."
+      : `Черхалда ругел ссылкаби кӀиго нухалъ жубаларо (такрар: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `Черхалда бищунго цӀикӀкӀун ${limit} ссылка букӀине бегьула — цӀикӀкӀарал жубачӀо (${rejected}). Черх цебе ун хадуб гьел битӀе.`,
+  skipButton: "✖️ Босуге",
+  skipped: "⏭ Гьаб ссылка тана.",
+  chooseTimedOut: "⌛ 30 минуталъ сипат тӀаса бищичӀо — гьаб ссылка тана.",
+  queueLostOnRestart: (count) =>
+    `⚠️ Бот обновлениялъе цӀидасан рагьулеб буго — черх бацӀцӀад гьабуна (ссылкаби: ${count}). Цо минуталдасан гьел цӀидасан битӀе.`,
+  subtitlesButton: "📝 Субтитраби",
+  subtitlesBack: "⬅️ Сипаталде нахъе",
+  subtitlesAuto: "авто",
+  subtitlesChoose: "Субтитрабазул мацӀ тӀаса бище",
+  subtitlesPreparing: "📝 Субтитраби хӀадур гьарулел руго...",
+  subtitlesFailed: "Гьаб мацӀалда субтитраби росизе кӀвечӀо. Цогидаб мацӀ тӀаса бище.",
+  subtitlesBusy: "YouTube гьанже субтитраби кьолел гьечӀо — цо-цо минуталдасан цӀидасан хӀалбихье.",
+  playlistFound: (title, count) =>
+    `📃 Плейлист${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} видео.\nДица гьел цо-цо росила. Кинаб формат?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Бищунго лъикӀаб сипат",
+  playlistAudioButton: "🎵 Аудио гурони (mp3)",
+  playlistNoButton: "✖️ Гуро, баркала",
+  playlistQueued: (count) =>
+    `📃 Плейлисталдаса черхалде жубарал видеоял: ${count}. Дица гьел цо-цо битӀила. Гъоркь бугеб кнопкаялдалъун яги /stop командаялдалъун чӀезабизе бегьула.`,
+  playlistFailed: "Плейлист рагьизе кӀвечӀо — гьеб къалъараб букӀин бегьула. Цо видеоялъул ссылка битӀе.",
+  stopButton: "⏹ ЧӀезабизе",
+  stopped: (dropped) => `⏹ ЧӀезабуна.${dropped ? ` Черхалдаса рахъарал ссылкаби: ${dropped}.` : ""}`,
+  nothingToStop: "Гьанже щибниги босулеб гьечӀо.",
+  languageChoose: "🌐 Боталъул мацӀ тӀаса бище. «Авто» — нужер Telegram-алда гӀадин.",
+  languageChooseGroup: "🌐 Гьаб къокъаялда боталъул жавабазул мацӀ. «Авто» — гьар гӀахьалчиясул Telegram-алъул мацӀ.",
+  languageAuto: "Авто — Telegram-алда гӀадин",
+  languageAutoGroup: "Авто — гьар гӀахьалчиясул жиндирго",
+  languageSaved: (name) => `✅ Боталъул мацӀ: ${name}. Хисизе: /language.`,
+  languageSavedAuto: "✅ Боталъ нужер Telegram-алъул мацӀ хӀалтӀизабула. Хисизе: /language.",
+  settingsLanguageButton: (name) => `🌐 МацӀ: ${name ?? "авто"}`,
+  settingsBack: "⬅️ Настройкабазде нахъе",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -10181,4 +10401,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq, bs, ce, inh };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq, bs, ce, inh, av };

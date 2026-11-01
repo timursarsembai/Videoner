@@ -365,6 +365,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Чуяккхар а рогӀ а сацаде" },
     { command: "language", description: "Ботан мотт" },
   ],
+  av: [
+    { command: "start", description: "Бот кин хӀалтӀизабизе" },
+    { command: "extension", description: "Браузералъул расширение" },
+    { command: "accounts", description: "Сторисазе ва къалъарал постазе нужер аккаунтал" },
+    { command: "connect", description: "Расширениялъул кодалдалъун аккаунт бухьинабизе" },
+    { command: "stop", description: "Босиги черхги чӀезабизе" },
+    { command: "language", description: "Боталъул мацӀ" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -684,6 +692,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Кодаца укх тоабага аккаунт тӀатоха" },
     { command: "language", description: "Укх тоаба чу ботан мотт (администраторашта)" },
     { command: "start", description: "Бот тоаба чу мишта болх беш я" },
+  ],
+  av: [
+    { command: "settings", description: "Гьаб къокъаялда боталъул настройкаби (администраторазе)" },
+    { command: "accounts", description: "Гьаб къокъаялда бухьинабурал аккаунтал" },
+    { command: "connect", description: "Кодалдалъун гьаб къокъаялда аккаунт бухьинабизе" },
+    { command: "language", description: "Гьаб къокъаялда боталъул мацӀ (администраторазе)" },
+    { command: "start", description: "Бот къокъаялда кин хӀалтӀулеб" },
   ],
 };
 

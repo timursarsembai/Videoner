@@ -18,7 +18,7 @@
   const ui = chrome.i18n.getUILanguage().toLowerCase();
   // Языки с письмом справа налево — как RTL_LANGS в shared.js.
   const RTL = ["ar", "fa", "ur", "ps", "ckb", "ug"];
-  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ky: "Жүктөп алуу", ce: "Чуяккха", inh: "Чуяккха", tt: "Йөкләү", tg: "Боргирӣ", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", ps: "ښکته کول", ckb: "داگرتن", ug: "چۈشۈرۈش", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", tl: "I-download", am: "አውርድ", om: "Buusi", ha: "Sauke", so: "Soo deji", ku: "Daxîne", az: "Yüklə", tk: "Ýükle", ms: "Muat turun", nl: "Downloaden", ro: "Descarcă", sq: "Shkarko", bs: "Preuzmi", en: "Download" };
+  const LABELS = { ru: "Скачать", uk: "Завантажити", kk: "Жүктеп алу", ky: "Жүктөп алуу", ce: "Чуяккха", inh: "Чуяккха", av: "Босизе", tt: "Йөкләү", tg: "Боргирӣ", ar: "تحميل", zh: "下载", hi: "डाउनलोड", id: "Unduh", sw: "Pakua", de: "Herunterladen", fr: "Télécharger", it: "Scarica", pt: "Baixar", es: "Descargar", uz: "Yuklab olish", tr: "İndir", fa: "دانلود", vi: "Tải xuống", bn: "ডাউনলোড", ur: "ڈاؤن لوڈ", ps: "ښکته کول", ckb: "داگرتن", ug: "چۈشۈرۈش", pl: "Pobierz", ja: "ダウンロード", ko: "다운로드", th: "ดาวน์โหลด", tl: "I-download", am: "አውርድ", om: "Buusi", ha: "Sauke", so: "Soo deji", ku: "Daxîne", az: "Yüklə", tk: "Ýükle", ms: "Muat turun", nl: "Downloaden", ro: "Descarcă", sq: "Shkarko", bs: "Preuzmi", en: "Download" };
   const HIDES = {
     ru: "Скрыть кнопку для этого видео",
     uk: "Сховати кнопку для цього відео",
@@ -26,6 +26,7 @@
     ky: "Бул видеодо баскычты жашыруу",
     ce: "ХӀокху видеохь кнопка къайлаяккха",
     inh: "ХӀа видео тӀа кнопка лачкъаде",
+    av: "Гьаб видеоялда кнопка бахчизабизе",
     tt: "Бу видеода төймәне яшерү",
     tg: "Пинҳон кардани тугма дар ин видео",
     ar: "إخفاء الزر لهذا الفيديو",

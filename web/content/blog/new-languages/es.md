@@ -18,7 +18,7 @@ Videoner ya está disponible en **14 idiomas**. Al inglés, español, ruso, ucra
 
 - **El sitio web**: todas las páginas, los artículos del blog y los documentos legales.
 - **El bot**: todos los mensajes, los botones y el menú de comandos. Si tu Telegram está en uno de estos idiomas, el bot te responde en él automáticamente.
-- **La extensión del navegador**: la ventana de la extensión, el botón de descarga en las páginas de video y los mensajes de error.
+- **La extensión del navegador**: la ventana de la extensión, el botón «Descargar» en las páginas de video y los mensajes de error.
 
 ## Cómo elegir el idioma
 

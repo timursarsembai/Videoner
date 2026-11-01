@@ -7,7 +7,7 @@ Telegram tiene un límite: un bot no puede enviar un archivo de más de **2 GB**
 
 ## Qué hace ahora el bot
 
-- **Calidades pesadas.** Si algunas calidades superan claramente los 2 GB, el bot no las muestra y te explica por qué. Debajo del selector de calidad aparecen dos botones: **«🌐 Download on the website»** (descargar en el sitio web) y **«🧩 Download with the extension»** (descargar con la extensión).
+- **Calidades pesadas.** Si algunas calidades superan claramente los 2 GB, el bot no las muestra y te explica por qué. Debajo del selector de calidad aparecen dos botones: **«🌐 Descargar en el sitio web»** (descargar en el sitio web) y **«🧩 Descargar con la extensión»** (descargar con la extensión).
 - **Incluso la calidad más baja supera los 2 GB.** En el bot solo puedes descargar el audio, y el video — con esos mismos botones.
 - **El archivo resultó pesar más de 2 GB después de descargarlo.** Pasa cuando el tamaño no se conoce de antemano. El bot te explica qué ocurre y te da los mismos dos botones — o puedes elegir una calidad más baja.
 

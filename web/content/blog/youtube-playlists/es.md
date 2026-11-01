@@ -17,11 +17,11 @@ Envía el enlace de una lista de reproducción y Videoner descargará todos sus 
 - **mejor calidad** — todo lo que ofrece el vídeo;
 - **solo audio (mp3)** — ideal para música, pódcasts y clases.
 
-Puedes interrumpir la descarga en cualquier momento con el botón **«Detener»** en el sitio (**«Stop»** en el bot): se detendrán tanto el vídeo actual como todos los siguientes.
+Puedes interrumpir la descarga en cualquier momento con el botón **«Detener»** en el sitio (**«Detener»** en el bot): se detendrán tanto el vídeo actual como todos los siguientes.
 
 ## En el bot
 
-Envía a [@VideonerBot](https://t.me/VideonerBot) el enlace de una lista y elige la calidad. El bot te enviará los vídeos uno a uno. Para detenerlo, usa el botón **«Stop»** bajo el mensaje o el comando **/stop**.
+Envía a [@VideonerBot](https://t.me/VideonerBot) el enlace de una lista y elige la calidad. El bot te enviará los vídeos uno a uno. Para detenerlo, usa el botón **«Detener»** bajo el mensaje o el comando **/stop**.
 
 Si envías el enlace de un vídeo que forma parte de una lista, el bot descargará ese vídeo y te ofrecerá aparte descargar la lista completa. Los flags también funcionan: `enlace de la lista -audio` — toda la lista en mp3 de una vez.
 

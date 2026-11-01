@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -14,9 +14,9 @@ export function detectLang(languageCode?: string): Lang {
 export const NEWS_CHANNEL = "@videonerdownload";
 
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок.
-export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt"];
+export const LANGS: Lang[] = ["ru", "uk", "kk", "en", "ar", "zh", "hi", "id", "sw", "de", "fr", "it", "pt", "es"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -2679,6 +2679,226 @@ const pt: Messages = {
   settingsBack: "⬅️ Voltar às configurações",
 };
 
+const es: Messages = {
+  start: "¡Hola! Envíame el enlace de un video de YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest o Threads — te ayudo a descargarlo.\n\n✨ Sin límites de calidad: recibes todo lo que ofrece la plataforma, hasta 4K — siempre que el archivo quepa en 2 GB, el límite de Telegram para bots. Aquí no hay funciones de pago.\n\nTotalmente gratis: sin suscripciones, sin anuncios, sin compras dentro de la app.\n\n🧩 ¿Descargas en un ordenador? Instala la extensión para el navegador — aparece un botón Descargar directamente en la página del video: videoner.download/es/extension\n\n👥 Agrégame a un grupo y publicaré los videos de los enlaces que se compartan allí.\n\n⚡ Sáltate la elección de calidad: añade -audio después del enlace para recibir solo el sonido (mp3), o -hd para la mejor calidad.\n\n📣 Novedades del proyecto: @videonerdownload\n\n🌐 Idioma del bot: /language",
+  notLink: "Eso no parece un enlace. Envíame el enlace de un video.",
+  inviteGreeting: "¡Hola! Soy Videoner — descargo videos de YouTube, TikTok, Instagram y otras plataformas gratis. Preparando el video que te compartieron 👇",
+  inviteNotFound: "No encontré ningún video para este enlace de invitación. Envíame el enlace de un video y lo descargo.",
+  inviteUnavailable: "No pude abrir el video de este enlace — el servicio no responde en este momento. Vuelve a abrir el mismo enlace dentro de un minuto.",
+  fetchingInfo: "🔍 Obteniendo información del video...",
+  audioOnlyButton: "🎵 Solo audio (mp3)",
+  photoButton: "📷 Descargar fotos",
+  slideshowButton: "🎞 Presentación (video)",
+  galleryButton: "📷+🎞 Fotos y presentación",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nElige la calidad:`,
+  sessionExpired: "La sesión expiró — envía el enlace de nuevo",
+  downloading: "⏬ Descargando, puede tardar un par de minutos...",
+  downloadFailed: "la descarga falló",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ Descargando: ${percent}%${eta ? ` · quedan ${eta}` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ Casi listo — armando el archivo...",
+  converting: (percent) => `⚙️ Convirtiendo: ${percent}%`,
+  etaUnderMinute: "menos de un minuto",
+  etaMinutes: (minutes) => `~${minutes} min`,
+  etaHours: (hours, minutes) => `~${hours} h${minutes ? ` ${minutes} min` : ""}`,
+  downloadTimeout: "la descarga está tardando demasiado — el video parece muy pesado. Prueba con una calidad más baja.",
+  downloadInterrupted: "⚠️ El bot se está reiniciando por una actualización — tu descarga se interrumpió. Envía el enlace de nuevo dentro de un minuto.",
+  fileTooBig: (mb, url) =>
+    `El archivo resultó grande (${mb} MB) — Telegram no deja que el bot lo envíe.\nDescárgalo aquí: ${url}`,
+  sendingFile: "📤 Enviando el archivo...",
+  sendingAlbum: (count) => `📤 Esta publicación tiene varios archivos (${count}) — los envío como álbum...`,
+  failedPrefix: "❌ Error: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `Fuente: ${sourceUrl}\n` +
+        "Todos los derechos del video pertenecen a su autor.\n" +
+        "Descargado gratis con @VideonerBot",
+      `📣 Novedades del proyecto: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 Compartir: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `Para descargar, suscríbete a nuestro canal ${channel} — es la única condición, el servicio sigue siendo gratis.\n\n` +
+    "Suscríbete y pulsa «Ya me suscribí».",
+  openChannelButton: "📣 Abrir el canal",
+  checkSubscriptionButton: "Ya me suscribí",
+  subscribeThanks: "¡Gracias! Ahora envíame el enlace de un video.",
+  subscribeThanksResuming: "¡Gracias! Retomo tu enlace ahora mismo.",
+  subscribeStillMissing: "Todavía no veo la suscripción. Suscríbete y pulsa de nuevo.",
+  channelNotice: (channel) => `\n\nEl enlace a esta publicación aparecerá en ${channel} — de forma anónima, sin tu nombre.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "Descarga este y cualquier otro video gratis: @VideonerBot",
+  errorStoryNeedsId:
+    "envía el enlace de una historia concreta: ábrela en la app de Instagram y toca Compartir → Copiar enlace.",
+  errorInstagramStory:
+    "Las historias de Instagram solo son visibles para quienes han iniciado sesión.",
+  errorLoginRequired:
+    "Esta publicación no está disponible sin iniciar sesión: la plataforma solo la muestra a " +
+    "usuarios con sesión iniciada. Pasa con publicaciones privadas, contenido con restricción de edad y " +
+    "publicaciones compartidas con un público limitado.\n\n" +
+    "Las publicaciones públicas se descargan sin problemas — prueba con otro enlace.",
+  errorUnsupportedPlatform:
+    "No pude reconocer ese enlace — asegúrate de que sea un enlace directo a un video de YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest o Threads.",
+  errorFileTooLarge: "el archivo pesa más de 2 GB — Telegram no deja que los bots envíen archivos más grandes. Descárgalo en el sitio web o con la extensión para el navegador — botones abajo. O envía el enlace de nuevo y elige una calidad más baja.",
+  siteButton: "🌐 Descargar en el sitio web",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ Las calidades de más de ${limit} están ocultas: Telegram no deja que los bots envíen archivos más grandes. Puedes descargarlas en el sitio web o con la extensión para el navegador — botones abajo.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ Este video es demasiado pesado para Telegram incluso en la calidad más baja (~${smallest}): Telegram no deja que los bots envíen archivos de más de 2 GB. Aquí puedes obtener solo el audio; el video — en el sitio web o con la extensión para el navegador (botones abajo).`,
+  errorFormatUnavailable: "Esa calidad no está disponible para este video. Envía el enlace de nuevo — te mostraré la lista actual.",
+  errorNoVideoContent: "Este enlace no tiene ningún video para descargar — parece que la publicación solo tiene fotos.",
+  errorRegionBlocked:
+    "Este video está bloqueado fuera del país del autor — la plataforma no se lo " +
+    "entrega a nuestro servidor. No hay forma de evitarlo: la restricción es de su lado." +
+    "\n\nLos demás enlaces se descargan como siempre.",
+  errorRateLimited: "Demasiados enlaces seguidos — espera un poco y envíalo de nuevo.",
+  errorYoutubeDailyLimit: (gb) => `descargaste más de ${gb} GB de YouTube en las últimas 24 horas — es el límite diario del bot por persona. Se cuentan las últimas 24 horas, así que podrás descargar nuevos videos de YouTube un poco más tarde. Las demás plataformas funcionan como siempre.`,
+  playlistStoppedByLimit: (dropped) => `⏹ Lista detenida: se alcanzó el límite diario de YouTube. Videos sin descargar: ${dropped}. Envía de nuevo el enlace de la lista más tarde.`,
+  errorPlatformRefused:
+    "la plataforma no le entregó este video a nuestro servidor. Pasa con publicaciones " +
+    "privadas o con restricción de edad, y a veces la plataforma simplemente limita el acceso " +
+    "por un tiempo. Inténtalo de nuevo en unos minutos.",
+  errorThreadsNoMedia:
+    "en esta publicación de Threads no se ve ningún video ni foto. O es una publicación solo de texto, o " +
+    "Threads muestra sus archivos solo a usuarios con sesión iniciada — esas publicaciones no se pueden descargar sin iniciar sesión.",
+  extensionHint:
+    "\n\n💻 Puedes descargarlo con la extensión de Videoner para el navegador en un ordenador: " +
+    "descarga con tu propia sesión en la plataforma, y ninguna contraseña ni cookie sale de tu navegador.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 Para descargar publicaciones como esta, conecta tu cuenta de ${platform} al bot — una sola vez. Después el bot descarga todo lo que tú puedes ver: publicaciones privadas, reels e historias, también desde el móvil. El botón de abajo muestra cómo.${withExtension ? "\n\n💻 O descárgalo con la extensión de Videoner para el navegador en un ordenador." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ Tu cuenta de ${platform} conectada no pudo abrir esta publicación. Puede que la sesión haya dejado de funcionar — vuelve a conectar la cuenta. O esa cuenta no tiene acceso a la publicación.${withExtension ? "\n\n💻 También puedes descargarlo con la extensión de Videoner para el navegador en un ordenador." : ""}`,
+  connectAccountButton: "🔑 Conectar cuenta",
+  reconnectAccountButton: "🔑 Volver a conectar",
+  extensionButton: "🧩 Descargar con la extensión",
+  extensionCommand:
+    "🧩 Videoner para tu navegador: un botón Descargar directamente en la página del video — YouTube, Instagram, TikTok, VK, videos privados de tu cuenta y lecciones de GetCourse.\n\nPara Chrome, Edge, Opera, Yandex Browser y Firefox en un ordenador.",
+  extensionPageButton: "🧩 Instalar la extensión",
+  addToGroupButton: "👥 Agregar a un grupo",
+  newsButton: "📣 Novedades del proyecto",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novedades del proyecto: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ Configuración del bot en este grupo\n\n" +
+    `🗑 Borrar el mensaje con el enlace: ${s.deleteLinks ? "sí" : "no"}\n` +
+    "Cuando se envía el video, el mensaje que solo contenía el enlace se borra — en el chat queda solo el video con el nombre de quien lo compartió.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ Ahora no puedo borrar mensajes: hazme administrador con el permiso «Eliminar mensajes».\n"
+      : "") +
+    `\n✍️ Texto bajo el video: ${{ full: "completo", short: "título y fuente", none: "sin texto" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 Calidad: ${s.quality === "max" ? "la más alta que acepta Telegram" : "estándar (720p)"}\n` +
+    `\n⏱ Videos largos: ${s.longVideos ? "de cualquier duración" : "solo hasta 15 minutos"}\n` +
+    `\n🔑 Quién puede conectar sus cuentas (para historias y publicaciones privadas): ${s.cookiesBy === "all" ? "cualquier miembro" : "solo los administradores"}\n` +
+    `\n🌐 Idioma de las respuestas: ${s.language ? langName(s.language) : "el de cada miembro"}\n` +
+    "\nSolo los administradores del grupo pueden cambiar la configuración.",
+  settingsDeleteButton: (on) => `🗑 Borrar enlaces: ${on ? "sí" : "no"}`,
+  settingsCaptionButton: (style) => `✍️ Texto: ${{ full: "completo", short: "corto", none: "ninguno" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 Calidad: ${mode === "max" ? "máxima" : "720p"}`,
+  settingsLongButton: (on) => `⏱ Videos largos: ${on ? "sí" : "hasta 15 min"}`,
+  settingsDoneButton: "✅ Listo",
+  settingsAdminsOnly: "Solo los administradores del grupo pueden cambiar la configuración.",
+  settingsGroupsOnly: "La configuración es para grupos: agrégame a un grupo y envía /settings allí.",
+  settingsFailed: "No se pudo guardar la configuración, inténtalo de nuevo.",
+  settingsCookiesButton: (by) => `🔑 Conectar cuentas: ${by === "all" ? "todos" : "administradores"}`,
+  accountsIntro:
+    "🔑 Cuentas conectadas\n\nEl bot puede descargar lo que solo ven quienes han iniciado sesión (historias de Instagram, publicaciones privadas) — usando tu cuenta. Una sesión funciona donde la conectaste: la del chat privado sirve para tus descargas, incluidos tus propios enlaces en grupos que no tienen cuenta propia; la conectada a un grupo sirve para todos sus miembros.",
+  accountsHowTo:
+    "Cómo conectar:\n1. Lo más fácil: la extensión de Videoner en un ordenador — inicia sesión en el sitio de la plataforma, abre la ventana de Videoner, pulsa «🔑 Conecta tu cuenta de … al bot» y envíame el código. Para un grupo, envía /connect CÓDIGO en ese grupo.\n2. O envíame un archivo cookies.txt (cookies exportadas del navegador), o pega su texto en un mensaje.\n3. Desde un teléfono Android — con Firefox y el complemento Cookie-Editor: https://videoner.download/es/blog/android-firefox",
+  accountsWarning:
+    "⚠️ A las plataformas no les gustan las descargas automáticas y pueden restringir o bloquear la cuenta. Mejor conecta una cuenta secundaria, no la principal. Las cookies se guardan cifradas, se usan solo para descargar y se eliminan con los botones de abajo.",
+  accountsNone: "Todavía no hay nada conectado.",
+  accountsGroupTitle: "🔑 Cuentas conectadas a este grupo",
+  accountsGroupHowTo:
+    "Para conectar una cuenta para todo el grupo: obtén un código con el botón «🔑 Conecta tu cuenta de … al bot» en la extensión de Videoner y envía aquí /connect CÓDIGO. Si conectaste una cuenta solo en tu chat privado, el bot la usa aquí para tus propios enlaces. Tus conexiones: /accounts en un chat privado con @VideonerBot.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ la sesión no funciona)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ la sesión no funciona)"}`,
+  accountsWhereHere: "chat privado",
+  accountsWhereGroup: (title) => `grupo «${title}»`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 Eliminar todas mis conexiones",
+  accountsDeleted: "Eliminado.",
+  accountsDeletedAll: (n) => `Conexiones eliminadas: ${n}.`,
+  accountsNotAllowed: "Solo quien la conectó o un administrador del grupo puede eliminarla.",
+  connectUsage:
+    "Envía /connect CÓDIGO. El código te lo da el botón «🔑 Conecta tu cuenta de … al bot» en la extensión de Videoner en un ordenador. Tus conexiones: /accounts.",
+  connectOnlyAdmins: "Solo los administradores pueden conectar cuentas a este grupo (ver /settings).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} conectado ${where}. Ahora el bot también descarga lo que solo ven quienes han iniciado sesión. Ver o eliminar: /accounts.\n\n⚠️ La plataforma puede restringir la cuenta por las descargas automáticas — mejor usa una secundaria.`,
+  connectWhereGroup: "a este grupo",
+  connectWhereHere: "para tus descargas en el chat privado y el modo inline",
+  connectCodeNotFound: "Código no encontrado o caducado (los códigos duran 10 minutos). Obtén uno nuevo en la extensión de Videoner.",
+  connectRejectedNoSession: "Estas cookies no tienen una sesión iniciada. Inicia sesión en el sitio de la plataforma y vuelve a exportar las cookies.",
+  connectRejectedUnknown: "No se encontraron cookies de las plataformas compatibles: Instagram, Facebook, YouTube, X, VK, TikTok.",
+  connectUnavailable: "Conectar cuentas todavía no está disponible.",
+  connectFailed: "No se pudo conectar, inténtalo de nuevo.",
+  connectFileTooBig: "El archivo es demasiado grande — exporta solo las cookies del sitio que necesitas.",
+  connectNotAnonymous: "Conecta la cuenta como tú mismo, no de forma anónima como el grupo: si no, las conexiones de los administradores se mezclan. Anulé el código — obtén uno nuevo.",
+  connectCodeInGroup:
+    "Un código de conexión publicado en el chat del grupo lo pueden ver otros — lo anulé y borré el mensaje. Obtén uno nuevo y envíalo con /connect CÓDIGO: borro ese mensaje con el comando al instante.",
+  groupWelcome:
+    "👋 ¡Hola! Publica en este chat enlaces a videos de TikTok, Instagram, YouTube, VK y otras plataformas — responderé con el propio video.\n\n" +
+    "Descargo por mi cuenta los clips de hasta 15 minutos, sin comandos, y el resto del tiempo me quedo callado.\n\n⚙️ Los administradores del grupo pueden ajustarme con /settings: borrar los mensajes con enlaces, estilo del texto, calidad, videos largos e idioma.\n\n⚡ Añade -audio después de un enlace para recibir el sonido, o -hd para la mejor calidad.\n\n📣 Novedades del proyecto: @videonerdownload",
+  errorTooLong: "el video es demasiado largo — todavía no podemos descargar videos tan largos.",
+  errorUnknown: "no se pudo descargar este video. Inténtalo un poco más tarde o envía otro enlace.",
+  inlineHintButton: "Enviar un enlace al bot",
+  inlineResultTitle: "⬇️ Descargar video",
+  inlineResultDescription: "El video se publicará directamente en este chat",
+  inlinePlaceholder: "⏬ Descargando, puede tardar un par de minutos...",
+  inlineOpenBot: "Abrir el bot",
+  inlineOnlySingleVideo:
+    "Este modo envía un solo video. Para publicaciones con varios archivos o fotos, envía el enlace al bot en un chat privado.",
+  inlineSubscribeRequired: (channel: string) =>
+    `Para descargar, suscríbete a ${channel} e inténtalo de nuevo.`,
+  inlineRateLimited: "Demasiadas solicitudes seguidas. Espera un minuto e inténtalo de nuevo.",
+  queueRest: (count) => `\n\n📋 Enlaces que siguen en la cola: ${count}. Te los mostraré uno por uno después de este.`,
+  queuedOne: (position) =>
+    `📋 Enlace en la cola, n.º ${position}. Primero terminamos el actual — luego te muestro la elección de calidad para este.`,
+  queuedMany: (added, waiting) =>
+    `📋 Enlaces añadidos a la cola: ${added}. En espera en total: ${waiting}. Te los mostraré uno por uno después del actual.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "Este enlace ya está en la cola — no lo añado dos veces."
+      : `Los enlaces que ya están en la cola no se añaden dos veces (repetidos: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `La cola admite como máximo ${limit} enlaces — los sobrantes no se añadieron (${rejected}). Envíalos cuando la cola avance.`,
+  skipButton: "✖️ No descargar",
+  skipped: "⏭ Enlace omitido.",
+  chooseTimedOut: "⌛ No se eligió ninguna calidad en 30 minutos — omito este enlace.",
+  queueLostOnRestart: (count) =>
+    `⚠️ El bot se está reiniciando por una actualización — la cola se vació (enlaces: ${count}). Envíalos de nuevo dentro de un minuto.`,
+  subtitlesButton: "📝 Subtítulos",
+  subtitlesBack: "⬅️ Volver a la calidad",
+  subtitlesAuto: "auto",
+  subtitlesChoose: "Elige el idioma de los subtítulos",
+  subtitlesPreparing: "📝 Preparando los subtítulos...",
+  subtitlesFailed: "No se pudieron descargar los subtítulos en este idioma. Prueba con otro idioma.",
+  subtitlesBusy: "YouTube no está entregando subtítulos en este momento — inténtalo de nuevo en unos minutos.",
+  playlistFound: (title, count) =>
+    `📃 Lista${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} videos.\nLos descargaré uno por uno. ¿En qué formato?`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 Mejor calidad",
+  playlistAudioButton: "🎵 Solo audio (mp3)",
+  playlistNoButton: "✖️ No, gracias",
+  playlistQueued: (count) =>
+    `📃 Videos de la lista en la cola: ${count}. Te los enviaré uno por uno. Detén la descarga con el botón de abajo o con /stop.`,
+  playlistFailed: "No se pudo abrir la lista — puede que sea privada. Envía el enlace de un solo video.",
+  stopButton: "⏹ Detener",
+  stopped: (dropped) => `⏹ Detenido.${dropped ? ` Enlaces quitados de la cola: ${dropped}.` : ""}`,
+  nothingToStop: "No se está descargando nada en este momento.",
+  languageChoose: "🌐 Elige el idioma del bot. «Auto» sigue el idioma de tu Telegram.",
+  languageChooseGroup: "🌐 El idioma de las respuestas del bot en este grupo. «Auto» — el idioma de Telegram de cada miembro.",
+  languageAuto: "Auto — como en Telegram",
+  languageAutoGroup: "Auto — el de cada miembro",
+  languageSaved: (name) => `✅ Idioma del bot: ${name}. Cámbialo con /language.`,
+  languageSavedAuto: "✅ El bot sigue el idioma de tu Telegram. Cámbialo con /language.",
+  settingsLanguageButton: (name) => `🌐 Idioma: ${name ?? "automático"}`,
+  settingsBack: "⬅️ Volver a la configuración",
+};
+
 const uk: Messages = {
   start: "Привіт! Надішли мені посилання на відео з YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads — я допоможу його завантажити.\n\n✨ Якість нічим не обмежена: віддам усе, що є на платформі, аж до 4K — аби файл вмістився у 2 ГБ, більше Telegram боту надіслати не дає. Платних функцій тут немає взагалі.\n\nПовністю безкоштовно: без підписок, без реклами, без вбудованих покупок.\n\n🧩 Завантажуєте на комп'ютері? Встановіть розширення для браузера — кнопка «Завантажити» з'явиться прямо на сторінці відео: videoner.download/uk/extension\n\n👥 Додайте мене в групу — сам надсилатиму відео за посиланнями, які там публікують.\n\n⚡ Без вибору якості: допишіть після посилання -audio — надішлю звук (mp3), -hd — відео в найкращій якості.\n\n📣 Новини проєкту: @videonerdownload\n\n🌐 Мова бота: /language",
   notLink: "Це не схоже на посилання. Надішли посилання на відео.",
@@ -3126,4 +3346,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es };

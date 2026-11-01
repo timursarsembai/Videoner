@@ -13,9 +13,9 @@ En TikTok hay publicaciones en las que se deslizan imágenes en lugar de ver un 
 
 Para cualquier publicación con varias fotos — en TikTok, Instagram o Threads — ahora hay tres opciones:
 
-- **📷 Download photos** (descargar fotos) — todas las fotos en un álbum, como antes.
-- **🎞 Slideshow (video)** (presentación en vídeo) — un solo vídeo con todas las fotos: cada una se muestra 3 segundos, en formato vertical, como en TikTok.
-- **📷+🎞 Photos and slideshow** (fotos y presentación) — en un solo álbum: primero el vídeo y después todas las fotos.
+- **📷 Descargar fotos** (descargar fotos) — todas las fotos en un álbum, como antes.
+- **🎞 Presentación (video)** (presentación en vídeo) — un solo vídeo con todas las fotos: cada una se muestra 3 segundos, en formato vertical, como en TikTok.
+- **📷+🎞 Fotos y presentación** (fotos y presentación) — en un solo álbum: primero el vídeo y después todas las fotos.
 
 La presentación se crea sin música, solo con las imágenes.
 

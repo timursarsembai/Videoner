@@ -10,8 +10,8 @@ Dos formas nuevas de descargar videos más rápido.
 ¿Quieres enseñarle un video a un amigo sin reenviarle el enlace? Ahora puedes enviar el video a cualquier chat de Telegram sin salir de él:
 
 1. En el campo de mensaje escribe `@VideonerBot`, un espacio y el enlace del video.
-2. Sobre el teclado aparecerá la tarjeta «Download video» (descargar video): tócala.
-3. En el chat aparecerá el mensaje «Downloading…» (descargando) y, en un par de minutos, en su lugar estará el video.
+2. Sobre el teclado aparecerá la tarjeta «Descargar video»: tócala.
+3. En el chat aparecerá el mensaje «Descargando…» y, en un par de minutos, en su lugar estará el video.
 
 No hace falta añadir el bot a ese chat: funciona en cualquier conversación.
 

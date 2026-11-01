@@ -30,6 +30,6 @@ Y mientras una persona descarga un video largo, el bot ya no se «congela» para
 
 ## Subtítulos de YouTube
 
-Debajo de los videos de YouTube apareció el botón **«Subtitles»** (subtítulos). Púlsalo, elige el idioma y el bot te enviará un archivo **.srt**. Son los subtítulos del autor del video y, si no los hay en el idioma del video, los automáticos. Después puedes volver y descargar el video.
+Debajo de los videos de YouTube apareció el botón **«Subtítulos»** (subtítulos). Púlsalo, elige el idioma y el bot te enviará un archivo **.srt**. Son los subtítulos del autor del video y, si no los hay en el idioma del video, los automáticos. Después puedes volver y descargar el video.
 
 En el sitio [videoner.download](https://videoner.download) funciona igual: junto a «video» y «audio» está el botón «subtítulos».

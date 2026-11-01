@@ -1148,6 +1148,91 @@ const TEXTS = {
     langAuto: "Auto",
     langLabel: "Idioma",
   },
+  es: {
+    loading: "Obteniendo información del video…",
+    notVideoPage:
+      "Abre la página de un video en YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest o Threads y vuelve a hacer clic en el ícono. Clase de GetCourse: si la página de la clase estaba abierta antes de instalar la extensión, recárgala.",
+    gcLesson: "Clase de GetCourse",
+    gcPick: "Esta clase tiene varios videos: elige uno",
+    gcVideo: (n) => `Video ${n}`,
+    gcNote: "Tu navegador descarga y une el video. Puedes cerrar esta ventana, pero no el navegador.",
+    gcNoStream: "No se pudo obtener el video del reproductor. Recarga la clase e inténtalo de nuevo.",
+    video: "Video",
+    photo: "Fotos en tamaño original",
+    slideshow: "Presentación (video)",
+    gallery: "Fotos + presentación",
+    audioOnly: "Solo audio (mp3)",
+    subtitles: "Subtítulos (.srt)",
+    subtitlesAuto: "automáticos",
+    back: "Atrás",
+    starting: "Iniciando la descarga…",
+    waiting: "Esperando un lugar libre en el servidor…",
+    downloading: "Descargando",
+    converting: "Procesando",
+    left: (eta) => `quedan ${eta}`,
+    saving: "Guardando en Descargas…",
+    done: "Listo: el archivo está en Descargas.",
+    news: "📣 Novedades del proyecto: @videonerdownload",
+    again: "Descargar otro",
+    directDownload: "Descargar video (mp4)",
+    directPhoto: "Descargar foto (jpg)",
+    directNote: "Directo desde el navegador, sin cola en el servidor",
+    moreOptions: "Otras calidades y audio",
+    fallback: "La descarga en el navegador falló: descargando por el servidor.",
+    openSite: "Abrir videoner.download",
+    retry: "Intentar de nuevo",
+    min: "min",
+    sec: "s",
+    errNetwork: "No se puede conectar con Videoner. Revisa tu conexión e inténtalo de nuevo.",
+    errRateLimit: "Demasiadas solicitudes seguidas. Espera un minuto e inténtalo de nuevo.",
+    errUnsupported:
+      "En esta página no hay ningún video que Videoner pueda descargar. Abre la página de un video o publicación concretos.",
+    errYoutubeDaily: "Se agotó el límite diario de YouTube para tu red. Inténtalo de nuevo mañana.",
+    errTooLarge: "El archivo es demasiado grande en esta calidad. Elige una menor.",
+    errLogin:
+      "Esta publicación solo está disponible para usuarios con sesión iniciada. Las publicaciones públicas se descargan sin problema.",
+    errRegion: "El autor restringió esta publicación por país, así que no se puede descargar.",
+    errServerBlocked: "La plataforma está limitando temporalmente nuestro servidor. Inténtalo de nuevo más tarde.",
+    errFailed: "La descarga falló. Inténtalo de nuevo o elige otra calidad.",
+    errGeneric: "Algo salió mal. Inténtalo de nuevo en un rato.",
+    acctButton: (p) => `🔑 Conecta tu cuenta de ${p} al bot`,
+    acctWarn: (p) =>
+      `@VideonerBot podrá descargar con tu cuenta de ${p} lo que solo ven los usuarios con sesión iniciada: historias, publicaciones privadas. A las plataformas no les gustan las descargas automáticas y pueden restringir la cuenta: mejor conecta una secundaria. El navegador pedirá permiso para leer las cookies de este sitio; solo las cookies de ${p} van al servidor, cifradas.`,
+    acctConfirm: "Conectar",
+    acctCancel: "Cancelar",
+    acctSending: "Conectando…",
+    acctDenied: "No se puede conectar la cuenta sin el permiso de acceso a las cookies.",
+    acctNoLogin: (p) => `No has iniciado sesión en ${p} en este navegador. Inicia sesión en el sitio e inténtalo de nuevo.`,
+    acctFailed: "No funcionó. Inténtalo de nuevo en un rato.",
+    acctCodeTitle: (p) => `Código para conectar ${p}:`,
+    acctCodeHelp:
+      "Envíalo a @VideonerBot en un chat privado, para tus propias descargas. Para un grupo, envía /connect CODE en el grupo. El código es válido durante 10 minutos.",
+    acctCopy: "Copiar",
+    acctCopied: "Copiado",
+    acctOpenBot: "Abrir el bot",
+    acctNewCode: "Obtener un código nuevo",
+    acctList: "Mis conexiones en el bot",
+    acctRevoke: "Revocar el acceso a las cookies",
+    acctRevoked:
+      "Acceso a las cookies revocado: la extensión ya no las lee. Las cuentas que ya conectaste siguen en el bot: elimínalas en «Mis conexiones en el bot».",
+    playlistOffer: "📃 Descargar toda la lista",
+    playlistTitle: (title, n) => `📃 Lista${title ? ` «${title}»` : ""}: ${n} videos`,
+    playlistHint: "Los descargaré uno por uno. Puedes cerrar esta ventana.",
+    playlist720: "Lista en 720p",
+    playlistBest: "Lista en la mejor calidad",
+    playlistAudio: "Lista: solo audio (mp3)",
+    playlistProgress: (i, n) => `Video ${i} de ${n}`,
+    playlistStats: (done, failed) => `Descargados: ${done}${failed ? ` · fallidos: ${failed}` : ""}`,
+    playlistStop: "⏹ Detener",
+    playlistDone: (done, n) => `Lista descargada: ${done} de ${n}.`,
+    playlistStopped: (done, n) => `Detenido. Descargados: ${done} de ${n}.`,
+    playlistLoading: "Obteniendo la lista de videos…",
+    close: "Cerrar",
+    updateAvailable: (v) => `Ya está disponible la versión ${v}.`,
+    updateHow: "Cómo actualizar",
+    langAuto: "Auto",
+    langLabel: "Idioma",
+  },
   en: {
     loading: "Fetching video info…",
     notVideoPage:
@@ -1238,12 +1323,12 @@ const TEXTS = {
 // Язык окошка: выбранный вручную (список вверху окошка, хранится в
 // storage.local под LANG_KEY) или язык браузера — русский, украинский,
 // казахский, арабский, китайский (zh-CN, zh-TW, zh-HK → zh, по базовому
-// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), остальным английский. Тот же выбор делают content.js и getcourse.js
+// коду), хинди (hi, hi-IN → hi), индонезийский (id, id-ID и старый код in → id), суахили (sw, sw-KE, sw-TZ → sw), немецкий (de, de-DE, de-AT, de-CH → de), французский (fr, fr-FR, fr-CA, fr-BE, fr-CH → fr), итальянский (it, it-IT, it-CH → it), португальский (pt, pt-BR, pt-PT → pt, бразильский вариант), испанский (es, es-ES, es-419, es-MX, es-AR → es), остальным английский. Тот же выбор делают content.js и getcourse.js
 // (им модули недоступны). lang и t — живые привязки:
 // loadLang() меняет их до первой отрисовки окошка. Арабский пишется справа
 // налево — окошко ставит dir="rtl" (popup.js, isRtl).
 export const LANG_KEY = "uiLang";
-export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", en: "English" };
+export const LANG_NAMES = { ru: "Русский", uk: "Українська", kk: "Қазақша", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", en: "English" };
 export const browserLang = pickLang(chrome.i18n.getUILanguage());
 export let lang = browserLang;
 export let t = TEXTS[lang];
@@ -1350,11 +1435,11 @@ export function formatEta(seconds) {
 export function formatSize(bytes) {
   if (!Number.isFinite(bytes) || bytes <= 0) return "";
   const gb = bytes / 1024 ** 3;
-  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому и португальскому — латинские GB/MB, как и цифры (ar-u-nu-latn);
+  // Арабскому, китайскому, хинди, индонезийскому, суахили, немецкому, итальянскому, португальскому и испанскому — латинские GB/MB, как и цифры (ar-u-nu-latn);
   // французскому — свои Go/Mo.
-  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt";
+  const latin = lang === "en" || lang === "ar" || lang === "zh" || lang === "hi" || lang === "id" || lang === "sw" || lang === "de" || lang === "it" || lang === "pt" || lang === "es";
   const [gbUnit, mbUnit] = lang === "fr" ? ["Go", "Mo"] : latin ? ["GB", "MB"] : ["ГБ", "МБ"];
-  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", en: "en-US" }[lang];
+  const locale = { ru: "ru-RU", uk: "uk-UA", kk: "kk-KZ", ar: "ar-u-nu-latn", zh: "zh-CN", hi: "hi-IN-u-nu-latn", id: "id-ID", sw: "sw-KE", de: "de-DE", fr: "fr-FR", it: "it-IT", pt: "pt-BR", es: "es-ES", en: "en-US" }[lang];
   if (gb >= 1) return `~${gb.toLocaleString(locale, { maximumFractionDigits: 1 })} ${gbUnit}`;
   return `~${Math.max(1, Math.round(bytes / 1024 ** 2))} ${mbUnit}`;
 }

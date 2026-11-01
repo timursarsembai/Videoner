@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('es')) {
+      return (
+        '¡Hola! Iniciaste este bot, pero todavía no has descargado nada — ' +
+        'quizá no estaba claro por dónde empezar.\n\n' +
+        'Es un solo paso: envíame el enlace de un video, ' +
+        'por ejemplo https://youtube.com/watch?v=jNQXAC9IVRw — y te devuelvo ' +
+        'el archivo en unos treinta segundos.\n\n' +
+        'Funciona con YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, ' +
+        'Rutube, OK.ru, Pinterest y Threads. Totalmente gratis y en cualquier ' +
+        'calidad — hasta 4K, el HD no cuesta nada extra.\n\n' +
+        'Si algo no funciona, solo responde aquí. Este es ' +
+        'el único recordatorio, no volveré a molestarte.'
+      );
+    }
+
     if (code.startsWith('pt')) {
       return (
         'Olá! Você iniciou este bot, mas ainda não baixou nada — ' +

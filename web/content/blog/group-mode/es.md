@@ -8,7 +8,7 @@ Ahora puedes añadir [@VideonerBot](https://t.me/VideonerBot) a un chat de grupo
 ## Cómo añadirlo
 
 1. Abre [@VideonerBot](https://t.me/VideonerBot) y pulsa /start.
-2. Pulsa el botón **«Add to a group»** (añadir a un grupo) y elige el chat.
+2. Pulsa el botón **«Agregar a un grupo»** (añadir a un grupo) y elige el chat.
 3. Listo: el bot saludará y empezará a funcionar.
 
 ## Cómo se comporta el bot en un grupo

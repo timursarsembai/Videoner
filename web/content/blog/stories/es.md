@@ -7,14 +7,14 @@ Las historias y las publicaciones privadas solo las ve quien ha iniciado sesión
 
 ## Historias en la extensión
 
-La [extensión de Videoner](https://videoner.download/es/extension) descarga **historias de Instagram** directamente en el navegador, con tu sesión. Abre una historia y pulsa «Download» (descargar): el video se guardará en mp4 y la foto en jpg.
+La [extensión de Videoner](https://videoner.download/es/extension) descarga **historias de Instagram** directamente en el navegador, con tu sesión. Abre una historia y pulsa «Descargar» (descargar): el video se guardará en mp4 y la foto en jpg.
 
 ## Conectar una cuenta al bot
 
 Para que el bot también descargue historias y publicaciones privadas, conéctale tu cuenta:
 
 1. Inicia sesión en el sitio de la plataforma en un navegador con la extensión de Videoner.
-2. Pulsa el icono de Videoner y, en la parte inferior de la ventana, **«Connect your … account to the bot»** (conectar tu cuenta al bot).
+2. Pulsa el icono de Videoner y, en la parte inferior de la ventana, **«Conecta tu cuenta de … al bot»** (conectar tu cuenta al bot).
 3. Concede el acceso cuando el navegador lo pida: la extensión te mostrará un código.
 4. Envía el código al bot [@VideonerBot](https://t.me/VideonerBot) por chat privado. El código es válido durante 10 minutos.
 

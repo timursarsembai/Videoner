@@ -15,7 +15,7 @@ Para Instagram, Facebook y TikTok hay además un segundo botón: descargar la pu
 
 ## Cómo conectar una cuenta
 
-- **En el ordenador**: el botón «🔑 Connect your … account to the bot» en la ventana de la extensión Videoner (la extensión aún no está en español).
+- **En el ordenador**: el botón «🔑 Conecta tu cuenta de … al bot» en la ventana de la extensión Videoner (la extensión aún no está en español).
 - **En un móvil Android**: con Firefox y el complemento Cookie-Editor, [instrucciones](https://videoner.download/es/blog/android-firefox).
 - **Con un archivo**: envía cookies.txt al bot.
 

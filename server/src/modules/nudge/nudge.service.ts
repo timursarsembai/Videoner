@@ -127,6 +127,21 @@ export class NudgeService {
       );
     }
 
+    if (code.startsWith('ps')) {
+      return (
+        'سلام! تاسو دا بوټ پیل کړ، خو تر اوسه مو هېڅ نه دي ښکته کړي — ' +
+        'ښايي دا روښانه نه وي چې له کومه پیل وکړئ.\n\n' +
+        'یوازې یو ګام: دلته د یوې ویډیو لینک ولېږئ، ' +
+        'د بېلګې په توګه https://youtube.com/watch?v=jNQXAC9IVRw — او زه به ' +
+        'چمتو فایل تاسو ته شاوخوا نیمه دقیقه کې بېرته ولېږم.\n\n' +
+        'YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، ' +
+        'Rutube، OK.ru، Pinterest او Threads کار کوي. بشپړ وړیا او په هر ' +
+        'کیفیت — تر 4K پورې، د HD لپاره اضافي پیسې نشته.\n\n' +
+        'که څه کار ونه کړي، یوازې دلته ځواب ولیکئ. دا ' +
+        'یوازینۍ یادونه ده، بیا به مو ونه ځوروم.'
+      );
+    }
+
     if (code.startsWith('ro') || code.startsWith('mo')) {
       return (
         'Salut! Ai pornit acest bot, dar încă n-ai descărcat nimic — ' +

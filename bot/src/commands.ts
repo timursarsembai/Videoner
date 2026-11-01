@@ -285,6 +285,14 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "stop", description: "Oprește descărcarea și coada" },
     { command: "language", description: "Limba botului" },
   ],
+  ps: [
+    { command: "start", description: "د بوټ د کارولو طریقه" },
+    { command: "extension", description: "د براوزر توسیع" },
+    { command: "accounts", description: "د سټوریو او شخصي پوسټونو لپاره ستاسو حسابونه" },
+    { command: "connect", description: "د توسیع د کوډ په واسطه حساب وصل کړئ" },
+    { command: "stop", description: "ښکته کول او کتار ودروئ" },
+    { command: "language", description: "د بوټ ژبه" },
+  ],
 };
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
@@ -534,6 +542,13 @@ export const GROUP_COMMANDS: Record<Lang, { command: string; description: string
     { command: "connect", description: "Conectează un cont la acest grup cu un cod" },
     { command: "language", description: "Limba botului în acest grup (administratori)" },
     { command: "start", description: "Cum funcționează botul într-un grup" },
+  ],
+  ps: [
+    { command: "settings", description: "په دې ګروپ کې د بوټ تنظیمات (اډمینان)" },
+    { command: "accounts", description: "له دې ګروپ سره وصل شوي حسابونه" },
+    { command: "connect", description: "د کوډ په واسطه له دې ګروپ سره حساب وصل کړئ" },
+    { command: "language", description: "په دې ګروپ کې د بوټ ژبه (اډمینان)" },
+    { command: "start", description: "بوټ په ګروپ کې څنګه کار کوي" },
   ],
 };
 

@@ -1,6 +1,6 @@
 import { clip, splitTitle } from "./caption.js";
 
-export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro";
+export type Lang = "ru" | "uk" | "kk" | "en" | "ar" | "zh" | "hi" | "id" | "sw" | "de" | "fr" | "it" | "pt" | "es" | "uz" | "tr" | "fa" | "vi" | "bn" | "ur" | "pl" | "ja" | "ko" | "th" | "tl" | "am" | "om" | "ha" | "so" | "az" | "ky" | "tg" | "ms" | "nl" | "ro" | "ps";
 
 export function detectLang(languageCode?: string): Lang {
   const code = languageCode?.toLowerCase().split("-")[0];
@@ -17,9 +17,9 @@ export const NEWS_CHANNEL = "@videonerdownload";
 // Языки, которые можно выбрать вручную (/language), в порядке кнопок: по названию
 // языка на нём самом — латиница по алфавиту, затем кириллица, затем остальные.
 // Тот же порядок на сайте (web LANGUAGES) и в расширении (shared.js LANG_NAMES).
-export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "hi", "bn", "th", "am", "zh", "ja", "ko"];
+export const LANGS: Lang[] = ["om", "az", "id", "ms", "de", "en", "es", "fr", "ha", "it", "sw", "nl", "uz", "pl", "pt", "ro", "so", "tl", "vi", "tr", "kk", "ky", "ru", "tg", "uk", "ar", "ur", "fa", "ps", "hi", "bn", "th", "am", "zh", "ja", "ko"];
 // Название языка на нём самом — так его узнает и тот, кто других не читает.
-export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română" };
+export const LANGUAGE_NAMES: Record<Lang, string> = { ru: "Русский", uk: "Українська", kk: "Қазақша", en: "English", ar: "العربية", zh: "中文", hi: "हिन्दी", id: "Bahasa Indonesia", sw: "Kiswahili", de: "Deutsch", fr: "Français", it: "Italiano", pt: "Português", es: "Español", uz: "Oʻzbekcha", tr: "Türkçe", fa: "فارسی", vi: "Tiếng Việt", bn: "বাংলা", ur: "اردو", pl: "Polski", ja: "日本語", ko: "한국어", th: "ไทย", tl: "Tagalog", am: "አማርኛ", om: "Afaan Oromoo", ha: "Hausa", so: "Soomaali", az: "Azərbaycanca", ky: "Кыргызча", tg: "Тоҷикӣ", ms: "Bahasa Melayu", nl: "Nederlands", ro: "Română", ps: "پښتو" };
 
 export function isLang(value: unknown): value is Lang {
   return typeof value === "string" && (LANGS as string[]).includes(value);
@@ -7303,6 +7303,226 @@ const ro: Messages = {
   settingsBack: "⬅️ Înapoi la setări",
 };
 
+const ps: Messages = {
+  start: "سلام! د YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، Rutube، OK.ru، Pinterest یا Threads څخه د یوې ویډیو لینک راته ولېږئ — د هغې په ښکته کولو کې به مو مرسته وکړم.\n\n✨ د کیفیت هېڅ محدودیت نشته: هر کیفیت چې پلاټفارم یې وړاندې کوي، تر 4K پورې، تاسو ته رسېږي — په دې شرط چې فایل له 2 GB څخه لوی نه وي؛ دا د بوټونو لپاره د Telegram حد دی. دلته هېڅ پولي امکانات نشته.\n\nبشپړ وړیا: نه ګډون، نه اعلانونه، نه د اپلیکیشن دننه پېرودنې.\n\n🧩 په کمپیوټر ښکته کوئ؟ د براوزر توسیع نصب کړئ — د «ښکته کول» تڼۍ په مستقیم ډول د ویډیو په پاڼه کې ښکاري: videoner.download/ps/extension\n\n👥 ما یو ګروپ ته ور اضافه کړئ، او هغه لینکونه چې غړي یې هلته شریکوي، د هغو ویډیوګانې به ولېږم.\n\n⚡ د کیفیت ټاکل پرېږدئ: له لینک وروسته -audio ولیکئ چې یوازې غږ (mp3) ترلاسه کړئ، یا -hd د غوره کیفیت لپاره.\n\n📣 د پروژې خبرونه: ‎@videonerdownload\n\n🌐 د بوټ ژبه: ‎/language",
+  notLink: "دا لینک نه ښکاري. د یوې ویډیو لینک راته ولېږئ.",
+  inviteGreeting: "سلام! زه Videoner یم — له YouTube، TikTok، Instagram او نورو پلاټفارمونو څخه ویډیوګانې وړیا ښکته کوم. هغه ویډیو چې چا له تاسو سره شریکه کړې، چمتو کوم 👇",
+  inviteNotFound: "د دې بلنې لینک لپاره مې ویډیو ونه موندله. د یوې ویډیو لینک راته ولېږئ چې ښکته یې کړم.",
+  inviteUnavailable: "د دې لینک ویډیو مې پرانیستلای نه شوه — خدمت اوس ځواب نه ورکوي. یوه دقیقه وروسته همدا لینک بیا پرانیزئ.",
+  fetchingInfo: "🔍 د ویډیو معلومات راوړل کېږي...",
+  audioOnlyButton: "🎵 یوازې آډیو (mp3)",
+  photoButton: "📷 انځورونه ښکته کول",
+  slideshowButton: "🎞 سلایډ شو (ویډیو)",
+  galleryButton: "📷+🎞 انځورونه او سلایډ شو",
+  chooseQuality: (title, duration) => `«${title}»${duration ? `\n⏱ ${duration}` : ""}\n\nکیفیت وټاکئ:`,
+  sessionExpired: "ناسته پای ته ورسېده — لینک بیا ولېږئ",
+  downloading: "⏬ ښکته کېږي، کېدای شي څو دقیقې وخت ونیسي...",
+  downloadFailed: "ښکته کول ناکام شول",
+  downloadProgress: (percent, eta, done) =>
+    `⏬ ښکته کېږي: ${percent}%${eta ? ` · ${eta} پاتې` : ""}${done ? `\n${done}` : ""}`,
+  downloadFinishing: "⚙️ نږدې بشپړ دی — فایل یوځای کېږي...",
+  converting: (percent) => `⚙️ اړول کېږي: ${percent}%`,
+  etaUnderMinute: "له یوې دقیقې کم",
+  etaMinutes: (minutes) => `~${minutes} دقیقې`,
+  etaHours: (hours, minutes) => `~${hours} ساعته${minutes ? ` ${minutes} دقیقې` : ""}`,
+  downloadTimeout: "ښکته کول ډېر وخت نیسي — داسې ښکاري چې ویډیو ډېره درنه ده. ټیټ کیفیت وازمویئ.",
+  downloadInterrupted: "⚠️ بوټ د تازه کولو لپاره بیا پیل کېږي — ستاسو ښکته کول ودرېدل. مهرباني وکړئ یوه دقیقه وروسته لینک بیا ولېږئ.",
+  fileTooBig: (mb, url) =>
+    `فایل لوی شو (${mb} MB) — Telegram بوټ ته اجازه نه ورکوي چې ویې لېږي.\nله دې ځایه یې ښکته کړئ: ${url}`,
+  sendingFile: "📤 فایل لېږل کېږي...",
+  sendingAlbum: (count) => `📤 په دې پوسټ کې څو فایلونه (${count}) دي — د البوم په توګه یې لېږم...`,
+  failedPrefix: "❌ ناکام: ",
+  fileCaption: (title, sourceUrl, shareUrl, description) =>
+    composeCaption(
+      title,
+      description,
+      `سرچینه: ${sourceUrl}\n` +
+        "د ویډیو ټول حقونه د هغې جوړونکي پورې اړه لري.\n" +
+        "په ‎@VideonerBot وړیا ښکته شوې",
+      `📣 د پروژې خبرونه: ${NEWS_CHANNEL}`,
+      shareUrl && `🔗 شریکول: ${shareUrl}`,
+    ),
+  subscribeRequired: (channel) =>
+    `د ښکته کولو لپاره، مهرباني وکړئ زموږ په چینل ${channel} کې ګډون وکړئ — دا یوازینی شرط دی، خدمت وړیا پاتې کېږي.\n\n` +
+    "ګډون وکړئ او «ګډون مې وکړ» کېکاږئ.",
+  openChannelButton: "📣 چینل پرانیزئ",
+  checkSubscriptionButton: "ګډون مې وکړ",
+  subscribeThanks: "مننه! اوس د یوې ویډیو لینک راته ولېږئ.",
+  subscribeThanksResuming: "مننه! همدا اوس ستاسو لینک ته لاس اچوم.",
+  subscribeStillMissing: "ستاسو ګډون لا نه وینم. ګډون وکړئ او بیا یې کېکاږئ.",
+  channelNotice: (channel) => `\n\nد دې پوسټ لینک به په ${channel} کې خپور شي — په بې نومه ډول، ستاسو له نوم پرته.`,
+  channelPost: (title, url) =>
+    (title ? `🎬 ${title.slice(0, 200)}\n\n` : "") +
+    `${url}\n\n` +
+    "دا او هره بله ویډیو وړیا ښکته کړئ: ‎@VideonerBot",
+  errorStoryNeedsId:
+    "د یوې ټاکلې سټورۍ لینک ولېږئ: هغه د Instagram په اپلیکیشن کې پرانیزئ او «شریکول ← لینک کاپي کړئ» کېکاږئ.",
+  errorInstagramStory:
+    "د Instagram سټورۍ یوازې هغه کسان لیدلای شي چې خپل حساب ته ننوتي وي.",
+  errorLoginRequired:
+    "دا پوسټ له ننوتلو پرته نه لاسته راځي: پلاټفارم یې یوازې هغو " +
+    "کاروونکو ته ښیي چې ننوتي وي. دا د شخصي پوسټونو، د عمر محدودیت لرونکي منځپانګې " +
+    "او هغو پوسټونو سره پېښېږي چې له محدودو لیدونکو سره شریک شوي وي.\n\n" +
+    "عامه پوسټونه بې له ستونزې ښکته کېږي — بل لینک وازمویئ.",
+  errorUnsupportedPlatform:
+    "دا لینک مې ونه پېژانده — ډاډ ترلاسه کړئ چې دا د YouTube، TikTok، Instagram، Facebook، Twitter/X، Vimeo، VK، Rutube، OK.ru، Pinterest یا Threads څخه د ویډیو مستقیم لینک دی.",
+  errorFileTooLarge: "فایل له 2 GB څخه لوی دی — Telegram بوټونو ته اجازه نه ورکوي چې لوی فایلونه ولېږي. په وېبپاڼه کې یې یا د براوزر په توسیع یې ښکته کړئ — تڼۍ لاندې دي. یا لینک بیا ولېږئ او ټیټ کیفیت وټاکئ.",
+  siteButton: "🌐 په وېبپاڼه کې ښکته کول",
+  qualitiesHiddenBySize: (limit) =>
+    `\n\n⚖️ له ${limit} څخه دروند کیفیتونه پټ شوي: Telegram بوټونو ته اجازه نه ورکوي چې لوی فایلونه ولېږي. تاسو یې په وېبپاڼه کې یا د براوزر په توسیع ښکته کولای شئ — تڼۍ لاندې دي.`,
+  videoTooBigForTelegram: (smallest) =>
+    `\n\n⚖️ دا ویډیو حتی په تر ټولو ټیټ کیفیت (~${smallest}) کې هم د Telegram لپاره ډېره درنه ده: Telegram بوټونو ته اجازه نه ورکوي چې له 2 GB څخه لوی فایلونه ولېږي. دلته یوازې آډیو ترلاسه کولای شئ؛ ویډیو — په وېبپاڼه کې یا د براوزر په توسیع (تڼۍ لاندې دي).`,
+  errorFormatUnavailable: "دا کیفیت د دې ویډیو لپاره شتون نه لري. لینک بیا ولېږئ — تازه لیست به درته وښیم.",
+  errorNoVideoContent: "په دې لینک کې د ښکته کولو لپاره ویډیو نشته — داسې ښکاري چې پوسټ یوازې انځورونه لري.",
+  errorRegionBlocked:
+    "دا ویډیو د جوړونکي له هېواد څخه بهر بنده ده — پلاټفارم یې " +
+    "زموږ سرور ته نه ورکوي. د دې د تېرولو لار نشته: محدودیت د هغوی له خوا دی." +
+    "\n\nنور لینکونه د تل په څېر ښکته کېږي.",
+  errorRateLimited: "پرله پسې ډېر لینکونه — لږ صبر وکړئ او بیا یې ولېږئ.",
+  errorYoutubeDailyLimit: (gb) => `تاسو په تېرو 24 ساعتونو کې له YouTube څخه له ${gb} GB څخه ډېر ښکته کړي — دا د هر کس لپاره د بوټ ورځنی حد دی. حساب د وروستیو 24 ساعتونو له مخې کېږي، نو لږ وروسته کولای شئ د YouTube نوې ویډیوګانې ښکته کړئ. نور پلاټفارمونه د تل په څېر کار کوي.`,
+  playlistStoppedByLimit: (dropped) => `⏹ پلی لیست ودرول شو: د YouTube ورځني حد ته ورسېدئ. نه ښکته شوې ویډیوګانې: ${dropped}. وروسته د پلی لیست لینک بیا ولېږئ.`,
+  errorPlatformRefused:
+    "پلاټفارم دا ویډیو زموږ سرور ته ورنه کړه. دا د شخصي " +
+    "یا د عمر محدودیت لرونکو پوسټونو سره پېښېږي، او کله ناکله پلاټفارم یوازې " +
+    "لاسرسی د یو څه وخت لپاره محدودوي. څو دقیقې وروسته بیا هڅه وکړئ.",
+  errorThreadsNoMedia:
+    "د Threads په دې پوسټ کې هېڅ ویډیو یا انځور نه ښکاري. یا دا یوازې متني پوسټ دی، یا " +
+    "Threads خپل میډیا یوازې ننوتو کاروونکو ته ښیي — داسې پوسټونه له ننوتلو پرته نه شي ښکته کېدای.",
+  extensionHint:
+    "\n\n💻 تاسو یې په کمپیوټر کې د Videoner د براوزر په توسیع ښکته کولای شئ: " +
+    "توسیع ستاسو په خپل ننوتلو سره په پلاټفارم کې ښکته کوي، او هېڅ پټنوم یا cookies ستاسو له براوزر نه وځي.",
+  privateConnectHint: (platform, withExtension) =>
+    `\n\n🔑 د داسې پوسټونو د ښکته کولو لپاره، خپل ${platform} حساب له بوټ سره وصل کړئ — یوازې یو ځل. له هغې وروسته بوټ هر هغه څه ښکته کوي چې تاسو یې لیدلای شئ: شخصي پوسټونه، ریلز او سټورۍ، له موبایل څخه هم. لاندې تڼۍ یې طریقه ښیي.${withExtension ? "\n\n💻 یا یې په کمپیوټر کې د Videoner د براوزر په توسیع ښکته کړئ." : ""}`,
+  privateReconnectHint: (platform, withExtension) =>
+    `\n\n⚠️ ستاسو وصل شوي ${platform} حساب دا پوسټ پرانیستلای نه شو. کېدای شي ننوتل نور کار نه کوي — حساب بیا وصل کړئ. یا دا حساب پوسټ ته لاسرسی نه لري.${withExtension ? "\n\n💻 همدارنګه یې په کمپیوټر کې د Videoner د براوزر په توسیع ښکته کولای شئ." : ""}`,
+  connectAccountButton: "🔑 حساب وصل کړئ",
+  reconnectAccountButton: "🔑 بیا وصل کړئ",
+  extensionButton: "🧩 په توسیع ښکته کول",
+  extensionCommand:
+    "🧩 Videoner ستاسو د براوزر لپاره: د «ښکته کول» تڼۍ مستقیم د ویډیو په پاڼه کې — YouTube، Instagram، TikTok، VK، ستاسو له حساب څخه شخصي ویډیوګانې او د GetCourse درسونه.\n\nپه کمپیوټر کې د Chrome، Edge، Opera، Yandex Browser او Firefox لپاره.",
+  extensionPageButton: "🧩 توسیع نصب کړئ",
+  addToGroupButton: "👥 ګروپ ته اضافه کړئ",
+  newsButton: "📣 د پروژې خبرونه",
+  fileCaptionShort: (title, sourceUrl) =>
+    withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 د پروژې خبرونه: ${NEWS_CHANNEL}`, undefined),
+  sentBy: (name) => `👤 ${name}`,
+  groupSettings: (s, canDelete) =>
+    "⚙️ د دې ګروپ لپاره د بوټ تنظیمات\n\n" +
+    `🗑 د لینک لرونکي پیغام ړنګول: ${s.deleteLinks ? "هو" : "نه"}\n` +
+    "کله چې ویډیو ولېږل شي، هغه پیغام چې یوازې لینک یې درلود ړنګېږي — په چټ کې یوازې ویډیو د شریکوونکي له نوم سره پاتې کېږي.\n" +
+    (s.deleteLinks && !canDelete
+      ? "⚠️ اوس پیغامونه نه شم ړنګولای: ما د «پیغامونه ړنګول» له اجازې سره اډمین کړئ.\n"
+      : "") +
+    `\n✍️ د ویډیو لاندې متن: ${{ full: "بشپړ", short: "سرلیک او سرچینه", none: "بې متنه" }[s.caption] ?? s.caption}\n` +
+    `\n🎞 کیفیت: ${s.quality === "max" ? "تر ټولو لوړ چې Telegram یې مني" : "معیاري (720p)"}\n` +
+    `\n⏱ اوږدې ویډیوګانې: ${s.longVideos ? "هر اوږدوالی" : "یوازې تر 15 دقیقو پورې"}\n` +
+    `\n🔑 څوک کولای شي خپل حسابونه وصل کړي (د سټوریو او شخصي پوسټونو لپاره): ${s.cookiesBy === "all" ? "هر غړی" : "یوازې اډمینان"}\n` +
+    `\n🌐 د ځوابونو ژبه: ${s.language ? langName(s.language) : "د هر غړي خپله"}\n` +
+    "\nیوازې د ګروپ اډمینان کولای شي تنظیمات بدل کړي.",
+  settingsDeleteButton: (on) => `🗑 لینکونه ړنګول: ${on ? "هو" : "نه"}`,
+  settingsCaptionButton: (style) => `✍️ متن: ${{ full: "بشپړ", short: "لنډ", none: "هېڅ" }[style] ?? style}`,
+  settingsQualityButton: (mode) => `🎞 کیفیت: ${mode === "max" ? "تر ټولو لوړ" : "720p"}`,
+  settingsLongButton: (on) => `⏱ اوږدې ویډیوګانې: ${on ? "هو" : "تر 15 دقیقو"}`,
+  settingsDoneButton: "✅ بشپړ",
+  settingsAdminsOnly: "یوازې د ګروپ اډمینان کولای شي تنظیمات بدل کړي.",
+  settingsGroupsOnly: "تنظیمات د ګروپونو لپاره دي: ما یو ګروپ ته اضافه کړئ او هلته ‎/settings ولېږئ.",
+  settingsFailed: "تنظیمات خوندي نه شول، مهرباني وکړئ بیا هڅه وکړئ.",
+  settingsCookiesButton: (by) => `🔑 د حسابونو وصلول: ${by === "all" ? "هر څوک" : "اډمینان"}`,
+  accountsIntro:
+    "🔑 وصل شوي حسابونه\n\nبوټ کولای شي هغه څه چې یوازې ننوتي کسان یې ویني (د Instagram سټورۍ، شخصي پوسټونه) ستاسو په حساب ښکته کړي. هر ننوتل په هماغه ځای کار کوي چېرې چې مو وصل کړی: هغه چې په شخصي چټ کې وصل شوی ستاسو د ښکته کولو لپاره دی، په هغو ګروپونو کې ستاسو د خپلو لینکونو په ګډون چې خپل حساب نه لري؛ هغه چې له یوه ګروپ سره وصل شوی د هغه ګروپ ټولو غړو ته کار کوي.",
+  accountsHowTo:
+    "د وصلولو طریقه:\n1. تر ټولو اسانه: په کمپیوټر کې د Videoner توسیع — د پلاټفارم په وېبپاڼه کې ننوځئ، د Videoner کړکۍ پرانیزئ، «🔑 خپل … حساب له بوټ سره وصل کړئ» کېکاږئ او کوډ راته ولېږئ. د ګروپ لپاره، په هماغه ګروپ کې ‎/connect CODE ولېږئ.\n2. یا راته د cookies.txt فایل (له براوزر څخه صادر شوي cookies) ولېږئ، یا یې متن په یوه پیغام کې ولګوئ.\n3. له Android موبایل څخه — د Firefox او Cookie-Editor ضمیمې سره: https://videoner.download/ps/blog/android-firefox",
+  accountsWarning:
+    "⚠️ پلاټفارمونه اتوماتیک ښکته کول نه خوښوي او کېدای شي حساب محدود یا بند کړي. غوره ده چې یو فرعي حساب وصل کړئ، نه خپل اصلي حساب. cookies کوډ شوي ساتل کېږي، یوازې د ښکته کولو لپاره کارول کېږي، او د لاندې تڼیو په واسطه ړنګېږي.",
+  accountsNone: "تر اوسه هېڅ نه دي وصل شوي.",
+  accountsGroupTitle: "🔑 له دې ګروپ سره وصل شوي حسابونه",
+  accountsGroupHowTo:
+    "د ټول ګروپ لپاره د یوه حساب د وصلولو لپاره: د Videoner په توسیع کې د «🔑 خپل … حساب له بوټ سره وصل کړئ» تڼۍ په واسطه کوډ واخلئ او دلته ‎/connect CODE ولېږئ. که مو حساب یوازې په خپل شخصي چټ کې وصل کړی وي، بوټ یې دلته ستاسو د خپلو لینکونو لپاره کاروي. ستاسو وصلونه: ‎/accounts له ‎@VideonerBot سره په شخصي چټ کې.",
+  accountsLine: (platform, where, active) => `• ${platform} — ${where}${active ? "" : " (⚠️ ننوتل کار نه کوي)"}`,
+  accountsGroupLine: (platform, owner, active) => `• ${platform} — ${owner}${active ? "" : " (⚠️ ننوتل کار نه کوي)"}`,
+  accountsWhereHere: "شخصي چټ",
+  accountsWhereGroup: (title) => `ګروپ «${title}»`,
+  accountsDeleteButton: (platform, where) => `🗑 ${platform} · ${where}`,
+  accountsDeleteAllButton: "🗑 زما ټول وصلونه ړنګ کړئ",
+  accountsDeleted: "ړنګ شو.",
+  accountsDeletedAll: (n) => `ړنګ شوي وصلونه: ${n}.`,
+  accountsNotAllowed: "یوازې هغه څوک چې حساب یې وصل کړی یا د ګروپ اډمین یې ړنګولای شي.",
+  connectUsage:
+    "‎/connect CODE ولېږئ. کوډ تاسو ته په کمپیوټر کې د Videoner په توسیع کې د «🔑 خپل … حساب له بوټ سره وصل کړئ» تڼۍ درکوي. ستاسو وصلونه: ‎/accounts.",
+  connectOnlyAdmins: "یوازې اډمینان کولای شي له دې ګروپ سره حسابونه وصل کړي (‎/settings وګورئ).",
+  connectDone: (platform, where) =>
+    `✅ ${platform} ${where} وصل شو. اوس بوټ هغه څه هم ښکته کوي چې یوازې ننوتي کسان یې ویني. کتل یا ړنګول: ‎/accounts.\n\n⚠️ کېدای شي پلاټفارم حساب د اتوماتیک ښکته کولو له امله محدود کړي — غوره ده چې فرعي حساب وکاروئ.`,
+  connectWhereGroup: "له دې ګروپ سره",
+  connectWhereHere: "په شخصي چټ او inline حالت کې ستاسو د ښکته کولو لپاره",
+  connectCodeNotFound: "کوډ ونه موندل شو یا یې موده تېره شوې (کوډونه 10 دقیقې اعتبار لري). د Videoner له توسیع څخه نوی کوډ واخلئ.",
+  connectRejectedNoSession: "په دې cookies کې ننوتل نشته. د پلاټفارم په وېبپاڼه کې ننوځئ او cookies بیا صادر کړئ.",
+  connectRejectedUnknown: "د ملاتړ شوو پلاټفارمونو هېڅ cookies ونه موندل شول: Instagram، Facebook، YouTube، X، VK، TikTok.",
+  connectUnavailable: "د حسابونو وصلول لا شتون نه لري.",
+  connectFailed: "وصل نه شو، مهرباني وکړئ بیا هڅه وکړئ.",
+  connectFileTooBig: "فایل ډېر لوی دی — یوازې د اړینې وېبپاڼې cookies صادر کړئ.",
+  connectNotAnonymous: "حساب د خپل ځان په نوم وصل کړئ، نه د ګروپ په توګه بې نومه: که نه نو د اډمینانو وصلونه سره ګډوډېږي. کوډ مې باطل کړ — نوی واخلئ.",
+  connectCodeInGroup:
+    "د وصلولو کوډ چې د ګروپ په چټ کې خپور شي، نور یې هم لیدلای شي — باطل مې کړ او پیغام مې ړنګ کړ. نوی کوډ واخلئ او د ‎/connect CODE په توګه یې ولېږئ: د دې کمانډ پیغام سمدستي ړنګوم.",
+  groupWelcome:
+    "👋 سلام! په دې چټ کې د TikTok، Instagram، YouTube، VK او نورو پلاټفارمونو د ویډیوګانو لینکونه ولېږئ — زه به پخپله ویډیو درته د ځواب په توګه ولېږم.\n\n" +
+    "تر 15 دقیقو پورې ویډیوګانې پخپله، له هېڅ کمانډ پرته، ښکته کوم، او نور وخت چوپ یم.\n\n⚙️ د ګروپ اډمینان کولای شي ما په ‎/settings تنظیم کړي: د لینک پیغامونو ړنګول، د متن بڼه، کیفیت، اوږدې ویډیوګانې او ژبه.\n\n⚡ له لینک وروسته -audio ولیکئ چې غږ ترلاسه کړئ، یا -hd د غوره کیفیت لپاره.\n\n📣 د پروژې خبرونه: ‎@videonerdownload",
+  errorTooLong: "ویډیو ډېره اوږده ده — تر اوسه دومره اوږدې ویډیوګانې نه شو ښکته کولای.",
+  errorUnknown: "دا ویډیو ښکته نه شوه. لږ وروسته بیا هڅه وکړئ یا بل لینک ولېږئ.",
+  inlineHintButton: "بوټ ته لینک ولېږئ",
+  inlineResultTitle: "⬇️ ویډیو ښکته کول",
+  inlineResultDescription: "ویډیو به مستقیم په همدې چټ کې ولېږل شي",
+  inlinePlaceholder: "⏬ ښکته کېږي، کېدای شي څو دقیقې وخت ونیسي...",
+  inlineOpenBot: "بوټ پرانیزئ",
+  inlineOnlySingleVideo:
+    "دا حالت یوازې یوه ویډیو لېږي. د څو فایلي پوسټونو یا انځورونو لپاره، لینک په شخصي چټ کې بوټ ته ولېږئ.",
+  inlineSubscribeRequired: (channel: string) =>
+    `د ښکته کولو لپاره، په ${channel} کې ګډون وکړئ او بیا هڅه وکړئ.`,
+  inlineRateLimited: "پرله پسې ډېرې غوښتنې. یوه دقیقه صبر وکړئ او بیا هڅه وکړئ.",
+  queueRest: (count) => `\n\n📋 په کتار کې پاتې لینکونه: ${count}. له دې وروسته به یې یو په یو درته وښیم.`,
+  queuedOne: (position) =>
+    `📋 لینک کتار ته اضافه شو، شمېره ${position}. لومړی اوسنی بشپړ کړو — بیا به یې د کیفیت ټاکل درته وښیم.`,
+  queuedMany: (added, waiting) =>
+    `📋 کتار ته اضافه شوي لینکونه: ${added}. ټول په انتظار: ${waiting}. له اوسني وروسته به یې یو په یو درته وښیم.`,
+  queueDuplicates: (count) =>
+    count === 1
+      ? "دا لینک دمخه په کتار کې دی — دوه ځله یې نه اضافه کوم."
+      : `هغه لینکونه چې دمخه په کتار کې دي دوه ځله نه اضافه کېږي (تکرارونه: ${count}).`,
+  queueFull: (limit, rejected) =>
+    `کتار تر ټولو ډېر ${limit} لینکونه ځایولای شي — اضافي لینکونه اضافه نه شول (${rejected}). کله چې کتار مخ ته لاړ، بیا یې ولېږئ.`,
+  skipButton: "✖️ مه یې ښکته کوئ",
+  skipped: "⏭ دا لینک پرېښودل شو.",
+  chooseTimedOut: "⌛ په 30 دقیقو کې هېڅ کیفیت ونه ټاکل شو — دا لینک پرېږدم.",
+  queueLostOnRestart: (count) =>
+    `⚠️ بوټ د تازه کولو لپاره بیا پیل کېږي — کتار خالي شو (لینکونه: ${count}). مهرباني وکړئ یوه دقیقه وروسته یې بیا ولېږئ.`,
+  subtitlesButton: "📝 زیرنویس",
+  subtitlesBack: "⬅️ کیفیت ته بېرته",
+  subtitlesAuto: "اتوماتیک",
+  subtitlesChoose: "د زیرنویس ژبه وټاکئ",
+  subtitlesPreparing: "📝 زیرنویس چمتو کېږي...",
+  subtitlesFailed: "په دې ژبه زیرنویس ښکته نه شو. بله ژبه وازمویئ.",
+  subtitlesBusy: "YouTube اوس زیرنویس نه ورکوي — څو دقیقې وروسته بیا هڅه وکړئ.",
+  playlistFound: (title, count) =>
+    `📃 پلی لیست${title ? ` «${title.slice(0, 150)}»` : ""}: ${count} ویډیوګانې.\nیو په یو به یې ښکته کړم. په کوم فارمټ؟`,
+  playlistStdButton: "🎬 720p",
+  playlistHdButton: "🎬 غوره کیفیت",
+  playlistAudioButton: "🎵 یوازې آډیو (mp3)",
+  playlistNoButton: "✖️ نه، مننه",
+  playlistQueued: (count) =>
+    `📃 له پلی لیست څخه کتار ته اضافه شوې ویډیوګانې: ${count}. یو په یو به یې ولېږم. د درولو لپاره لاندې تڼۍ یا ‎/stop.`,
+  playlistFailed: "پلی لیست پرانیستل نه شو — کېدای شي شخصي وي. د یوې ویډیو لینک ولېږئ.",
+  stopButton: "⏹ درول",
+  stopped: (dropped) => `⏹ ودرول شو.${dropped ? ` له کتار څخه لرې شوي لینکونه: ${dropped}.` : ""}`,
+  nothingToStop: "اوس هېڅ نه ښکته کېږي.",
+  languageChoose: "🌐 د بوټ ژبه وټاکئ. «اتوماتیک» ستاسو د Telegram ژبه تعقیبوي.",
+  languageChooseGroup: "🌐 په دې ګروپ کې د بوټ د ځوابونو ژبه. «اتوماتیک» — د هر غړي د Telegram ژبه.",
+  languageAuto: "اتوماتیک — لکه په Telegram کې",
+  languageAutoGroup: "اتوماتیک — د هر غړي خپله",
+  languageSaved: (name) => `✅ د بوټ ژبه: ${name}. په ‎/language یې بدلولای شئ.`,
+  languageSavedAuto: "✅ بوټ ستاسو د Telegram ژبه تعقیبوي. په ‎/language یې بدلولای شئ.",
+  settingsLanguageButton: (name) => `🌐 ژبه: ${name ?? "اتوماتیک"}`,
+  settingsBack: "⬅️ تنظیماتو ته بېرته",
+};
+
 const tl: Messages = {
   start: "Hi! Magpadala ng link ng video mula sa YouTube, TikTok, Instagram, Facebook, Twitter/X, Vimeo, VK, Rutube, OK.ru, Pinterest, o Threads — tutulungan kitang i-download ito.\n\n✨ Walang limit sa quality: makukuha mo ang anumang inaalok ng platform, hanggang 4K — basta kasya ang file sa 2 GB, ang limit ng Telegram para sa mga bot. Walang bayad na feature dito.\n\nLibreng-libre: walang subscription, walang ads, walang in-app purchase.\n\n🧩 Magda-download sa computer? I-install ang browser extension — lalabas ang Download button mismo sa page ng video: videoner.download/tl/extension\n\n👥 Idagdag ako sa isang group at ipo-post ko ang mga video ng mga link na ibinabahagi roon.\n\n⚡ Laktawan ang pagpili ng quality: idagdag ang -audio pagkatapos ng link para sa tunog lang (mp3), o -hd para sa pinakamagandang quality.\n\n📣 Balita ng proyekto: @videonerdownload\n\n🌐 Wika ng bot: /language",
   notLink: "Mukhang hindi ito link. Magpadala ng link ng video.",
@@ -7970,4 +8190,4 @@ const kk: Messages = {
   settingsBack: "⬅️ Баптауларға оралу",
 };
 
-export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro };
+export const messages: Record<Lang, Messages> = { ru, uk, kk, en, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, es, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, tl, am, om, ha, so, az, ky, tg, ms, nl, ro, ps };

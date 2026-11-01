@@ -1859,4 +1859,56 @@ export const extensionPage: Record<Language, ExtensionPageText> = {
     ],
     back: "Acasă",
   },
+  ps: {
+    metaTitle: "د Videoner د براوزر توسیع",
+    title: "Videoner ستاسو د براوزر لپاره",
+    summary:
+      "توسیع د ویډیو پاڼو ته د «ښکته کول» تڼۍ ورزیاتوي او مستقیم ستاسو په براوزر کې ښکته کوي. د Instagram، Facebook، TikTok او Threads ویډیوګانې ستاسو په خپل حساب ښکته کېږي — نو هغه شخصي پوسټونه چې په خپل حساب کې یې وینئ هم ښکته کېږي، او هغه ویډیوګانې هم چې پلیټفارم زموږ سرور ته نه دي ورکړې.",
+    failedVideo: "هغه ویډیو چې په سایټ یا بوټ کې ښکته نه شوه:",
+    failedVideoHint:
+      "توسیع نصب کړئ، په همدې براوزر کې هغه پلیټفارم ته ننوځئ، ویډیو خلاصه کړئ او په ښکته ښي کونج کې «ښکته کول» کېکاږئ.",
+    openVideo: "ویډیو خلاصول",
+    version: "نسخه",
+    browsersTitle: "چېرته کار کوي",
+    browsers:
+      "Google Chrome، Yandex Browser، Microsoft Edge، Opera، Brave، Vivaldi او نور د Chromium پر بنسټ براوزرونه — په کمپیوټر کې.",
+    mobile: "ګرځنده تلیفونونه او ټابلېټونه توسیع نه ملاتړ کوي — هلته سایټ یا د Telegram بوټ وکاروئ.",
+    getcourseTitle: "د GetCourse درسونه",
+    getcourse:
+      "د GetCourse په یوه ښوونځي کې، چې ورته ننوتي یاست، یو درس خلاص کړئ: د پلیر په پورته ښي کونج کې د «ښکته کول» تڼۍ ښکاري، او د Videoner نښه د درس ټولې ویډیوګانې لیست کوي. ستاسو براوزر پخپله درس ښکته کوي او په یوه mp4 فایل کې یې راټولوي — فایل زموږ له سرور نه تېرېږي. که دا کار ونه شي، زموږ سرور درس په همغه کیفیت ښکته کوي؛ په دې حالت کې سرور د ویډیو لینک له پلیر څخه ترلاسه کوي.",
+    privacyTitle: "ستاسو حساب ستاسو سره پاتې کېږي",
+    privacy:
+      "توسیع هېڅکله پاسورډ نه غواړي: پلیټفارم ته غوښتنه ستاسو خپل براوزر لېږي، او زموږ سرور یوازې د احصایې لپاره یو لنډ راپور ترلاسه کوي — لینک، د فایل اندازه او سرلیک. کوکيز سرور ته یوازې هغه وخت ځي چې تاسو پخپله «حساب له بوټ سره وصل کړئ» کېکاږئ — او یوازې د همغه پلیټفارم کوکيز، کوډ شوي.",
+    stepsTitle: "په Chrome، Yandex Browser، Edge او Opera کې د نصبولو لارښود",
+    steps: [
+      "آرشیف ښکته کړئ او خلاص یې کړئ — یو videoner-extension فولډر به ترلاسه کړئ چې په نوم کې یې د نسخې شمېره ده.",
+      "د توسیعونو پاڼه خلاصه کړئ: د پتې په پټه کې ‎chrome://extensions ولیکئ (په Edge کې ‎edge://extensions، په Opera کې ‎opera://extensions).",
+      "«Developer mode» فعال کړئ — سویچ یې د پاڼې په سر کې دی.",
+      "«Load unpacked» کېکاږئ او همغه فولډر وټاکئ — هغه چې manifest.json پکې دی.",
+      "بشپړ شو: د ویډیو پاڼو کې د «ښکته کول» تڼۍ ښکاري، او د Videoner نښه د براوزر په توول بار کې راځي.",
+    ],
+    browsersFirefox: "Mozilla Firefox 128 یا نوې نسخه — هم په کمپیوټر کې.",
+    firefoxSoon:
+      "د Firefox نسخه ډېر ژر راځي. اوس مهال توسیع په Chrome، Yandex Browser، Edge، Opera او نورو د Chromium پر بنسټ براوزرونو کې کار کوي.",
+    chromeTitle: "Chrome، Yandex Browser، Edge، Opera",
+    chromeHint: "‎.zip آرشیف — په څو دقیقو کې نصبېږي",
+    firefoxTitle: "Firefox",
+    firefoxHint: "په یوه کلیک نصبول",
+    yourBrowser: "ستاسو براوزر",
+    soon: "ډېر ژر",
+    firefoxStepsTitle: "په Firefox کې د نصبولو لارښود",
+    firefoxSteps: [
+      "د همدې پاڼې په سر کې د Firefox تڼۍ کېکاږئ.",
+      "Firefox پوښتنه کوي چې ایا videoner.download ته د توسیع (add-on) نصبولو اجازه ورکړي — «Continue to Installation» کېکاږئ.",
+      "په «Add Videoner?» کړکۍ کې «Add» کېکاږئ.",
+      "بشپړ شو: د ویډیو پاڼو کې د «ښکته کول» تڼۍ ښکاري، او د Videoner نښه په توول بار کې راځي. Firefox تازه نسخې پخپله نصبوي.",
+    ],
+    updateTitle: "په Chrome، Yandex Browser، Edge او Opera کې د تازه کولو لارښود",
+    updateSteps: [
+      "کله چې نوې نسخه راشي، د Videoner پر نښه د NEW نښان ښکاري او د توسیع کړکۍ دې پاڼې ته لینک ورکوي.",
+      "د همدې پاڼې په سر کې د Chrome په تڼۍ آرشیف ښکته کړئ او په همغه پخواني فولډر کې یې خلاص کړئ، فایلونه یې ځای پر ځای کړئ.",
+      "د توسیعونو پاڼه خلاصه کړئ (‎chrome://extensions، په Yandex Browser کې ‎browser://extensions، ‎edge://extensions) او «Reload» کېکاږئ — د Videoner پر کارت ګرد غشی.",
+    ],
+    back: "کور",
+  },
 };

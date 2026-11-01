@@ -439,6 +439,18 @@ export const blogUi: Record<
     readFull: "Citește articolul complet pe site",
     dateLocale: "ro-RO",
   },
+  ps: {
+    title: "د Videoner بلاګ",
+    description: "د پروژې خبرونه: په بوټ، سایټ او توسیع کې څه نوي راغلي او څنګه یې وکاروئ.",
+    readMore: "لوستل",
+    back: "ټولې لیکنې",
+    allPosts: "بلاګ",
+    channel: "خبرونه په Telegram کې",
+    channelCta: "د پروژې خبرونه د Telegram په چینل ‎@videonerdownload کې.",
+    readOnSite: "په سایټ کې لوستل",
+    readFull: "بشپړه لیکنه په سایټ کې ولولئ",
+    dateLocale: "ps-AF-u-nu-latn",
+  },
 };
 
 export function formatPostDate(date: string, lang: Language): string {

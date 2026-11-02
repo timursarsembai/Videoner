@@ -67,8 +67,9 @@ VK, TikTok) — кнопка «Подключить аккаунт к боту»
    для группы (`bot/src/handlers/accounts.ts`). Через чат проходит только код.
 
 Во встроенном окошке на странице кнопки нет: Firefox не даёт ему ни
-`cookies`, ни `permissions`. В сборке для каталога Mozilla (`dist/firefox-amo/`)
-разрешения на куки нет вовсе — кнопка там сама не показывается.
+`cookies`, ни `permissions`. В Firefox передача кук объявлена в manifest как
+необязательный сбор данных `authenticationInfo` и спрашивается вместе с
+разрешением `cookies` (так требует каталог Mozilla).
 
 ## Firefox
 

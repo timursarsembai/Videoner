@@ -24,8 +24,7 @@
 #   dist/videoner-firefox-<версия>.zip — то же одним архивом.
 #   dist/firefox-amo/ — вариант для каталога addons.mozilla.org: тот же, но
 #     без update_url (обновления каталожной версии раздаёт сама Mozilla, а
-#     каталог такой адрес не принимает) и без разрешения на куки (кнопка
-#     «Подключить аккаунт к боту»). Отправка — extension/README.md.
+#     каталог такой адрес не принимает). Отправка — extension/README.md.
 #   Отличия от Chrome — только в manifest (FIREFOX_MANIFEST ниже) и в
 #   наборе файлов: фоновая часть — страница background.html, а не service
 #   worker, и скрытая страница gc-offscreen.* не нужна (см. background.js).
@@ -91,8 +90,11 @@ ff["browser_specific_settings"] = {
         "update_url": "https://videoner.download/extension/firefox-updates.json",
         # Требование Mozilla к новым дополнениям: какие данные уходят с
         # компьютера. Ссылка на видео уходит серверу Videoner — без неё он не
-        # скачает видео, это и есть работа расширения.
-        "data_collection_permissions": {"required": ["websiteActivity"]},
+        # скачает видео, это и есть работа расширения. Куки площадки
+        # (authenticationInfo) — только по кнопке «Подключить аккаунт к боту»,
+        # поэтому необязательное: его спрашивают вместе с разрешением cookies
+        # (account-connect.js).
+        "data_collection_permissions": {"required": ["websiteActivity"], "optional": ["authenticationInfo"]},
     }
 }
 ff_text = json.dumps(ff, ensure_ascii=False, indent=2) + "\n"
@@ -114,12 +116,6 @@ print(f"{ff_zip}: {len(ff_files)} файлов, {ff_zip.stat().st_size // 1024} 
 # ---- Firefox, каталог Mozilla ----
 amo = json.loads(ff_text)
 del amo["browser_specific_settings"]["gecko"]["update_url"]
-# Без кнопки «Подключить аккаунт к боту» (account-connect.js): чтение кук
-# площадок каталог Mozilla проверяет особенно строго, и ради неё одной
-# каталожная версия могла бы не пройти. Кнопка сама прячется, если
-# разрешения cookies в manifest нет.
-amo.pop("optional_permissions", None)
-amo.pop("optional_host_permissions", None)
 amo_dir = dist / "firefox-amo"
 shutil.rmtree(amo_dir, ignore_errors=True)
 shutil.copytree(ff_dir, amo_dir)

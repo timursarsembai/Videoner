@@ -16,8 +16,7 @@ import { api, t } from "./shared.js";
 //      /connect КОД — для группы. Сами куки через чат не проходят.
 //
 // Только в окошке по значку: во встроенном окошке на странице Firefox не даёт
-// ни cookies, ни permissions. И только в сборке с сайта: в сборке для каталога
-// Mozilla разрешения cookies нет (scripts/pack-extension.sh) — тогда кнопки нет.
+// ни cookies, ни permissions.
 
 const PLATFORMS = {
   instagram: { label: "Instagram", domains: ["instagram.com"] },
@@ -47,6 +46,19 @@ export function platformOfUrl(url) {
   }
   return null;
 }
+
+// Новый Firefox спрашивает и согласие на передачу данных (data_collection в
+// manifest, scripts/pack-extension.sh): куки уходят нашему серверу — это
+// authenticationInfo. Узнаём заранее, при открытии окошка: в обработчике
+// нажатия до permissions.request ждать нельзя (см. connect). Chrome и старый
+// Firefox этого поля не знают и отклонили бы весь запрос.
+let askDataCollection = false;
+chrome.permissions
+  ?.getAll()
+  .then((all) => {
+    askDataCollection = Array.isArray(all.data_collection);
+  })
+  .catch(() => {});
 
 function available() {
   const optional = chrome.runtime.getManifest().optional_permissions ?? [];
@@ -176,7 +188,9 @@ export async function mountAccountConnect(container, tabUrl) {
     void store(PENDING, { platform, at: Date.now() });
     let granted;
     try {
-      granted = await chrome.permissions.request({ permissions: ["cookies"], origins });
+      const request = { permissions: ["cookies"], origins };
+      if (askDataCollection) request.data_collection = ["authenticationInfo"];
+      granted = await chrome.permissions.request(request);
     } catch {
       granted = false;
     }

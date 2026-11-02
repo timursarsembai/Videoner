@@ -75,6 +75,18 @@ describe('user cookies', () => {
     expect(res.ok && res.netscape).toContain('sessionid\tabc');
   });
 
+  it('keeps threads.com cookies in the instagram record', () => {
+    const text = netscape([
+      ['.instagram.com', 'TRUE', '/', 'TRUE', String(FUTURE), 'sessionid', 'ig'],
+      ['.threads.com', 'TRUE', '/', 'TRUE', String(FUTURE), 'sessionid', 'th'],
+      ['.mail.example', 'TRUE', '/', 'TRUE', String(FUTURE), 'sid', 'x'],
+    ]);
+    const r = extractPlatformCookies(text, 'instagram');
+    expect(r.ok && r.count).toBe(2);
+    expect(r.ok && r.netscape).toContain('.threads.com');
+    expect(r.ok && r.netscape).not.toContain('mail.example');
+  });
+
   it('maps threads to instagram cookies', () => {
     expect(cookiePlatformFor('threads')).toBe('instagram');
     expect(cookiePlatformFor('rutube')).toBeNull();
@@ -87,6 +99,7 @@ describe('user cookies', () => {
     expect(sessionFailureKind('Requested content is not available, rate-limit reached or login required')).toBeNull();
     expect(sessionFailureKind('Please wait a few minutes before you try again')).toBeNull();
     expect(sessionFailureKind('Video unavailable')).toBeNull();
+    expect(sessionFailureKind('[threads] DeYFuUkmnev: No video or photo is visible in this Threads post: it is either a text-only post, or its media is shown only to signed-in users and cannot be downloaded without logging in')).toBe('ambiguous');
   });
 
   it('tries user cookies only for login-like failures', () => {
@@ -94,6 +107,7 @@ describe('user cookies', () => {
     expect(userCookiesMayHelp('This video is private')).toBe(true);
     expect(userCookiesMayHelp("Sign in to confirm you're not a bot")).toBe(false);
     expect(userCookiesMayHelp('Read timed out')).toBe(false);
+    expect(userCookiesMayHelp('[threads] DeYFuUkmnev: No video or photo is visible in this Threads post: it is either a text-only post, or its media is shown only to signed-in users and cannot be downloaded without logging in')).toBe(true);
   });
 
   it('scrubs lines that may carry cookie values', () => {

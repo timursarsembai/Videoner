@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { connectablePlatform, cookieScopeFor, looksLikeCookiesText, parseConnectCode, rejectionReason } from "./accounts.js";
+import { connectablePlatform, connectLabel, cookieScopeFor, looksLikeCookiesText, parseConnectCode, rejectionReason } from "./accounts.js";
 
 test("код подключения: с дефисом и без, обычные слова — не код", () => {
   assert.equal(parseConnectCode("ABC-234"), "ABC-234");
@@ -44,7 +44,15 @@ test("площадка, к которой можно подключить акк
   assert.equal(connectablePlatform("https://x.com/u/status/1"), "twitter");
   assert.equal(connectablePlatform("https://vkvideo.ru/video-1_2"), "vk");
   assert.equal(connectablePlatform("https://youtu.be/abc"), "youtube");
-  assert.equal(connectablePlatform("https://www.threads.com/@u/post/X"), null);
+  // Threads входит аккаунтом Instagram.
+  assert.equal(connectablePlatform("https://www.threads.com/@u/post/X"), "instagram");
+  assert.equal(connectablePlatform("https://www.threads.net/@u/post/X"), "instagram");
   assert.equal(connectablePlatform("https://notinstagram.com/p/x"), null);
   assert.equal(connectablePlatform("не ссылка"), null);
+});
+
+test("название площадки в совете подключить аккаунт", () => {
+  assert.equal(connectLabel("https://www.threads.com/@u/post/X", "instagram"), "Threads");
+  assert.equal(connectLabel("https://www.instagram.com/p/X/", "instagram"), "Instagram");
+  assert.equal(connectLabel("не ссылка", "tiktok"), "TikTok");
 });

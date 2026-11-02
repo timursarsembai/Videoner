@@ -3,7 +3,7 @@ import { messages, type Lang } from "../i18n.js";
 import { langOf } from "../language.js";
 import { parseFlag, type LinkFlag } from "../flags.js";
 import { pickGroupQuality } from "../group.js";
-import { connectablePlatform, platformLabel } from "../accounts.js";
+import { connectablePlatform, connectLabel } from "../accounts.js";
 import { postDescription } from "../caption.js";
 import {
   api,
@@ -465,9 +465,11 @@ async function failureMessage(
   const needsLogin =
     friendly === m.errorLoginRequired ||
     friendly === m.errorInstagramStory ||
+    // Пост Threads, медиа которого видно только вошедшим (или текстовый).
+    friendly === m.errorThreadsNoMedia ||
     (friendly === m.errorPlatformRefused && platform !== "youtube");
   if (platform && needsLogin && who.chatId > 0 && who.userId) {
-    const label = platformLabel(platform);
+    const label = connectLabel(url, platform);
     const connected = await hasConnectedAccount(who.userId, platform);
     const keyboard = new InlineKeyboard()
       .text(connected ? m.reconnectAccountButton : m.connectAccountButton, "ac|show")

@@ -19,7 +19,8 @@ import { api, t } from "./shared.js";
 // ни cookies, ни permissions.
 
 const PLATFORMS = {
-  instagram: { label: "Instagram", domains: ["instagram.com"] },
+  // Threads — тот же аккаунт Instagram, но вход у него в своих куках.
+  instagram: { label: "Instagram", domains: ["instagram.com", "threads.com", "threads.net"] },
   facebook: { label: "Facebook", domains: ["facebook.com"] },
   youtube: { label: "YouTube", domains: ["youtube.com", "google.com"] },
   twitter: { label: "X", domains: ["x.com", "twitter.com"] },

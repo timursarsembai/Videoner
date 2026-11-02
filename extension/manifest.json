@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "description": "__MSG_extDescription__",
-  "version": "1.6.11",
+  "version": "1.6.12",
   "default_locale": "ru",
   "icons": {
     "16": "icons/icon-16.png",
@@ -122,6 +122,8 @@
   ],
   "optional_host_permissions": [
     "https://*.instagram.com/*",
+    "https://*.threads.com/*",
+    "https://*.threads.net/*",
     "https://*.facebook.com/*",
     "https://*.youtube.com/*",
     "https://*.google.com/*",

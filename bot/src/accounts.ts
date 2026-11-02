@@ -45,7 +45,8 @@ export const PLATFORM_LABELS: Record<string, string> = {
 // Площадка ссылки, если к ней можно подключить свой аккаунт (PLATFORM_LABELS).
 // Нужна, чтобы на «нужен вход» предложить подключение (handlers/download.ts).
 const CONNECTABLE_HOSTS: [RegExp, string][] = [
-  [/(^|\.)instagram\.com$/, "instagram"],
+  // Threads входит аккаунтом Instagram (server/src/lib/user-cookies.ts).
+  [/(^|\.)(instagram\.com|threads\.(com|net))$/, "instagram"],
   [/(^|\.)(facebook\.com|fb\.watch)$/, "facebook"],
   [/(^|\.)(youtube\.com|youtu\.be)$/, "youtube"],
   [/(^|\.)(x\.com|twitter\.com)$/, "twitter"],
@@ -65,6 +66,17 @@ export function connectablePlatform(url: string): string | null {
 
 export function platformLabel(platform: string): string {
   return PLATFORM_LABELS[platform] ?? platform;
+}
+
+// Название площадки в совете подключить аккаунт: для ссылки на Threads —
+// «Threads», хотя подключается аккаунт Instagram (вход у них общий).
+export function connectLabel(url: string, platform: string): string {
+  try {
+    if (/(^|\.)threads\.(com|net)$/i.test(new URL(url).hostname)) return "Threads";
+  } catch {
+    // не ссылка — обычное название
+  }
+  return platformLabel(platform);
 }
 
 // Причина отказа сервера в тексте ошибки («Cookies rejected: no-session»).

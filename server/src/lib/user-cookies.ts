@@ -22,8 +22,10 @@ interface PlatformCookies {
 }
 
 export const COOKIE_PLATFORMS: Record<CookiePlatform, PlatformCookies> = {
-  instagram: { domains: ['instagram.com'], session: ['sessionid'] },
-  // Threads узнаёт пользователя по кукам Instagram — отдельной записи не нужно.
+  // Threads — тот же аккаунт Instagram, но вход хранит в своих куках
+  // (threads.com, threads.net): без них закрытый пост Threads не откроется.
+  // Отдельной записи не заводим — это один аккаунт.
+  instagram: { domains: ['instagram.com', 'threads.com', 'threads.net'], session: ['sessionid'] },
   facebook: { domains: ['facebook.com'], session: ['c_user', 'xs'] },
   youtube: {
     domains: ['youtube.com', 'google.com'],
@@ -164,7 +166,10 @@ export function extractPlatformCookies(text: string, platform?: CookiePlatform):
 //   null      — к входу отношения не имеет (ограничение по частоте, ролик
 //               удалён, сбой сети).
 const DEAD_SESSION_PATTERNS = [/checkpoint_required/i, /challenge_required/i, /http error 401/i, /401:?\s*unauthorized/i];
-const AMBIGUOUS_PATTERNS = [/login required/i, /requires authentication/i, /this content is unreachable/i];
+// Пост Threads без видимого медиа (плагин server/ytdlp-plugins/threads) —
+// закрытый или просто текстовый: по ответу не отличить.
+const THREADS_NO_MEDIA = /shown only to signed-in users/i;
+const AMBIGUOUS_PATTERNS = [/login required/i, /requires authentication/i, /this content is unreachable/i, THREADS_NO_MEDIA];
 const RATE_LIMIT_PATTERNS = [/rate-?limit/i, /please wait a few minutes/i, /too many requests/i, /http error 429/i];
 
 export function sessionFailureKind(message: string): 'dead' | 'ambiguous' | null {
@@ -190,6 +195,7 @@ export function userCookiesMayHelp(message: string): boolean {
     /without being logged-in/i,
     /sign in/i,
     /log in/i,
+    THREADS_NO_MEDIA,
   ].some((re) => re.test(message));
 }
 

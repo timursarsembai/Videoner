@@ -93,49 +93,47 @@ VK, TikTok) — кнопка «Подключить аккаунт к боту»
 - в API сайта расширение приходит с `Origin: moz-extension://…` (у каждой
   установки свой адрес) — его пускает `web/app/api/ext/[...path]/route.ts`.
 
-Проверка: `web-ext lint -s dist/firefox --self-hosted`; поставить для пробы —
+Проверка: `web-ext lint -s dist/firefox-amo`; поставить для пробы —
 `about:debugging` → «Этот Firefox» → «Загрузить временное дополнение» →
-`dist/firefox/manifest.json`. Обычный Firefox ставит только подписанное
-Mozilla дополнение: подписываем без публикации в каталоге (unlisted), файл
-`.xpi` кладём в `web/public/extension/videoner-firefox.xpi`, его версию — в
-`web/lib/extension-firefox-version.ts`, а для обновлений —
-`web/public/extension/firefox-updates.json` (адрес — в `update_url` сборки;
-формат — список версий со ссылками на свои .xpi). Сайт отдаёт .xpi с типом
-`application/x-xpinstall` — без него Firefox сохранил бы файл, а не предложил
-установку; .xpi и .json не проходят через языковой middleware сайта
-(`web/middleware.ts`). Пока там `null`, страница
-videoner.download/extension пишет Firefox-пользователям «скоро».
+`dist/firefox-amo/manifest.json`. Обычный Firefox ставит только подписанное
+Mozilla дополнение.
 
-Подпись новой версии (поднять `version` в manifest, затем):
+Firefox-версия раздаётся через каталог addons.mozilla.org (с 1.6.10,
+02.11.2026): https://addons.mozilla.org/firefox/addon/videoner-video-downloader/
+— туда ведёт кнопка Firefox на videoner.download/extension, обновления
+раздаёт сама Mozilla. Описание, категории, ссылки и политика
+конфиденциальности карточки заполнены через API (политика — отдельный адрес
+`…/addon/<slug>/eula_policy/`). Каталожная сборка — `dist/firefox-amo/`
+(без `update_url`).
+
+Раньше (1.3.0–1.6.8) подписанный .xpi раздавал сам сайт: у таких установок в
+manifest `update_url` → `web/public/extension/firefox-updates.json`. Этот
+файл теперь указывает на .xpi 1.6.10 из каталога (без `update_url`): получив
+его, установка дальше обновляется из каталога. Файл и
+`videoner-firefox.xpi` не удалять, пока такие установки могут оставаться;
+новые версии в него вписывать не нужно. Сборка `dist/firefox/` (с
+`update_url`) больше не подписывается.
+
+Новая версия (поднять `version` в manifest, затем):
 
 1. `./scripts/pack-extension.sh`.
 2. Ключи Mozilla (AMO, аккаунт владельца) лежат в Infisical, проект videoner,
    окружение Development: `AMO_JWT_ISSUER`, `AMO_JWT_SECRET`. Выгрузить их в
    файл `~/.config/videoner-amo.env` (права 600) — не в `.env` проекта.
-3. ```
+3. `cp scripts/amo-metadata.json dist/`, затем
+   ```
    docker run --rm -u $(id -u):$(id -g) -e HOME=/tmp --env-file ~/.config/videoner-amo.env \
      -v $PWD/dist:/d node:22-bookworm-slim sh -c 'npx -y web-ext@8.3.0 sign \
-     --channel unlisted --source-dir /d/firefox --artifacts-dir /d/signed \
+     --channel listed --source-dir /d/firefox-amo --artifacts-dir /tmp/a \
+     --amo-metadata /d/amo-metadata.json --approval-timeout 0 \
      --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"'
    ```
-   Mozilla проверяет и подписывает автоматически, обычно за пару минут.
-4. Скопировать `dist/signed/*-<версия>.xpi` в
-   `web/public/extension/videoner-firefox.xpi`, вписать версию в
-   `web/lib/extension-firefox-version.ts`, а в `firefox-updates.json` — новую
-   версию, `update_link` с `?v=<версия>` и `update_hash` (sha256 файла).
-   Задеплоить web: установленные расширения обновятся сами в течение суток.
-
-Каталог addons.mozilla.org (с 1.4.1, 29.10.2026): страница
-https://addons.mozilla.org/firefox/addon/videoner-video-downloader/ —
-описание, категории и ссылки заполнены через API (поддержка — бот
-@VideonerBot). Каталожная сборка — `dist/firefox-amo/` (без `update_url`),
-отправка той же командой, что выше, но
-`--channel listed --source-dir /d/firefox-amo --amo-metadata /d/amo-metadata.json --approval-timeout 0`
-(скопировать `scripts/amo-metadata.json` в `dist/`). Там лицензия версии и
-заметка для проверяющего: откуда vendor/mux.min.js (официальная сборка
-mux.js 7.1.0, sha256 в заметке) и зачем упоминание offscreen. Проверка —
-от пары дней до пары недель; номер версии нельзя повторять ни в каталоге, ни
-среди версий для сайта.
+   В `amo-metadata.json` — лицензия версии и заметка для проверяющего: откуда
+   vendor/mux.min.js (официальная сборка mux.js 7.1.0, sha256 в заметке),
+   зачем упоминание offscreen и как устроена передача кук. Автоматическая
+   проверка — минуты (1.6.9 и 1.6.10 одобрены за 5 минут), ручная может
+   прийти и позже. Номер версии в каталоге повторять нельзя — в том числе
+   номера старых версий для сайта.
 
 ## Установка вручную
 

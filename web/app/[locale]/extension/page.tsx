@@ -7,7 +7,6 @@ import { ArrowLeft, Download, ExternalLink } from "lucide-react";
 import { ChromeLogo, FirefoxLogo } from "@/components/common/browser-logos";
 
 import { extensionPage } from "@/lib/extension-page";
-import { FIREFOX_EXTENSION_VERSION } from "@/lib/extension-firefox-version";
 import { EXTENSION_VERSION } from "@/lib/extension-version";
 import { languageAlternates, localizedHref } from "@/lib/i18n/routing";
 import { resolveLocale } from "@/lib/legal/page";
@@ -18,12 +17,14 @@ import { detectPlatform } from "@/lib/validations/url";
 // (lib/extension-hint.ts, bot/src/helpers.ts) — со ссылкой на ролик в ?url=.
 //
 // Два варианта установки — две кнопки рядом: архив для Chrome и браузеров на
-// его основе (режим разработчика, вручную) и подписанный у Mozilla .xpi для
-// Firefox (установка прямо с сайта). Кнопку браузера посетителя выделяем и
-// ставим его инструкцию первой; браузер узнаём по User-Agent: ошибиться тут
-// не страшно, обе кнопки на странице всегда есть.
+// его основе (режим разработчика, вручную) и страница в каталоге Mozilla для
+// Firefox (с 1.6.10, 02.11.2026; раньше — .xpi с сайта, такие установки
+// переходят на каталог сами через firefox-updates.json). Кнопку браузера
+// посетителя выделяем и ставим его инструкцию первой; браузер узнаём по
+// User-Agent: ошибиться тут не страшно, обе кнопки на странице всегда есть.
 
-const FIREFOX_XPI = "/extension/videoner-firefox.xpi";
+// Без языка в адресе: каталог сам откроется на языке браузера.
+const FIREFOX_AMO = "https://addons.mozilla.org/firefox/addon/videoner-video-downloader/";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -56,7 +57,6 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
   const userAgent = (await headers()).get("user-agent") ?? "";
   const isMobile = /Android|Mobile|iPhone|iPad/.test(userAgent);
   const isFirefox = /Firefox\//.test(userAgent) && !isMobile;
-  const firefoxReady = FIREFOX_EXTENSION_VERSION !== null;
 
   const chromeButton = (
     <BrowserButton
@@ -71,15 +71,14 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
       badge={isFirefox || isMobile ? null : text.yourBrowser}
     />
   );
-  // Ссылка на .xpi без download: Firefox сам предлагает установить
-  // дополнение, а не сохраняет файл.
   const firefoxButton = (
     <BrowserButton
-      href={firefoxReady ? `${FIREFOX_XPI}?v=${FIREFOX_EXTENSION_VERSION}` : null}
+      href={FIREFOX_AMO}
+      external
       logo={<FirefoxLogo className="h-10 w-10 text-[#ff7139]" />}
       title={text.firefoxTitle}
-      hint={firefoxReady ? text.firefoxHint : text.firefoxSoon}
-      footer={firefoxReady ? `${text.version} ${FIREFOX_EXTENSION_VERSION} · \u2066.xpi\u2069` : text.soon}
+      hint={text.firefoxHint}
+      footer={"\u2066addons.mozilla.org\u2069"}
       badge={isFirefox ? text.yourBrowser : null}
     />
   );
@@ -107,7 +106,7 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
       </ol>
     </section>
   );
-  const firefoxSteps = firefoxReady ? (
+  const firefoxSteps = (
     <section key="firefox" id="firefox" className="mt-10">
       <h2 className="text-xl font-semibold">{text.firefoxStepsTitle}</h2>
       <ol className="mt-3 list-decimal space-y-2 ps-5 text-foreground/80">
@@ -118,7 +117,7 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
         ))}
       </ol>
     </section>
-  ) : null;
+  );
 
   return (
     <article className="container max-w-3xl pb-12 pt-24 sm:pb-16 sm:pt-28">
@@ -158,7 +157,7 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
       <section className="mt-10">
         <h2 className="text-xl font-semibold">{text.browsersTitle}</h2>
         <p className="mt-3 leading-relaxed text-foreground/80">{text.browsers}</p>
-        {firefoxReady && <p className="mt-2 leading-relaxed text-foreground/80">{text.browsersFirefox}</p>}
+        <p className="mt-2 leading-relaxed text-foreground/80">{text.browsersFirefox}</p>
         <p className="mt-2 leading-relaxed text-foreground/60">{text.mobile}</p>
       </section>
 
@@ -178,10 +177,12 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
 }
 
 // Кнопка установки для одного браузера. href null — варианта ещё нет:
-// карточка видна, но не нажимается.
+// карточка видна, но не нажимается. external — чужой сайт (каталог Mozilla):
+// другой значок и новая вкладка.
 function BrowserButton({
   href,
   download,
+  external = false,
   logo,
   title,
   hint,
@@ -190,6 +191,7 @@ function BrowserButton({
 }: {
   href: string | null;
   download?: string;
+  external?: boolean;
   logo: ReactNode;
   title: string;
   hint: string;
@@ -218,7 +220,7 @@ function BrowserButton({
             : "bg-foreground/5 text-foreground/50"
         }`}
       >
-        {href && <Download className="h-4 w-4" />}
+        {href && (external ? <ExternalLink className="h-4 w-4" /> : <Download className="h-4 w-4" />)}
         {footer}
       </span>
     </>
@@ -238,6 +240,7 @@ function BrowserButton({
     <a
       href={href}
       download={download}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={`${frame} transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary`}
     >
       {body}

@@ -1,5 +1,6 @@
 import { fetchQualities } from "./getcourse-hls.js";
 import { mountAccountConnect } from "./account-connect.js";
+import { HISTORY_KEY, clearHistory, readHistory } from "./history.js";
 import { availableUpdate } from "./update-check.js";
 import {
   NEWS_URL,
@@ -23,6 +24,7 @@ import {
   browserLang,
   LANG_NAMES,
   isRtl,
+  localeTag,
   session,
   setJob,
   t,
@@ -80,6 +82,9 @@ const INFO_TTL_MS = 10 * 60_000;
 const infoKey = (url) => `info:${url}`;
 
 let url = null;
+// Адрес самой страницы: у урока GetCourse url ниже заменяется ключом задачи,
+// а в историю скачиваний нужна страница урока.
+let pageUrl = null;
 let info = null;
 let tabId = null;
 // Готовый mp4 на самой странице (page-media.js): тогда первым предлагаем
@@ -356,6 +361,7 @@ async function showGcChoices() {
             quality: variant.quality,
             variantUrl: variant.url,
             master: gcPlayer.master,
+            page: pageUrl,
           });
           showLoading(t.starting);
         })
@@ -424,6 +430,100 @@ function render(job) {
     default:
       return showStart();
   }
+}
+
+// ---- История скачиваний (history.js) ----
+//
+// Кнопка в шапке открывает список вместо основного содержимого; основное
+// содержимое продолжает обновляться под ним и снова видно по «Назад».
+const historyBox = document.getElementById("history");
+const historyToggle = document.getElementById("history-toggle");
+const historyCovers = ["update", "app", "playlist", "account"].map((id) => document.getElementById(id));
+let coveredHidden = null;
+
+function openHistory() {
+  coveredHidden = historyCovers.map((node) => node.hidden);
+  for (const node of historyCovers) node.hidden = true;
+  historyBox.hidden = false;
+  historyToggle.setAttribute("aria-pressed", "true");
+  void renderHistory();
+}
+
+function closeHistory() {
+  if (!coveredHidden) return;
+  historyCovers.forEach((node, i) => {
+    node.hidden = coveredHidden[i];
+  });
+  coveredHidden = null;
+  historyBox.hidden = true;
+  historyToggle.setAttribute("aria-pressed", "false");
+}
+
+function historyDate(at) {
+  const options = { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" };
+  try {
+    return new Date(at).toLocaleString(localeTag(), options);
+  } catch {
+    return new Date(at).toLocaleString(undefined, options);
+  }
+}
+
+async function renderHistory() {
+  const entries = await readHistory();
+  const back = el("button", { class: "secondary", type: "button", onclick: closeHistory }, t.back);
+  const nodes = [el("div", { class: "section-label" }, t.historyTitle)];
+  if (!entries.length) {
+    nodes.push(el("p", { class: "muted" }, t.historyEmpty));
+  } else {
+    const items = entries.map((entry) => {
+      // Ссылка приходит со страницы площадки — открываем только веб-адреса.
+      const title = /^https?:\/\//i.test(entry.url ?? "")
+        ? el(
+            "a",
+            {
+              class: "history-title",
+              href: entry.url,
+              onclick: (event) => {
+                event.preventDefault();
+                openTab(entry.url);
+              },
+            },
+            entry.title
+          )
+        : el("span", { class: "history-title" }, entry.title);
+      const meta = [historyDate(entry.at), entry.kind === "audio" ? "MP3" : null].filter(Boolean).join(" · ");
+      return el("li", {}, title, el("div", { class: "history-meta" }, meta));
+    });
+    nodes.push(
+      el("ul", { class: "history-list" }, ...items),
+      el("div", { class: "note" }, t.historyNote),
+      el(
+        "button",
+        {
+          class: "secondary",
+          type: "button",
+          onclick: async () => {
+            await clearHistory();
+            void renderHistory();
+          },
+        },
+        t.historyClear
+      )
+    );
+  }
+  nodes.push(back);
+  historyBox.replaceChildren(...nodes);
+}
+
+function mountHistory() {
+  historyToggle.setAttribute("aria-label", t.historyTitle);
+  historyToggle.title = t.historyTitle;
+  historyToggle.setAttribute("aria-pressed", "false");
+  historyToggle.addEventListener("click", () => (coveredHidden ? closeHistory() : openHistory()));
+  // Скачивание закончилось при открытом списке — дописываем его.
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === "local" && HISTORY_KEY in changes && coveredHidden) void renderHistory();
+  });
 }
 
 // Список языков вверху окошка: «Авто» — по языку браузера. После выбора
@@ -556,6 +656,7 @@ async function main() {
   document.documentElement.lang = lang;
   document.documentElement.dir = isRtl() ? "rtl" : "ltr";
   void mountLanguagePicker();
+  mountHistory();
   // Ход скачивания пишет background.js — окошко просто перерисовывается.
   session.onChanged(async (changes) => {
     // null — связь с фоновой частью восстановлена (Firefox, см. shared.js):
@@ -587,6 +688,7 @@ async function main() {
   });
 
   url = await targetUrl();
+  pageUrl = url;
   // Кнопка «Подключить аккаунт к боту» — на любой странице площадки, не
   // только на странице видео (account-connect.js).
   if (!embedded && url) mountAccountConnect(document.getElementById("account"), url);

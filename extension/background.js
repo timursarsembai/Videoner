@@ -1,4 +1,5 @@
 import { checkForUpdate } from "./update-check.js";
+import { addToHistory } from "./history.js";
 import { reportUrl } from "./getcourse-hls.js";
 import { remuxLesson } from "./gc-remux.js";
 import {
@@ -240,6 +241,7 @@ async function startDirect({ url, tabId, media }) {
     // Отчёт — только для статистики: его сбой не должен портить человеку
     // скачанный файл.
     api("/download/report", { url, fileSize: size, title, lang: uiLang }).catch((e) => console.warn("Videoner: report", e));
+    void addToHistory({ url, title, kind: media.ext === "jpg" ? "photo" : "video" });
     await updateJob(url, (job) => ({ ...job, state: "done", progress: null }));
   } finally {
     active.delete(url);
@@ -380,7 +382,7 @@ async function sendStart(job) {
 
 const isBrowserGetCourse = (job) => Boolean(job?.gc && job.direct && job.state === "downloading");
 
-async function startGetCourse({ key, title, quality, variantUrl, master }) {
+async function startGetCourse({ key, title, quality, variantUrl, master, page }) {
   // Двойной клик: второй запуск не ждёт чтения задачи и отсекается сразу.
   if (localLessons.has(key)) return;
   if (!OFFSCREEN) {
@@ -401,7 +403,9 @@ async function startGetCourse({ key, title, quality, variantUrl, master }) {
     kind: "video",
     quality,
     direct: true,
-    gc: { master, quality },
+    // page — адрес страницы урока: ссылка в истории скачиваний (у самой
+    // задачи вместо ссылки ключ getcourse:<хеш>).
+    gc: { master, quality, page },
     state: "downloading",
     progress: null,
     startedAt: Date.now(),
@@ -461,6 +465,7 @@ async function getCourseDone({ key, href, size }) {
     api("/download/report", { url: reportUrl(job.gc.master), fileSize: size, title: job.title, lang: uiLang }).catch((e) =>
       console.warn("Videoner: report", e)
     );
+    void addToHistory(historyEntry(job));
     await updateJob(key, (current) => ({ ...current, state: "done", progress: null }));
   } catch (e) {
     console.error("Videoner: getcourse save", e);
@@ -500,6 +505,15 @@ async function checkGetCourse(key) {
   if (!isBrowserGetCourse(job)) return;
   const alive = OFFSCREEN ? await hasOffscreen() : localLessons.has(key);
   if (!alive) await getCourseFailed(key);
+}
+
+// Запись истории по задаче. Урок GetCourse — по адресу страницы урока;
+// задача старого окошка его не знает — тогда запись без ссылки.
+function historyEntry(job) {
+  const url = job.gc ? job.gc.page : job.url;
+  // quality "original" — пост из одних фото (popup.js, showChoices).
+  const kind = job.kind === "audio" ? "audio" : job.quality === "original" ? "photo" : "video";
+  return { url, title: job.title, kind };
 }
 
 async function infoFor(url) {
@@ -545,6 +559,7 @@ async function follow(job) {
       await setJob(job.url, { ...job, state: "saving", progress: null });
       try {
         await saveFiles(job, status);
+        void addToHistory(historyEntry(job));
         await setJob(job.url, { ...job, state: "done", progress: null });
       } catch (e) {
         console.error("Videoner: save", e);
@@ -709,6 +724,7 @@ async function downloadPlaylistItem(key, runId, mode, entry) {
     }
     if (status.status === "COMPLETED") {
       await saveFiles({ title: entry.title || "video" }, status);
+      void addToHistory({ url: entry.url, title: entry.title, kind: audio ? "audio" : "video" });
       return true;
     }
     if (status.status === "FAILED" || status.status === "EXPIRED") return false;

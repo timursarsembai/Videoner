@@ -1,2 +1,2 @@
 // Генерируется scripts/pack-extension.sh — руками не править.
-export const EXTENSION_VERSION = "1.6.8";
+export const EXTENSION_VERSION = "1.6.11";

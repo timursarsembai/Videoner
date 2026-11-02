@@ -90,6 +90,30 @@ body.embed {
   color: var(--text);
 }
 
+/* Кнопка истории скачиваний в шапке (popup.js, openHistory). */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.icon-button:hover,
+.icon-button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+}
+
+[dir="rtl"] .icon-button svg {
+  transform: scaleX(-1);
+}
+
 main {
   padding: 14px 16px 16px;
 }
@@ -357,4 +381,47 @@ button {
 
 .playlist .stop {
   margin-top: 10px;
+}
+
+/* История скачиваний (popup.js renderHistory) — вместо основного содержимого. */
+.history {
+  padding: 14px 16px 16px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 360px;
+  overflow-y: auto;
+  margin: 0 -4px;
+  padding: 0;
+  list-style: none;
+}
+
+.history-list li {
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.history-list li:last-child {
+  border-bottom: none;
+}
+
+.history-title {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+a.history-title:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.history-meta {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
 }

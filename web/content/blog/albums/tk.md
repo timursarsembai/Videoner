@@ -2,6 +2,7 @@
 title: Karuseller, suratlar we Threads — tutuş ýazgyny ýükläň
 summary: Videoner indi ýazgydaky ähli faýllary ýükleýär — Instagram karusellerindäki wideolary hem, suratlary hem. Mundan başga, indi Threads hem goldanýar.
 date: 2026-08-12
+time: 23:18:52
 ---
 Şu wagta çenli birnäçe faýly bolan ýazgydan diňe bir wideo ýükläp bolýardy. Indi Videoner tutuş ýazgyny alýar.
 

@@ -2,6 +2,7 @@
 title: Videoner browser extension: a Download button on the video page
 summary: The extension is out for Chrome, Yandex Browser, Edge and Opera. A Download button appears right on the video page, and Instagram, Facebook, TikTok and Threads download with your sign-in.
 date: 2026-10-28
+time: 23:18:52
 ---
 If you often download videos on your computer, you can now do it without copying links. Meet the Videoner browser extension.
 

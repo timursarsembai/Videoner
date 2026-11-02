@@ -2,6 +2,7 @@
 title: Mod kumpulan: bot menghantar video bagi pautan yang dikongsi dalam sembang
 summary: Tambahkan @VideonerBot ke kumpulan, dan bot akan membalas pautan yang dihantar di sana dengan video. Pentadbir menetapkan cara bot berfungsi dengan arahan /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Kini anda boleh menambah [@VideonerBot](https://t.me/VideonerBot) ke sembang kumpulan. Apabila seseorang menghantar pautan video, bot membalas dengan video itu sendiri. Tiada sesiapa perlu membuka pautan atau beralih ke bot.
 

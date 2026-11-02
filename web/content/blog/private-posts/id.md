@@ -2,6 +2,7 @@
 title: Postingan privat? Bot menunjukkan cara mengunduhnya
 summary: Jika postingan, reel, atau story hanya terlihat oleh pengguna yang sudah masuk, bot kini menyarankan untuk menghubungkan akun Anda — setelah itu bot mengunduh postingan seperti itu sendiri, juga dari ponsel Anda.
 date: 2026-10-31
+time: 22:40:56
 ---
 Sebagian postingan hanya ditampilkan kepada pengguna yang sudah masuk: story Instagram, postingan dan reel privat, postingan khusus teman, video dengan batasan usia. Sebelumnya, bot hanya membalas tautan seperti itu dengan "tidak tersedia tanpa masuk".
 

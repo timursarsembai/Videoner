@@ -2,6 +2,7 @@
 title: Post matni endi fayl izohida
 summary: Bot TikTok, Instagram, Threads, X, Facebook va Pinterestʼdagi post matnini video va rasm izohiga qoʻshadi. Sayt va kengaytma yuklab olishdan keyin yangiliklar kanalimizga havola koʻrsatadi.
 date: 2026-10-31
+time: 01:36:57
 ---
 Koʻpincha videoni muallifning izohi uchun ulashishadi: retsept, manzil, hazil, heshteglar roʻyxati. Endi [@VideonerBot](https://t.me/VideonerBot) uni fayl bilan birga saqlaydi.
 

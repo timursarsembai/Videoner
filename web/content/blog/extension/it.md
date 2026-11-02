@@ -2,6 +2,7 @@
 title: Estensione Videoner per il browser: un pulsante Scarica nella pagina del video
 summary: L’estensione è disponibile per Chrome, Yandex Browser, Edge e Opera. Un pulsante Scarica compare direttamente nella pagina del video, e Instagram, Facebook, TikTok e Threads si scaricano con il tuo accesso.
 date: 2026-10-28
+time: 23:18:52
 ---
 Se scarichi spesso video sul computer, ora puoi farlo senza copiare i link. Ti presentiamo l’estensione Videoner per il browser.
 

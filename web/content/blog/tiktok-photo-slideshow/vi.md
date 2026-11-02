@@ -2,6 +2,7 @@
 title: Bài đăng ảnh TikTok và trình chiếu ảnh
 summary: Videoner giờ tải được bài đăng ảnh TikTok và có thể biến bất kỳ bài đăng nhiều ảnh nào thành video trình chiếu. Trong nhóm, bot gửi ngay ảnh và trình chiếu.
 date: 2026-10-31
+time: 00:53:50
 ---
 Hai bản cập nhật cho những bài đăng có nhiều ảnh thay vì video.
 

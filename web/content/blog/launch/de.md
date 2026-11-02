@@ -2,6 +2,7 @@
 title: Videoner ist online: Website und Telegram-Bot zum Herunterladen von Videos
 summary: Videoner lädt Videos von YouTube, TikTok, Instagram, Facebook und Twitter/X herunter – auf der Website videoner.download und im Telegram-Bot @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Hi! Das ist Videoner – ein kostenloser Dienst, der Videos aus sozialen Netzwerken herunterlädt. Du kannst ihn auf zwei Arten nutzen: auf der Website und in Telegram.
 

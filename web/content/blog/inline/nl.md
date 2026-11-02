@@ -2,6 +2,7 @@
 title: Inline-modus: stuur video's naar elke chat met @VideonerBot
 summary: Typ @VideonerBot en een link direct in een gesprek, en de video komt in diezelfde chat. Op de website open je een link door simpelweg ons domein ervoor te zetten.
 date: 2026-08-19
+time: 23:18:52
 ---
 Twee nieuwe manieren om video's sneller te downloaden.
 

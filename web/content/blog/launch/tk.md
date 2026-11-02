@@ -2,6 +2,7 @@
 title: Videoner işe başlady — wideo ýüklemek üçin saýt we Telegram boty
 summary: Videoner YouTube, TikTok, Instagram, Facebook we Twitter/X-den wideolary ýükleýär — videoner.download saýtynda we @VideonerBot Telegram botunda.
 date: 2026-07-20
+time: 23:18:52
 ---
 Salam! Bu Videoner — sosial ulgamlardan wideo ýükleýän mugt hyzmat. Ony iki usulda ulanyp bilersiňiz: saýtda we Telegram-da.
 

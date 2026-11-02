@@ -2,6 +2,7 @@
 title: Majukwaa mapya: Vimeo, VK, Rutube, OK.ru na Pinterest
 summary: Sasa Videoner inapakua video kutoka kwenye majukwaa matano zaidi — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) na Pinterest. Inafanya kazi kwenye tovuti na kwenye bot.
 date: 2026-07-22
+time: 23:18:52
 ---
 Tumeongeza majukwaa matano mapya. Sasa Videoner inapakua video kutoka:
 

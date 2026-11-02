@@ -2,6 +2,7 @@
 title: Videoner sada govori 25 jezika
 summary: Web-stranica, bot i proširenje preglednika sada govore još 19 jezika — od kineskog i hindskog do njemačkog, turskog i japanskog.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner je sada dostupan na **25 jezika**. Engleskom, španskom, ruskom, ukrajinskom, kazahskom i arapskom pridružilo se još 19:
 

@@ -2,6 +2,7 @@
 title: Videoner sada govori 35 jezika
 summary: Još 10 jezika — amharski, oromo, hausa, somalijski, azerbejdžanski, kirgiski, tadžički, malajski, holandski i rumunski.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner je sada dostupan na **35 jezika**. Pridružilo se još 10:
 

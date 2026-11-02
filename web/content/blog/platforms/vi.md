@@ -2,6 +2,7 @@
 title: Nền tảng mới: Vimeo, VK, Rutube, OK.ru và Pinterest
 summary: Videoner giờ tải video từ thêm năm nền tảng — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) và Pinterest. Dùng được cả trên trang web lẫn trong bot.
 date: 2026-07-22
+time: 23:18:52
 ---
 Chúng tôi đã thêm năm nền tảng mới. Giờ Videoner tải video từ:
 

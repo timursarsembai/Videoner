@@ -17,6 +17,7 @@ export function GET() {
       return {
         slug: post.slug,
         date: post.date,
+        time: post.time,
         url,
         html: telegramHtml(post, url, { readOnSite: ui.readOnSite, readMore: ui.readFull }),
       };

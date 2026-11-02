@@ -2,6 +2,7 @@
 title: Videoner nisi — faqe interneti dhe bot Telegram për shkarkimin e videove
 summary: Videoner shkarkon video nga YouTube, TikTok, Instagram, Facebook dhe Twitter/X — në faqen videoner.download dhe në botin e Telegram @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Përshëndetje! Ky është Videoner — një shërbim falas që shkarkon video nga rrjetet sociale. Mund ta përdorni në dy mënyra: në faqen e internetit dhe në Telegram.
 

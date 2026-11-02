@@ -2,6 +2,7 @@
 title: Modo para grupos: el bot envía los videos de los enlaces del chat
 summary: Añade @VideonerBot a un grupo y responderá con el video a los enlaces que se publiquen allí. Los administradores ajustan su comportamiento con el comando /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Ahora puedes añadir [@VideonerBot](https://t.me/VideonerBot) a un chat de grupo. Alguien comparte el enlace de un video y el bot responde enviando el video. Nadie tiene que abrir el enlace ni ir al bot.
 

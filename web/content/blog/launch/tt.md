@@ -2,6 +2,7 @@
 title: Videoner эшли башлады — видео йөкләп алу өчен сайт һәм Telegram-бот
 summary: Videoner YouTube, TikTok, Instagram, Facebook һәм Twitter/X видеоларын йөкләп ала — videoner.download сайтында һәм @VideonerBot Telegram-ботында.
 date: 2026-07-20
+time: 23:18:52
 ---
 Сәлам! Бу Videoner — социаль челтәрләрдән видео йөкләп ала торган бушлай сервис. Аны ике ысул белән кулланып була: сайтта һәм Telegram'да.
 

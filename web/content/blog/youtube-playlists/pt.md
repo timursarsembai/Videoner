@@ -2,6 +2,7 @@
 title: Playlists completas do YouTube e fim dos limites diários
 summary: O Videoner baixa playlists do YouTube um vídeo por vez — no bot, no site e na extensão, com um botão Parar. E o limite diário de downloads acabou.
 date: 2026-10-31
+time: 02:36:50
 ---
 Duas grandes mudanças.
 

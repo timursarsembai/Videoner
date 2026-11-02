@@ -2,6 +2,7 @@
 title: Instagram-stories en gekoppelde accounts
 summary: De extensie downloadt Instagram-stories, en de bot downloadt stories en privéposts via je gekoppelde account. Koppelen met een knop in de extensie, beheren met /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories en privéposts zijn alleen zichtbaar voor ingelogde gebruikers, dus de Videoner-server kan er niet bij. Daar zijn nu twee oplossingen voor.
 

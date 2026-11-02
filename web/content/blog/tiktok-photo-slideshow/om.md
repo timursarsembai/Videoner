@@ -2,6 +2,7 @@
 title: Maxxansa suuraa TikTok fi islaayid shoo suuraa
 summary: Videoner amma maxxansa suuraa TikTok buusa, maxxansa suuraalee hedduu qabu kamiyyuu immoo gara islaayid shoo viidiyootti jijjiiruu danda'a. Garee keessatti, bootiin suuraalee fi islaayid shoo battaluma erga.
 date: 2026-10-31
+time: 00:53:50
 ---
 Haaromsa lama maxxansa viidiyoo mannaa suuraalee hedduu qabaniif.
 

@@ -2,6 +2,7 @@
 title: Videoner endi 35 tilda
 summary: Yana 10 ta til — amxar, oromo, xausa, somali, ozarbayjon, qirgʻiz, tojik, malay, niderland va rumin tillari.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner endi **35 tilda** mavjud. Yana 10 ta til qoʻshildi:
 

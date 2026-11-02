@@ -2,6 +2,7 @@
 title: Carousel, mga larawan at Threads: i-download ang buong post
 summary: Dina-download na ngayon ng Videoner ang bawat file sa isang post — parehong video at larawan mula sa mga Instagram carousel. Dagdag pa, suportado na ang Threads.
 date: 2026-08-12
+time: 23:18:52
 ---
 Dati, isang video lang ang puwede mong i-download mula sa post na may ilang file. Ngayon, kinukuha na ng Videoner ang buong post.
 

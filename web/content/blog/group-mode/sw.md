@@ -2,6 +2,7 @@
 title: Hali ya kikundi: bot inatuma video za viungo vinavyoshirikiwa kwenye chat
 summary: Ongeza @VideonerBot kwenye kikundi, na itajibu kwa video kwenye viungo vinavyotumwa humo. Wasimamizi wanaweka tabia yake kwa amri ya /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Sasa unaweza kuongeza [@VideonerBot](https://t.me/VideonerBot) kwenye chat ya kikundi. Mtu anapotuma kiungo cha video, bot inajibu kwa video yenyewe. Hakuna anayehitaji kufungua kiungo au kuhamia kwenye bot.
 

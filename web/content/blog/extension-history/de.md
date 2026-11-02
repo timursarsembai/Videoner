@@ -2,6 +2,7 @@
 title: Download-Verlauf in der Erweiterung und Videoner im Firefox-Katalog
 summary: Die Erweiterung merkt sich jetzt, was du in den letzten 30 Tagen heruntergeladen hast – Titel, Link und Datum. Und für Firefox ist sie jetzt im offiziellen Add-on-Katalog von Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 Die Videoner-Browsererweiterung bringt zwei Neuerungen: einen Download-Verlauf und die Installation in Firefox aus dem offiziellen Katalog von Mozilla.
 

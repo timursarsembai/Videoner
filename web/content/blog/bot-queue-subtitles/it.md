@@ -2,6 +2,7 @@
 title: Un bot migliore: 4K, dimensioni dei file, avanzamento, coda e sottotitoli
 summary: Ora il bot offre fino al 4K e file fino a 2 GB, dimensioni indicative sui pulsanti, avanzamento del download in tempo reale, una coda per più link e i sottotitoli di YouTube in .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Ecco un riepilogo degli ultimi aggiornamenti del bot [@VideonerBot](https://t.me/VideonerBot).
 

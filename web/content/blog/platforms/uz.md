@@ -2,6 +2,7 @@
 title: Yangi platformalar: Vimeo, VK, Rutube, OK.ru va Pinterest
 summary: Videoner endi yana beshta platformadan — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) va Pinterestʼdan video yuklab oladi. Bu saytda ham, botda ham ishlaydi.
 date: 2026-07-22
+time: 23:18:52
 ---
 Biz beshta yangi platforma qoʻshdik. Videoner endi quyidagilardan video yuklab oladi:
 

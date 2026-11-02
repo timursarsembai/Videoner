@@ -2,6 +2,7 @@
 title: Videoner ya habla 46 idiomas
 summary: 11 idiomas más — pastún, kurdo (sorani y kurmanji), uigur, turcomano, tártaro, albanés, bosnio, checheno, ingusetio y ávaro.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner ya está disponible en **46 idiomas**. Se suman 11 más:
 

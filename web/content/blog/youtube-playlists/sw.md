@@ -2,6 +2,7 @@
 title: Orodha kamili za kucheza za YouTube na hakuna tena vikomo vya kila siku
 summary: Videoner inapakua orodha za kucheza (playlist) za YouTube video moja baada ya nyingine — kwenye bot, kwenye tovuti na kwenye kiendelezi, kwa kitufe cha kusimamisha. Na kikomo cha upakuaji cha kila siku kimeondolewa.
 date: 2026-10-31
+time: 02:36:50
 ---
 Mabadiliko mawili makubwa.
 

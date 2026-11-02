@@ -2,6 +2,7 @@
 title: -audio va -hd bayroqlari: sifat tanlamasdan yuklab olish
 summary: Havoladan keyin -audio qoʻshing — bot ovozni darhol mp3 qilib yuboradi; -hd qoʻshsangiz, video eng yaxshi sifatda keladi. Shaxsiy chatlarda ham, guruhlarda ham ishlaydi.
 date: 2026-10-31
+time: 01:12:42
 ---
 [@VideonerBot](https://t.me/VideonerBot) boti endi bayroqlarni — havoladan keyin yoziladigan qisqa soʻzlarni tushunadi. Ular bilan sifat tugmasini bosish shart emas: bot darhol yuklab olishni boshlaydi.
 

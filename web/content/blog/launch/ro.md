@@ -2,6 +2,7 @@
 title: Videoner s-a lansat: un site și un bot de Telegram pentru descărcarea videoclipurilor
 summary: Videoner descarcă videoclipuri de pe YouTube, TikTok, Instagram, Facebook și Twitter/X — pe site-ul videoner.download și în botul de Telegram @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Salut! Acesta este Videoner — un serviciu gratuit care descarcă videoclipuri de pe rețelele sociale. Îl poți folosi în două feluri: pe site și în Telegram.
 

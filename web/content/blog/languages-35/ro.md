@@ -2,6 +2,7 @@
 title: Videoner vorbește acum 35 de limbi
 summary: Încă 10 limbi — amharică, oromo, hausa, somaleză, azeră, kârgâză, tadjică, malaeză, neerlandeză și română.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner este acum disponibil în **35 de limbi**. Li s-au alăturat încă 10:
 

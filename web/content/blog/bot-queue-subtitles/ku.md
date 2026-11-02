@@ -2,6 +2,7 @@
 title: Botek çêtir — 4K, mezinahiya pelan, pêşveçûn, rêz û binnivîs
 summary: Bot niha heta 4K û pelên heta 2 GB pêşkêş dike, mezinahiyên texmînî li ser bişkokan, pêşveçûna daxistinê ya zindî, rêzek ji bo çend lînkan û binnivîsên YouTube bi .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Li vir kurteyek ji nûkirinên dawî yên bota [@VideonerBot](https://t.me/VideonerBot) heye.
 

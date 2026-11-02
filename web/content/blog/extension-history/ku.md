@@ -2,6 +2,7 @@
 title: Dîroka daxistinan di pêvekê de û Videoner di kataloga Firefox de
 summary: Pêvek niha bi bîr tîne ka te di 30 rojên dawî de çi daxistiye — nav, lînk û dîrok. Û ji bo Firefox, ew niha di kataloga fermî ya pêvekên Mozilla de ye.
 date: 2026-11-02
+time: 00:48:04
 ---
 Di pêveka gerokê ya Videoner de du tiştên nû hene: dîroka daxistinan, û sazkirina li Firefox ji kataloga fermî ya Mozilla.
 

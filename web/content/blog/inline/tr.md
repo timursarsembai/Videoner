@@ -2,6 +2,7 @@
 title: Satır içi mod: @VideonerBot ile videoları herhangi bir sohbete gönderin
 summary: Doğrudan bir sohbette @VideonerBot ve bir bağlantı yazın, video aynı sohbete gelsin. Sitede ise bir bağlantıyı başına alan adımızı ekleyerek açabilirsiniz.
 date: 2026-08-19
+time: 23:18:52
 ---
 Videoları daha hızlı indirmenin iki yeni yolu.
 

@@ -2,6 +2,7 @@
 title: Videoner 브라우저 확장 프로그램: 동영상 페이지에 다운로드 버튼이 생겨요
 summary: Chrome, Yandex Browser, Edge, Opera용 확장 프로그램이 나왔어요. 동영상 페이지에 바로 다운로드 버튼이 나타나고, Instagram, Facebook, TikTok, Threads는 회원님의 로그인으로 다운로드해요.
 date: 2026-10-28
+time: 23:18:52
 ---
 컴퓨터에서 동영상을 자주 다운로드한다면, 이제 링크를 복사하지 않고도 할 수 있어요. Videoner 브라우저 확장 프로그램을 소개해요.
 

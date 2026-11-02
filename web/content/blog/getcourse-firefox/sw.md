@@ -2,6 +2,7 @@
 title: Kiendelezi: masomo ya GetCourse na toleo la Firefox
 summary: Sasa kiendelezi cha Videoner kinaweza kupakua masomo ya video kutoka kwenye shule za GetCourse, na kimetoka kwa Firefox kikiwa na usakinishaji wa mbofyo mmoja na masasisho ya kiotomatiki.
 date: 2026-10-29
+time: 23:18:52
 ---
 Masasisho mawili makubwa ya kiendelezi cha Videoner.
 

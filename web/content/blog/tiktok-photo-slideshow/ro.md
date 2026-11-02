@@ -2,6 +2,7 @@
 title: Postări foto de pe TikTok și prezentări foto
 summary: Videoner descarcă acum postările foto de pe TikTok și poate transforma orice postare cu mai multe fotografii într-o prezentare foto video. În grupuri, botul trimite imediat fotografiile și prezentarea.
 date: 2026-10-31
+time: 00:53:50
 ---
 Două actualizări pentru postările care conțin mai multe fotografii în loc de un videoclip.
 

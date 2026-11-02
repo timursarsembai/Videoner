@@ -2,6 +2,7 @@
 title: ¿Una publicación privada? El bot te dice cómo descargarla
 summary: Si una publicación, un reel o una historia solo es visible con sesión iniciada, el bot ahora propone conectar tu cuenta; después descarga esas publicaciones por sí mismo, también desde el móvil.
 date: 2026-10-31
+time: 22:40:56
 ---
 Algunas publicaciones solo se muestran a quien ha iniciado sesión: historias de Instagram, publicaciones y reels privados, publicaciones solo para amigos y videos con restricción de edad. Hasta ahora, ante estos enlaces el bot solo respondía «no disponible sin iniciar sesión».
 

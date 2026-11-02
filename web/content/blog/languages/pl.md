@@ -2,6 +2,7 @@
 title: Videoner po ukraińsku i kazachsku, a język możesz teraz wybrać sam
 summary: Bot, strona i rozszerzenie mówią teraz po ukraińsku i kazachsku. A język bota możesz teraz wybrać sam komendą /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner jest teraz dostępny w dwóch nowych językach — **ukraińskim** i **kazachskim**.
 

@@ -2,6 +2,7 @@
 title: Qoraalka boostada hadda wuxuu ku jiraa qoraalka faylka
 summary: Bot-ku wuxuu qoraalka boostooyinka TikTok, Instagram, Threads, X, Facebook iyo Pinterest ku daraa qoraalka muuqaallada iyo sawirrada. Websaydhka iyo kordhiyuhu hadda soo dejinta kadib waxay ku xiraan kanaalkeenna warka.
 date: 2026-10-31
+time: 01:36:57
 ---
 Dadku inta badan muuqaal waxay u gudbiyaan qoraalka qoraaga awgiis: cunto karis, cinwaan, kaftan, liis hashtag-yo ah. Hadda [@VideonerBot](https://t.me/VideonerBot) wuxuu ku hayaa faylka la jira.
 

@@ -2,6 +2,7 @@
 title: Videoner artıq ərəbcə danışır
 summary: Sayt, bot və brauzer genişlənməsi artıq ərəb dilində, sağdan sola düzülüşlə mövcuddur.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner artıq **ərəb dilində** mövcuddur — ingilis, ispan, rus, ukrayna və qazax dillərindən sonra altıncı dil.
 

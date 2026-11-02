@@ -2,6 +2,7 @@
 title: Historiku i shkarkimeve në shtesë dhe Videoner në katalogun e Firefox
 summary: Shtesa tani mban mend çfarë keni shkarkuar në 30 ditët e fundit — titullin, lidhjen dhe datën. Dhe për Firefox tani ndodhet në katalogun zyrtar të shtesave të Mozilla-s.
 date: 2026-11-02
+time: 00:48:04
 ---
 Shtesa e shfletuesit Videoner sjell dy të reja: historikun e shkarkimeve dhe instalimin në Firefox nga katalogu zyrtar i Mozilla-s.
 

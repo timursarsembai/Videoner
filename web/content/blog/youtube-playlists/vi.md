@@ -2,6 +2,7 @@
 title: Tải trọn danh sách phát YouTube và không còn giới hạn hằng ngày
 summary: Videoner tải danh sách phát YouTube lần lượt từng video — trong bot, trên trang web và trong tiện ích, có nút Dừng. Và giới hạn tải hằng ngày đã được bỏ.
 date: 2026-10-31
+time: 02:36:50
 ---
 Hai thay đổi lớn.
 

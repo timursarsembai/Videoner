@@ -2,6 +2,7 @@
 title: Videoner kini tersedia dalam 25 bahasa
 summary: Laman web, bot dan sambungan pelayar kini tersedia dalam 19 bahasa lagi — daripada bahasa Cina dan Hindi hingga bahasa Jerman, Turki dan Jepun.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner kini tersedia dalam **25 bahasa**. Bahasa Inggeris, Sepanyol, Rusia, Ukraine, Kazakh dan Arab kini disertai oleh 19 bahasa lagi:
 

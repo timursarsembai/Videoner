@@ -2,6 +2,7 @@
 title: نئے پلیٹ فارمز: Vimeo، VK، Rutube، OK.ru اور Pinterest
 summary: Videoner اب پانچ مزید پلیٹ فارمز سے ویڈیوز ڈاؤن لوڈ کرتا ہے: Vimeo، VK، Rutube، OK.ru (Odnoklassniki) اور Pinterest۔ یہ ویب سائٹ اور بوٹ دونوں پر کام کرتا ہے۔
 date: 2026-07-22
+time: 23:18:52
 ---
 ہم نے پانچ نئے پلیٹ فارمز شامل کیے ہیں۔ اب Videoner ان سے ویڈیوز ڈاؤن لوڈ کرتا ہے:
 

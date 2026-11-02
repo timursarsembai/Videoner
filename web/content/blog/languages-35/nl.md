@@ -2,6 +2,7 @@
 title: Videoner spreekt nu 35 talen
 summary: 10 talen erbij – Amhaars, Oromo, Hausa, Somalisch, Azerbeidzjaans, Kirgizisch, Tadzjieks, Maleis, Nederlands en Roemeens.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner is nu beschikbaar in **35 talen**. Er zijn er 10 bijgekomen:
 

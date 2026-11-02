@@ -2,6 +2,7 @@
 title: Prywatny post? Bot podpowie, jak go pobrać
 summary: Jeśli post, rolka albo relacja jest widoczna tylko dla zalogowanych, bot zaproponuje teraz połączenie twojego konta — potem sam pobiera takie posty, także z telefonu.
 date: 2026-10-31
+time: 22:40:56
 ---
 Niektóre posty platformy pokazują tylko zalogowanym: relacje z Instagrama, prywatne posty i rolki, posty tylko dla znajomych, filmy z ograniczeniem wiekowym. Do tej pory na taki link bot odpowiadał tylko „niedostępne bez logowania”.
 

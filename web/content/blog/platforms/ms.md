@@ -2,6 +2,7 @@
 title: Platform baharu: Vimeo, VK, Rutube, OK.ru dan Pinterest
 summary: Videoner kini memuat turun video daripada lima platform lagi — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) dan Pinterest. Ia berfungsi di laman web dan juga dalam bot.
 date: 2026-07-22
+time: 23:18:52
 ---
 Kami telah menambah lima platform baharu. Videoner kini memuat turun video daripada:
 

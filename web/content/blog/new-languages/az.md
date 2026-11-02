@@ -2,6 +2,7 @@
 title: Videoner artıq 25 dildə danışır
 summary: Sayt, bot və brauzer genişlənməsi artıq daha 19 dildə danışır — çin və hind dillərindən alman, türk və yapon dillərinə qədər.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner indi **25 dildə** mövcuddur. İngilis, ispan, rus, ukrayna, qazax və ərəb dillərinə daha 19 dil qoşulub:
 

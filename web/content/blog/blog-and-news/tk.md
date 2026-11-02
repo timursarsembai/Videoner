@@ -2,6 +2,7 @@
 title: Videoner-iň indi blogy we täzelikler kanaly bar
 summary: Taslamadaky täzelikler barada saýtdaky blogda we @videonerdownload Telegram kanalynda gürrüň berýäris. Botdan gelýän her faýlyň tekstinde indi kanala salgy bar.
 date: 2026-10-30
+time: 23:18:52
 ---
 Saýtda blog we Telegram-da täzelikler kanalyny açdyk. Bu ýerde botda, saýtda we giňeltmede näme täzelikleriň bardygy we olary nädip ulanmalydygy barada gysgaça gürrüň bereris.
 

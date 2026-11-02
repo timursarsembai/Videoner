@@ -2,6 +2,7 @@
 title: Videoner brauzer giňeltmesi — wideo sahypasynda “Ýükle” düwmesi
 summary: Giňeltme Chrome, Yandex Browser, Edge we Opera üçin çykdy. “Ýükle” düwmesi göni wideo sahypasynda peýda bolýar, Instagram, Facebook, TikTok we Threads bolsa Siziň girişiňiz bilen ýüklenýär.
 date: 2026-10-28
+time: 23:18:52
 ---
 Eger wideolary kompýuterde ýygy-ýygydan ýükleýän bolsaňyz, indi muny salgylary göçürmezden edip bilersiňiz. Videoner brauzer giňeltmesi bilen tanyşyň.
 

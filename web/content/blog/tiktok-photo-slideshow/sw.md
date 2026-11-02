@@ -2,6 +2,7 @@
 title: Machapisho ya picha ya TikTok na maonyesho ya slaidi ya picha
 summary: Sasa Videoner inapakua machapisho ya picha ya TikTok na inaweza kugeuza chapisho lolote lenye picha kadhaa kuwa onyesho la slaidi la video. Kwenye vikundi, bot inatuma picha na onyesho la slaidi mara moja.
 date: 2026-10-31
+time: 00:53:50
 ---
 Masasisho mawili kwa machapisho yenye picha kadhaa badala ya video.
 

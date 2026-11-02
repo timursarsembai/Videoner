@@ -2,6 +2,7 @@
 title: Yaxshilangan bot: 4K, fayl hajmlari, jarayon, navbat va subtitrlar
 summary: Bot endi 4K gacha sifat va 2 GB gacha fayllarni taklif qiladi, tugmalarda taxminiy hajm, yuklab olish jarayoni, bir nechta havola uchun navbat va YouTube subtitrlari .srt formatida.
 date: 2026-10-03
+time: 23:18:52
 ---
 [@VideonerBot](https://t.me/VideonerBot) botining soʻnggi yangilanishlari haqida qisqacha.
 

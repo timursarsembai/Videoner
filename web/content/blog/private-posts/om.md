@@ -2,6 +2,7 @@
 title: Maxxansa dhuunfaa? Bootiin akkamitti akka buufattan agarsiisa
 summary: Maxxansi, reel ykn istooriin tokko namoota seenaniif qofa yoo mul'ate, bootiin amma akkaawuntii keessan akka walqabsiiftan isin gorsa — sana booda maxxansa akkasii ofumaan buusa, bilbila irraas.
 date: 2026-10-31
+time: 22:40:56
 ---
 Maxxansi tokko tokko namoota seenaniif qofa mul'ata: istooriiwwan Instagram, maxxansa fi reel dhuunfaa, maxxansa hiriyootaaf qofa, viidiyoo umuriin daangeffame. Hanga ammaatti bootiin liinkii akkasiitiif “seensa malee hin argamu” jedhee qofa deebisa ture.
 

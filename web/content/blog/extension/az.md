@@ -2,6 +2,7 @@
 title: Videoner brauzer genişlənməsi: video səhifəsində «Yüklə» düyməsi
 summary: Genişlənmə Chrome, Yandex Browser, Edge və Opera üçün çıxdı. «Yüklə» düyməsi birbaşa video səhifəsində görünür, Instagram, Facebook, TikTok və Threads isə sizin girişinizlə yüklənir.
 date: 2026-10-28
+time: 23:18:52
 ---
 Kompüterdə tez-tez video yükləyirsinizsə, indi bunu linkləri kopyalamadan edə bilərsiniz. Tanış olun: Videoner brauzer genişlənməsi.
 

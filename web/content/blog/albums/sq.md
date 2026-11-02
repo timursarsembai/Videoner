@@ -2,6 +2,7 @@
 title: Karusele, foto dhe Threads — shkarkoni të gjithë postimin
 summary: Videoner tani shkarkon çdo skedar të postimit — si videot, ashtu edhe fotot nga karuselet e Instagram. Për më tepër, tani mbështetet edhe Threads.
 date: 2026-08-12
+time: 23:18:52
 ---
 Deri tani nga një postim me disa skedarë mund të shkarkonit vetëm një video. Tani Videoner merr të gjithë postimin.
 

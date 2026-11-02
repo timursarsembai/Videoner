@@ -2,6 +2,7 @@
 title: Videoner tarayıcı eklentisi: video sayfasında bir İndir düğmesi
 summary: Eklenti Chrome, Yandex Browser, Edge ve Opera için yayında. Video sayfasında doğrudan bir İndir düğmesi beliriyor; Instagram, Facebook, TikTok ve Threads ise sizin girişinizle indiriliyor.
 date: 2026-10-28
+time: 23:18:52
 ---
 Bilgisayarda sık sık video indiriyorsanız artık bunu bağlantı kopyalamadan yapabilirsiniz. Videoner tarayıcı eklentisiyle tanışın.
 

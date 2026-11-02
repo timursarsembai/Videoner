@@ -2,6 +2,7 @@
 title: Lista të plota luajtjeje të YouTube dhe pa kufij ditorë
 summary: Videoner shkarkon listat e luajtjes së YouTube një video në një kohë — në bot, në faqen e internetit dhe në shtesë, me butonin Ndalo. Dhe kufiri ditor i shkarkimeve nuk ekziston më.
 date: 2026-10-31
+time: 02:36:50
 ---
 Dy ndryshime të mëdha.
 

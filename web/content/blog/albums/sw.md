@@ -2,6 +2,7 @@
 title: Carousel, picha na Threads: pakua chapisho zima
 summary: Sasa Videoner inapakua kila faili kwenye chapisho — video na picha kutoka kwenye carousel za Instagram. Pia, sasa Threads inatumika.
 date: 2026-08-12
+time: 23:18:52
 ---
 Hadi sasa, kutoka kwenye chapisho lenye faili kadhaa uliweza kupakua video moja tu. Sasa Videoner inachukua chapisho zima.
 

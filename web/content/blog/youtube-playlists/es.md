@@ -2,6 +2,7 @@
 title: Listas de reproducción de YouTube completas y sin límites diarios
 summary: Videoner descarga listas de YouTube vídeo a vídeo — en el bot, en el sitio y en la extensión, con un botón para detener. Y ya no hay límite diario de descargas.
 date: 2026-10-31
+time: 02:36:50
 ---
 Dos grandes cambios.
 

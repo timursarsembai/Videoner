@@ -2,6 +2,7 @@
 title: Qrup rejimi: bot çatda paylaşılan linklərə videonu göndərir
 summary: @VideonerBot-u qrupa əlavə edin, o, orada paylaşılan linklərə videonun özü ilə cavab verəcək. Adminlər onun davranışını /settings əmri ilə tənzimləyir.
 date: 2026-10-30
+time: 23:18:52
 ---
 İndi [@VideonerBot](https://t.me/VideonerBot) botunu qrup çatına əlavə edə bilərsiniz. Kimsə video linki göndərəndə bot videonun özü ilə cavab verir. Heç kimin linki açmasına və ya bota keçməsinə ehtiyac qalmır.
 

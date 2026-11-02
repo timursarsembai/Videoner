@@ -2,6 +2,7 @@
 title: Sababbin dandamali: Vimeo, VK, Rutube, OK.ru da Pinterest
 summary: Yanzu Videoner yana sauke bidiyo daga ƙarin dandamali biyar — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) da Pinterest. Yana aiki a shafin yanar gizo da kuma a bot.
 date: 2026-07-22
+time: 23:18:52
 ---
 Mun ƙara sababbin dandamali biyar. Yanzu Videoner yana sauke bidiyo daga:
 

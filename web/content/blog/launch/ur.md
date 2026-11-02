@@ -2,6 +2,7 @@
 title: Videoner لانچ ہو گیا: ویڈیوز ڈاؤن لوڈ کرنے کے لیے ویب سائٹ اور Telegram بوٹ
 summary: Videoner ویڈیوز YouTube، TikTok، Instagram، Facebook اور Twitter/X سے ڈاؤن لوڈ کرتا ہے، videoner.download ویب سائٹ پر اور ‎@VideonerBot Telegram بوٹ میں۔
 date: 2026-07-20
+time: 23:18:52
 ---
 السلام علیکم! یہ Videoner ہے: سوشل میڈیا سے ویڈیوز ڈاؤن لوڈ کرنے والی ایک مفت سروس۔ آپ اسے دو طریقوں سے استعمال کر سکتے ہیں: ویب سائٹ پر اور Telegram میں۔
 

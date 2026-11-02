@@ -2,6 +2,7 @@
 title: Carousel-ka, sawirrada iyo Threads: soo deji boostada oo dhan
 summary: Videoner hadda wuxuu soo dejiyaa fayl kasta oo boostada ku jira — muuqaallada iyo sawirrada carousel-ka Instagram labadaba. Intaa waxaa dheer, Threads hadda waa la taageeraa.
 date: 2026-08-12
+time: 23:18:52
 ---
 Ilaa hadda, boost leh dhowr fayl waxaad ka soo dejin kartay hal muuqaal oo keliya. Hadda Videoner wuxuu qaadaa boostada oo dhan.
 

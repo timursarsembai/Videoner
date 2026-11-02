@@ -2,6 +2,7 @@
 title: Yanayin rukuni: bot yana aika bidiyo don hanyoyin haɗi da aka raba a hira
 summary: Ku ƙara @VideonerBot a rukuni, kuma zai amsa hanyoyin haɗin da aka wallafa a can da bidiyon kansa. Masu gudanarwa suna saita halinsa da umarnin /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Yanzu za ku iya ƙara [@VideonerBot](https://t.me/VideonerBot) a hirar rukuni. Idan wani ya turo hanyar haɗi zuwa bidiyo, bot yana amsawa da bidiyon kansa. Babu wanda zai buɗe hanyar haɗin ko ya koma zuwa bot.
 

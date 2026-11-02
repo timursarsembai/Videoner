@@ -2,6 +2,7 @@
 title: Videoner now speaks 25 languages
 summary: The website, the bot and the browser extension now speak 19 more languages — from Chinese and Hindi to German, Turkish and Japanese.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner is now available in **25 languages**. English, Spanish, Russian, Ukrainian, Kazakh and Arabic are joined by 19 more:
 

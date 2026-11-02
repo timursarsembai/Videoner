@@ -2,6 +2,7 @@
 title: Textul postării apare acum în textul fișierului
 summary: Botul adaugă textul postării de pe TikTok, Instagram, Threads, X, Facebook și Pinterest în textul videoclipurilor și fotografiilor. Site-ul și extensia afișează acum, după descărcare, un link către canalul nostru de noutăți.
 date: 2026-10-31
+time: 01:36:57
 ---
 Oamenii trimit adesea un videoclip mai departe pentru textul autorului: o rețetă, o adresă, o glumă, o listă de hashtaguri. Acum [@VideonerBot](https://t.me/VideonerBot) îl păstrează împreună cu fișierul.
 

@@ -2,6 +2,7 @@
 title: Videoner を公開しました：動画をダウンロードできるサイトと Telegram ボット
 summary: Videoner は YouTube、TikTok、Instagram、Facebook、Twitter/X の動画をダウンロードできます。サイト videoner.download と Telegram ボット @VideonerBot でご利用いただけます。
 date: 2026-07-20
+time: 23:18:52
 ---
 こんにちは！ Videoner は、SNS の動画をダウンロードできる無料のサービスです。サイトと Telegram の2つの方法でご利用いただけます。
 

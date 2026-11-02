@@ -2,6 +2,7 @@
 title: Stories de pe Instagram și conturi conectate
 summary: Extensia descarcă stories de pe Instagram, iar botul descarcă stories și postări private prin contul tău conectat. Te conectezi cu un buton din extensie și gestionezi conexiunile cu /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories și postările private sunt vizibile doar utilizatorilor conectați, așa că serverul Videoner nu le poate obține. Acum există două soluții pentru asta.
 

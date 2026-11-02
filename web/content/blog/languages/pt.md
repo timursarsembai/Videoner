@@ -2,6 +2,7 @@
 title: Videoner em ucraniano e cazaque, e agora você pode escolher o idioma
 summary: O bot, o site e a extensão agora falam ucraniano e cazaque. E você já pode escolher o idioma do bot com o comando /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 O Videoner agora está disponível em dois novos idiomas — **ucraniano** e **cazaque**.
 

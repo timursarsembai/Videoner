@@ -2,6 +2,7 @@
 title: Stories Instagram dan akaun yang disambungkan
 summary: Sambungan memuat turun stories Instagram, dan bot memuat turun stories serta hantaran peribadi melalui akaun anda yang disambungkan. Sambungkan akaun dengan butang dalam sambungan; urus dengan /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories dan hantaran peribadi hanya boleh dilihat oleh pengguna yang telah log masuk, jadi pelayan Videoner tidak dapat mendapatkannya. Kini terdapat dua penyelesaian untuk itu.
 

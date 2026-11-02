@@ -2,6 +2,7 @@
 title: Platformên nû — Vimeo, VK, Rutube, OK.ru û Pinterest
 summary: Videoner niha vîdyoyan ji pênc platformên din jî dadixe — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) û Pinterest. Hem li ser malperê hem jî di botê de dixebite.
 date: 2026-07-22
+time: 23:18:52
 ---
 Me pênc platformên nû zêde kirin. Videoner niha vîdyoyan ji van dadixe:
 

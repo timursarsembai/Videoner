@@ -2,6 +2,7 @@
 title: Videoner ya tiene blog y canal de noticias
 summary: Contamos las novedades del proyecto en el blog del sitio y en el canal de Telegram @videonerdownload. El enlace al canal ya aparece en el pie de cada archivo del bot.
 date: 2026-10-30
+time: 23:18:52
 ---
 Abrimos un blog en el sitio web y un canal de noticias en Telegram. Aquí contaremos brevemente qué hay de nuevo en el bot, el sitio y la extensión, y cómo usarlo.
 

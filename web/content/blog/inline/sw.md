@@ -2,6 +2,7 @@
 title: Hali ya inline: tuma video kwenye chat yoyote kwa @VideonerBot
 summary: Andika @VideonerBot na kiungo moja kwa moja kwenye mazungumzo, na video itafika kwenye chat hiyo hiyo. Kwenye tovuti, unaweza kufungua kiungo kwa kuongeza tu domeni yetu mbele yake.
 date: 2026-08-19
+time: 23:18:52
 ---
 Njia mbili mpya za kupakua video kwa haraka zaidi.
 

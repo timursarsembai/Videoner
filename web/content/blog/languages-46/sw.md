@@ -2,6 +2,7 @@
 title: Videoner sasa inapatikana kwa lugha 46
 summary: Lugha 11 zaidi — Kipashto, Kikurdi (Kisorani na Kikurmanji), Kiuyghur, Kiturkmeni, Kitatari, Kialbania, Kibosnia, Kichechen, Kiingush na Kiavari.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner sasa inapatikana kwa **lugha 46**. Lugha 11 zaidi zimeongezwa:
 

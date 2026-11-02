@@ -2,6 +2,7 @@
 title: Historia ya upakuaji kwenye kiendelezi, na Videoner kwenye katalogi ya Firefox
 summary: Kiendelezi sasa kinakumbuka ulichopakua katika siku 30 zilizopita — kichwa, kiungo na tarehe. Na kwa Firefox, sasa kinapatikana kwenye katalogi rasmi ya nyongeza za Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 Kiendelezi cha kivinjari cha Videoner kina mambo mawili mapya: historia ya upakuaji, na kusakinisha kwenye Firefox kutoka katalogi rasmi ya Mozilla.
 

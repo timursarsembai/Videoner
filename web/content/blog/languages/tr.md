@@ -2,6 +2,7 @@
 title: Videoner Ukraynaca ve Kazakçada; artık dili kendiniz seçebilirsiniz
 summary: Bot, site ve eklenti artık Ukraynaca ve Kazakça konuşuyor. Ayrıca botun dilini artık /language komutuyla kendiniz seçebilirsiniz.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner artık iki yeni dilde kullanılabiliyor: **Ukraynaca** ve **Kazakça**.
 

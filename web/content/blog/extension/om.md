@@ -2,6 +2,7 @@
 title: Dabalata biraawuzarii Videoner: qabduu “Buusi” fuula viidiyoo irratti
 summary: Dabalanni biraawuzarii Chrome, Yandex Browser, Edge fi Opera'f bahee jira. Qabduun “Buusi” kallattiin fuula viidiyoo irratti mul'ata, Instagram, Facebook, TikTok fi Threads immoo seensa keessaniin buufamu.
 date: 2026-10-28
+time: 23:18:52
 ---
 Yoo yeroo baay'ee kompiitara irratti viidiyoo buufattan ta'e, amma liinkii osoo hin garagalchin kana gochuu dandeessu. Dabalata biraawuzarii Videoner wajjin wal haa barannu.
 

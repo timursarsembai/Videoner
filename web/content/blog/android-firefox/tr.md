@@ -2,6 +2,7 @@
 title: Hesabınızı artık Android telefondan da bota bağlayabilirsiniz
 summary: Bilgisayara gerek yok: Android'de Instagram'ı Firefox ve Cookie-Editor eklentisiyle @VideonerBot'a bağlayın, bot da hikâyeleri ve gizli gönderileri indirsin.
 date: 2026-10-31
+time: 00:39:25
 ---
 Botun Instagram hikâyelerini ve gizli gönderileri indirebilmesi için hesabınızı ona bağlamanız gerekir. Şimdiye kadar bunun için Videoner eklentisinin kurulu olduğu bir bilgisayar gerekiyordu. Artık doğrudan **Android** telefonunuzdan bağlanabilirsiniz.
 

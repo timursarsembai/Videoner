@@ -2,6 +2,7 @@
 title: L’historique des téléchargements dans l’extension, et Videoner dans le catalogue Firefox
 summary: L’extension garde désormais en mémoire ce que vous avez téléchargé ces 30 derniers jours — titre, lien et date. Et pour Firefox, elle est maintenant dans le catalogue officiel des modules de Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 L’extension de navigateur Videoner a deux nouveautés : un historique des téléchargements et l’installation dans Firefox depuis le catalogue officiel de Mozilla.
 

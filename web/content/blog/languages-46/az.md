@@ -2,6 +2,7 @@
 title: Videoner artıq 46 dildə danışır
 summary: Daha 11 dil — puştu, kürd (sorani və kurmanci), uyğur, türkmən, tatar, alban, bosniya, çeçen, inquş və avar dilləri.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner indi **46 dildə** mövcuddur. Daha 11 dil qoşulub:
 

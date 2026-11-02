@@ -2,6 +2,7 @@
 title: Histórico de downloads na extensão e o Videoner no catálogo do Firefox
 summary: A extensão agora lembra o que você baixou nos últimos 30 dias — título, link e data. E, no Firefox, ela agora está no catálogo oficial de complementos da Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 A extensão de navegador do Videoner traz duas novidades: um histórico de downloads e a instalação no Firefox pelo catálogo oficial da Mozilla.
 

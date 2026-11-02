@@ -2,6 +2,7 @@
 title: Platforma të reja — Vimeo, VK, Rutube, OK.ru dhe Pinterest
 summary: Videoner tani shkarkon video nga pesë platforma të tjera — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) dhe Pinterest. Funksionon si në faqen e internetit, ashtu edhe në bot.
 date: 2026-07-22
+time: 23:18:52
 ---
 Kemi shtuar pesë platforma të reja. Videoner tani shkarkon video nga:
 

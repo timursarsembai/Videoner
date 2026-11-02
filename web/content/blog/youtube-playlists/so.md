@@ -2,6 +2,7 @@
 title: Liisaska muuqaallada YouTube oo dhammaystiran iyo xad maalinle ah oo aan jirin
 summary: Videoner wuxuu soo dejiyaa liisaska muuqaallada YouTube muuqaal muuqaal — bot-ka, websaydhka iyo kordhiyaha, isagoo leh badhanka “Jooji”. Xadkii soo dejinta maalinlaha ahaana waa la qaaday.
 date: 2026-10-31
+time: 02:36:50
 ---
 Laba isbeddel oo waaweyn.
 

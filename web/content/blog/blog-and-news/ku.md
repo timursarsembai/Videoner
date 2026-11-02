@@ -2,6 +2,7 @@
 title: Niha bloga Videoner û kanaleke nûçeyan heye
 summary: Em nûçeyên projeyê di bloga malperê û di kanala Telegramê @videonerdownload de parve dikin. Niha di nivîsa her pelê ji botê de lînka kanalê heye.
 date: 2026-10-30
+time: 23:18:52
 ---
 Me li ser malperê blogek û li Telegramê kanaleke nûçeyan vekir. Li vir em ê bi kurtî behsa nûbûnên botê, malperê û pêvekê bikin, û ka çawa wan bi kar bînî.
 

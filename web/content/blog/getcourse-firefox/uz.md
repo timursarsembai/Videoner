@@ -2,6 +2,7 @@
 title: Kengaytma: GetCourse darslari va Firefox versiyasi
 summary: Videoner kengaytmasi endi GetCourse maktablaridagi video darslarni yuklab oladi va Firefox uchun bir bosishda oʻrnatish hamda avtomatik yangilanishlar bilan chiqdi.
 date: 2026-10-29
+time: 23:18:52
 ---
 Videoner kengaytmasida ikkita katta yangilanish.
 

@@ -2,6 +2,7 @@
 title: Nasa 25 wika na ang Videoner
 summary: May 19 pang bagong wika ang website, ang bot at ang browser extension — mula Chinese at Hindi hanggang German, Turkish at Japanese.
 date: 2026-11-01
+time: 00:11:17
 ---
 Available na ang Videoner sa **25 wika**. Bukod sa English, Spanish, Russian, Ukrainian, Kazakh at Arabic, may 19 pang bagong wika:
 

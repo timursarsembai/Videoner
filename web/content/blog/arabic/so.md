@@ -2,6 +2,7 @@
 title: Videoner hadda wuxuu ku hadlaa Carabi
 summary: Websaydhka, bot-ka iyo kordhiyaha biraawsarka hadda waxaa lagu heli karaa Carabi, iyadoo bogga loo habeeyay midig ilaa bidix.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner hadda waxaa lagu heli karaa **Carabi** — luqadda lixaad kadib Ingiriisi, Isbaanish, Ruush, Yukreeniyaan iyo Kazakh.
 

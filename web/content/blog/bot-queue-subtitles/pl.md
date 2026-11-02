@@ -2,6 +2,7 @@
 title: Lepszy bot: 4K, rozmiary plików, postęp, kolejka i napisy
 summary: Bot daje teraz jakość do 4K i pliki do 2 GB, przybliżone rozmiary na przyciskach, postęp pobierania na żywo, kolejkę dla wielu linków i napisy z YouTube w .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Oto podsumowanie ostatnich aktualizacji bota [@VideonerBot](https://t.me/VideonerBot).
 

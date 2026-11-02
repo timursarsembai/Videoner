@@ -2,6 +2,7 @@
 title: Mode inline : envoyez des vidéos dans n’importe quelle conversation avec @VideonerBot
 summary: Tapez @VideonerBot suivi d’un lien directement dans une conversation, et la vidéo arrive dans cette même conversation. Sur le site, vous pouvez ouvrir un lien simplement en ajoutant notre domaine devant.
 date: 2026-08-19
+time: 23:18:52
 ---
 Deux nouvelles façons de télécharger des vidéos plus vite.
 

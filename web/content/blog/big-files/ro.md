@@ -2,6 +2,7 @@
 title: Videoclipuri de peste 2 GB: botul îți arată unde să le descarci
 summary: Telegram nu permite boturilor să trimită fișiere mai mari de 2 GB. Acum botul explică acest lucru și îți oferă imediat butoane ca să descarci același videoclip pe site sau cu extensia.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram are o limită: un bot nu poate trimite un fișier mai mare de **2 GB**. Un videoclip lung la calitate înaltă o depășește ușor — de exemplu, un curs de câteva ore în 1080p.
 

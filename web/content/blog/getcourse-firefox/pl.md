@@ -2,6 +2,7 @@
 title: Rozszerzenie: lekcje z GetCourse i wersja dla Firefoksa
 summary: Rozszerzenie Videoner pobiera teraz lekcje wideo ze szkół na GetCourse i jest dostępne dla Firefoksa z instalacją jednym kliknięciem i automatycznymi aktualizacjami.
 date: 2026-10-29
+time: 23:18:52
 ---
 Dwie duże aktualizacje rozszerzenia Videoner.
 

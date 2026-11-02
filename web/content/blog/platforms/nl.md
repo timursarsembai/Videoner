@@ -2,6 +2,7 @@
 title: Nieuwe platforms: Vimeo, VK, Rutube, OK.ru en Pinterest
 summary: Videoner downloadt nu video's van nog vijf platforms – Vimeo, VK, Rutube, OK.ru (Odnoklassniki) en Pinterest. Het werkt zowel op de website als in de bot.
 date: 2026-07-22
+time: 23:18:52
 ---
 We hebben vijf nieuwe platforms toegevoegd. Videoner downloadt nu video's van:
 

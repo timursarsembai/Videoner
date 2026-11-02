@@ -2,6 +2,7 @@
 title: Giờ bạn có thể kết nối tài khoản với bot ngay trên điện thoại Android
 summary: Không cần máy tính: trên Android, hãy kết nối Instagram với @VideonerBot qua Firefox và tiện ích Cookie-Editor, bot sẽ tải được story và bài đăng riêng tư.
 date: 2026-10-31
+time: 00:39:25
 ---
 Để bot tải được story và bài đăng riêng tư trên Instagram, bạn cần kết nối tài khoản của mình với bot. Trước đây, việc này cần một máy tính có cài tiện ích Videoner. Giờ bạn có thể kết nối ngay trên điện thoại **Android**.
 

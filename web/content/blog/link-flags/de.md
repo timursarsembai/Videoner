@@ -2,6 +2,7 @@
 title: Die Flags -audio und -hd: Herunterladen ohne Qualitätsauswahl
 summary: Häng -audio an einen Link, und der Bot schickt sofort den Ton als mp3; mit -hd kommt das Video in bester Qualität. Funktioniert in privaten Chats und in Gruppen.
 date: 2026-10-31
+time: 01:12:42
 ---
 Der Bot [@VideonerBot](https://t.me/VideonerBot) versteht jetzt Flags – kurze Wörter nach einem Link. Damit musst du keinen Qualitäts-Button antippen: Der Bot fängt sofort mit dem Download an.
 

@@ -2,6 +2,7 @@
 title: Il testo del post ora è nella didascalia del file
 summary: Il bot aggiunge alle didascalie di video e foto il testo dei post di TikTok, Instagram, Threads, X, Facebook e Pinterest. Il sito e l’estensione ora mostrano un link al nostro canale di notizie dopo il download.
 date: 2026-10-31
+time: 01:36:57
 ---
 Spesso un video si inoltra per la didascalia dell’autore: una ricetta, un indirizzo, una battuta, una lista di hashtag. Ora [@VideonerBot](https://t.me/VideonerBot) la conserva insieme al file.
 

@@ -2,6 +2,7 @@
 title: Daha iyi bir bot: 4K, dosya boyutları, ilerleme, sıra ve altyazılar
 summary: Bot artık 4K'ya kadar kalite ve 2 GB'a kadar dosyalar, düğmelerde yaklaşık boyutlar, canlı indirme ilerlemesi, birden fazla bağlantı için sıra ve .srt biçiminde YouTube altyazıları sunuyor.
 date: 2026-10-03
+time: 23:18:52
 ---
 [@VideonerBot](https://t.me/VideonerBot) botundaki son güncellemelerin bir özeti.
 

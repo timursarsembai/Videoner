@@ -2,6 +2,7 @@
 title: Videoner indi 35 dilde gürleýär
 summary: Ýene 10 dil — amhar, oromo, hausa, somali, azerbaýjan, gyrgyz, täjik, malaý, niderland we rumyn dilleri.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner indi **35 dilde** elýeterli. Ýene 10 dil goşuldy:
 

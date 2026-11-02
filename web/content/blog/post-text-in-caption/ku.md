@@ -2,6 +2,7 @@
 title: Nivîsa postê niha bi pelê re tê
 summary: Bot nivîsa postê ji TikTok, Instagram, Threads, X, Facebook û Pinterest li nivîsa vîdyo û wêneyan zêde dike. Malper û pêvek niha piştî daxistinê lînka kanala me ya nûçeyan nîşan didin.
 date: 2026-10-31
+time: 01:36:57
 ---
 Mirov pir caran vîdyoyekê ji bo nivîsa nivîskar dişînin: reçeteyek, navnîşanek, henekek, lîsteyek haştagan. Niha [@VideonerBot](https://t.me/VideonerBot) wê bi pelê re diparêze.
 

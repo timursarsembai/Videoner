@@ -2,6 +2,7 @@
 title: Mode groupe : le bot publie les vidéos des liens partagés dans la conversation
 summary: Ajoutez @VideonerBot à un groupe, et il répondra par la vidéo aux liens qui y sont publiés. Les administrateurs règlent son comportement avec la commande /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Vous pouvez désormais ajouter [@VideonerBot](https://t.me/VideonerBot) à une conversation de groupe. Quand quelqu’un partage le lien d’une vidéo, le bot répond avec la vidéo elle-même. Personne n’a besoin d’ouvrir le lien ni de passer par le bot.
 

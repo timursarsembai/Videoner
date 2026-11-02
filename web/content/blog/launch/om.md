@@ -2,6 +2,7 @@
 title: Videoner hojii jalqabeera: marsariitii fi boot Telegram viidiyoo buusuuf
 summary: Videoner viidiyoo YouTube, TikTok, Instagram, Facebook fi Twitter/X irraa buusa — marsariitii videoner.download irratti fi boot Telegram @VideonerBot keessatti.
 date: 2026-07-20
+time: 23:18:52
 ---
 Akkam! Kun Videoner — tajaajila bilisaa viidiyoo miidiyaa hawaasaa irraa buusu dha. Karaa lamaan itti fayyadamuu dandeessu: marsariitii irratti fi Telegram keessatti.
 

@@ -2,6 +2,7 @@
 title: Carrousels, foto's en Threads: download de hele post
 summary: Videoner downloadt nu elk bestand uit een post – zowel video's als foto's uit Instagram-carrousels. Bovendien wordt Threads nu ondersteund.
 date: 2026-08-12
+time: 23:18:52
 ---
 Tot nu toe kon je uit een post met meerdere bestanden maar één video downloaden. Nu pakt Videoner de hele post.
 

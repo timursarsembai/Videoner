@@ -2,6 +2,7 @@
 title: Videoner tani ka një blog dhe një kanal lajmesh
 summary: Risitë e projektit i ndajmë në blogun e faqes së internetit dhe në kanalin e Telegram @videonerdownload. Çdo skedar nga boti tani ka në tekst një lidhje te kanali.
 date: 2026-10-30
+time: 23:18:52
 ---
 Kemi nisur një blog në faqen e internetit dhe një kanal lajmesh në Telegram. Këtu do të tregojmë shkurt çfarë ka të re në bot, në faqen e internetit dhe në shtesë, si dhe si ta përdorni.
 

@@ -2,6 +2,7 @@
 title: Yanzu Videoner yana da blog da tashar labarai
 summary: Muna ba da labarin sababbin abubuwa na aikin a blog ɗin shafin yanar gizo da kuma a tashar Telegram @videonerdownload. Yanzu kowane fayil daga bot yana da hanyar haɗi zuwa tashar a rubutun bayaninsa.
 date: 2026-10-30
+time: 23:18:52
 ---
 Mun buɗe blog a shafin yanar gizo da tashar labarai a Telegram. A nan ne za mu taƙaita bayani game da sababbin abubuwa a cikin bot, a shafin yanar gizo da a ƙarin burauza, da yadda ake amfani da su.
 

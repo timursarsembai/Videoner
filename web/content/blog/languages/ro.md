@@ -2,6 +2,7 @@
 title: Videoner în ucraineană și kazahă, iar acum îți poți alege limba
 summary: Botul, site-ul și extensia vorbesc acum ucraineană și kazahă. Și acum poți alege singur limba botului cu comanda /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner este acum disponibil în două limbi noi — **ucraineană** și **kazahă**.
 

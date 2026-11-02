@@ -2,6 +2,7 @@
 title: Videoner are acum un blog și un canal de noutăți
 summary: Povestim ce e nou în proiect pe blogul site-ului și în canalul de Telegram @videonerdownload. Fiecare fișier de la bot are acum în text un link către canal.
 date: 2026-10-30
+time: 23:18:52
 ---
 Am pornit un blog pe site și un canal de noutăți pe Telegram. Aici vom povesti pe scurt ce e nou în bot, pe site și în extensie și cum să folosești noutățile.
 

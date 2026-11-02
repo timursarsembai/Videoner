@@ -2,6 +2,7 @@
 title: Dabalata biraawuzarii: barnoota GetCourse fi fooyya'insa Firefox
 summary: Dabalanni biraawuzarii Videoner amma barnoota viidiyoo mana barumsaa GetCourse irraa buusuu danda'a, Firefox'fis cuqaasa tokkoon fe'amuu fi ofumaan haaromfamuun bahee jira.
 date: 2026-10-29
+time: 23:18:52
 ---
 Haaromsa gurguddaa lama dabalata biraawuzarii Videoner irratti.
 

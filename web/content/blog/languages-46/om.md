@@ -2,6 +2,7 @@
 title: Videoner amma afaanota 46 dubbata
 summary: Afaanota dabalataa 11 — Afaan Pashtoo, Afaan Kurdii (Soraanii fi Kurmaanjii), Afaan Uyigur, Afaan Turkmaan, Afaan Taataar, Afaan Albaaniyaa, Afaan Bosniyaa, Afaan Checheen, Afaan Inguush fi Afaan Avaar.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner amma **afaanota 46**n argama. Afaanonni dabalataa 11 itti dabalamaniiru:
 

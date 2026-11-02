@@ -2,6 +2,7 @@
 title: Instagram storisleri we birikdirilen hasaplar
 summary: Giňeltme Instagram storislerini ýükleýär, bot bolsa birikdirilen hasabyňyz arkaly storisleri we ýapyk ýazgylary ýükleýär. Giňeltmedäki düwme bilen birikdiriň, /accounts bilen dolandyryň.
 date: 2026-10-30
+time: 23:18:52
 ---
 Storisler we ýapyk ýazgylar diňe hasaba giren ulanyjylara görünýär, şonuň üçin Videoner serweri olary alyp bilmeýär. Indi munuň iki çözgüdi bar.
 

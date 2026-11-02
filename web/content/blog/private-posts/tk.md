@@ -2,6 +2,7 @@
 title: Ýapyk ýazgymy? Bot ony nädip ýüklemelidigini görkezýär
 summary: Eger ýazgy, rils ýa-da storis diňe hasaba girenlere görünýän bolsa, bot indi hasabyňyzy birikdirmegi teklip edýär — ondan soň şeýle ýazgylary özi ýükleýär, telefondan hem.
 date: 2026-10-31
+time: 22:40:56
 ---
 Käbir ýazgylary platformalar diňe hasaba girenlere görkezýär: Instagram storisleri, ýapyk ýazgylar we rilsler, diňe dostlar üçin ýazgylar, ýaş çägi bolan wideolar. Şu wagta çenli bot şeýle salgylara diňe “hasaba girmezden elýeterli däl” diýip jogap berýärdi.
 

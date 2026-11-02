@@ -2,6 +2,7 @@
 title: Videoner оғоз ёфт: сайт ва Telegram-бот барои боргирии видео
 summary: Videoner видеоро аз YouTube, TikTok, Instagram, Facebook ва Twitter/X боргирӣ мекунад — дар сайти videoner.download ва дар Telegram-боти @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Салом! Ин Videoner аст — хизматрасонии ройгоне, ки видеоро аз шабакаҳои иҷтимоӣ боргирӣ мекунад. Аз он бо ду роҳ истифода бурдан мумкин аст: дар сайт ва дар Telegram.
 

@@ -2,6 +2,7 @@
 title: Calaamadaha -audio iyo -hd: soo deji adigoon tayo dooran
 summary: Ku dar -audio link-ga kadib, bot-kuna isla markiiba wuxuu soo dirayaa codka oo mp3 ah; ku dar -hd si aad u hesho muuqaalka tayada ugu wanaagsan. Wuxuu ka shaqeeyaa sheekooyinka gaarka ah iyo kooxaha.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bot-ka [@VideonerBot](https://t.me/VideonerBot) hadda wuxuu fahmaa calaamado (flags) — erayo gaagaaban oo link-ga ka dambeeya. Iyaga oo jira uma baahnid in aad taabato badhan tayo: bot-ku isla markiiba wuxuu bilaabaa soo dejinta.
 

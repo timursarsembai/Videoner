@@ -2,6 +2,7 @@
 title: Videoner ишке кирди: видео жүктөп алуу үчүн сайт жана Telegram-бот
 summary: Videoner YouTube, TikTok, Instagram, Facebook жана Twitter/X'тен видео жүктөп алат — videoner.download сайтында жана @VideonerBot Telegram-ботунда.
 date: 2026-07-20
+time: 23:18:52
 ---
 Салам! Бул Videoner — социалдык тармактардан видео жүктөп алуучу акысыз кызмат. Аны эки жол менен колдонсоңуз болот: сайтта жана Telegram'да.
 

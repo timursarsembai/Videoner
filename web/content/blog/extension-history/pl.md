@@ -2,6 +2,7 @@
 title: Historia pobrań w rozszerzeniu i Videoner w katalogu Firefoksa
 summary: Rozszerzenie pamięta teraz, co pobrałeś w ostatnich 30 dniach — tytuł, link i datę. A dla Firefoksa jest już w oficjalnym katalogu dodatków Mozilli.
 date: 2026-11-02
+time: 00:48:04
 ---
 Rozszerzenie Videoner do przeglądarki ma dwie nowości: historię pobrań i instalację w Firefoksie z oficjalnego katalogu Mozilli.
 

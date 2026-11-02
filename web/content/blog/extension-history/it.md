@@ -2,6 +2,7 @@
 title: Cronologia download nell’estensione e Videoner nel catalogo di Firefox
 summary: L’estensione ora ricorda cosa hai scaricato negli ultimi 30 giorni: titolo, link e data. E per Firefox ora è nel catalogo ufficiale dei componenti aggiuntivi di Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 L’estensione di Videoner per il browser porta due novità: la cronologia dei download e l’installazione in Firefox dal catalogo ufficiale di Mozilla.
 

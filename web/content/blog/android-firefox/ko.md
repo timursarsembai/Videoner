@@ -2,6 +2,7 @@
 title: 이제 Android 휴대폰에서 봇에 계정을 연결할 수 있어요
 summary: 컴퓨터가 없어도 돼요. Android에서 Firefox와 Cookie-Editor 부가 기능으로 Instagram을 @VideonerBot에 연결하면, 봇이 스토리와 비공개 게시물을 다운로드해요.
 date: 2026-10-31
+time: 00:39:25
 ---
 봇이 Instagram 스토리와 비공개 게시물을 다운로드하려면 계정을 봇에 연결해야 해요. 지금까지는 Videoner 확장 프로그램이 설치된 컴퓨터가 필요했어요. 이제 **Android** 휴대폰에서 바로 연결할 수 있어요.
 

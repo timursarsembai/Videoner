@@ -2,6 +2,7 @@
 title: Qapalı paylaşım? Bot onu necə yükləməyi göstərir
 summary: Paylaşım, reels və ya stori yalnız hesaba daxil olmuş istifadəçilərə görünürsə, bot indi hesabınızı qoşmağı təklif edir — bundan sonra belə paylaşımları özü yükləyir, telefondan da.
 date: 2026-10-31
+time: 22:40:56
 ---
 Bəzi paylaşımlar yalnız hesaba daxil olmuş istifadəçilərə göstərilir: Instagram storiləri, qapalı paylaşımlar və reels, yalnız dostlar üçün paylaşımlar, yaş məhdudiyyəti olan videolar. İndiyədək bot belə linklərə yalnız «hesaba daxil olmadan əlçatan deyil» deyə cavab verirdi.
 

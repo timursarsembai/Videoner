@@ -2,6 +2,7 @@
 title: Sasa unaweza kuunganisha akaunti yako na bot kutoka kwenye simu ya Android
 summary: Huhitaji kompyuta: kwenye Android, unganisha Instagram na @VideonerBot kupitia Firefox na kiongezi cha Cookie-Editor, na bot itapakua stories na machapisho ya faragha.
 date: 2026-10-31
+time: 00:39:25
 ---
 Ili bot ipakue stories na machapisho ya faragha ya Instagram, unahitaji kuunganisha akaunti yako nayo. Hadi sasa, hili lilihitaji kompyuta yenye kiendelezi cha Videoner. Sasa unaweza kuunganisha moja kwa moja kutoka kwenye simu yako ya **Android**.
 

@@ -2,6 +2,7 @@
 title: Mallattoowwan -audio fi -hd: qulqullina osoo hin filatin buufadhaa
 summary: Liinkii booda -audio dabalaa, bootiin sagalee mp3'n battaluma erga; viidiyoo qulqullina olaanaaf -hd dabalaa. Chaatii dhuunfaa fi garee keessatti ni hojjeta.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bootiin [@VideonerBot](https://t.me/VideonerBot) amma mallattoowwan (flags) hubata — jechoota gaggabaaboo liinkii booda dhufan. Isaaniin qabduu qulqullinaa tuquun isin hin barbaachisu: bootiin battaluma buusuu jalqaba.
 

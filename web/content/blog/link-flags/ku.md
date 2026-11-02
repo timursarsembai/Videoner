@@ -2,6 +2,7 @@
 title: Flagên -audio û -hd — bêyî hilbijartina kalîteyê daxîne
 summary: Piştî lînkê -audio zêde bike û bot yekser dengê wek mp3 dişîne; ji bo vîdyoya bi kalîteya herî baş -hd zêde bike. Di sohbetên taybet û koman de dixebite.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bota [@VideonerBot](https://t.me/VideonerBot) niha flagan fam dike — peyvên kurt ên piştî lînkê. Bi wan re ne hewce ye ku tu li bişkoka kalîteyê bitikînî: bot yekser dest bi daxistinê dike.
 

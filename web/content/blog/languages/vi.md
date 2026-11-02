@@ -2,6 +2,7 @@
 title: Videoner có tiếng Ukraina và tiếng Kazakh, và giờ bạn có thể tự chọn ngôn ngữ
 summary: Bot, trang web và tiện ích giờ đã có tiếng Ukraina và tiếng Kazakh. Và giờ bạn có thể tự chọn ngôn ngữ của bot bằng lệnh /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner giờ đã có thêm hai ngôn ngữ mới — **tiếng Ukraina** và **tiếng Kazakh**.
 

@@ -2,6 +2,7 @@
 title: Nasa 35 wika na ang Videoner
 summary: 10 pang bagong wika — Amharic, Oromo, Hausa, Somali, Azerbaijani, Kyrgyz, Tajik, Malay, Dutch at Romanian.
 date: 2026-11-01
+time: 13:44:30
 ---
 Available na ang Videoner sa **35 wika**. May 10 pang bagong wika:
 

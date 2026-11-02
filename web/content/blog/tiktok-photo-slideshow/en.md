@@ -2,6 +2,7 @@
 title: TikTok photo posts and photo slideshows
 summary: Videoner now downloads TikTok photo posts and can turn any post with several photos into a video slideshow. In groups, the bot sends photos and a slideshow right away.
 date: 2026-10-31
+time: 00:53:50
 ---
 Two updates for posts that contain several photos instead of a video.
 

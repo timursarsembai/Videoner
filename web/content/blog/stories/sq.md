@@ -2,6 +2,7 @@
 title: Stories e Instagram dhe llogaritë e lidhura
 summary: Shtesa shkarkon stories e Instagram, kurse boti shkarkon stories dhe postime private përmes llogarisë suaj të lidhur. Lidhni me një buton në shtesë dhe menaxhoni me /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories dhe postimet private i shohin vetëm përdoruesit e identifikuar, ndaj serveri i Videoner nuk mund t’i marrë. Tani ka dy zgjidhje për këtë.
 

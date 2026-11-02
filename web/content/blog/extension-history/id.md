@@ -2,6 +2,7 @@
 title: Riwayat unduhan di ekstensi, dan Videoner di katalog Firefox
 summary: Ekstensi kini mengingat apa saja yang Anda unduh dalam 30 hari terakhir — judul, tautan, dan tanggal. Untuk Firefox, ekstensi ini kini tersedia di katalog Add-on resmi Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 Ekstensi browser Videoner punya dua hal baru: riwayat unduhan, dan pemasangan di Firefox dari katalog resmi Mozilla.
 

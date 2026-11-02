@@ -2,6 +2,7 @@
 title: Videoner hadda wuxuu leeyahay blog iyo kanaal war
 summary: Waxyaabaha cusub ee mashruuca waxaan ku wadaagnaa blog-ga websaydhka iyo kanaalka Telegram ee @videonerdownload. Fayl kasta oo bot-ka ka yimaada hadda qoraalkiisa waxaa ku jira link-ga kanaalka.
 date: 2026-10-30
+time: 23:18:52
 ---
 Waxaan bilownay blog websaydhka ah iyo kanaal war oo Telegram ah. Halkan ayaan si kooban ugu sheegi doonnaa waxa cusub ee bot-ka, websaydhka iyo kordhiyaha, iyo sida loo isticmaalo.
 

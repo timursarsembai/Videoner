@@ -2,6 +2,7 @@
 title: Group mode: nagpo-post ang bot ng video para sa mga link na ibinahagi sa chat
 summary: Idagdag ang @VideonerBot sa isang grupo, at sasagot ito ng video sa mga link na ipino-post doon. Inaayos ng mga admin ang pag-uugali nito gamit ang command na /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Puwede mo nang idagdag ang [@VideonerBot](https://t.me/VideonerBot) sa isang group chat. Kapag may nag-post ng link sa video, sumasagot ang bot ng mismong video. Walang kailangang magbukas ng link o lumipat sa bot.
 

@@ -2,6 +2,7 @@
 title: Mod inline: hantar video ke mana-mana sembang dengan @VideonerBot
 summary: Taip @VideonerBot dan pautan terus dalam perbualan, dan video akan tiba dalam sembang yang sama. Di laman web, anda boleh membuka pautan hanya dengan menambah domain kami di hadapannya.
 date: 2026-08-19
+time: 23:18:52
 ---
 Dua cara baharu untuk memuat turun video dengan lebih pantas.
 

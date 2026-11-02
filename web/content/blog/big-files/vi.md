@@ -2,6 +2,7 @@
 title: Video trên 2 GB: bot chỉ cho bạn nơi để tải
 summary: Telegram không cho bot gửi tệp trên 2 GB. Giờ đây bot giải thích điều này và đưa ngay các nút để tải chính video đó trên trang web hoặc bằng tiện ích.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram có một giới hạn: bot không thể gửi tệp lớn hơn **2 GB**. Một video dài ở chất lượng cao dễ dàng vượt quá mức này — ví dụ, bài giảng dài vài tiếng ở 1080p.
 

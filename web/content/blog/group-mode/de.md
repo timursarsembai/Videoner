@@ -2,6 +2,7 @@
 title: Gruppenmodus: Der Bot postet Videos zu Links, die im Chat geteilt werden
 summary: Füge @VideonerBot zu einer Gruppe hinzu, und er antwortet auf dort gepostete Links mit dem Video. Admins stellen sein Verhalten mit dem Befehl /settings ein.
 date: 2026-10-30
+time: 23:18:52
 ---
 Du kannst [@VideonerBot](https://t.me/VideonerBot) jetzt zu einem Gruppenchat hinzufügen. Wenn jemand einen Link zu einem Video schickt, antwortet der Bot mit dem Video selbst. Niemand muss den Link öffnen oder zum Bot wechseln.
 

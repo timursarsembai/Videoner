@@ -2,6 +2,7 @@
 title: Video's groter dan 2 GB: de bot laat zien waar je ze kunt downloaden
 summary: Telegram laat bots geen bestanden groter dan 2 GB versturen. Nu legt de bot dat uit en biedt meteen knoppen aan om dezelfde video op de website of met de extensie te downloaden.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram heeft een limiet: een bot kan geen bestand groter dan **2 GB** versturen. Een lange video in hoge kwaliteit gaat daar makkelijk overheen – bijvoorbeeld een college van een paar uur in 1080p.
 

@@ -2,6 +2,7 @@
 title: Een privépost? De bot laat zien hoe je hem downloadt
 summary: Is een post, reel of story alleen zichtbaar voor ingelogde mensen, dan stelt de bot nu voor om je account te koppelen – daarna downloadt hij zulke posts zelf, ook vanaf je telefoon.
 date: 2026-10-31
+time: 22:40:56
 ---
 Sommige posts worden alleen getoond aan mensen die zijn ingelogd: Instagram-stories, privéposts en -reels, posts alleen voor vrienden, video's met een leeftijdsgrens. Tot nu toe antwoordde de bot op zulke links alleen “niet beschikbaar zonder in te loggen”.
 

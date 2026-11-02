@@ -2,6 +2,7 @@
 title: Niha tu dikarî hesabê xwe ji telefona Android bi botê ve girê bidî
 summary: Komputer ne pêwîst e — li ser Android, Instagramê bi rêya Firefox û pêveka Cookie-Editor bi @VideonerBot ve girê bide, û bot dê story û postên taybet daxe.
 date: 2026-10-31
+time: 00:39:25
 ---
 Ji bo ku bot story û postên taybet ên Instagramê daxe, divê tu hesabê xwe bi wî ve girê bidî. Heta niha ji bo vê komputereke bi pêveka Videoner pêwîst bû. Niha tu dikarî rasterast ji telefona xwe ya **Android** girê bidî.
 

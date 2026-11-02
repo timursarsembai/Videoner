@@ -2,6 +2,7 @@
 title: -audio we -hd baýdaklary — hil saýlamazdan ýüklemek
 summary: Salgydan soň -audio goşuň, bot sesi derrew mp3 görnüşinde iberer; -hd goşsaňyz, wideo iň gowy hilde geler. Şahsy çatlarda we toparlarda işleýär.
 date: 2026-10-31
+time: 01:12:42
 ---
 [@VideonerBot](https://t.me/VideonerBot) boty indi baýdaklary — salgydan soň ýazylýan gysga sözleri düşünýär. Olar bilen hil düwmesine basmak gerek däl: bot ýüklemäge derrew başlaýar.
 

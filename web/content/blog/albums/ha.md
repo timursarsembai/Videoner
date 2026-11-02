@@ -2,6 +2,7 @@
 title: Carousel, hotuna da Threads: ku sauke dukan wallafa
 summary: Yanzu Videoner yana sauke kowane fayil da ke cikin wallafa — bidiyo da hotuna daga carousel na Instagram. Haka kuma, yanzu Threads yana aiki.
 date: 2026-08-12
+time: 23:18:52
 ---
 Har zuwa yanzu, daga wallafa mai fayiloli da yawa bidiyo ɗaya kawai za ku iya saukewa. Yanzu Videoner yana ɗaukar dukan wallafar.
 

@@ -2,6 +2,7 @@
 title: Shtesa e shfletuesit Videoner — butoni Shkarko në faqen e videos
 summary: Shtesa është gati për Chrome, Yandex Browser, Edge dhe Opera. Butoni Shkarko shfaqet drejtpërdrejt në faqen e videos, dhe Instagram, Facebook, TikTok e Threads shkarkohen me hyrjen tuaj.
 date: 2026-10-28
+time: 23:18:52
 ---
 Nëse shpesh shkarkoni video në kompjuter, tani mund ta bëni pa kopjuar lidhje. Njihuni me shtesën e shfletuesit Videoner.
 

@@ -2,6 +2,7 @@
 title: Videoner kini mempunyai blog dan saluran berita
 summary: Kami berkongsi perkembangan terbaharu projek di blog laman web dan di saluran Telegram @videonerdownload. Setiap fail daripada bot kini mempunyai pautan ke saluran itu dalam teksnya.
 date: 2026-10-30
+time: 23:18:52
 ---
 Kami telah memulakan blog di laman web dan saluran berita di Telegram. Di sinilah kami akan menerangkan secara ringkas perkara baharu dalam bot, di laman web dan dalam sambungan, serta cara menggunakannya.
 

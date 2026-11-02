@@ -2,6 +2,7 @@
 title: Instagram priče i povezani računi
 summary: Proširenje preuzima Instagram priče, a bot preuzima priče i privatne objave putem vašeg povezanog računa. Povezujete se dugmetom u proširenju, a upravljate komandom /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Priče i privatne objave vidljive su samo prijavljenim korisnicima, pa ih Videoner server ne može dobiti. Sada za to postoje dva rješenja.
 

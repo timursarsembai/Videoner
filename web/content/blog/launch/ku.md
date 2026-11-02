@@ -2,6 +2,7 @@
 title: Videoner dest bi kar kir — malper û bota Telegramê ji bo daxistina vîdyoyan
 summary: Videoner vîdyoyan ji YouTube, TikTok, Instagram, Facebook û Twitter/X dadixe — li ser malpera videoner.download û di bota Telegramê @VideonerBot de.
 date: 2026-07-20
+time: 23:18:52
 ---
 Silav! Ev Videoner e — servîseke belaş ku vîdyoyan ji torên civakî dadixe. Tu dikarî wê bi du awayan bi kar bînî: li ser malperê û di Telegramê de.
 

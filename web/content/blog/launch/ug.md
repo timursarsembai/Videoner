@@ -2,6 +2,7 @@
 title: Videoner ئىشقا كىرىشتى — ۋىدىيو چۈشۈرۈش ئۈچۈن تور بېكەت ۋە Telegram بوتى
 summary: Videoner YouTube، TikTok، Instagram، Facebook ۋە Twitter/X تىن ۋىدىيو چۈشۈرىدۇ — videoner.download تور بېكىتىدە ۋە ‎@VideonerBot Telegram بوتىدا.
 date: 2026-07-20
+time: 23:18:52
 ---
 ياخشىمۇسىز! بۇ Videoner — ئىجتىمائىي تاراتقۇلاردىن ۋىدىيو چۈشۈرىدىغان ھەقسىز مۇلازىمەت. ئۇنى ئىككى خىل ئۇسۇلدا ئىشلەتكىلى بولىدۇ: تور بېكەتتە ۋە Telegram دا.
 

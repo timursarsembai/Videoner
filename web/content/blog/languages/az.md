@@ -2,6 +2,7 @@
 title: Videoner ukrayna və qazax dillərində, həm də artıq dili seçmək olar
 summary: Bot, sayt və genişlənmə artıq ukrayna və qazax dillərində danışır. İndi botun dilini /language əmri ilə özünüz də seçə bilərsiniz.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner indi iki yeni dildə mövcuddur — **ukrayna** və **qazax** dillərində.
 

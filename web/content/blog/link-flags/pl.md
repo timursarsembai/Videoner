@@ -2,6 +2,7 @@
 title: Flagi -audio i -hd: pobieranie bez wybierania jakości
 summary: Dopisz -audio po linku, a bot od razu wyśle dźwięk w mp3; dopisz -hd, żeby dostać film w najlepszej jakości. Działa w prywatnych czatach i w grupach.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bot [@VideonerBot](https://t.me/VideonerBot) rozumie teraz flagi — krótkie słowa po linku. Dzięki nim nie musisz stukać przycisku jakości: bot od razu zaczyna pobierać.
 

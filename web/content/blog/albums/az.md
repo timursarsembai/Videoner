@@ -2,6 +2,7 @@
 title: Karusellər, fotolar və Threads: paylaşımı bütövlükdə yükləyin
 summary: Videoner indi paylaşımdakı bütün faylları yükləyir — Instagram karusellərindən həm videoları, həm də fotoları. Üstəlik, artıq Threads də dəstəklənir.
 date: 2026-08-12
+time: 23:18:52
 ---
 İndiyədək bir neçə fayldan ibarət paylaşımdan yalnız bir video yükləmək olurdu. İndi Videoner paylaşımı bütövlükdə götürür.
 

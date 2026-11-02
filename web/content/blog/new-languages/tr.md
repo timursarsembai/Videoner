@@ -2,6 +2,7 @@
 title: Videoner artık 25 dil konuşuyor
 summary: Web sitesi, bot ve tarayıcı eklentisi artık 19 dil daha konuşuyor — Çince ve Hintçeden Almanca, Türkçe ve Japoncaya kadar.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner artık **25 dilde** kullanılabiliyor. İngilizce, İspanyolca, Rusça, Ukraynaca, Kazakça ve Arapçaya 19 dil daha eklendi:
 

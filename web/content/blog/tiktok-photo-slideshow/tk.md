@@ -2,6 +2,7 @@
 title: TikTok surat ýazgylary we suratlardan slaýd-şou
 summary: Videoner indi TikTok surat ýazgylaryny ýükleýär we birnäçe suratly islendik ýazgyny wideo slaýd-şoua öwrüp bilýär. Toparlarda bot suratlary we slaýd-şouny derrew iberýär.
 date: 2026-10-31
+time: 00:53:50
 ---
 Wideonyň ýerine birnäçe surat bolan ýazgylar üçin iki täzelenme.
 

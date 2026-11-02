@@ -2,6 +2,7 @@
 title: Videoner sada govori arapski
 summary: Web-stranica, bot i proširenje preglednika sada su dostupni na arapskom, s rasporedom zdesna nalijevo.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner je sada dostupan na **arapskom** — to je šesti jezik nakon engleskog, španskog, ruskog, ukrajinskog i kazahskog.
 

@@ -2,6 +2,7 @@
 title: Stories do Instagram e contas conectadas
 summary: A extensão baixa stories do Instagram, e o bot baixa stories e posts privados pela sua conta conectada. Conecte com um botão na extensão; gerencie com /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories e posts privados só aparecem para quem está logado, então o servidor do Videoner não consegue acessá-los. Agora há duas soluções para isso.
 

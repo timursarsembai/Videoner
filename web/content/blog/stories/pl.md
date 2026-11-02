@@ -2,6 +2,7 @@
 title: Relacje z Instagrama i połączone konta
 summary: Rozszerzenie pobiera relacje z Instagrama, a bot — relacje i prywatne posty przez połączone konto. Łączysz przyciskiem w rozszerzeniu, zarządzasz komendą /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Relacje i prywatne posty widzą tylko zalogowani, więc serwer Videoner nie ma do nich dostępu. Teraz są na to dwa sposoby.
 

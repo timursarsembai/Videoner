@@ -2,6 +2,7 @@
 title: Videoner 浏览器扩展：视频页面上的“下载”按钮
 summary: 扩展现已支持 Chrome、Yandex Browser、Edge 和 Opera。“下载”按钮直接出现在视频页面上，Instagram、Facebook、TikTok 和 Threads 的视频会使用你的登录状态下载。
 date: 2026-10-28
+time: 23:18:52
 ---
 如果你经常在电脑上下载视频，现在无需复制链接也能完成。欢迎使用 Videoner 浏览器扩展。
 

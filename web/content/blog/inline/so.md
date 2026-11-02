@@ -2,6 +2,7 @@
 title: Habka inline: u dir muuqaallo sheeko kasta adigoo adeegsanaya @VideonerBot
 summary: Ku qor @VideonerBot iyo link si toos ah wadahadalka dhexdiisa, muuqaalkuna wuxuu imaanayaa isla sheekadaas. Websaydhka, link waxaad ku furi kartaa adigoo hortiisa ku daraya domain-keenna.
 date: 2026-08-19
+time: 23:18:52
 ---
 Laba hab oo cusub oo muuqaallada si dhakhso ah loogu soo dejiyo.
 

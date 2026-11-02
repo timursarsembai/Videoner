@@ -2,6 +2,7 @@
 title: Pêveka gerokê ya Videoner — bişkoka Daxîne li ser rûpela vîdyoyê
 summary: Pêvek ji bo Chrome, Yandex Browser, Edge û Opera derket. Bişkoka Daxîne rasterast li ser rûpela vîdyoyê xuya dibe, û Instagram, Facebook, TikTok û Threads bi têketina te tên daxistin.
 date: 2026-10-28
+time: 23:18:52
 ---
 Heke tu gelek caran li ser komputerê vîdyoyan dadixî, niha tu dikarî vê bêyî kopîkirina lînkan bikî. Pêveka gerokê ya Videoner nas bike.
 

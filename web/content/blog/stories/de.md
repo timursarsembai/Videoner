@@ -2,6 +2,7 @@
 title: Instagram-Storys und verbundene Konten
 summary: Die Erweiterung lädt Instagram-Storys herunter, und der Bot lädt Storys und private Beiträge über dein verbundenes Konto herunter. Verbinden per Button in der Erweiterung, verwalten mit /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Storys und private Beiträge sind nur für angemeldete Nutzer sichtbar, deshalb kommt der Videoner-Server nicht an sie heran. Dafür gibt es jetzt zwei Lösungen.
 

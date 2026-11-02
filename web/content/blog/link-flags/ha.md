@@ -2,6 +2,7 @@
 title: Alamomin -audio da -hd: ku sauke ba tare da zaɓar inganci ba
 summary: Ku ƙara -audio bayan hanyar haɗi, bot kuma zai aika sautin a mp3 nan take; ku ƙara -hd don bidiyo a mafi kyawun inganci. Yana aiki a hira ta sirri da kuma a rukuni.
 date: 2026-10-31
+time: 01:12:42
 ---
 Yanzu bot ɗin [@VideonerBot](https://t.me/VideonerBot) yana fahimtar alamomi (flags) — gajerun kalmomi bayan hanyar haɗi. Da su ba sai kun taɓa maɓallin inganci ba: bot yana fara saukewa nan take.
 

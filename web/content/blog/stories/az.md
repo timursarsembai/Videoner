@@ -2,6 +2,7 @@
 title: Instagram storiləri və qoşulmuş hesablar
 summary: Genişlənmə Instagram storilərini yükləyir, bot isə qoşulmuş hesabınız vasitəsilə storiləri və qapalı paylaşımları yükləyir. Genişlənmədəki düymə ilə qoşun, /accounts ilə idarə edin.
 date: 2026-10-30
+time: 23:18:52
 ---
 Storilər və qapalı paylaşımlar yalnız hesaba daxil olmuş istifadəçilərə görünür, ona görə də Videoner serveri onları əldə edə bilmir. İndi bunun üçün iki həll var.
 

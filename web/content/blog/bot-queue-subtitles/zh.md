@@ -2,6 +2,7 @@
 title: 更好用的机器人：4K、文件大小、进度、队列和字幕
 summary: 机器人现在支持最高 4K 画质和最大 2 GB 的文件，按钮上显示大致文件大小，实时显示下载进度，支持多链接队列，还能下载 .srt 格式的 YouTube 字幕。
 date: 2026-10-03
+time: 23:18:52
 ---
 下面汇总了 [@VideonerBot](https://t.me/VideonerBot) 机器人的最新更新。
 

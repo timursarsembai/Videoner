@@ -2,6 +2,7 @@
 title: Wallafa ta sirri? Bot yana nuna yadda za a sauke ta
 summary: Idan wallafa, reel ko story suna bayyana ne kawai ga waɗanda suka shiga asusunsu, yanzu bot yana ba da shawarar haɗa asusunku — bayan haka yana sauke irin waɗannan wallafe-wallafe da kansa, har ma daga wayarku.
 date: 2026-10-31
+time: 22:40:56
 ---
 Wasu wallafe-wallafe ana nuna su ne kawai ga mutanen da suka shiga asusunsu: stories na Instagram, wallafe-wallafe da reels na sirri, wallafe-wallafe na abokai kawai, bidiyo masu iyakar shekaru. Har zuwa yanzu bot yana amsa irin waɗannan hanyoyin haɗi da “ba ya samuwa ba tare da shiga ba” kawai.
 

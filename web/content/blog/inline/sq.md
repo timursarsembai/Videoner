@@ -2,6 +2,7 @@
 title: Modaliteti inline — dërgoni video në çdo bisedë me @VideonerBot
 summary: Shkruani @VideonerBot dhe një lidhje drejtpërdrejt në bisedë, dhe videoja mbërrin në po atë bisedë. Në faqen e internetit mund të hapni një lidhje thjesht duke shtuar domenin tonë para saj.
 date: 2026-08-19
+time: 23:18:52
 ---
 Dy mënyra të reja për të shkarkuar video më shpejt.
 

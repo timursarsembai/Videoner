@@ -2,6 +2,7 @@
 title: Videoner na ukrajinskom i kazahskom, a jezik sada možete birati sami
 summary: Bot, web-stranica i proširenje sada govore ukrajinski i kazahski. A jezik bota sada možete odabrati sami komandom /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner je sada dostupan na dva nova jezika — **ukrajinskom** i **kazahskom**.
 

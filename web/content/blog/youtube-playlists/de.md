@@ -2,6 +2,7 @@
 title: Komplette YouTube-Playlists und keine Tageslimits mehr
 summary: Videoner lädt YouTube-Playlists Video für Video herunter – im Bot, auf der Website und in der Erweiterung, mit einem Stopp-Button. Und das tägliche Download-Limit ist weg.
 date: 2026-10-31
+time: 02:36:50
 ---
 Zwei große Änderungen.
 

@@ -2,6 +2,7 @@
 title: The -audio and -hd flags: download without choosing quality
 summary: Add -audio after a link and the bot sends the sound as mp3 right away; add -hd for video in the best quality. Works in private chats and groups.
 date: 2026-10-31
+time: 01:12:42
 ---
 The [@VideonerBot](https://t.me/VideonerBot) bot now understands flags — short words after a link. With them you don't need to tap a quality button: the bot starts downloading right away.
 

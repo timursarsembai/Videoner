@@ -2,6 +2,7 @@
 title: Videoner auf Ukrainisch und Kasachisch – und jetzt kannst du die Sprache wählen
 summary: Der Bot, die Website und die Erweiterung sprechen jetzt Ukrainisch und Kasachisch. Und die Sprache des Bots kannst du jetzt selbst mit dem Befehl /language wählen.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner gibt es jetzt in zwei neuen Sprachen – **Ukrainisch** und **Kasachisch**.
 

@@ -2,6 +2,7 @@
 title: Bolji bot — 4K, veličine fajlova, napredak, red i titlovi
 summary: Bot sada nudi do 4K i fajlove do 2 GB, približne veličine na dugmadi, napredak preuzimanja uživo, red za više linkova i YouTube titlove u .srt formatu.
 date: 2026-10-03
+time: 23:18:52
 ---
 Evo pregleda najnovijih novosti u botu [@VideonerBot](https://t.me/VideonerBot).
 

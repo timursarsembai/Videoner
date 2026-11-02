@@ -2,6 +2,7 @@
 title: Videoner spreekt nu Arabisch
 summary: De website, de bot en de browserextensie zijn nu beschikbaar in het Arabisch, met een opmaak van rechts naar links.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner is nu beschikbaar in het **Arabisch** – de zesde taal na Engels, Spaans, Russisch, Oekraïens en Kazachs.
 

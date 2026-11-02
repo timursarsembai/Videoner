@@ -2,6 +2,7 @@
 title: TikTok rasmli postlari va rasmlardan slayd-shou
 summary: Videoner endi TikTok rasmli postlarini yuklab oladi va bir nechta rasmli istalgan postni video slayd-shouga aylantira oladi. Guruhlarda bot rasmlar va slayd-shouni darhol yuboradi.
 date: 2026-10-31
+time: 00:53:50
 ---
 Video oʻrniga bir nechta rasm boʻlgan postlar uchun ikkita yangilanish.
 

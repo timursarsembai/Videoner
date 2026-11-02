@@ -2,6 +2,7 @@
 title: Hantaran peribadi? Bot menunjukkan cara memuat turunnya
 summary: Jika hantaran, reel atau story hanya boleh dilihat oleh pengguna yang telah log masuk, bot kini mencadangkan agar anda menyambungkan akaun — selepas itu bot memuat turun hantaran sedemikian sendiri, termasuk daripada telefon.
 date: 2026-10-31
+time: 22:40:56
 ---
 Sesetengah hantaran hanya dipaparkan kepada pengguna yang telah log masuk: stories Instagram, hantaran dan reels peribadi, hantaran untuk rakan sahaja, video dengan had umur. Sebelum ini bot hanya membalas “tidak tersedia tanpa log masuk” kepada pautan sedemikian.
 

@@ -2,6 +2,7 @@
 title: Videoner oo Yukreeniyaan iyo Kazakh ah, hadda luqadda adigaa dooranaya
 summary: Bot-ka, websaydhka iyo kordhiyaha hadda waxay ku hadlaan Yukreeniyaan iyo Kazakh. Hadda luqadda bot-ka adigaa iskaa u dooran kara adigoo adeegsanaya amarka /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner hadda waxaa lagu heli karaa laba luqadood oo cusub — **Yukreeniyaan** iyo **Kazakh**.
 

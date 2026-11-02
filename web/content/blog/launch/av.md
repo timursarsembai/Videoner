@@ -2,6 +2,7 @@
 title: Videoner байбихьана — видеоял росизе сайт ва Telegram-бот
 summary: Videoner-ица YouTube, TikTok, Instagram, Facebook ва Twitter/X-алдаса видеоял росула — videoner.download сайталда ва Telegram-алъул @VideonerBot боталда.
 date: 2026-07-20
+time: 23:18:52
 ---
 Салам! Гьаб Videoner буго — социалиял сетаздаса видеоял росулеб мухьгьечӀеб сервис. Гьеб кӀиго куцалда хӀалтӀизабизе бегьула: сайталда ва Telegram-алда.
 

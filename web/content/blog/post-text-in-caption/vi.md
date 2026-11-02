@@ -2,6 +2,7 @@
 title: Nội dung bài đăng giờ có trong chú thích tệp
 summary: Bot thêm nội dung bài đăng từ TikTok, Instagram, Threads, X, Facebook và Pinterest vào chú thích video và ảnh. Trang web và tiện ích giờ hiển thị liên kết đến kênh tin tức của chúng tôi sau khi tải.
 date: 2026-10-31
+time: 01:36:57
 ---
 Người ta thường chuyển tiếp video vì phần chú thích của tác giả: một công thức nấu ăn, một địa chỉ, một câu đùa, một loạt hashtag. Giờ [@VideonerBot](https://t.me/VideonerBot) giữ phần đó cùng với tệp.
 

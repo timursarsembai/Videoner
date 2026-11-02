@@ -2,6 +2,7 @@
 title: Oznake -audio i -hd — preuzimanje bez biranja kvaliteta
 summary: Dodajte -audio iza linka i bot odmah šalje zvuk kao mp3; dodajte -hd za video u najboljem kvalitetu. Radi u privatnim chatovima i grupama.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bot [@VideonerBot](https://t.me/VideonerBot) sada razumije oznake — kratke riječi iza linka. Uz njih ne morate dodirivati dugme s kvalitetom: bot odmah počinje preuzimanje.
 

@@ -2,6 +2,7 @@
 title: Flamujt -audio dhe -hd — shkarkoni pa zgjedhur cilësinë
 summary: Shtoni -audio pas lidhjes dhe boti dërgon menjëherë zërin në mp3; shtoni -hd për video në cilësinë më të mirë. Funksionon në biseda private dhe në grupe.
 date: 2026-10-31
+time: 01:12:42
 ---
 Boti [@VideonerBot](https://t.me/VideonerBot) tani kupton flamujt — fjalë të shkurtra pas lidhjes. Me to nuk keni nevojë të prekni një buton cilësie: boti fillon shkarkimin menjëherë.
 

@@ -2,6 +2,7 @@
 title: Videoner proširenje preglednika — dugme Preuzmi na stranici videa
 summary: Proširenje je dostupno za Chrome, Yandex Browser, Edge i Operu. Dugme Preuzmi pojavljuje se direktno na stranici videa, a Instagram, Facebook, TikTok i Threads preuzimaju se uz vašu prijavu.
 date: 2026-10-28
+time: 23:18:52
 ---
 Ako često preuzimate videozapise na računaru, sada to možete raditi bez kopiranja linkova. Upoznajte Videoner proširenje preglednika.
 

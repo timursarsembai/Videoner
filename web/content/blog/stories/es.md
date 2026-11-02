@@ -2,6 +2,7 @@
 title: Historias de Instagram y cuentas conectadas
 summary: La extensión descarga historias de Instagram, y el bot, historias y publicaciones privadas con tu cuenta conectada. Conéctala con un botón en la extensión y gestiónala con /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Las historias y las publicaciones privadas solo las ve quien ha iniciado sesión, así que el servidor de Videoner no puede obtenerlas. Ahora hay dos soluciones para eso.
 

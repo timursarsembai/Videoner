@@ -2,6 +2,7 @@
 title: Postim privat? Boti tregon si ta shkarkoni
 summary: Nëse një postim, reel ose story shihet vetëm nga përdoruesit e identifikuar, boti tani sugjeron të lidhni llogarinë tuaj — pas kësaj i shkarkon vetë postime të tilla, edhe nga telefoni.
 date: 2026-10-31
+time: 22:40:56
 ---
 Disa postime u shfaqen vetëm atyre që janë të identifikuar: stories e Instagram, postime dhe reels private, postime vetëm për miqtë, video me kufizim moshe. Deri tani, për lidhje të tilla boti përgjigjej vetëm “nuk është e disponueshme pa hyrë në llogari”.
 

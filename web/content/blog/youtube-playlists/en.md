@@ -2,6 +2,7 @@
 title: Full YouTube playlists and no more daily limits
 summary: Videoner downloads YouTube playlists one video at a time — in the bot, on the site and in the extension, with a Stop button. And the daily download limit is gone.
 date: 2026-10-31
+time: 02:36:50
 ---
 Two big changes.
 

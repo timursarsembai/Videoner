@@ -2,6 +2,7 @@
 title: Video mbi 2 GB — boti tregon ku t’i shkarkoni
 summary: Telegram nuk i lejon botët të dërgojnë skedarë mbi 2 GB. Tani boti e shpjegon këtë dhe ofron menjëherë butona për ta shkarkuar të njëjtën video në faqen e internetit ose me shtesën.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram ka një kufi: një bot nuk mund të dërgojë skedar më të madh se **2 GB**. Një video e gjatë në cilësi të lartë e kalon lehtë — për shembull, një leksion disaorësh në 1080p.
 

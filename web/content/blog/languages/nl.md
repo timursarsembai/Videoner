@@ -2,6 +2,7 @@
 title: Videoner in het Oekraïens en Kazachs, en nu kun je de taal kiezen
 summary: De bot, de website en de extensie spreken nu Oekraïens en Kazachs. En je kunt de taal van de bot nu zelf kiezen met het commando /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner is nu beschikbaar in twee nieuwe talen – **Oekraïens** en **Kazachs**.
 

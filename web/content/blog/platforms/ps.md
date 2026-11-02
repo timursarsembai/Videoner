@@ -2,6 +2,7 @@
 title: نوي پلاتفورمونه — Vimeo، VK، Rutube، OK.ru او Pinterest
 summary: Videoner اوس له پنځو نورو پلاتفورمونو ویډیوګانې ښکته کوي — Vimeo، VK، Rutube، OK.ru (Odnoklassniki) او Pinterest. دا په سایټ او بوټ دواړو کې کار کوي.
 date: 2026-07-22
+time: 23:18:52
 ---
 موږ پنځه نوي پلاتفورمونه اضافه کړل. Videoner اوس له دې ځایونو ویډیوګانې ښکته کوي:
 

@@ -2,6 +2,7 @@
 title: Modaliteti i grupeve — boti poston videot për lidhjet e ndara në bisedë
 summary: Shtoni @VideonerBot në një grup dhe ai do t’u përgjigjet me video lidhjeve të postuara atje. Administratorët e konfigurojnë sjelljen e tij me komandën /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Tani mund ta shtoni [@VideonerBot](https://t.me/VideonerBot) në një bisedë grupi. Kur dikush hedh një lidhje videoje, boti përgjigjet me vetë videon. Askush nuk ka nevojë ta hapë lidhjen apo të kalojë te boti.
 

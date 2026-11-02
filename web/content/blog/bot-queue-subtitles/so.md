@@ -2,6 +2,7 @@
 title: Bot ka wanaagsan: 4K, cabbirka faylasha, horumarka, saf iyo qoraalka hoose
 summary: Bot-ku hadda wuxuu bixiyaa ilaa 4K iyo faylal ilaa 2 GB, cabbirro qiyaas ah oo badhamada ku qoran, horumarka soo dejinta oo toos ah, saf loogu talagalay link-yo badan iyo qoraalka hoose ee YouTube oo .srt ah.
 date: 2026-10-03
+time: 23:18:52
 ---
 Halkan waxaa ku jira soo koobidda cusbooneysiintii ugu dambeysay ee bot-ka [@VideonerBot](https://t.me/VideonerBot).
 

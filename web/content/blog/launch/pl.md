@@ -2,6 +2,7 @@
 title: Videoner wystartował: strona i bot w Telegramie do pobierania filmów
 summary: Videoner pobiera filmy z YouTube, TikToka, Instagrama, Facebooka i Twittera/X — na stronie videoner.download i w bocie @VideonerBot w Telegramie.
 date: 2026-07-20
+time: 23:18:52
 ---
 Cześć! To Videoner — darmowy serwis do pobierania filmów z mediów społecznościowych. Możesz z niego korzystać na dwa sposoby: na stronie i w Telegramie.
 

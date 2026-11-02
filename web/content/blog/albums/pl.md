@@ -2,6 +2,7 @@
 title: Karuzele, zdjęcia i Threads: pobieraj cały post
 summary: Videoner pobiera teraz wszystkie pliki z posta — i filmy, i zdjęcia z karuzel na Instagramie. Do tego doszła obsługa Threads.
 date: 2026-08-12
+time: 23:18:52
 ---
 Do tej pory z posta z kilkoma plikami dało się pobrać tylko jeden film. Teraz Videoner zabiera cały post.
 

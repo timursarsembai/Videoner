@@ -2,6 +2,7 @@
 title: Videos über 2 GB: Der Bot zeigt dir, wo du sie herunterladen kannst
 summary: Telegram erlaubt Bots keine Dateien über 2 GB. Jetzt erklärt der Bot das und bietet dir sofort Buttons an, um dasselbe Video auf der Website oder mit der Erweiterung herunterzuladen.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram hat ein Limit: Ein Bot kann keine Datei senden, die größer als **2 GB** ist. Ein langes Video in hoher Qualität überschreitet das schnell – zum Beispiel eine mehrstündige Vorlesung in 1080p.
 

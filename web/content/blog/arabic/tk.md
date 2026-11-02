@@ -2,6 +2,7 @@
 title: Videoner indi arap dilinde gürleýär
 summary: Saýt, bot we brauzer giňeltmesi indi arap dilinde elýeterli, sahypa sagdan çepe ýerleşdirilýär.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner indi **arap dilinde** elýeterli — iňlis, ispan, rus, ukrain we gazak dillerinden soň altynjy dil.
 

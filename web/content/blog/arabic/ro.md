@@ -2,6 +2,7 @@
 title: Videoner vorbește acum arabă
 summary: Site-ul, botul și extensia de browser sunt acum disponibile în arabă, cu afișare de la dreapta la stânga.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner este acum disponibil în **arabă** — a șasea limbă, după engleză, spaniolă, rusă, ucraineană și kazahă.
 

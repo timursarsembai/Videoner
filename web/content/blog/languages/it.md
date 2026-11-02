@@ -2,6 +2,7 @@
 title: Videoner in ucraino e kazako, e ora puoi scegliere la lingua
 summary: Il bot, il sito e l’estensione ora parlano ucraino e kazako. E ora puoi scegliere tu la lingua del bot con il comando /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner è ora disponibile in due nuove lingue: **ucraino** e **kazako**.
 

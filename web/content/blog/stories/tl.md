@@ -2,6 +2,7 @@
 title: Mga Instagram story at naka-connect na account
 summary: Dina-download ng extension ang mga Instagram story, at dina-download ng bot ang mga story at private post gamit ang naka-connect mong account. Mag-connect gamit ang button sa extension; pamahalaan gamit ang /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Nakikita lang ng mga user na naka-sign in ang mga story at private post, kaya hindi ito makuha ng server ng Videoner. Ngayon, may dalawang solusyon para diyan.
 

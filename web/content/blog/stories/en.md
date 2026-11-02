@@ -2,6 +2,7 @@
 title: Instagram stories and connected accounts
 summary: The extension downloads Instagram stories, and the bot downloads stories and private posts via your connected account. Connect with a button in the extension; manage with /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories and private posts are visible only to signed-in users, so the Videoner server can't get them. Now there are two solutions for that.
 

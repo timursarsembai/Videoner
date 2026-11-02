@@ -2,6 +2,7 @@
 title: Playlist di YouTube complete e niente più limiti giornalieri
 summary: Videoner scarica le playlist di YouTube un video alla volta, nel bot, sul sito e nell’estensione, con un pulsante per interromperlo. E il limite giornaliero di download non c’è più.
 date: 2026-10-31
+time: 02:36:50
 ---
 Due grandi novità.
 

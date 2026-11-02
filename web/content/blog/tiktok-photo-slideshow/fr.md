@@ -2,6 +2,7 @@
 title: Publications photo TikTok et diaporamas de photos
 summary: Videoner télécharge désormais les publications photo TikTok et peut transformer toute publication contenant plusieurs photos en diaporama vidéo. Dans les groupes, le bot envoie directement les photos et un diaporama.
 date: 2026-10-31
+time: 00:53:50
 ---
 Deux mises à jour pour les publications qui contiennent plusieurs photos au lieu d’une vidéo.
 

@@ -2,6 +2,7 @@
 title: Videoner เปิดให้ใช้แล้ว: เว็บไซต์และบอท Telegram สำหรับดาวน์โหลดวิดีโอ
 summary: Videoner ดาวน์โหลดวิดีโอจาก YouTube, TikTok, Instagram, Facebook และ Twitter/X ได้ทั้งบนเว็บไซต์ videoner.download และในบอท Telegram @VideonerBot
 date: 2026-07-20
+time: 23:18:52
 ---
 สวัสดี! นี่คือ Videoner บริการฟรีสำหรับดาวน์โหลดวิดีโอจากโซเชียลมีเดีย ใช้งานได้สองทาง คือบนเว็บไซต์และใน Telegram
 

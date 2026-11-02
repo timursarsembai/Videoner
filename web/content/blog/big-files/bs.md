@@ -2,6 +2,7 @@
 title: Videozapisi veći od 2 GB — bot pokazuje gdje ih preuzeti
 summary: Telegram ne dozvoljava botovima da šalju fajlove veće od 2 GB. Sada bot to objašnjava i odmah nudi dugmad za preuzimanje istog videa na web-stranici ili pomoću proširenja.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram ima ograničenje: bot ne može poslati fajl veći od **2 GB**. Dugačak video u visokom kvalitetu lako ga premaši — na primjer, predavanje od nekoliko sati u 1080p.
 

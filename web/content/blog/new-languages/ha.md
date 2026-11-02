@@ -2,6 +2,7 @@
 title: Yanzu Videoner yana magana da harsuna 25
 summary: Shafin yanar gizo, bot da ƙarin burauza yanzu suna magana da ƙarin harsuna 19 — daga Sinanci da Hindi zuwa Jamusanci, Turkanci da Japananci.
 date: 2026-11-01
+time: 00:11:17
 ---
 Yanzu Videoner yana samuwa da **harsuna 25**. Ga Turanci, Sifaniyanci, Rashanci, Yukrainanci, Kazakh da Larabci an ƙara wasu 19:
 

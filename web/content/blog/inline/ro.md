@@ -2,6 +2,7 @@
 title: Modul inline: trimite videoclipuri în orice chat cu @VideonerBot
 summary: Scrie @VideonerBot și un link direct în conversație, iar videoclipul ajunge chiar în acel chat. Pe site, poți deschide un link doar adăugând domeniul nostru în fața lui.
 date: 2026-08-19
+time: 23:18:52
 ---
 Două modalități noi de a descărca videoclipuri mai repede.
 

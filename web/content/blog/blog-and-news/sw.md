@@ -2,6 +2,7 @@
 title: Sasa Videoner ina blogu na chaneli ya habari
 summary: Tunashiriki mambo mapya ya mradi kwenye blogu ya tovuti na kwenye chaneli ya Telegram @videonerdownload. Sasa kila faili kutoka kwa bot ina kiungo cha chaneli kwenye maelezo yake.
 date: 2026-10-30
+time: 23:18:52
 ---
 Tumeanzisha blogu kwenye tovuti na chaneli ya habari kwenye Telegram. Hapa tutaeleza kwa ufupi mambo mapya kwenye bot, kwenye tovuti na kwenye kiendelezi, na jinsi ya kuyatumia.
 

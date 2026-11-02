@@ -2,6 +2,7 @@
 title: Cikakkun jerin bidiyo na YouTube kuma babu iyakar yau da kullum
 summary: Videoner yana sauke jerin bidiyo na YouTube bidiyo ɗaya bayan ɗaya — a bot, a shafin yanar gizo da a ƙarin burauza, tare da maɓallin Tsaya. Kuma an cire iyakar saukewa ta yau da kullum.
 date: 2026-10-31
+time: 02:36:50
 ---
 Manyan canje-canje biyu.
 

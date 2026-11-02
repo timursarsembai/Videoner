@@ -2,6 +2,7 @@
 title: Je kunt je account nu ook vanaf een Android-telefoon aan de bot koppelen
 summary: Geen computer nodig: koppel Instagram op Android via Firefox en de add-on Cookie-Editor aan @VideonerBot, en de bot downloadt stories en privéposts.
 date: 2026-10-31
+time: 00:39:25
 ---
 Om de bot Instagram-stories en privéposts te laten downloaden, moet je je account aan hem koppelen. Tot nu toe had je daarvoor een computer met de Videoner-extensie nodig. Nu kun je het rechtstreeks vanaf je **Android**-telefoon doen.
 

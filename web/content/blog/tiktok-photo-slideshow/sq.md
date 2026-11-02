@@ -2,6 +2,7 @@
 title: Postimet me foto të TikTok dhe shfaqjet e fotove
 summary: Videoner tani shkarkon postimet me foto të TikTok dhe mund ta kthejë çdo postim me disa foto në një shfaqje fotosh si video. Në grupe, boti dërgon menjëherë fotot dhe shfaqjen.
 date: 2026-10-31
+time: 00:53:50
 ---
 Dy përditësime për postimet që në vend të videos përmbajnë disa foto.
 

@@ -2,6 +2,7 @@
 title: Videoner kini dilancarkan: laman web dan bot Telegram untuk memuat turun video
 summary: Videoner memuat turun video daripada YouTube, TikTok, Instagram, Facebook dan Twitter/X — di laman web videoner.download dan dalam bot Telegram @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Hai! Ini Videoner — perkhidmatan percuma yang memuat turun video daripada media sosial. Anda boleh menggunakannya dengan dua cara: di laman web dan dalam Telegram.
 

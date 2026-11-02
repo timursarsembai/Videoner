@@ -2,6 +2,7 @@
 title: 2 GB-dan uly wideolar — bot olary nireden ýüklemelidigini görkezýär
 summary: Telegram botlara 2 GB-dan uly faýllary ibermäge rugsat bermeýär. Indi bot muny düşündirýär we şol wideony saýtda ýa-da giňeltme bilen ýüklemek üçin derrew düwmeleri hödürleýär.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram-yň çägi bar: bot **2 GB**-dan uly faýly iberip bilmeýär. Ýokary hilli uzyn wideo bu çäkden aňsatlyk bilen geçýär — meselem, 1080p hilde birnäçe sagatlyk leksiýa.
 

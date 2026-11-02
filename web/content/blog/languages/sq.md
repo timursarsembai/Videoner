@@ -2,6 +2,7 @@
 title: Videoner në ukrainisht dhe kazakisht, dhe tani mund ta zgjidhni gjuhën
 summary: Boti, faqja e internetit dhe shtesa tani flasin ukrainisht dhe kazakisht. Dhe tani gjuhën e botit mund ta zgjidhni vetë me komandën /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner tani është në dispozicion në dy gjuhë të reja — **ukrainisht** dhe **kazakisht**.
 

@@ -2,6 +2,7 @@
 title: الإضافة: دروس GetCourse ونسخة لـ Firefox
 summary: أصبحت إضافة Videoner تنزّل دروس الفيديو من مدارس GetCourse، وصدرت لمتصفح Firefox مع تثبيت بنقرة واحدة وتحديثات تلقائية.
 date: 2026-10-29
+time: 23:18:52
 ---
 تحديثان كبيران لإضافة Videoner.
 

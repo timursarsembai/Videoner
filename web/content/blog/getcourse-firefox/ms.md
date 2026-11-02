@@ -2,6 +2,7 @@
 title: Sambungan: pelajaran GetCourse dan versi Firefox
 summary: Sambungan Videoner kini boleh memuat turun video pelajaran daripada sekolah dalam talian di GetCourse, dan kini tersedia untuk Firefox dengan pemasangan satu klik dan kemas kini automatik.
 date: 2026-10-29
+time: 23:18:52
 ---
 Dua kemas kini besar untuk sambungan Videoner.
 

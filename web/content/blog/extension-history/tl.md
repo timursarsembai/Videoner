@@ -2,6 +2,7 @@
 title: History ng mga download sa extension, at Videoner sa catalog ng Firefox
 summary: Natatandaan na ng extension ang mga na-download mo sa nakaraang 30 araw — title, link at petsa. At para sa Firefox, nasa opisyal na catalog ng mga add-on ng Mozilla na ito.
 date: 2026-11-02
+time: 00:48:04
 ---
 Dalawang bago sa Videoner browser extension: history ng mga download, at pag-install sa Firefox mula sa opisyal na catalog ng Mozilla.
 

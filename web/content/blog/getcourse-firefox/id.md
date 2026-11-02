@@ -2,6 +2,7 @@
 title: Ekstensi: pelajaran GetCourse dan versi Firefox
 summary: Ekstensi Videoner kini bisa mengunduh video pelajaran dari sekolah GetCourse, dan tersedia untuk Firefox dengan pemasangan sekali klik serta pembaruan otomatis.
 date: 2026-10-29
+time: 23:18:52
 ---
 Dua pembaruan besar untuk ekstensi Videoner.
 

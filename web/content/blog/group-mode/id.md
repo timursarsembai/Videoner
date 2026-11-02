@@ -2,6 +2,7 @@
 title: Mode grup: bot mengirim video untuk tautan yang dibagikan di chat
 summary: Tambahkan @VideonerBot ke grup, dan bot akan membalas tautan yang dikirim di sana dengan videonya. Admin mengatur perilakunya dengan perintah /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Kini Anda bisa menambahkan [@VideonerBot](https://t.me/VideonerBot) ke chat grup. Saat seseorang membagikan tautan ke sebuah video, bot membalas dengan videonya. Tidak ada yang perlu membuka tautan atau beralih ke bot.
 

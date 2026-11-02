@@ -2,6 +2,7 @@
 title: Sasa Videoner inazungumza Kiarabu
 summary: Tovuti, bot na kiendelezi cha kivinjari sasa vinapatikana kwa Kiarabu, kwa mpangilio wa kuanzia kulia kwenda kushoto.
 date: 2026-10-31
+time: 22:12:03
 ---
 Sasa Videoner inapatikana kwa **Kiarabu** — lugha ya sita baada ya Kiingereza, Kihispania, Kirusi, Kiukreni na Kikazakh.
 

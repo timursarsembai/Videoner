@@ -2,6 +2,7 @@
 title: Videoner پیل شو — د ویډیوګانو د ښکته کولو لپاره سایټ او Telegram بوټ
 summary: Videoner له YouTube، TikTok، Instagram، Facebook او Twitter/X څخه ویډیوګانې ښکته کوي — د videoner.download په سایټ او د Telegram په ‎@VideonerBot بوټ کې.
 date: 2026-07-20
+time: 23:18:52
 ---
 سلام! دا Videoner دی — یو وړیا خدمت چې له ټولنیزو رسنیو ویډیوګانې ښکته کوي. په دوو لارو یې کارولای شئ: په سایټ کې او په Telegram کې.
 

@@ -2,6 +2,7 @@
 title: Postingan foto TikTok dan slideshow foto
 summary: Videoner kini mengunduh postingan foto TikTok dan bisa mengubah postingan apa pun yang berisi beberapa foto menjadi slideshow video. Di grup, bot langsung mengirim foto dan slideshow.
 date: 2026-10-31
+time: 00:53:50
 ---
 Dua pembaruan untuk postingan yang berisi beberapa foto, bukan video.
 

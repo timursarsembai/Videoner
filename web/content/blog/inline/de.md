@@ -2,6 +2,7 @@
 title: Inline-Modus: Schick Videos mit @VideonerBot in jeden Chat
 summary: Tippe @VideonerBot und einen Link direkt in eine Unterhaltung, und das Video kommt in genau diesem Chat an. Auf der Website öffnest du einen Link, indem du einfach unsere Domain davorsetzt.
 date: 2026-08-19
+time: 23:18:52
 ---
 Zwei neue Wege, Videos schneller herunterzuladen.
 

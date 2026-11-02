@@ -2,6 +2,7 @@
 title: Videoner sasa inapatikana kwa lugha 35
 summary: Lugha 10 zaidi — Kiamhari, Kioromo, Kihausa, Kisomali, Kiazerbaijani, Kikirigizi, Kitajiki, Kimalei, Kiholanzi na Kiromania.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner sasa inapatikana kwa **lugha 35**. Lugha 10 zaidi zimeongezwa:
 

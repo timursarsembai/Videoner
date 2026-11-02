@@ -2,6 +2,7 @@
 title: As flags -audio e -hd: baixe sem escolher a qualidade
 summary: Adicione -audio depois do link e o bot envia o som em mp3 na hora; adicione -hd para receber o vídeo na melhor qualidade. Funciona em conversas privadas e em grupos.
 date: 2026-10-31
+time: 01:12:42
 ---
 O bot [@VideonerBot](https://t.me/VideonerBot) agora entende flags — palavras curtas depois do link. Com elas, você não precisa tocar em um botão de qualidade: o bot começa a baixar na hora.
 

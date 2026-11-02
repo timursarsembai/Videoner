@@ -2,6 +2,7 @@
 title: Gizli bir gönderi mi? Bot nasıl indireceğinizi gösteriyor
 summary: Bir gönderi, reels veya hikâye yalnızca giriş yapmış kişilere görünüyorsa bot artık hesabınızı bağlamanızı öneriyor; ardından bu tür gönderileri telefondan da kendisi indiriyor.
 date: 2026-10-31
+time: 22:40:56
 ---
 Bazı gönderiler yalnızca giriş yapmış kişilere gösterilir: Instagram hikâyeleri, gizli gönderiler ve reels videoları, yalnızca arkadaşlara açık gönderiler, yaş sınırlı videolar. Şimdiye kadar bot bu tür bağlantılara yalnızca “giriş yapmadan erişilemiyor” yanıtını veriyordu.
 

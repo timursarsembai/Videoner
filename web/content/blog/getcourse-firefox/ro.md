@@ -2,6 +2,7 @@
 title: Extensia: lecții GetCourse și o versiune pentru Firefox
 summary: Extensia Videoner poate descărca acum lecții video de la școlile de pe GetCourse și este disponibilă pentru Firefox, cu instalare dintr-un clic și actualizări automate.
 date: 2026-10-29
+time: 23:18:52
 ---
 Două actualizări mari ale extensiei Videoner.
 

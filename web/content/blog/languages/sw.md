@@ -2,6 +2,7 @@
 title: Videoner kwa Kiukreni na Kikazakh, na sasa unaweza kuchagua lugha
 summary: Bot, tovuti na kiendelezi sasa vinazungumza Kiukreni na Kikazakh. Na sasa unaweza kuchagua lugha ya bot mwenyewe kwa amri ya /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Sasa Videoner inapatikana kwa lugha mbili mpya — **Kiukreni** na **Kikazakh**.
 

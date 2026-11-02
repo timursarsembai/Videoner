@@ -2,6 +2,7 @@
 title: Caruseluri, fotografii și Threads: descarcă toată postarea
 summary: Videoner descarcă acum toate fișierele dintr-o postare — atât videoclipurile, cât și fotografiile din caruselurile Instagram. În plus, acum este acceptat și Threads.
 date: 2026-08-12
+time: 23:18:52
 ---
 Până acum, dintr-o postare cu mai multe fișiere puteai descărca un singur videoclip. Acum Videoner preia toată postarea.
 

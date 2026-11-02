@@ -2,6 +2,7 @@
 title: Genişlənmədə yükləmə tarixçəsi və Firefox kataloqunda Videoner
 summary: Genişlənmə indi son 30 gündə nələri yüklədiyinizi yadda saxlayır — adını, linkini və tarixini. Firefox üçün isə o, Mozilla-nın rəsmi əlavələr kataloqunda yer aldı.
 date: 2026-11-02
+time: 00:48:04
 ---
 Videoner brauzer genişlənməsində iki yenilik var: yükləmə tarixçəsi və Firefox-a Mozilla-nın rəsmi kataloqundan quraşdırma.
 

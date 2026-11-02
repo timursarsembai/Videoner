@@ -2,6 +2,7 @@
 title: Videoner tani flet 25 gjuhë
 summary: Faqja e internetit, boti dhe shtesa e shfletuesit tani flasin 19 gjuhë të tjera — nga kinezishtja dhe hindishtja te gjermanishtja, turqishtja dhe japonishtja.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner tani është në dispozicion në **25 gjuhë**. Anglishtes, spanjishtes, rusishtes, ukrainishtes, kazakishtes dhe arabishtes u shtohen edhe 19 të tjera:
 

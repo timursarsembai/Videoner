@@ -2,6 +2,7 @@
 title: Istoricul descărcărilor în extensie și Videoner în catalogul Firefox
 summary: Extensia ține minte acum ce ai descărcat în ultimele 30 de zile — titlul, linkul și data. Iar pentru Firefox este acum în catalogul oficial de suplimente Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 Extensia de browser Videoner are două noutăți: istoricul descărcărilor și instalarea în Firefox din catalogul oficial Mozilla.
 

@@ -2,6 +2,7 @@
 title: Extensie: GetCourse-lessen en een versie voor Firefox
 summary: De Videoner-extensie kan nu videolessen van GetCourse-scholen downloaden, en ze is uit voor Firefox met installatie in één klik en automatische updates.
 date: 2026-10-29
+time: 23:18:52
 ---
 Twee grote updates voor de Videoner-extensie.
 

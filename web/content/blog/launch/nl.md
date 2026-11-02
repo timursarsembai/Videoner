@@ -2,6 +2,7 @@
 title: Videoner is live: een website en Telegram-bot om video's te downloaden
 summary: Videoner downloadt video's van YouTube, TikTok, Instagram, Facebook en Twitter/X – op de website videoner.download en in de Telegram-bot @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Hoi! Dit is Videoner – een gratis dienst die video's van sociale media downloadt. Je kunt hem op twee manieren gebruiken: op de website en in Telegram.
 

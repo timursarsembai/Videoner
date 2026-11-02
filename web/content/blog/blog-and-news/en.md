@@ -2,6 +2,7 @@
 title: Videoner now has a blog and a news channel
 summary: We share what's new in the project on the website blog and in the @videonerdownload Telegram channel. Every file from the bot now has a link to the channel in its caption.
 date: 2026-10-30
+time: 23:18:52
 ---
 We've started a blog on the website and a news channel on Telegram. This is where we'll briefly cover what's new in the bot, on the website and in the extension, and how to use it.
 

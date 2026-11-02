@@ -2,6 +2,7 @@
 title: Videoner sada govori 46 jezika
 summary: Još 11 jezika — paštunski, kurdski (sorani i kurmandži), ujgurski, turkmenski, tatarski, albanski, bosanski, čečenski, inguški i avarski.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner je sada dostupan na **46 jezika**. Pridružilo se još 11:
 

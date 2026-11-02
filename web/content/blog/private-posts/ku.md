@@ -2,6 +2,7 @@
 title: Posteke taybet? Bot nîşan dide ka çawa wê daxî
 summary: Heke post, reel an story tenê ji kesên têketî re xuya be, bot niha pêşniyar dike ku tu hesabê xwe girê bidî — piştre ew postên wiha bi xwe dadixe, ji telefonê jî.
 date: 2026-10-31
+time: 22:40:56
 ---
 Hin post tenê ji kesên ku têketine re tên nîşandan: story yên Instagramê, post û reelên taybet, postên tenê ji bo hevalan, vîdyoyên bi sînorê temen. Heta niha bot ji bo lînkên wiha tenê bersiva “bêyî têketinê ne berdest e” dida.
 

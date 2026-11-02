@@ -2,6 +2,7 @@
 title: Playlisturi YouTube întregi și fără limite zilnice
 summary: Videoner descarcă playlisturi YouTube câte un videoclip pe rând — în bot, pe site și în extensie, cu un buton „Oprește”. Iar limita zilnică de descărcări a dispărut.
 date: 2026-10-31
+time: 02:36:50
 ---
 Două schimbări mari.
 

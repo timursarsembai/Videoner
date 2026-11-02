@@ -2,6 +2,7 @@
 title: Videoner ora parla 46 lingue
 summary: Altre 11 lingue — pashto, curdo (sorani e kurmanji), uiguro, turkmeno, tataro, albanese, bosniaco, ceceno, inguscio e avaro.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner è ora disponibile in **46 lingue**. Se ne aggiungono altre 11:
 

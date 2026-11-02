@@ -2,6 +2,7 @@
 title: Moda komê — bot ji bo lînkên di sohbetê de vîdyoyan dişîne
 summary: Bota @VideonerBot li komekê zêde bike, û ew ê bi vîdyoyê bersiva lînkên ku li wir tên şandin bide. Rêveber tevgera wê bi fermana /settings mîheng dikin.
 date: 2026-10-30
+time: 23:18:52
 ---
 Niha tu dikarî [@VideonerBot](https://t.me/VideonerBot) li sohbeteke komê zêde bikî. Dema ku kesek lînka vîdyoyekê dişîne, bot bi vîdyoyê bi xwe bersiv dide. Ne hewce ye ku kes lînkê veke an derbasî botê bibe.
 

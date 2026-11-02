@@ -2,6 +2,7 @@
 title: Paylaşımın mətni indi faylın altında
 summary: Bot TikTok, Instagram, Threads, X, Facebook və Pinterest paylaşımlarının mətnini video və fotoların altındakı mətnə əlavə edir. Sayt və genişlənmə isə yükləmədən sonra xəbər kanalımıza link göstərir.
 date: 2026-10-31
+time: 01:36:57
 ---
 Videonu çox vaxt müəllifin yazdığı mətnə görə göndərirlər: resept, ünvan, zarafat, heşteqlər siyahısı. İndi [@VideonerBot](https://t.me/VideonerBot) bu mətni faylla birlikdə saxlayır.
 

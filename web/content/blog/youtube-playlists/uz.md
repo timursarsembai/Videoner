@@ -2,6 +2,7 @@
 title: YouTube pleylistlari toʻliq va kunlik cheklovlarsiz
 summary: Videoner YouTube pleylistlarini birma-bir yuklab oladi — botda, saytda va kengaytmada, «Toʻxtatish» tugmasi bilan. Kunlik yuklab olish cheklovi esa olib tashlandi.
 date: 2026-10-31
+time: 02:36:50
 ---
 Ikkita katta oʻzgarish.
 

@@ -2,6 +2,7 @@
 title: Neue Plattformen: Vimeo, VK, Rutube, OK.ru und Pinterest
 summary: Videoner lädt jetzt Videos von fünf weiteren Plattformen herunter – Vimeo, VK, Rutube, OK.ru (Odnoklassniki) und Pinterest. Das klappt auf der Website und im Bot.
 date: 2026-07-22
+time: 23:18:52
 ---
 Wir haben fünf neue Plattformen hinzugefügt. Videoner lädt jetzt Videos herunter von:
 

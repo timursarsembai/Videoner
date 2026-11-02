@@ -2,6 +2,7 @@
 title: Videoner hadda wuxuu ku hadlaa 46 luqadood
 summary: 11 luqadood oo kale — Bashtuu, Kurdi (Soraani iyo Kurmaanji), Uygur, Turkmaan, Taatar, Albaaniyaan, Bosniyaan, Jejen, Ingush iyo Avar.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner hadda waxaa lagu heli karaa **46 luqadood**. Waxaa ku soo biiray 11 kale:
 

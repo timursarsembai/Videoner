@@ -2,6 +2,7 @@
 title: Tutuş YouTube pleýlistleri we gündelik çäkleriň ýatyrylmagy
 summary: Videoner YouTube pleýlistlerini wideolary birin-birin ýükleýär — botda, saýtda we giňeltmede, “⏹ Duruz” düwmesi bilen. Gündelik ýükleme çägi bolsa ýatyryldy.
 date: 2026-10-31
+time: 02:36:50
 ---
 Iki uly üýtgeşme.
 

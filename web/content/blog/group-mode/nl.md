@@ -2,6 +2,7 @@
 title: Groepsmodus: de bot plaatst video's bij links die in de chat worden gedeeld
 summary: Voeg @VideonerBot toe aan een groep, en hij antwoordt met de video op links die daar worden geplaatst. Beheerders stellen zijn gedrag in met het commando /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Je kunt [@VideonerBot](https://t.me/VideonerBot) nu toevoegen aan een groepschat. Als iemand een link naar een video plaatst, antwoordt de bot met de video zelf. Niemand hoeft de link te openen of naar de bot te gaan.
 

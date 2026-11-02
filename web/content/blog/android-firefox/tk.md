@@ -2,6 +2,7 @@
 title: Hasabyňyzy bota indi Android telefondan hem birikdirip bolýar
 summary: Kompýuter gerek däl — Android-de Firefox we Cookie-Editor giňeltmesi arkaly Instagram-y @VideonerBot-a birikdiriň, bot storisleri we ýapyk ýazgylary ýükläp berer.
 date: 2026-10-31
+time: 00:39:25
 ---
 Botuň Instagram storislerini we ýapyk ýazgylary ýüklemegi üçin oňa öz hasabyňyzy birikdirmeli. Şu wagta çenli munuň üçin Videoner giňeltmesi oturdylan kompýuter gerekdi. Indi göni **Android** telefonyňyzdan birikdirip bilersiňiz.
 

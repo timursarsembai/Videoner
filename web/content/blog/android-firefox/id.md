@@ -2,6 +2,7 @@
 title: Kini Anda bisa menghubungkan akun ke bot dari ponsel Android
 summary: Tanpa komputer: di Android, hubungkan Instagram ke @VideonerBot lewat Firefox dan pengaya Cookie-Editor, lalu bot akan mengunduh story dan postingan privat.
 date: 2026-10-31
+time: 00:39:25
 ---
 Agar bot bisa mengunduh story Instagram dan postingan privat, Anda perlu menghubungkan akun Anda ke bot. Sebelumnya, ini memerlukan komputer dengan ekstensi Videoner. Kini Anda bisa menghubungkannya langsung dari ponsel **Android**.
 

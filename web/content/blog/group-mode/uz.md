@@ -2,6 +2,7 @@
 title: Guruh rejimi: bot chatda ulashilgan havolalar boʻyicha video yuboradi
 summary: @VideonerBotʼni guruhga qoʻshing — u yerda yuborilgan havolalarga video bilan javob beradi. Adminlar uning ishini /settings buyrugʻi bilan sozlaydi.
 date: 2026-10-30
+time: 23:18:52
 ---
 Endi [@VideonerBot](https://t.me/VideonerBot)ni guruh chatiga qoʻshishingiz mumkin. Kimdir videoga havola tashlasa, bot videoning oʻzi bilan javob beradi. Hech kim havolani ochishi yoki botga oʻtishi shart emas.
 

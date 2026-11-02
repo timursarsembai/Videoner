@@ -2,6 +2,7 @@
 title: Grup modu: bot, sohbette paylaşılan bağlantıların videolarını gönderiyor
 summary: @VideonerBot'u bir gruba ekleyin, oraya gönderilen bağlantılara videoyla yanıt versin. Yöneticiler botun davranışını /settings komutuyla ayarlar.
 date: 2026-10-30
+time: 23:18:52
 ---
 Artık [@VideonerBot](https://t.me/VideonerBot)'u bir grup sohbetine ekleyebilirsiniz. Biri bir videonun bağlantısını paylaştığında bot, videonun kendisiyle yanıt verir. Kimsenin bağlantıyı açmasına veya bota geçmesine gerek kalmaz.
 

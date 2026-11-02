@@ -2,6 +2,7 @@
 title: Topar tertibi — bot çatda paýlaşylan salgylar üçin wideolary iberýär
 summary: Topara @VideonerBot-y goşuň — ol şol ýerde iberilen salgylara wideo bilen jogap berer. Adminler onuň işleýşini /settings buýrugy bilen sazlaýarlar.
 date: 2026-10-30
+time: 23:18:52
 ---
 Indi [@VideonerBot](https://t.me/VideonerBot) boty topar çatyna goşup bilersiňiz. Kimdir biri wideonyň salgysyny iberende, bot wideonyň özi bilen jogap berýär. Hiç kime salgyny açmak ýa-da bota geçmek gerek däl.
 

@@ -15,7 +15,9 @@ const EVERY_MS = 30 * 60_000;
 const FIRST_RUN_MS = 60_000;
 const BETWEEN_POSTS_MS = 3_000;
 
-type FeedPost = { slug: string; date: string; url: string; html: string };
+// time — время публикации внутри дня (HH:MM:SS, web/lib/blog/posts.ts); у
+// ленты старого сайта его нет.
+type FeedPost = { slug: string; date: string; time?: string; url: string; html: string };
 
 let running = false;
 // Опубликованные статьи, номер которых сервер ещё не записал.
@@ -43,7 +45,10 @@ async function publishNew(tg: Api) {
     const { slugs } = await api<{ slugs: string[] }>("/channel-posts");
     const fresh = posts
       .filter((p) => !slugs.includes(p.slug) && !pendingDone.has(p.slug))
-      .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.slug.localeCompare(b.slug)));
+      .sort(
+        (a, b) =>
+          a.date.localeCompare(b.date) || (a.time ?? "").localeCompare(b.time ?? "") || a.slug.localeCompare(b.slug),
+      );
     for (const post of fresh) {
       const { ok } = await api<{ ok: boolean }>("/channel-posts/claim", { slug: post.slug });
       if (!ok) continue;

@@ -2,6 +2,7 @@
 title: Maandishi ya chapisho sasa yako kwenye maelezo ya faili
 summary: Bot inaongeza maandishi ya chapisho kutoka TikTok, Instagram, Threads, X, Facebook na Pinterest kwenye maelezo ya video na picha. Tovuti na kiendelezi sasa vinaonyesha kiungo cha chaneli yetu ya habari baada ya upakuaji.
 date: 2026-10-31
+time: 01:36:57
 ---
 Mara nyingi watu hushiriki video kwa sababu ya maelezo ya mwandishi: mapishi, anwani, utani, orodha ya hashtag. Sasa [@VideonerBot](https://t.me/VideonerBot) inayahifadhi pamoja na faili.
 

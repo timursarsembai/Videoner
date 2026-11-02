@@ -2,6 +2,7 @@
 title: Vous pouvez maintenant connecter votre compte au bot depuis un téléphone Android
 summary: Plus besoin d’ordinateur : sur Android, connectez Instagram à @VideonerBot avec Firefox et le module Cookie-Editor, et le bot téléchargera les stories et les publications privées.
 date: 2026-10-31
+time: 00:39:25
 ---
 Pour que le bot télécharge les stories Instagram et les publications privées, vous devez lui connecter votre compte. Jusqu’ici, il fallait pour cela un ordinateur avec l’extension Videoner. Désormais, vous pouvez le faire directement depuis votre téléphone **Android**.
 

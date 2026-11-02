@@ -2,6 +2,7 @@
 title: Račun sada možete povezati s botom s Android telefona
 summary: Računar nije potreban — na Androidu povežite Instagram s @VideonerBot putem Firefoxa i dodatka Cookie-Editor, a bot će preuzimati priče i privatne objave.
 date: 2026-10-31
+time: 00:39:25
 ---
 Da bi bot mogao preuzimati Instagram priče i privatne objave, morate s njim povezati svoj račun. Do sada je za to bio potreban računar s Videoner proširenjem. Sada se možete povezati direktno sa svog **Android** telefona.
 

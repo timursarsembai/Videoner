@@ -2,6 +2,7 @@
 title: Un bot más cómodo: 4K, tamaño, progreso, cola y subtítulos
 summary: El bot ofrece calidad de hasta 4K y archivos de hasta 2 GB, tamaño aproximado en los botones, progreso en vivo, cola de varios enlaces y subtítulos de YouTube en .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Reunimos varias novedades del bot [@VideonerBot](https://t.me/VideonerBot) de los últimos días.
 

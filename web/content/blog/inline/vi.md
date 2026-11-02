@@ -2,6 +2,7 @@
 title: Chế độ inline: gửi video vào bất kỳ cuộc trò chuyện nào với @VideonerBot
 summary: Gõ @VideonerBot và liên kết ngay trong cuộc trò chuyện, video sẽ đến chính cuộc trò chuyện đó. Trên trang web, bạn có thể mở liên kết chỉ bằng cách thêm tên miền của chúng tôi vào trước.
 date: 2026-08-19
+time: 23:18:52
 ---
 Hai cách mới để tải video nhanh hơn.
 

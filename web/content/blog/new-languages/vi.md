@@ -2,6 +2,7 @@
 title: Videoner giờ đã có 25 ngôn ngữ
 summary: Trang web, bot và tiện ích trình duyệt giờ hỗ trợ thêm 19 ngôn ngữ — từ tiếng Trung, tiếng Hindi đến tiếng Đức, tiếng Thổ Nhĩ Kỳ và tiếng Nhật.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner giờ đã có **25 ngôn ngữ**. Bên cạnh tiếng Anh, tiếng Tây Ban Nha, tiếng Nga, tiếng Ukraina, tiếng Kazakh và tiếng Ả Rập, có thêm 19 ngôn ngữ nữa:
 

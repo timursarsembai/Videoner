@@ -2,6 +2,7 @@
 title: Videoner niha bi 25 zimanan diaxive
 summary: Malper, bot û pêveka gerokê niha bi 19 zimanên din jî diaxivin — ji çînî û hindî heta almanî, tirkî û japonî.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner niha bi **25 zimanan** heye. 19 zimanên din tevlî îngilîzî, spanî, rûsî, ukraynî, qazaxî û erebî bûn:
 

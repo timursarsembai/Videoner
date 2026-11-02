@@ -2,6 +2,7 @@
 title: Videoner niha bi 35 zimanan diaxive
 summary: 10 zimanên din — amharî, oromoyî, hawsayî, somalî, azerbaycanî, qirgizî, tacîkî, malayî, holendî û romanî.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner niha bi **35 zimanan** heye. 10 zimanên din tevlî bûn:
 

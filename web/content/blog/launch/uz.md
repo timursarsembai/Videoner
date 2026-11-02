@@ -2,6 +2,7 @@
 title: Videoner ishga tushdi: video yuklab olish uchun sayt va Telegram bot
 summary: Videoner YouTube, TikTok, Instagram, Facebook va Twitter/Xʼdan video yuklab oladi — videoner.download saytida va @VideonerBot Telegram botida.
 date: 2026-07-20
+time: 23:18:52
 ---
 Salom! Bu Videoner — ijtimoiy tarmoqlardan video yuklab oluvchi bepul xizmat. Undan ikki xil usulda foydalanish mumkin: saytda va Telegramʼda.
 

@@ -2,6 +2,7 @@
 title: Karuseli, fotografije i Threads — preuzmite cijelu objavu
 summary: Videoner sada preuzima sve fajlove iz objave — i videozapise i fotografije iz Instagram karusela. Uz to je dodana podrška za Threads.
 date: 2026-08-12
+time: 23:18:52
 ---
 Do sada ste iz objave s više fajlova mogli preuzeti samo jedan video. Sada Videoner preuzima cijelu objavu.
 

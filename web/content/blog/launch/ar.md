@@ -2,6 +2,7 @@
 title: انطلق Videoner: موقع وبوت Telegram لتنزيل الفيديوهات
 summary: ينزّل Videoner الفيديوهات من YouTube وTikTok وInstagram وFacebook وTwitter/X، على موقع videoner.download وفي بوت Telegram ‎@VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 مرحباً! هذا Videoner، خدمة مجانية لتنزيل الفيديوهات من وسائل التواصل الاجتماعي. يمكنك استخدامها بطريقتين: على الموقع وفي Telegram.
 

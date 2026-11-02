@@ -2,6 +2,7 @@
 title: Extensão de navegador do Videoner: um botão Baixar na página do vídeo
 summary: A extensão chegou para Chrome, Yandex Browser, Edge e Opera. Um botão Baixar aparece direto na página do vídeo, e Instagram, Facebook, TikTok e Threads são baixados com o seu login.
 date: 2026-10-28
+time: 23:18:52
 ---
 Se você costuma baixar vídeos no computador, agora dá para fazer isso sem copiar links. Conheça a extensão de navegador do Videoner.
 

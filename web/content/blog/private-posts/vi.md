@@ -2,6 +2,7 @@
 title: Bài đăng riêng tư? Bot sẽ chỉ bạn cách tải
 summary: Nếu bài đăng, reel hay story chỉ hiển thị với người đã đăng nhập, bot giờ gợi ý bạn kết nối tài khoản — sau đó bot tự tải những bài đăng như vậy, kể cả từ điện thoại.
 date: 2026-10-31
+time: 22:40:56
 ---
 Một số bài đăng chỉ hiển thị với người đã đăng nhập: story Instagram, bài đăng và reel riêng tư, bài đăng chỉ dành cho bạn bè, video giới hạn độ tuổi. Trước đây, với những liên kết như vậy bot chỉ trả lời “không khả dụng khi chưa đăng nhập”.
 

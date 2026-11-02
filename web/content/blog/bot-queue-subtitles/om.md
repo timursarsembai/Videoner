@@ -2,6 +2,7 @@
 title: Boot fooyya'e: 4K, hamma faayilii, adeemsa, tarree fi barreeffama jalaa
 summary: Bootiin amma hanga 4K fi faayilii hanga 2 GB, hamma tilmaamaa qabduuwwan irratti, adeemsa buufannaa yeroo sanaa, tarree liinkii hedduuf fi barreeffama jalaa YouTube .srt'n kenna.
 date: 2026-10-03
+time: 23:18:52
 ---
 Kunoo haaromsa dhiyoo boot [@VideonerBot](https://t.me/VideonerBot) irratti godhaman walitti qabnee.
 

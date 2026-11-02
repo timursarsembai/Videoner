@@ -2,6 +2,7 @@
 title: Private na post? Ipinapakita ng bot kung paano ito i-download
 summary: Kung nakikita lang ng mga naka-sign in ang isang post, reel o story, imumungkahi na ngayon ng bot na i-connect ang account mo — pagkatapos noon, ito na mismo ang magda-download ng mga ganitong post, kahit mula sa phone.
 date: 2026-10-31
+time: 22:40:56
 ---
 May mga post na ipinapakita lang sa mga taong naka-sign in: mga Instagram story, private na post at reel, mga post na para sa friends lang, mga video na may age restriction. Dati, “hindi available nang hindi naka-sign in” lang ang sagot ng bot sa mga ganitong link.
 

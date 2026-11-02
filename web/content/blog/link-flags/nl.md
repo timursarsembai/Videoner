@@ -2,6 +2,7 @@
 title: De flags -audio en -hd: downloaden zonder kwaliteit te kiezen
 summary: Zet -audio na een link en de bot stuurt meteen het geluid als mp3; zet -hd voor video in de beste kwaliteit. Werkt in privéchats en groepen.
 date: 2026-10-31
+time: 01:12:42
 ---
 De bot [@VideonerBot](https://t.me/VideonerBot) begrijpt nu flags – korte woorden na een link. Daarmee hoef je niet op een kwaliteitsknop te tikken: de bot begint meteen met downloaden.
 

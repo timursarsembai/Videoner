@@ -2,6 +2,7 @@
 title: Taariikhda soo dejinta ee kordhiyaha iyo Videoner oo ku jira katalogga Firefox
 summary: Kordhiyuhu hadda wuxuu xasuustaa waxa aad soo dejisay 30-kii maalmood ee la soo dhaafay — magaca, link-ga iyo taariikhda. Firefox-na hadda wuxuu ku jiraa katalogga rasmiga ah ee add-on-yada Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 Kordhiyaha biraawsarka Videoner wuxuu helay laba wax cusub: taariikhda soo dejinta, iyo rakibidda Firefox oo laga sameeyo katalogga rasmiga ah ee Mozilla.
 

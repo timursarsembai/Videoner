@@ -2,6 +2,7 @@
 title: Videoner ukrain we gazak dillerinde, indi dili hem saýlap bolýar
 summary: Bot, saýt we giňeltme indi ukrain we gazak dillerinde gürleýär. Botuň dilini bolsa indi /language buýrugy bilen özüňiz saýlap bilersiňiz.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner indi iki täze dilde elýeterli — **ukrain** we **gazak** dillerinde.
 

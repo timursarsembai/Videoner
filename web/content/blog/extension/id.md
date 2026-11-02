@@ -2,6 +2,7 @@
 title: Ekstensi browser Videoner: tombol Unduh di halaman video
 summary: Ekstensi kini tersedia untuk Chrome, Yandex Browser, Edge, dan Opera. Tombol Unduh muncul langsung di halaman video, dan Instagram, Facebook, TikTok, serta Threads diunduh dengan login Anda.
 date: 2026-10-28
+time: 23:18:52
 ---
 Jika Anda sering mengunduh video di komputer, kini Anda bisa melakukannya tanpa menyalin tautan. Perkenalkan ekstensi browser Videoner.
 

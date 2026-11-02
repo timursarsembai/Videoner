@@ -2,6 +2,7 @@
 title: Story yên Instagramê û hesabên girêdayî
 summary: Pêvek story yên Instagramê dadixe, û bot story û postên taybet bi hesabê te yê girêdayî dadixe. Bi bişkokekê di pêvekê de girê bide; bi /accounts birêve bibe.
 date: 2026-10-30
+time: 23:18:52
 ---
 Story û postên taybet tenê ji bikarhênerên têketî re xuya ne, ji ber vê yekê servera Videoner nikare wan bigire. Niha ji bo vê du çareserî hene.
 

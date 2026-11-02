@@ -2,6 +2,7 @@
 title: Die Videoner-Browser-Erweiterung: ein Download-Button direkt auf der Videoseite
 summary: Die Erweiterung ist da – für Chrome, Yandex Browser, Edge und Opera. Ein Download-Button erscheint direkt auf der Videoseite, und Instagram, Facebook, TikTok und Threads lädst du mit deiner Anmeldung herunter.
 date: 2026-10-28
+time: 23:18:52
 ---
 Wenn du oft Videos auf dem Computer herunterlädst, geht das jetzt ganz ohne Links kopieren. Hier ist sie: die Videoner-Browser-Erweiterung.
 

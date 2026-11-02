@@ -2,6 +2,7 @@
 title: Shtesa — mësimet e GetCourse dhe versioni për Firefox
 summary: Shtesa Videoner tani shkarkon video-mësimet nga shkollat në GetCourse dhe është gati për Firefox, me instalim me një klikim dhe përditësime automatike.
 date: 2026-10-29
+time: 23:18:52
 ---
 Dy përditësime të mëdha të shtesës Videoner.
 

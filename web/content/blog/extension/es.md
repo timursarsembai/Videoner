@@ -2,6 +2,7 @@
 title: Extensión de Videoner: botón «Descargar» en la página del video
 summary: Ya está la extensión para Chrome, Yandex Browser, Edge y Opera. El botón Descargar aparece en la página del video, e Instagram, Facebook, TikTok y Threads se descargan con tu sesión.
 date: 2026-10-28
+time: 23:18:52
 ---
 Si sueles descargar videos en el ordenador, ahora puedes hacerlo sin copiar enlaces. Te presentamos la extensión de Videoner para el navegador.
 

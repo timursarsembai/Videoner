@@ -2,6 +2,7 @@
 title: Seenaa buusuu dabalata keessatti, fi Videoner kaataaloogii Firefox keessatti
 summary: Dabalanni amma waan guyyoota 30 darban keessatti buustan yaadata — mata duree, liinkii fi guyyaa. Firefox'f immoo kaataaloogii dabalataalee (add-ons) Mozilla isa seera qabeessa keessatti argama.
 date: 2026-11-02
+time: 00:48:04
 ---
 Dabalanni biraawuzarii Videoner wantoota haaraa lama qaba: seenaa buusuu, fi kaataaloogii seera qabeessa Mozilla irraa Firefox irratti fe'uu.
 

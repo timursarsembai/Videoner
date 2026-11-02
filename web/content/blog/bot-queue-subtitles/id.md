@@ -2,6 +2,7 @@
 title: Bot yang lebih baik: 4K, ukuran file, progres, antrean, dan subtitle
 summary: Bot kini menawarkan hingga 4K dan file hingga 2 GB, perkiraan ukuran di tombol, progres unduhan secara langsung, antrean untuk beberapa tautan, serta subtitle YouTube dalam format .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Berikut rangkuman pembaruan terbaru bot [@VideonerBot](https://t.me/VideonerBot).
 

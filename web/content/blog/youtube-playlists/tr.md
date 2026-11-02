@@ -2,6 +2,7 @@
 title: YouTube oynatma listelerinin tamamı ve artık günlük sınır yok
 summary: Videoner, YouTube oynatma listelerini birer birer video olarak indiriyor: botta, sitede ve eklentide, bir Durdur düğmesiyle. Günlük indirme sınırı da kaldırıldı.
 date: 2026-10-31
+time: 02:36:50
 ---
 İki büyük değişiklik.
 

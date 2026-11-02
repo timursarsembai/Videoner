@@ -2,6 +2,7 @@
 title: নতুন প্ল্যাটফর্ম: Vimeo, VK, Rutube, OK.ru এবং Pinterest
 summary: Videoner এখন আরও পাঁচটি প্ল্যাটফর্ম থেকে ভিডিও ডাউনলোড করে — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) এবং Pinterest। ওয়েবসাইট এবং বট দুই জায়গাতেই কাজ করে।
 date: 2026-07-22
+time: 23:18:52
 ---
 আমরা পাঁচটি নতুন প্ল্যাটফর্ম যোগ করেছি। Videoner এখন যেখান থেকে ভিডিও ডাউনলোড করে:
 

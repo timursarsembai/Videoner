@@ -2,6 +2,7 @@
 title: Haala garee: bootiin liinkii chaatii keessatti qoodamaniif viidiyoo maxxansa
 summary: @VideonerBot garee tokkotti dabalaa, innis liinkii achitti maxxansamaniif viidiyoon deebisa. Bulchitoonni amala isaa ajaja /settings'n qindeessu.
 date: 2026-10-30
+time: 23:18:52
 ---
 Amma [@VideonerBot](https://t.me/VideonerBot) chaatii gareetti dabaluu dandeessu. Namni tokko liinkii viidiyoo yoo maxxanse, bootiin viidiyoo mataa isaatiin deebisa. Namni tokkollee liinkii sana banuu ykn gara bootiitti ce'uu hin barbaachisu.
 

@@ -2,6 +2,7 @@
 title: A better bot: 4K, file sizes, progress, a queue and subtitles
 summary: The bot now offers up to 4K and files up to 2 GB, approximate sizes on buttons, live download progress, a queue for multiple links and YouTube subtitles in .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Here's a roundup of the latest updates to the [@VideonerBot](https://t.me/VideonerBot) bot.
 

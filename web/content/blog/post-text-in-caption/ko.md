@@ -2,6 +2,7 @@
 title: 이제 파일 캡션에 게시물 텍스트가 들어가요
 summary: 봇이 TikTok, Instagram, Threads, X, Facebook, Pinterest의 게시물 텍스트를 동영상과 사진 캡션에 넣어 드려요. 웹사이트와 확장 프로그램에서는 다운로드 후 뉴스 채널 링크가 표시돼요.
 date: 2026-10-31
+time: 01:36:57
 ---
 사람들은 작성자의 글 때문에 동영상을 전달하는 경우가 많아요. 레시피, 주소, 농담, 해시태그 목록 같은 것들이요. 이제 [@VideonerBot](https://t.me/VideonerBot)이 이 글을 파일과 함께 보관해요.
 

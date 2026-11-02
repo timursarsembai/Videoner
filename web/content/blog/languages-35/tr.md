@@ -2,6 +2,7 @@
 title: Videoner artık 35 dil konuşuyor
 summary: 10 dil daha — Amharca, Oromca, Hausaca, Somalice, Azerbaycan Türkçesi, Kırgızca, Tacikçe, Malayca, Felemenkçe ve Rumence.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner artık **35 dilde** kullanılabiliyor. 10 dil daha eklendi:
 

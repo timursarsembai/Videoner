@@ -2,6 +2,7 @@
 title: You can now connect your account to the bot from an Android phone
 summary: No computer needed: on Android, connect Instagram to @VideonerBot via Firefox and the Cookie-Editor add-on, and the bot will download stories and private posts.
 date: 2026-10-31
+time: 00:39:25
 ---
 For the bot to download Instagram stories and private posts, you need to connect your account to it. Until now, this required a computer with the Videoner extension. Now you can connect right from your **Android** phone.
 

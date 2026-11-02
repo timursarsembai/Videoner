@@ -2,6 +2,7 @@
 title: Videoner giờ đã có tiếng Ả Rập
 summary: Trang web, bot và tiện ích trình duyệt giờ đã có tiếng Ả Rập, với bố cục từ phải sang trái.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner giờ đã có **tiếng Ả Rập** — ngôn ngữ thứ sáu sau tiếng Anh, tiếng Tây Ban Nha, tiếng Nga, tiếng Ukraina và tiếng Kazakh.
 

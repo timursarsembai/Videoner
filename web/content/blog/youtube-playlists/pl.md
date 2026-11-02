@@ -2,6 +2,7 @@
 title: Całe playlisty z YouTube i koniec z dziennymi limitami
 summary: Videoner pobiera playlisty z YouTube film po filmie — w bocie, na stronie i w rozszerzeniu, z przyciskiem „Zatrzymaj”. A dzienny limit pobrań zniknął.
 date: 2026-10-31
+time: 02:36:50
 ---
 Dwie duże zmiany.
 

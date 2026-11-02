@@ -2,6 +2,7 @@
 title: Chế độ nhóm: bot gửi video cho các liên kết được chia sẻ trong cuộc trò chuyện
 summary: Thêm @VideonerBot vào nhóm, bot sẽ trả lời bằng video cho các liên kết được đăng ở đó. Quản trị viên tùy chỉnh cách bot hoạt động bằng lệnh /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Giờ bạn có thể thêm [@VideonerBot](https://t.me/VideonerBot) vào nhóm chat. Khi ai đó gửi liên kết đến một video, bot sẽ trả lời bằng chính video đó. Không ai phải mở liên kết hay chuyển sang bot.
 

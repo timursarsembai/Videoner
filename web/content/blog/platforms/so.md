@@ -2,6 +2,7 @@
 title: Madallo cusub: Vimeo, VK, Rutube, OK.ru iyo Pinterest
 summary: Videoner hadda wuxuu muuqaallada ka soo dejiyaa shan madal oo kale — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) iyo Pinterest. Wuxuu ka shaqeeyaa websaydhka iyo bot-ka labadaba.
 date: 2026-07-22
+time: 23:18:52
 ---
 Waxaan ku darnay shan madal oo cusub. Videoner hadda wuxuu muuqaallada ka soo dejiyaa:
 

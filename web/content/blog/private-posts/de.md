@@ -2,6 +2,7 @@
 title: Ein privater Beitrag? Der Bot zeigt dir, wie du ihn herunterlädst
 summary: Ist ein Beitrag, Reel oder eine Story nur für angemeldete Nutzer sichtbar, schlägt der Bot jetzt vor, dein Konto zu verbinden – danach lädt er solche Beiträge selbst herunter, auch vom Handy aus.
 date: 2026-10-31
+time: 22:40:56
 ---
 Manche Beiträge werden nur angemeldeten Nutzern angezeigt: Instagram-Storys, private Beiträge und Reels, Beiträge nur für Freunde, Videos mit Altersbeschränkung. Bisher hat der Bot auf solche Links nur „ohne Anmeldung nicht verfügbar“ geantwortet.
 

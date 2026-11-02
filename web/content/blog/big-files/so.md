@@ -2,6 +2,7 @@
 title: Muuqaallada ka weyn 2 GB: bot-ku wuxuu tusaa meesha laga soo dejiyo
 summary: Telegram uma oggola bot-yada inay diraan faylal ka weyn 2 GB. Hadda bot-ku wuxuu sharxaa arrintan, isla markaana wuxuu bixiyaa badhamo lagu soo dejiyo isla muuqaalkaas websaydhka ama kordhiyaha.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram wuxuu leeyahay xad: bot ma diri karo fayl ka weyn **2 GB**. Muuqaal dheer oo tayo sare leh si fudud ayuu uga gudbaa — tusaale ahaan, cashar saacado badan socda oo 1080p ah.
 

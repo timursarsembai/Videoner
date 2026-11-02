@@ -2,6 +2,7 @@
 title: Teksti i postimit tani në tekstin e skedarit
 summary: Boti shton tekstin e postimit nga TikTok, Instagram, Threads, X, Facebook dhe Pinterest në tekstin e videove dhe fotove. Faqja e internetit dhe shtesa tani japin pas shkarkimit lidhjen te kanali ynë i lajmeve.
 date: 2026-10-31
+time: 01:36:57
 ---
 Shpesh njerëzit e përcjellin një video për shkak të tekstit të autorit: një recetë, një adresë, një shaka, një listë hashtag-ësh. Tani [@VideonerBot](https://t.me/VideonerBot) e ruan atë së bashku me skedarin.
 

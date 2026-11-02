@@ -2,6 +2,7 @@
 title: Um bot melhor: 4K, tamanho dos arquivos, progresso, fila e legendas
 summary: O bot agora oferece até 4K e arquivos de até 2 GB, tamanho aproximado nos botões, progresso do download em tempo real, fila para vários links e legendas do YouTube em .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Reunimos aqui as últimas atualizações do bot [@VideonerBot](https://t.me/VideonerBot).
 

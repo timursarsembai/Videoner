@@ -2,6 +2,7 @@
 title: Cờ -audio và -hd: tải mà không cần chọn chất lượng
 summary: Thêm -audio sau liên kết, bot sẽ gửi ngay âm thanh dạng mp3; thêm -hd để nhận video ở chất lượng tốt nhất. Dùng được trong cuộc trò chuyện riêng và trong nhóm.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bot [@VideonerBot](https://t.me/VideonerBot) giờ hiểu được cờ — những từ ngắn đặt sau liên kết. Với cờ, bạn không cần nhấn nút chất lượng: bot bắt đầu tải ngay.
 

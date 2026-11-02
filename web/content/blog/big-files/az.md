@@ -2,6 +2,7 @@
 title: 2 GB-dan böyük videolar: bot onları harada yükləməyi göstərir
 summary: Telegram botlara 2 GB-dan böyük fayl göndərməyə imkan vermir. İndi bot bunu izah edir və eyni videonu saytda və ya genişlənmə ilə yükləmək üçün dərhal düymələr təklif edir.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram-ın məhdudiyyəti var: bot **2 GB**-dan böyük fayl göndərə bilməz. Yüksək keyfiyyətli uzun video bu həddi asanlıqla aşır — məsələn, 1080p-də bir neçə saatlıq mühazirə.
 

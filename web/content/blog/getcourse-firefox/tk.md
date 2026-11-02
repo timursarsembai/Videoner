@@ -2,6 +2,7 @@
 title: Giňeltme — GetCourse sapaklary we Firefox wersiýasy
 summary: Videoner giňeltmesi indi GetCourse mekdeplerinden wideo sapaklary ýükläp bilýär, şeýle hem bir basyşda oturdylýan we awtomatik täzelenýän Firefox wersiýasy çykdy.
 date: 2026-10-29
+time: 23:18:52
 ---
 Videoner giňeltmesiniň iki uly täzelenmesi.
 

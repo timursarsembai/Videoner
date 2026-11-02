@@ -2,6 +2,7 @@
 title: Een betere bot: 4K, bestandsgroottes, voortgang, een wachtrij en ondertiteling
 summary: De bot biedt nu tot 4K en bestanden tot 2 GB, geschatte groottes op de knoppen, live downloadvoortgang, een wachtrij voor meerdere links en YouTube-ondertiteling in .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Hier is een overzicht van de nieuwste updates van de bot [@VideonerBot](https://t.me/VideonerBot).
 

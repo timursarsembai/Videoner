@@ -2,6 +2,7 @@
 title: Sambungan pelayar Videoner: butang Muat turun pada halaman video
 summary: Sambungan ini kini tersedia untuk Chrome, Yandex Browser, Edge dan Opera. Butang “Muat turun” muncul terus pada halaman video, dan Instagram, Facebook, TikTok serta Threads dimuat turun menggunakan log masuk anda.
 date: 2026-10-28
+time: 23:18:52
 ---
 Jika anda kerap memuat turun video pada komputer, kini anda boleh melakukannya tanpa menyalin pautan. Perkenalkan sambungan pelayar Videoner.
 

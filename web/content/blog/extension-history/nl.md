@@ -2,6 +2,7 @@
 title: Downloadgeschiedenis in de extensie en Videoner in de Firefox-catalogus
 summary: De extensie onthoudt nu wat je de afgelopen 30 dagen hebt gedownload – titel, link en datum. En voor Firefox staat ze nu in de officiële add-oncatalogus van Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 De Videoner-browserextensie heeft twee nieuwe dingen: een downloadgeschiedenis en installatie in Firefox vanuit de officiële catalogus van Mozilla.
 

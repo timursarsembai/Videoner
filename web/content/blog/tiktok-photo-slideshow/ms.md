@@ -2,6 +2,7 @@
 title: Hantaran foto TikTok dan tayangan slaid foto
 summary: Videoner kini memuat turun hantaran foto TikTok dan boleh menukar mana-mana hantaran dengan beberapa foto menjadi tayangan slaid video. Dalam kumpulan, bot terus menghantar foto dan tayangan slaid.
 date: 2026-10-31
+time: 00:53:50
 ---
 Dua kemas kini untuk hantaran yang mengandungi beberapa foto dan bukannya video.
 

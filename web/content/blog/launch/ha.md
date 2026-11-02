@@ -2,6 +2,7 @@
 title: Videoner ya fara aiki: shafin yanar gizo da bot na Telegram don sauke bidiyo
 summary: Videoner yana sauke bidiyo daga YouTube, TikTok, Instagram, Facebook da Twitter/X — a shafin videoner.download da kuma a bot na Telegram @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Sannu! Wannan shi ne Videoner — sabis kyauta da ke sauke bidiyo daga kafofin sada zumunta. Za ku iya amfani da shi ta hanyoyi biyu: a shafin yanar gizo da kuma a Telegram.
 

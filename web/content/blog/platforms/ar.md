@@ -2,6 +2,7 @@
 title: منصات جديدة: Vimeo وVK وRutube وOK.ru وPinterest
 summary: أصبح Videoner ينزّل الفيديوهات من خمس منصات إضافية: Vimeo وVK وRutube وOK.ru (Odnoklassniki) وPinterest. ويعمل ذلك على الموقع وفي البوت.
 date: 2026-07-22
+time: 23:18:52
 ---
 أضفنا خمس منصات جديدة. أصبح Videoner ينزّل الفيديوهات من:
 

@@ -2,6 +2,7 @@
 title: Videoner Afaan Yuukireen fi Afaan Qazaaqiin, amma immoo afaan filachuu dandeessu
 summary: Bootiin, marsariitiin fi dabalanni biraawuzarii amma Afaan Yuukireen fi Afaan Qazaaq dubbatu. Akkasumas amma afaan bootii ofii keessaniin ajaja /language'n filachuu dandeessu.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner amma afaanota haaraa lamaan argama — **Afaan Yuukireen** fi **Afaan Qazaaq**.
 

@@ -2,6 +2,7 @@
 title: Karusel, foto dan Threads: muat turun keseluruhan hantaran
 summary: Videoner kini memuat turun setiap fail dalam sesuatu hantaran — video dan juga foto daripada karusel Instagram. Selain itu, Threads kini disokong.
 date: 2026-08-12
+time: 23:18:52
 ---
 Sebelum ini, anda hanya boleh memuat turun satu video daripada hantaran yang mengandungi beberapa fail. Kini Videoner mengambil keseluruhan hantaran.
 

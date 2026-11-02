@@ -2,6 +2,7 @@
 title: Videoner amma Arabiffaa dubbata
 summary: Marsariitiin, bootiin fi dabalanni biraawuzarii amma Arabiffaan argamu, qindaa'ina mirgaa gara bitaatti deemu waliin.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner amma **Arabiffaan** ni argama — afaan jahaffaa Ingiliffaa, Afaan Ispaanishii, Afaan Raashiyaa, Afaan Yuukireen fi Afaan Qazaaq booda.
 

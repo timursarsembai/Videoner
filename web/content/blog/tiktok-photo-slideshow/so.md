@@ -2,6 +2,7 @@
 title: Boostooyinka sawirrada TikTok iyo bandhig sawirro
 summary: Videoner hadda wuxuu soo dejiyaa boostooyinka sawirrada TikTok, wuxuuna boost kasta oo leh dhowr sawir u beddeli karaa bandhig sawirro oo muuqaal ah. Kooxaha, bot-ku isla markiiba wuxuu soo diraa sawirrada iyo bandhigga.
 date: 2026-10-31
+time: 00:53:50
 ---
 Laba cusbooneysiin oo loogu talagalay boostooyinka ka kooban dhowr sawir halkii ay ka koobnaan lahaayeen muuqaal.
 

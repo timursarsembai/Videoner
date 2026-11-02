@@ -2,6 +2,7 @@
 title: 扩展更新：支持 GetCourse 课程，推出 Firefox 版
 summary: Videoner 扩展现在可以下载 GetCourse 网校的视频课程，并推出了 Firefox 版，一键安装，自动更新。
 date: 2026-10-29
+time: 23:18:52
 ---
 Videoner 扩展迎来两项重要更新。
 

@@ -2,6 +2,7 @@
 title: Volledige YouTube-afspeellijsten en geen daglimiet meer
 summary: Videoner downloadt YouTube-afspeellijsten video voor video – in de bot, op de site en in de extensie, met een knop Stoppen. En de daglimiet voor downloads is verdwenen.
 date: 2026-10-31
+time: 02:36:50
 ---
 Twee grote veranderingen.
 

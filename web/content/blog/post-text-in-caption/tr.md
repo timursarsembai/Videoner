@@ -2,6 +2,7 @@
 title: Gönderi metni artık dosya açıklamasında
 summary: Bot; TikTok, Instagram, Threads, X, Facebook ve Pinterest'teki gönderi metnini video ve fotoğraf açıklamalarına ekliyor. Site ve eklenti, indirmeden sonra haber kanalımızın bağlantısını gösteriyor.
 date: 2026-10-31
+time: 01:36:57
 ---
 İnsanlar bir videoyu çoğu zaman yazarın açıklaması için iletir: bir tarif, bir adres, bir şaka, bir hashtag listesi. Artık [@VideonerBot](https://t.me/VideonerBot) bu metni dosyayla birlikte saklıyor.
 

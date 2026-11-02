@@ -2,6 +2,7 @@
 title: Täze platformalar — Vimeo, VK, Rutube, OK.ru we Pinterest
 summary: Videoner indi ýene bäş platformadan wideo ýükleýär — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) we Pinterest. Bu saýtda-da, botda-da işleýär.
 date: 2026-07-22
+time: 23:18:52
 ---
 Bäş täze platforma goşduk. Videoner indi şu platformalardan wideo ýükleýär:
 

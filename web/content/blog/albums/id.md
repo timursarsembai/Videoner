@@ -2,6 +2,7 @@
 title: Carousel, foto, dan Threads: unduh seluruh postingan
 summary: Videoner kini mengunduh setiap file dalam postingan — baik video maupun foto dari carousel Instagram. Selain itu, Threads kini didukung.
 date: 2026-08-12
+time: 23:18:52
 ---
 Sebelumnya, dari postingan yang berisi beberapa file Anda hanya bisa mengunduh satu video. Kini Videoner mengambil seluruh postingan.
 

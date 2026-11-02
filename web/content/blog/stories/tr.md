@@ -2,6 +2,7 @@
 title: Instagram hikâyeleri ve bağlı hesaplar
 summary: Eklenti Instagram hikâyelerini, bot ise bağladığınız hesap aracılığıyla hikâyeleri ve gizli gönderileri indiriyor. Eklentideki bir düğmeyle bağlanın, /accounts ile yönetin.
 date: 2026-10-30
+time: 23:18:52
 ---
 Hikâyeler ve gizli gönderiler yalnızca giriş yapmış kullanıcılara görünür, bu yüzden Videoner sunucusu onlara erişemez. Artık bunun için iki çözüm var.
 

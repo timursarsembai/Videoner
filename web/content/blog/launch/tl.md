@@ -2,6 +2,7 @@
 title: Live na ang Videoner: website at Telegram bot para sa pag-download ng video
 summary: Nagda-download ang Videoner ng mga video mula sa YouTube, TikTok, Instagram, Facebook at Twitter/X — sa website na videoner.download at sa Telegram bot na @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Kumusta! Ito ang Videoner — isang libreng serbisyo na nagda-download ng mga video mula sa social media. Magagamit mo ito sa dalawang paraan: sa website at sa Telegram.
 

@@ -2,6 +2,7 @@
 title: Një bot më i mirë — 4K, madhësi skedarësh, progres, radhë dhe titra
 summary: Boti tani ofron deri në 4K dhe skedarë deri në 2 GB, madhësi të përafërta në butona, progresin e shkarkimit në kohë reale, radhë për disa lidhje dhe titra të YouTube në .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Ja një përmbledhje e përditësimeve të fundit të botit [@VideonerBot](https://t.me/VideonerBot).
 

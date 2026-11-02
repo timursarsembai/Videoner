@@ -2,6 +2,7 @@
 title: Videoner è online: un sito e un bot Telegram per scaricare video
 summary: Videoner scarica video da YouTube, TikTok, Instagram, Facebook e Twitter/X, sul sito videoner.download e nel bot Telegram @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Ciao! Questo è Videoner, un servizio gratuito che scarica i video dai social. Puoi usarlo in due modi: sul sito e su Telegram.
 

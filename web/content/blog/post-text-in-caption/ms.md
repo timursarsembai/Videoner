@@ -2,6 +2,7 @@
 title: Teks hantaran kini disertakan bersama fail
 summary: Bot menambah teks hantaran daripada TikTok, Instagram, Threads, X, Facebook dan Pinterest pada teks di bawah video dan foto. Laman web dan sambungan kini memaparkan pautan ke saluran berita kami selepas muat turun.
 date: 2026-10-31
+time: 01:36:57
 ---
 Orang sering memanjangkan video kerana teks yang ditulis oleh pemiliknya: resipi, alamat, jenaka, senarai hashtag. Kini [@VideonerBot](https://t.me/VideonerBot) menyimpan teks itu bersama fail.
 

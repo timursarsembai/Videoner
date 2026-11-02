@@ -2,6 +2,7 @@
 title: Habka kooxda: bot-ku wuxuu soo dhigaa muuqaallada link-yada sheekada lagu wadaago
 summary: Ku dar @VideonerBot koox, wuxuuna muuqaalka ugu jawaabi doonaa link-yada halkaas lagu soo dhigo. Maamulayaashu waxay habdhaqankiisa ku dejiyaan amarka /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Hadda waxaad [@VideonerBot](https://t.me/VideonerBot) ku dari kartaa sheeko kooxeed. Marka qof soo dhigo link muuqaal, bot-ku wuxuu ugu jawaabaa muuqaalka laftiisa. Qofna uma baahna in uu furo link-ga ama u gudbo bot-ka.
 

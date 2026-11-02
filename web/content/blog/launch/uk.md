@@ -2,6 +2,7 @@
 title: Videoner запущено: сайт і Telegram-бот для завантаження відео
 summary: Videoner завантажує відео з YouTube, TikTok, Instagram, Facebook і Twitter/X — на сайті videoner.download і в Telegram-боті @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Привіт! Це Videoner — безкоштовний сервіс, який завантажує відео з соцмереж. Ним можна користуватися двома способами: на сайті й у Telegram.
 

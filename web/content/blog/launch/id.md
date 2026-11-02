@@ -2,6 +2,7 @@
 title: Videoner diluncurkan: situs web dan bot Telegram untuk mengunduh video
 summary: Videoner mengunduh video dari YouTube, TikTok, Instagram, Facebook, dan Twitter/X — di situs web videoner.download dan di bot Telegram @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Halo! Ini Videoner — layanan gratis untuk mengunduh video dari media sosial. Anda bisa menggunakannya dengan dua cara: di situs web dan di Telegram.
 

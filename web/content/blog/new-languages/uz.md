@@ -2,6 +2,7 @@
 title: Videoner endi 25 tilda
 summary: Sayt, bot va brauzer kengaytmasi yana 19 tilda gapira boshladi — xitoy va hind tillaridan nemis, turk va yapon tillarigacha.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner endi **25 tilda** mavjud. Ingliz, ispan, rus, ukrain, qozoq va arab tillariga yana 19 ta til qoʻshildi:
 

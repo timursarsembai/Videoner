@@ -2,6 +2,7 @@
 title: Puwede mo nang i-connect ang account mo sa bot mula sa Android phone
 summary: Hindi na kailangan ng computer: sa Android, i-connect ang Instagram sa @VideonerBot gamit ang Firefox at ang Cookie-Editor add-on, at ida-download ng bot ang mga story at private post.
 date: 2026-10-31
+time: 00:39:25
 ---
 Para ma-download ng bot ang mga Instagram story at private post, kailangan mong i-connect dito ang account mo. Dati, kailangan pa ng computer na may Videoner extension. Ngayon, puwede ka nang mag-connect direkta mula sa iyong **Android** phone.
 

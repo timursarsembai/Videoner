@@ -2,6 +2,7 @@
 title: Postên wêneyan ên TikTok û pêşandana wêneyan
 summary: Videoner niha postên wêneyan ên TikTok dadixe û dikare her posteke bi çend wêneyan bike vîdyoyeke pêşandana wêneyan. Di koman de bot yekser wêne û pêşandanê dişîne.
 date: 2026-10-31
+time: 00:53:50
 ---
 Du nûkirin ji bo postên ku li şûna vîdyoyê çend wêne tê de hene.
 

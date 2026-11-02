@@ -2,6 +2,7 @@
 title: Ang mga flag na -audio at -hd: mag-download nang hindi pumipili ng quality
 summary: Ilagay ang -audio pagkatapos ng link at agad na ipapadala ng bot ang tunog bilang mp3; ilagay ang -hd para sa video sa pinakamagandang quality. Gumagana sa private chat at sa mga grupo.
 date: 2026-10-31
+time: 01:12:42
 ---
 Naiintindihan na ngayon ng bot na [@VideonerBot](https://t.me/VideonerBot) ang mga flag — maiikling salita pagkatapos ng link. Dahil dito, hindi mo na kailangang mag-tap ng quality button: agad na magsisimulang mag-download ang bot.
 

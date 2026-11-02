@@ -9,6 +9,9 @@ import { Block, parseBlocks } from "./markdown";
 //   title: …
 //   summary: …
 //   date: YYYY-MM-DD
+//   time: HH:MM:SS        (необязательно: время публикации по UTC — порядок
+//                          статей одного дня; без него статья ниже датированных
+//                          тем же днём со временем, между собой — по slug)
 //   updated: YYYY-MM-DD   (необязательно: дата заметной правки статьи)
 //   ---
 // Страницы блога собираются при сборке и пересобираются раз в час
@@ -19,6 +22,8 @@ import { Block, parseBlocks } from "./markdown";
 export type BlogPost = {
   slug: string;
   date: string;
+  // Время публикации (HH:MM:SS) — только для порядка внутри дня; "" — не указано.
+  time: string;
   // Дата последней правки (dateModified в JSON-LD, lastmod в sitemap); без
   // поля updated в шапке совпадает с date.
   updated: string;
@@ -32,6 +37,7 @@ export type BlogPost = {
 const DIR = path.join(process.cwd(), "content", "blog");
 const FALLBACK: Language[] = ["en", "ru"];
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const TIME = /^\d{2}:\d{2}:\d{2}$/;
 
 function parseFile(file: string): { meta: Record<string, string>; body: string } | null {
   if (!fs.existsSync(file)) return null;
@@ -62,17 +68,18 @@ export function getPost(slug: string, lang: Language): BlogPost | null {
     // — не повод прятать статью: просто считаем, что правок не было.
     const updated =
       ISO_DATE.test(meta.updated ?? "") && meta.updated > meta.date && meta.updated <= today() ? meta.updated : meta.date;
-    return { slug, date: meta.date, updated, lang: l, title: meta.title, summary: meta.summary ?? "", blocks: parseBlocks(body) };
+    const time = TIME.test(meta.time ?? "") ? meta.time : "";
+    return { slug, date: meta.date, time, updated, lang: l, title: meta.title, summary: meta.summary ?? "", blocks: parseBlocks(body) };
   }
   return null;
 }
 
-// Новые сверху.
+// Новые сверху: по дате, внутри дня — по времени; при равных — по slug.
 export function listPosts(lang: Language): BlogPost[] {
   if (!fs.existsSync(DIR)) return [];
   return fs
     .readdirSync(DIR)
     .map((slug) => getPost(slug, lang))
     .filter((p): p is BlogPost => p !== null)
-    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : a.slug.localeCompare(b.slug)));
+    .sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time) || a.slug.localeCompare(b.slug));
 }

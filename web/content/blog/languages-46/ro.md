@@ -2,6 +2,7 @@
 title: Videoner vorbește acum 46 de limbi
 summary: Încă 11 limbi — paștună, kurdă (sorani și kurmanji), uigură, turkmenă, tătară, albaneză, bosniacă, cecenă, ingușă și avară.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner este acum disponibil în **46 de limbi**. Li s-au alăturat încă 11:
 

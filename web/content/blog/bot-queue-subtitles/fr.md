@@ -2,6 +2,7 @@
 title: Un bot plus pratique : 4K, taille des fichiers, progression, file d’attente et sous-titres
 summary: Le bot propose jusqu’à la 4K et des fichiers jusqu’à 2 Go, la taille approximative sur les boutons, la progression du téléchargement en direct, une file d’attente pour plusieurs liens et les sous-titres YouTube en .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Voici un tour d’horizon des dernières mises à jour du bot [@VideonerBot](https://t.me/VideonerBot).
 

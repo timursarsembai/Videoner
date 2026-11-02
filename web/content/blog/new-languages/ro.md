@@ -2,6 +2,7 @@
 title: Videoner vorbește acum 25 de limbi
 summary: Site-ul, botul și extensia de browser vorbesc acum încă 19 limbi — de la chineză și hindi la germană, turcă și japoneză.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner este acum disponibil în **25 de limbi**. Engleza, spaniola, rusa, ucraineana, kazaha și araba sunt completate de încă 19:
 

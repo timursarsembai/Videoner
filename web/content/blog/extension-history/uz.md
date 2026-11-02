@@ -2,6 +2,7 @@
 title: Kengaytmada yuklab olishlar tarixi va Firefox katalogida Videoner
 summary: Kengaytma endi oxirgi 30 kunda nimalarni yuklab olganingizni eslab qoladi — nomi, havolasi va sanasi. Firefox uchun esa u Mozillaʼning rasmiy qoʻshimchalar katalogida paydo boʻldi.
 date: 2026-11-02
+time: 00:48:04
 ---
 Videoner brauzer kengaytmasida ikkita yangilik: yuklab olishlar tarixi va Firefoxʼga Mozillaʼning rasmiy katalogidan oʻrnatish.
 

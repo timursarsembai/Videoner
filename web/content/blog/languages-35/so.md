@@ -2,6 +2,7 @@
 title: Videoner hadda wuxuu ku hadlaa 35 luqadood
 summary: 10 luqadood oo kale — Amxaari, Oromo, Hawsa, Soomaali, Azerbayjaani, Kirgis, Taajik, Malaay, Holandiis iyo Roomaaniyaan.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner hadda waxaa lagu heli karaa **35 luqadood**. Waxaa ku soo biiray 10 kale:
 

@@ -2,6 +2,7 @@
 title: Tekst objave sada u tekstu uz fajl
 summary: Bot dodaje tekst objave s TikToka, Instagrama, Threadsa, X-a, Facebooka i Pinteresta uz videozapise i fotografije. Web-stranica i proširenje nakon preuzimanja sada vode na naš kanal s novostima.
 date: 2026-10-31
+time: 01:36:57
 ---
 Ljudi često prosljeđuju video zbog autorovog teksta: recepta, adrese, šale, liste hashtagova. Sada ga [@VideonerBot](https://t.me/VideonerBot) čuva zajedno s fajlom.
 

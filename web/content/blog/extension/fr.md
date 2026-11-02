@@ -2,6 +2,7 @@
 title: L’extension de navigateur Videoner : un bouton « Télécharger » sur la page de la vidéo
 summary: L’extension est disponible pour Chrome, Yandex Browser, Edge et Opera. Un bouton « Télécharger » apparaît directement sur la page de la vidéo, et Instagram, Facebook, TikTok et Threads se téléchargent avec votre connexion.
 date: 2026-10-28
+time: 23:18:52
 ---
 Si vous téléchargez souvent des vidéos sur votre ordinateur, vous pouvez désormais le faire sans copier de liens. Voici l’extension de navigateur Videoner.
 

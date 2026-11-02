@@ -2,6 +2,7 @@
 title: Videoner giờ đã có 35 ngôn ngữ
 summary: Thêm 10 ngôn ngữ — tiếng Amhara, tiếng Oromo, tiếng Hausa, tiếng Somali, tiếng Azerbaijan, tiếng Kyrgyz, tiếng Tajik, tiếng Mã Lai, tiếng Hà Lan và tiếng Romania.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner giờ đã có **35 ngôn ngữ**. Có thêm 10 ngôn ngữ nữa:
 

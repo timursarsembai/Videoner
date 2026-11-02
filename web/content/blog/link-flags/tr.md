@@ -2,6 +2,7 @@
 title: -audio ve -hd işaretleri: kalite seçmeden indirin
 summary: Bağlantının arkasına -audio ekleyin, bot sesi hemen mp3 olarak göndersin; en iyi kalitede video için -hd ekleyin. Özel sohbetlerde ve gruplarda çalışır.
 date: 2026-10-31
+time: 01:12:42
 ---
 [@VideonerBot](https://t.me/VideonerBot) botu artık işaretleri anlıyor: bağlantıdan sonra yazılan kısa kelimeler. Bunlar sayesinde bir kalite düğmesine dokunmanıza gerek kalmaz: bot indirmeye hemen başlar.
 

@@ -2,6 +2,7 @@
 title: Boost gaar ah? Bot-ku wuxuu tusaa sida loo soo dejiyo
 summary: Haddii boost, reel ama story ay arki karaan oo keliya dadka galay akoonkooda, bot-ku hadda wuxuu soo jeediyaa in aad akoonkaaga ku xirto — kadib wuxuu iskiis u soo dejiyaa boostooyinkaas, xitaa taleefankaaga.
 date: 2026-10-31
+time: 22:40:56
 ---
 Boostooyinka qaarkood waxaa la tusaa oo keliya dadka akoonkooda ku jira: stories-ka Instagram, boostooyinka iyo reels-ka gaarka ah, boostooyinka saaxiibbada oo keliya, muuqaallada da'da lagu xaddiday. Ilaa hadda bot-ku link-yadaas wuxuu ugu jawaabi jiray oo keliya “lama heli karo iyadoon la gelin”.
 

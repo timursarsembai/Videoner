@@ -2,6 +2,7 @@
 title: Videoner tani flet 35 gjuhë
 summary: 10 gjuhë të tjera — amharisht, oromo, hausa, somalisht, azerbajxhanisht, kirgizisht, taxhikisht, malajisht, holandisht dhe rumanisht.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner tani është në dispozicion në **35 gjuhë**. Janë shtuar edhe 10 të tjera:
 

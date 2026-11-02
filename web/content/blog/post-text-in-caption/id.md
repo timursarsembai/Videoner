@@ -2,6 +2,7 @@
 title: Teks postingan kini ada di keterangan file
 summary: Bot menambahkan teks postingan dari TikTok, Instagram, Threads, X, Facebook, dan Pinterest ke keterangan video dan foto. Situs web dan ekstensi kini menautkan ke kanal berita kami setelah unduhan selesai.
 date: 2026-10-31
+time: 01:36:57
 ---
 Orang sering meneruskan video demi keterangan dari pembuatnya: resep, alamat, lelucon, daftar tagar. Kini [@VideonerBot](https://t.me/VideonerBot) menyimpannya bersama file.
 

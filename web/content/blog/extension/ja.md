@@ -2,6 +2,7 @@
 title: Videoner ブラウザ拡張機能：動画ページに「ダウンロード」ボタン
 summary: Chrome、Yandex Browser、Edge、Opera 向けの拡張機能をリリースしました。動画ページに直接「ダウンロード」ボタンが表示され、Instagram、Facebook、TikTok、Threads はあなたのログイン状態でダウンロードされます。
 date: 2026-10-28
+time: 23:18:52
 ---
 パソコンで動画をよくダウンロードするなら、リンクをコピーせずにダウンロードできるようになりました。Videoner ブラウザ拡張機能をご紹介します。
 

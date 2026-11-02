@@ -2,6 +2,7 @@
 title: Instagram storislari va ulangan akkauntlar
 summary: Kengaytma Instagram storislarini yuklab oladi, bot esa ulangan akkauntingiz orqali storislar va yopiq postlarni yuklab oladi. Kengaytmadagi tugma bilan ulang, /accounts orqali boshqaring.
 date: 2026-10-30
+time: 23:18:52
 ---
 Storislar va yopiq postlar faqat tizimga kirgan foydalanuvchilarga koʻrinadi, shuning uchun Videoner serveri ularni ololmaydi. Endi buning ikkita yechimi bor.
 

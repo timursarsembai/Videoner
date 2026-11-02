@@ -2,6 +2,7 @@
 title: Yanzu Videoner yana magana da harsuna 46
 summary: Ƙarin harsuna 11 — Yaren Pashto, Yaren Kurdawa (Sorani da Kurmanji), Yaren Uyghur, Yaren Turkmen, Yaren Tatar, Yaren Albaniya, Yaren Bosniya, Yaren Chechen, Yaren Ingush da Yaren Avar.
 date: 2026-11-01
+time: 16:40:18
 ---
 Yanzu Videoner yana samuwa da **harsuna 46**. An ƙara wasu 11:
 

@@ -2,6 +2,7 @@
 title: Tekst posta teraz w podpisie pliku
 summary: Bot dodaje do podpisów filmów i zdjęć tekst posta z TikToka, Instagrama, Threads, X, Facebooka i Pinteresta. Strona i rozszerzenie po pobraniu pokazują teraz link do naszego kanału z nowościami.
 date: 2026-10-31
+time: 01:36:57
 ---
 Często przesyła się film właśnie dla opisu autora: przepisu, adresu, żartu, listy hasztagów. Teraz [@VideonerBot](https://t.me/VideonerBot) zachowuje go razem z plikiem.
 

@@ -2,6 +2,7 @@
 title: Videonerʼning endi blogi va yangiliklar kanali bor
 summary: Loyihadagi yangiliklar haqida saytdagi blogda va Telegramʼdagi @videonerdownload kanalida yozib boramiz. Botdan keladigan har bir fayl izohida endi kanalga havola bor.
 date: 2026-10-30
+time: 23:18:52
 ---
 Biz saytda blog va Telegramʼda yangiliklar kanalini ochdik. Bu yerda bot, sayt va kengaytmadagi yangiliklar hamda ulardan qanday foydalanish haqida qisqacha yozib boramiz.
 

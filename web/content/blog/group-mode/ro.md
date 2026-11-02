@@ -2,6 +2,7 @@
 title: Modul de grup: botul postează videoclipurile din linkurile trimise în chat
 summary: Adaugă @VideonerBot într-un grup, iar el va răspunde cu videoclipul la linkurile postate acolo. Administratorii îi configurează comportamentul cu comanda /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Acum poți adăuga [@VideonerBot](https://t.me/VideonerBot) într-un chat de grup. Când cineva trimite un link către un videoclip, botul răspunde cu videoclipul propriu-zis. Nimeni nu trebuie să deschidă linkul sau să treacă la bot.
 

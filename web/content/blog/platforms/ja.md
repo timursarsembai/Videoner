@@ -2,6 +2,7 @@
 title: 新しいプラットフォーム：Vimeo、VK、Rutube、OK.ru、Pinterest
 summary: Videoner が新たに5つのプラットフォーム、Vimeo、VK、Rutube、OK.ru（Odnoklassniki）、Pinterest の動画をダウンロードできるようになりました。サイトでもボットでも使えます。
 date: 2026-07-22
+time: 23:18:52
 ---
 5つの新しいプラットフォームに対応しました。Videoner は次のプラットフォームの動画をダウンロードできます。
 

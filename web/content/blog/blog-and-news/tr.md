@@ -2,6 +2,7 @@
 title: Videoner'ın artık bir blogu ve haber kanalı var
 summary: Projedeki yenilikleri sitedeki blogda ve @videonerdownload Telegram kanalında paylaşıyoruz. Bottan gelen her dosyanın açıklamasında artık kanalın bağlantısı var.
 date: 2026-10-30
+time: 23:18:52
 ---
 Sitede bir blog ve Telegram'da bir haber kanalı açtık. Burada botta, sitede ve eklentideki yenilikleri ve bunların nasıl kullanılacağını kısaca anlatacağız.
 

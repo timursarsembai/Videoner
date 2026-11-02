@@ -2,6 +2,7 @@
 title: Extensia de browser Videoner: butonul „Descarcă” pe pagina videoclipului
 summary: Extensia este disponibilă pentru Chrome, Yandex Browser, Edge și Opera. Butonul „Descarcă” apare direct pe pagina videoclipului, iar Instagram, Facebook, TikTok și Threads se descarcă folosind conectarea ta.
 date: 2026-10-28
+time: 23:18:52
 ---
 Dacă descarci des videoclipuri pe calculator, acum o poți face fără să copiezi linkuri. Îți prezentăm extensia de browser Videoner.
 

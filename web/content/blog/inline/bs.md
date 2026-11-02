@@ -2,6 +2,7 @@
 title: Inline način — šaljite videozapise u bilo koji chat pomoću @VideonerBot
 summary: Upišite @VideonerBot i link direktno u razgovoru i video stiže u taj isti chat. Na web-stranici link možete otvoriti samo dodavanjem naše domene ispred njega.
 date: 2026-08-19
+time: 23:18:52
 ---
 Dva nova načina da brže preuzimate videozapise.
 

@@ -2,6 +2,7 @@
 title: Videoner hadda wuxuu ku hadlaa 25 luqadood
 summary: Websaydhka, bot-ka iyo kordhiyaha biraawsarka hadda waxay ku hadlaan 19 luqadood oo kale — laga bilaabo Shiinaha iyo Hindi ilaa Jarmal, Turki iyo Jabbaan.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner hadda waxaa lagu heli karaa **25 luqadood**. Ingiriisi, Isbaanish, Ruush, Yukreeniyaan, Kazakh iyo Carabi waxaa ku soo biiray 19 kale:
 

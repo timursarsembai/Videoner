@@ -2,6 +2,7 @@
 title: Lîsteyên vîdyoyan ên YouTube bi tevahî û êdî sînorê rojane tune
 summary: Videoner lîsteyên vîdyoyan ên YouTube yek bi yek dadixe — di botê de, li ser malperê û di pêvekê de, bi bişkoka Rawestîne. Û sînorê rojane yê daxistinê rabû.
 date: 2026-10-31
+time: 02:36:50
 ---
 Du guhertinên mezin.
 

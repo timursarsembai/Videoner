@@ -2,6 +2,7 @@
 title: Des playlists YouTube entières et plus de limite quotidienne
 summary: Videoner télécharge les playlists YouTube une vidéo à la fois — dans le bot, sur le site et dans l’extension, avec un bouton « Arrêter ». Et la limite quotidienne de téléchargements a disparu.
 date: 2026-10-31
+time: 02:36:50
 ---
 Deux grands changements.
 

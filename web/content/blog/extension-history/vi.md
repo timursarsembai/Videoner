@@ -2,6 +2,7 @@
 title: Lịch sử tải xuống trong tiện ích và Videoner trên danh mục của Firefox
 summary: Giờ tiện ích ghi nhớ những gì bạn đã tải trong 30 ngày qua — tiêu đề, liên kết và ngày tải. Còn với Firefox, tiện ích đã có mặt trong danh mục tiện ích chính thức của Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 Tiện ích trình duyệt Videoner có hai điểm mới: lịch sử tải xuống và cài đặt trên Firefox từ danh mục chính thức của Mozilla.
 

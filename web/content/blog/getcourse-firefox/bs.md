@@ -2,6 +2,7 @@
 title: Proširenje — GetCourse lekcije i verzija za Firefox
 summary: Videoner proširenje sada može preuzimati video lekcije iz GetCourse škola, a dostupno je i za Firefox, s instalacijom jednim klikom i automatskim ažuriranjima.
 date: 2026-10-29
+time: 23:18:52
 ---
 Dvije velike novosti u Videoner proširenju.
 

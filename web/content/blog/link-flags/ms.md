@@ -2,6 +2,7 @@
 title: Penanda -audio dan -hd: muat turun tanpa memilih kualiti
 summary: Tambahkan -audio selepas pautan dan bot terus menghantar audio dalam mp3; tambahkan -hd untuk video dalam kualiti terbaik. Berfungsi dalam sembang peribadi dan kumpulan.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bot [@VideonerBot](https://t.me/VideonerBot) kini memahami penanda — perkataan pendek selepas pautan. Dengan penanda, anda tidak perlu mengetik butang kualiti: bot terus mula memuat turun.
 

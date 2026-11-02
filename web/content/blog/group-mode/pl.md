@@ -2,6 +2,7 @@
 title: Tryb grupowy: bot wrzuca filmy z linków wysłanych na czacie
 summary: Dodaj @VideonerBot do grupy, a na wrzucone tam linki odpowie filmem. Admini ustawiają jego zachowanie komendą /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Możesz teraz dodać [@VideonerBot](https://t.me/VideonerBot) do czatu grupowego. Gdy ktoś wrzuci link do filmu, bot odpowie samym filmem. Nikt nie musi otwierać linku ani przełączać się do bota.
 

@@ -2,6 +2,7 @@
 title: Inline tertibi — @VideonerBot bilen islendik çata wideo iberiň
 summary: Gürrüňdeşlikde @VideonerBot we salgyny ýazyň — wideo şol çatyň özüne geler. Saýtda bolsa salgynyň öňüne biziň domenimizi goşmak bilen ony açyp bolýar.
 date: 2026-08-19
+time: 23:18:52
 ---
 Wideolary has çalt ýüklemegiň iki täze usuly.
 

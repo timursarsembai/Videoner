@@ -2,6 +2,7 @@
 title: Giňeltmede ýükleme taryhy we Firefox katalogynda Videoner
 summary: Giňeltme indi soňky 30 günde näme ýükländigiňizi ýatda saklaýar — ady, salgysy we senesi. Firefox üçin bolsa ol Mozilla-nyň resmi goşmaçalar katalogynda peýda boldy.
 date: 2026-11-02
+time: 00:48:04
 ---
 Videoner brauzer giňeltmesinde iki täzelik bar: ýükleme taryhy we Firefox-a Mozilla-nyň resmi katalogyndan gurnamak.
 

@@ -2,6 +2,7 @@
 title: Stories-ka Instagram iyo akoonnada la xiray
 summary: Kordhiyuhu wuxuu soo dejiyaa stories-ka Instagram, bot-kuna wuxuu soo dejiyaa stories-ka iyo boostooyinka gaarka ah isagoo adeegsanaya akoonkaaga la xiray. Ku xir badhan kordhiyaha ku yaal; ku maamul /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories-ka iyo boostooyinka gaarka ah waxaa arki kara oo keliya isticmaalayaasha akoonkooda ku jira, sidaas darteed server-ka Videoner ma heli karo. Hadda arrintaas waxaa u jira laba xal.
 

@@ -2,6 +2,7 @@
 title: Playlist YouTube utuh dan tanpa batas harian
 summary: Videoner mengunduh playlist YouTube satu video demi satu — di bot, di situs web, dan di ekstensi, dengan tombol Hentikan. Dan batas unduhan harian sudah dihapus.
 date: 2026-10-31
+time: 02:36:50
 ---
 Dua perubahan besar.
 

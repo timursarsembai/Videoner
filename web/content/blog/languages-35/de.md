@@ -2,6 +2,7 @@
 title: Videoner spricht jetzt 35 Sprachen
 summary: 10 weitere Sprachen – Amharisch, Oromo, Hausa, Somali, Aserbaidschanisch, Kirgisisch, Tadschikisch, Malaiisch, Niederländisch und Rumänisch.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner gibt es jetzt in **35 Sprachen**. 10 weitere sind hinzugekommen:
 

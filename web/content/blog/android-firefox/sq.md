@@ -2,6 +2,7 @@
 title: Tani mund ta lidhni llogarinë me botin nga një telefon Android
 summary: Pa kompjuter — në Android lidhni Instagram me @VideonerBot përmes Firefox dhe shtesës Cookie-Editor, dhe boti do të shkarkojë stories dhe postime private.
 date: 2026-10-31
+time: 00:39:25
 ---
 Që boti të shkarkojë stories dhe postime private të Instagram, duhet t’i lidhni llogarinë tuaj. Deri tani për këtë nevojitej një kompjuter me shtesën Videoner. Tani mund ta lidhni drejtpërdrejt nga telefoni **Android**.
 

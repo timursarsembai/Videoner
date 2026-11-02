@@ -2,6 +2,7 @@
 title: Videoner indi 25 dilde gürleýär
 summary: Saýt, bot we brauzer giňeltmesi ýene 19 dilde gürleýär — hytaý we hindi dillerinden nemes, türk we ýapon dillerine çenli.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner indi **25 dilde** elýeterli. Iňlis, ispan, rus, ukrain, gazak we arap dillerine ýene 19 dil goşuldy:
 

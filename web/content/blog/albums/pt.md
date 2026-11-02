@@ -2,6 +2,7 @@
 title: Carrosséis, fotos e Threads: baixe o post inteiro
 summary: Agora o Videoner baixa todos os arquivos de um post — vídeos e fotos dos carrosséis do Instagram. E o Threads passou a ser suportado.
 date: 2026-08-12
+time: 23:18:52
 ---
 Até agora, de um post com vários arquivos dava para baixar só um vídeo. Agora o Videoner pega o post inteiro.
 

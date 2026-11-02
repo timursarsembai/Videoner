@@ -2,6 +2,7 @@
 title: Historija preuzimanja u proširenju i Videoner u Firefox katalogu
 summary: Proširenje sada pamti šta ste preuzeli u posljednjih 30 dana — naslov, link i datum. A za Firefox je sada u zvaničnom Mozillinom katalogu dodataka.
 date: 2026-11-02
+time: 00:48:04
 ---
 Videoner proširenje preglednika donosi dvije novosti: historiju preuzimanja i instalaciju u Firefoxu iz zvaničnog Mozillinog kataloga.
 

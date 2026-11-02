@@ -2,6 +2,7 @@
 title: Carousel, ảnh và Threads: tải trọn cả bài đăng
 summary: Giờ đây Videoner tải mọi tệp trong bài đăng — cả video lẫn ảnh từ carousel Instagram. Ngoài ra, Threads đã được hỗ trợ.
 date: 2026-08-12
+time: 23:18:52
 ---
 Trước đây, với bài đăng có nhiều tệp, bạn chỉ tải được một video. Giờ Videoner lấy trọn cả bài đăng.
 

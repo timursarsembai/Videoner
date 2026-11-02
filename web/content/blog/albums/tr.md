@@ -2,6 +2,7 @@
 title: Karuseller, fotoğraflar ve Threads: gönderinin tamamını indirin
 summary: Videoner artık bir gönderideki tüm dosyaları indiriyor: Instagram karusellerindeki hem videoları hem fotoğrafları. Ayrıca artık Threads de destekleniyor.
 date: 2026-08-12
+time: 23:18:52
 ---
 Şimdiye kadar birden fazla dosya içeren bir gönderiden yalnızca tek bir video indirebiliyordunuz. Artık Videoner gönderinin tamamını alıyor.
 

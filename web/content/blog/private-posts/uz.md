@@ -2,6 +2,7 @@
 title: Yopiq post? Bot uni qanday yuklab olishni koʻrsatadi
 summary: Agar post, reels yoki storis faqat tizimga kirganlarga koʻrinsa, bot endi akkauntingizni ulashni taklif qiladi — shundan soʻng bunday postlarni oʻzi yuklab oladi, telefondan ham.
 date: 2026-10-31
+time: 22:40:56
 ---
 Baʼzi postlar faqat tizimga kirgan foydalanuvchilarga koʻrsatiladi: Instagram storislari, yopiq postlar va reels, faqat doʻstlar uchun postlar, yosh cheklovi qoʻyilgan videolar. Shu paytgacha bot bunday havolalarga faqat «akkauntga kirmasdan ochib boʻlmaydi» deb javob berardi.
 

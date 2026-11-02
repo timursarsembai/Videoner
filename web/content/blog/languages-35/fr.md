@@ -2,6 +2,7 @@
 title: Videoner parle désormais 35 langues
 summary: 10 langues de plus — amharique, oromo, haoussa, somali, azerbaïdjanais, kirghiz, tadjik, malais, néerlandais et roumain.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner est désormais disponible en **35 langues**. 10 nouvelles langues s’ajoutent :
 

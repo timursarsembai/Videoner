@@ -2,6 +2,7 @@
 title: Fotoposts op TikTok en diavoorstellingen van foto's
 summary: Videoner downloadt nu fotoposts van TikTok en kan van elke post met meerdere foto's een diavoorstelling als video maken. In groepen stuurt de bot meteen foto's en een diavoorstelling.
 date: 2026-10-31
+time: 00:53:50
 ---
 Twee updates voor posts met meerdere foto's in plaats van een video.
 

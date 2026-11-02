@@ -2,6 +2,7 @@
 title: 확장 프로그램: GetCourse 강의와 Firefox 버전
 summary: 이제 Videoner 확장 프로그램으로 GetCourse 온라인 스쿨의 동영상 강의를 다운로드할 수 있어요. Firefox 버전도 나왔고, 클릭 한 번으로 설치되며 자동으로 업데이트돼요.
 date: 2026-10-29
+time: 23:18:52
 ---
 Videoner 확장 프로그램의 큰 업데이트 두 가지를 소개해요.
 

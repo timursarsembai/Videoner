@@ -2,6 +2,7 @@
 title: Artıq hesabınızı Android telefondan bota qoşa bilərsiniz
 summary: Kompüter lazım deyil: Android-də Instagram-ı Firefox və Cookie-Editor əlavəsi vasitəsilə @VideonerBot-a qoşun, bot storiləri və qapalı paylaşımları yükləyəcək.
 date: 2026-10-31
+time: 00:39:25
 ---
 Botun Instagram storilərini və qapalı paylaşımları yükləməsi üçün hesabınızı ona qoşmalısınız. İndiyədək bunun üçün Videoner genişlənməsi olan kompüter lazım idi. İndi hesabı birbaşa **Android** telefonunuzdan qoşa bilərsiniz.
 

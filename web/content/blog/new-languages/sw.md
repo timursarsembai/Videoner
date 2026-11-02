@@ -2,6 +2,7 @@
 title: Videoner sasa inapatikana kwa lugha 25
 summary: Tovuti, bot na kiendelezi cha kivinjari sasa vinazungumza lugha 19 zaidi — kuanzia Kichina na Kihindi hadi Kijerumani, Kituruki na Kijapani.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner sasa inapatikana kwa **lugha 25**. Kiingereza, Kihispania, Kirusi, Kiukreni, Kikazakh na Kiarabu sasa vimeongezewa lugha 19 zaidi:
 

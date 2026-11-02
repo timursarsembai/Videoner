@@ -2,6 +2,7 @@
 title: Kaaruuselii, suuraalee fi Threads: maxxansa guutuu buufadhaa
 summary: Videoner amma faayilii maxxansa tokko keessa jiru hunda buusa — viidiyoowwanii fi suuraalee kaaruuselii Instagram lamaanuu. Kana malees, Threads amma ni deeggarama.
 date: 2026-08-12
+time: 23:18:52
 ---
 Hanga ammaatti, maxxansa faayilii hedduu qabu irraa viidiyoo tokko qofa buufachuu dandeessu turtan. Amma Videoner maxxansa guutuu fudhata.
 

@@ -2,6 +2,7 @@
 title: Chapisho la faragha? Bot inaonyesha jinsi ya kulipakua
 summary: Ikiwa chapisho, reel au story inaonekana kwa walioingia tu, sasa bot inapendekeza kuunganisha akaunti yako — baada ya hapo inapakua machapisho kama hayo yenyewe, hata kutoka kwenye simu yako.
 date: 2026-10-31
+time: 22:40:56
 ---
 Baadhi ya machapisho yanaonyeshwa kwa watu walioingia tu: stories za Instagram, machapisho na reels za faragha, machapisho ya marafiki pekee, video zenye kikomo cha umri. Hadi sasa bot ilijibu viungo kama hivyo kwa "haipatikani bila kuingia" tu.
 

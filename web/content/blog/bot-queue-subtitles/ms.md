@@ -2,6 +2,7 @@
 title: Bot yang lebih baik: 4K, saiz fail, kemajuan, baris gilir dan sari kata
 summary: Bot kini menawarkan sehingga 4K dan fail sehingga 2 GB, anggaran saiz pada butang, kemajuan muat turun secara langsung, baris gilir untuk beberapa pautan dan sari kata YouTube dalam .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Berikut ialah ringkasan kemas kini terbaharu bot [@VideonerBot](https://t.me/VideonerBot).
 

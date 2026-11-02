@@ -2,6 +2,7 @@
 title: Karussells, Fotos und Threads: Lade den ganzen Beitrag herunter
 summary: Videoner lädt jetzt jede Datei eines Beitrags herunter – Videos und Fotos aus Instagram-Karussells. Außerdem wird jetzt Threads unterstützt.
 date: 2026-08-12
+time: 23:18:52
 ---
 Bisher konntest du aus einem Beitrag mit mehreren Dateien nur ein Video herunterladen. Jetzt holt sich Videoner den ganzen Beitrag.
 

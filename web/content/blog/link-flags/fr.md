@@ -2,6 +2,7 @@
 title: Les options -audio et -hd : télécharger sans choisir la qualité
 summary: Ajoutez -audio après un lien et le bot envoie aussitôt le son en mp3 ; ajoutez -hd pour la vidéo dans la meilleure qualité. Fonctionne en conversation privée et dans les groupes.
 date: 2026-10-31
+time: 01:12:42
 ---
 Le bot [@VideonerBot](https://t.me/VideonerBot) comprend désormais les options — de courts mots placés après un lien. Avec elles, inutile d’appuyer sur un bouton de qualité : le bot commence le téléchargement immédiatement.
 

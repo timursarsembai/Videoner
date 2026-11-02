@@ -2,6 +2,7 @@
 title: Videoner da Yukrainanci da Kazakh, kuma yanzu za ku iya zaɓar harshe
 summary: Bot, shafin yanar gizo da ƙarin burauza yanzu suna magana da Yukrainanci da Kazakh. Kuma yanzu za ku iya zaɓar harshen bot da kanku da umarnin /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Yanzu Videoner yana samuwa da sababbin harsuna biyu — **Yukrainanci** da **Kazakh**.
 

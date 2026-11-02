@@ -2,6 +2,7 @@
 title: Karûsel, wêne û Threads — tevahiya postê daxîne
 summary: Videoner niha her pelê postekê dadixe — hem vîdyo hem jî wêneyên karûselên Instagramê. Herwiha niha piştgiriya Threads jî heye.
 date: 2026-08-12
+time: 23:18:52
 ---
 Heta niha te dikarî ji posteke bi çend pelan tenê yek vîdyoyê daxistana. Niha Videoner tevahiya postê digire.
 

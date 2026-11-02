@@ -2,6 +2,7 @@
 title: 轮播图、照片和 Threads：下载整条帖子
 summary: Videoner 现在可以下载帖子中的所有文件，包括 Instagram 轮播图中的视频和照片。此外，现已支持 Threads。
 date: 2026-08-12
+time: 23:18:52
 ---
 以前，如果一条帖子包含多个文件，你只能下载其中一个视频。现在 Videoner 会下载整条帖子。
 

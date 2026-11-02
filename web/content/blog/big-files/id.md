@@ -2,6 +2,7 @@
 title: Video di atas 2 GB: bot menunjukkan tempat mengunduhnya
 summary: Telegram tidak mengizinkan bot mengirim file di atas 2 GB. Kini bot menjelaskan hal ini dan langsung menawarkan tombol untuk mengunduh video yang sama di situs web atau dengan ekstensi.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram punya batas: bot tidak bisa mengirim file yang lebih besar dari **2 GB**. Video panjang dalam kualitas tinggi mudah melampauinya — misalnya, kuliah berjam-jam dalam 1080p.
 

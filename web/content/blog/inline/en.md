@@ -2,6 +2,7 @@
 title: Inline mode: send videos to any chat with @VideonerBot
 summary: Type @VideonerBot and a link right in a conversation, and the video arrives in that same chat. On the website, you can open a link just by adding our domain in front of it.
 date: 2026-08-19
+time: 23:18:52
 ---
 Two new ways to download videos faster.
 

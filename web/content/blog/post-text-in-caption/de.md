@@ -2,6 +2,7 @@
 title: Der Beitragstext steht jetzt in der Dateibeschriftung
 summary: Der Bot fügt den Beitragstext von TikTok, Instagram, Threads, X, Facebook und Pinterest zur Beschriftung von Videos und Fotos hinzu. Website und Erweiterung verlinken nach dem Download jetzt auf unseren News-Kanal.
 date: 2026-10-31
+time: 01:36:57
 ---
 Oft leitet man ein Video wegen der Beschreibung des Autors weiter: ein Rezept, eine Adresse, ein Witz, eine Liste von Hashtags. Jetzt behält [@VideonerBot](https://t.me/VideonerBot) sie zusammen mit der Datei.
 

@@ -2,6 +2,7 @@
 title: Bot mafi kyau: 4K, girman fayiloli, ci gaba, layi da rubutun ƙasa
 summary: Yanzu bot yana ba da har zuwa 4K da fayiloli har zuwa 2 GB, kimanin girma a kan maɓallai, ci gaban saukewa kai tsaye, layi don hanyoyin haɗi da yawa da rubutun ƙasa na YouTube a .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Ga taƙaitaccen bayani game da sababbin abubuwa na bot ɗin [@VideonerBot](https://t.me/VideonerBot).
 

@@ -2,6 +2,7 @@
 title: پلتفرم‌های جدید: Vimeo، VK، Rutube، OK.ru و Pinterest
 summary: Videoner حالا ویدیوها را از پنج پلتفرم دیگر هم دانلود می‌کند: Vimeo، VK، Rutube، OK.ru (Odnoklassniki) و Pinterest. هم در سایت و هم در ربات کار می‌کند.
 date: 2026-07-22
+time: 23:18:52
 ---
 پنج پلتفرم جدید اضافه کردیم. Videoner حالا ویدیوها را از این‌ها دانلود می‌کند:
 

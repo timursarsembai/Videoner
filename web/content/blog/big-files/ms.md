@@ -2,6 +2,7 @@
 title: Video melebihi 2 GB: bot menunjukkan tempat untuk memuat turunnya
 summary: Telegram tidak membenarkan bot menghantar fail melebihi 2 GB. Kini bot menerangkan perkara ini dan terus menawarkan butang untuk memuat turun video yang sama di laman web atau dengan sambungan.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram mempunyai had: bot tidak boleh menghantar fail yang lebih besar daripada **2 GB**. Video panjang dalam kualiti tinggi mudah melebihinya — contohnya, kuliah selama beberapa jam dalam 1080p.
 

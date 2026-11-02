@@ -2,6 +2,7 @@
 title: 现在可以用 Android 手机将账号连接到机器人
 summary: 无需电脑：在 Android 上通过 Firefox 和 Cookie-Editor 扩展将 Instagram 连接到 @VideonerBot，机器人就能下载快拍和私密帖子。
 date: 2026-10-31
+time: 00:39:25
 ---
 要让机器人下载 Instagram 快拍和私密帖子，需要先将你的账号连接到机器人。以前，这需要一台装有 Videoner 扩展的电脑。现在，你可以直接用 **Android** 手机完成连接。
 

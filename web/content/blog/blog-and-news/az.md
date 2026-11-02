@@ -2,6 +2,7 @@
 title: Videoner-in artıq bloqu və xəbər kanalı var
 summary: Layihədəki yenilikləri saytdakı bloqda və @videonerdownload Telegram kanalında paylaşırıq. Botdan gələn hər faylın mətnində indi kanala link var.
 date: 2026-10-30
+time: 23:18:52
 ---
 Saytda bloq, Telegram-da isə xəbər kanalı açdıq. Burada botdakı, saytdakı və genişlənmədəki yeniliklər və onlardan necə istifadə etmək barədə qısaca yazacağıq.
 

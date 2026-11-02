@@ -2,6 +2,7 @@
 title: Acum îți poți conecta contul la bot de pe un telefon Android
 summary: Fără calculator: pe Android, conectează Instagram la @VideonerBot prin Firefox și suplimentul Cookie-Editor, iar botul va descărca stories și postări private.
 date: 2026-10-31
+time: 00:39:25
 ---
 Ca botul să poată descărca stories și postări private de pe Instagram, trebuie să-ți conectezi contul la el. Până acum era nevoie de un calculator cu extensia Videoner. Acum te poți conecta direct de pe telefonul **Android**.
 

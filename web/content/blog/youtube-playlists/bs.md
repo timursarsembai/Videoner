@@ -2,6 +2,7 @@
 title: Cijele YouTube liste za reprodukciju i više nema dnevnih ograničenja
 summary: Videoner preuzima YouTube liste za reprodukciju video po video — u botu, na web-stranici i u proširenju, s dugmetom Zaustavi. A dnevno ograničenje preuzimanja je ukinuto.
 date: 2026-10-31
+time: 02:36:50
 ---
 Dvije velike promjene.
 

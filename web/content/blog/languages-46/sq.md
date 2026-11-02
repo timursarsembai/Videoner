@@ -2,6 +2,7 @@
 title: Videoner tani flet 46 gjuhë
 summary: 11 gjuhë të tjera — pashto, kurdisht (sorani dhe kurmanxhi), ujgurisht, turkmenisht, tatarisht, shqip, boshnjakisht, çeçenisht, ingushisht dhe avarisht.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner tani është në dispozicion në **46 gjuhë**. Janë shtuar edhe 11 të tjera:
 

@@ -2,6 +2,7 @@
 title: Yanzu Videoner yana magana da harsuna 35
 summary: Ƙarin harsuna 10 — Amharik, Oromo, Hausa, Yaren Somaliya, Yaren Azerbaijan, Yaren Kyrgyz, Yaren Tajik, Yaren Malay, Yaren Holland da Yaren Romaniya.
 date: 2026-11-01
+time: 13:44:30
 ---
 Yanzu Videoner yana samuwa da **harsuna 35**. An ƙara wasu 10:
 

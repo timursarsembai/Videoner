@@ -2,6 +2,7 @@
 title: Du kannst dein Konto jetzt auch vom Android-Handy aus mit dem Bot verbinden
 summary: Kein Computer nötig: Verbinde Instagram auf Android über Firefox und das Add-on Cookie-Editor mit @VideonerBot, und der Bot lädt Storys und private Beiträge herunter.
 date: 2026-10-31
+time: 00:39:25
 ---
 Damit der Bot Instagram-Storys und private Beiträge herunterladen kann, musst du dein Konto mit ihm verbinden. Bisher brauchtest du dafür einen Computer mit der Videoner-Erweiterung. Jetzt geht das direkt von deinem **Android**-Handy aus.
 

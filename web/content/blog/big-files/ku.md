@@ -2,6 +2,7 @@
 title: Vîdyoyên ji 2 GB mezintir — bot nîşan dide ku li ku wan daxî
 summary: Telegram nahêle ku bot pelên ji 2 GB mezintir bişînin. Niha bot vê yekê rave dike û yekser bişkokan pêşkêş dike da ku tu heman vîdyoyê li ser malperê an bi pêvekê daxî.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegramê sînorek heye: bot nikare pelekî ji **2 GB** mezintir bişîne. Vîdyoyeke dirêj bi kalîteya bilind bi hêsanî ji vî sînorî derbas dibe — wek mînak, dersek çend saetî bi 1080p.
 

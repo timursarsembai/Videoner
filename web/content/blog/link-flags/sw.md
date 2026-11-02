@@ -2,6 +2,7 @@
 title: Alama -audio na -hd: pakua bila kuchagua ubora
 summary: Ongeza -audio baada ya kiungo na bot itatuma sauti kama mp3 mara moja; ongeza -hd kwa video yenye ubora bora. Inafanya kazi kwenye chat za faragha na kwenye vikundi.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bot ya [@VideonerBot](https://t.me/VideonerBot) sasa inaelewa alama — maneno mafupi baada ya kiungo. Ukizitumia, huhitaji kugusa kitufe cha ubora: bot inaanza kupakua mara moja.
 

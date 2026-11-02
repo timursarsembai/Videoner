@@ -2,6 +2,7 @@
 title: Nasa caption na ng file ang text ng post
 summary: Idinadagdag ng bot ang text ng post mula sa TikTok, Instagram, Threads, X, Facebook at Pinterest sa caption ng video at larawan. May link na sa news channel namin ang site at ang extension pagkatapos ng download.
 date: 2026-10-31
+time: 01:36:57
 ---
 Madalas ipasa ng mga tao ang isang video dahil sa caption ng author: isang recipe, isang address, isang biro, isang listahan ng hashtag. Ngayon, itinatago na ito ng [@VideonerBot](https://t.me/VideonerBot) kasama ng file.
 

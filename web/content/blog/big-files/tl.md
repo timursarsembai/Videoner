@@ -2,6 +2,7 @@
 title: Mga video na lampas 2 GB: ipinapakita ng bot kung saan ito ida-download
 summary: Hindi pinapayagan ng Telegram ang mga bot na magpadala ng file na lampas 2 GB. Ngayon, ipinapaliwanag ito ng bot at agad na nag-aalok ng mga button para i-download ang parehong video sa website o gamit ang extension.
 date: 2026-10-31
+time: 02:49:39
 ---
 May limit ang Telegram: hindi makakapagpadala ang bot ng file na mas malaki sa **2 GB**. Madali itong nalalampasan ng mahabang video na mataas ang quality — halimbawa, isang lecture na ilang oras ang haba sa 1080p.
 

@@ -2,6 +2,7 @@
 title: Bot tốt hơn: 4K, dung lượng tệp, tiến trình, hàng đợi và phụ đề
 summary: Giờ bot cung cấp chất lượng đến 4K và tệp đến 2 GB, dung lượng ước tính trên nút, tiến trình tải theo thời gian thực, hàng đợi cho nhiều liên kết và phụ đề YouTube dạng .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Dưới đây là tổng hợp các bản cập nhật mới nhất của bot [@VideonerBot](https://t.me/VideonerBot).
 

@@ -2,6 +2,7 @@
 title: Videoner-browserextensie: een knop Downloaden op de videopagina
 summary: De extensie is uit voor Chrome, Yandex Browser, Edge en Opera. Er verschijnt een knop Downloaden direct op de videopagina, en Instagram, Facebook, TikTok en Threads downloaden met jouw login.
 date: 2026-10-28
+time: 23:18:52
 ---
 Download je vaak video's op je computer? Dan kan dat nu zonder links te kopiëren. Maak kennis met de Videoner-browserextensie.
 

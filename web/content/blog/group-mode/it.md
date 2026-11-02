@@ -2,6 +2,7 @@
 title: Modalità gruppo: il bot pubblica i video dei link condivisi in chat
 summary: Aggiungi @VideonerBot a un gruppo e risponderà con il video ai link pubblicati lì. Gli admin ne configurano il comportamento con il comando /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Ora puoi aggiungere [@VideonerBot](https://t.me/VideonerBot) a una chat di gruppo. Quando qualcuno manda il link a un video, il bot risponde con il video stesso. Nessuno deve aprire il link o passare al bot.
 

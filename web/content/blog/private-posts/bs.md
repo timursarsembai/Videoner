@@ -2,6 +2,7 @@
 title: Privatna objava? Bot pokazuje kako je preuzeti
 summary: Ako su objava, reel ili priča vidljivi samo prijavljenim korisnicima, bot sada predlaže da povežete svoj račun — nakon toga sam preuzima takve objave, i s telefona.
 date: 2026-10-31
+time: 22:40:56
 ---
 Neke objave prikazuju se samo prijavljenim korisnicima: Instagram priče, privatne objave i reelsi, objave samo za prijatelje, videozapisi s dobnim ograničenjem. Do sada je bot na takve linkove odgovarao samo „nije dostupno bez prijave“.
 

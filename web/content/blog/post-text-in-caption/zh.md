@@ -2,6 +2,7 @@
 title: 帖子正文现在会出现在文件说明中
 summary: 机器人会把 TikTok、Instagram、Threads、X、Facebook 和 Pinterest 的帖子正文添加到视频和照片的说明文字中。网站和扩展在下载完成后会显示我们新闻频道的链接。
 date: 2026-10-31
+time: 01:36:57
 ---
 人们转发视频，常常是为了作者写的文字：一份菜谱、一个地址、一个笑话、一串话题标签。现在 [@VideonerBot](https://t.me/VideonerBot) 会把这些文字和文件一起保留下来。
 

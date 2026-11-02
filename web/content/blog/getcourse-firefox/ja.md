@@ -2,6 +2,7 @@
 title: 拡張機能：GetCourse のレッスンと Firefox 版
 summary: Videoner 拡張機能で GetCourse のスクールの動画レッスンをダウンロードできるようになりました。また、ワンクリックでインストールでき自動更新される Firefox 版もリリースしました。
 date: 2026-10-29
+time: 23:18:52
 ---
 Videoner 拡張機能の大きなアップデートが2つあります。
 

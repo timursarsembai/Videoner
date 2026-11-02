@@ -2,6 +2,7 @@
 title: Videoner راه افتاد: سایت و ربات Telegram برای دانلود ویدیو
 summary: Videoner ویدیوها را از YouTube، TikTok، Instagram، Facebook و Twitter/X دانلود می‌کند؛ در سایت videoner.download و در ربات Telegram ‎@VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 سلام! این Videoner است؛ سرویسی رایگان برای دانلود ویدیو از شبکه‌های اجتماعی. به دو روش می‌توانید از آن استفاده کنید: در سایت و در Telegram.
 

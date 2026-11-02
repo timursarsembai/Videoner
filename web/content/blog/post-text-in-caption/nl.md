@@ -2,6 +2,7 @@
 title: Posttekst nu in de tekst onder het bestand
 summary: De bot zet de posttekst van TikTok, Instagram, Threads, X, Facebook en Pinterest in de tekst onder video's en foto's. De site en de extensie linken na een download nu naar ons nieuwskanaal.
 date: 2026-10-31
+time: 01:36:57
 ---
 Mensen sturen een video vaak door vanwege de tekst van de maker: een recept, een adres, een grap, een rij hashtags. Nu bewaart [@VideonerBot](https://t.me/VideonerBot) die samen met het bestand.
 

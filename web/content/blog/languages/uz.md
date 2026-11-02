@@ -2,6 +2,7 @@
 title: Videoner ukrain va qozoq tillarida, endi tilni tanlash ham mumkin
 summary: Bot, sayt va kengaytma endi ukrain va qozoq tillarida gapiradi. Botning tilini esa endi /language buyrugʻi bilan oʻzingiz tanlashingiz mumkin.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner endi ikkita yangi tilda — **ukrain** va **qozoq** tillarida mavjud.
 

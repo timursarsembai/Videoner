@@ -2,6 +2,7 @@
 title: Yanzu Videoner yana magana da Larabci
 summary: Shafin yanar gizo, bot da ƙarin burauza yanzu suna samuwa da Larabci, tare da tsarin shafi daga dama zuwa hagu.
 date: 2026-10-31
+time: 22:12:03
 ---
 Yanzu Videoner yana samuwa da **Larabci** — harshe na shida bayan Turanci, Sifaniyanci, Rashanci, Yukrainanci da Kazakh.
 

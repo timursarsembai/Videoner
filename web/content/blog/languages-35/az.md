@@ -2,6 +2,7 @@
 title: Videoner artıq 35 dildə danışır
 summary: Daha 10 dil — amhar, oromo, hausa, somali, azərbaycan, qırğız, tacik, malay, niderland və rumın dilləri.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner indi **35 dildə** mövcuddur. Daha 10 dil qoşulub:
 

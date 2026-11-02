@@ -2,6 +2,7 @@
 title: Modo inline: envie vídeos para qualquer chat com o @VideonerBot
 summary: Digite @VideonerBot e um link direto na conversa, e o vídeo chega nesse mesmo chat. No site, dá para abrir um link só adicionando o nosso domínio antes dele.
 date: 2026-08-19
+time: 23:18:52
 ---
 Duas novas formas de baixar vídeos mais rápido.
 

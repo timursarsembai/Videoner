@@ -2,6 +2,7 @@
 title: Bidiyo sama da 2 GB: bot yana nuna inda za a sauke su
 summary: Telegram ba ya barin bot su aika fayiloli sama da 2 GB. Yanzu bot yana bayyana hakan kuma nan take yana ba da maɓallai don sauke wannan bidiyon a shafin yanar gizo ko da ƙarin burauza.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram yana da iyaka: bot ba zai iya aika fayil mafi girma fiye da **2 GB** ba. Dogon bidiyo mai inganci sosai yana wuce wannan cikin sauƙi — misali, lacca ta sa'o'i da yawa a 1080p.
 

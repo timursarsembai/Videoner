@@ -2,6 +2,7 @@
 title: Videoner niha bi 46 zimanan diaxive
 summary: 11 zimanên din — peştûyî, kurdî (soranî û kurmancî), uygurî, tirkmenî, tatarî, arnawidî, bosnayî, çeçenî, îngûşî û awarî.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner niha bi **46 zimanan** heye. 11 zimanên din tevlî bûn:
 

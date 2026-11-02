@@ -2,6 +2,7 @@
 title: Inline mode: magpadala ng video sa kahit anong chat gamit ang @VideonerBot
 summary: I-type ang @VideonerBot at isang link mismo sa usapan, at darating ang video sa parehong chat. Sa website, mabubuksan mo ang isang link sa pamamagitan lang ng paglalagay ng domain namin sa unahan nito.
 date: 2026-08-19
+time: 23:18:52
 ---
 Dalawang bagong paraan para mas mabilis mag-download ng video.
 

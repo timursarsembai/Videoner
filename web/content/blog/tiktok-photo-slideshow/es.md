@@ -2,6 +2,7 @@
 title: Publicaciones de fotos de TikTok y presentaciones con fotos
 summary: Videoner ya descarga publicaciones de fotos de TikTok y puede convertir cualquier publicación con varias fotos en un vídeo de presentación. En grupos, el bot envía fotos y presentación al instante.
 date: 2026-10-31
+time: 00:53:50
 ---
 Dos novedades para las publicaciones que tienen varias fotos en lugar de un vídeo.
 

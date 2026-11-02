@@ -2,6 +2,7 @@
 title: Un bot mai bun: 4K, dimensiuni de fișiere, progres, coadă și subtitrări
 summary: Botul oferă acum până la 4K și fișiere de până la 2 GB, dimensiuni aproximative pe butoane, progresul descărcării în timp real, o coadă pentru mai multe linkuri și subtitrări YouTube în .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Iată un rezumat al celor mai recente actualizări ale botului [@VideonerBot](https://t.me/VideonerBot).
 

@@ -2,6 +2,7 @@
 title: Videoner giờ đã có 46 ngôn ngữ
 summary: Thêm 11 ngôn ngữ — tiếng Pashto, tiếng Kurd (Sorani và Kurmanji), tiếng Duy Ngô Nhĩ, tiếng Turkmen, tiếng Tatar, tiếng Albania, tiếng Bosnia, tiếng Chechen, tiếng Ingush và tiếng Avar.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner giờ đã có **46 ngôn ngữ**. Có thêm 11 ngôn ngữ nữa:
 

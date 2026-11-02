@@ -2,6 +2,7 @@
 title: Videoner işə düşdü: video yükləmək üçün sayt və Telegram botu
 summary: Videoner YouTube, TikTok, Instagram, Facebook və Twitter/X-dən videoları yükləyir — videoner.download saytında və @VideonerBot Telegram botunda.
 date: 2026-07-20
+time: 23:18:52
 ---
 Salam! Bu, Videoner-dir — sosial şəbəkələrdən video yükləyən pulsuz xidmət. Ondan iki yolla istifadə edə bilərsiniz: saytda və Telegram-da.
 

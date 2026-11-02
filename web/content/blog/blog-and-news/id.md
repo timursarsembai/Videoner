@@ -2,6 +2,7 @@
 title: Videoner kini punya blog dan kanal berita
 summary: Kami membagikan kabar terbaru proyek di blog situs web dan di kanal Telegram @videonerdownload. Setiap file dari bot kini menyertakan tautan ke kanal di keterangannya.
 date: 2026-10-30
+time: 23:18:52
 ---
 Kami memulai blog di situs web dan kanal berita di Telegram. Di sinilah kami akan menyampaikan secara singkat apa yang baru di bot, situs web, dan ekstensi, serta cara menggunakannya.
 

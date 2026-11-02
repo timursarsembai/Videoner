@@ -2,6 +2,7 @@
 title: Buong YouTube playlist at wala nang daily limit
 summary: Dina-download ng Videoner ang mga YouTube playlist nang isa-isang video — sa bot, sa site at sa extension, may button na “Ihinto”. At wala na ang daily limit sa pag-download.
 date: 2026-10-31
+time: 02:36:50
 ---
 Dalawang malaking pagbabago.
 

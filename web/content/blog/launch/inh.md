@@ -2,6 +2,7 @@
 title: Videoner болх бе доладаьлла — видео чуяккха сайт а Telegram-бот а
 summary: Videoner YouTube, TikTok, Instagram, Facebook а Twitter/X а тӀара видео чуйоккх — videoner.download сайта тӀа а @VideonerBot Telegram-бота чу а.
 date: 2026-07-20
+time: 23:18:52
 ---
 Салам! Ер Videoner я — социальни сеташ тӀара видео чуйоккха мах боаца сервис. Из шин тайпара лелае мегаш да: сайта тӀа а Telegram-е а.
 

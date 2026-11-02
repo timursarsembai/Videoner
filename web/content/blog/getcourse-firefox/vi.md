@@ -2,6 +2,7 @@
 title: Tiện ích: bài học GetCourse và phiên bản cho Firefox
 summary: Tiện ích Videoner giờ có thể tải video bài học từ các trường trên GetCourse, và đã có phiên bản cho Firefox với cài đặt một cú nhấp và cập nhật tự động.
 date: 2026-10-29
+time: 23:18:52
 ---
 Hai bản cập nhật lớn cho tiện ích Videoner.
 

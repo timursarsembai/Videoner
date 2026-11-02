@@ -2,6 +2,7 @@
 title: Las opciones -audio y -hd: descarga sin elegir calidad
 summary: Añade -audio después del enlace y el bot te enviará el audio en mp3 al instante; con -hd, el vídeo en la mejor calidad. Funciona en chats privados y grupos.
 date: 2026-10-31
+time: 01:12:42
 ---
 El bot [@VideonerBot](https://t.me/VideonerBot) ahora entiende opciones: palabras cortas después del enlace. Con ellas no tienes que pulsar el botón de calidad: el bot empieza a descargar al instante.
 

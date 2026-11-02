@@ -2,6 +2,7 @@
 title: Stories Instagram et comptes connectés
 summary: L’extension télécharge les stories Instagram, et le bot télécharge les stories et les publications privées grâce à votre compte connecté. Connectez-le avec un bouton dans l’extension ; gérez-le avec /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Les stories et les publications privées ne sont visibles que par les utilisateurs connectés : le serveur Videoner ne peut donc pas les récupérer. Il existe désormais deux solutions.
 

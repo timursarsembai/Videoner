@@ -2,6 +2,7 @@
 title: Video zinazozidi GB 2: bot inaonyesha mahali pa kuzipakua
 summary: Telegram hairuhusu bot kutuma faili zinazozidi GB 2. Sasa bot inaeleza hili na inatoa vitufe papo hapo vya kupakua video hiyo hiyo kwenye tovuti au kwa kiendelezi.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram ina kikomo: bot haiwezi kutuma faili kubwa kuliko **GB 2**. Video ndefu kwa ubora wa juu inazidi kikomo hiki kwa urahisi — kwa mfano, mhadhara wa saa kadhaa kwa 1080p.
 

@@ -2,6 +2,7 @@
 title: Kordhiyaha biraawsarka Videoner: badhanka “Soo deji” ee bogga muuqaalka
 summary: Kordhiyuhu wuxuu u soo baxay Chrome, Yandex Browser, Edge iyo Opera. Badhanka “Soo deji” wuxuu si toos ah uga soo muuqdaa bogga muuqaalka, Instagram, Facebook, TikTok iyo Threads-na waxaa lagu soo dejiyaa galitaankaaga.
 date: 2026-10-28
+time: 23:18:52
 ---
 Haddii aad inta badan muuqaallo ku soo dejiso kombiyuutarkaaga, hadda waad samayn kartaa adigoon link-yo koobiyeyn. La kulan kordhiyaha biraawsarka Videoner.
 

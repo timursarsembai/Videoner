@@ -2,6 +2,7 @@
 title: Filmy powyżej 2 GB: bot pokaże, gdzie je pobrać
 summary: Telegram nie pozwala botom wysyłać plików większych niż 2 GB. Teraz bot to wyjaśnia i od razu daje przyciski, żeby pobrać ten sam film na stronie albo przez rozszerzenie.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram ma limit: bot nie może wysłać pliku większego niż **2 GB**. Długi film w wysokiej jakości łatwo go przekracza — na przykład kilkugodzinny wykład w 1080p.
 

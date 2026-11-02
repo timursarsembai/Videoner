@@ -2,6 +2,7 @@
 title: Videoner bi ukraynî û qazaxî, û niha tu dikarî ziman hilbijêrî
 summary: Bot, malper û pêvek niha bi ukraynî û qazaxî diaxivin. Û niha tu dikarî zimanê botê bi xwe bi fermana /language hilbijêrî.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner niha bi du zimanên nû heye — **ukraynî** û **qazaxî**.
 

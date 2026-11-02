@@ -2,6 +2,7 @@
 title: Ora puoi collegare il tuo account al bot da un telefono Android
 summary: Niente computer: su Android collega Instagram a @VideonerBot con Firefox e il componente aggiuntivo Cookie-Editor, e il bot scaricherà storie e post privati.
 date: 2026-10-31
+time: 00:39:25
 ---
 Perché il bot possa scaricare le storie di Instagram e i post privati, devi collegargli il tuo account. Finora serviva un computer con l’estensione Videoner. Ora puoi collegarlo direttamente dal tuo telefono **Android**.
 

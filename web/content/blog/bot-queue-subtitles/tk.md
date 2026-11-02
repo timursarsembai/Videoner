@@ -2,6 +2,7 @@
 title: Has gowy bot — 4K, faýl ölçegleri, ýüklemäniň barşy, nobat we subtitrler
 summary: Bot indi 4K-a çenli hili we 2 GB-a çenli faýllary, düwmelerde takmynan ölçegleri, ýüklemäniň janly barşyny, birnäçe salgy üçin nobaty we YouTube subtitrlerini .srt görnüşinde hödürleýär.
 date: 2026-10-03
+time: 23:18:52
 ---
 [@VideonerBot](https://t.me/VideonerBot) botunyň soňky täzelenmeleriniň gysgaça syny.
 

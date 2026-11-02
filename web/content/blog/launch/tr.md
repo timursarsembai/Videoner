@@ -2,6 +2,7 @@
 title: Videoner yayında: video indirmek için bir site ve Telegram botu
 summary: Videoner; YouTube, TikTok, Instagram, Facebook ve Twitter/X'ten videoları videoner.download sitesinde ve @VideonerBot Telegram botunda indiriyor.
 date: 2026-07-20
+time: 23:18:52
 ---
 Merhaba! Karşınızda Videoner: sosyal medyadan video indiren ücretsiz bir hizmet. Onu iki şekilde kullanabilirsiniz: sitede ve Telegram'da.
 

@@ -2,6 +2,7 @@
 title: El texto de la publicación ahora va en el pie del archivo
 summary: El bot añade al pie de videos y fotos el texto de la publicación de TikTok, Instagram, Threads, X, Facebook y Pinterest. Y la web y la extensión enlazan al canal de noticias tras descargar.
 date: 2026-10-31
+time: 01:36:57
 ---
 A menudo se reenvía un video por el texto del autor: una receta, una dirección, un chiste, una lista de hashtags. Ahora [@VideonerBot](https://t.me/VideonerBot) lo guarda junto con el archivo.
 

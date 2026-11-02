@@ -2,6 +2,7 @@
 title: O postare privată? Botul îți arată cum s-o descarci
 summary: Dacă o postare, un reel sau un story este vizibil doar pentru cei conectați, botul îți sugerează acum să-ți conectezi contul — după aceea descarcă singur astfel de postări, inclusiv de pe telefon.
 date: 2026-10-31
+time: 22:40:56
 ---
 Unele postări sunt afișate doar celor conectați: stories pe Instagram, postări și reels private, postări doar pentru prieteni, videoclipuri cu restricție de vârstă. Până acum, la astfel de linkuri botul răspundea doar „indisponibil fără conectare”.
 

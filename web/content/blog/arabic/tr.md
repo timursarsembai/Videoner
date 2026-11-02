@@ -2,6 +2,7 @@
 title: Videoner artık Arapça konuşuyor
 summary: Site, bot ve tarayıcı eklentisi artık sağdan sola düzenle Arapça olarak da kullanılabiliyor.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner artık **Arapça** olarak da kullanılabiliyor: İngilizce, İspanyolca, Rusça, Ukraynaca ve Kazakçadan sonra altıncı dil.
 

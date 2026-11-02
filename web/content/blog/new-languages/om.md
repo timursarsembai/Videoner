@@ -2,6 +2,7 @@
 title: Videoner amma afaanota 25 dubbata
 summary: Marsariitiin, bootiin fi dabalanni biraawuzarii amma afaanota dabalataa 19 dubbatu — Afaan Chaayinaa fi Hindii irraa kaasee hanga Afaan Jarmanii, Afaan Turkii fi Afaan Jaappaaniitti.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner amma **afaanota 25**n argama. Ingiliffaa, Afaan Ispaanishii, Afaan Raashiyaa, Afaan Yuukireen, Afaan Qazaaq fi Arabiffaatti afaanonni dabalataa 19 itti dabalamaniiru:
 

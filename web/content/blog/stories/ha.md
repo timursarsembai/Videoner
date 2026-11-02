@@ -2,6 +2,7 @@
 title: Stories na Instagram da asusun da aka haɗa
 summary: Ƙarin burauza yana sauke stories na Instagram, bot kuma yana sauke stories da wallafe-wallafe na sirri ta asusunku da aka haɗa. Ku haɗa da maɓalli a ƙarin; ku sarrafa da /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories da wallafe-wallafe na sirri suna bayyana ne kawai ga waɗanda suka shiga asusunsu, don haka sabar Videoner ba za ta iya samun su ba. Yanzu akwai mafita biyu don haka.
 

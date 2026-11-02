@@ -2,6 +2,7 @@
 title: แพลตฟอร์มใหม่: Vimeo, VK, Rutube, OK.ru และ Pinterest
 summary: ตอนนี้ Videoner ดาวน์โหลดวิดีโอได้จากอีกห้าแพลตฟอร์ม ได้แก่ Vimeo, VK, Rutube, OK.ru (Odnoklassniki) และ Pinterest ใช้ได้ทั้งบนเว็บไซต์และในบอท
 date: 2026-07-22
+time: 23:18:52
 ---
 เราเพิ่มแพลตฟอร์มใหม่ห้าแห่ง ตอนนี้ Videoner ดาวน์โหลดวิดีโอได้จาก:
 

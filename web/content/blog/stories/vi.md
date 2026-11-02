@@ -2,6 +2,7 @@
 title: Story Instagram và tài khoản đã kết nối
 summary: Tiện ích tải story Instagram, còn bot tải story và bài đăng riêng tư qua tài khoản bạn đã kết nối. Kết nối bằng một nút trong tiện ích; quản lý bằng lệnh /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Story và bài đăng riêng tư chỉ hiển thị với người đã đăng nhập, nên máy chủ Videoner không lấy được chúng. Giờ đã có hai cách giải quyết.
 

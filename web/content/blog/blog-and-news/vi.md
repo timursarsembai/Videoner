@@ -2,6 +2,7 @@
 title: Videoner giờ đã có blog và kênh tin tức
 summary: Chúng tôi chia sẻ những điểm mới của dự án trên blog của trang web và trên kênh Telegram @videonerdownload. Mỗi tệp từ bot giờ đều có liên kết đến kênh trong chú thích.
 date: 2026-10-30
+time: 23:18:52
 ---
 Chúng tôi đã mở blog trên trang web và kênh tin tức trên Telegram. Đây là nơi chúng tôi sẽ giới thiệu ngắn gọn những điểm mới trong bot, trên trang web và trong tiện ích, cùng cách sử dụng chúng.
 

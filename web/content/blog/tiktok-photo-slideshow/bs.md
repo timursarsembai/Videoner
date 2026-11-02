@@ -2,6 +2,7 @@
 title: TikTok objave s fotografijama i prezentacije fotografija
 summary: Videoner sada preuzima TikTok objave s fotografijama i može svaku objavu s više fotografija pretvoriti u video prezentaciju. U grupama bot odmah šalje fotografije i prezentaciju.
 date: 2026-10-31
+time: 00:53:50
 ---
 Dvije novosti za objave koje umjesto videa sadrže nekoliko fotografija.
 

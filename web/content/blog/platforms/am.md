@@ -2,6 +2,7 @@
 title: አዳዲስ መድረኮች፦ Vimeo፣ VK፣ Rutube፣ OK.ru እና Pinterest
 summary: Videoner አሁን ከአምስት ተጨማሪ መድረኮች ቪዲዮዎችን ያወርዳል — Vimeo፣ VK፣ Rutube፣ OK.ru (Odnoklassniki) እና Pinterest። በድረ-ገጹም በቦቱም ይሰራል።
 date: 2026-07-22
+time: 23:18:52
 ---
 አምስት አዳዲስ መድረኮችን አክለናል። Videoner አሁን ቪዲዮዎችን ከሚከተሉት ያወርዳል፦
 

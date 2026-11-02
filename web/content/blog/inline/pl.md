@@ -2,6 +2,7 @@
 title: Tryb inline: wysyłaj filmy na dowolny czat z @VideonerBot
 summary: Wpisz @VideonerBot i link prosto w rozmowie, a film trafi na ten sam czat. Na stronie otworzysz link, po prostu dopisując przed nim naszą domenę.
 date: 2026-08-19
+time: 23:18:52
 ---
 Dwa nowe sposoby, żeby pobierać filmy szybciej.
 

@@ -2,6 +2,7 @@
 title: Nove platforme — Vimeo, VK, Rutube, OK.ru i Pinterest
 summary: Videoner sada preuzima videozapise s još pet platformi — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) i Pinterest. Radi i na web-stranici i u botu.
 date: 2026-07-22
+time: 23:18:52
 ---
 Dodali smo pet novih platformi. Videoner sada preuzima videozapise s:
 

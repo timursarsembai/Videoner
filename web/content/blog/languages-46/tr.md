@@ -2,6 +2,7 @@
 title: Videoner artık 46 dil konuşuyor
 summary: 11 dil daha — Peştuca, Kürtçe (Soranice ve Kurmanci), Uygurca, Türkmence, Tatarca, Arnavutça, Boşnakça, Çeçence, İnguşça ve Avarca.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner artık **46 dilde** kullanılabiliyor. 11 dil daha eklendi:
 

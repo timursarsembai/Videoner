@@ -2,6 +2,7 @@
 title: Nuevas plataformas: Vimeo, VK, Rutube, OK.ru y Pinterest
 summary: Videoner ahora descarga videos de cinco plataformas más: Vimeo, VKontakte, Rutube, Odnoklassniki y Pinterest. Funciona tanto en el sitio web como en el bot.
 date: 2026-07-22
+time: 23:18:52
 ---
 Añadimos cinco plataformas nuevas. Ahora Videoner descarga videos de:
 

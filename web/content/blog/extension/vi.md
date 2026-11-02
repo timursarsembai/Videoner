@@ -2,6 +2,7 @@
 title: Tiện ích trình duyệt Videoner: nút Tải xuống ngay trên trang video
 summary: Tiện ích đã có cho Chrome, Yandex Browser, Edge và Opera. Nút Tải xuống xuất hiện ngay trên trang video, còn Instagram, Facebook, TikTok và Threads được tải bằng thông tin đăng nhập của bạn.
 date: 2026-10-28
+time: 23:18:52
 ---
 Nếu bạn thường tải video trên máy tính, giờ bạn có thể làm việc đó mà không cần sao chép liên kết. Xin giới thiệu tiện ích trình duyệt Videoner.
 

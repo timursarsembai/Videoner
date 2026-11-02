@@ -2,6 +2,7 @@
 title: Inline rejim: @VideonerBot orqali istalgan chatga video yuboring
 summary: Suhbatning oʻzida @VideonerBot va havolani yozing — video oʻsha chatga keladi. Saytda esa havolani oldiga domenimizni qoʻshish orqali ochish mumkin.
 date: 2026-08-19
+time: 23:18:52
 ---
 Videolarni tezroq yuklab olishning ikkita yangi usuli.
 

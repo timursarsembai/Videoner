@@ -2,6 +2,7 @@
 title: TikTok-Fotobeiträge und Foto-Diashows
 summary: Videoner lädt jetzt TikTok-Fotobeiträge herunter und kann jeden Beitrag mit mehreren Fotos in eine Video-Diashow verwandeln. In Gruppen schickt der Bot Fotos und Diashow sofort.
 date: 2026-10-31
+time: 00:53:50
 ---
 Zwei Updates für Beiträge, die statt eines Videos mehrere Fotos enthalten.
 

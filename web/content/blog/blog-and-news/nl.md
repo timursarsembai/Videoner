@@ -2,6 +2,7 @@
 title: Videoner heeft nu een blog en een nieuwskanaal
 summary: We delen wat er nieuw is in het project op de blog van de website en in het Telegram-kanaal @videonerdownload. Elk bestand van de bot heeft nu een link naar het kanaal in de tekst eronder.
 date: 2026-10-30
+time: 23:18:52
 ---
 We zijn begonnen met een blog op de website en een nieuwskanaal op Telegram. Daar vertellen we kort wat er nieuw is in de bot, op de website en in de extensie, en hoe je het gebruikt.
 

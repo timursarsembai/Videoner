@@ -2,6 +2,7 @@
 title: Videoner indi 46 dilde gürleýär
 summary: Ýene 11 dil — peştu, kürt (sorani we kurmanji), uýgur, türkmen, tatar, alban, bosniýa, çeçen, inguş we awar dilleri.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner indi **46 dilde** elýeterli. Ýene 11 dil goşuldy:
 

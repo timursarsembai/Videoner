@@ -2,6 +2,7 @@
 title: Konto możesz teraz połączyć z botem z telefonu z Androidem
 summary: Bez komputera: na Androidzie połączysz Instagram z @VideonerBot przez Firefoksa i dodatek Cookie-Editor, a bot będzie pobierał relacje i prywatne posty.
 date: 2026-10-31
+time: 00:39:25
 ---
 Żeby bot mógł pobierać relacje i prywatne posty z Instagrama, musisz połączyć z nim swoje konto. Do tej pory trzeba było do tego komputera z rozszerzeniem Videoner. Teraz zrobisz to prosto z telefonu z **Androidem**.
 

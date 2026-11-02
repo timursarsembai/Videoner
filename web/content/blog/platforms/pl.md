@@ -2,6 +2,7 @@
 title: Nowe platformy: Vimeo, VK, Rutube, OK.ru i Pinterest
 summary: Videoner pobiera teraz filmy z pięciu kolejnych platform — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) i Pinterest. Działa to i na stronie, i w bocie.
 date: 2026-07-22
+time: 23:18:52
 ---
 Dodaliśmy pięć nowych platform. Videoner pobiera teraz filmy z:
 

@@ -2,6 +2,7 @@
 title: Mga TikTok photo post at photo slideshow
 summary: Dina-download na ngayon ng Videoner ang mga TikTok photo post at kaya nitong gawing video slideshow ang anumang post na may ilang larawan. Sa mga grupo, agad na ipinapadala ng bot ang mga larawan at ang slideshow.
 date: 2026-10-31
+time: 00:53:50
 ---
 Dalawang update para sa mga post na may ilang larawan sa halip na video.
 

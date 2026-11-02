@@ -2,6 +2,7 @@
 title: Videoner niha bi erebî diaxive
 summary: Malper, bot û pêveka gerokê niha bi erebî jî hene, bi rêzkirina ji rastê ber bi çepê.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner niha bi **erebî** heye — zimanê şeşem piştî îngilîzî, spanî, rûsî, ukraynî û qazaxî.
 

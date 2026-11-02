@@ -2,6 +2,7 @@
 title: Ƙarin burauza: darussan GetCourse da sigar Firefox
 summary: Yanzu ƙarin Videoner zai iya sauke bidiyon darussa daga makarantun GetCourse, kuma ya fito don Firefox tare da sanyawa da danna ɗaya da sabuntawa ta atomatik.
 date: 2026-10-29
+time: 23:18:52
 ---
 Manyan sababbin abubuwa biyu a ƙarin Videoner.
 

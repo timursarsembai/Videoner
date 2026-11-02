@@ -2,6 +2,7 @@
 title: Daha yaxşı bot: 4K, fayl ölçüləri, gedişat, növbə və subtitrlər
 summary: Bot indi 4K-ya qədər keyfiyyət və 2 GB-a qədər fayllar, düymələrdə təxmini ölçülər, yükləmənin canlı gedişatı, bir neçə link üçün növbə və YouTube subtitrlərini .srt formatında təklif edir.
 date: 2026-10-03
+time: 23:18:52
 ---
 [@VideonerBot](https://t.me/VideonerBot) botunun son yeniliklərinin icmalı.
 

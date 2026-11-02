@@ -2,6 +2,7 @@
 title: Videoner spreekt nu 46 talen
 summary: 11 talen erbij – Pasjtoe, Koerdisch (Sorani en Kurmanji), Oeigoers, Turkmeens, Tataars, Albanees, Bosnisch, Tsjetsjeens, Ingoesjetisch en Avaars.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner is nu beschikbaar in **46 talen**. Er zijn er 11 bijgekomen:
 

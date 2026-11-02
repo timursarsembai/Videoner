@@ -2,6 +2,7 @@
 title: Karusellar, rasmlar va Threads: butun postni yuklab oling
 summary: Endi Videoner postdagi barcha fayllarni — Instagram karusellaridagi videolarni ham, rasmlarni ham yuklab oladi. Bundan tashqari, Threads ham qoʻllab-quvvatlanadi.
 date: 2026-08-12
+time: 23:18:52
 ---
 Avval bir nechta fayldan iborat postdan faqat bitta videoni yuklab olish mumkin edi. Endi Videoner butun postni oladi.
 

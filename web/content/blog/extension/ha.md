@@ -2,6 +2,7 @@
 title: Ƙarin burauza na Videoner: maɓallin Sauke a shafin bidiyo
 summary: Ƙarin ya fito don Chrome, Yandex Browser, Edge da Opera. Maɓallin Sauke yana bayyana kai tsaye a shafin bidiyo, kuma Instagram, Facebook, TikTok da Threads suna sauke da shigarku.
 date: 2026-10-28
+time: 23:18:52
 ---
 Idan kuna yawan sauke bidiyo a kwamfutarku, yanzu za ku iya yin hakan ba tare da kwafin hanyoyin haɗi ba. Ga ƙarin burauza na Videoner.
 

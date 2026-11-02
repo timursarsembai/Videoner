@@ -2,6 +2,7 @@
 title: Tarihin saukewa a ƙarin burauza, da Videoner a kundin Firefox
 summary: Yanzu ƙarin burauza yana tuna abin da kuka sauke cikin kwanaki 30 da suka wuce — suna, hanyar haɗi da kwanan wata. Kuma don Firefox, yanzu yana cikin kundin add-on na hukuma na Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 Ƙarin burauza na Videoner ya samu sababbin abubuwa biyu: tarihin saukewa, da sanya shi a Firefox daga kundin hukuma na Mozilla.
 

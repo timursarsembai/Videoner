@@ -2,6 +2,7 @@
 title: Le texte de la publication figure désormais dans la légende du fichier
 summary: Le bot ajoute le texte des publications TikTok, Instagram, Threads, X, Facebook et Pinterest à la légende des vidéos et des photos. Le site et l’extension affichent désormais un lien vers notre chaîne d’actualités après un téléchargement.
 date: 2026-10-31
+time: 01:36:57
 ---
 On transfère souvent une vidéo pour la légende de son auteur : une recette, une adresse, une blague, une liste de hashtags. Désormais, [@VideonerBot](https://t.me/VideonerBot) la conserve avec le fichier.
 

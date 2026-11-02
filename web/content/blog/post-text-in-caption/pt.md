@@ -2,6 +2,7 @@
 title: O texto do post agora vai na legenda do arquivo
 summary: O bot adiciona o texto do post do TikTok, Instagram, Threads, X, Facebook e Pinterest à legenda dos vídeos e fotos. O site e a extensão agora mostram um link para o nosso canal de novidades depois do download.
 date: 2026-10-31
+time: 01:36:57
 ---
 Muitas vezes um vídeo é compartilhado por causa da legenda do autor: uma receita, um endereço, uma piada, uma lista de hashtags. Agora o [@VideonerBot](https://t.me/VideonerBot) guarda esse texto junto com o arquivo.
 

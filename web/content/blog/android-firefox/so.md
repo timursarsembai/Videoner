@@ -2,6 +2,7 @@
 title: Hadda akoonkaaga waxaad bot-ka kaga xiri kartaa taleefan Android ah
 summary: Kombiyuutar looma baahna: Android, Instagram kula xir @VideonerBot adigoo adeegsanaya Firefox iyo add-on-ka Cookie-Editor, bot-kuna wuxuu soo dejin doonaa stories-ka iyo boostooyinka gaarka ah.
 date: 2026-10-31
+time: 00:39:25
 ---
 Si bot-ku u soo dejiyo stories-ka Instagram iyo boostooyinka gaarka ah, waa inaad akoonkaaga ku xirtaa. Ilaa hadda, taasi waxay u baahnayd kombiyuutar leh kordhiyaha Videoner. Hadda waxaad si toos ah ugu xiri kartaa taleefankaaga **Android**.
 

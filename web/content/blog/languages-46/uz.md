@@ -2,6 +2,7 @@
 title: Videoner endi 46 tilda
 summary: Yana 11 ta til — pushtu, kurd (sorani va kurmanji), uygʻur, turkman, tatar, alban, bosniya, chechen, ingush va avar tillari.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner endi **46 tilda** mavjud. Yana 11 ta til qoʻshildi:
 

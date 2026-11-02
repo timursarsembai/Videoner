@@ -2,6 +2,7 @@
 title: Ein besserer Bot: 4K, Dateigrößen, Fortschritt, Warteschlange und Untertitel
 summary: Der Bot bietet jetzt bis zu 4K und Dateien bis 2 GB, ungefähre Größen auf den Buttons, Live-Fortschritt beim Download, eine Warteschlange für mehrere Links und YouTube-Untertitel als .srt.
 date: 2026-10-03
+time: 23:18:52
 ---
 Hier ein Überblick über die neuesten Updates des Bots [@VideonerBot](https://t.me/VideonerBot).
 

@@ -2,6 +2,7 @@
 title: Rozszerzenie Videoner do przeglądarki: przycisk Pobierz na stronie filmu
 summary: Rozszerzenie jest już dostępne dla Chrome, Yandex Browser, Edge i Opery. Przycisk Pobierz pojawia się prosto na stronie filmu, a Instagram, Facebook, TikTok i Threads pobierają się z twoim logowaniem.
 date: 2026-10-28
+time: 23:18:52
 ---
 Jeśli często pobierasz filmy na komputerze, możesz to teraz robić bez kopiowania linków. Poznaj rozszerzenie Videoner do przeglądarki.
 

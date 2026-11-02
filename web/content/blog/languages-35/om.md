@@ -2,6 +2,7 @@
 title: Videoner amma afaanota 35 dubbata
 summary: Afaanota dabalataa 10 — Afaan Amaaraa, Afaan Oromoo, Afaan Hawusaa, Afaan Somaalii, Afaan Azarbaayijaan, Afaan Kirgiiz, Afaan Taajik, Afaan Maalaay, Afaan Holaandii fi Afaan Roomaaniyaa.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner amma **afaanota 35**n argama. Afaanonni dabalataa 10 itti dabalamaniiru:
 

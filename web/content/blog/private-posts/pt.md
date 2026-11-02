@@ -2,6 +2,7 @@
 title: Um post privado? O bot mostra como baixar
 summary: Se um post, reel ou story só aparece para quem está logado, o bot agora sugere conectar sua conta — depois disso, ele mesmo baixa esses posts, inclusive pelo celular.
 date: 2026-10-31
+time: 22:40:56
 ---
 Alguns posts só aparecem para quem está logado: stories do Instagram, posts e reels privados, posts só para amigos, vídeos com restrição de idade. Até agora, para esses links o bot só respondia “não disponível sem login”.
 

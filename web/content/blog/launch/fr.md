@@ -2,6 +2,7 @@
 title: Videoner est en ligne : un site et un bot Telegram pour télécharger des vidéos
 summary: Videoner télécharge des vidéos depuis YouTube, TikTok, Instagram, Facebook et Twitter/X — sur le site videoner.download et dans le bot Telegram @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Bonjour ! Voici Videoner, un service gratuit qui télécharge des vidéos depuis les réseaux sociaux. Vous pouvez l’utiliser de deux façons : sur le site et dans Telegram.
 

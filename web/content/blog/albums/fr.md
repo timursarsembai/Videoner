@@ -2,6 +2,7 @@
 title: Carrousels, photos et Threads : téléchargez la publication entière
 summary: Videoner télécharge désormais tous les fichiers d’une publication — les vidéos comme les photos des carrousels Instagram. Et Threads est maintenant pris en charge.
 date: 2026-08-12
+time: 23:18:52
 ---
 Jusqu’ici, d’une publication contenant plusieurs fichiers, vous ne pouviez télécharger qu’une seule vidéo. Désormais, Videoner récupère la publication entière.
 

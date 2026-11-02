@@ -2,6 +2,7 @@
 title: Moda inline — bi @VideonerBot vîdyoyan bişîne her sohbetê
 summary: Rasterast di axaftinê de @VideonerBot û lînkekê binivîse, û vîdyo dê bigihîje heman sohbetê. Li ser malperê tu dikarî lînkekê tenê bi zêdekirina domaina me li pêşiya wê vekî.
 date: 2026-08-19
+time: 23:18:52
 ---
 Du rêyên nû ji bo daxistina vîdyoyan bi lez.
 

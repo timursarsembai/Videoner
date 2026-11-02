@@ -2,6 +2,7 @@
 title: Nasa 46 wika na ang Videoner
 summary: 11 pang bagong wika — Pashto, Kurdish (Sorani at Kurmanji), Uyghur, Turkmen, Tatar, Albanian, Bosnian, Chechen, Ingush at Avar.
 date: 2026-11-01
+time: 16:40:18
 ---
 Available na ang Videoner sa **46 wika**. May 11 pang bagong wika:
 

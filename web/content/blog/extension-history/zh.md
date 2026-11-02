@@ -2,6 +2,7 @@
 title: 扩展新增下载记录，Videoner 已上架 Firefox 附加组件目录
 summary: 扩展现在会记住你最近 30 天下载过的内容——标题、链接和日期。Firefox 版也已上架 Mozilla 官方附加组件目录。
 date: 2026-11-02
+time: 00:48:04
 ---
 Videoner 浏览器扩展带来两项新功能：下载记录，以及从 Mozilla 官方目录安装到 Firefox。
 

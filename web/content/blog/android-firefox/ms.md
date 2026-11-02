@@ -2,6 +2,7 @@
 title: Kini anda boleh menyambungkan akaun anda ke bot daripada telefon Android
 summary: Tanpa komputer: di Android, sambungkan Instagram ke @VideonerBot melalui Firefox dan add-on Cookie-Editor, dan bot akan memuat turun stories dan hantaran peribadi.
 date: 2026-10-31
+time: 00:39:25
 ---
 Untuk membolehkan bot memuat turun stories Instagram dan hantaran peribadi, anda perlu menyambungkan akaun anda kepadanya. Sebelum ini, langkah ini memerlukan komputer dengan sambungan Videoner. Kini anda boleh menyambungkannya terus daripada telefon **Android** anda.
 

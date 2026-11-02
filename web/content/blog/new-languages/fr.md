@@ -2,6 +2,7 @@
 title: Videoner parle désormais 25 langues
 summary: Le site, le bot et l’extension de navigateur parlent désormais 19 langues de plus — du chinois et du hindi à l’allemand, au turc et au japonais.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner est désormais disponible en **25 langues**. À l’anglais, l’espagnol, le russe, l’ukrainien, le kazakh et l’arabe s’ajoutent 19 nouvelles langues :
 

@@ -2,6 +2,7 @@
 title: Une publication privée ? Le bot vous montre comment la télécharger
 summary: Si une publication, un reel ou une story n’est visible qu’une fois connecté, le bot vous propose désormais de connecter votre compte — ensuite, il télécharge lui-même ces publications, y compris depuis votre téléphone.
 date: 2026-10-31
+time: 22:40:56
 ---
 Certaines publications ne sont visibles que par les personnes connectées : les stories Instagram, les publications et reels privés, les publications réservées aux amis, les vidéos soumises à une limite d’âge. Jusqu’ici, le bot répondait seulement « indisponible sans connexion » à ces liens.
 

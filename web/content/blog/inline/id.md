@@ -2,6 +2,7 @@
 title: Mode inline: kirim video ke chat mana pun dengan @VideonerBot
 summary: Ketik @VideonerBot dan tautan langsung di percakapan, dan video akan dikirim ke chat yang sama. Di situs web, Anda bisa membuka tautan cukup dengan menambahkan domain kami di depannya.
 date: 2026-08-19
+time: 23:18:52
 ---
 Dua cara baru untuk mengunduh video lebih cepat.
 

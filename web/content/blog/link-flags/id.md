@@ -2,6 +2,7 @@
 title: Flag -audio dan -hd: unduh tanpa memilih kualitas
 summary: Tambahkan -audio setelah tautan, dan bot langsung mengirim suaranya dalam mp3; tambahkan -hd untuk video dalam kualitas terbaik. Berfungsi di chat pribadi dan grup.
 date: 2026-10-31
+time: 01:12:42
 ---
 Bot [@VideonerBot](https://t.me/VideonerBot) kini memahami flag — kata pendek setelah tautan. Dengan flag, Anda tidak perlu mengetuk tombol kualitas: bot langsung mulai mengunduh.
 

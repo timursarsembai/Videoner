@@ -2,6 +2,7 @@
 title: Videoner kini tersedia dalam 46 bahasa
 summary: 11 bahasa lagi — bahasa Pashto, Kurdi (Sorani dan Kurmanji), Uyghur, Turkmen, Tatar, Albania, Bosnia, Chechen, Ingush dan Avar.
 date: 2026-11-01
+time: 16:40:18
 ---
 Videoner kini tersedia dalam **46 bahasa**. 11 bahasa lagi telah ditambah:
 

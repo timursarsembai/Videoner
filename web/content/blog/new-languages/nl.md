@@ -2,6 +2,7 @@
 title: Videoner spreekt nu 25 talen
 summary: De website, de bot en de browserextensie spreken nu 19 talen meer – van Chinees en Hindi tot Duits, Turks en Japans.
 date: 2026-11-01
+time: 00:11:17
 ---
 Videoner is nu beschikbaar in **25 talen**. Naast Engels, Spaans, Russisch, Oekraïens, Kazachs en Arabisch zijn er 19 bijgekomen:
 

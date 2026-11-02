@@ -2,6 +2,7 @@
 title: 新平台：Vimeo、VK、Rutube、OK.ru 和 Pinterest
 summary: Videoner 新增支持五个平台的视频下载：Vimeo、VK、Rutube、OK.ru（Odnoklassniki）和 Pinterest。网站和机器人均可使用。
 date: 2026-07-22
+time: 23:18:52
 ---
 我们新增了五个平台。Videoner 现在可以下载以下平台的视频：
 

@@ -2,6 +2,7 @@
 title: Kordhiyaha: casharrada GetCourse iyo nooca Firefox
 summary: Kordhiyaha Videoner hadda wuxuu soo dejin karaa casharrada muuqaalka ah ee dugsiyada GetCourse, wuxuuna u soo baxay Firefox isagoo leh rakibid hal guji ah iyo cusbooneysiin toos ah.
 date: 2026-10-29
+time: 23:18:52
 ---
 Laba cusbooneysiin oo waaweyn oo ku saabsan kordhiyaha Videoner.
 

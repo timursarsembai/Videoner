@@ -2,6 +2,7 @@
 title: Yanayin inline: ku aika bidiyo zuwa kowace hira da @VideonerBot
 summary: Ku rubuta @VideonerBot da hanyar haɗi kai tsaye a cikin tattaunawa, kuma bidiyon zai iso a wannan hirar. A shafin yanar gizo, za ku iya buɗe hanyar haɗi ta hanyar ƙara sunan shafinmu a gabanta kawai.
 date: 2026-08-19
+time: 23:18:52
 ---
 Sababbin hanyoyi biyu na sauke bidiyo da sauri.
 

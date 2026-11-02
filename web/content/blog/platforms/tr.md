@@ -2,6 +2,7 @@
 title: Yeni platformlar: Vimeo, VK, Rutube, OK.ru ve Pinterest
 summary: Videoner artık beş platformdan daha video indiriyor: Vimeo, VK, Rutube, OK.ru (Odnoklassniki) ve Pinterest. Hem sitede hem botta çalışır.
 date: 2026-07-22
+time: 23:18:52
 ---
 Beş yeni platform ekledik. Videoner artık şu platformlardan video indiriyor:
 

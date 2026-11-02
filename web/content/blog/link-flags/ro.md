@@ -2,6 +2,7 @@
 title: Indicatorii -audio și -hd: descarcă fără să alegi calitatea
 summary: Adaugă -audio după un link și botul trimite imediat sunetul în mp3; adaugă -hd pentru videoclip la cea mai bună calitate. Funcționează în chaturi private și în grupuri.
 date: 2026-10-31
+time: 01:12:42
 ---
 Botul [@VideonerBot](https://t.me/VideonerBot) înțelege acum indicatori — cuvinte scurte după un link. Cu ei nu mai trebuie să atingi un buton de calitate: botul începe descărcarea imediat.
 

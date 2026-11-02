@@ -2,6 +2,7 @@
 title: TikTok foto paylaşımları və fotolardan slayd-şou
 summary: Videoner indi TikTok foto paylaşımlarını yükləyir və bir neçə fotolu istənilən paylaşımı video slayd-şouya çevirə bilir. Qruplarda bot fotoları və slayd-şounu dərhal göndərir.
 date: 2026-10-31
+time: 00:53:50
 ---
 Video əvəzinə bir neçə foto olan paylaşımlar üçün iki yenilik.
 

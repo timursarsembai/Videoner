@@ -2,6 +2,7 @@
 title: Videoner запущен: сайт и Telegram-бот для скачивания видео
 summary: Videoner скачивает видео с YouTube, TikTok, Instagram, Facebook и Twitter/X — на сайте videoner.download и в Telegram-боте @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Привет! Это Videoner — бесплатный сервис, который скачивает видео из соцсетей. Им можно пользоваться двумя способами: на сайте и в Telegram.
 

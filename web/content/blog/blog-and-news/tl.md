@@ -2,6 +2,7 @@
 title: May blog at news channel na ang Videoner
 summary: Ibinabahagi namin ang mga bago sa project sa blog ng website at sa Telegram channel na @videonerdownload. May link na sa channel ang caption ng bawat file mula sa bot.
 date: 2026-10-30
+time: 23:18:52
 ---
 Nagsimula kami ng blog sa website at ng news channel sa Telegram. Dito namin maikling ikukuwento kung ano ang bago sa bot, sa website at sa extension, at kung paano ito gamitin.
 

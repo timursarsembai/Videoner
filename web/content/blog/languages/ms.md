@@ -2,6 +2,7 @@
 title: Videoner dalam bahasa Ukraine dan Kazakh, dan kini anda boleh memilih bahasa
 summary: Bot, laman web dan sambungan kini tersedia dalam bahasa Ukraine dan Kazakh. Dan kini anda boleh memilih sendiri bahasa bot dengan arahan /language.
 date: 2026-10-30
+time: 23:18:52
 ---
 Videoner kini tersedia dalam dua bahasa baharu — **bahasa Ukraine** dan **bahasa Kazakh**.
 

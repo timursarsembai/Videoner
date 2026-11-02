@@ -2,6 +2,7 @@
 title: Kiendelezi cha kivinjari cha Videoner: kitufe cha kupakua kwenye ukurasa wa video
 summary: Kiendelezi kimetoka kwa Chrome, Yandex Browser, Edge na Opera. Kitufe cha kupakua kinaonekana moja kwa moja kwenye ukurasa wa video, na Instagram, Facebook, TikTok na Threads zinapakuliwa kwa akaunti yako.
 date: 2026-10-28
+time: 23:18:52
 ---
 Ikiwa mara nyingi unapakua video kwenye kompyuta, sasa unaweza kufanya hivyo bila kunakili viungo. Karibu kiendelezi cha kivinjari cha Videoner.
 

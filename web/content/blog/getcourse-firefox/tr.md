@@ -2,6 +2,7 @@
 title: Eklenti: GetCourse dersleri ve Firefox sürümü
 summary: Videoner eklentisi artık GetCourse okullarındaki video dersleri indirebiliyor; ayrıca tek tıkla kurulum ve otomatik güncellemelerle Firefox için de yayında.
 date: 2026-10-29
+time: 23:18:52
 ---
 Videoner eklentisinde iki büyük güncelleme.
 

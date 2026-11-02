@@ -2,6 +2,7 @@
 title: Grupni način — bot šalje videozapise za linkove podijeljene u chatu
 summary: Dodajte @VideonerBot u grupu i on će na linkove objavljene u njoj odgovarati videom. Administratori podešavaju njegovo ponašanje komandom /settings.
 date: 2026-10-30
+time: 23:18:52
 ---
 Sada možete dodati [@VideonerBot](https://t.me/VideonerBot) u grupni chat. Kada neko pošalje link na video, bot odgovara samim videom. Niko ne mora otvarati link niti prelaziti u bota.
 

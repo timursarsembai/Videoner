@@ -2,6 +2,7 @@
 title: Marunong na ng Arabic ang Videoner
 summary: Available na sa Arabic ang website, ang bot at ang browser extension, na may layout mula kanan pakaliwa.
 date: 2026-10-31
+time: 22:12:03
 ---
 Available na ang Videoner sa **Arabic** — ang ikaanim na wika kasunod ng English, Spanish, Russian, Ukrainian at Kazakh.
 

@@ -2,6 +2,7 @@
 title: Sejarah muat turun dalam sambungan, dan Videoner dalam katalog Firefox
 summary: Sambungan kini mengingati apa yang anda muat turun dalam 30 hari lepas — tajuk, pautan dan tarikh. Bagi Firefox pula, sambungan ini kini ada dalam katalog alat tambah rasmi Mozilla.
 date: 2026-11-02
+time: 00:48:04
 ---
 Sambungan pelayar Videoner mendapat dua perkara baharu: sejarah muat turun, dan pemasangan dalam Firefox daripada katalog rasmi Mozilla.
 

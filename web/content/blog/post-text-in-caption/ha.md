@@ -2,6 +2,7 @@
 title: Rubutun wallafa yanzu yana cikin rubutun bayanin fayil
 summary: Bot yana ƙara rubutun wallafa daga TikTok, Instagram, Threads, X, Facebook da Pinterest a rubutun bayanin bidiyo da hotuna. Shafin yanar gizo da ƙarin burauza yanzu suna nuna hanyar haɗi zuwa tasharmu ta labarai bayan saukewa.
 date: 2026-10-31
+time: 01:36:57
 ---
 Mutane sukan tura bidiyo saboda rubutun mai wallafa: girke-girke, adireshi, barkwanci, jerin hashtag. Yanzu [@VideonerBot](https://t.me/VideonerBot) yana ajiye shi tare da fayil.
 

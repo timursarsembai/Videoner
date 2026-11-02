@@ -2,6 +2,7 @@
 title: Storie di Instagram e account collegati
 summary: L’estensione scarica le storie di Instagram, e il bot scarica storie e post privati tramite il tuo account collegato. Collega con un pulsante nell’estensione; gestisci con /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Le storie e i post privati sono visibili solo a chi ha fatto l’accesso, quindi il server di Videoner non riesce a ottenerli. Ora ci sono due soluzioni.
 

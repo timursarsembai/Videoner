@@ -2,6 +2,7 @@
 title: Videoner parle désormais arabe
 summary: Le site, le bot et l’extension de navigateur sont maintenant disponibles en arabe, avec une mise en page de droite à gauche.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner est désormais disponible en **arabe** — la sixième langue après l’anglais, l’espagnol, le russe, l’ukrainien et le kazakh.
 

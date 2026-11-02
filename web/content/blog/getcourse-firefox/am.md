@@ -2,6 +2,7 @@
 title: ቅጥያ፦ የGetCourse ትምህርቶች እና የFirefox ስሪት
 summary: የVideoner ቅጥያ አሁን ከGetCourse ትምህርት ቤቶች የቪዲዮ ትምህርቶችን ማውረድ ይችላል፣ እንዲሁም በአንድ ጠቅታ በሚጫን እና በራስ-ሰር በሚዘመን ስሪት ለFirefox ተለቋል።
 date: 2026-10-29
+time: 23:18:52
 ---
 በVideoner ቅጥያ ላይ ሁለት ትልልቅ ዝማኔዎች።
 

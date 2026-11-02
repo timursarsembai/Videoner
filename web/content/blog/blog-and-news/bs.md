@@ -2,6 +2,7 @@
 title: Videoner sada ima blog i kanal s novostima
 summary: O novostima projekta pišemo na blogu web-stranice i u Telegram kanalu @videonerdownload. Uz svaki fajl iz bota sada je u tekstu i link na kanal.
 date: 2026-10-30
+time: 23:18:52
 ---
 Pokrenuli smo blog na web-stranici i kanal s novostima na Telegramu. Tu ćemo ukratko pisati o tome šta je novo u botu, na web-stranici i u proširenju, i kako to koristiti.
 

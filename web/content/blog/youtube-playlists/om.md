@@ -2,6 +2,7 @@
 title: Tarree viidiyoo YouTube guutuu fi daangaan guyyaa kana booda hin jiru
 summary: Videoner tarree viidiyoo (playlist) YouTube viidiyoo tokko tokkoon buusa — boot, marsariitii fi dabalata biraawuzarii keessatti, qabduu “Dhaabi” waliin. Daangaan buufannaa guyyaa immoo haqameera.
 date: 2026-10-31
+time: 02:36:50
 ---
 Jijjiirama gurguddaa lama.
 

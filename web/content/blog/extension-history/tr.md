@@ -2,6 +2,7 @@
 title: Eklentide indirme geçmişi ve Firefox kataloğunda Videoner
 summary: Eklenti artık son 30 günde neleri indirdiğinizi hatırlıyor: başlık, bağlantı ve tarih. Firefox için ise artık Mozilla'nın resmî eklenti kataloğunda.
 date: 2026-11-02
+time: 00:48:04
 ---
 Videoner tarayıcı eklentisinde iki yenilik var: indirme geçmişi ve Firefox'a Mozilla'nın resmî kataloğundan kurulum.
 

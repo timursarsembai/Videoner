@@ -2,6 +2,7 @@
 title: Pêvek — dersên GetCourse û guhertoya Firefox
 summary: Pêveka Videoner niha dikare dersên vîdyoyî ji dibistanên GetCourse daxe, û ji bo Firefox bi sazkirina bi yek klîkê û nûkirinên otomatîk derket.
 date: 2026-10-29
+time: 23:18:52
 ---
 Du nûkirinên mezin ji bo pêveka Videoner.
 

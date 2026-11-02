@@ -2,6 +2,7 @@
 title: Videoner je pokrenut — web-stranica i Telegram bot za preuzimanje videozapisa
 summary: Videoner preuzima videozapise s YouTubea, TikToka, Instagrama, Facebooka i Twittera/X — na web-stranici videoner.download i u Telegram botu @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Zdravo! Ovo je Videoner — besplatna usluga za preuzimanje videozapisa s društvenih mreža. Možete je koristiti na dva načina: na web-stranici i u Telegramu.
 

@@ -2,6 +2,7 @@
 title: TikTok fotoğraf gönderileri ve fotoğraf slayt gösterileri
 summary: Videoner artık TikTok fotoğraf gönderilerini indiriyor ve birden fazla fotoğraf içeren her gönderiyi bir video slayt gösterisine dönüştürebiliyor. Gruplarda bot fotoğrafları ve slayt gösterisini hemen gönderiyor.
 date: 2026-10-31
+time: 00:53:50
 ---
 Video yerine birkaç fotoğraf içeren gönderiler için iki güncelleme.
 

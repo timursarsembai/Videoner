@@ -2,6 +2,7 @@
 title: Yanzu za ku iya haɗa asusunku da bot daga wayar Android
 summary: Ba sai da kwamfuta ba: a Android, ku haɗa Instagram da @VideonerBot ta Firefox da ƙarin Cookie-Editor, bot kuma zai sauke stories da wallafe-wallafe na sirri.
 date: 2026-10-31
+time: 00:39:25
 ---
 Domin bot ya sauke stories da wallafe-wallafe na sirri na Instagram, dole ku haɗa asusunku da shi. Har zuwa yanzu, wannan yana buƙatar kwamfuta mai ƙarin burauza na Videoner. Yanzu za ku iya haɗawa kai tsaye daga wayarku ta **Android**.
 

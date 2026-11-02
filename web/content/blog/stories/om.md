@@ -2,6 +2,7 @@
 title: Istooriiwwan Instagram fi akkaawuntiiwwan walqabsiifaman
 summary: Dabalanni biraawuzarii istooriiwwan Instagram buusa, bootiin immoo akkaawuntii walqabsiifame keessaniin istooriiwwanii fi maxxansa dhuunfaa buusa. Dabalata keessatti qabduun walqabsiisaa; /accounts'n bulchaa.
 date: 2026-10-30
+time: 23:18:52
 ---
 Istooriiwwanii fi maxxansi dhuunfaa fayyadamtoota seenaniif qofa mul'atu, kanaaf sarvarri Videoner isaan argachuu hin danda'u. Amma kanaaf furmaata lamatu jira.
 

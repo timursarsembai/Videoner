@@ -2,6 +2,7 @@
 title: 새 플랫폼: Vimeo, VK, Rutube, OK.ru, Pinterest
 summary: 이제 Videoner가 Vimeo, VK, Rutube, OK.ru(Odnoklassniki), Pinterest 등 다섯 개 플랫폼의 동영상을 추가로 다운로드해요. 웹사이트와 봇 모두에서 사용할 수 있어요.
 date: 2026-07-22
+time: 23:18:52
 ---
 새 플랫폼 다섯 개를 추가했어요. 이제 Videoner는 다음 플랫폼의 동영상을 다운로드해요.
 

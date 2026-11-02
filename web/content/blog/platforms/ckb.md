@@ -2,6 +2,7 @@
 title: پلاتفۆرمی نوێ — Vimeo، VK، Rutube، OK.ru و Pinterest
 summary: Videoner ئێستا لە پێنج پلاتفۆرمی تریش ڤیدیۆ دادەگرێت — Vimeo، VK، Rutube، OK.ru (Odnoklassniki) و Pinterest. هەم لە ماڵپەڕ و هەم لە بۆتدا کار دەکات.
 date: 2026-07-22
+time: 23:18:52
 ---
 پێنج پلاتفۆرمی نوێمان زیاد کرد. Videoner ئێستا ڤیدیۆ لەمانەوە دادەگرێت:
 

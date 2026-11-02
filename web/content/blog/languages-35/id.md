@@ -2,6 +2,7 @@
 title: Videoner kini tersedia dalam 35 bahasa
 summary: 10 bahasa baru — Amharik, Oromo, Hausa, Somali, Azerbaijan, Kirgiz, Tajik, Melayu, Belanda, dan Rumania.
 date: 2026-11-01
+time: 13:44:30
 ---
 Videoner kini tersedia dalam **35 bahasa**. Ada 10 bahasa lagi yang bergabung:
 

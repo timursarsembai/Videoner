@@ -2,6 +2,7 @@
 title: -audio və -hd flaqları: keyfiyyət seçmədən yükləyin
 summary: Linkdən sonra -audio əlavə edin — bot səsi dərhal mp3 kimi göndərəcək; -hd əlavə edin — video ən yaxşı keyfiyyətdə gələcək. Şəxsi çatlarda və qruplarda işləyir.
 date: 2026-10-31
+time: 01:12:42
 ---
 [@VideonerBot](https://t.me/VideonerBot) botu indi flaqları — linkdən sonrakı qısa sözləri başa düşür. Onlarla keyfiyyət düyməsinə toxunmaq lazım deyil: bot yükləməyə dərhal başlayır.
 

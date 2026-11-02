@@ -2,6 +2,7 @@
 title: Caroselli, foto e Threads: scarica il post intero
 summary: Ora Videoner scarica tutti i file di un post: sia i video sia le foto dei caroselli di Instagram. E in più ora c’è anche Threads.
 date: 2026-08-12
+time: 23:18:52
 ---
 Finora da un post con più file potevi scaricare un solo video. Adesso Videoner prende il post intero.
 

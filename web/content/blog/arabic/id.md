@@ -2,6 +2,7 @@
 title: Videoner kini tersedia dalam bahasa Arab
 summary: Situs web, bot, dan ekstensi browser kini tersedia dalam bahasa Arab, dengan tata letak dari kanan ke kiri.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner kini tersedia dalam **bahasa Arab** — bahasa keenam setelah Inggris, Spanyol, Rusia, Ukraina, dan Kazakh.
 

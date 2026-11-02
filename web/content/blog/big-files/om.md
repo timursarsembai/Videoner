@@ -2,6 +2,7 @@
 title: Viidiyoo 2 GB ol: bootiin eessatti akka buufattan agarsiisa
 summary: Telegram booteen faayilii 2 GB ol akka ergan hin hayyamu. Amma bootiin kana ibsee, viidiyoo kanuma marsariitii irratti ykn dabalata biraawuzariitiin buufachuuf battaluma qabduuwwan isiniif kenna.
 date: 2026-10-31
+time: 02:49:39
 ---
 Telegram daangaa qaba: boot tokko faayilii **2 GB** caalu erguu hin danda'u. Viidiyoon dheeraan qulqullina olaanaan salphaatti daangaa kana darba — fakkeenyaaf, barnoota sa'aatii hedduu fudhatu, qulqullina 1080p tiin.
 

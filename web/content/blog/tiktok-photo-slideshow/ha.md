@@ -2,6 +2,7 @@
 title: Wallafe-wallafen hotuna na TikTok da nunin hotuna
 summary: Yanzu Videoner yana sauke wallafe-wallafen hotuna na TikTok kuma zai iya mayar da kowace wallafa mai hotuna da yawa zuwa bidiyon nunin hotuna. A rukuni, bot yana aika hotuna da nunin hotuna nan take.
 date: 2026-10-31
+time: 00:53:50
 ---
 Sababbin abubuwa biyu don wallafe-wallafe da ke ɗauke da hotuna da yawa maimakon bidiyo.
 

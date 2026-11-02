@@ -2,6 +2,7 @@
 title: Videoner endi arab tilida
 summary: Sayt, bot va brauzer kengaytmasi endi arab tilida, oʻngdan chapga yoziladigan sahifa tuzilishi bilan mavjud.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner endi **arab tilida** ham mavjud — bu ingliz, ispan, rus, ukrain va qozoq tillaridan keyingi oltinchi til.
 

@@ -2,6 +2,7 @@
 title: Videoner brauzer kengaytmasi: video sahifasida yuklab olish tugmasi
 summary: Kengaytma Chrome, Yandex Browser, Edge va Opera uchun chiqdi. Yuklab olish tugmasi toʻgʻridan-toʻgʻri video sahifasida paydo boʻladi, Instagram, Facebook, TikTok va Threads esa sizning akkauntingiz orqali yuklab olinadi.
 date: 2026-10-28
+time: 23:18:52
 ---
 Agar kompyuterda tez-tez video yuklab olsangiz, endi buni havolalarni nusxalamasdan qilishingiz mumkin. Videoner brauzer kengaytmasi bilan tanishing.
 

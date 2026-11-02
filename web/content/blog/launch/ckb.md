@@ -2,6 +2,7 @@
 title: Videoner دەستی پێکرد — ماڵپەڕ و بۆتی Telegram بۆ داگرتنی ڤیدیۆ
 summary: Videoner ڤیدیۆ لە YouTube، TikTok، Instagram، Facebook و Twitter/X دادەگرێت — لە ماڵپەڕی videoner.download و لە بۆتی ‎@VideonerBot لە Telegram.
 date: 2026-07-20
+time: 23:18:52
 ---
 سڵاو! ئەمە Videoner ە — خزمەتگوزارییەکی بەخۆڕایی بۆ داگرتنی ڤیدیۆ لە تۆڕە کۆمەڵایەتییەکان. دەتوانیت بە دوو شێوە بەکاری بهێنیت: لە ماڵپەڕ و لە Telegram.
 

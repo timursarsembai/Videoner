@@ -2,6 +2,7 @@
 title: Post text now in the file caption
 summary: The bot adds the post text from TikTok, Instagram, Threads, X, Facebook and Pinterest to video and photo captions. The site and extension now link to our news channel after a download.
 date: 2026-10-31
+time: 01:36:57
 ---
 People often forward a video for the author's caption: a recipe, an address, a joke, a list of hashtags. Now [@VideonerBot](https://t.me/VideonerBot) keeps it together with the file.
 

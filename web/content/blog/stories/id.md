@@ -2,6 +2,7 @@
 title: Story Instagram dan akun yang terhubung
 summary: Ekstensi mengunduh story Instagram, dan bot mengunduh story serta postingan privat melalui akun Anda yang terhubung. Hubungkan dengan tombol di ekstensi; kelola dengan /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Story dan postingan privat hanya terlihat oleh pengguna yang sudah masuk, sehingga server Videoner tidak bisa mengambilnya. Kini ada dua solusi untuk itu.
 

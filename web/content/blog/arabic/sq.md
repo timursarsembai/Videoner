@@ -2,6 +2,7 @@
 title: Videoner tani flet arabisht
 summary: Faqja e internetit, boti dhe shtesa e shfletuesit tani janë në dispozicion në arabisht, me paraqitje nga e djathta në të majtë.
 date: 2026-10-31
+time: 22:12:03
 ---
 Videoner tani është në dispozicion në **arabisht** — gjuha e gjashtë pas anglishtes, spanjishtes, rusishtes, ukrainishtes dhe kazakishtes.
 

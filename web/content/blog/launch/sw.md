@@ -2,6 +2,7 @@
 title: Videoner imezinduliwa: tovuti na bot ya Telegram ya kupakua video
 summary: Videoner inapakua video kutoka YouTube, TikTok, Instagram, Facebook na Twitter/X — kwenye tovuti ya videoner.download na kwenye bot ya Telegram @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Habari! Hii ni Videoner — huduma ya bure inayopakua video kutoka kwenye mitandao ya kijamii. Unaweza kuitumia kwa njia mbili: kwenye tovuti na kwenye Telegram.
 

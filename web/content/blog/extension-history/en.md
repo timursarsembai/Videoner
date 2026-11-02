@@ -2,6 +2,7 @@
 title: Download history in the extension, and Videoner in the Firefox catalog
 summary: The extension now remembers what you downloaded in the last 30 days — title, link and date. And for Firefox it is now in Mozilla's official add-ons catalog.
 date: 2026-11-02
+time: 00:48:04
 ---
 The Videoner browser extension gets two new things: a download history, and installing in Firefox from Mozilla's official catalog.
 

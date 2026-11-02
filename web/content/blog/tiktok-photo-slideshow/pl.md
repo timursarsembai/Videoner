@@ -2,6 +2,7 @@
 title: Posty ze zdjęciami z TikToka i pokazy slajdów
 summary: Videoner pobiera teraz posty ze zdjęciami z TikToka i zamieni każdy post z kilkoma zdjęciami w film-pokaz slajdów. W grupach bot od razu wysyła zdjęcia i pokaz slajdów.
 date: 2026-10-31
+time: 00:53:50
 ---
 Dwie aktualizacje dla postów, w których zamiast filmu jest kilka zdjęć.
 

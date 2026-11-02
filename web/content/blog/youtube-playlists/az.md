@@ -2,6 +2,7 @@
 title: Tam YouTube pleylistləri və gündəlik limitlər artıq yoxdur
 summary: Videoner YouTube pleylistlərini videoları bir-bir olmaqla yükləyir — botda, saytda və genişlənmədə, «Dayandır» düyməsi ilə. Gündəlik yükləmə limiti isə ləğv olunub.
 date: 2026-10-31
+time: 02:36:50
 ---
 İki böyük dəyişiklik.
 

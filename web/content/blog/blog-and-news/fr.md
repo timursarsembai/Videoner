@@ -2,6 +2,7 @@
 title: Videoner a désormais un blog et une chaîne d’actualités
 summary: Nous présentons les nouveautés du projet sur le blog du site et sur la chaîne Telegram @videonerdownload. Chaque fichier envoyé par le bot comporte désormais un lien vers la chaîne dans sa légende.
 date: 2026-10-30
+time: 23:18:52
 ---
 Nous avons lancé un blog sur le site et une chaîne d’actualités sur Telegram. C’est là que nous présenterons brièvement les nouveautés du bot, du site et de l’extension, et comment en profiter.
 

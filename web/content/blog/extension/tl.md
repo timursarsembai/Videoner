@@ -2,6 +2,7 @@
 title: Videoner browser extension: button na “I-download” sa page ng video
 summary: Inilabas na ang extension para sa Chrome, Yandex Browser, Edge at Opera. May button na “I-download” na lumalabas mismo sa page ng video, at nada-download ang Instagram, Facebook, TikTok at Threads gamit ang sarili mong login.
 date: 2026-10-28
+time: 23:18:52
 ---
 Kung madalas kang mag-download ng video sa computer, magagawa mo na ito nang hindi kinokopya ang mga link. Kilalanin ang Videoner browser extension.
 

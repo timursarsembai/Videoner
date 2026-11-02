@@ -2,6 +2,7 @@
 title: Carruseles, fotos y Threads: descargamos la publicación completa
 summary: Videoner ahora descarga todos los archivos de una publicación: videos y fotos de los carruseles de Instagram. Además, ya es compatible con Threads.
 date: 2026-08-12
+time: 23:18:52
 ---
 Antes, de una publicación con varios archivos solo se podía descargar un video. Ahora Videoner descarga la publicación completa.
 

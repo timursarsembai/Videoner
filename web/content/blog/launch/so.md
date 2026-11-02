@@ -2,6 +2,7 @@
 title: Videoner waa shaqeynayaa: websaydh iyo bot Telegram ah oo muuqaallada lagu soo dejiyo
 summary: Videoner wuxuu muuqaallada ka soo dejiyaa YouTube, TikTok, Instagram, Facebook iyo Twitter/X — websaydhka videoner.download iyo bot-ka Telegram ee @VideonerBot.
 date: 2026-07-20
+time: 23:18:52
 ---
 Salaan! Kani waa Videoner — adeeg bilaash ah oo muuqaallada ka soo dejiya baraha bulshada. Laba siyaabood ayaad u isticmaali kartaa: websaydhka iyo Telegram.
 

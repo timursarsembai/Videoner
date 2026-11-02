@@ -2,6 +2,7 @@
 title: A private post? The bot shows how to download it
 summary: If a post, reel or story is visible only to signed-in people, the bot now suggests connecting your account — after that it downloads such posts itself, from your phone too.
 date: 2026-10-31
+time: 22:40:56
 ---
 Some posts are shown only to people who are signed in: Instagram stories, private posts and reels, friends-only posts, age-restricted videos. Until now the bot only replied "not available without signing in" to such links.
 

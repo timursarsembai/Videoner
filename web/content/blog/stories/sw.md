@@ -2,6 +2,7 @@
 title: Stories za Instagram na akaunti zilizounganishwa
 summary: Kiendelezi kinapakua stories za Instagram, na bot inapakua stories na machapisho ya faragha kupitia akaunti yako iliyounganishwa. Unganisha kwa kitufe kwenye kiendelezi; simamia kwa /accounts.
 date: 2026-10-30
+time: 23:18:52
 ---
 Stories na machapisho ya faragha yanaonekana kwa watumiaji walioingia tu, kwa hiyo seva ya Videoner haiwezi kuyapata. Sasa kuna suluhisho mbili kwa hilo.
 

@@ -2,6 +2,7 @@
 title: Waltajjiilee haaraa: Vimeo, VK, Rutube, OK.ru fi Pinterest
 summary: Videoner amma waltajjiilee dabalataa shan irraa viidiyoo buusa — Vimeo, VK, Rutube, OK.ru (Odnoklassniki) fi Pinterest. Marsariitii fi boot lamaan irrattuu hojjeta.
 date: 2026-07-22
+time: 23:18:52
 ---
 Waltajjiilee haaraa shan daballeerra. Videoner amma viidiyoo kanneen irraa buusa:
 

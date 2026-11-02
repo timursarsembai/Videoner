@@ -2,6 +2,7 @@
 title: Endi akkauntni botga Android telefondan ulash mumkin
 summary: Kompyuter kerak emas: Androidʼda Instagramʼni @VideonerBotʼga Firefox va Cookie-Editor qoʻshimchasi orqali ulang — bot storislar va yopiq postlarni yuklab oladi.
 date: 2026-10-31
+time: 00:39:25
 ---
 Bot Instagram storislari va yopiq postlarni yuklab olishi uchun unga akkauntingizni ulashingiz kerak. Shu paytgacha buning uchun Videoner kengaytmasi oʻrnatilgan kompyuter talab qilinardi. Endi akkauntni toʻgʻridan-toʻgʻri **Android** telefoningizdan ulashingiz mumkin.
 

@@ -2,6 +2,7 @@
 title: Inline rejim: @VideonerBot ilə videoları istənilən çata göndərin
 summary: Söhbətin içində @VideonerBot və linki yazın — video həmin çata gələcək. Saytda isə linki sadəcə qarşısına domenimizi əlavə etməklə açmaq olar.
 date: 2026-08-19
+time: 23:18:52
 ---
 Videoları daha sürətli yükləməyin iki yeni yolu.
 

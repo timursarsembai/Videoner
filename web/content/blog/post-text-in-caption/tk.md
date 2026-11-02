@@ -2,6 +2,7 @@
 title: Ýazgynyň teksti indi faýlyň aşagyndaky tekstde
 summary: Bot TikTok, Instagram, Threads, X, Facebook we Pinterest ýazgylarynyň tekstini wideo we suratlaryň aşagyndaky tekste goşýar. Saýt we giňeltme ýüklemeden soň täzelikler kanalymyza salgy görkezýär.
 date: 2026-10-31
+time: 01:36:57
 ---
 Wideony köplenç awtoryň teksti üçin ugradýarlar: tagam resepti, salgy, degişme, heştegler sanawy. Indi [@VideonerBot](https://t.me/VideonerBot) ony faýl bilen bilelikde saklaýar.
 

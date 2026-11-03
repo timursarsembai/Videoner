@@ -85,7 +85,7 @@ async function privateList(ctx: Context, m: (typeof messages)[Lang]) {
     kb.text(m.accountsDeleteButton(platformLabel(r.platform), where).slice(0, 60), `ac|d|${r.id}`).row();
   }
   if (rows.length) kb.text(m.accountsDeleteAllButton, "ac|all");
-  const text = [m.accountsIntro, lines.length ? lines.join("\n") : m.accountsNone, m.accountsHowTo, m.accountsWarning].join("\n\n");
+  const text = [m.accountsIntro, m.accountsPlatforms, lines.length ? lines.join("\n") : m.accountsNone, m.accountsHowTo, m.accountsWarning].join("\n\n");
   return { text, keyboard: kb };
 }
 
@@ -98,7 +98,7 @@ async function groupList(ctx: Context, m: (typeof messages)[Lang]) {
     kb.text(m.accountsDeleteButton(label, who).slice(0, 60), `ac|d|${r.id}`).row();
     return m.accountsGroupLine(label, who, r.active);
   });
-  const text = [m.accountsGroupTitle, lines.length ? lines.join("\n") : m.accountsNone, m.accountsGroupHowTo].join("\n\n");
+  const text = [m.accountsGroupTitle, m.accountsPlatforms, lines.length ? lines.join("\n") : m.accountsNone, m.accountsGroupHowTo].join("\n\n");
   return { text, keyboard: kb };
 }
 

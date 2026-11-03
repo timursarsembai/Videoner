@@ -145,6 +145,8 @@ interface Messages {
   settingsCookiesButton: (by: string) => string;
   // Подключённые аккаунты (куки людей): handlers/accounts.ts.
   accountsIntro: string;
+  // Какие площадки можно подключить — список под вступлением /accounts.
+  accountsPlatforms: string;
   accountsHowTo: string;
   accountsWarning: string;
   accountsNone: string;
@@ -389,6 +391,7 @@ const ru: Messages = {
   settingsCookiesButton: (by) => `🔑 Подключать аккаунты: ${by === "all" ? "все" : "админы"}`,
   accountsIntro:
     "🔑 Подключённые аккаунты\n\nБот может скачивать то, что видно только вошедшим (сторис Instagram, закрытые записи), — от вашего аккаунта. Вход работает там, куда вы его подключили: в личке — для ваших скачиваний, и в группах — для ваших собственных ссылок, если к группе свой аккаунт не подключён. Подключённый к группе — для всех её участников.",
+  accountsPlatforms: "Можно подключить: Instagram (и Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Как подключить:\n1. Проще всего — расширение Videoner на компьютере: войдите на сайт площадки, откройте окошко Videoner, нажмите «Подключить аккаунт» и пришлите мне код. Для группы — отправьте в группе /connect КОД.\n2. Или пришлите мне файл cookies.txt (экспорт кук из браузера) — или вставьте его текст сообщением.\n3. С телефона Android — через Firefox и дополнение Cookie-Editor: https://videoner.download/ru/blog/android-firefox",
   accountsWarning:
@@ -608,6 +611,7 @@ const en: Messages = {
   settingsCookiesButton: (by) => `🔑 Connecting accounts: ${by === "all" ? "everyone" : "admins"}`,
   accountsIntro:
     "🔑 Connected accounts\n\nThe bot can download what only signed-in people see (Instagram stories, private posts) — using your account. A login works where you connected it: one in the private chat serves your downloads, including your own links in groups that have no account of their own; one connected to a group serves all its members.",
+  accountsPlatforms: "You can connect: Instagram (and Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "How to connect:\n1. Easiest: the Videoner extension on a computer — sign in on the platform's site, open the Videoner popup, press \"Connect account\" and send me the code. For a group, send /connect CODE in that group.\n2. Or send me a cookies.txt file (cookies exported from the browser), or paste its text as a message.\n3. From an Android phone — with Firefox and the Cookie-Editor add-on: https://videoner.download/blog/android-firefox",
   accountsWarning:
@@ -827,6 +831,7 @@ const ar: Messages = {
   settingsCookiesButton: (by) => `🔑 ربط الحسابات: ${by === "all" ? "الجميع" : "المشرفون"}`,
   accountsIntro:
     "🔑 الحسابات المرتبطة\n\nيستطيع البوت تنزيل ما لا يراه إلا المسجّلون (قصص Instagram، المنشورات الخاصة) — باستخدام حسابك. يعمل تسجيل الدخول حيث ربطته: المرتبط في الدردشة الخاصة يخدم تنزيلاتك، بما فيها روابطك أنت في المجموعات التي ليس لها حساب خاص بها؛ والمرتبط بمجموعة يخدم جميع أعضائها.",
+  accountsPlatforms: "يمكنك ربط: Instagram (وThreads)، Facebook، YouTube، X، VK، TikTok.",
   accountsHowTo:
     "طريقة الربط:\n1. الأسهل: إضافة Videoner على الكمبيوتر — سجّل الدخول في موقع المنصة، وافتح نافذة Videoner، واضغط \"ربط الحساب\" وأرسل لي الرمز. للمجموعة، أرسل ‎/connect CODE في تلك المجموعة.\n2. أو أرسل لي ملف cookies.txt (ملفات cookies مصدّرة من المتصفح)، أو الصق نصه في رسالة.\n3. من هاتف Android — عبر Firefox وإضافة Cookie-Editor: https://videoner.download/ar/blog/android-firefox",
   accountsWarning:
@@ -1046,6 +1051,7 @@ const zh: Messages = {
   settingsCookiesButton: (by) => `🔑 连接账号：${by === "all" ? "所有人" : "管理员"}`,
   accountsIntro:
     "🔑 已连接的账号\n\n机器人可以借助你的账号下载只有登录用户才能看到的内容（Instagram 快拍、私密帖子）。登录在哪里连接就在哪里生效：在私聊中连接的账号用于你自己的下载，包括你在没有连接账号的群组里发的链接；连接到群组的账号则供该群所有成员使用。",
+  accountsPlatforms: "可连接：Instagram（及 Threads）、Facebook、YouTube、X、VK、TikTok。",
   accountsHowTo:
     "连接方法：\n1. 最简单：在电脑上使用 Videoner 扩展——先在平台网站上登录，打开 Videoner 弹窗，点击「🔑 将你的 … 账号连接到机器人」，然后把代码发给我。如果是群组，请在该群中发送 /connect CODE。\n2. 或者把 cookies.txt 文件（从浏览器导出的 cookies）发给我，也可以把文件内容作为消息粘贴发送。\n3. 在 Android 手机上——使用 Firefox 和 Cookie-Editor 附加组件：https://videoner.download/zh/blog/android-firefox",
   accountsWarning:
@@ -1265,6 +1271,7 @@ const hi: Messages = {
   settingsCookiesButton: (by) => `🔑 खाते कनेक्ट करना: ${by === "all" ? "सभी" : "एडमिन"}`,
   accountsIntro:
     "🔑 कनेक्ट किए गए खाते\n\nबॉट वह भी डाउनलोड कर सकता है जो सिर्फ़ साइन-इन किए हुए लोगों को दिखता है (Instagram स्टोरीज़, प्राइवेट पोस्ट) — आपके खाते से। लॉग-इन वहीं काम करता है जहाँ आपने उसे कनेक्ट किया है: प्राइवेट चैट में कनेक्ट किया गया लॉग-इन आपके डाउनलोड के लिए है, जिसमें उन ग्रुप्स में आपके अपने लिंक भी शामिल हैं जिनका अपना कोई खाता नहीं है; ग्रुप से कनेक्ट किया गया लॉग-इन उसके सभी सदस्यों के काम आता है।",
+  accountsPlatforms: "आप कनेक्ट कर सकते हैं: Instagram (और Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "कनेक्ट कैसे करें:\n1. सबसे आसान: कंप्यूटर पर Videoner एक्सटेंशन — प्लेटफ़ॉर्म की साइट पर साइन-इन करें, Videoner पॉपअप खोलें, «🔑 अपना … खाता बॉट से कनेक्ट करें» दबाएँ और कोड मुझे भेजें। ग्रुप के लिए, उसी ग्रुप में /connect CODE भेजें।\n2. या मुझे cookies.txt फ़ाइल भेजें (ब्राउज़र से एक्सपोर्ट की गई कुकीज़), या उसका टेक्स्ट मैसेज में पेस्ट करें।\n3. Android फ़ोन से — Firefox और Cookie-Editor ऐड-ऑन के साथ: https://videoner.download/hi/blog/android-firefox",
   accountsWarning:
@@ -1484,6 +1491,7 @@ const indonesian: Messages = {
   settingsCookiesButton: (by) => `🔑 Menghubungkan akun: ${by === "all" ? "semua orang" : "admin"}`,
   accountsIntro:
     "🔑 Akun yang terhubung\n\nBot dapat mengunduh konten yang hanya terlihat oleh orang yang sudah masuk (story Instagram, postingan privat) — menggunakan akun Anda. Login berlaku di tempat Anda menghubungkannya: login di obrolan pribadi melayani unduhan Anda, termasuk tautan Anda sendiri di grup yang tidak memiliki akun sendiri; login yang dihubungkan ke grup melayani semua anggotanya.",
+  accountsPlatforms: "Yang bisa dihubungkan: Instagram (dan Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Cara menghubungkan:\n1. Paling mudah: ekstensi Videoner di komputer — masuk di situs platform, buka jendela Videoner, tekan «🔑 Hubungkan akun … Anda ke bot», lalu kirimkan kodenya kepada saya. Untuk grup, kirim /connect KODE di grup tersebut.\n2. Atau kirimkan file cookies.txt (cookies yang diekspor dari browser), atau tempelkan isinya sebagai pesan.\n3. Dari ponsel Android — dengan Firefox dan add-on Cookie-Editor: https://videoner.download/id/blog/android-firefox",
   accountsWarning:
@@ -1703,6 +1711,7 @@ const sw: Messages = {
   settingsCookiesButton: (by) => `🔑 Kuunganisha akaunti: ${by === "all" ? "kila mtu" : "wasimamizi"}`,
   accountsIntro:
     "🔑 Akaunti zilizounganishwa\n\nBot inaweza kupakua maudhui ambayo yanaonekana tu kwa watu walioingia (story za Instagram, machapisho ya faragha) — kwa kutumia akaunti yako. Kuingia kunafanya kazi pale ulipokiunganisha: kilichounganishwa kwenye gumzo la faragha kinahudumia upakuaji wako, pamoja na linki zako mwenyewe katika vikundi visivyo na akaunti yao; kilichounganishwa na kikundi kinahudumia wanachama wake wote.",
+  accountsPlatforms: "Unaweza kuunganisha: Instagram (na Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Jinsi ya kuunganisha:\n1. Rahisi zaidi: kiendelezi cha Videoner kwenye kompyuta — ingia kwenye tovuti ya jukwaa, fungua dirisha la Videoner, bonyeza «🔑 Unganisha akaunti yako ya … na bot» kisha unitumie msimbo. Kwa kikundi, tuma /connect MSIMBO katika kikundi hicho.\n2. Au nitumie faili ya cookies.txt (cookies zilizohamishwa kutoka kwenye kivinjari), au bandika maandishi yake kama ujumbe.\n3. Kutoka kwenye simu ya Android — kwa Firefox na kiongezi cha Cookie-Editor: https://videoner.download/sw/blog/android-firefox",
   accountsWarning:
@@ -1922,6 +1931,7 @@ const de: Messages = {
   settingsCookiesButton: (by) => `🔑 Konten verbinden: ${by === "all" ? "alle" : "Admins"}`,
   accountsIntro:
     "🔑 Verbundene Konten\n\nDer Bot kann herunterladen, was nur angemeldete Personen sehen (Instagram-Storys, private Beiträge) — über dein Konto. Eine Anmeldung gilt dort, wo du sie verbunden hast: eine im privaten Chat für deine Downloads, auch für deine eigenen Links in Gruppen ohne eigenes Konto; eine mit einer Gruppe verbundene für alle ihre Mitglieder.",
+  accountsPlatforms: "Verbinden kannst du: Instagram (und Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "So verbindest du ein Konto:\n1. Am einfachsten: die Videoner-Erweiterung am Computer — melde dich auf der Website der Plattform an, öffne das Videoner-Fenster, tippe auf «🔑 Dein …-Konto mit dem Bot verbinden» und schick mir den Code. Für eine Gruppe schick /connect CODE in dieser Gruppe.\n2. Oder schick mir eine cookies.txt-Datei (aus dem Browser exportierte Cookies) oder füge ihren Text als Nachricht ein.\n3. Vom Android-Handy aus — mit Firefox und dem Add-on Cookie-Editor: https://videoner.download/de/blog/android-firefox",
   accountsWarning:
@@ -2141,6 +2151,7 @@ const fr: Messages = {
   settingsCookiesButton: (by) => `🔑 Connexion des comptes : ${by === "all" ? "tout le monde" : "admins"}`,
   accountsIntro:
     "🔑 Comptes connectés\n\nLe bot peut télécharger ce que seules les personnes connectées voient (stories Instagram, publications privées) — avec votre compte. Une connexion fonctionne là où vous l'avez faite : celle du chat privé sert à vos téléchargements, y compris vos propres liens dans les groupes qui n'ont pas de compte à eux ; celle d'un groupe sert à tous ses membres.",
+  accountsPlatforms: "Vous pouvez connecter : Instagram (et Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Comment connecter un compte :\n1. Le plus simple : l'extension Videoner sur ordinateur — connectez-vous sur le site de la plateforme, ouvrez la fenêtre Videoner, appuyez sur «🔑 Connecter votre compte … au bot» et envoyez-moi le code. Pour un groupe, envoyez /connect CODE dans ce groupe.\n2. Ou envoyez-moi un fichier cookies.txt (cookies exportés depuis le navigateur), ou collez son texte dans un message.\n3. Depuis un téléphone Android — avec Firefox et le module Cookie-Editor : https://videoner.download/fr/blog/android-firefox",
   accountsWarning:
@@ -2360,6 +2371,7 @@ const it: Messages = {
   settingsCookiesButton: (by) => `🔑 Collegamento account: ${by === "all" ? "tutti" : "admin"}`,
   accountsIntro:
     "🔑 Account collegati\n\nIl bot può scaricare ciò che vede solo chi ha effettuato l'accesso (storie di Instagram, post privati) — usando il tuo account. Un collegamento funziona dove l'hai fatto: quello nella chat privata serve per i tuoi download, compresi i tuoi link nei gruppi che non hanno un account proprio; quello collegato a un gruppo serve a tutti i suoi membri.",
+  accountsPlatforms: "Puoi collegare: Instagram (e Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Come collegare un account:\n1. Il modo più semplice: l'estensione Videoner sul computer — accedi al sito della piattaforma, apri la finestra di Videoner, premi «🔑 Collega il tuo account … al bot» e mandami il codice. Per un gruppo, invia /connect CODICE in quel gruppo.\n2. Oppure mandami un file cookies.txt (cookie esportati dal browser), o incolla il suo testo in un messaggio.\n3. Da un telefono Android — con Firefox e il componente aggiuntivo Cookie-Editor: https://videoner.download/it/blog/android-firefox",
   accountsWarning:
@@ -2579,6 +2591,7 @@ const pt: Messages = {
   settingsCookiesButton: (by) => `🔑 Conectar contas: ${by === "all" ? "todos" : "admins"}`,
   accountsIntro:
     "🔑 Contas conectadas\n\nO bot consegue baixar o que só quem está logado vê (stories do Instagram, posts privados) — usando a sua conta. Um login vale onde você o conectou: o do chat privado serve para os seus downloads, inclusive para os seus próprios links em grupos que não têm conta própria; o conectado a um grupo serve para todos os membros dele.",
+  accountsPlatforms: "Você pode conectar: Instagram (e Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Como conectar:\n1. O jeito mais fácil: a extensão Videoner no computador — faça login no site da plataforma, abra a janela do Videoner, toque em «🔑 Conectar sua conta do … ao bot» e me mande o código. Para um grupo, mande /connect CÓDIGO nesse grupo.\n2. Ou me mande um arquivo cookies.txt (cookies exportados do navegador), ou cole o texto dele em uma mensagem.\n3. Pelo celular Android — com o Firefox e o complemento Cookie-Editor: https://videoner.download/pt/blog/android-firefox",
   accountsWarning:
@@ -2798,6 +2811,7 @@ const es: Messages = {
   settingsCookiesButton: (by) => `🔑 Conectar cuentas: ${by === "all" ? "todos" : "administradores"}`,
   accountsIntro:
     "🔑 Cuentas conectadas\n\nEl bot puede descargar lo que solo ven quienes han iniciado sesión (historias de Instagram, publicaciones privadas) — usando tu cuenta. Una sesión funciona donde la conectaste: la del chat privado sirve para tus descargas, incluidos tus propios enlaces en grupos que no tienen cuenta propia; la conectada a un grupo sirve para todos sus miembros.",
+  accountsPlatforms: "Puedes conectar: Instagram (y Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Cómo conectar:\n1. Lo más fácil: la extensión de Videoner en un ordenador — inicia sesión en el sitio de la plataforma, abre la ventana de Videoner, pulsa «🔑 Conecta tu cuenta de … al bot» y envíame el código. Para un grupo, envía /connect CÓDIGO en ese grupo.\n2. O envíame un archivo cookies.txt (cookies exportadas del navegador), o pega su texto en un mensaje.\n3. Desde un teléfono Android — con Firefox y el complemento Cookie-Editor: https://videoner.download/es/blog/android-firefox",
   accountsWarning:
@@ -3017,6 +3031,7 @@ const uz: Messages = {
   settingsCookiesButton: (by) => `🔑 Akkauntlarni ulash: ${by === "all" ? "hamma" : "adminlar"}`,
   accountsIntro:
     "🔑 Ulangan akkauntlar\n\nBot faqat tizimga kirganlar koʻradigan narsalarni (Instagram storislari, yopiq postlar) sizning akkauntingiz orqali yuklab olishi mumkin. Kirish qayerda ulangan boʻlsa, oʻsha yerda ishlaydi: shaxsiy chatda ulangani sizning yuklab olishlaringizga, jumladan oʻz akkaunti ulanmagan guruhlardagi oʻz havolalaringizga xizmat qiladi; guruhga ulangani esa uning barcha aʼzolariga xizmat qiladi.",
+  accountsPlatforms: "Ulash mumkin: Instagram (va Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Qanday ulash mumkin:\n1. Eng osoni: kompyuterdagi Videoner kengaytmasi — platforma saytida akkauntingizga kiring, Videoner oynasini oching, «🔑 … akkauntingizni botga ulash» tugmasini bosing va menga kodni yuboring. Guruh uchun oʻsha guruhda /connect KOD yuboring.\n2. Yoki menga cookies.txt faylini (brauzerdan eksport qilingan cookie fayllar) yuboring yoki uning matnini xabar sifatida joylang.\n3. Android telefondan — Firefox va Cookie-Editor qoʻshimchasi orqali: https://videoner.download/uz/blog/android-firefox",
   accountsWarning:
@@ -3236,6 +3251,7 @@ const tr: Messages = {
   settingsCookiesButton: (by) => `🔑 Hesap bağlama: ${by === "all" ? "herkes" : "yöneticiler"}`,
   accountsIntro:
     "🔑 Bağlı hesaplar\n\nBot, yalnızca oturum açmış kişilerin görebildiklerini (Instagram hikayeleri, gizli gönderiler) hesabınızla indirebilir. Bir oturum, bağlandığı yerde çalışır: özel sohbette bağlanan, sizin indirmelerinize hizmet eder — kendi hesabı olmayan gruplardaki kendi bağlantılarınız dahil; bir gruba bağlanan ise grubun tüm üyelerine hizmet eder.",
+  accountsPlatforms: "Bağlayabileceğiniz platformlar: Instagram (ve Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Nasıl bağlanır:\n1. En kolayı: bilgisayarda Videoner eklentisi — platformun sitesinde oturum açın, Videoner penceresini açın, «🔑 … hesabınızı bota bağlayın» düğmesine basın ve kodu bana gönderin. Bir grup için o grupta /connect KOD gönderin.\n2. Ya da bana bir cookies.txt dosyası gönderin (tarayıcıdan dışa aktarılan çerezler) veya metnini mesaj olarak yapıştırın.\n3. Android telefondan — Firefox ve Cookie-Editor eklentisiyle: https://videoner.download/tr/blog/android-firefox",
   accountsWarning:
@@ -3455,6 +3471,7 @@ const fa: Messages = {
   settingsCookiesButton: (by) => `🔑 اتصال حساب‌ها: ${by === "all" ? "همه" : "ادمین‌ها"}`,
   accountsIntro:
     "🔑 حساب‌های متصل\n\nربات می‌تواند چیزهایی را که فقط کاربران واردشده می‌بینند (استوری‌های Instagram، پست‌های خصوصی) با حساب شما دانلود کند. هر ورود همان جایی کار می‌کند که متصلش کرده‌اید: حسابی که در گفتگوی خصوصی متصل شده برای دانلودهای خود شماست، از جمله لینک‌های خودتان در گروه‌هایی که حساب جداگانه ندارند؛ حسابی که به یک گروه متصل شده برای همهٔ اعضای آن گروه کار می‌کند.",
+  accountsPlatforms: "قابل اتصال: Instagram (و Threads)، Facebook، YouTube، X، VK، TikTok.",
   accountsHowTo:
     "روش اتصال:\n1. ساده‌ترین راه: افزونهٔ Videoner روی کامپیوتر — در سایت پلتفرم وارد حساب شوید، پنجرهٔ Videoner را باز کنید، دکمهٔ «🔑 اتصال حساب … شما به ربات» را بزنید و کد را برایم بفرستید. برای یک گروه، در همان گروه ‎/connect CODE را بفرستید.\n2. یا یک فایل cookies.txt (کوکی‌های خروجی‌گرفته از مرورگر) برایم بفرستید، یا متن آن را در یک پیام بچسبانید.\n3. از گوشی Android — با Firefox و افزونهٔ Cookie-Editor: https://videoner.download/fa/blog/android-firefox",
   accountsWarning:
@@ -3674,6 +3691,7 @@ const vi: Messages = {
   settingsCookiesButton: (by) => `🔑 Kết nối tài khoản: ${by === "all" ? "mọi người" : "quản trị viên"}`,
   accountsIntro:
     "🔑 Tài khoản đã kết nối\n\nBot có thể tải những nội dung chỉ người đã đăng nhập mới xem được (story Instagram, bài đăng riêng tư) — bằng tài khoản của bạn. Phiên đăng nhập có tác dụng ở nơi bạn kết nối: kết nối trong chat riêng phục vụ lượt tải của bạn, kể cả link của chính bạn trong các nhóm chưa có tài khoản riêng; kết nối với một nhóm phục vụ mọi thành viên của nhóm đó.",
+  accountsPlatforms: "Có thể kết nối: Instagram (và Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Cách kết nối:\n1. Dễ nhất: tiện ích Videoner trên máy tính — đăng nhập trên trang của nền tảng, mở cửa sổ Videoner, bấm «🔑 Kết nối tài khoản … của bạn với bot» rồi gửi mã cho mình. Với nhóm, hãy gửi /connect MÃ ngay trong nhóm đó.\n2. Hoặc gửi cho mình file cookies.txt (cookie xuất từ trình duyệt), hoặc dán nội dung của nó thành tin nhắn.\n3. Từ điện thoại Android — dùng Firefox và tiện ích Cookie-Editor: https://videoner.download/vi/blog/android-firefox",
   accountsWarning:
@@ -3894,6 +3912,7 @@ const bn: Messages = {
   settingsCookiesButton: (by) => `🔑 অ্যাকাউন্ট যুক্ত করা: ${by === "all" ? "সবাই" : "অ্যাডমিনরা"}`,
   accountsIntro:
     "🔑 যুক্ত অ্যাকাউন্ট\n\nশুধু সাইন ইন করা লোকেরা যা দেখতে পান (Instagram স্টোরি, প্রাইভেট পোস্ট), বট তা আপনার অ্যাকাউন্ট ব্যবহার করে ডাউনলোড করতে পারে। লগ ইন সেখানেই কাজ করে যেখানে আপনি এটি যুক্ত করেছেন: প্রাইভেট চ্যাটে যুক্ত করা অ্যাকাউন্ট আপনার ডাউনলোডের জন্য, যেসব গ্রুপে নিজস্ব অ্যাকাউন্ট নেই সেখানে আপনার নিজের লিংকসহ; আর গ্রুপে যুক্ত করা অ্যাকাউন্ট সেই গ্রুপের সব সদস্যের জন্য।",
+  accountsPlatforms: "যুক্ত করা যায়: Instagram (ও Threads), Facebook, YouTube, X, VK, TikTok।",
   accountsHowTo:
     "কীভাবে যুক্ত করবেন:\n1. সবচেয়ে সহজ: কম্পিউটারে Videoner এক্সটেনশন — প্ল্যাটফর্মের সাইটে সাইন ইন করুন, Videoner উইন্ডো খুলুন, «🔑 আপনার … অ্যাকাউন্ট বটের সাথে যুক্ত করুন» চাপুন এবং কোডটি আমাকে পাঠান। গ্রুপের জন্য সেই গ্রুপেই /connect কোড পাঠান।\n2. অথবা আমাকে একটি cookies.txt ফাইল পাঠান (ব্রাউজার থেকে এক্সপোর্ট করা কুকি), অথবা এর লেখা মেসেজ হিসেবে পেস্ট করুন।\n3. Android ফোন থেকে — Firefox ও Cookie-Editor অ্যাড-অন দিয়ে: https://videoner.download/bn/blog/android-firefox",
   accountsWarning:
@@ -4113,6 +4132,7 @@ const ur: Messages = {
   settingsCookiesButton: (by) => `🔑 اکاؤنٹس جوڑنا: ${by === "all" ? "سب" : "ایڈمنز"}`,
   accountsIntro:
     "🔑 جڑے ہوئے اکاؤنٹس\n\nبوٹ وہ چیزیں بھی ڈاؤن لوڈ کر سکتا ہے جو صرف سائن ان لوگوں کو نظر آتی ہیں (Instagram اسٹوریز، پرائیویٹ پوسٹس) — آپ کے اکاؤنٹ کے ذریعے۔ لاگ ان وہیں کام کرتا ہے جہاں آپ نے اسے جوڑا ہے: پرائیویٹ چیٹ میں جوڑا گیا اکاؤنٹ آپ کے ڈاؤن لوڈز کے لیے ہے، ان گروپس میں آپ کے اپنے لنکس سمیت جن کا اپنا کوئی اکاؤنٹ نہیں؛ کسی گروپ سے جوڑا گیا اکاؤنٹ اس کے تمام ممبرز کے کام آتا ہے۔",
+  accountsPlatforms: "آپ جوڑ سکتے ہیں: Instagram (اور Threads)، Facebook، YouTube، X، VK، TikTok۔",
   accountsHowTo:
     "جوڑنے کا طریقہ:\n1. سب سے آسان: کمپیوٹر پر Videoner ایکسٹینشن — پلیٹ فارم کی سائٹ پر سائن ان کریں، Videoner کی ونڈو کھولیں، «🔑 اپنا … اکاؤنٹ بوٹ سے جوڑیں» دبائیں اور کوڈ مجھے بھیجیں۔ گروپ کے لیے، اسی گروپ میں ‎/connect CODE بھیجیں۔\n2. یا مجھے cookies.txt فائل (براؤزر سے ایکسپورٹ کی گئی کوکیز) بھیجیں، یا اس کا متن پیغام میں پیسٹ کریں۔\n3. Android فون سے — Firefox اور Cookie-Editor ایڈ آن کے ساتھ: https://videoner.download/ur/blog/android-firefox",
   accountsWarning:
@@ -4332,6 +4352,7 @@ const pl: Messages = {
   settingsCookiesButton: (by) => `🔑 Łączenie kont: ${by === "all" ? "wszyscy" : "administratorzy"}`,
   accountsIntro:
     "🔑 Połączone konta\n\nBot może pobierać to, co widzą tylko zalogowane osoby (relacje na Instagramie, prywatne posty) — przez twoje konto. Logowanie działa tam, gdzie zostało połączone: to w prywatnym czacie obsługuje twoje pobrania, także twoje własne linki w grupach, które nie mają własnego konta; to połączone z grupą obsługuje wszystkich jej członków.",
+  accountsPlatforms: "Możesz połączyć: Instagram (i Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Jak połączyć:\n1. Najprościej: rozszerzenie Videoner na komputerze — zaloguj się na stronie platformy, otwórz okienko Videoner, naciśnij «🔑 Połącz swoje konto … z botem» i wyślij mi kod. Dla grupy wyślij /connect KOD w tej grupie.\n2. Albo wyślij mi plik cookies.txt (pliki cookie wyeksportowane z przeglądarki) lub wklej jego treść jako wiadomość.\n3. Z telefonu z Androidem — przez Firefoksa i dodatek Cookie-Editor: https://videoner.download/pl/blog/android-firefox",
   accountsWarning:
@@ -4551,6 +4572,7 @@ const ja: Messages = {
   settingsCookiesButton: (by) => `🔑 アカウントの接続：${by === "all" ? "全員" : "管理者"}`,
   accountsIntro:
     "🔑 接続済みのアカウント\n\nボットは、ログインしている人にしか見えないもの（Instagram のストーリー、非公開の投稿）を、あなたのアカウントを使ってダウンロードできます。ログインは接続した場所で有効になります。個人チャットで接続したものはあなたのダウンロードに使われ、独自のアカウントがないグループでのあなた自身のリンクにも使われます。グループに接続したものはそのグループのメンバー全員に使われます。",
+  accountsPlatforms: "接続できるサービス：Instagram（および Threads）、Facebook、YouTube、X、VK、TikTok。",
   accountsHowTo:
     "接続方法：\n1. いちばん簡単なのは、パソコンの Videoner 拡張機能です。プラットフォームのサイトでログインし、Videoner のポップアップを開いて «🔑 … アカウントをボットに接続» を押し、表示されたコードを私に送ってください。グループの場合は、そのグループで /connect コード を送ってください。\n2. または、cookies.txt ファイル（ブラウザからエクスポートした Cookie）を送るか、その内容をメッセージとして貼り付けてください。\n3. Android スマートフォンからは、Firefox と Cookie-Editor アドオンを使います：https://videoner.download/ja/blog/android-firefox",
   accountsWarning:
@@ -4770,6 +4792,7 @@ const ko: Messages = {
   settingsCookiesButton: (by) => `🔑 계정 연결: ${by === "all" ? "모두" : "관리자"}`,
   accountsIntro:
     "🔑 연결된 계정\n\n봇은 로그인한 사람만 볼 수 있는 콘텐츠(Instagram 스토리, 비공개 게시물)를 내 계정으로 다운로드할 수 있어요. 로그인은 연결한 곳에서 작동해요. 개인 채팅에서 연결한 계정은 내 다운로드에 쓰이고, 자체 계정이 없는 그룹에서 내가 보낸 링크에도 쓰여요. 그룹에 연결한 계정은 그 그룹의 모든 멤버에게 쓰여요.",
+  accountsPlatforms: "연결할 수 있는 플랫폼: Instagram(및 Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "연결 방법:\n1. 가장 쉬운 방법은 컴퓨터의 Videoner 확장 프로그램이에요. 플랫폼 사이트에 로그인하고 Videoner 팝업을 열어 «🔑 내 … 계정을 봇에 연결»을 누른 뒤 코드를 저에게 보내 주세요. 그룹이라면 해당 그룹에서 /connect 코드 를 보내 주세요.\n2. 또는 cookies.txt 파일(브라우저에서 내보낸 쿠키)을 보내거나, 그 내용을 메시지로 붙여 넣어 주세요.\n3. Android 휴대폰에서는 Firefox와 Cookie-Editor 부가 기능으로 할 수 있어요: https://videoner.download/ko/blog/android-firefox",
   accountsWarning:
@@ -4989,6 +5012,7 @@ const th: Messages = {
   settingsCookiesButton: (by) => `🔑 การเชื่อมต่อบัญชี: ${by === "all" ? "ทุกคน" : "แอดมิน"}`,
   accountsIntro:
     "🔑 บัญชีที่เชื่อมต่อไว้\n\nบอทดาวน์โหลดเนื้อหาที่เห็นได้เฉพาะคนที่ล็อกอิน (สตอรี่ Instagram, โพสต์ส่วนตัว) ได้โดยใช้บัญชีของคุณ การล็อกอินจะใช้ได้ในที่ที่คุณเชื่อมต่อไว้: บัญชีที่เชื่อมต่อในแชตส่วนตัวใช้กับการดาวน์โหลดของคุณ รวมถึงลิงก์ที่คุณส่งในกลุ่มที่ไม่มีบัญชีของตัวเอง ส่วนบัญชีที่เชื่อมต่อกับกลุ่มใช้ได้กับสมาชิกทุกคนในกลุ่มนั้น",
+  accountsPlatforms: "เชื่อมต่อได้: Instagram (และ Threads), Facebook, YouTube, X, VK, TikTok",
   accountsHowTo:
     "วิธีเชื่อมต่อ:\n1. ง่ายที่สุด: ใช้ส่วนขยาย Videoner บนคอมพิวเตอร์ ล็อกอินบนเว็บไซต์ของแพลตฟอร์ม เปิดป๊อปอัป Videoner กด «🔑 เชื่อมต่อบัญชี … ของคุณกับบอท» แล้วส่งรหัสมาให้เรา หากเป็นกลุ่ม ให้ส่ง /connect รหัส ในกลุ่มนั้น\n2. หรือส่งไฟล์ cookies.txt (คุกกี้ที่ส่งออกจากเบราว์เซอร์) หรือวางเนื้อหาของไฟล์เป็นข้อความ\n3. จากมือถือ Android ใช้ Firefox กับส่วนเสริม Cookie-Editor: https://videoner.download/th/blog/android-firefox",
   accountsWarning:
@@ -5208,6 +5232,7 @@ const am: Messages = {
   settingsCookiesButton: (by) => `🔑 መለያ ማገናኘት፦ ${by === "all" ? "ሁሉም" : "አስተዳዳሪዎች"}`,
   accountsIntro:
     "🔑 የተገናኙ መለያዎች\n\nቦቱ ለገቡ ሰዎች ብቻ የሚታየውን (የInstagram ስቶሪዎችን፣ የግል ልጥፎችን) በእርስዎ መለያ ማውረድ ይችላል። መግቢያው የሚሰራው ባገናኙበት ቦታ ነው፦ በግል ቻት የተገናኘ መለያ ለእርስዎ ማውረዶች ያገለግላል፤ የራሳቸው መለያ በሌላቸው ቡድኖች ውስጥ የሚልኳቸውን ሊንኮችም ጨምሮ። ከቡድን ጋር የተገናኘ መለያ ደግሞ ለሁሉም የቡድኑ አባላት ያገለግላል።",
+  accountsPlatforms: "ማገናኘት ይችላሉ፦ Instagram (እና Threads)፣ Facebook፣ YouTube፣ X፣ VK፣ TikTok።",
   accountsHowTo:
     "እንዴት እንደሚያገናኙ፦\n1. በጣም ቀላሉ፦ በኮምፒውተር ላይ የVideoner ቅጥያ — በመድረኩ ድረ-ገጽ ላይ ይግቡ፣ የVideoner ብቅ-ባይ መስኮትን ይክፈቱ፣ «🔑 የ… መለያዎን ከቦቱ ጋር ያገናኙ» የሚለውን ይጫኑና ኮዱን ይላኩልኝ። ለቡድን ከሆነ በዚያው ቡድን ውስጥ /connect ኮድ ይላኩ።\n2. ወይም የcookies.txt ፋይል (ከአሳሹ የተላኩ ኩኪዎች) ይላኩልኝ፣ ወይም ጽሑፉን እንደ መልዕክት ይለጥፉ።\n3. ከAndroid ስልክ — በFirefox እና በCookie-Editor ተጨማሪ፦ https://videoner.download/am/blog/android-firefox",
   accountsWarning:
@@ -5427,6 +5452,7 @@ const om: Messages = {
   settingsCookiesButton: (by) => `🔑 Akkaawuntii walqabsiisuu: ${by === "all" ? "nama hunda" : "bulchitoota"}`,
   accountsIntro:
     "🔑 Akkaawuntiiwwan walqabsiifaman\n\nBootiin waan namoota seenan qofaaf mul'atu (istoorii Instagram, maxxansoota dhuunfaa) akkaawuntii keessan fayyadamee buufachuu danda'a. Seensi bakka itti walqabsiiftan qofatti hojjeta: kan chaatii dhuunfaa keessatti walqabsiifame buufannaa keessan tajaajila, liinkiiwwan keessan gareewwan akkaawuntii mataa isaanii hin qabne keessatti ergitan dabalatee; kan garee tokkoon walqabsiifame miseensota isaa hunda tajaajila.",
+  accountsPlatforms: "Walqabsiisuu dandeessu: Instagram (fi Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Akkamitti walqabsiisuu:\n1. Inni salphaan: kompiitara irratti dabalata Videoner — marsariitii waltajjichaa irratti seenaa, foddaa Videoner banaa, “🔑 Akkaawuntii … keessan bootii wajjin walqabsiisaa” tuqaatii koodii naaf ergaa. Gareef yoo ta'e, garee sana keessatti /connect KOODII ergaa.\n2. Ykn faayilii cookies.txt (kuukii biraawuzarii irraa baafame) naaf ergaa, ykn barreeffama isaa akka ergaatti maxxansaa.\n3. Bilbila Android irraa — Firefox fi dabalata Cookie-Editor'n: https://videoner.download/om/blog/android-firefox",
   accountsWarning:
@@ -5646,6 +5672,7 @@ const ha: Messages = {
   settingsCookiesButton: (by) => `🔑 Haɗa asusu: ${by === "all" ? "kowa" : "admins"}`,
   accountsIntro:
     "🔑 Asusun da aka haɗa\n\nBot zai iya sauke abin da waɗanda suka shiga asusu kawai ke gani (stories na Instagram, wallafe-wallafe na sirri) — ta amfani da asusunku. Shiga yana aiki a inda kuka haɗa shi: wanda ke cikin tattaunawar sirri yana yi wa saukewarku aiki, har da hanyoyin haɗinku a rukunonin da ba su da nasu asusu; wanda aka haɗa da rukuni yana yi wa dukkan membobinsa aiki.",
+  accountsPlatforms: "Kuna iya haɗa: Instagram (da Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Yadda ake haɗawa:\n1. Mafi sauƙi: ƙarin burauza na Videoner a kwamfuta — ku shiga a shafin dandalin, ku buɗe taga na Videoner, ku danna “🔑 Haɗa asusunku na … da bot” sannan ku aiko min da lambar. Don rukuni, ku aika /connect LAMBA a cikin wannan rukuni.\n2. Ko ku aiko min da fayil ɗin cookies.txt (cookies da aka fitar daga burauza), ko ku liƙa rubutunsa a matsayin saƙo.\n3. Daga wayar Android — da Firefox da ƙarin Cookie-Editor: https://videoner.download/ha/blog/android-firefox",
   accountsWarning:
@@ -5865,6 +5892,7 @@ const so: Messages = {
   settingsCookiesButton: (by) => `🔑 Ku xiridda akoonnada: ${by === "all" ? "qof kasta" : "maamulayaasha"}`,
   accountsIntro:
     "🔑 Akoonnada ku xiran\n\nBot-ku wuxuu soo dejin karaa waxa ay arkaan oo keliya dadka akoonkooda galay (stories-ka Instagram, boostooyinka gaarka ah) — isagoo adeegsanaya akoonkaaga. Gelitaanku wuxuu ka shaqeeyaa meesha aad ku xirtay: midka sheekada gaarka ah wuxuu u adeegaa soo dejintaada, oo ay ku jiraan link-yadaada kooxaha aan lahayn akoon u gaar ah; midka koox lagu xiray wuxuu u adeegaa dhammaan xubnaheeda.",
+  accountsPlatforms: "Waxaad ku xiri kartaa: Instagram (iyo Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Sida loo xiro:\n1. Tan ugu fudud: kordhiyaha Videoner ee kombiyuutarka — gal websaydhka madasha, fur daaqadda Videoner, riix “🔑 Ku xir akoonkaaga … bot-ka” oo ii soo dir koodka. Koox ahaan, ku dir /connect KOOD kooxdaas gudaheeda.\n2. Ama ii soo dir fayl cookies.txt ah (cookies laga soo saaray biraawsarka), ama qoraalkiisa ku dheji fariin ahaan.\n3. Taleefan Android ah — adigoo isticmaalaya Firefox iyo add-on-ka Cookie-Editor: https://videoner.download/so/blog/android-firefox",
   accountsWarning:
@@ -6084,6 +6112,7 @@ const az: Messages = {
   settingsCookiesButton: (by) => `🔑 Hesabları qoşmaq: ${by === "all" ? "hamı" : "adminlər"}`,
   accountsIntro:
     "🔑 Qoşulmuş hesablar\n\nBot yalnız hesaba daxil olmuş istifadəçilərin gördüyünü (Instagram storiləri, qapalı paylaşımlar) sizin hesabınızla yükləyə bilər. Giriş harada qoşulubsa, orada işləyir: şəxsi çatda qoşulan sizin yükləmələrinizə, o cümlədən öz hesabı olmayan qruplardakı öz linklərinizə xidmət edir; qrupa qoşulan isə onun bütün üzvlərinə xidmət edir.",
+  accountsPlatforms: "Qoşmaq olar: Instagram (və Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Necə qoşmaq olar:\n1. Ən asanı: kompüterdə Videoner genişlənməsi — platformanın saytında hesabınıza daxil olun, Videoner pəncərəsini açın, «🔑 … hesabınızı bota qoşun» düyməsini basın və kodu mənə göndərin. Qrup üçün həmin qrupda /connect KOD göndərin.\n2. Və ya mənə cookies.txt faylını (brauzerdən ixrac edilmiş cookies) göndərin, yaxud onun mətnini mesaj kimi yapışdırın.\n3. Android telefondan — Firefox və Cookie-Editor əlavəsi ilə: https://videoner.download/az/blog/android-firefox",
   accountsWarning:
@@ -6303,6 +6332,7 @@ const ky: Messages = {
   settingsCookiesButton: (by) => `🔑 Аккаунт туташтыруу: ${by === "all" ? "баары" : "администраторлор"}`,
   accountsIntro:
     "🔑 Туташтырылган аккаунттар\n\nБот аккаунтка киргендер гана көрө турган нерселерди (Instagram стористери, жабык посттор) Сиздин аккаунтуңуз аркылуу жүктөп ала алат. Кирүү Сиз аны туташтырган жерде иштейт: жеке чатта туташтырылганы Сиздин жүктөөлөрүңүз үчүн, анын ичинде өз аккаунту жок топтордогу өз шилтемелериңиз үчүн иштейт; топко туташтырылганы анын бардык катышуучуларына кызмат кылат.",
+  accountsPlatforms: "Туташтырууга болот: Instagram (жана Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Кантип туташтыруу керек:\n1. Эң оңою: компьютердеги Videoner кеңейтүүсү — платформанын сайтына кирип, Videoner терезесин ачыңыз, «🔑 … аккаунтуңузду ботко туташтырыңыз» баскычын басып, кодду мага жөнөтүңүз. Топ үчүн ошол топко /connect КОД жөнөтүңүз.\n2. Же мага cookies.txt файлын (браузерден экспорттолгон cookie-файлдар) жөнөтүңүз, же анын текстин билдирүү катары жиберип коюңуз.\n3. Android телефонунан — Firefox жана Cookie-Editor кошумчасы менен: https://videoner.download/ky/blog/android-firefox",
   accountsWarning:
@@ -6522,6 +6552,7 @@ const tg: Messages = {
   settingsCookiesButton: (by) => `🔑 Пайваст кардани аккаунтҳо: ${by === "all" ? "ҳама" : "админҳо"}`,
   accountsIntro:
     "🔑 Аккаунтҳои пайвастшуда\n\nБот метавонад он чиро, ки танҳо корбарони воридшуда мебинанд (сторисҳои Instagram, постҳои пӯшида), бо аккаунти Шумо боргирӣ кунад. Воридшавӣ дар ҳамон ҷое кор мекунад, ки онро пайваст кардед: аккаунти дар чати шахсӣ пайвастшуда барои боргириҳои Шумо, аз ҷумла пайвандҳои худатон дар гурӯҳҳое, ки аккаунти худро надоранд, хизмат мекунад; аккаунти ба гурӯҳ пайвастшуда ба ҳамаи узвҳои он хизмат мекунад.",
+  accountsPlatforms: "Пайваст кардан мумкин аст: Instagram (ва Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Чӣ тавр пайваст кардан:\n1. Осонтарин роҳ: васеъкунандаи Videoner дар компютер — ба сайти платформа ворид шавед, равзанаи Videoner-ро кушоед, тугмаи «🔑 Аккаунти …-и худро ба бот пайваст кунед»-ро пахш кунед ва кодро ба ман фиристед. Барои гурӯҳ дар ҳамон гурӯҳ /connect КОД фиристед.\n2. Ё ба ман файли cookies.txt (cookie-ҳое, ки аз браузер содир шудаанд) фиристед, ё матни онро ҳамчун паём гузоред.\n3. Аз телефони Android — бо Firefox ва иловаи Cookie-Editor: https://videoner.download/tg/blog/android-firefox",
   accountsWarning:
@@ -6741,6 +6772,7 @@ const ms: Messages = {
   settingsCookiesButton: (by) => `🔑 Menyambungkan akaun: ${by === "all" ? "semua orang" : "pentadbir"}`,
   accountsIntro:
     "🔑 Akaun yang disambungkan\n\nBot boleh memuat turun apa yang hanya dapat dilihat oleh orang yang telah log masuk (story Instagram, hantaran peribadi) — menggunakan akaun anda. Log masuk berfungsi di tempat anda menyambungkannya: yang disambungkan dalam sembang peribadi digunakan untuk muat turun anda, termasuk pautan anda sendiri dalam kumpulan yang tiada akaun sendiri; yang disambungkan ke kumpulan digunakan untuk semua ahlinya.",
+  accountsPlatforms: "Anda boleh sambungkan: Instagram (dan Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Cara menyambungkan:\n1. Paling mudah: sambungan Videoner di komputer — log masuk di laman platform, buka tetingkap timbul Videoner, tekan “🔑 Sambungkan akaun … anda ke bot” dan hantar kod itu kepada saya. Untuk kumpulan, hantar /connect KOD dalam kumpulan tersebut.\n2. Atau hantar kepada saya fail cookies.txt (kuki yang dieksport dari pelayar), atau tampal teksnya sebagai mesej.\n3. Dari telefon Android — dengan Firefox dan add-on Cookie-Editor: https://videoner.download/ms/blog/android-firefox",
   accountsWarning:
@@ -6960,6 +6992,7 @@ const nl: Messages = {
   settingsCookiesButton: (by) => `🔑 Accounts koppelen: ${by === "all" ? "iedereen" : "beheerders"}`,
   accountsIntro:
     "🔑 Gekoppelde accounts\n\nDe bot kan downloaden wat alleen ingelogde mensen zien (Instagram-story's, privéposts) — via jouw account. Een login werkt waar je hem hebt gekoppeld: een login in de privéchat geldt voor jouw downloads, ook voor je eigen links in groepen zonder eigen account; een login die aan een groep is gekoppeld, geldt voor alle leden.",
+  accountsPlatforms: "Je kunt koppelen: Instagram (en Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Zo koppel je een account:\n1. Het makkelijkst: de Videoner-extensie op een computer — log in op de website van het platform, open het venster van Videoner, klik op “🔑 Je …-account aan de bot koppelen” en stuur me de code. Voor een groep stuur je /connect CODE in die groep.\n2. Of stuur me een bestand cookies.txt (cookies geëxporteerd uit de browser), of plak de tekst ervan als bericht.\n3. Vanaf een Android-telefoon — met Firefox en de add-on Cookie-Editor: https://videoner.download/nl/blog/android-firefox",
   accountsWarning:
@@ -7179,6 +7212,7 @@ const ro: Messages = {
   settingsCookiesButton: (by) => `🔑 Conectarea conturilor: ${by === "all" ? "toți" : "administratorii"}`,
   accountsIntro:
     "🔑 Conturi conectate\n\nBotul poate descărca ceea ce văd doar cei conectați (povești Instagram, postări private) — folosind contul tău. O autentificare funcționează acolo unde ai conectat-o: cea din chatul privat servește descărcările tale, inclusiv linkurile tale din grupurile care nu au un cont propriu; cea conectată la un grup servește toți membrii lui.",
+  accountsPlatforms: "Poți conecta: Instagram (și Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Cum conectezi un cont:\n1. Cel mai simplu: extensia Videoner pe calculator — conectează-te pe site-ul platformei, deschide fereastra Videoner, apasă „🔑 Conectează-ți contul … la bot” și trimite-mi codul. Pentru un grup, trimite /connect COD în acel grup.\n2. Sau trimite-mi un fișier cookies.txt (cookie-uri exportate din browser) ori lipește textul lui într-un mesaj.\n3. De pe un telefon Android — cu Firefox și suplimentul Cookie-Editor: https://videoner.download/ro/blog/android-firefox",
   accountsWarning:
@@ -7398,6 +7432,7 @@ const ps: Messages = {
   settingsCookiesButton: (by) => `🔑 د حسابونو وصلول: ${by === "all" ? "هر څوک" : "اډمینان"}`,
   accountsIntro:
     "🔑 وصل شوي حسابونه\n\nبوټ کولای شي هغه څه چې یوازې ننوتي کسان یې ویني (د Instagram سټورۍ، شخصي پوسټونه) ستاسو په حساب ښکته کړي. هر ننوتل په هماغه ځای کار کوي چېرې چې مو وصل کړی: هغه چې په شخصي چټ کې وصل شوی ستاسو د ښکته کولو لپاره دی، په هغو ګروپونو کې ستاسو د خپلو لینکونو په ګډون چې خپل حساب نه لري؛ هغه چې له یوه ګروپ سره وصل شوی د هغه ګروپ ټولو غړو ته کار کوي.",
+  accountsPlatforms: "وصلولای شئ: Instagram (او Threads)، Facebook، YouTube، X، VK، TikTok.",
   accountsHowTo:
     "د وصلولو طریقه:\n1. تر ټولو اسانه: په کمپیوټر کې د Videoner توسیع — د پلاټفارم په وېبپاڼه کې ننوځئ، د Videoner کړکۍ پرانیزئ، «🔑 خپل … حساب له بوټ سره وصل کړئ» کېکاږئ او کوډ راته ولېږئ. د ګروپ لپاره، په هماغه ګروپ کې ‎/connect CODE ولېږئ.\n2. یا راته د cookies.txt فایل (له براوزر څخه صادر شوي cookies) ولېږئ، یا یې متن په یوه پیغام کې ولګوئ.\n3. له Android موبایل څخه — د Firefox او Cookie-Editor ضمیمې سره: https://videoner.download/ps/blog/android-firefox",
   accountsWarning:
@@ -7617,6 +7652,7 @@ const ckb: Messages = {
   settingsCookiesButton: (by) => `🔑 بەستنەوەی هەژمار: ${by === "all" ? "هەمووان" : "ئەدمینەکان"}`,
   accountsIntro:
     "🔑 هەژمارە بەستراوەکان\n\nبۆتەکە دەتوانێت ئەو شتانەی تەنها کەسانی چووەژوورەوە دەیبینن (ستۆرییەکانی Instagram، پۆستە تایبەتەکان) بە هەژمارەکەی تۆ دابگرێت. هەر چوونەژوورەوەیەک لەو شوێنە کار دەکات کە لێی بەستراوەتەوە: ئەوەی لە چاتی تایبەتدا بەستراوەتەوە بۆ داگرتنەکانی خۆتە، لەوانەش بەستەرەکانی خۆت لەو گرووپانەی هەژماری خۆیان نییە؛ ئەوەی بە گرووپێکەوە بەستراوەتەوە بۆ هەموو ئەندامەکانی ئەو گرووپە کار دەکات.",
+  accountsPlatforms: "دەتوانیت ببەستیتەوە: Instagram (و Threads)، Facebook، YouTube، X، VK، TikTok.",
   accountsHowTo:
     "چۆن ببەستیتەوە:\n1. ئاسانترین ڕێگا: پێوەکراوی Videoner لەسەر کۆمپیوتەر — لە ماڵپەڕی پلاتفۆرمەکە بچۆ ژوورەوە، پەنجەرەی Videoner بکەرەوە، کرتە لە «🔑 هەژماری … بە بۆتەوە ببەستەوە» بکە و کۆدەکەم بۆ بنێرە. بۆ گرووپ، لە هەمان گرووپدا ‎/connect CODE بنێرە.\n2. یان فایلی cookies.txt (cookies هەناردەکراو لە وێبگەڕەوە) بۆم بنێرە، یان دەقەکەی وەک نامەیەک بلکێنە.\n3. بە مۆبایلێکی Android — بە Firefox و پێوەکراوی Cookie-Editor: https://videoner.download/ckb/blog/android-firefox",
   accountsWarning:
@@ -7836,6 +7872,7 @@ const ku: Messages = {
   settingsCookiesButton: (by) => `🔑 Girêdana hesaban: ${by === "all" ? "her kes" : "rêveber"}`,
   accountsIntro:
     "🔑 Hesabên girêdayî\n\nBot dikare tiştên ku tenê kesên têketî dibînin (story-yên Instagram, postên taybet) daxîne — bi hesabê te. Têketinek li wê derê dixebite ku te ew lê girê daye: ya di sohbeta taybet de ji bo daxistinên te ye, di nav de lînkên te yên di wan koman de ku hesabê wan ê xwe tune; ya bi komekê ve girêdayî ji bo hemû endamên wê ye.",
+  accountsPlatforms: "Tu dikarî girê bidî: Instagram (û Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Çawa girê bidî:\n1. Ya herî hêsan: pêveka Videoner li ser komputerê — li ser malpera platformê têkeve, pencereya Videoner veke, “🔑 Hesabê xwe yê … bi botê ve girê bide” bitikîne û kodê ji min re bişîne. Ji bo komekê, di wê komê de /connect CODE bişîne.\n2. An jî pelek cookies.txt (cookies ji gerokê hatine derxistin) ji min re bişîne, an jî nivîsa wê kopî bike û wek peyamekê bişîne.\n3. Ji telefoneke Android — bi Firefox û pêveka Cookie-Editor: https://videoner.download/ku/blog/android-firefox",
   accountsWarning:
@@ -8055,6 +8092,7 @@ const ug: Messages = {
   settingsCookiesButton: (by) => `🔑 ھېسابات باغلاش: ${by === "all" ? "ھەممەيلەن" : "باشقۇرغۇچىلار"}`,
   accountsIntro:
     "🔑 باغلانغان ھېساباتلار\n\nبوت پەقەت ھېساباتىغا كىرگەن كىشىلەرلا كۆرەلەيدىغان نەرسىلەرنى (Instagram ھېكايىلىرى، شەخسىي يوللانمىلار) ھېساباتىڭىز ئارقىلىق چۈشۈرەلەيدۇ. ھەر بىر كىرىش ئۇ باغلانغان جايدا ئىشلەيدۇ: شەخسىي سۆھبەتتە باغلانغىنى سىزنىڭ چۈشۈرۈشلىرىڭىز ئۈچۈن، جۈملىدىن ئۆز ھېساباتى يوق گۇرۇپپىلاردىكى ئۆزىڭىزنىڭ ئۇلانمىلىرى ئۈچۈن ئىشلەيدۇ؛ گۇرۇپپىغا باغلانغىنى شۇ گۇرۇپپىنىڭ بارلىق ئەزالىرى ئۈچۈن ئىشلەيدۇ.",
+  accountsPlatforms: "باغلىغىلى بولىدۇ: Instagram (ۋە Threads)، Facebook، YouTube، X، VK، TikTok.",
   accountsHowTo:
     "قانداق باغلاش:\n1. ئەڭ ئاسان يولى: كومپيۇتېردىكى Videoner قىستۇرمىسى — سۇپىنىڭ تور بېكىتىدە ھېساباتىڭىزغا كىرىڭ، Videoner كۆزنىكىنى ئېچىڭ، «🔑 … ھېساباتىڭىزنى بوتقا باغلاڭ» نى بېسىپ، كودنى ماڭا يوللاڭ. گۇرۇپپا ئۈچۈن شۇ گۇرۇپپىدا ‎/connect CODE يوللاڭ.\n2. ياكى ماڭا cookies.txt ھۆججىتىنى (توركۆرگۈدىن چىقىرىلغان cookies) يوللاڭ، ياكى ئۇنىڭ تېكىستىنى ئۇچۇر قىلىپ چاپلاڭ.\n3. Android تېلېفونىدىن — Firefox ۋە Cookie-Editor قىستۇرمىسى ئارقىلىق: https://videoner.download/ug/blog/android-firefox",
   accountsWarning:
@@ -8274,6 +8312,7 @@ const tk: Messages = {
   settingsCookiesButton: (by) => `🔑 Hasap birikdirmek: ${by === "all" ? "hemmeler" : "adminler"}`,
   accountsIntro:
     "🔑 Birikdirilen hasaplar\n\nBot diňe hasabyna giren ulanyjylaryň görýän zatlaryny (Instagram storislerini, ýapyk ýazgylary) Siziň hasabyňyz arkaly ýükläp bilýär. Giriş ony birikdiren ýeriňizde işleýär: hususy çatda birikdirileni Siziň ýüklemeleriňiz üçin, şol sanda öz hasaby bolmadyk toparlardaky öz salgylaryňyz üçin işleýär; topara birikdirileni bolsa onuň ähli agzalaryna hyzmat edýär.",
+  accountsPlatforms: "Birikdirip bolýar: Instagram (we Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Nädip birikdirmeli:\n1. Iň aňsady: kompýuterdäki Videoner giňeltmesi — platformanyň saýtynda hasabyňyza giriň, Videoner penjiresini açyň, “🔑 … hasabyňyzy bota birikdiriň” düwmesine basyň we kody maňa iberiň. Topar üçin şol topara /connect KOD iberiň.\n2. Ýa-da maňa cookies.txt faýlyny (brauzerden eksport edilen cookie-faýllar) iberiň ýa-da onuň tekstini habar edip goýberiň.\n3. Android telefondan — Firefox we Cookie-Editor goşmaçasy bilen: https://videoner.download/tk/blog/android-firefox",
   accountsWarning:
@@ -8493,6 +8532,7 @@ const tt: Messages = {
   settingsCookiesButton: (by) => `🔑 Аккаунтларны тоташтыру: ${by === "all" ? "барысы" : "админнар"}`,
   accountsIntro:
     "🔑 Тоташтырылган аккаунтлар\n\nБот аккаунтка кергән кешеләргә генә күренгәнне (Instagram сторислары, ябык постлар) сезнең аккаунт аша йөкләп ала ала. Керү сез аны кайда тоташтырсагыз, шунда эшли: шәхси чатта тоташтырылганы — сезнең йөкләүләр өчен, шул исәптән үз аккаунты тоташтырылмаган төркемнәрдәге сезнең үз сылтамаларыгыз өчен дә; төркемгә тоташтырылганы — аның барлык әгъзалары өчен.",
+  accountsPlatforms: "Тоташтырып була: Instagram (һәм Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Ничек тоташтырырга:\n1. Иң җиңеле — компьютердагы Videoner киңәйтмәсе: платформа сайтына керегез, Videoner тәрәзәсен ачыгыз, «🔑 … аккаунтыгызны ботка тоташтырыгыз» төймәсенә басыгыз һәм кодны миңа җибәрегез. Төркем өчен — шул төркемдә /connect КОД җибәрегез.\n2. Яисә миңа cookies.txt файлын (браузердан экспортланган cookie файллары) җибәрегез — яки аның текстын хәбәр итеп куегыз.\n3. Android телефоныннан — Firefox һәм Cookie-Editor өстәмәсе аша: https://videoner.download/tt/blog/android-firefox",
   accountsWarning:
@@ -8712,6 +8752,7 @@ const sq: Messages = {
   settingsCookiesButton: (by) => `🔑 Lidhja e llogarive: ${by === "all" ? "të gjithë" : "administratorët"}`,
   accountsIntro:
     "🔑 Llogaritë e lidhura\n\nBoti mund të shkarkojë atë që shohin vetëm përdoruesit e identifikuar (story të Instagram, postime private) — me llogarinë tuaj. Një identifikim funksionon aty ku e lidhët: ai në bisedën private shërben për shkarkimet tuaja, përfshirë lidhjet tuaja në grupet që nuk kanë llogari të vetën; ai i lidhur me një grup shërben për të gjithë anëtarët e tij.",
+  accountsPlatforms: "Mund të lidhni: Instagram (dhe Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Si të lidhni një llogari:\n1. Më e lehta: shtesa Videoner në kompjuter — identifikohuni në faqen e platformës, hapni dritaren e Videoner, shtypni “🔑 Lidhni llogarinë tuaj … me botin” dhe më dërgoni kodin. Për një grup, dërgoni /connect KODI në atë grup.\n2. Ose më dërgoni një skedar cookies.txt (cookies të eksportuara nga shfletuesi), ose ngjitni tekstin e tij si mesazh.\n3. Nga një telefon Android — me Firefox dhe shtesën Cookie-Editor: https://videoner.download/sq/blog/android-firefox",
   accountsWarning:
@@ -8941,6 +8982,7 @@ const bs: Messages = {
   settingsCookiesButton: (by) => `🔑 Povezivanje računa: ${by === "all" ? "svi" : "administratori"}`,
   accountsIntro:
     "🔑 Povezani računi\n\nBot može preuzeti ono što vide samo prijavljeni korisnici (Instagram priče, privatne objave) — pomoću vašeg računa. Prijava radi tamo gdje ste je povezali: ona u privatnom chatu služi za vaša preuzimanja, uključujući vaše vlastite linkove u grupama koje nemaju svoj račun; ona povezana s grupom služi svim njenim članovima.",
+  accountsPlatforms: "Možete povezati: Instagram (i Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Kako povezati:\n1. Najlakše: proširenje Videoner na računaru — prijavite se na stranici platforme, otvorite prozor Videonera, pritisnite „🔑 Povežite svoj … račun s botom“ i pošaljite mi kod. Za grupu pošaljite /connect KOD u toj grupi.\n2. Ili mi pošaljite fajl cookies.txt (kolačići izvezeni iz preglednika) ili zalijepite njegov tekst kao poruku.\n3. S Android telefona — pomoću Firefoxa i dodatka Cookie-Editor: https://videoner.download/bs/blog/android-firefox",
   accountsWarning:
@@ -9160,6 +9202,7 @@ const ce: Messages = {
   settingsCookiesButton: (by) => `🔑 Аккаунташ тӀетасар: ${by === "all" ? "массарна а" : "администраторшна"}`,
   accountsIntro:
     "🔑 ТӀетесна аккаунташ\n\nАккаунт чохь хьоьжучарна бен ца гуш дерг (Instagram сторисаш, къайла посташ) бото Шайн аккаунтца чуйоккху. Логин и тӀетесначохь бен болх ца беш ю: ботаца чатехь тӀетесначо Шайн чуяккхарш кхочушдо, шайн аккаунт йоцучу тобанашкахь Шайн хьажоргаш а; тобане тӀетесначо цуьнан массо декъашхошна болх бо.",
+  accountsPlatforms: "ТӀетаса мега: Instagram (Threads а), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Муха тӀетаса:\n1. Уггар атта: компьютер тӀехь Videoner расширени — платформан сайтехь логин а йина, Videoner кор схьа а деллина, «🔑 Шайн … аккаунт ботна тӀетасийша» кнопка тӀе а таӀийна, код суна дахийтийша. Тобанна — цу тобанехь /connect КОД дахийтийша.\n2. Я суна cookies.txt файл (браузерера экспорт йина cookies) дахийтийша, я цуьнан текст хаам санна чуйиллалаш.\n3. Android телефонера — Firefox а, Cookie-Editor дополнени а лелош: https://videoner.download/ce/blog/android-firefox",
   accountsWarning:
@@ -9379,6 +9422,7 @@ const inh: Messages = {
   settingsCookiesButton: (by) => `🔑 Аккаунташ тӀатохар: ${by === "all" ? "массане" : "администраторашта"}`,
   accountsIntro:
     "🔑 ТӀатехаь аккаунташ\n\nАккаунта чу бола наха мара гуш доацар (Instagram сторисаш, къайла посташ) бота Шун аккаунтаца чуйоаккх. Логин из тӀатехача мара болх беш яц: ботаца чата чу тӀатехар Шун чуяккхарашта болх бу, ший аккаунт йоаца тоабашка Шун ссылкашта а; тоабага тӀатехар цу тоаба массайолча доакъашхошта болх бу.",
+  accountsPlatforms: "ТӀатоха мегаш да: Instagram (Threads а), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Мишта тӀатоха:\n1. Эггара атта: компьютер тӀа Videoner расширени — платформа сайта тӀа логин е, Videoner кор дӀаелла, «🔑 Шун … аккаунт ботага тӀатохал» кнопка тӀатаӀа, код сона дахийтал. Тоабана — цу тоаба чу /connect КОД дахийтал.\n2. Е сона cookies.txt файл (браузера тӀара экспорт яь cookies) дахийтал, е цун текст хоам мо чуоттаде.\n3. Android телефона тӀара — Firefox а Cookie-Editor дополнени а лелаеш: https://videoner.download/inh/blog/android-firefox",
   accountsWarning:
@@ -9598,6 +9642,7 @@ const av: Messages = {
   settingsCookiesButton: (by) => `🔑 Аккаунтал бухьинаби: ${by === "all" ? "киназего" : "администраторазе"}`,
   accountsIntro:
     "🔑 Бухьинабурал аккаунтал\n\nАккаунталде жаниве лъугьарал гӀадамазе гурони рихьулареб жо (Instagram сторисал, къалъарал постал) боталъ нужер аккаунталдалъун босула. Логин хӀалтӀула гьеб бухьинабураб бакӀалда гурони: боталгун чаталда бухьинабураб — нужер босиязе, жидерго аккаунт гьечӀел къокъабазда нужер ссылкабазеги; къокъаялда бухьинабураб — гьелъул тӀолабго гӀахьалчагӀазе.",
+  accountsPlatforms: "Бухьинабизе бегьула: Instagram (ва Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Кин бухьинабизе:\n1. Бищунго бигьаяб: компьютералда Videoner расширение — платформаялъул сайталда аккаунталде жаниве лъугьа, Videoner-алъул окно рагье, «🔑 Нужер … аккаунт боталда бухьинабе» кнопкаялда квер бай ва код дие битӀе. Къокъаялъе — гьеб къокъаялда /connect КОД битӀе.\n2. Яги дие cookies.txt файл (браузералдаса экспорт гьабурал cookies) битӀе, яги гьелъул текст кагъаталъун битӀе.\n3. Android телефоналдаса — Firefox ва Cookie-Editor дополнение хӀалтӀизабун: https://videoner.download/av/blog/android-firefox",
   accountsWarning:
@@ -9817,6 +9862,7 @@ const tl: Messages = {
   settingsCookiesButton: (by) => `🔑 Pag-connect ng account: ${by === "all" ? "lahat" : "mga admin"}`,
   accountsIntro:
     "🔑 Mga naka-connect na account\n\nKayang i-download ng bot ang nakikita lang ng mga naka-sign in (Instagram stories, private post) — gamit ang iyong account. Gumagana ang login kung saan mo ito ini-connect: ang nasa private chat ay para sa iyong mga download, kasama ang sarili mong mga link sa mga group na walang sariling account; ang naka-connect sa isang group ay para sa lahat ng miyembro nito.",
+  accountsPlatforms: "Puwedeng i-connect: Instagram (at Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Paano mag-connect:\n1. Pinakamadali: ang Videoner extension sa computer — mag-sign in sa site ng platform, buksan ang popup ng Videoner, pindutin ang «🔑 I-connect ang iyong … account sa bot» at ipadala sa akin ang code. Para sa group, ipadala ang /connect CODE sa group na iyon.\n2. O magpadala sa akin ng cookies.txt file (cookies na na-export mula sa browser), o i-paste ang laman nito bilang mensahe.\n3. Mula sa Android phone — gamit ang Firefox at ang Cookie-Editor add-on: https://videoner.download/tl/blog/android-firefox",
   accountsWarning:
@@ -10037,6 +10083,7 @@ const uk: Messages = {
   settingsCookiesButton: (by) => `🔑 Підключати акаунти: ${by === "all" ? "усі" : "адміни"}`,
   accountsIntro:
     "🔑 Підключені акаунти\n\nБот може завантажувати те, що видно лише тим, хто увійшов (сторіс Instagram, закриті дописи), — від вашого акаунта. Вхід працює там, куди ви його підключили: в особистих повідомленнях — для ваших завантажень, і в групах — для ваших власних посилань, якщо до групи не підключено власний акаунт. Підключений до групи — для всіх її учасників.",
+  accountsPlatforms: "Можна підключити: Instagram (і Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Як підключити:\n1. Найпростіше — розширення Videoner на комп'ютері: увійдіть на сайт платформи, відкрийте віконце Videoner, натисніть «Підключити акаунт» і надішліть мені код. Для групи — надішліть у групі /connect КОД.\n2. Або надішліть мені файл cookies.txt (експорт куків із браузера) — чи вставте його текст повідомленням.\n3. З телефона Android — через Firefox і доповнення Cookie-Editor: https://videoner.download/uk/blog/android-firefox",
   accountsWarning:
@@ -10262,6 +10309,7 @@ const kk: Messages = {
   settingsCookiesButton: (by) => `🔑 Аккаунт қосу: ${by === "all" ? "барлығы" : "әкімшілер"}`,
   accountsIntro:
     "🔑 Қосылған аккаунттар\n\nБот тек аккаунтқа кіргендерге көрінетін нәрселерді (Instagram стористері, жабық жазбалар) сіздің аккаунтыңыз арқылы жүктеп ала алады. Кіру өзіңіз қосқан жерде жұмыс істейді: жеке чатта — сіздің жүктеп алуларыңыз үшін, ал топтарда — егер топқа өз аккаунты қосылмаған болса, сіздің өз сілтемелеріңіз үшін. Топқа қосылған аккаунт оның барлық қатысушыларына жұмыс істейді.",
+  accountsPlatforms: "Қосуға болады: Instagram (және Threads), Facebook, YouTube, X, VK, TikTok.",
   accountsHowTo:
     "Қалай қосуға болады:\n1. Ең оңайы — компьютердегі Videoner кеңейтімі: платформа сайтына кіріп, Videoner терезесін ашыңыз, «Аккаунтты қосу» батырмасын басып, кодты маған жіберіңіз. Топ үшін — топта /connect КОД жіберіңіз.\n2. Немесе маған cookies.txt файлын (браузерден экспортталған куки) жіберіңіз — не оның мәтінін хабарлама етіп қойыңыз.\n3. Android телефонынан — Firefox және Cookie-Editor қосымшасы арқылы: https://videoner.download/kk/blog/android-firefox",
   accountsWarning:

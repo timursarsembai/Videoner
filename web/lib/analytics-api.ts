@@ -24,14 +24,20 @@ export interface SourceDatum {
   count: number;
 }
 
+// Попытки скачивания и новые пользователи бота за день — каждый день
+// периода, включая пустые.
 export interface TimeseriesPoint {
   day: string;
-  count: number;
+  downloads: number;
+  newUsers: number;
 }
 
-export interface TimeseriesData {
-  downloads: TimeseriesPoint[];
-  newBotUsers: TimeseriesPoint[];
+// Успешные скачивания за день недели (1 — понедельник … 7 — воскресенье)
+// из одного источника, за период.
+export interface WeekdayPoint {
+  weekday: number;
+  source: string;
+  count: number;
 }
 
 export interface ActivityData {
@@ -51,15 +57,9 @@ export interface ActiveDailyPoint {
   mau: number;
 }
 
-// Активные пользователи за календарную неделю (с понедельника).
-export interface ActiveWeeklyPoint {
-  week: string;
-  users: number;
-}
-
-// Активные пользователи за календарный месяц.
-export interface ActiveMonthlyPoint {
-  month: string;
+// Активные пользователи за календарную неделю (с понедельника) или месяц.
+export interface ActivePeriodPoint {
+  period: string;
   users: number;
 }
 
@@ -78,12 +78,11 @@ export interface ErrorDatum {
   count: number;
 }
 
-// Успешные скачивания площадки за день (или месяц, тогда в поле month).
+// Успешные скачивания площадки за день или календарный месяц (period).
 // bytes — скачано из сети (у YouTube это трафик прокси), cachedBytes — отдано
 // повторно из кеша, не потратив трафика.
 export interface TrafficPoint {
-  day?: string;
-  month?: string;
+  period: string;
   platform: string;
   count: number;
   bytes: number;
@@ -111,6 +110,8 @@ export interface AttemptRow {
   url: string;
   title: string | null;
   errorCategory: string | null;
+  // Страна посетителя сайта или расширения (код ISO), у бота null.
+  country: string | null;
   fileSize: string | null;
   user: { telegramId: string; username: string | null } | null;
 }
@@ -146,12 +147,9 @@ export interface BlockedUser {
   lastEvent: { blocked: boolean; source: string; at: string } | null;
 }
 
-export interface BlockedData {
+export interface BlockedSummary {
   total: number;
   blocked: number;
-  daily: BlockedPoint[];
-  weekly: BlockedPoint[];
-  monthly: BlockedPoint[];
   users: BlockedUser[];
 }
 
@@ -171,22 +169,14 @@ export interface LanguageStatsRow {
   totalDownloads: number;
 }
 
-export interface AnalyticsSnapshot {
-  overview: OverviewData;
-  platforms: PlatformDatum[];
-  sources: SourceDatum[];
-  timeseries: TimeseriesData;
-  activity: ActivityData;
-  topUsers: TopUser[];
-  errors: ErrorDatum[];
-  errorsTimeseries: ErrorTimeseriesPoint[];
-  trafficDaily: TrafficPoint[];
-  trafficMonthly: TrafficPoint[];
-  activeDaily: ActiveDailyPoint[];
-  activeWeekly: ActiveWeeklyPoint[];
-  activeMonthly: ActiveMonthlyPoint[];
-  blocked: BlockedData;
-  languages: LanguageStatsRow[];
+// Успешные скачивания сайта и расширения из одной страны за период. country —
+// код ISO 3166-1 alpha-2 или "unknown" (до начала записи страны или без
+// заголовка Cloudflare).
+export interface CountryStatsRow {
+  country: string;
+  webDownloads: number;
+  extensionDownloads: number;
+  totalDownloads: number;
 }
 
 // Ходит на СВОЙ Next.js-прокси (app/api/dashboard/[...path]/route.ts), а не
@@ -229,62 +219,72 @@ export async function logoutDashboard(): Promise<void> {
   await fetch("/api/dashboard/auth", { method: "DELETE" });
 }
 
-export async function fetchAnalyticsSnapshot(days: number = 30): Promise<AnalyticsSnapshot> {
-  const [
-    overview,
-    platforms,
-    sources,
-    timeseries,
-    activity,
-    topUsers,
-    errors,
-    errorsTimeseries,
-    trafficDaily,
-    trafficMonthly,
-    activeDaily,
-    activeWeekly,
-    activeMonthly,
-    blocked,
-    languages,
-  ] = await Promise.all([
-    get<OverviewData>(`/overview?days=${days}`),
-    get<PlatformDatum[]>("/platforms"),
-    get<SourceDatum[]>("/sources"),
-    get<TimeseriesData>(`/timeseries?days=${days}`),
-    get<ActivityData>("/users/activity"),
-    get<TopUser[]>("/users/top?limit=20"),
-    get<ErrorDatum[]>("/errors"),
-    get<ErrorTimeseriesPoint[]>(`/errors/timeseries?days=${days}`),
-    get<TrafficPoint[]>(`/traffic/daily?days=${days}`),
-    get<TrafficPoint[]>("/traffic/monthly"),
-    get<ActiveDailyPoint[]>(`/users/active/daily?days=${days}`),
-    get<ActiveWeeklyPoint[]>("/users/active/weekly?weeks=26"),
-    get<ActiveMonthlyPoint[]>("/users/active/monthly"),
-    get<BlockedData>(`/users/blocked?days=${days}`),
-    get<LanguageStatsRow[]>(`/languages?days=${days}`),
-  ]);
+// Запросы графиков собираются в пакет: всё, что графики попросили за один
+// проход отрисовки, уходит одним GET /analytics/batch. У каждого графика свой
+// период, и по запросу на график дашборд быстро упирался бы в лимит частоты
+// сервера (он общий для всех запросов сайта). Одинаковые запросы (два графика
+// с одними данными и периодом) уходят один раз.
+export type AnalyticsParams = Record<string, string | number | undefined>;
 
-  return {
-    overview,
-    platforms,
-    sources,
-    timeseries,
-    activity,
-    topUsers,
-    errors,
-    errorsTimeseries,
-    trafficDaily,
-    trafficMonthly,
-    activeDaily,
-    activeWeekly,
-    activeMonthly,
-    blocked,
-    languages,
-  };
+interface PendingQuery {
+  key: string;
+  name: string;
+  params: AnalyticsParams;
+  resolve: (value: unknown) => void;
+  reject: (reason: unknown) => void;
 }
 
+// Столько же принимает сервер (MAX_BATCH в analytics.controller.ts).
+const MAX_BATCH = 40;
+let pending: PendingQuery[] = [];
+let flushTimer: ReturnType<typeof setTimeout> | null = null;
 
-// Журнал грузится ОТДЕЛЬНО от снапшота: у него своя постраничная навигация,
+export function analyticsQuery<T>(name: string, params: AnalyticsParams = {}): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    pending.push({
+      key: JSON.stringify([name, params]),
+      name,
+      params,
+      resolve: resolve as (value: unknown) => void,
+      reject,
+    });
+    flushTimer ??= setTimeout(flushQueries, 0);
+  });
+}
+
+async function flushQueries() {
+  flushTimer = null;
+  const queue = pending;
+  pending = [];
+  const byKey = new Map<string, PendingQuery[]>();
+  for (const query of queue) byKey.set(query.key, [...(byKey.get(query.key) ?? []), query]);
+  const unique = Array.from(byKey.values());
+  for (let i = 0; i < unique.length; i += MAX_BATCH) {
+    void sendBatch(unique.slice(i, i + MAX_BATCH));
+  }
+}
+
+async function sendBatch(groups: PendingQuery[][]) {
+  const items = groups.map((group, i) => ({ id: String(i), name: group[0].name, ...group[0].params }));
+  const settle = (i: number, ok: boolean, value: unknown) =>
+    groups[i].forEach((q) => (ok ? q.resolve(value) : q.reject(value)));
+  try {
+    const result = await get<Record<string, unknown>>(`/batch?q=${encodeURIComponent(JSON.stringify(items))}`);
+    groups.forEach((_, i) => {
+      const value = result[String(i)];
+      const failed = value && typeof value === "object" && "error" in value && Object.keys(value).length === 1;
+      if (value === undefined || failed) {
+        settle(i, false, new Error(failed ? String((value as { error: unknown }).error) : "Нет ответа"));
+      } else {
+        settle(i, true, value);
+      }
+    });
+  } catch (error) {
+    groups.forEach((_, i) => settle(i, false, error));
+  }
+}
+
+// Журнал грузится ОТДЕЛЬНО от графиков: у него своя постраничная навигация,
 // и тащить его в общий Promise.all значило бы перезапрашивать все графики при
 // каждом перелистывании страницы.
 export async function fetchAttempts(

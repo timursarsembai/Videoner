@@ -50,7 +50,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Данные учётной записи Telegram, которые бот получает, когда вы ему пишете: числовой идентификатор, имя пользователя, имя и код языка.",
               "Ссылки, которые вы отправляете на скачивание, и сведения о самой попытке: площадка, дата и время, выбранное качество, результат (успех или ошибка).",
-              "Технические данные соединения: IP-адрес, тип и версия браузера, язык, страница перехода. Они попадают в журналы сервера и в системы веб-аналитики.",
+              "Технические данные соединения: IP-адрес, тип и версия браузера, язык, страница перехода. Они попадают в журналы сервера и в системы веб-аналитики. По IP-адресу также определяется страна — она сохраняется вместе со скачиванием на сайте или в расширении для статистики.",
               "Файлы cookie и идентификаторы аналитики — подробнее в Политике cookie.",
             ],
           },
@@ -353,7 +353,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Telegram account data the bot receives when you message it: numeric id, username, first name and a language code.",
               "The links you submit for download and details of the attempt itself: platform, date and time, chosen quality, and the outcome (success or error).",
-              "Technical connection data: IP address, browser type and version, language and referring page. These end up in server logs and in the web analytics tools.",
+              "Technical connection data: IP address, browser type and version, language and referring page. These end up in server logs and in the web analytics tools. The IP address is also used to determine your country, which is stored with downloads made on the website or in the extension, for statistics.",
               "Cookies and analytics identifiers — see the Cookie Policy for details.",
             ],
           },
@@ -654,7 +654,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Datos de la cuenta de Telegram que recibe el bot cuando usted le escribe: identificador numérico, nombre de usuario, nombre y código de idioma.",
               "Los enlaces que envía para descargar y los datos del propio intento: plataforma, fecha y hora, calidad elegida y resultado (éxito o error).",
-              "Datos técnicos de la conexión: dirección IP, tipo y versión del navegador, idioma y página de procedencia. Quedan registrados en los registros del servidor y en las herramientas de analítica web.",
+              "Datos técnicos de la conexión: dirección IP, tipo y versión del navegador, idioma y página de procedencia. Quedan registrados en los registros del servidor y en las herramientas de analítica web. A partir de la dirección IP también se determina el país, que se almacena junto con la descarga realizada en el sitio o en la extensión, con fines estadísticos.",
               "Cookies e identificadores de analítica: véase la Política de cookies.",
             ],
           },
@@ -954,7 +954,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Дані облікового запису Telegram, які бот отримує, коли ви йому пишете: числовий ідентифікатор, ім'я користувача, ім'я та код мови.",
               "Посилання, які ви надсилаєте на завантаження, і відомості про саму спробу: платформа, дата й час, обрана якість, результат (успіх або помилка).",
-              "Технічні дані з'єднання: IP-адреса, тип і версія браузера, мова, сторінка переходу. Вони потрапляють до журналів сервера та до систем вебаналітики.",
+              "Технічні дані з'єднання: IP-адреса, тип і версія браузера, мова, сторінка переходу. Вони потрапляють до журналів сервера та до систем вебаналітики. За IP-адресою також визначається країна — вона зберігається разом із завантаженням на сайті або в розширенні для статистики.",
               "Файли cookie та ідентифікатори аналітики — докладніше в Політиці cookie.",
             ],
           },
@@ -1256,7 +1256,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Сіз ботқа жазған кезде ол алатын Telegram есептік жазбасының деректері: сандық идентификатор, пайдаланушы аты, аты және тіл коды.",
               "Сіз жүктеп алуға жіберетін сілтемелер және әрекеттің өзі туралы мәліметтер: платформа, күні мен уақыты, таңдалған сапа, нәтиже (сәтті немесе қате).",
-              "Қосылымның техникалық деректері: IP-мекенжай, браузердің түрі мен нұсқасы, тіл, өтпелі бет. Олар сервер журналдарына және веб-аналитика жүйелеріне түседі.",
+              "Қосылымның техникалық деректері: IP-мекенжай, браузердің түрі мен нұсқасы, тіл, өтпелі бет. Олар сервер журналдарына және веб-аналитика жүйелеріне түседі. IP-мекенжай бойынша ел де анықталады — ол статистика үшін сайтта немесе кеңейтімде жасалған жүктеп алумен бірге сақталады.",
               "Cookie файлдары және аналитика идентификаторлары — толығырақ Cookie саясатында.",
             ],
           },
@@ -1559,7 +1559,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "بيانات حساب Telegram التي يتلقاها البوت عندما تراسله: المعرّف الرقمي، واسم المستخدم، والاسم الأول، ورمز اللغة.",
               "الروابط التي ترسلها للتنزيل، والمعلومات المتعلقة بمحاولة التنزيل ذاتها: المنصة، والتاريخ والوقت، والجودة المختارة، والنتيجة (نجاح أو خطأ).",
-              "البيانات التقنية للاتصال: عنوان IP، ونوع المتصفح وإصداره، واللغة، والصفحة المُحيلة. وتُسجَّل هذه البيانات في سجلات الخادم وفي أنظمة تحليلات الويب.",
+              "البيانات التقنية للاتصال: عنوان IP، ونوع المتصفح وإصداره، واللغة، والصفحة المُحيلة. وتُسجَّل هذه البيانات في سجلات الخادم وفي أنظمة تحليلات الويب. ويُحدَّد البلد أيضًا من خلال عنوان IP، ويُحفَظ مع التنزيل الذي يتم عبر الموقع أو الإضافة لأغراض إحصائية.",
               "ملفات تعريف الارتباط (cookies) ومعرّفات التحليلات — للتفاصيل راجع سياسة ملفات تعريف الارتباط.",
             ],
           },
@@ -1861,7 +1861,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "您向机器人发送消息时，机器人获取的 Telegram 账户数据：数字标识符、用户名、名字及语言代码。",
               "您提交下载的链接以及该次下载尝试的相关信息：平台、日期和时间、所选画质、结果（成功或出错）。",
-              "连接的技术数据：IP 地址、浏览器类型及版本、语言、来源页面。这些数据会进入服务器日志和网站分析系统。",
+              "连接的技术数据：IP 地址、浏览器类型及版本、语言、来源页面。这些数据会进入服务器日志和网站分析系统。 我们还会根据 IP 地址确定国家/地区，并将其与在网站或扩展程序中进行的下载一并保存，用于统计。",
               "Cookie 及分析标识符——详见《Cookie 政策》。",
             ],
           },
@@ -2161,7 +2161,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Telegram खाते का डेटा, जो बॉट को तब प्राप्त होता है जब आप उसे संदेश भेजते हैं: संख्यात्मक पहचानकर्ता (id), उपयोगकर्ता नाम (username), नाम और भाषा कोड।",
               "डाउनलोड के लिए आपके द्वारा भेजे गए लिंक और स्वयं प्रयास से जुड़ी जानकारी: प्लेटफ़ॉर्म, तारीख और समय, चुनी गई गुणवत्ता, और परिणाम (सफलता या त्रुटि)।",
-              "कनेक्शन का तकनीकी डेटा: IP पता, ब्राउज़र का प्रकार और संस्करण, भाषा और वह पृष्ठ जिससे आप आए (referring page)। यह डेटा सर्वर लॉग और वेब एनालिटिक्स प्रणालियों में दर्ज होता है।",
+              "कनेक्शन का तकनीकी डेटा: IP पता, ब्राउज़र का प्रकार और संस्करण, भाषा और वह पृष्ठ जिससे आप आए (referring page)। यह डेटा सर्वर लॉग और वेब एनालिटिक्स प्रणालियों में दर्ज होता है। IP पते के आधार पर देश का भी पता लगाया जाता है — आँकड़ों के लिए इसे साइट पर या एक्सटेंशन में किए गए डाउनलोड के साथ सहेजा जाता है।",
               "कुकी (cookies) और एनालिटिक्स पहचानकर्ता — विवरण के लिए कुकी नीति देखें।",
             ],
           },
@@ -2463,7 +2463,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Data akun Telegram yang diterima bot ketika Anda mengirim pesan kepadanya: ID numerik, nama pengguna, nama depan, dan kode bahasa.",
               "Tautan yang Anda kirimkan untuk diunduh beserta keterangan mengenai upaya pengunduhan itu sendiri: platform, tanggal dan waktu, kualitas yang dipilih, serta hasilnya (berhasil atau galat).",
-              "Data teknis koneksi: alamat IP, jenis dan versi peramban, bahasa, serta halaman perujuk. Data ini tercatat dalam log server dan dalam sistem analitik web.",
+              "Data teknis koneksi: alamat IP, jenis dan versi peramban, bahasa, serta halaman perujuk. Data ini tercatat dalam log server dan dalam sistem analitik web. Alamat IP juga digunakan untuk menentukan negara, yang disimpan bersama unduhan yang dilakukan di situs atau di ekstensi untuk keperluan statistik.",
               "Cookie dan pengenal analitik — selengkapnya lihat Kebijakan Cookie.",
             ],
           },
@@ -2765,7 +2765,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Data za akaunti ya Telegram ambazo boti hupokea unapoiandikia: kitambulisho cha nambari, jina la mtumiaji (username), jina na msimbo wa lugha.",
               "Viungo unavyotuma kwa ajili ya kupakua na taarifa kuhusu jaribio lenyewe: jukwaa, tarehe na saa, ubora uliouchagua, na matokeo (mafanikio au hitilafu).",
-              "Data za kiufundi za muunganisho: anwani ya IP, aina na toleo la kivinjari, lugha na ukurasa uliokuelekeza. Data hizi huingia kwenye kumbukumbu za seva (server logs) na kwenye mifumo ya takwimu za wavuti.",
+              "Data za kiufundi za muunganisho: anwani ya IP, aina na toleo la kivinjari, lugha na ukurasa uliokuelekeza. Data hizi huingia kwenye kumbukumbu za seva (server logs) na kwenye mifumo ya takwimu za wavuti. Anwani ya IP pia hutumiwa kubaini nchi, ambayo huhifadhiwa pamoja na upakuaji uliofanywa kwenye tovuti au kwenye kiendelezi kwa ajili ya takwimu.",
               "Vidakuzi (cookies) na vitambulisho vya takwimu — maelezo zaidi yamo katika Sera ya Vidakuzi.",
             ],
           },
@@ -3066,7 +3066,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Daten Ihres Telegram-Kontos, die der Bot erhält, wenn Sie ihm schreiben: numerische Kennung, Benutzername, Vorname und Sprachcode.",
               "Die Links, die Sie zum Herunterladen übermitteln, und Angaben zum jeweiligen Downloadversuch: Plattform, Datum und Uhrzeit, gewählte Qualität sowie Ergebnis (Erfolg oder Fehler).",
-              "Technische Verbindungsdaten: IP-Adresse, Browsertyp und -version, Sprache und verweisende Seite. Diese gelangen in die Serverprotokolle und in die Webanalysedienste.",
+              "Technische Verbindungsdaten: IP-Adresse, Browsertyp und -version, Sprache und verweisende Seite. Diese gelangen in die Serverprotokolle und in die Webanalysedienste. Anhand der IP-Adresse wird außerdem das Land ermittelt; es wird zu statistischen Zwecken zusammen mit dem Download auf der Website oder in der Erweiterung gespeichert.",
               "Cookies und Analysekennungen – Näheres dazu in der Cookie-Richtlinie.",
             ],
           },
@@ -3368,7 +3368,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Les données du compte Telegram que le bot reçoit lorsque vous lui écrivez : identifiant numérique, nom d’utilisateur, prénom et code de langue.",
               "Les liens que vous soumettez pour téléchargement et les informations relatives à la tentative elle-même : plateforme, date et heure, qualité choisie, résultat (succès ou erreur).",
-              "Les données techniques de connexion : adresse IP, type et version du navigateur, langue, page de provenance. Elles sont enregistrées dans les journaux du serveur et dans les outils d’analyse d’audience.",
+              "Les données techniques de connexion : adresse IP, type et version du navigateur, langue, page de provenance. Elles sont enregistrées dans les journaux du serveur et dans les outils d’analyse d’audience. L’adresse IP permet également de déterminer le pays, qui est enregistré avec le téléchargement effectué sur le site ou dans l’extension, à des fins statistiques.",
               "Les cookies et les identifiants d’analyse — pour plus de détails, voir la Politique relative aux cookies.",
             ],
           },
@@ -3671,7 +3671,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "I dati dell’account Telegram che il bot riceve quando Lei gli scrive: identificativo numerico, nome utente, nome e codice della lingua.",
               "I link che Lei invia per il download e le informazioni sul tentativo stesso: piattaforma, data e ora, qualità scelta, esito (riuscito o errore).",
-              "Dati tecnici della connessione: indirizzo IP, tipo e versione del browser, lingua, pagina di provenienza. Tali dati confluiscono nei log del server e nei sistemi di analisi web.",
+              "Dati tecnici della connessione: indirizzo IP, tipo e versione del browser, lingua, pagina di provenienza. Tali dati confluiscono nei log del server e nei sistemi di analisi web. In base all’indirizzo IP viene inoltre determinato il paese, che viene conservato insieme al download effettuato sul sito o nell’estensione a fini statistici.",
               "Cookie e identificativi di analisi — per i dettagli si veda la Cookie policy.",
             ],
           },
@@ -3973,7 +3973,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Dados da conta do Telegram que o bot recebe quando você lhe envia uma mensagem: identificador numérico, nome de usuário, nome e código de idioma.",
               "Os links que você envia para download e informações sobre a própria tentativa: plataforma, data e hora, qualidade escolhida e resultado (sucesso ou erro).",
-              "Dados técnicos da conexão: endereço IP, tipo e versão do navegador, idioma e página de origem. Eles são registrados nos logs do servidor e nas ferramentas de análise da web.",
+              "Dados técnicos da conexão: endereço IP, tipo e versão do navegador, idioma e página de origem. Eles são registrados nos logs do servidor e nas ferramentas de análise da web. O endereço IP também é usado para determinar o país, que é armazenado junto com o download feito no site ou na extensão, para fins estatísticos.",
               "Cookies e identificadores de análise — mais detalhes na Política de Cookies.",
             ],
           },
@@ -4275,7 +4275,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Siz botga yozganingizda u oladigan Telegram hisob qaydnomasi maʼlumotlari: raqamli identifikator, foydalanuvchi nomi, ism va til kodi.",
               "Yuklab olish uchun yuboradigan havolalaringiz va urinishning oʻzi haqidagi maʼlumotlar: platforma, sana va vaqt, tanlangan sifat, natija (muvaffaqiyat yoki xato).",
-              "Ulanishning texnik maʼlumotlari: IP-manzil, brauzer turi va versiyasi, til, oʻtish amalga oshirilgan sahifa. Ular server jurnallariga va veb-tahlil tizimlariga tushadi.",
+              "Ulanishning texnik maʼlumotlari: IP-manzil, brauzer turi va versiyasi, til, oʻtish amalga oshirilgan sahifa. Ular server jurnallariga va veb-tahlil tizimlariga tushadi. IP-manzil boʻyicha mamlakat ham aniqlanadi — u statistika uchun saytda yoki kengaytmada amalga oshirilgan yuklab olish bilan birga saqlanadi.",
               "Cookie fayllari va tahlil identifikatorlari — batafsil maʼlumot Cookie siyosatida.",
             ],
           },
@@ -4577,7 +4577,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Bota mesaj yazdığınızda botun aldığı Telegram hesap verileri: sayısal kimlik numarası, kullanıcı adı, ad ve dil kodu.",
               "İndirmek üzere gönderdiğiniz bağlantılar ve indirme girişimine ilişkin bilgiler: platform, tarih ve saat, seçilen kalite, sonuç (başarılı veya hata).",
-              "Bağlantıya ilişkin teknik veriler: IP adresi, tarayıcı türü ve sürümü, dil, yönlendiren sayfa. Bu veriler sunucu kayıtlarına ve web analitiği sistemlerine aktarılır.",
+              "Bağlantıya ilişkin teknik veriler: IP adresi, tarayıcı türü ve sürümü, dil, yönlendiren sayfa. Bu veriler sunucu kayıtlarına ve web analitiği sistemlerine aktarılır. IP adresinden ayrıca ülke belirlenir; bu bilgi, istatistik amacıyla sitede veya uzantıda gerçekleştirilen indirmeyle birlikte saklanır.",
               "Çerezler ve analitik tanımlayıcılar — ayrıntılar için Çerez Politikası’na bakınız.",
             ],
           },
@@ -4879,7 +4879,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "داده‌های حساب کاربری Telegram که ربات هنگام پیام دادن شما به آن دریافت می‌کند: شناسه عددی، نام کاربری، نام و کد زبان.",
               "پیوندهایی که برای دانلود ارسال می‌کنید و اطلاعات مربوط به خود تلاش دانلود: پلتفرم، تاریخ و زمان، کیفیت انتخاب‌شده و نتیجه (موفقیت یا خطا).",
-              "داده‌های فنی اتصال: نشانی IP، نوع و نسخه مرورگر، زبان و صفحه ارجاع‌دهنده. این داده‌ها در گزارش‌های (لاگ‌های) سرور و در ابزارهای تحلیل وب ثبت می‌شوند.",
+              "داده‌های فنی اتصال: نشانی IP، نوع و نسخه مرورگر، زبان و صفحه ارجاع‌دهنده. این داده‌ها در گزارش‌های (لاگ‌های) سرور و در ابزارهای تحلیل وب ثبت می‌شوند. کشور نیز بر اساس نشانی IP تعیین می‌شود و برای اهداف آماری همراه با دانلودی که در سایت یا افزونه انجام می‌شود ذخیره می‌گردد.",
               "کوکی‌ها و شناسه‌های تحلیلی — جزئیات بیشتر در سیاست کوکی آمده است.",
             ],
           },
@@ -5179,7 +5179,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Dữ liệu tài khoản Telegram mà bot nhận được khi bạn nhắn tin cho bot: mã định danh dạng số, tên người dùng, tên và mã ngôn ngữ.",
               "Các liên kết bạn gửi để tải xuống và thông tin về chính lần tải đó: nền tảng, ngày và giờ, chất lượng đã chọn, kết quả (thành công hoặc lỗi).",
-              "Dữ liệu kỹ thuật về kết nối: địa chỉ IP, loại và phiên bản trình duyệt, ngôn ngữ, trang giới thiệu. Các dữ liệu này được ghi vào nhật ký máy chủ và các hệ thống phân tích web.",
+              "Dữ liệu kỹ thuật về kết nối: địa chỉ IP, loại và phiên bản trình duyệt, ngôn ngữ, trang giới thiệu. Các dữ liệu này được ghi vào nhật ký máy chủ và các hệ thống phân tích web. Địa chỉ IP cũng được dùng để xác định quốc gia — thông tin này được lưu cùng với lần tải xuống trên trang web hoặc trong tiện ích mở rộng nhằm phục vụ thống kê.",
               "Cookie và mã định danh phân tích — xem chi tiết trong Chính sách cookie.",
             ],
           },
@@ -5481,7 +5481,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Telegram অ্যাকাউন্টের তথ্য, যা আপনি বটকে বার্তা পাঠালে বটটি পায়: সাংখ্যিক আইডি, ইউজারনেম, নাম এবং ভাষার কোড।",
               "ডাউনলোডের জন্য আপনি যে লিংকগুলো পাঠান এবং প্রতিটি প্রচেষ্টার বিবরণ: প্ল্যাটফর্ম, তারিখ ও সময়, নির্বাচিত মান এবং ফলাফল (সফল বা ত্রুটি)।",
-              "সংযোগের প্রযুক্তিগত তথ্য: IP ঠিকানা, ব্রাউজারের ধরন ও সংস্করণ, ভাষা এবং যে পাতা থেকে আপনি এসেছেন। এগুলো সার্ভারের লগে এবং ওয়েব অ্যানালিটিক্স ব্যবস্থায় জমা হয়।",
+              "সংযোগের প্রযুক্তিগত তথ্য: IP ঠিকানা, ব্রাউজারের ধরন ও সংস্করণ, ভাষা এবং যে পাতা থেকে আপনি এসেছেন। এগুলো সার্ভারের লগে এবং ওয়েব অ্যানালিটিক্স ব্যবস্থায় জমা হয়। IP ঠিকানা থেকে দেশও নির্ধারণ করা হয় — পরিসংখ্যানের জন্য এটি সাইটে বা এক্সটেনশনে করা ডাউনলোডের সঙ্গে সংরক্ষিত হয়।",
               "কুকি এবং অ্যানালিটিক্স শনাক্তকারী — বিস্তারিত কুকি নীতিতে দেখুন।",
             ],
           },
@@ -5783,7 +5783,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Telegram اکاؤنٹ کا ڈیٹا جو بوٹ کو اس وقت موصول ہوتا ہے جب آپ اسے پیغام بھیجتے ہیں: عددی شناخت (id)، صارف نام (username)، نام اور زبان کا کوڈ۔",
               "وہ لنکس جو آپ ڈاؤن لوڈ کے لیے بھیجتے ہیں، اور خود کوشش کی تفصیلات: پلیٹ فارم، تاریخ اور وقت، منتخب کردہ کوالٹی، اور نتیجہ (کامیابی یا خرابی)۔",
-              "کنکشن کا تکنیکی ڈیٹا: IP ایڈریس، براؤزر کی قسم اور ورژن، زبان، اور وہ صفحہ جہاں سے آپ آئے۔ یہ ڈیٹا سرور لاگز اور ویب اینالیٹکس کے نظاموں میں درج ہوتا ہے۔",
+              "کنکشن کا تکنیکی ڈیٹا: IP ایڈریس، براؤزر کی قسم اور ورژن، زبان، اور وہ صفحہ جہاں سے آپ آئے۔ یہ ڈیٹا سرور لاگز اور ویب اینالیٹکس کے نظاموں میں درج ہوتا ہے۔ IP ایڈریس سے ملک کا بھی تعین کیا جاتا ہے — اعداد و شمار کے لیے یہ سائٹ یا ایکسٹینشن پر کیے گئے ڈاؤن لوڈ کے ساتھ محفوظ کیا جاتا ہے۔",
               "کوکیز اور اینالیٹکس کے شناخت کنندگان — تفصیلات کوکی پالیسی میں دیکھیں۔",
             ],
           },
@@ -6086,7 +6086,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Dane konta Telegram, które bot otrzymuje, gdy do niego piszesz: identyfikator liczbowy, nazwa użytkownika, imię i kod języka.",
               "Linki, które przesyłasz do pobrania, oraz informacje o samej próbie pobrania: platforma, data i godzina, wybrana jakość, wynik (powodzenie lub błąd).",
-              "Techniczne dane połączenia: adres IP, typ i wersja przeglądarki, język, strona odsyłająca. Trafiają one do dzienników serwera oraz do narzędzi analityki internetowej.",
+              "Techniczne dane połączenia: adres IP, typ i wersja przeglądarki, język, strona odsyłająca. Trafiają one do dzienników serwera oraz do narzędzi analityki internetowej. Na podstawie adresu IP ustalany jest również kraj — jest on zapisywany wraz z pobraniem na stronie lub w rozszerzeniu do celów statystycznych.",
               "Pliki cookie i identyfikatory analityczne — szczegóły w Polityce cookies.",
             ],
           },
@@ -6388,7 +6388,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "利用者がボットにメッセージを送信した際にボットが受け取るTelegramアカウントのデータ：数値ID、ユーザー名、名前および言語コード。",
               "ダウンロードのために送信されたリンクおよびダウンロード試行に関する情報：プラットフォーム、日時、選択した画質、結果（成功またはエラー）。",
-              "接続に関する技術データ：IPアドレス、ブラウザの種類およびバージョン、言語、参照元ページ。これらはサーバーログおよびウェブ解析ツールに記録されます。",
+              "接続に関する技術データ：IPアドレス、ブラウザの種類およびバージョン、言語、参照元ページ。これらはサーバーログおよびウェブ解析ツールに記録されます。 IPアドレスからは国も判定され、統計のため、サイトまたは拡張機能でのダウンロードとともに保存されます。",
               "Cookieおよび解析用識別子。詳細はCookieポリシーをご覧ください。",
             ],
           },
@@ -6690,7 +6690,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "귀하가 봇에 메시지를 보낼 때 봇이 수신하는 Telegram 계정 정보: 숫자 식별자, 사용자 이름, 이름 및 언어 코드.",
               "귀하가 다운로드를 위해 보내는 링크와 다운로드 시도에 관한 정보: 플랫폼, 일시, 선택한 화질, 결과(성공 또는 오류).",
-              "접속에 관한 기술 정보: IP 주소, 브라우저 종류 및 버전, 언어, 유입 페이지. 이 정보는 서버 로그 및 웹 분석 시스템에 기록됩니다.",
+              "접속에 관한 기술 정보: IP 주소, 브라우저 종류 및 버전, 언어, 유입 페이지. 이 정보는 서버 로그 및 웹 분석 시스템에 기록됩니다. IP 주소를 통해 국가도 확인되며, 이는 통계 목적으로 사이트 또는 확장 프로그램에서의 다운로드 기록과 함께 저장됩니다.",
               "쿠키 및 분석 식별자 — 자세한 내용은 쿠키 정책을 참조하십시오.",
             ],
           },
@@ -6993,7 +6993,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "ข้อมูลบัญชี Telegram ที่บอตได้รับเมื่อท่านส่งข้อความถึงบอต ได้แก่ ตัวระบุที่เป็นตัวเลข ชื่อผู้ใช้ ชื่อ และรหัสภาษา",
               "ลิงก์ที่ท่านส่งเพื่อดาวน์โหลดและข้อมูลเกี่ยวกับความพยายามดาวน์โหลดนั้น ได้แก่ แพลตฟอร์ม วันและเวลา คุณภาพที่เลือก และผลลัพธ์ (สำเร็จหรือเกิดข้อผิดพลาด)",
-              "ข้อมูลทางเทคนิคของการเชื่อมต่อ ได้แก่ หมายเลข IP ประเภทและเวอร์ชันของเบราว์เซอร์ ภาษา และหน้าที่อ้างอิงมา ข้อมูลเหล่านี้จะถูกบันทึกไว้ในล็อกของเซิร์ฟเวอร์และในระบบวิเคราะห์เว็บไซต์",
+              "ข้อมูลทางเทคนิคของการเชื่อมต่อ ได้แก่ หมายเลข IP ประเภทและเวอร์ชันของเบราว์เซอร์ ภาษา และหน้าที่อ้างอิงมา ข้อมูลเหล่านี้จะถูกบันทึกไว้ในล็อกของเซิร์ฟเวอร์และในระบบวิเคราะห์เว็บไซต์ หมายเลข IP ยังใช้ในการระบุประเทศ ซึ่งจะถูกบันทึกไว้พร้อมกับการดาวน์โหลดบนเว็บไซต์หรือในส่วนขยายเพื่อใช้ทำสถิติ",
               "คุกกี้และตัวระบุสำหรับการวิเคราะห์ — รายละเอียดเพิ่มเติมดูได้ในนโยบายคุกกี้",
             ],
           },
@@ -7295,7 +7295,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "ለቦቱ ሲጽፉ ቦቱ የሚቀበላቸው የTelegram አካውንት መረጃዎች፦ የቁጥር መለያ (numeric ID)፣ የተጠቃሚ ስም (username)፣ ስም እና የቋንቋ ኮድ።",
               "ለማውረድ የሚልኳቸው ሊንኮች እና ስለ ሙከራው ራሱ የሚገልጹ መረጃዎች፦ መድረክ (platform)፣ ቀን እና ሰዓት፣ የተመረጠው ጥራት እና ውጤቱ (ስኬት ወይም ስሕተት)።",
-              "የግንኙነቱ ቴክኒካዊ መረጃዎች፦ IP አድራሻ፣ የአሳሹ (browser) ዓይነት እና ስሪት፣ ቋንቋ እና የመጡበት ገጽ (referring page)። እነዚህ በሰርቨር መዝገቦች (logs) እና በድረ-ገጽ ትንታኔ (web analytics) ሥርዓቶች ውስጥ ይመዘገባሉ።",
+              "የግንኙነቱ ቴክኒካዊ መረጃዎች፦ IP አድራሻ፣ የአሳሹ (browser) ዓይነት እና ስሪት፣ ቋንቋ እና የመጡበት ገጽ (referring page)። እነዚህ በሰርቨር መዝገቦች (logs) እና በድረ-ገጽ ትንታኔ (web analytics) ሥርዓቶች ውስጥ ይመዘገባሉ። በIP አድራሻው መሠረት አገርም ይወሰናል — ይህ መረጃ ለስታቲስቲክስ ሲባል በድረ-ገጹ ወይም በቅጥያው (extension) ከተደረገው ማውረድ ጋር አብሮ ይቀመጣል።",
               "ኩኪዎች (cookies) እና የትንታኔ መለያዎች — ዝርዝሩ በኩኪ ፖሊሲው ውስጥ ይገኛል።",
             ],
           },
@@ -7597,7 +7597,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Odeeffannoo herrega Telegram kan bootiin yeroo isin isaaf barreessitan argatu: eenyummeessaa lakkoofsaa (numeric id), maqaa fayyadamaa (username), maqaa fi koodii afaanii.",
               "Liinkiiwwan buusuuf ergitan fi odeeffannoo yaalii sanaa: waltajjii, guyyaa fi sa'aatii, qulqullina filatame, fi bu'aa (milkaa'ina ykn dogoggora).",
-              "Odeeffannoo teeknikaa walqunnamtii: teessoo IP, gosaa fi fooyya'iinsa (version) biraawuzarii, afaan, fi fuula irraa dhuftan. Kunniin galmee sarvarii (server logs) fi meeshaalee xiinxala marsariitii keessa galu.",
+              "Odeeffannoo teeknikaa walqunnamtii: teessoo IP, gosaa fi fooyya'iinsa (version) biraawuzarii, afaan, fi fuula irraa dhuftan. Kunniin galmee sarvarii (server logs) fi meeshaalee xiinxala marsariitii keessa galu. Teessoo IP irraa biyyi illee ni murtaa'a — kunis istaatiksiif jecha buusuu marsariitii ykn dabalata biraawuzarii irratti raawwatame wajjin ni kuufama.",
               "Cookie fi eenyummeessitoota xiinxalaa — bal'inaan Imaammata Cookie keessatti ilaalaa.",
             ],
           },
@@ -7899,7 +7899,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Bayanan asusun Telegram da bot ke samu idan kuka aika masa saƙo: lambar shaida (id), sunan mai amfani (username), suna da lambar harshe.",
               "Hanyoyin haɗin da kuke aikawa don saukewa da bayanai game da ƙoƙarin saukewar kansa: dandali, kwanan wata da lokaci, ingancin da aka zaɓa, da sakamako (nasara ko kuskure).",
-              "Bayanan fasaha na haɗin intanet: adireshin IP, nau'i da sigar burauza, harshe da shafin da kuka fito. Waɗannan suna shiga cikin bayanan ayyukan uwar garke (server logs) da kayan aikin nazarin yanar gizo.",
+              "Bayanan fasaha na haɗin intanet: adireshin IP, nau'i da sigar burauza, harshe da shafin da kuka fito. Waɗannan suna shiga cikin bayanan ayyukan uwar garke (server logs) da kayan aikin nazarin yanar gizo. Ana kuma amfani da adireshin IP don gano ƙasa, wadda ake adanawa tare da saukewar da aka yi a shafin ko a ƙarin burauza, domin ƙididdiga.",
               "Cookies da masu gano nazari (analytics identifiers) — ƙarin bayani a cikin Manufar Cookie.",
             ],
           },
@@ -8201,7 +8201,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Xogta akoonka Telegram ee bot-ku helo markaad u qorto: aqoonsiga tirada ah (numeric id), magaca isticmaalaha (username), magaca iyo koodka luqadda.",
               "Link-yada aad u soo dirto soo dejinta iyo faahfaahinta isku daygaas laftiisa: madasha, taariikhda iyo waqtiga, tayada la doortay iyo natiijada (guul ama khalad).",
-              "Xogta farsamo ee isku xirka: cinwaanka IP, nooca iyo nuqulka biraawsarka, luqadda iyo bogga laga yimid. Xogtani waxay gashaa diiwaannada server-ka (server logs) iyo qalabka falanqaynta website-ka (web analytics).",
+              "Xogta farsamo ee isku xirka: cinwaanka IP, nooca iyo nuqulka biraawsarka, luqadda iyo bogga laga yimid. Xogtani waxay gashaa diiwaannada server-ka (server logs) iyo qalabka falanqaynta website-ka (web analytics). Cinwaanka IP waxaa sidoo kale lagu go'aamiyaa dalka, kaas oo lagu kaydiyo soo dejinta lagu sameeyo website-ka ama kordhiyaha, si loogu isticmaalo tirakoob.",
               "Cookie-yada iyo aqoonsiyada falanqaynta — faahfaahin ka eeg Siyaasadda Cookie-ga.",
             ],
           },
@@ -8501,7 +8501,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Bota yazdığınız zaman onun aldığı Telegram hesabı məlumatları: rəqəmsal identifikator, istifadəçi adı, ad və dil kodu.",
               "Yükləmək üçün göndərdiyiniz linklər və cəhdin özü haqqında məlumatlar: platforma, tarix və vaxt, seçilmiş keyfiyyət, nəticə (uğur və ya xəta).",
-              "Qoşulmanın texniki məlumatları: IP ünvanı, brauzerin növü və versiyası, dil, keçidin edildiyi səhifə. Bu məlumatlar server jurnallarına və veb-analitika sistemlərinə düşür.",
+              "Qoşulmanın texniki məlumatları: IP ünvanı, brauzerin növü və versiyası, dil, keçidin edildiyi səhifə. Bu məlumatlar server jurnallarına və veb-analitika sistemlərinə düşür. IP ünvanına görə ölkə də müəyyən edilir — o, statistika üçün saytda və ya genişlənmədə edilən yükləmə ilə birlikdə saxlanılır.",
               "Cookie faylları və analitika identifikatorları — ətraflı məlumat Cookie siyasətindədir.",
             ],
           },
@@ -8803,7 +8803,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Сиз ботко жазганда ал ала турган Telegram эсептик жазуусунун маалыматтары: сандык идентификатор, колдонуучунун аты, аты жана тил коду.",
               "Сиз жүктөп алуу үчүн жөнөткөн шилтемелер жана аракеттин өзү тууралуу маалыматтар: аянтча, күнү жана убактысы, тандалган сапат, натыйжа (ийгиликтүү же ката).",
-              "Туташуунун техникалык маалыматтары: IP дарек, браузердин түрү жана версиясы, тил, өтүү жасалган барак. Алар сервердин журналдарына жана веб-аналитика системаларына түшөт.",
+              "Туташуунун техникалык маалыматтары: IP дарек, браузердин түрү жана версиясы, тил, өтүү жасалган барак. Алар сервердин журналдарына жана веб-аналитика системаларына түшөт. IP дарек боюнча өлкө да аныкталат — ал статистика үчүн сайтта же кеңейтүүдө жасалган жүктөп алуу менен бирге сакталат.",
               "Cookie файлдары жана аналитика идентификаторлору — кененирээк Cookie саясатында.",
             ],
           },
@@ -9105,7 +9105,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Маълумоти аккаунти Telegram, ки бот ҳангоми ба он навиштани Шумо мегирад: идентификатори рақамӣ, номи корбар, ном ва рамзи забон.",
               "Пайвандҳое, ки Шумо барои боргирӣ мефиристед, ва маълумот дар бораи худи кӯшиш: платформа, сана ва вақт, сифати интихобшуда, натиҷа (муваффақият ё хато).",
-              "Маълумоти техникии пайвастшавӣ: суроғаи IP, навъ ва версияи браузер, забон, саҳифае, ки аз он гузариш сурат гирифтааст. Онҳо ба журналҳои сервер ва ба системаҳои веб-таҳлил ворид мешаванд.",
+              "Маълумоти техникии пайвастшавӣ: суроғаи IP, навъ ва версияи браузер, забон, саҳифае, ки аз он гузариш сурат гирифтааст. Онҳо ба журналҳои сервер ва ба системаҳои веб-таҳлил ворид мешаванд. Аз рӯи суроғаи IP инчунин кишвар муайян карда мешавад — он барои омор якҷоя бо боргирӣ дар сомона ё дар васеъкунанда нигоҳ дошта мешавад.",
               "Файлҳои cookie ва идентификаторҳои таҳлилӣ — муфассалтар дар Сиёсати cookie.",
             ],
           },
@@ -9407,7 +9407,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Data akaun Telegram yang diterima oleh bot apabila anda menghantar mesej kepadanya: ID berangka, nama pengguna, nama pertama dan kod bahasa.",
               "Pautan yang anda hantar untuk dimuat turun dan butiran percubaan itu sendiri: platform, tarikh dan masa, kualiti yang dipilih serta hasilnya (berjaya atau ralat).",
-              "Data teknikal sambungan: alamat IP, jenis dan versi pelayar, bahasa dan halaman perujuk. Data ini direkodkan dalam log pelayan dan dalam alat analitik web.",
+              "Data teknikal sambungan: alamat IP, jenis dan versi pelayar, bahasa dan halaman perujuk. Data ini direkodkan dalam log pelayan dan dalam alat analitik web. Alamat IP juga digunakan untuk menentukan negara, yang disimpan bersama muat turun yang dibuat di laman web atau dalam sambungan untuk tujuan statistik.",
               "Kuki dan pengecam analitik — butiran lanjut dalam Dasar Kuki.",
             ],
           },
@@ -9707,7 +9707,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Gegevens van uw Telegram-account die de bot ontvangt wanneer u hem een bericht stuurt: numerieke ID, gebruikersnaam, voornaam en taalcode.",
               "De links die u ter download indient en gegevens over de downloadpoging zelf: platform, datum en tijd, gekozen kwaliteit en resultaat (gelukt of fout).",
-              "Technische verbindingsgegevens: IP-adres, type en versie van de browser, taal en verwijzende pagina. Deze komen terecht in de serverlogboeken en in de webanalysediensten.",
+              "Technische verbindingsgegevens: IP-adres, type en versie van de browser, taal en verwijzende pagina. Deze komen terecht in de serverlogboeken en in de webanalysediensten. Op basis van het IP-adres wordt ook het land bepaald; dit wordt voor statistische doeleinden samen met de download op de website of in de extensie opgeslagen.",
               "Cookies en analyse-ID's — zie het Cookiebeleid voor meer informatie.",
             ],
           },
@@ -10009,7 +10009,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Datele contului Telegram pe care botul le primește atunci când îi scrieți: identificatorul numeric, numele de utilizator, prenumele și codul limbii.",
               "Linkurile pe care le trimiteți pentru descărcare și informațiile despre încercarea propriu-zisă: platforma, data și ora, calitatea aleasă, rezultatul (reușită sau eroare).",
-              "Datele tehnice ale conexiunii: adresa IP, tipul și versiunea browserului, limba, pagina de proveniență. Acestea ajung în jurnalele serverului și în sistemele de analiză web.",
+              "Datele tehnice ale conexiunii: adresa IP, tipul și versiunea browserului, limba, pagina de proveniență. Acestea ajung în jurnalele serverului și în sistemele de analiză web. Pe baza adresei IP se determină și țara, care este stocată împreună cu descărcarea efectuată pe site sau în extensie, în scopuri statistice.",
               "Cookie-uri și identificatori de analiză — detalii în Politica privind cookie-urile.",
             ],
           },
@@ -10311,7 +10311,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "د Telegram د حساب معلومات چې بوټ یې هغه وخت ترلاسه کوي کله چې تاسو ورته لیکئ: شمېري پېژندګڼه (ID)، کارن نوم (username)، نوم او د ژبې کوډ.",
               "هغه لینکونه چې تاسو یې د ښکته کولو لپاره لېږئ، او پخپله د هڅې په اړه معلومات: پلاتفورم، نېټه او وخت، ټاکل شوی کیفیت او پایله (بریا یا تېروتنه).",
-              "د اتصال تخنیکي معلومات: IP پته، د براوزر ډول او نسخه، ژبه او هغه پاڼه چې له هغې راغلي یاست. دا معلومات د سرور په لاګونو (logs) او د وېب تحلیل په سیستمونو کې ثبتېږي.",
+              "د اتصال تخنیکي معلومات: IP پته، د براوزر ډول او نسخه، ژبه او هغه پاڼه چې له هغې راغلي یاست. دا معلومات د سرور په لاګونو (logs) او د وېب تحلیل په سیستمونو کې ثبتېږي. د IP پتې له مخې هېواد هم ټاکل کېږي — دا د احصایې لپاره په سایټ یا توسیع کې د ترسره شوي ښکته کولو سره یوځای ساتل کېږي.",
               "کوکيز او د تحلیل پېژندګڼې — تفصیل یې د کوکيز په پالیسۍ کې دی.",
             ],
           },
@@ -10613,7 +10613,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "داتای هەژماری Telegram کە بۆتەکە وەریدەگرێت کاتێک نامەی بۆ دەنێریت: ناسێنەری ژمارەیی، ناوی بەکارهێنەر (username)، ناو و کۆدی زمان.",
               "ئەو بەستەرانەی بۆ داگرتن دەینێریت و زانیاری دەربارەی خودی هەوڵەکە: پلاتفۆرم، ڕێکەوت و کات، کوالیتیی هەڵبژێردراو، و ئەنجام (سەرکەوتن یان هەڵە).",
-              "داتا تەکنیکییەکانی پەیوەندی: ناونیشانی IP، جۆر و وەشانی وێبگەڕ، زمان، و ئەو پەڕەیەی لێیەوە هاتوویت. ئەمانە دەچنە ناو تۆمارەکانی سێرڤەر و سیستەمەکانی شیکاریی وێبەوە.",
+              "داتا تەکنیکییەکانی پەیوەندی: ناونیشانی IP، جۆر و وەشانی وێبگەڕ، زمان، و ئەو پەڕەیەی لێیەوە هاتوویت. ئەمانە دەچنە ناو تۆمارەکانی سێرڤەر و سیستەمەکانی شیکاریی وێبەوە. بە پێی ناونیشانی IP وڵاتیش دیاری دەکرێت — بۆ ئامار لەگەڵ ئەو داگرتنەی لە ماڵپەڕەکە یان لە پێوەکراوەکەدا کراوە هەڵدەگیرێت.",
               "کووکییەکان و ناسێنەرەکانی شیکاری — وردەکاری لە سیاسەتی کووکیدا.",
             ],
           },
@@ -10915,7 +10915,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Daneyên hesabê Telegramê yên ku bot dema tu jê re dinivîsî distîne: nasnameya hejmarî (id), navê bikarhêner (username), nav û koda ziman.",
               "Lînkên ku tu ji bo daxistinê dişînî û agahiyên li ser hewldanê bi xwe: platform, dîrok û dem, kalîteya hilbijartî, encam (serkeftin an çewtî).",
-              "Daneyên teknîkî yên girêdanê: navnîşana IP, cure û guhertoya gerokê, ziman, rûpela ku tu jê hatî. Ev dane dikevin tomarên serverê (log) û pergalên analîtîka webê.",
+              "Daneyên teknîkî yên girêdanê: navnîşana IP, cure û guhertoya gerokê, ziman, rûpela ku tu jê hatî. Ev dane dikevin tomarên serverê (log) û pergalên analîtîka webê. Li gorî navnîşana IP welat jî tê diyarkirin — ew ji bo statîstîkê bi daxistina li ser malperê an di pêvekê de re tê tomarkirin.",
               "Pelên cookie û nasnameyên analîtîkê — hûrgulî di Polîtîkaya Cookie de ne.",
             ],
           },
@@ -11217,7 +11217,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "سىز بوتقا يازغىنىڭىزدا بوت تاپشۇرۇۋالىدىغان Telegram ھېسابات ئۇچۇرلىرى: سانلىق ID، ئىشلەتكۈچى نامى، ئىسىم ۋە تىل كودى.",
               "سىز چۈشۈرۈش ئۈچۈن يوللىغان ئۇلانمىلار ۋە چۈشۈرۈش ئۇرۇنۇشىنىڭ ئۆزىگە دائىر ئۇچۇرلار: سۇپا، چېسلا ۋە ۋاقىت، تاللانغان سۈپەت، نەتىجە (مۇۋەپپەقىيەتلىك ياكى خاتالىق).",
-              "ئۇلىنىشقا دائىر تېخنىكىلىق ئۇچۇرلار: IP ئادرېسى، توركۆرگۈ تۈرى ۋە نەشرى، تىل، كېلىش بېتى. بۇ ئۇچۇرلار مۇلازىمېتىر خاتىرىلىرىگە ۋە تور تەھلىل سىستېمىلىرىغا كىرىدۇ.",
+              "ئۇلىنىشقا دائىر تېخنىكىلىق ئۇچۇرلار: IP ئادرېسى، توركۆرگۈ تۈرى ۋە نەشرى، تىل، كېلىش بېتى. بۇ ئۇچۇرلار مۇلازىمېتىر خاتىرىلىرىگە ۋە تور تەھلىل سىستېمىلىرىغا كىرىدۇ. IP ئادرېسى ئارقىلىق دۆلەتمۇ بېكىتىلىدۇ — ئۇ ستاتىستىكا ئۈچۈن تور بېكەت ياكى قىستۇرمىدا ئېلىپ بېرىلغان چۈشۈرۈش بىلەن بىللە ساقلىنىدۇ.",
               "كۇكىلار ۋە تەھلىل پەرقلەندۈرگۈچلىرى — تەپسىلاتى كۇكى سىياسىتىدە بايان قىلىنغان.",
             ],
           },
@@ -11517,7 +11517,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Siz bota ýazanyňyzda onuň alýan Telegram hasabynyň maglumatlary: san görnüşindäki identifikator, ulanyjy ady, ady we dil kody.",
               "Ýüklemek üçin iberýän salgylaryňyz we synanyşygyň özi barada maglumatlar: platforma, senesi we wagty, saýlanan hil, netijesi (üstünlik ýa-da ýalňyşlyk).",
-              "Birikmäniň tehniki maglumatlary: IP-salgy, brauzeriň görnüşi we wersiýasy, dil, Siziň geçip gelen sahypaňyz. Olar serweriň žurnallaryna we web-analitika ulgamlaryna düşýär.",
+              "Birikmäniň tehniki maglumatlary: IP-salgy, brauzeriň görnüşi we wersiýasy, dil, Siziň geçip gelen sahypaňyz. Olar serweriň žurnallaryna we web-analitika ulgamlaryna düşýär. IP-salgy boýunça ýurt hem kesgitlenýär — ol statistika üçin saýtda ýa-da giňeltmede amala aşyrylan ýükleme bilen bilelikde saklanýar.",
               "Cookie faýllary we analitika identifikatorlary — jikme-jiklikler Cookie syýasatynda.",
             ],
           },
@@ -11819,7 +11819,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Сез ботка язганда ул ала торган Telegram хисап язмасы мәгълүматлары: сан идентификаторы, кулланучы исеме, исем һәм тел коды.",
               "Сез йөкләп алу өчен җибәргән сылтамалар һәм омтылышның үзе турында белешмәләр: платформа, дата һәм вакыт, сайланган сыйфат, нәтиҗә (уңыш яки хата).",
-              "Тоташуның техник мәгълүматлары: IP-адрес, браузерның төре һәм версиясе, тел, күчү бите. Алар сервер журналларына һәм веб-аналитика системаларына эләгә.",
+              "Тоташуның техник мәгълүматлары: IP-адрес, браузерның төре һәм версиясе, тел, күчү бите. Алар сервер журналларына һәм веб-аналитика системаларына эләгә. IP-адрес буенча ил дә билгеләнә — ул статистика өчен сайтта яки киңәйтмәдә башкарылган йөкләп алу белән бергә саклана.",
               "Cookie файллары һәм аналитика идентификаторлары — тулырак Cookie сәясәтендә.",
             ],
           },
@@ -12121,7 +12121,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Të dhënat e llogarisë Telegram që boti merr kur i shkruani: identifikuesi numerik, emri i përdoruesit, emri dhe kodi i gjuhës.",
               "Lidhjet që dërgoni për shkarkim dhe informacioni për vetë përpjekjen: platforma, data dhe ora, cilësia e zgjedhur dhe rezultati (sukses ose gabim).",
-              "Të dhënat teknike të lidhjes: adresa IP, lloji dhe versioni i shfletuesit, gjuha dhe faqja nga e cila keni ardhur. Këto ruhen në regjistrat e serverit dhe në sistemet e analitikës së uebit.",
+              "Të dhënat teknike të lidhjes: adresa IP, lloji dhe versioni i shfletuesit, gjuha dhe faqja nga e cila keni ardhur. Këto ruhen në regjistrat e serverit dhe në sistemet e analitikës së uebit. Nga adresa IP përcaktohet gjithashtu shteti, i cili ruhet së bashku me shkarkimin e kryer në faqe ose në shtesë, për qëllime statistikore.",
               "Cookie-t dhe identifikuesit e analitikës — për më shumë, shihni Politikën e cookie-ve.",
             ],
           },
@@ -12423,7 +12423,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Podaci Telegram računa koje bot dobija kada mu pišete: numerički identifikator, korisničko ime, ime i kod jezika.",
               "Linkovi koje šaljete za preuzimanje i podaci o samom pokušaju: platforma, datum i vrijeme, odabrani kvalitet, ishod (uspjeh ili greška).",
-              "Tehnički podaci o konekciji: IP adresa, vrsta i verzija preglednika, jezik, stranica s koje ste došli. Oni se bilježe u serverskim zapisima (logovima) i u sistemima web-analitike.",
+              "Tehnički podaci o konekciji: IP adresa, vrsta i verzija preglednika, jezik, stranica s koje ste došli. Oni se bilježe u serverskim zapisima (logovima) i u sistemima web-analitike. Na osnovu IP adrese određuje se i država, koja se čuva zajedno s preuzimanjem na stranici ili u proširenju u statističke svrhe.",
               "Kolačići i identifikatori analitike — više o tome u Politici kolačića.",
             ],
           },
@@ -12725,7 +12725,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Шу ботна йаздечу хенахь цо схьаоьцу Telegram аккаунтан хаамаш: терахьийн идентификатор, пайдаэцархочун цӀе, цӀе а, меттан код а.",
               "Чуяккха Шу дахьийтина хьажоргаш а, гӀоертарх лаьцна хаамаш а: платформа, терахь а, хан а, харжина дикалла, жамӀ (кхиам я гӀалат).",
-              "ЗӀенан (соединение) технически хаамаш: IP-адрес, браузеран тайпа а, верси а, мотт, хьалхарчу агӀонан адрес (страница перехода). Уьш серверан журналашка а, веб-аналитикин системашка а кхочу.",
+              "ЗӀенан (соединение) технически хаамаш: IP-адрес, браузеран тайпа а, верси а, мотт, хьалхарчу агӀонан адрес (страница перехода). Уьш серверан журналашка а, веб-аналитикин системашка а кхочу. IP-адресаца мохк а билгалбоккху — иза статистикина сайтехь я расширенехь динчу чуяккхарца цхьаьна лардо.",
               "Cookie-файлаш а, аналитикин идентификаторш а — кхин а дуккха Cookie политикехь.",
             ],
           },
@@ -13027,7 +13027,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Шо ботага яздеча хана цо хьаэц Telegram аккаунта хоамаш: терахьий идентификатор, пайдаэцархочун цӀи, цӀи а меттан код а.",
               "Шо чуяккха дахийта ссылкаш, чуяккха гӀоертарах лаьца хоамаш а: платформа, терахь а ха а, хьаржа качество, жамӀ (дика хилар е гӀалат).",
-              "ЗӀенан (соединение) технически хоамаш: IP-адрес, браузера тайпа а верси а, мотт, хьалхарча оагӀон адрес (страница перехода). Уж сервера журналашка а веб-аналитика системашка а кхоач.",
+              "ЗӀенан (соединение) технически хоамаш: IP-адрес, браузера тайпа а верси а, мотт, хьалхарча оагӀон адрес (страница перехода). Уж сервера журналашка а веб-аналитика системашка а кхоач. IP-адреса тӀа хьежжа мохк а къоастабу — из статистикана сайта тӀа е расширене чу даь чуяккхарца цхьана Ӏалашбу.",
               "Cookie-файлаш а аналитика идентификатораш а — дукхагӀа Cookie политике чу.",
             ],
           },
@@ -13329,7 +13329,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Нуж боталде хъвалаго, боталъ босулел Telegram аккаунталъул баянал: цифраялъул идентификатор, хӀалтӀизабулесул цӀар (имя пользователя), цӀар ва мацӀалъул код.",
               "Нужеца босизе битӀулел ссылкаби ва босизе гьабураб хӀаракаталъул баянал: платформа, къо ва заман, бищараб сипат, хӀасил (успех яги гъалатӀ).",
-              "Бухьеналъул (соединение) техникиял баянал: IP-адрес, браузералъул тайпа ва версия, мацӀ, нуж рачӀараб гьумер (страница перехода). Гьел сервералъул журналазде ва веб-аналитикаялъул системабазде руссуна.",
+              "Бухьеналъул (соединение) техникиял баянал: IP-адрес, браузералъул тайпа ва версия, мацӀ, нуж рачӀараб гьумер (страница перехода). Гьел сервералъул журналазде ва веб-аналитикаялъул системабазде руссуна. IP-адресалда рекъон улкаги батула — гьеб статистикаялъе сайталда яги расширениялда гьабураб босиялда цадахъ цӀунула.",
               "Cookie-файлал ва аналитикаялъул идентификаторал — тӀадеги Cookie политикаялда.",
             ],
           },
@@ -13631,7 +13631,7 @@ export const legal: LegalByLanguage = {
             bullets: [
               "Datos ng Telegram account na natatanggap ng bot kapag nagpadala ka ng mensahe rito: numerikong identifier, username, pangalan at code ng wika.",
               "Ang mga link na ipinapadala mo para i-download at ang mga detalye ng mismong pagtatangka: platform, petsa at oras, napiling kalidad, at ang resulta (tagumpay o error).",
-              "Teknikal na datos ng koneksyon: IP address, uri at bersyon ng browser, wika at pinanggalingang pahina (referring page). Napupunta ang mga ito sa mga log ng server at sa mga sistema ng web analytics.",
+              "Teknikal na datos ng koneksyon: IP address, uri at bersyon ng browser, wika at pinanggalingang pahina (referring page). Napupunta ang mga ito sa mga log ng server at sa mga sistema ng web analytics. Ginagamit din ang IP address upang matukoy ang bansa, na itinatabi kasama ng pag-download na ginawa sa site o sa extension, para sa estadistika.",
               "Mga cookie at analytics identifier — para sa mga detalye, tingnan ang Patakaran sa Cookie.",
             ],
           },

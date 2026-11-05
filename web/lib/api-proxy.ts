@@ -12,6 +12,13 @@ import { getSessionTelegramId } from "@/lib/auth/session";
 const API_URL = process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL!;
 const API_KEY = process.env.API_KEY!;
 
+// Страна посетителя: её к каждому запросу добавляет Cloudflare (заголовок
+// CF-IPCountry, код ISO 3166-1 alpha-2). Только для статистики на дашборде;
+// сервер сам отбрасывает служебные XX и T1 (server/src/lib/countries.ts).
+export function getClientCountry(request: NextRequest): string | undefined {
+  return request.headers.get("cf-ipcountry") || undefined;
+}
+
 export function getClientIp(request: NextRequest): string {
   const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) return forwardedFor.split(",")[0].trim();
@@ -215,6 +222,7 @@ export async function proxyApiRequest(
         ...(body ?? {}),
         source: options.source,
         clientIp: getClientIp(request),
+        clientCountry: getClientCountry(request),
         telegramId: telegramId ?? undefined,
       };
     }

@@ -61,6 +61,7 @@ import {
   playlistEntries,
 } from 'src/lib/playlist';
 import { parseUiLang } from 'src/lib/languages';
+import { parseCountry } from 'src/lib/countries';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -73,6 +74,9 @@ export interface DownloadRequestMeta {
   // IP посетителя сайта. Присылает только прокси сайта (web/app/api), сам
   // браузер к серверу не ходит; нужен для суточного лимита YouTube.
   clientIp?: string;
+  // Страна посетителя сайта или расширения (заголовок CF-IPCountry, ставит
+  // прокси сайта) — только для статистики; проверяется parseCountry.
+  clientCountry?: string;
   // Где человек подключил свои куки (только бот, см. lib/cookie-scope.ts).
   cookieScope?: string;
   // В группе — личный вход того, кто прислал ссылку, если у группы своего нет.
@@ -413,6 +417,7 @@ export class DownloadService {
           fromCache: true,
           clientIpHash: hashClientIp(meta.clientIp),
           lang: parseUiLang(meta.lang),
+          country: parseCountry(meta.clientCountry),
         },
       });
     };
@@ -603,6 +608,7 @@ export class DownloadService {
     videoDuration?: number;
     cacheKey?: string | null;
     clientIp?: string;
+    clientCountry?: string;
     lang?: unknown;
   }) {
     return this.prisma.download.create({
@@ -619,6 +625,7 @@ export class DownloadService {
         cacheKey: data.cacheKey ?? null,
         clientIpHash: hashClientIp(data.clientIp),
         lang: parseUiLang(data.lang),
+        country: parseCountry(data.clientCountry),
       },
     });
   }
@@ -684,6 +691,7 @@ export class DownloadService {
         clientIpHash: hashClientIp(meta.clientIp),
         clientSide: true,
         lang: parseUiLang(meta.lang),
+        country: parseCountry(meta.clientCountry),
       },
     });
     return { ok: true };
@@ -1337,6 +1345,7 @@ export class DownloadService {
           videoDuration: info.duration,
           cacheKey,
           clientIp: meta.clientIp,
+          clientCountry: meta.clientCountry,
           lang: meta.lang,
         });
       };
@@ -1561,6 +1570,7 @@ export class DownloadService {
           videoDuration: info.duration,
           cacheKey,
           clientIp: meta.clientIp,
+          clientCountry: meta.clientCountry,
           lang: meta.lang,
         });
       };

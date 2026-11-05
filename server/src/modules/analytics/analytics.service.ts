@@ -6,6 +6,7 @@ import {
   effectiveBotLanguage,
   UNKNOWN_LANGUAGE,
 } from 'src/lib/languages';
+import type { DateRange } from 'src/lib/analytics-range';
 
 // Строка статистики по языкам (см. AnalyticsService.languages).
 export interface LanguageStatsRow {
@@ -18,6 +19,18 @@ export interface LanguageStatsRow {
   extensionDownloads: number;
   totalDownloads: number;
 }
+
+// Строка статистики по странам (см. AnalyticsService.countries).
+export interface CountryStatsRow {
+  country: string;
+  webDownloads: number;
+  extensionDownloads: number;
+  totalDownloads: number;
+}
+
+// Страна неизвестна: скачивания до начала записи страны, запросы без
+// заголовка Cloudflare или со служебным кодом (XX, T1).
+export const UNKNOWN_COUNTRY = 'unknown';
 
 // NULL и явное значение enum (например 'OTHER') должны схлопываться в одну
 // группу при агрегации по nullable-полю — иначе они приходят как два разных
@@ -41,33 +54,58 @@ function mergeNullableGroups<T>(
   return Array.from(merged.entries()).map(([category, count]) => ({ category, count }));
 }
 
+// Границы периода для сырого SQL — строкой YYYY-MM-DD: так Postgres не
+// пересчитывает их из пояса сессии, а время в базе — UTC без пояса.
+function day(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+// Успешные — COMPLETED и EXPIRED: CleanupService через 30–60 минут переводит
+// каждое успешное скачивание в EXPIRED (файл удалён с диска, но скачивание-то
+// было).
+const SUCCESS = [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED];
+
+// Каждый метод с периодом считает только записи внутри [from, to) — у каждого
+// графика на дашборде свой период (src/lib/analytics-range.ts).
 @Injectable()
 export class AnalyticsService {
   constructor(private prisma: PrismaService) {}
 
-  // Счётчики скачиваний — за выбранный на дашборде период и без запросов
-  // напрямую в API. Раньше они считались за всё время и врали в обе стороны:
-  //   успешным считался только COMPLETED, а CleanupService через 30-60 минут
-  //   переводит каждое успешное скачивание в EXPIRED (файл удалён с диска,
-  //   но скачивание-то было). В «Успешных» оставались лишь файлы последнего
-  //   часа, и успешность выходила заниженной в разы;
-  //   ошибки копились с самого начала, включая проверки при разработке. Бот
-  //   и сайт помечают свои запросы BOT и WEB, а API — это ручные проверки и
-  //   тесты, живых пользователей там нет.
-  async overview(days: number) {
+  private created(range: DateRange) {
+    return { gte: range.from, lt: range.to };
+  }
+
+  // С какого дня есть данные — для «всего времени» и списков месяцев,
+  // кварталов и лет в выборе периода на дашборде.
+  async since() {
+    const [download, user] = await Promise.all([
+      this.prisma.download.findFirst({
+        where: { source: { not: DownloadSource.API } },
+        orderBy: { createdAt: 'asc' },
+        select: { createdAt: true },
+      }),
+      this.prisma.botUser.findFirst({
+        orderBy: { firstSeenAt: 'asc' },
+        select: { firstSeenAt: true },
+      }),
+    ]);
+    const dates = [download?.createdAt, user?.firstSeenAt].filter((d): d is Date => !!d);
+    const first = dates.length ? new Date(Math.min(...dates.map((d) => d.getTime()))) : new Date();
+    return { since: day(first) };
+  }
+
+  // Счётчики скачиваний за период. Бот, сайт и расширение помечают свои
+  // запросы (BOT, WEB, EXTENSION), а API — это ручные проверки и тесты,
+  // живых пользователей там нет: их не считаем.
+  async overview(range: DateRange) {
     const scope = {
-      createdAt: { gte: new Date(Date.now() - days * 24 * 60 * 60 * 1000) },
+      createdAt: this.created(range),
       source: { not: DownloadSource.API },
     };
     const [total, completed, failed, totalBotUsers, webLoginUsers] =
       await Promise.all([
         this.prisma.download.count({ where: scope }),
-        this.prisma.download.count({
-          where: {
-            ...scope,
-            status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
-          },
-        }),
+        this.prisma.download.count({ where: { ...scope, status: { in: SUCCESS } } }),
         this.prisma.download.count({
           where: { ...scope, status: DownloadStatus.FAILED },
         }),
@@ -83,27 +121,24 @@ export class AnalyticsService {
       failedDownloads: failed,
       successRate: finished > 0 ? completed / finished : null,
       totalBotUsers,
-      // Переехало из удалённой секции subscriptions(): к деньгам метрика
-      // отношения не имела, а знать, сколько людей вообще доходит до сайта,
-      // а не только до бота, по-прежнему полезно.
       webLoginUsers,
     };
   }
 
-  // Статистика по языкам за days дней: пользователи бота и успешные
-  // скачивания из бота, с сайта и из расширения.
+  // Статистика по языкам за период: пользователи бота и успешные скачивания
+  // из бота, с сайта и из расширения.
   //   Язык человека в боте — выбранный вручную (BotUser.language), иначе по
   //   языку Telegram (languageCode); вне списка 46 языков — «other». Группируем
   //   в SQL по двум сырым колонкам (разных пар немного), а сводим к языку в
   //   JS — правила те же, что у бота (src/lib/languages.ts).
-  //   Активный — lastSeenAt в периоде, как в карточках DAU/WAU/MAU
-  //   (usersActivity); новый — firstSeenAt в периоде.
+  //   Всего — кто пришёл до конца периода; активный — был активен хотя бы в
+  //   один день периода (UserActivityDay); новый — firstSeenAt в периоде.
   //   Скачивания бота — по языку его пользователя (запись без пользователя —
-  //   «unknown»), сайта и расширения — по Download.lang, который они
-  //   присылают с выката записи языка; раньше там null — «unknown».
-  //   Успешные — COMPLETED и EXPIRED, как в overview().
-  async languages(days: number): Promise<LanguageStatsRow[]> {
-    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  //   «unknown»), сайта и расширения — по Download.lang; до начала записи
+  //   языка там null — «unknown».
+  async languages(range: DateRange): Promise<LanguageStatsRow[]> {
+    const from = day(range.from);
+    const to = day(range.to);
     const [users, botDownloads, clientDownloads] = await Promise.all([
       this.prisma.$queryRaw<
         {
@@ -114,12 +149,16 @@ export class AnalyticsService {
           newUsers: number;
         }[]
       >`
-        SELECT language, "languageCode",
+        SELECT u.language, u."languageCode",
                COUNT(*)::int AS total,
-               COUNT(*) FILTER (WHERE "lastSeenAt" >= ${since})::int AS active,
-               COUNT(*) FILTER (WHERE "firstSeenAt" >= ${since})::int AS "newUsers"
-        FROM "BotUser"
-        GROUP BY language, "languageCode"
+               COUNT(*) FILTER (WHERE EXISTS (
+                 SELECT 1 FROM "UserActivityDay" a
+                  WHERE a."botUserId" = u.id AND a.day >= ${from}::date AND a.day < ${to}::date
+               ))::int AS active,
+               COUNT(*) FILTER (WHERE u."firstSeenAt" >= ${from}::timestamp)::int AS "newUsers"
+        FROM "BotUser" u
+        WHERE u."firstSeenAt" < ${to}::timestamp
+        GROUP BY u.language, u."languageCode"
       `,
       this.prisma.$queryRaw<
         {
@@ -135,15 +174,16 @@ export class AnalyticsService {
         LEFT JOIN "BotUser" u ON u.id = d."botUserId"
         WHERE d.source = 'BOT'
           AND d.status IN ('COMPLETED', 'EXPIRED')
-          AND d."createdAt" >= ${since}
+          AND d."createdAt" >= ${from}::timestamp
+          AND d."createdAt" < ${to}::timestamp
         GROUP BY 1, 2, 3
       `,
       this.prisma.download.groupBy({
         by: ['source', 'lang'],
         where: {
           source: { in: [DownloadSource.WEB, DownloadSource.EXTENSION] },
-          status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] },
-          createdAt: { gte: since },
+          status: { in: SUCCESS },
+          createdAt: this.created(range),
         },
         _count: { _all: true },
       }),
@@ -199,9 +239,43 @@ export class AnalyticsService {
     );
   }
 
-  async platforms() {
+  // Успешные скачивания сайта и расширения по странам за период (страну
+  // определяет Cloudflare, см. src/lib/countries.ts). Бота здесь нет:
+  // Telegram не сообщает ботам, откуда человек.
+  async countries(range: DateRange): Promise<CountryStatsRow[]> {
+    const groups = await this.prisma.download.groupBy({
+      by: ['source', 'country'],
+      where: {
+        source: { in: [DownloadSource.WEB, DownloadSource.EXTENSION] },
+        status: { in: SUCCESS },
+        createdAt: this.created(range),
+      },
+      _count: { _all: true },
+    });
+    const rows = new Map<string, CountryStatsRow>();
+    for (const g of groups) {
+      const country = g.country ?? UNKNOWN_COUNTRY;
+      const r = rows.get(country) ?? {
+        country,
+        webDownloads: 0,
+        extensionDownloads: 0,
+        totalDownloads: 0,
+      };
+      if (g.source === DownloadSource.WEB) r.webDownloads += g._count._all;
+      else r.extensionDownloads += g._count._all;
+      r.totalDownloads += g._count._all;
+      rows.set(country, r);
+    }
+    return Array.from(rows.values()).sort(
+      (a, b) => b.totalDownloads - a.totalDownloads || a.country.localeCompare(b.country),
+    );
+  }
+
+  // Все попытки за период по площадкам (включая неудачные).
+  async platforms(range: DateRange) {
     const rows = await this.prisma.download.groupBy({
       by: ['downloader'],
+      where: { createdAt: this.created(range) },
       _count: { _all: true },
     });
     return rows.map((row) => ({
@@ -210,9 +284,11 @@ export class AnalyticsService {
     }));
   }
 
-  async sources() {
+  // Все попытки за период по источникам: бот, сайт, расширение, API.
+  async sources(range: DateRange) {
     const rows = await this.prisma.download.groupBy({
       by: ['source'],
+      where: { createdAt: this.created(range) },
       _count: { _all: true },
     });
     return rows.map((row) => ({
@@ -221,31 +297,53 @@ export class AnalyticsService {
     }));
   }
 
-  async timeseries(days: number) {
-    const [downloads, newBotUsers] = await Promise.all([
-      this.prisma.$queryRaw<{ day: Date; count: number }[]>`
-        SELECT date_trunc('day', "createdAt") as day, COUNT(*)::int as count
+  // Попытки скачивания (бот, сайт и расширение — без проверок через API, как
+  // в overview) и новые пользователи бота по дням периода — каждый день,
+  // включая пустые, чтобы ось не сжималась.
+  async timeseries(range: DateRange) {
+    const from = day(range.from);
+    const to = day(range.to);
+    return this.prisma.$queryRaw<{ day: Date; downloads: number; newUsers: number }[]>`
+      WITH days AS (
+        SELECT generate_series(${from}::date, ${to}::date - 1, interval '1 day')::timestamp AS day
+      ),
+      dl AS (
+        SELECT date_trunc('day', "createdAt") AS day, COUNT(*)::int AS count
         FROM "Download"
-        WHERE "createdAt" >= NOW() - make_interval(days => ${days}::int)
-        GROUP BY day
-        ORDER BY day ASC
-      `,
-      this.prisma.$queryRaw<{ day: Date; count: number }[]>`
-        SELECT date_trunc('day', "firstSeenAt") as day, COUNT(*)::int as count
+        WHERE source <> 'API'
+          AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+        GROUP BY 1
+      ),
+      nu AS (
+        SELECT date_trunc('day', "firstSeenAt") AS day, COUNT(*)::int AS count
         FROM "BotUser"
-        WHERE "firstSeenAt" >= NOW() - make_interval(days => ${days}::int)
-        GROUP BY day
-        ORDER BY day ASC
-      `,
-    ]);
+        WHERE "firstSeenAt" >= ${from}::timestamp AND "firstSeenAt" < ${to}::timestamp
+        GROUP BY 1
+      )
+      SELECT days.day, COALESCE(dl.count, 0)::int AS downloads, COALESCE(nu.count, 0)::int AS "newUsers"
+      FROM days
+      LEFT JOIN dl ON dl.day = days.day
+      LEFT JOIN nu ON nu.day = days.day
+      ORDER BY days.day ASC
+    `;
+  }
 
-    return {
-      downloads: downloads.map((row) => ({ day: row.day, count: row.count })),
-      newBotUsers: newBotUsers.map((row) => ({
-        day: row.day,
-        count: row.count,
-      })),
-    };
+  // Успешные скачивания по дням недели (понедельник — 1) и источникам за
+  // период: в какие дни качают больше. API не считаем — это проверки.
+  async weekdays(range: DateRange) {
+    const from = day(range.from);
+    const to = day(range.to);
+    return this.prisma.$queryRaw<{ weekday: number; source: string; count: number }[]>`
+      SELECT EXTRACT(ISODOW FROM "createdAt")::int AS weekday,
+             source::text AS source,
+             COUNT(*)::int AS count
+      FROM "Download"
+      WHERE status IN ('COMPLETED', 'EXPIRED')
+        AND source <> 'API'
+        AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+      GROUP BY 1, 2
+      ORDER BY 1, 2
+    `;
   }
 
   // Объём и число успешных скачиваний по дням и площадкам. bytes — что
@@ -253,41 +351,35 @@ export class AnalyticsService {
   // что отдано повторно из кеша, не потратив ничего. Запросы через API здесь
   // учитываются: трафик они тратят по-настоящему. Скачанное самим браузером
   // (clientSide, отчёт расширения) входит в число, но не в объём: сервер
-  // его не качал. Сумма BigInt в Postgres
-  // даёт numeric, а его Prisma отдаёт объектом Decimal — приводим к float8,
-  // точности double на байтах хватает с запасом.
-  async trafficDaily(days: number) {
-    return this.prisma.$queryRaw<
-      { day: Date; platform: string; count: number; bytes: number; cachedBytes: number }[]
-    >`
-      SELECT date_trunc('day', "createdAt") as day,
-             downloader::text as platform,
-             COUNT(*)::int as count,
-             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache" AND NOT "clientSide"), 0)::float8 as bytes,
-             COALESCE(SUM("fileSize") FILTER (WHERE "fromCache"), 0)::float8 as "cachedBytes"
-      FROM "Download"
-      WHERE status IN ('COMPLETED', 'EXPIRED')
-        AND "createdAt" >= NOW() - make_interval(days => ${days}::int)
-      GROUP BY day, platform
-      ORDER BY day ASC
-    `;
+  // его не качал. Сумма BigInt в Postgres даёт numeric, а его Prisma отдаёт
+  // объектом Decimal — приводим к float8, точности double на байтах хватает
+  // с запасом.
+  async trafficDaily(range: DateRange) {
+    return this.traffic('day', range);
   }
 
-  // То же помесячно за всё время — чтобы видеть, во что обходится каждый
-  // расчётный период прокси.
-  async trafficMonthly() {
+  // То же по календарным месяцам — во что обходится каждый расчётный период
+  // прокси. Месяц на краю периода считается только в его пределах.
+  async trafficMonthly(range: DateRange) {
+    return this.traffic('month', range);
+  }
+
+  private traffic(unit: 'day' | 'month', range: DateRange) {
+    const from = day(range.from);
+    const to = day(range.to);
     return this.prisma.$queryRaw<
-      { month: Date; platform: string; count: number; bytes: number; cachedBytes: number }[]
+      { period: Date; platform: string; count: number; bytes: number; cachedBytes: number }[]
     >`
-      SELECT date_trunc('month', "createdAt") as month,
-             downloader::text as platform,
-             COUNT(*)::int as count,
-             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache" AND NOT "clientSide"), 0)::float8 as bytes,
-             COALESCE(SUM("fileSize") FILTER (WHERE "fromCache"), 0)::float8 as "cachedBytes"
+      SELECT date_trunc(${unit}, "createdAt") AS period,
+             downloader::text AS platform,
+             COUNT(*)::int AS count,
+             COALESCE(SUM("fileSize") FILTER (WHERE NOT "fromCache" AND NOT "clientSide"), 0)::float8 AS bytes,
+             COALESCE(SUM("fileSize") FILTER (WHERE "fromCache"), 0)::float8 AS "cachedBytes"
       FROM "Download"
       WHERE status IN ('COMPLETED', 'EXPIRED')
-      GROUP BY month, platform
-      ORDER BY month ASC
+        AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+      GROUP BY 1, 2
+      ORDER BY 1 ASC
     `;
   }
 
@@ -317,9 +409,9 @@ export class AnalyticsService {
 
   // DAU, WAU и MAU на каждый день периода: сколько разных людей были активны
   // в этот календарный день, за 7 и за 30 дней по него включительно (UTC).
-  // Последняя точка — те же числа, что в карточках, с точностью до границы
-  // суток (карточки считают последние 24 часа, 7 и 30 суток от «сейчас»).
-  async activeDaily(days: number) {
+  async activeDaily(range: DateRange) {
+    const from = day(range.from);
+    const to = day(range.to);
     return this.prisma.$queryRaw<
       { day: Date; dau: number; wau: number; mau: number }[]
     >`
@@ -333,57 +425,40 @@ export class AnalyticsService {
              (SELECT COUNT(DISTINCT a."botUserId")
                 FROM "UserActivityDay" a
                WHERE a.day BETWEEN d::date - 29 AND d::date)::int AS mau
-      FROM generate_series(
-             (NOW() AT TIME ZONE 'UTC')::date - (${days}::int - 1),
-             (NOW() AT TIME ZONE 'UTC')::date,
-             interval '1 day'
-           ) AS d
+      FROM generate_series(${from}::date, ${to}::date - 1, interval '1 day') AS d
       ORDER BY day ASC
     `;
   }
 
-  // Активные пользователи по календарным неделям (с понедельника) за
-  // последние weeks недель. Текущая неделя ещё не закончилась и растёт.
-  async activeWeekly(weeks: number) {
-    return this.prisma.$queryRaw<{ week: Date; users: number }[]>`
-      SELECT date_trunc('week', day::timestamp) AS week,
+  // Активные пользователи по календарным неделям (с понедельника) или
+  // месяцам, которые пересекаются с периодом. Неделя или месяц на краю
+  // считаются целиком — иначе первый столбик врал бы в меньшую сторону.
+  // Текущие неделя и месяц ещё не закончились и растут.
+  async activePeriods(unit: 'week' | 'month', range: DateRange) {
+    const from = day(range.from);
+    const to = day(range.to);
+    return this.prisma.$queryRaw<{ period: Date; users: number }[]>`
+      SELECT date_trunc(${unit}, day::timestamp) AS period,
              COUNT(DISTINCT "botUserId")::int AS users
       FROM "UserActivityDay"
-      WHERE day >= date_trunc('week', NOW() AT TIME ZONE 'UTC')::date - (${weeks}::int - 1) * 7
-      GROUP BY week
-      ORDER BY week ASC
+      WHERE day >= date_trunc(${unit}, ${from}::timestamp)::date
+        AND day < ${to}::date
+      GROUP BY 1
+      ORDER BY 1 ASC
     `;
   }
 
-  // Активные пользователи по календарным месяцам за всё время. Текущий месяц
-  // ещё не закончился, поэтому его столбик растёт до конца месяца.
-  async activeMonthly() {
-    return this.prisma.$queryRaw<{ month: Date; users: number }[]>`
-      SELECT date_trunc('month', day::timestamp) AS month,
-             COUNT(DISTINCT "botUserId")::int AS users
-      FROM "UserActivityDay"
-      GROUP BY month
-      ORDER BY month ASC
-    `;
-  }
-
-  // Приток и отток пользователей бота: сколько заблокировали сейчас, а по
-  // дням (days дней), неделям (полгода) и месяцам (год) — сколько пришло
-  // новых (первое появление в боте или на сайте) и сколько заблокировали и
-  // разблокировали бота. События baseline — те, кто заблокировал до начала
-  // учёта (29.10.2026), дата неизвестна: в «сейчас» они входят, в разбивку по
-  // периодам — нет.
+  // Сколько заблокировали бота сейчас и кто именно. События baseline — те,
+  // кто заблокировал до начала учёта (29.10.2026), дата неизвестна: в
+  // «сейчас» они входят, в разбивку по периодам (blockedPeriods) — нет.
   //
   // users — кто заблокировал бота сейчас или блокировал раньше и вернулся, с
   // последним событием: его source говорит, насколько точно известно время
   // (telegram — точное, check — время проверки, baseline — неизвестно).
-  async blocked(days: number) {
-    const [total, blocked, daily, weekly, monthly, users] = await Promise.all([
+  async blockedSummary() {
+    const [total, blocked, users] = await Promise.all([
       this.prisma.botUser.count(),
       this.prisma.botUser.count({ where: { blockedAt: { not: null } } }),
-      this.usersByPeriod('day', days),
-      this.usersByPeriod('week', 26),
-      this.usersByPeriod('month', 12),
       this.prisma.botUser.findMany({
         where: {
           OR: [{ blockedAt: { not: null } }, { blockEvents: { some: {} } }],
@@ -397,9 +472,6 @@ export class AnalyticsService {
     return {
       total,
       blocked,
-      daily,
-      weekly,
-      monthly,
       users: users.map((user) => {
         const last = user.blockEvents[0];
         return {
@@ -419,9 +491,13 @@ export class AnalyticsService {
     };
   }
 
-  // Периоды без событий тоже нужны — иначе пустая неделя пропала бы с оси.
-  // Время в базе — UTC без пояса, периоды считаются так же.
-  private usersByPeriod(unit: 'day' | 'week' | 'month', count: number) {
+  // Приток и отток по дням, неделям или месяцам, пересекающимся с периодом:
+  // сколько пришло новых (первое появление в боте или на сайте) и сколько
+  // заблокировали и разблокировали бота. Периоды без событий тоже нужны —
+  // иначе пустая неделя пропала бы с оси.
+  async blockedPeriods(unit: 'day' | 'week' | 'month', range: DateRange) {
+    const from = day(range.from);
+    const to = day(range.to);
     const step = `1 ${unit}`;
     return this.prisma.$queryRaw<
       { period: Date; newUsers: number; blocked: number; unblocked: number }[]
@@ -432,8 +508,8 @@ export class AnalyticsService {
              COUNT(e.id) FILTER (WHERE e.blocked)::int AS blocked,
              COUNT(e.id) FILTER (WHERE NOT e.blocked)::int AS unblocked
       FROM generate_series(
-             date_trunc(${unit}, NOW() AT TIME ZONE 'UTC') - (${count}::int - 1) * ${step}::interval,
-             date_trunc(${unit}, NOW() AT TIME ZONE 'UTC'),
+             date_trunc(${unit}, ${from}::timestamp),
+             date_trunc(${unit}, ${to}::timestamp - interval '1 day'),
              ${step}::interval
            ) AS p
       LEFT JOIN "BotBlockEvent" e
@@ -461,10 +537,10 @@ export class AnalyticsService {
     }));
   }
 
-  async errors() {
+  async errors(range: DateRange) {
     const rows = await this.prisma.download.groupBy({
       by: ['errorCategory'],
-      where: { status: DownloadStatus.FAILED },
+      where: { status: DownloadStatus.FAILED, createdAt: this.created(range) },
       _count: { _all: true },
     });
     return mergeNullableGroups(
@@ -474,20 +550,22 @@ export class AnalyticsService {
     );
   }
 
-  async errorsTimeseries(days: number) {
+  async errorsTimeseries(range: DateRange) {
+    const from = day(range.from);
+    const to = day(range.to);
     // COALESCE прямо в SQL — иначе NULL и строка 'OTHER' группируются как
     // разные строки, а при схлопывании в один день на фронте одна запись
     // молча перезаписывает другую (теряется часть счётчика).
-    const rows = await this.prisma.$queryRaw<
+    return this.prisma.$queryRaw<
       { day: Date; category: string; count: number }[]
     >`
-      SELECT date_trunc('day', "createdAt") as day, COALESCE("errorCategory"::text, 'OTHER') as category, COUNT(*)::int as count
+      SELECT date_trunc('day', "createdAt") AS day, COALESCE("errorCategory"::text, 'OTHER') AS category, COUNT(*)::int AS count
       FROM "Download"
-      WHERE status = 'FAILED' AND "createdAt" >= NOW() - make_interval(days => ${days}::int)
-      GROUP BY day, category
-      ORDER BY day ASC
+      WHERE status = 'FAILED'
+        AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+      GROUP BY 1, 2
+      ORDER BY 1 ASC
     `;
-    return rows;
   }
 
   async attempts(
@@ -549,6 +627,7 @@ export class AnalyticsService {
         url: row.originalUrl,
         title: row.videoTitle,
         errorCategory: row.errorCategory,
+        country: row.country,
         // BigInt не сериализуется в JSON — отдаём строкой, как telegramId.
         fileSize: row.fileSize === null ? null : row.fileSize.toString(),
         user: row.botUser

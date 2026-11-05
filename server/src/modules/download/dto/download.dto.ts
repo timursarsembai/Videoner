@@ -82,6 +82,14 @@ class RequestMetaDto {
   clientIp?: string;
 
   @ApiProperty({
+    description: 'Website visitor country, ISO 3166-1 alpha-2 from Cloudflare (set by the website proxy only)',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  clientCountry?: string;
+
+  @ApiProperty({
     description:
       'Where the requester connected their own cookies: user:<telegramId> or chat:<chatId> (bot only)',
     required: false,

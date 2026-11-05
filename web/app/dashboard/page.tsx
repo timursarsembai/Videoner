@@ -1,41 +1,42 @@
 "use client";
 
-import { Fragment, useEffect, useState, type FormEvent } from "react";
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { useCallback, useEffect, useState, type ComponentType, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import {
   TooManyAttemptsError,
   UnauthorizedError,
-  fetchAnalyticsSnapshot,
-  fetchAttempts,
+  analyticsQuery,
   loginDashboard,
   logoutDashboard,
-  type AnalyticsSnapshot,
-  type AttemptRow,
-  type BlockedUser,
-  type ErrorTimeseriesPoint,
-  type LanguageStatsRow,
-  type TrafficPoint,
+  type ActivityData,
+  type BlockedSummary,
+  type OverviewData,
+  type TopUser,
 } from "@/lib/analytics-api";
-import { LANGUAGE_LABELS, type Language } from "@/lib/i18n/languages";
+import { ChartCard, DashboardContext, useAnalytics } from "@/components/dashboard/chart-card";
+import {
+  ActiveDailyChart,
+  ActivePeriodChart,
+  BlockedChart,
+  DownloadStatCards,
+  DownloadsUsersChart,
+  ErrorsByCategoryChart,
+  ErrorsTimeseriesChart,
+  PlatformCountsChart,
+  PlatformsPie,
+  SourcesPie,
+  StatCard,
+  TrafficChart,
+  VolumePie,
+  WeekdayChart,
+} from "@/components/dashboard/charts";
+import { CountriesTab } from "@/components/dashboard/countries";
+import { LanguagesTab } from "@/components/dashboard/languages";
+import { AttemptsLog, BlockedUsersTable, TopUsersTable } from "@/components/dashboard/tables";
 
-const PERIOD_OPTIONS = [7, 30, 90] as const;
+// Дашборд. У каждого графика свой выбор периода (по умолчанию последние 30
+// дней) — общего переключателя в шапке нет. Графики вкладки грузятся одним
+// пакетным запросом (lib/analytics-api.ts, analyticsQuery).
 
 // Вкладки дашборда. Выбранная живёт в адресе (#users и т. п.): обновление
 // страницы и ссылка из закладок открывают ту же вкладку.
@@ -45,6 +46,7 @@ const DASHBOARD_TABS = [
   { id: "downloads", label: "Скачивания" },
   { id: "errors", label: "Ошибки" },
   { id: "languages", label: "Языки" },
+  { id: "countries", label: "Страны" },
   { id: "log", label: "Журнал" },
 ] as const;
 
@@ -55,962 +57,137 @@ function tabFromHash(): DashboardTab {
   return DASHBOARD_TABS.find((t) => t.id === id)?.id ?? "overview";
 }
 
-const PLATFORM_COLORS: Record<string, string> = {
-  YOUTUBE: "#ef4444",
-  TIKTOK: "#111827",
-  INSTAGRAM: "#ec4899",
-  FACEBOOK: "#3b82f6",
-  TWITTER: "#0ea5e9",
-  THREADS: "#374151",
-  VIMEO: "#14b8a6",
-  VK: "#6366f1",
-  RUTUBE: "#f97316",
-  OKRU: "#eab308",
-  PINTEREST: "#be123c",
-  GETCOURSE: "#16a34a",
-};
+const blockedShare = (b: BlockedSummary) =>
+  `${b.blocked} (${b.total ? ((b.blocked / b.total) * 100).toFixed(1) : 0}%)`;
+const BLOCKED_HINT = (b: BlockedSummary) =>
+  `Из ${b.total} пользователей бота, включая удаливших аккаунт. Учёт по дням — с 29.10.2026`;
 
-const SOURCE_COLORS: Record<string, string> = {
-  BOT: "#0ea5e9",
-  WEB: "#22c55e",
-  EXTENSION: "#8b5cf6",
-  API: "#9ca3af",
-};
-
-const SOURCE_LABELS: Record<string, string> = {
-  BOT: "Бот",
-  WEB: "Сайт",
-  EXTENSION: "Расширение",
-  API: "API",
-};
-
-const ERROR_COLORS: Record<string, string> = {
-  LOGIN_REQUIRED: "#f59e0b",
-  UNSUPPORTED_PLATFORM: "#6b7280",
-  FORMAT_UNAVAILABLE: "#8b5cf6",
-  YOUTUBE_AUTH_REQUIRED: "#ef4444",
-  TIMEOUT: "#3b82f6",
-  OTHER: "#9ca3af",
-};
-
-// С этого дня сайт и расширение присылают язык интерфейса вместе со
-// скачиванием (Download.lang). Поставить дату фактического выката.
-const LANGUAGE_TRACKING_SINCE = "2026-11-01";
-
-function formatDay(iso: string): string {
-  return new Date(iso).toLocaleDateString("ru-RU", {
-    day: "2-digit",
-    month: "2-digit",
-  });
-}
-
-// Ключ мержа — СЫРОЙ ISO-день (не отформатированный "ДД.ММ"), и в конце
-// сортировка по нему же: раньше два независимо отсортированных источника
-// (downloads/newBotUsers) сливались через first-seen порядок вставки в
-// Map — если день был только в одном из массивов, он попадал в конец
-// вместо своего места по дате, ломая линию тренда на графике.
-function mergeTimeseries(snapshot: AnalyticsSnapshot) {
-  const map = new Map<string, { day: string; downloads: number; newUsers: number }>();
-  for (const point of snapshot.timeseries.downloads) {
-    map.set(point.day, { day: formatDay(point.day), downloads: point.count, newUsers: 0 });
-  }
-  for (const point of snapshot.timeseries.newBotUsers) {
-    const existing = map.get(point.day);
-    if (existing) {
-      existing.newUsers = point.count;
-    } else {
-      map.set(point.day, { day: formatDay(point.day), downloads: 0, newUsers: point.count });
-    }
-  }
-  return Array.from(map.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([, value]) => value);
-}
-
-function mergeErrorsTimeseries(rows: ErrorTimeseriesPoint[]) {
-  const categories = Array.from(new Set(rows.map((r) => r.category))).sort();
-  const map = new Map<string, Record<string, string | number>>();
-  for (const row of rows) {
-    const existing = map.get(row.day) ?? { day: formatDay(row.day) };
-    existing[row.category] = row.count;
-    map.set(row.day, existing);
-  }
-  const data = Array.from(map.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([, row]) => {
-      for (const category of categories) {
-        if (!(category in row)) row[category] = 0;
-      }
-      return row;
-    });
-  return { data, categories };
-}
-
-// Дни периода целиком, включая те, где не было ни одного скачивания: иначе
-// на графике объёма пустой день просто исчезал бы, и ось сжималась бы.
-// Ключ — тот же ISO-формат полуночи UTC, в котором сервер отдаёт date_trunc.
-function periodDayKeys(days: number): string[] {
-  const now = new Date();
-  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  const keys: string[] = [];
-  for (let i = days - 1; i >= 0; i--) {
-    keys.push(new Date(today - i * 24 * 60 * 60 * 1000).toISOString());
-  }
-  return keys;
-}
-
-function formatMonth(iso: string): string {
-  return new Date(iso).toLocaleDateString("ru-RU", {
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-}
-
-// Неделя подписывается датой её понедельника.
-function formatWeek(iso: string): string {
-  return new Date(iso).toLocaleDateString("ru-RU", {
-    day: "2-digit",
-    month: "2-digit",
-    timeZone: "UTC",
-  });
-}
-
-const BYTE_UNITS = [
-  { label: "ГБ", size: 1024 ** 3 },
-  { label: "МБ", size: 1024 ** 2 },
-  { label: "КБ", size: 1024 },
-];
-
-// Единица — по самому большому значению графика, одна на всю ось: подписи
-// «0,3 ГБ» и «300 МБ» вперемешку на одной шкале читаются хуже.
-function pickByteUnit(max: number) {
-  return BYTE_UNITS.find((unit) => max >= unit.size) ?? BYTE_UNITS[BYTE_UNITS.length - 1];
-}
-
-function formatBytes(bytes: number): string {
-  const unit = pickByteUnit(bytes);
-  const value = bytes / unit.size;
-  return `${value.toLocaleString("ru-RU", { maximumFractionDigits: value < 10 ? 2 : 1 })} ${unit.label}`;
-}
-
-function PlatformSelect({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-}) {
+// Карточки без периода: пользователи бота и DAU/WAU/MAU считаются от
+// «сейчас», блокировки — текущее состояние.
+function UserStatCards({ full }: { full: boolean }) {
+  const overview = useAnalytics<OverviewData>("overview");
+  const activity = useAnalytics<ActivityData>("users/activity");
+  const blocked = useAnalytics<BlockedSummary>("users/blocked");
+  const o = overview.data;
+  const a = activity.data;
+  const b = blocked.data;
+  const dots = "…";
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
-    >
-      {PLATFORM_OPTIONS.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  );
-}
-
-// Объём скачанного одной площадкой: из сети и из кеша, стопкой. Площадка
-// выбирается у каждого графика своя, по умолчанию YouTube — ради него всё и
-// затевалось: его трафик идёт через прокси с оплатой за гигабайты.
-function TrafficChart({
-  title,
-  rows,
-  periodKeys,
-  keyOf,
-  formatKey,
-}: {
-  title: string;
-  rows: TrafficPoint[];
-  // Все точки оси по порядку; без них — только те, где есть данные.
-  periodKeys?: string[];
-  keyOf: (row: TrafficPoint) => string;
-  formatKey: (key: string) => string;
-}) {
-  const [platform, setPlatform] = useState("YOUTUBE");
-
-  const byKey = new Map<string, { bytes: number; cachedBytes: number }>();
-  for (const row of rows) {
-    if (row.platform !== platform) continue;
-    byKey.set(keyOf(row), { bytes: row.bytes, cachedBytes: row.cachedBytes });
-  }
-  const keys = periodKeys ?? Array.from(byKey.keys()).sort();
-  const max = Math.max(0, ...keys.map((k) => (byKey.get(k)?.bytes ?? 0) + (byKey.get(k)?.cachedBytes ?? 0)));
-  const unit = pickByteUnit(max);
-  const data = keys.map((key) => ({
-    label: formatKey(key),
-    bytes: (byKey.get(key)?.bytes ?? 0) / unit.size,
-    cachedBytes: (byKey.get(key)?.cachedBytes ?? 0) / unit.size,
-  }));
-  const total = keys.reduce((sum, k) => sum + (byKey.get(k)?.bytes ?? 0), 0);
-  const cached = keys.reduce((sum, k) => sum + (byKey.get(k)?.cachedBytes ?? 0), 0);
-  const round = (v: number) => v.toLocaleString("ru-RU", { maximumFractionDigits: 2 });
-
-  return (
-    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <h2 className="text-sm font-medium text-foreground/70">{title}</h2>
-          <p className="mt-1 text-xs text-foreground/40">
-            Из сети {formatBytes(total)}, из кеша {formatBytes(cached)}
-          </p>
-        </div>
-        <PlatformSelect value={platform} onChange={setPlatform} />
-      </div>
-      <ResponsiveContainer width="100%" height={280}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-          <XAxis dataKey="label" fontSize={12} />
-          <YAxis fontSize={12} unit={` ${unit.label}`} width={70} />
-          <Tooltip formatter={(value) => `${round(Number(value))} ${unit.label}`} />
-          <Legend />
-          <Bar dataKey="bytes" name="Из сети" stackId="traffic" fill={PLATFORM_COLORS[platform] ?? "#9ca3af"} />
-          <Bar dataKey="cachedBytes" name="Из кеша (без трафика)" stackId="traffic" fill="#9ca3af" fillOpacity={0.5} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-// Число успешных скачиваний по дням — отдельной линией на каждую площадку.
-function mergePlatformCounts(rows: TrafficPoint[], keys: string[]) {
-  const platforms = Array.from(new Set(rows.map((r) => r.platform))).sort();
-  const byDay = new Map<string, Record<string, number>>();
-  for (const row of rows) {
-    const day = byDay.get(row.day ?? "") ?? {};
-    day[row.platform] = row.count;
-    byDay.set(row.day ?? "", day);
-  }
-  const data = keys.map((key) => {
-    const counts = byDay.get(key) ?? {};
-    const point: Record<string, string | number> = { day: formatDay(key) };
-    for (const platform of platforms) point[platform] = counts[platform] ?? 0;
-    return point;
-  });
-  return { data, platforms };
-}
-
-// Сколько скачано из сети каждой площадкой за период.
-function platformVolume(rows: TrafficPoint[]) {
-  const totals = new Map<string, number>();
-  for (const row of rows) {
-    totals.set(row.platform, (totals.get(row.platform) ?? 0) + row.bytes);
-  }
-  return Array.from(totals.entries())
-    .filter(([, bytes]) => bytes > 0)
-    .map(([platform, bytes]) => ({ platform, bytes }))
-    .sort((a, b) => b.bytes - a.bytes);
-}
-
-function StatCard({
-  label,
-  value,
-  hint,
-}: {
-  label: string;
-  value: string | number;
-  hint?: string;
-}) {
-  return (
-    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-      <div className="text-sm text-foreground/60">{label}</div>
-      <div className="mt-1 text-2xl font-semibold">{value}</div>
-      {hint && <div className="mt-1 text-xs text-foreground/40">{hint}</div>}
-    </div>
-  );
-}
-
-const ACTIVE_LABELS = { dau: "DAU", wau: "WAU", mau: "MAU" } as const;
-
-function ActiveDailyChart({
-  data,
-  dataKey,
-  title,
-  hint,
-  wide = false,
-}: {
-  data: { day: string; dau: number; wau: number; mau: number }[];
-  dataKey: keyof typeof ACTIVE_LABELS;
-  title: string;
-  hint: string;
-  // На всю ширину сетки: по дням точек много, в половине им тесно.
-  wide?: boolean;
-}) {
-  return (
-    <div className={`rounded-lg border border-border/60 bg-background/60 p-4 ${wide ? "lg:col-span-2" : ""}`}>
-      <h2 className="mb-1 text-sm font-medium text-foreground/70">{title}</h2>
-      <p className="mb-4 text-xs text-foreground/50">{hint}</p>
-      <ResponsiveContainer width="100%" height={280}>
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-          <XAxis dataKey="day" fontSize={12} />
-          <YAxis fontSize={12} allowDecimals={false} />
-          <Tooltip />
-          <Line
-            type="monotone"
-            dataKey={dataKey}
-            name={ACTIVE_LABELS[dataKey]}
-            stroke="#3b82f6"
-            strokeWidth={2}
-            dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-function ActivePeriodChart({
-  data,
-  xKey,
-  title,
-  hint,
-}: {
-  data: ({ users: number } & Record<string, string | number>)[];
-  xKey: string;
-  title: string;
-  hint: string;
-}) {
-  return (
-    <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-      <h2 className="mb-1 text-sm font-medium text-foreground/70">{title}</h2>
-      <p className="mb-4 text-xs text-foreground/50">{hint}</p>
-      <ResponsiveContainer width="100%" height={280}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-          <XAxis dataKey={xKey} fontSize={12} />
-          <YAxis fontSize={12} allowDecimals={false} />
-          <Tooltip />
-          <Bar dataKey="users" name="Активных" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-// Приток и отток за период: новые пользователи, блокировки и разблокировки
-// бота — три серии в одних единицах (люди), поэтому одна ось.
-function BlockedChart({
-  data,
-  title,
-  hint,
-  wide = false,
-}: {
-  data: { label: string; newUsers: number; blocked: number; unblocked: number }[];
-  title: string;
-  hint: string;
-  // На всю ширину сетки: по дням точек много, в половине им тесно.
-  wide?: boolean;
-}) {
-  return (
-    <div className={`rounded-lg border border-border/60 bg-background/60 p-4 ${wide ? "lg:col-span-2" : ""}`}>
-      <h2 className="mb-1 text-sm font-medium text-foreground/70">{title}</h2>
-      <p className="mb-4 text-xs text-foreground/50">{hint}</p>
-      <ResponsiveContainer width="100%" height={280}>
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-          <XAxis dataKey="label" fontSize={12} />
-          <YAxis fontSize={12} allowDecimals={false} />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="newUsers" name="Новые пользователи" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="blocked" name="Заблокировали" fill="#ef4444" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="unblocked" name="Разблокировали" fill="#22c55e" radius={[4, 4, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  );
-}
-
-// Время в днях и минутах (без секунд) — для таблиц, где важна дата, а не
-// точный момент; пояс тот же, что в журнале попыток.
-function formatShortTime(iso: string): string {
-  return new Date(iso).toLocaleString("ru-RU", {
-    timeZone: "Asia/Almaty",
-    day: "2-digit",
-    month: "2-digit",
-    year: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
-function formatShortDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("ru-RU", {
-    timeZone: "Asia/Almaty",
-    day: "2-digit",
-    month: "2-digit",
-    year: "2-digit",
-  });
-}
-
-// Насколько точно известно время последнего события — зависит от того, как
-// его узнали (BotBlockEvent.source).
-function blockEventTime(event: BlockedUser["lastEvent"]): { text: string; hint?: string } {
-  if (!event || event.source === "baseline") {
-    return { text: "до 29.10.26", hint: "Заблокировал до начала учёта — точная дата неизвестна" };
-  }
-  if (event.source === "check") {
-    return {
-      text: `≈ ${formatShortTime(event.at)}`,
-      hint: "Время проверки после рассылки; сама блокировка — между рассылкой и проверкой",
-    };
-  }
-  return { text: formatShortTime(event.at) };
-}
-
-// Заблокировал, но пользуется дальше: блокировка запрещает боту писать в
-// личку, а инлайн-режим и группы работают и без неё.
-function activeAfterBlock(u: BlockedUser): boolean {
-  return u.blocked && !!u.lastEvent && new Date(u.lastSeenAt) > new Date(u.lastEvent.at);
-}
-
-// Сначала свежие события; те, чья дата неизвестна (baseline), — в конце.
-function sortBlockedUsers(users: BlockedUser[]): BlockedUser[] {
-  const time = (u: BlockedUser) =>
-    !u.lastEvent || u.lastEvent.source === "baseline" ? 0 : new Date(u.lastEvent.at).getTime();
-  return [...users].sort((a, b) => time(b) - time(a));
-}
-
-function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
-  const rows = sortBlockedUsers(users);
-  return (
-    <div className="rounded-lg border border-border/60 bg-background/60 p-4 lg:col-span-2">
-      <h2 className="mb-1 text-sm font-medium text-foreground/70">Заблокировали бота</h2>
-      <p className="mb-4 text-xs text-foreground/50">
-        Кто заблокировал бота или удалил аккаунт, и кто потом вернулся. «Но пользуется» — заблокировал
-        личку с ботом, но качает через инлайн-режим или в группах. Время — по Алматы.
-      </p>
-      <div className="max-h-[420px] overflow-auto">
-        <table className="w-full min-w-[640px] text-sm">
-          <thead className="sticky top-0 bg-background text-left text-foreground/60">
-            <tr>
-              <th className="pb-2 font-medium">Пользователь</th>
-              <th className="pb-2 font-medium">Язык</th>
-              <th className="pb-2 font-medium">Пришёл</th>
-              <th className="pb-2 text-right font-medium">Скачиваний</th>
-              <th className="pb-2 pl-4 font-medium">Когда</th>
-              <th className="pb-2 font-medium">Сейчас</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((u) => {
-              const when = blockEventTime(u.lastEvent);
-              return (
-                <tr key={u.telegramId} className="border-t border-border/40">
-                  <td className="py-2">
-                    {u.username ? (
-                      <a
-                        href={`https://t.me/${u.username}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        @{u.username}
-                      </a>
-                    ) : (
-                      <span className="text-foreground/70">{u.telegramId}</span>
-                    )}
-                    {u.firstName && <span className="ml-2 text-foreground/50">{u.firstName}</span>}
-                  </td>
-                  <td className="py-2 text-foreground/60">{u.languageCode ?? "—"}</td>
-                  <td className="py-2 tabular-nums text-foreground/60">{formatShortDate(u.firstSeenAt)}</td>
-                  <td className="py-2 text-right tabular-nums">{u.downloadCount}</td>
-                  <td className="whitespace-nowrap py-2 pl-4 tabular-nums text-foreground/80" title={when.hint}>
-                    {when.text}
-                  </td>
-                  <td className="py-2">
-                    <span
-                      className={`inline-block rounded px-2 py-0.5 text-xs ${
-                        u.blocked ? "bg-red-500/15 text-red-600" : "bg-emerald-500/15 text-emerald-600"
-                      }`}
-                    >
-                      {u.blocked ? "Заблокирован" : "Вернулся"}
-                    </span>
-                    {activeAfterBlock(u) && (
-                      <div
-                        className="mt-1 text-xs text-foreground/50"
-                        title="Бот не может писать ему в личку, но он качает через инлайн-режим или в группах"
-                      >
-                        но пользуется · {formatShortDate(u.lastSeenAt)}
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-            {rows.length === 0 && (
-              <tr>
-                <td colSpan={6} className="py-6 text-center text-foreground/40">
-                  Пока никто не блокировал бота
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-const ATTEMPTS_PAGE_SIZE = 50;
-
-const STATUS_LABELS: Record<string, string> = {
-  PENDING: "В очереди",
-  DOWNLOADING: "Качается",
-  CONVERTING: "Конвертация",
-  COMPLETED: "Готово",
-  FAILED: "Ошибка",
-  EXPIRED: "Удалён по сроку",
-};
-
-const STATUS_CLASSES: Record<string, string> = {
-  PENDING: "bg-amber-500/15 text-amber-600",
-  DOWNLOADING: "bg-sky-500/15 text-sky-600",
-  CONVERTING: "bg-sky-500/15 text-sky-600",
-  COMPLETED: "bg-emerald-500/15 text-emerald-600",
-  FAILED: "bg-red-500/15 text-red-600",
-  EXPIRED: "bg-foreground/10 text-foreground/50",
-};
-
-// Время в базе хранится в UTC (сервер живёт в UTC), а смотреть на него нужно в
-// местном. Часовой пояс задан явно, а не берётся из браузера: журнал часто
-// открывают с телефона в поездке, и «19:35» должно означать одно и то же
-// время независимо от того, где сейчас находится смотрящий.
-function formatAttemptTime(iso: string): string {
-  return new Date(iso).toLocaleString("ru-RU", {
-    timeZone: "Asia/Almaty",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-}
-
-// Порядок как в prisma/schema.prisma (enum Downloaders) — чтобы список в
-// фильтре не расходился с тем, что реально может прийти из базы.
-const PLATFORM_OPTIONS = [
-  "YOUTUBE",
-  "FACEBOOK",
-  "INSTAGRAM",
-  "TIKTOK",
-  "TWITTER",
-  "VIMEO",
-  "VK",
-  "RUTUBE",
-  "OKRU",
-  "PINTEREST",
-  "THREADS",
-  "GETCOURSE",
-] as const;
-
-const STATUS_OPTIONS = [
-  "PENDING",
-  "DOWNLOADING",
-  "CONVERTING",
-  "COMPLETED",
-  "FAILED",
-  "EXPIRED",
-] as const;
-
-function AttemptsLog() {
-  const [page, setPage] = useState<AttemptRow[]>([]);
-  const [total, setTotal] = useState(0);
-  const [offset, setOffset] = useState(0);
-  const [platform, setPlatform] = useState("");
-  const [status, setStatus] = useState("");
-  const [source, setSource] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | undefined>();
-
-  useEffect(() => {
-    setLoading(true);
-    setError(undefined);
-    fetchAttempts(ATTEMPTS_PAGE_SIZE, offset, platform, status, source)
-      .then((data) => {
-        setPage(data.rows);
-        setTotal(data.total);
-      })
-      .catch((e) => setError(e.message || "Не удалось загрузить журнал"))
-      .finally(() => setLoading(false));
-  }, [offset, platform, status, source]);
-
-  // Смена фильтра всегда возвращает на первую страницу. Иначе, стоя на
-  // 3-й странице общего списка и выбрав платформу с десятком записей,
-  // попадаешь на пустой экран за концом выборки — выглядит как «фильтр
-  // ничего не нашёл», хотя записи есть.
-  const changePlatform = (value: string) => {
-    setPlatform(value);
-    setOffset(0);
-  };
-  const changeStatus = (value: string) => {
-    setStatus(value);
-    setOffset(0);
-  };
-  const changeSource = (value: string) => {
-    setSource(value);
-    setOffset(0);
-  };
-
-  const from = total === 0 ? 0 : offset + 1;
-  const to = Math.min(offset + ATTEMPTS_PAGE_SIZE, total);
-
-  return (
-    <section className="rounded-lg border border-border/60 bg-background/60 p-4">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-medium text-foreground/70">
-          Журнал попыток скачивания
-        </h2>
-        <div className="flex flex-wrap items-center gap-2 text-xs text-foreground/50">
-          <select
-            value={platform}
-            onChange={(e) => changePlatform(e.target.value)}
-            className="h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          >
-            <option value="">Все платформы</option>
-            {PLATFORM_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <select
-            value={status}
-            onChange={(e) => changeStatus(e.target.value)}
-            className="h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          >
-            <option value="">Все статусы</option>
-            {STATUS_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {STATUS_LABELS[option]}
-              </option>
-            ))}
-          </select>
-          <select
-            value={source}
-            onChange={(e) => changeSource(e.target.value)}
-            className="h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          >
-            <option value="">Все источники</option>
-            {Object.entries(SOURCE_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-          <span>
-            {from}–{to} из {total}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={offset === 0 || loading}
-            onClick={() => setOffset(Math.max(0, offset - ATTEMPTS_PAGE_SIZE))}
-          >
-            Назад
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={to >= total || loading}
-            onClick={() => setOffset(offset + ATTEMPTS_PAGE_SIZE)}
-          >
-            Вперёд
-          </Button>
-        </div>
-      </div>
-
-      {error && <p className="text-sm text-destructive">{error}</p>}
-
-      {/* Горизонтальная прокрутка у самой таблицы: на телефоне колонок больше,
-          чем помещается, и без этого страница целиком уезжала бы вбок. */}
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[860px] text-sm">
-          <thead className="text-left text-foreground/60">
-            <tr>
-              <th className="pb-2 font-medium">Время</th>
-              <th className="pb-2 font-medium">Пользователь</th>
-              <th className="pb-2 font-medium">Источник</th>
-              <th className="pb-2 font-medium">Платформа</th>
-              <th className="pb-2 font-medium">Статус</th>
-              <th className="pb-2 font-medium">Что качали</th>
-            </tr>
-          </thead>
-          <tbody>
-            {page.map((row) => (
-              <tr key={row.id} className="border-t border-border/40 align-top">
-                <td className="whitespace-nowrap py-2 tabular-nums text-foreground/80">
-                  {formatAttemptTime(row.createdAt)}
-                </td>
-                <td className="py-2">
-                  {row.user ? (
-                    row.user.username ? (
-                      <a
-                        href={`https://t.me/${row.user.username}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        @{row.user.username}
-                      </a>
-                    ) : (
-                      <span className="text-foreground/70">{row.user.telegramId}</span>
-                    )
-                  ) : (
-                    <span className="text-foreground/40">через сайт/API</span>
-                  )}
-                </td>
-                <td className="py-2 text-foreground/60">
-                  {SOURCE_LABELS[row.source] ?? row.source}
-                  {row.clientSide ? " · в браузере" : ""}
-                </td>
-                <td className="py-2 text-foreground/60">{row.platform}</td>
-                <td className="py-2">
-                  <span
-                    className={`inline-block rounded px-2 py-0.5 text-xs ${
-                      STATUS_CLASSES[row.status] ?? "bg-foreground/10 text-foreground/60"
-                    }`}
-                  >
-                    {STATUS_LABELS[row.status] ?? row.status}
-                  </span>
-                  {row.errorCategory && (
-                    <div className="mt-1 text-xs text-foreground/40">
-                      {row.errorCategory}
-                    </div>
-                  )}
-                </td>
-                <td className="py-2">
-                  {row.title && (
-                    <div className="max-w-[420px] truncate" title={row.title}>
-                      {row.title}
-                    </div>
-                  )}
-                  <a
-                    href={row.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block max-w-[420px] truncate text-xs text-foreground/50 hover:underline"
-                    title={row.url}
-                  >
-                    {row.url}
-                  </a>
-                </td>
-              </tr>
-            ))}
-            {!loading && page.length === 0 && !error && (
-              <tr>
-                <td colSpan={6} className="py-6 text-center text-foreground/40">
-                  {platform || status || source
-                    ? "По выбранному фильтру ничего нет"
-                    : "Пока ни одной попытки"}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+    <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <StatCard label="Пользователей бота" value={o?.totalBotUsers ?? dots} />
+      <StatCard label="DAU" value={a?.dau ?? dots} hint="Активных пользователей за последние сутки" />
+      {full && <StatCard label="WAU" value={a?.wau ?? dots} hint="Активных пользователей за последние 7 дней" />}
+      <StatCard label="MAU" value={a?.mau ?? dots} hint="Активных пользователей за последние 30 дней" />
+      {full && (
+        <StatCard
+          label="Новые / вернувшиеся за 30 дн."
+          value={a ? `${a.newUsersLast30Days} / ${a.returningUsersLast30Days}` : dots}
+        />
+      )}
+      {full && <StatCard label="Входили на сайт через Telegram" value={o?.webLoginUsers ?? dots} />}
+      <StatCard label="Заблокировали бота" value={b ? blockedShare(b) : dots} hint={b ? BLOCKED_HINT(b) : undefined} />
     </section>
   );
 }
 
-// Название языка на нём самом (как в переключателе языков сайта) и код.
-// "other" и "unknown" — служебные строки сервера (server/src/lib/languages.ts).
-function languageLabel(code: string): string {
-  if (code === "other") return "Другие";
-  if (code === "unknown") return "Не указан";
-  return LANGUAGE_LABELS[code as Language] ?? code;
+function BlockedUsersSection() {
+  const blocked = useAnalytics<BlockedSummary>("users/blocked");
+  return <BlockedUsersTable users={blocked.data?.users ?? []} />;
 }
 
-const isServiceLanguage = (code: string) => code === "other" || code === "unknown";
-
-type LanguageSortKey =
-  | "activity"
-  | "usersTotal"
-  | "usersActive"
-  | "usersNew"
-  | "botDownloads"
-  | "webDownloads"
-  | "extensionDownloads"
-  | "totalDownloads";
-
-const LANGUAGE_COLUMNS: { key: Exclude<LanguageSortKey, "activity">; label: string; group: "users" | "downloads" }[] = [
-  { key: "usersTotal", label: "Всего", group: "users" },
-  { key: "usersActive", label: "Активных", group: "users" },
-  { key: "usersNew", label: "Новых", group: "users" },
-  { key: "botDownloads", label: "Бот", group: "downloads" },
-  { key: "webDownloads", label: "Сайт", group: "downloads" },
-  { key: "extensionDownloads", label: "Расширение", group: "downloads" },
-  { key: "totalDownloads", label: "Всего", group: "downloads" },
-];
-
-// «Активность» по умолчанию — скачивания за период, при равенстве — активные
-// и все пользователи бота. «Другие» и «Не указан» всегда внизу, над итогом:
-// это не языки, и наверху они только мешали бы.
-function sortLanguageRows(rows: LanguageStatsRow[], key: LanguageSortKey): LanguageStatsRow[] {
-  const byActivity = (a: LanguageStatsRow, b: LanguageStatsRow) =>
-    b.totalDownloads - a.totalDownloads || b.usersActive - a.usersActive || b.usersTotal - a.usersTotal;
-  return [...rows].sort((a, b) => {
-    const service = Number(isServiceLanguage(a.lang)) - Number(isServiceLanguage(b.lang));
-    if (service) return service;
-    if (key !== "activity") {
-      const diff = b[key] - a[key];
-      if (diff) return diff;
-    }
-    return byActivity(a, b) || a.lang.localeCompare(b.lang);
-  });
-}
-
-function LanguagesTab({ rows, days }: { rows: LanguageStatsRow[]; days: number }) {
-  const [sortKey, setSortKey] = useState<LanguageSortKey>("activity");
-  const sorted = sortLanguageRows(rows, sortKey);
-  const totals = LANGUAGE_COLUMNS.reduce(
-    (acc, c) => ({ ...acc, [c.key]: rows.reduce((sum, r) => sum + r[c.key], 0) }),
-    {} as Record<(typeof LANGUAGE_COLUMNS)[number]["key"], number>
-  );
-  // Топ-15 по скачиваниям — только настоящие языки: «Не указан» до выката
-  // записи языка забирал бы почти весь сайт и расширение.
-  const top = rows
-    .filter((r) => !isServiceLanguage(r.lang) && r.totalDownloads > 0)
-    .sort((a, b) => b.totalDownloads - a.totalDownloads)
-    .slice(0, 15)
-    .map((r) => ({ ...r, label: `${languageLabel(r.lang)} (${r.lang})` }));
-  const sinceText = new Date(LANGUAGE_TRACKING_SINCE).toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-
-  const header = (key: LanguageSortKey, label: string, className = "") => (
-    <th className={`pb-2 font-medium ${className}`}>
-      <button
-        type="button"
-        onClick={() => setSortKey(key)}
-        className={`hover:text-foreground ${sortKey === key ? "text-foreground" : ""}`}
-      >
-        {label}
-        {sortKey === key ? " ↓" : ""}
-      </button>
-    </th>
-  );
-
+function TopUsersSection() {
+  const top = useAnalytics<TopUser[]>("users/top", { limit: 20 });
   return (
-    <section className="grid grid-cols-1 gap-6">
-      <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-        <h2 className="mb-1 text-sm font-medium text-foreground/70">Языки, {days} дней</h2>
-        <p className="mb-4 text-xs text-foreground/50">
-          Пользователи бота — по языку бота (выбранному вручную или языку Telegram); активные и новые — за
-          период. Скачивания — успешные за период; бот — по языку пользователя, сайт и расширение — по
-          языку интерфейса. Нажмите на заголовок, чтобы отсортировать.
-        </p>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[760px] text-sm">
-            <thead className="text-left text-foreground/60">
-              <tr>
-                <th className="pb-1 font-medium" />
-                <th colSpan={3} className="pb-1 text-right font-medium">
-                  Пользователи бота
-                </th>
-                <th colSpan={4} className="pb-1 text-right font-medium">
-                  Скачивания
-                </th>
-              </tr>
-              <tr>
-                {header("activity", "Язык")}
-                {LANGUAGE_COLUMNS.map((c) => (
-                  <Fragment key={c.key}>
-                    {header(c.key, c.label, `text-right ${c.key === "botDownloads" ? "pl-6" : "pl-3"}`)}
-                  </Fragment>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sorted.map((r) => (
-                <tr key={r.lang} className="border-t border-border/40">
-                  <td className="py-2">
-                    <span className={isServiceLanguage(r.lang) ? "text-foreground/60" : ""}>
-                      {languageLabel(r.lang)}
-                    </span>
-                    {!isServiceLanguage(r.lang) && (
-                      <span className="ml-2 text-xs text-foreground/50">{r.lang}</span>
-                    )}
-                  </td>
-                  {LANGUAGE_COLUMNS.map((c) => (
-                    <td
-                      key={c.key}
-                      className={`py-2 text-right tabular-nums ${c.key === "botDownloads" ? "pl-6" : "pl-3"} ${
-                        c.key === "totalDownloads" ? "font-medium" : ""
-                      } ${r[c.key] === 0 ? "text-foreground/30" : ""}`}
-                    >
-                      {r[c.key]}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-              {!sorted.length && (
-                <tr>
-                  <td colSpan={8} className="py-8 text-center text-foreground/40">
-                    Нет данных
-                  </td>
-                </tr>
-              )}
-            </tbody>
-            <tfoot>
-              <tr className="border-t-2 border-border/60 font-medium">
-                <td className="py-2">Итого</td>
-                {LANGUAGE_COLUMNS.map((c) => (
-                  <td
-                    key={c.key}
-                    className={`py-2 text-right tabular-nums ${c.key === "botDownloads" ? "pl-6" : "pl-3"}`}
-                  >
-                    {totals[c.key]}
-                  </td>
-                ))}
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        <p className="mt-3 text-xs text-foreground/50">
-          Язык сайта и расширения записывается с {sinceText}; раньше — «Не указан».
-        </p>
-      </div>
-      <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-        <h2 className="mb-4 text-sm font-medium text-foreground/70">
-          Топ-15 языков по скачиваниям, {days} дней
-        </h2>
-        {top.length ? (
-          <ResponsiveContainer width="100%" height={Math.max(160, top.length * 32 + 60)}>
-            <BarChart data={top} layout="vertical" margin={{ left: 8, right: 16 }}>
-              <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-              <XAxis type="number" fontSize={12} allowDecimals={false} />
-              <YAxis type="category" dataKey="label" fontSize={12} width={150} interval={0} />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="botDownloads" name={SOURCE_LABELS.BOT} stackId="downloads" fill={SOURCE_COLORS.BOT} />
-              <Bar dataKey="webDownloads" name={SOURCE_LABELS.WEB} stackId="downloads" fill={SOURCE_COLORS.WEB} />
-              <Bar
-                dataKey="extensionDownloads"
-                name={SOURCE_LABELS.EXTENSION}
-                stackId="downloads"
-                fill={SOURCE_COLORS.EXTENSION}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        ) : (
-          <p className="py-24 text-center text-sm text-foreground/40">За период нет скачиваний с известным языком</p>
-        )}
-      </div>
+    <ChartCard title="Топ пользователей" hint="Больше всего скачиваний за всё время" loading={top.loading} error={top.error}>
+      <TopUsersTable users={top.data ?? []} />
+    </ChartCard>
+  );
+}
+
+function OverviewTab() {
+  return (
+    <>
+      <DownloadStatCards />
+      <UserStatCards full={false} />
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <DownloadsUsersChart />
+        <BlockedChart unit="day" />
+      </section>
+    </>
+  );
+}
+
+function UsersTab() {
+  return (
+    <>
+      <UserStatCards full />
+      <h2 className="text-base font-semibold">Активность</h2>
+      {/* Дни до 27.10.2026 восстановлены из скачиваний и дат визитов (см.
+          миграцию user_activity_days) и чуть ниже настоящих. */}
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <ActiveDailyChart metric="dau" wide />
+        <ActiveDailyChart metric="wau" />
+        <ActiveDailyChart metric="mau" />
+        <ActivePeriodChart unit="week" />
+        <ActivePeriodChart unit="month" />
+      </section>
+      <h2 className="text-base font-semibold">Приток и отток</h2>
+      {/* Новые пользователи — за всё время; учёт блокировок — с 29.10.2026:
+          заблокировавшие раньше входят в карточку «Заблокировали бота», но
+          не в графики (дата их блокировки неизвестна). */}
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <BlockedChart unit="day" wide />
+        <BlockedChart unit="week" />
+        <BlockedChart unit="month" />
+        <BlockedUsersSection />
+      </section>
+      <h2 className="text-base font-semibold">Самые активные</h2>
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <TopUsersSection />
+      </section>
+    </>
+  );
+}
+
+function DownloadsTab() {
+  return (
+    <>
+      <DownloadStatCards />
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <DownloadsUsersChart />
+        <WeekdayChart />
+        <PlatformCountsChart />
+        <PlatformsPie />
+        <SourcesPie />
+      </section>
+      <h2 className="text-base font-semibold">Объём</h2>
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <TrafficChart unit="day" />
+        <TrafficChart unit="month" />
+        <VolumePie />
+      </section>
+    </>
+  );
+}
+
+function ErrorsTab() {
+  return (
+    <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <ErrorsByCategoryChart />
+      <ErrorsTimeseriesChart />
     </section>
   );
 }
+
+const TAB_CONTENT: Record<DashboardTab, ComponentType> = {
+  overview: OverviewTab,
+  users: UsersTab,
+  downloads: DownloadsTab,
+  errors: ErrorsTab,
+  languages: LanguagesTab,
+  countries: CountriesTab,
+  log: AttemptsLog,
+};
 
 function LoginForm({
   onSubmit,
@@ -1086,58 +263,56 @@ function LoginForm({
 }
 
 export default function AnalyticsPage() {
-  // undefined — ещё не знаем (первая попытка загрузки не завершилась),
-  // true/false — есть ли действующая httpOnly-сессия дашборда на сервере.
+  // undefined — ещё не знаем (первая проверка не завершилась), true/false —
+  // есть ли действующая httpOnly-сессия дашборда на сервере.
   const [authenticated, setAuthenticated] = useState<boolean | undefined>(undefined);
-  const [snapshot, setSnapshot] = useState<AnalyticsSnapshot | null>(null);
+  // С какого дня есть данные — для «всего времени» и списков периодов.
+  const [since, setSince] = useState<string | null>(null);
   const [error, setError] = useState<string | undefined>();
-  const [loading, setLoading] = useState(false);
-  const [days, setDays] = useState<number>(30);
   const [refreshKey, setRefreshKey] = useState(0);
   const [tab, setTab] = useState<DashboardTab>("overview");
+  // Открытые вкладки остаются смонтированными (скрытыми): выбранные на их
+  // графиках периоды не сбрасываются при переходе туда и обратно.
+  const [visited, setVisited] = useState<Set<DashboardTab>>(new Set(["overview"]));
 
   // Вкладку из адреса читаем после монтирования: на сервере window нет, а
   // разная разметка сервера и клиента сломала бы гидратацию.
   useEffect(() => {
-    setTab(tabFromHash());
-    const onHashChange = () => setTab(tabFromHash());
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
+    const sync = () => {
+      const t = tabFromHash();
+      setTab(t);
+      setVisited((v) => new Set(v).add(t));
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
   }, []);
 
   const changeTab = (id: DashboardTab) => {
     setTab(id);
+    setVisited((v) => new Set(v).add(id));
     window.history.replaceState(null, "", id === "overview" ? window.location.pathname : `#${id}`);
   };
-  // Зависимость эффекта — только «вышли или нет», а не сам authenticated:
-  // иначе переход undefined → true после первой удачной загрузки запускал
-  // эффект повторно, и каждое открытие страницы грузило все графики дважды.
-  // Сайт ходит на сервер с одного IP, и пары
-  // перезагрузок хватало, чтобы упереться в его лимит 60 запросов в минуту.
-  // После входа (false → true) эффект по-прежнему срабатывает.
+
   const loggedOut = authenticated === false;
 
+  // Первый запрос заодно проверяет сессию: httpOnly-cookie (если есть)
+  // браузер приложит сам, а 401 однозначно скажет «сессии нет».
   useEffect(() => {
-    // Ключ больше не хранится в клиентском JS — на каждую загрузку страницы
-    // просто пробуем запрос; httpOnly-cookie (если есть) браузер приложит сам,
-    // а 401 однозначно скажет "сессии нет", без отдельной проверки заранее.
     if (loggedOut) return;
-    setLoading(true);
     setError(undefined);
-    fetchAnalyticsSnapshot(days)
+    analyticsQuery<{ since: string }>("since")
       .then((data) => {
-        setSnapshot(data);
+        setSince(data.since);
         setAuthenticated(true);
       })
       .catch((e) => {
-        if (e instanceof UnauthorizedError) {
-          setAuthenticated(false);
-        } else {
-          setError(e.message || "Не удалось загрузить данные");
-        }
-      })
-      .finally(() => setLoading(false));
-  }, [loggedOut, days, refreshKey]);
+        if (e instanceof UnauthorizedError) setAuthenticated(false);
+        else setError(e instanceof Error ? e.message : "Не удалось загрузить данные");
+      });
+  }, [loggedOut]);
+
+  const onUnauthorized = useCallback(() => setAuthenticated(false), []);
 
   const handleLogin = async (username: string, password: string, code: string) => {
     try {
@@ -1157,7 +332,7 @@ export default function AnalyticsPage() {
 
   const handleLogout = async () => {
     await logoutDashboard();
-    setSnapshot(null);
+    setSince(null);
     setAuthenticated(false);
   };
 
@@ -1165,15 +340,7 @@ export default function AnalyticsPage() {
     return <LoginForm onSubmit={handleLogin} error={error} />;
   }
 
-  if (loading && !snapshot) {
-    return (
-      <div className="flex min-h-screen items-center justify-center text-foreground/60">
-        Загрузка...
-      </div>
-    );
-  }
-
-  if (error && !snapshot) {
+  if (error && !since) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-foreground/60">
         <p>{error}</p>
@@ -1184,502 +351,52 @@ export default function AnalyticsPage() {
     );
   }
 
-  if (!snapshot) return null;
-
-  const { overview, platforms, sources, activity, topUsers, errors } = snapshot;
-  const timeseries = mergeTimeseries(snapshot);
-  const { data: errorsTimeseriesData, categories: errorCategories } = mergeErrorsTimeseries(
-    snapshot.errorsTimeseries
-  );
-  const dayKeys = periodDayKeys(days);
-  const { data: platformCountsData, platforms: countedPlatforms } = mergePlatformCounts(
-    snapshot.trafficDaily,
-    dayKeys
-  );
-  const volume = platformVolume(snapshot.trafficDaily);
-  const activeDaily = snapshot.activeDaily.map((p) => ({ ...p, day: formatDay(p.day) }));
-  const activeWeekly = snapshot.activeWeekly.map((p) => ({ week: formatWeek(p.week), users: p.users }));
-  const activeMonthly = snapshot.activeMonthly.map((p) => ({ month: formatMonth(p.month), users: p.users }));
-  const blocked = snapshot.blocked;
-  const blockedDaily = blocked.daily.map((p) => ({ ...p, label: formatDay(p.period) }));
-  const blockedWeekly = blocked.weekly.map((p) => ({ ...p, label: formatWeek(p.period) }));
-  const blockedMonthly = blocked.monthly.map((p) => ({ ...p, label: formatMonth(p.period) }));
+  if (!since) {
+    return <div className="flex min-h-screen items-center justify-center text-foreground/60">Загрузка...</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-8">
-      <div className="mx-auto max-w-6xl space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-xl font-semibold">Videoner Analytics</h1>
-          <div className="flex items-center gap-2">
-            <div className="flex overflow-hidden rounded-md border border-border/60">
-              {PERIOD_OPTIONS.map((d) => (
-                <button
-                  key={d}
-                  onClick={() => setDays(d)}
-                  className={`px-3 py-1.5 text-sm ${
-                    days === d
-                      ? "bg-foreground text-background"
-                      : "bg-transparent text-foreground/70 hover:bg-foreground/5"
-                  }`}
-                >
-                  {d} дн.
-                </button>
-              ))}
+    <DashboardContext.Provider value={{ since, refreshKey, onUnauthorized }}>
+      <div className="min-h-screen bg-background px-4 py-8 text-foreground sm:px-8">
+        <div className="mx-auto max-w-6xl space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h1 className="text-xl font-semibold">Videoner Analytics</h1>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={() => setRefreshKey((k) => k + 1)}>
+                Обновить
+              </Button>
+              <Button variant="ghost" size="sm" onClick={handleLogout}>
+                Выйти
+              </Button>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={loading}
-              onClick={() => setRefreshKey((k) => k + 1)}
-            >
-              {loading ? "Обновляю…" : "Обновить"}
-            </Button>
-            <Button variant="ghost" size="sm" onClick={handleLogout}>
-              Выйти
-            </Button>
           </div>
+
+          <nav className="-mx-4 flex gap-1 overflow-x-auto border-b border-border/60 px-4 sm:mx-0 sm:px-0">
+            {DASHBOARD_TABS.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => changeTab(t.id)}
+                className={`-mb-px whitespace-nowrap border-b-2 px-3 py-2 text-sm ${
+                  tab === t.id
+                    ? "border-foreground font-medium text-foreground"
+                    : "border-transparent text-foreground/60 hover:text-foreground"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </nav>
+
+          {DASHBOARD_TABS.filter((t) => visited.has(t.id)).map((t) => {
+            const Content = TAB_CONTENT[t.id];
+            return (
+              <div key={t.id} hidden={tab !== t.id} className="space-y-6">
+                <Content />
+              </div>
+            );
+          })}
         </div>
-
-        <nav className="-mx-4 flex gap-1 overflow-x-auto border-b border-border/60 px-4 sm:mx-0 sm:px-0">
-          {DASHBOARD_TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => changeTab(t.id)}
-              className={`-mb-px whitespace-nowrap border-b-2 px-3 py-2 text-sm ${
-                tab === t.id
-                  ? "border-foreground font-medium text-foreground"
-                  : "border-transparent text-foreground/60 hover:text-foreground"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </nav>
-
-        {tab === "overview" && (
-          <>
-            <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {/* Счётчики скачиваний — за выбранный период и только бот с
-                  сайтом: запросы напрямую в API — это проверки при разработке. */}
-              <StatCard label="Попыток" value={overview.totalDownloads} hint={`За ${days} дн., бот и сайт`} />
-              <StatCard
-                label="Успешных"
-                value={overview.completedDownloads}
-                hint={`За ${days} дн., включая файлы, уже удалённые с диска`}
-              />
-              <StatCard label="Ошибок" value={overview.failedDownloads} hint={`За ${days} дн., бот и сайт`} />
-              <StatCard
-                label="Успешность"
-                value={
-                  overview.successRate !== null
-                    ? `${Math.round(overview.successRate * 100)}%`
-                    : "—"
-                }
-                hint="Успешные из завершённых"
-              />
-            </section>
-            <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <StatCard label="Пользователей бота" value={overview.totalBotUsers} />
-              <StatCard label="DAU" value={activity.dau} hint="Активных пользователей за последние сутки" />
-              <StatCard label="MAU" value={activity.mau} hint="Активных пользователей за последние 30 дней" />
-              <StatCard
-                label="Заблокировали бота"
-                value={`${blocked.blocked} (${blocked.total ? ((blocked.blocked / blocked.total) * 100).toFixed(1) : 0}%)`}
-                hint={`Из ${blocked.total} пользователей бота, включая удаливших аккаунт. Учёт по дням — с 29.10.2026`}
-              />
-            </section>
-            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Скачивания и новые пользователи, {days} дней
-                </h2>
-                <ResponsiveContainer width="100%" height={280}>
-                  <LineChart data={timeseries}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                    <XAxis dataKey="day" fontSize={12} />
-                    <YAxis fontSize={12} allowDecimals={false} />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="downloads"
-                      name="Скачивания"
-                      stroke="#ef4444"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="newUsers"
-                      name="Новые пользователи"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              <BlockedChart
-                data={blockedDaily}
-                title={`Новые пользователи и блокировки по дням, ${days} дней`}
-                hint="Сколько человек впервые пришли в бот или на сайт, заблокировали и разблокировали бота за день (UTC); блокировки — с 29.10.2026"
-              />
-            </section>
-          </>
-        )}
-
-        {tab === "users" && (
-          <>
-            <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <StatCard label="Пользователей бота" value={overview.totalBotUsers} />
-              <StatCard label="DAU" value={activity.dau} hint="Активных пользователей за последние сутки" />
-              <StatCard label="WAU" value={activity.wau} hint="Активных пользователей за последние 7 дней" />
-              <StatCard label="MAU" value={activity.mau} hint="Активных пользователей за последние 30 дней" />
-              <StatCard
-                label="Новые / вернувшиеся за 30 дн."
-                value={`${activity.newUsersLast30Days} / ${activity.returningUsersLast30Days}`}
-              />
-              <StatCard label="Входили на сайт через Telegram" value={overview.webLoginUsers} />
-              <StatCard
-                label="Заблокировали бота"
-                value={`${blocked.blocked} (${blocked.total ? ((blocked.blocked / blocked.total) * 100).toFixed(1) : 0}%)`}
-                hint={`Из ${blocked.total} пользователей бота, включая удаливших аккаунт. Учёт по дням — с 29.10.2026`}
-              />
-            </section>
-            <h2 className="text-base font-semibold">Активность</h2>
-            {/* Дни до 27.10.2026 восстановлены из скачиваний и дат визитов (см.
-                миграцию user_activity_days) и чуть ниже настоящих. */}
-            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <ActiveDailyChart
-                data={activeDaily}
-                dataKey="dau"
-                wide
-                title={`DAU по дням, ${days} дней`}
-                hint="Активных за календарный день (UTC); сегодняшний ещё растёт"
-              />
-              <ActiveDailyChart
-                data={activeDaily}
-                dataKey="wau"
-                title={`WAU по дням, ${days} дней`}
-                hint="Активных за 7 дней на каждую дату"
-              />
-              <ActiveDailyChart
-                data={activeDaily}
-                dataKey="mau"
-                title={`MAU по дням, ${days} дней`}
-                hint="Активных за 30 дней на каждую дату"
-              />
-              <ActivePeriodChart
-                data={activeWeekly}
-                xKey="week"
-                title="Активные пользователи по неделям"
-                hint="Разных пользователей за неделю с понедельника, полгода; текущая ещё растёт"
-              />
-              <ActivePeriodChart
-                data={activeMonthly}
-                xKey="month"
-                title="Активные пользователи по месяцам"
-                hint="Разных пользователей за календарный месяц; текущий ещё растёт"
-              />
-            </section>
-            <h2 className="text-base font-semibold">Приток и отток</h2>
-            {/* Новые пользователи — за всё время; учёт блокировок — с 29.10.2026:
-                заблокировавшие раньше входят в карточку «Заблокировали бота», но
-                не в графики (дата их блокировки неизвестна). */}
-            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <BlockedChart
-                data={blockedDaily}
-                wide
-                title={`Новые пользователи и блокировки по дням, ${days} дней`}
-                hint="Сколько человек впервые пришли в бот или на сайт, заблокировали и разблокировали бота за день (UTC); блокировки — с 29.10.2026"
-              />
-              <BlockedChart
-                data={blockedWeekly}
-                title="Новые пользователи и блокировки по неделям"
-                hint="За неделю с понедельника, полгода; текущая ещё растёт"
-              />
-              <BlockedChart
-                data={blockedMonthly}
-                title="Новые пользователи и блокировки по месяцам"
-                hint="За календарный месяц, год; текущий ещё растёт"
-              />
-              <BlockedUsersTable users={blocked.users} />
-            </section>
-            <h2 className="text-base font-semibold">Самые активные</h2>
-            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Топ пользователей
-                </h2>
-                <div className="max-h-[280px] overflow-y-auto">
-                  <table className="w-full text-sm">
-                    <thead className="sticky top-0 bg-background text-left text-foreground/60">
-                      <tr>
-                        <th className="pb-2 font-medium">Пользователь</th>
-                        <th className="pb-2 font-medium">Язык</th>
-                        <th className="pb-2 text-right font-medium">Скачиваний</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {topUsers.map((u) => (
-                        <tr key={u.id} className="border-t border-border/40">
-                          <td className="py-2">
-                            {u.username ? (
-                              <a
-                                href={`https://t.me/${u.username}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="hover:underline"
-                              >
-                                @{u.username}
-                              </a>
-                            ) : (
-                              u.telegramId
-                            )}
-                          </td>
-                          <td className="py-2 text-foreground/60">
-                            {u.languageCode ?? "—"}
-                          </td>
-                          <td className="py-2 text-right">{u.downloadCount}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
-          </>
-        )}
-
-        {tab === "downloads" && (
-          <>
-            <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {/* Счётчики скачиваний — за выбранный период и только бот с
-                  сайтом: запросы напрямую в API — это проверки при разработке. */}
-              <StatCard label="Попыток" value={overview.totalDownloads} hint={`За ${days} дн., бот и сайт`} />
-              <StatCard
-                label="Успешных"
-                value={overview.completedDownloads}
-                hint={`За ${days} дн., включая файлы, уже удалённые с диска`}
-              />
-              <StatCard label="Ошибок" value={overview.failedDownloads} hint={`За ${days} дн., бот и сайт`} />
-              <StatCard
-                label="Успешность"
-                value={
-                  overview.successRate !== null
-                    ? `${Math.round(overview.successRate * 100)}%`
-                    : "—"
-                }
-                hint="Успешные из завершённых"
-              />
-            </section>
-            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Скачивания и новые пользователи, {days} дней
-                </h2>
-                <ResponsiveContainer width="100%" height={280}>
-                  <LineChart data={timeseries}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                    <XAxis dataKey="day" fontSize={12} />
-                    <YAxis fontSize={12} allowDecimals={false} />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="downloads"
-                      name="Скачивания"
-                      stroke="#ef4444"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="newUsers"
-                      name="Новые пользователи"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Успешные скачивания по платформам, {days} дней
-                </h2>
-                <ResponsiveContainer width="100%" height={280}>
-                  <LineChart data={platformCountsData}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                    <XAxis dataKey="day" fontSize={12} />
-                    <YAxis fontSize={12} allowDecimals={false} />
-                    <Tooltip />
-                    <Legend />
-                    {countedPlatforms.map((platform) => (
-                      <Line
-                        key={platform}
-                        type="monotone"
-                        dataKey={platform}
-                        name={platform}
-                        stroke={PLATFORM_COLORS[platform] ?? "#9ca3af"}
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Платформы
-                </h2>
-                <ResponsiveContainer width="100%" height={280}>
-                  <PieChart>
-                    <Pie
-                      data={platforms}
-                      dataKey="count"
-                      nameKey="platform"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      label={(entry) => `${entry.platform}: ${entry.count}`}
-                    >
-                      {platforms.map((p) => (
-                        <Cell
-                          key={p.platform}
-                          fill={PLATFORM_COLORS[p.platform] ?? "#9ca3af"}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Бот vs сайт
-                </h2>
-                <ResponsiveContainer width="100%" height={280}>
-                  <PieChart>
-                    <Pie
-                      data={sources}
-                      dataKey="count"
-                      nameKey="source"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      label={(entry) => `${SOURCE_LABELS[entry.source] ?? entry.source}: ${entry.count}`}
-                    >
-                      {sources.map((s) => (
-                        <Cell key={s.source} fill={SOURCE_COLORS[s.source] ?? "#9ca3af"} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value, _name, props) => [value, SOURCE_LABELS[props.payload.source] ?? props.payload.source]} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </section>
-            <h2 className="text-base font-semibold">Объём</h2>
-            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <TrafficChart
-                title={`Объём скачанного по дням, ${days} дней`}
-                rows={snapshot.trafficDaily}
-                periodKeys={dayKeys}
-                keyOf={(row) => row.day ?? ""}
-                formatKey={formatDay}
-              />
-              <TrafficChart
-                title="Объём скачанного по месяцам"
-                rows={snapshot.trafficMonthly}
-                keyOf={(row) => row.month ?? ""}
-                formatKey={formatMonth}
-              />
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Объём по платформам, {days} дней
-                </h2>
-                {volume.length ? (
-                  <ResponsiveContainer width="100%" height={280}>
-                    <PieChart>
-                      <Pie
-                        data={volume}
-                        dataKey="bytes"
-                        nameKey="platform"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={100}
-                        label={(entry) => `${entry.platform}: ${formatBytes(entry.bytes)}`}
-                      >
-                        {volume.map((v) => (
-                          <Cell key={v.platform} fill={PLATFORM_COLORS[v.platform] ?? "#9ca3af"} />
-                        ))}
-                      </Pie>
-                      <Tooltip formatter={(value) => formatBytes(Number(value))} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <p className="py-24 text-center text-sm text-foreground/40">За период нет данных о размере файлов</p>
-                )}
-              </div>
-            </section>
-          </>
-        )}
-
-        {tab === "errors" && (
-          <>
-            <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Ошибки по категориям
-                </h2>
-                <ResponsiveContainer width="100%" height={280}>
-                  <BarChart data={errors}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                    <XAxis dataKey="category" fontSize={11} interval={0} angle={-20} textAnchor="end" height={70} />
-                    <YAxis fontSize={12} allowDecimals={false} />
-                    <Tooltip />
-                    <Bar dataKey="count" name="Ошибок">
-                      {errors.map((e) => (
-                        <Cell key={e.category} fill={ERROR_COLORS[e.category] ?? "#9ca3af"} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="rounded-lg border border-border/60 bg-background/60 p-4 lg:col-span-2">
-                <h2 className="mb-4 text-sm font-medium text-foreground/70">
-                  Ошибки по дням — динамика по категориям
-                </h2>
-                <ResponsiveContainer width="100%" height={280}>
-                  <AreaChart data={errorsTimeseriesData}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                    <XAxis dataKey="day" fontSize={12} />
-                    <YAxis fontSize={12} allowDecimals={false} />
-                    <Tooltip />
-                    <Legend />
-                    {errorCategories.map((category) => (
-                      <Area
-                        key={category}
-                        type="monotone"
-                        dataKey={category}
-                        name={category}
-                        stackId="errors"
-                        stroke={ERROR_COLORS[category] ?? "#9ca3af"}
-                        fill={ERROR_COLORS[category] ?? "#9ca3af"}
-                        fillOpacity={0.5}
-                      />
-                    ))}
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </section>
-          </>
-        )}
-
-        {tab === "languages" && <LanguagesTab rows={snapshot.languages} days={days} />}
-
-        {tab === "log" && <AttemptsLog />}
       </div>
-    </div>
+    </DashboardContext.Provider>
   );
 }

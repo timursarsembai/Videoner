@@ -107,13 +107,19 @@ export function DownloadsUsersChart({ wide = false }: { wide?: boolean }) {
       error={q.error}
       wide={wide}
     >
-      <ScrollableChart points={data.length} pointWidth={LINE_POINT}>
+      <ScrollableChart
+        points={data.length}
+        pointWidth={LINE_POINT}
+        legend={[
+          { label: "Скачивания", color: "#ef4444" },
+          { label: "Новые пользователи", color: "#3b82f6" },
+        ]}
+      >
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
           <XAxis dataKey="label" fontSize={12} />
           <YAxis fontSize={12} allowDecimals={false} />
           <Tooltip />
-          <Legend align="right" />
           <Line type="monotone" dataKey="downloads" name="Скачивания" stroke="#ef4444" strokeWidth={2} dot={false} />
           <Line type="monotone" dataKey="newUsers" name="Новые пользователи" stroke="#3b82f6" strokeWidth={2} dot={false} />
         </LineChart>
@@ -207,13 +213,16 @@ export function PlatformCountsChart() {
       loading={q.loading}
       error={q.error}
     >
-      <ScrollableChart points={data.length} pointWidth={LINE_POINT}>
+      <ScrollableChart
+        points={data.length}
+        pointWidth={LINE_POINT}
+        legend={platforms.map((p) => ({ label: p, color: PLATFORM_COLORS[p] ?? "#9ca3af" }))}
+      >
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
           <XAxis dataKey="label" fontSize={12} />
           <YAxis fontSize={12} allowDecimals={false} />
           <Tooltip />
-          <Legend align="right" />
           {platforms.map((platform) => (
             <Line
               key={platform}
@@ -360,13 +369,20 @@ export function TrafficChart({ unit }: { unit: "day" | "month" }) {
       loading={q.loading}
       error={q.error}
     >
-      <ScrollableChart points={data.length} pointWidth={unit === "day" ? BAR_POINT : 60}>
+      <ScrollableChart
+        points={data.length}
+        pointWidth={unit === "day" ? BAR_POINT : 60}
+        yAxisWidth={75}
+        legend={[
+          { label: "Из сети", color: PLATFORM_COLORS[platform] ?? "#9ca3af" },
+          { label: "Из кеша (без трафика)", color: "#9ca3af" },
+        ]}
+      >
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
           <XAxis dataKey="label" fontSize={12} />
           <YAxis fontSize={12} unit={` ${byteUnit.label}`} width={70} />
           <Tooltip formatter={(value) => `${round(Number(value))} ${byteUnit.label}`} />
-          <Legend align="right" />
           <Bar dataKey="bytes" name="Из сети" stackId="traffic" fill={PLATFORM_COLORS[platform] ?? "#9ca3af"} />
           <Bar dataKey="cachedBytes" name="Из кеша (без трафика)" stackId="traffic" fill="#9ca3af" fillOpacity={0.5} />
         </BarChart>
@@ -506,13 +522,20 @@ export function BlockedChart({ unit, wide = false }: { unit: keyof typeof BLOCKE
       error={q.error}
       wide={wide}
     >
-      <ScrollableChart points={data.length} pointWidth={config.width}>
+      <ScrollableChart
+        points={data.length}
+        pointWidth={config.width}
+        legend={[
+          { label: "Новые пользователи", color: "#3b82f6" },
+          { label: "Заблокировали", color: "#ef4444" },
+          { label: "Разблокировали", color: "#22c55e" },
+        ]}
+      >
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
           <XAxis dataKey="label" fontSize={12} />
           <YAxis fontSize={12} allowDecimals={false} />
           <Tooltip />
-          <Legend align="right" />
           <Bar dataKey="newUsers" name="Новые пользователи" fill="#3b82f6" radius={[4, 4, 0, 0]} />
           <Bar dataKey="blocked" name="Заблокировали" fill="#ef4444" radius={[4, 4, 0, 0]} />
           <Bar dataKey="unblocked" name="Разблокировали" fill="#22c55e" radius={[4, 4, 0, 0]} />
@@ -578,13 +601,16 @@ export function ErrorsTimeseriesChart() {
       error={q.error}
       wide
     >
-      <ScrollableChart points={data.length} pointWidth={LINE_POINT}>
+      <ScrollableChart
+        points={data.length}
+        pointWidth={LINE_POINT}
+        legend={categories.map((c) => ({ label: c, color: ERROR_COLORS[c] ?? "#9ca3af" }))}
+      >
         <AreaChart data={data}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
           <XAxis dataKey="label" fontSize={12} />
           <YAxis fontSize={12} allowDecimals={false} />
           <Tooltip />
-          <Legend align="right" />
           {categories.map((category) => (
             <Area
               key={category}

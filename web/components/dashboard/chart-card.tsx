@@ -157,29 +157,46 @@ export function EmptyChart({ children, height = 280 }: { children: ReactNode; he
 // влево — пальцем на телефоне, колесом с Shift или перетаскиванием мышью на
 // компьютере. При первой отрисовке и смене данных показываем правый край —
 // самые свежие дни.
+//
+// Ось Y при этом стоит на месте: поверх левого края лежит закреплённая
+// (sticky) полоска с копией того же графика во всю его ширину, обрезанной до
+// оси. Копия рисует ту же шкалу, что и сам график, — отдельно считать её
+// пределы не нужно. Подписи оси X и легенду в копии прячем: они двигаются
+// вместе с графиком.
 export function ScrollableChart({
   points,
   pointWidth = 24,
   height = 280,
+  yAxisWidth = 65,
+  legend,
   children,
 }: {
   points: number;
   // Сколько пикселей нужно одной точке, чтобы подписи не слипались.
   pointWidth?: number;
   height?: number;
+  // Ширина оси Y вместе с отступом слева (у YAxis по умолчанию 60 + 5).
+  yAxisWidth?: number;
+  // Легенда — под графиком, вне прокрутки: внутри она уезжала бы вместе с
+  // данными.
+  legend?: LegendItem[];
   children: ReactNode;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; left: number } | null>(null);
   const [dragging, setDragging] = useState(false);
   const [scrollable, setScrollable] = useState(false);
+  const [fullWidth, setFullWidth] = useState(0);
   const minWidth = points * pointWidth;
 
   useLayoutEffect(() => {
     const el = box.current;
     if (!el) return;
     el.scrollLeft = el.scrollWidth;
-    const measure = () => setScrollable(el.scrollWidth > el.clientWidth + 1);
+    const measure = () => {
+      setScrollable(el.scrollWidth > el.clientWidth + 1);
+      setFullWidth(el.scrollWidth);
+    };
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(el);
@@ -203,22 +220,56 @@ export function ScrollableChart({
   };
 
   return (
-    <div
-      ref={box}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={stop}
-      onPointerLeave={stop}
-      className={`scrollbar-thin overflow-x-auto overscroll-x-contain ${
-        scrollable ? (dragging ? "cursor-grabbing select-none" : "cursor-grab") : ""
-      }`}
-    >
-      <div style={{ minWidth, height }}>
-        <ResponsiveContainer width="100%" height={height}>
-          {children as ReactElement}
-        </ResponsiveContainer>
+    <>
+      <div
+        ref={box}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={stop}
+        onPointerLeave={stop}
+        className={`scrollbar-thin overflow-x-auto overscroll-x-contain ${
+          scrollable ? (dragging ? "cursor-grabbing select-none" : "cursor-grab") : ""
+        }`}
+      >
+        <div style={{ minWidth, height }}>
+          {scrollable && fullWidth > 0 && (
+            <div
+              aria-hidden
+              className="pointer-events-none sticky left-0 z-10 overflow-hidden bg-background [&_.recharts-legend-wrapper]:invisible [&_.recharts-xAxis]:invisible"
+              style={{ width: yAxisWidth, height, marginBottom: -height }}
+            >
+              <div style={{ width: fullWidth, height }}>
+                <ResponsiveContainer width="100%" height={height}>
+                  {children as ReactElement}
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
+          <ResponsiveContainer width="100%" height={height}>
+            {children as ReactElement}
+          </ResponsiveContainer>
+        </div>
       </div>
-    </div>
+      {legend && legend.length > 0 && <ChartLegend items={legend} />}
+    </>
+  );
+}
+
+export interface LegendItem {
+  label: string;
+  color: string;
+}
+
+export function ChartLegend({ items }: { items: LegendItem[] }) {
+  return (
+    <ul className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-foreground/70">
+      {items.map((item) => (
+        <li key={item.label} className="flex items-center gap-1.5">
+          <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ background: item.color }} />
+          {item.label}
+        </li>
+      ))}
+    </ul>
   );
 }
 

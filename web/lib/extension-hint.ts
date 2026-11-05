@@ -28,6 +28,9 @@ const BROWSER_HELPS_SIGNALS = [
   "empty media response",
   "without being logged-in",
   "rate-limit reached",
+  // Instagram с 05.11.2026: «redirected to the login page … rate-limit for
+  // accessing posts anonymously».
+  "accessing posts anonymously",
   // Нужен вход.
   "sign in",
   "log in",

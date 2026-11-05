@@ -476,7 +476,13 @@ async function failureMessage(
       .row();
     if (link) keyboard.url(m.extensionButton, link);
     const hint = connected ? m.privateReconnectHint(label, !!link) : m.privateConnectHint(label, !!link);
-    return { text: text + hint, keyboard };
+    // Закрытая запись и временный запрет нашему серверу смотреть без входа —
+    // для человека одно и то же: коротко «видна только вошедшим». У сторис и
+    // постов Threads свои тексты: сторис бот без входа не качает вовсе, а пост
+    // Threads может быть и просто текстовым.
+    const reason =
+      friendly === m.errorLoginRequired || friendly === m.errorPlatformRefused ? m.loginOnlyReason(label) : friendly;
+    return { text: `${m.failedPrefix}${reason}${hint}`, keyboard };
   }
 
   if (!link) return { text };

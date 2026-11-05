@@ -104,6 +104,10 @@ interface Messages {
   // Закрытая запись, а к площадке можно подключить свой аккаунт
   // (handlers/download.ts failureMessage). withExtension — есть ещё и кнопка
   // расширения.
+  // Причина в ответе на «нужен вход», когда к площадке можно подключить
+  // аккаунт: и про закрытую запись, и про временный запрет нашему серверу
+  // смотреть без входа — для человека это одно и то же.
+  loginOnlyReason: (platform: string) => string;
   privateConnectHint: (platform: string, withExtension: boolean) => string;
   // Аккаунт этой площадки уже подключён, а запись всё равно не открылась.
   privateReconnectHint: (platform: string, withExtension: boolean) => string;
@@ -351,10 +355,11 @@ const ru: Messages = {
   extensionHint:
     "\n\n💻 Такое видео можно скачать расширением Videoner для браузера на компьютере: " +
     "оно качает под вашим входом на площадке, пароль и куки никуда не передаются.",
+  loginOnlyReason: (platform) => `${platform} показывает эту запись только тем, кто вошёл в аккаунт.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Чтобы скачать такую запись, подключите к боту свой аккаунт ${platform} — один раз. Дальше бот сам скачивает то, что видно вам: закрытые посты, рилсы и сторис, в том числе с телефона. Кнопка ниже покажет, как это сделать.${withExtension ? "\n\n💻 Или скачайте эту запись расширением Videoner для браузера на компьютере." : ""}`,
+    `\n\n🔑 Подключите свой аккаунт ${platform} к боту — один раз, и бот будет скачивать такие записи сам. Как — по кнопке ниже.${withExtension ? "\n💻 Или скачайте её расширением Videoner на компьютере." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Ваш подключённый аккаунт ${platform} не открыл эту запись. Возможно, вход перестал работать — подключите аккаунт заново. Или у этого аккаунта нет доступа к записи.${withExtension ? "\n\n💻 Можно также скачать её расширением Videoner для браузера на компьютере." : ""}`,
+    `\n\n⚠️ Ваш подключённый аккаунт ${platform} не открыл эту запись: вход перестал работать или у аккаунта нет к ней доступа. Подключите аккаунт заново по кнопке ниже.${withExtension ? "\n💻 Или скачайте её расширением Videoner на компьютере." : ""}`,
   connectAccountButton: "🔑 Подключить аккаунт",
   reconnectAccountButton: "🔑 Подключить заново",
   extensionButton: "🧩 Скачать через расширение",
@@ -572,10 +577,11 @@ const en: Messages = {
   extensionHint:
     "\n\n💻 You can download it with the Videoner browser extension on a computer: " +
     "it downloads using your own sign-in on the platform, and no password or cookies leave your browser.",
+  loginOnlyReason: (platform) => `${platform} shows this post only to people who are signed in.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 To download posts like this, connect your ${platform} account to the bot — once. After that the bot downloads whatever you can see: private posts, reels and stories, from your phone too. The button below shows how.${withExtension ? "\n\n💻 Or download it with the Videoner browser extension on a computer." : ""}`,
+    `\n\n🔑 Connect your ${platform} account to the bot — once, and the bot will download posts like this by itself. The button below shows how.${withExtension ? "\n💻 Or download it with the Videoner extension on a computer." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Your connected ${platform} account couldn't open this post. The login may have stopped working — connect the account again. Or this account has no access to the post.${withExtension ? "\n\n💻 You can also download it with the Videoner browser extension on a computer." : ""}`,
+    `\n\n⚠️ Your connected ${platform} account couldn't open this post: the login stopped working or the account has no access to it. Connect the account again with the button below.${withExtension ? "\n💻 Or download it with the Videoner extension on a computer." : ""}`,
   connectAccountButton: "🔑 Connect account",
   reconnectAccountButton: "🔑 Reconnect",
   extensionButton: "🧩 Download with the extension",
@@ -792,10 +798,11 @@ const ar: Messages = {
   extensionHint:
     "\n\n💻 يمكنك تنزيله بإضافة Videoner للمتصفح على الكمبيوتر: " +
     "فهي تنزّل باستخدام تسجيل دخولك أنت على المنصة، ولا تغادر أي كلمة مرور أو ملفات cookies متصفحك.",
+  loginOnlyReason: (platform) => `لا يعرض ${platform} هذا المنشور إلا لمن سجّل الدخول.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 لتنزيل منشورات كهذه، اربط حسابك على ${platform} بالبوت — مرة واحدة فقط. بعدها سيحمّل البوت كل ما تستطيع رؤيته: المنشورات الخاصة والريلز والقصص، ومن هاتفك أيضًا. الزر أدناه يشرح الطريقة.${withExtension ? "\n\n💻 أو حمّلها بإضافة Videoner للمتصفح على الكمبيوتر." : ""}`,
+    `\n\n🔑 اربط حسابك على ${platform} بالبوت — مرة واحدة، وسيحمّل البوت منشورات كهذه بنفسه. الزر أدناه يشرح الطريقة.${withExtension ? "\n💻 أو حمّله بإضافة Videoner للمتصفح على الكمبيوتر." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ لم يتمكن حسابك المرتبط على ${platform} من فتح هذا المنشور. ربما توقف تسجيل الدخول عن العمل — اربط الحساب من جديد. أو أن هذا الحساب لا يملك صلاحية الوصول إلى المنشور.${withExtension ? "\n\n💻 يمكنك أيضًا تحميله بإضافة Videoner للمتصفح على الكمبيوتر." : ""}`,
+    `\n\n⚠️ لم يتمكن حسابك المرتبط على ${platform} من فتح هذا المنشور: توقف تسجيل الدخول عن العمل أو أن الحساب لا يملك صلاحية الوصول إليه. اربط الحساب من جديد بالزر أدناه.${withExtension ? "\n💻 أو حمّله بإضافة Videoner للمتصفح على الكمبيوتر." : ""}`,
   connectAccountButton: "🔑 ربط الحساب",
   reconnectAccountButton: "🔑 إعادة الربط",
   extensionButton: "🧩 التنزيل بالإضافة",
@@ -1012,10 +1019,11 @@ const zh: Messages = {
   extensionHint:
     "\n\n💻 你可以在电脑上用 Videoner 浏览器扩展下载：" +
     "它使用你自己在平台上的登录状态下载，密码和 cookies 都不会离开你的浏览器。",
+  loginOnlyReason: (platform) => `${platform} 只向已登录的用户显示这条帖子。`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 要下载这类帖子，请把你的 ${platform} 账号连接到机器人——只需一次。之后机器人就能下载你能看到的一切：私密帖子、Reels 和快拍，在手机上也可以。点击下方按钮查看操作方法。${withExtension ? "\n\n💻 也可以在电脑上用 Videoner 浏览器扩展下载。" : ""}`,
+    `\n\n🔑 把你的 ${platform} 账号连接到机器人——只需一次，之后机器人就能自己下载这类帖子。点击下方按钮查看操作方法。${withExtension ? "\n💻 也可以在电脑上用 Videoner 浏览器扩展下载。" : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ 你连接的 ${platform} 账号无法打开这条帖子。可能是登录已失效——请重新连接账号。也可能这个账号没有查看该帖子的权限。${withExtension ? "\n\n💻 你也可以在电脑上用 Videoner 浏览器扩展下载。" : ""}`,
+    `\n\n⚠️ 你连接的 ${platform} 账号无法打开这条帖子：登录已失效，或者该账号没有查看权限。请通过下方按钮重新连接账号。${withExtension ? "\n💻 也可以在电脑上用 Videoner 浏览器扩展下载。" : ""}`,
   connectAccountButton: "🔑 连接账号",
   reconnectAccountButton: "🔑 重新连接",
   extensionButton: "🧩 用扩展下载",
@@ -1232,10 +1240,11 @@ const hi: Messages = {
   extensionHint:
     "\n\n💻 आप इसे कंप्यूटर पर Videoner ब्राउज़र एक्सटेंशन से डाउनलोड कर सकते हैं: " +
     "यह प्लेटफ़ॉर्म पर आपके अपने साइन-इन से डाउनलोड करता है, और कोई पासवर्ड या कुकीज़ आपके ब्राउज़र से बाहर नहीं जातीं।",
+  loginOnlyReason: (platform) => `${platform} यह पोस्ट सिर्फ़ साइन-इन किए हुए लोगों को दिखाता है।`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 ऐसी पोस्ट डाउनलोड करने के लिए अपना ${platform} खाता बॉट से कनेक्ट करें — सिर्फ़ एक बार। इसके बाद बॉट वह सब डाउनलोड करेगा जो आपको दिखता है: प्राइवेट पोस्ट, रील्स और स्टोरीज़, फ़ोन से भी। कैसे करें, यह नीचे वाला बटन बताएगा।${withExtension ? "\n\n💻 या इसे कंप्यूटर पर Videoner ब्राउज़र एक्सटेंशन से डाउनलोड करें।" : ""}`,
+    `\n\n🔑 अपना ${platform} खाता बॉट से कनेक्ट करें — सिर्फ़ एक बार, फिर बॉट ऐसी पोस्ट ख़ुद डाउनलोड करेगा। कैसे करें, यह नीचे वाला बटन बताएगा।${withExtension ? "\n💻 या इसे कंप्यूटर पर Videoner ब्राउज़र एक्सटेंशन से डाउनलोड करें।" : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ आपका कनेक्ट किया हुआ ${platform} खाता यह पोस्ट नहीं खोल सका। हो सकता है लॉग-इन ने काम करना बंद कर दिया हो — खाता फिर से कनेक्ट करें। या इस खाते के पास पोस्ट का एक्सेस नहीं है।${withExtension ? "\n\n💻 आप इसे कंप्यूटर पर Videoner ब्राउज़र एक्सटेंशन से भी डाउनलोड कर सकते हैं।" : ""}`,
+    `\n\n⚠️ आपका कनेक्ट किया हुआ ${platform} खाता यह पोस्ट नहीं खोल सका: लॉग-इन ने काम करना बंद कर दिया है या इस खाते के पास पोस्ट का एक्सेस नहीं है। नीचे वाले बटन से खाता फिर से कनेक्ट करें।${withExtension ? "\n💻 या इसे कंप्यूटर पर Videoner ब्राउज़र एक्सटेंशन से डाउनलोड करें।" : ""}`,
   connectAccountButton: "🔑 खाता कनेक्ट करें",
   reconnectAccountButton: "🔑 फिर से कनेक्ट करें",
   extensionButton: "🧩 एक्सटेंशन से डाउनलोड करें",
@@ -1452,10 +1461,11 @@ const indonesian: Messages = {
   extensionHint:
     "\n\n💻 Anda bisa mengunduhnya dengan ekstensi browser Videoner di komputer: " +
     "ekstensi mengunduh menggunakan login Anda sendiri di platform, dan tidak ada kata sandi atau cookies yang keluar dari browser Anda.",
+  loginOnlyReason: (platform) => `${platform} hanya menampilkan postingan ini kepada pengguna yang sudah login.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Untuk mengunduh postingan seperti ini, hubungkan akun ${platform} Anda ke bot — cukup sekali. Setelah itu bot mengunduh apa pun yang bisa Anda lihat: postingan privat, reels, dan story, juga dari ponsel Anda. Tombol di bawah menunjukkan caranya.${withExtension ? "\n\n💻 Atau unduh dengan ekstensi browser Videoner di komputer." : ""}`,
+    `\n\n🔑 Hubungkan akun ${platform} Anda ke bot — cukup sekali, dan bot akan mengunduh postingan seperti ini sendiri. Tombol di bawah menunjukkan caranya.${withExtension ? "\n💻 Atau unduh dengan ekstensi browser Videoner di komputer." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Akun ${platform} yang Anda hubungkan tidak dapat membuka postingan ini. Login mungkin sudah tidak berfungsi — hubungkan akun lagi. Atau akun ini tidak memiliki akses ke postingan tersebut.${withExtension ? "\n\n💻 Anda juga bisa mengunduhnya dengan ekstensi browser Videoner di komputer." : ""}`,
+    `\n\n⚠️ Akun ${platform} yang Anda hubungkan tidak dapat membuka postingan ini: login sudah tidak berfungsi atau akun tersebut tidak memiliki akses ke postingan ini. Hubungkan akun lagi dengan tombol di bawah.${withExtension ? "\n💻 Atau unduh dengan ekstensi browser Videoner di komputer." : ""}`,
   connectAccountButton: "🔑 Hubungkan akun",
   reconnectAccountButton: "🔑 Hubungkan ulang",
   extensionButton: "🧩 Unduh dengan ekstensi",
@@ -1672,10 +1682,11 @@ const sw: Messages = {
   extensionHint:
     "\n\n💻 Unaweza kuipakua kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta: " +
     "kinapakua kwa kutumia akaunti yako mwenyewe kwenye jukwaa, na hakuna nenosiri wala cookies zinazotoka kwenye kivinjari chako.",
+  loginOnlyReason: (platform) => `${platform} huonyesha chapisho hili kwa walioingia kwenye akaunti tu.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Ili kupakua machapisho kama haya, unganisha akaunti yako ya ${platform} na bot — mara moja tu. Baada ya hapo bot itapakua chochote unachoweza kuona: machapisho ya faragha, reels na story, hata kutoka kwenye simu yako. Kitufe kilicho hapa chini kinaonyesha jinsi ya kufanya.${withExtension ? "\n\n💻 Au ipakue kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta." : ""}`,
+    `\n\n🔑 Unganisha akaunti yako ya ${platform} na bot — mara moja tu, na bot itapakua machapisho kama haya yenyewe. Kitufe kilicho hapa chini kinaonyesha jinsi ya kufanya.${withExtension ? "\n💻 Au ipakue kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Akaunti yako ya ${platform} iliyounganishwa haikuweza kufungua chapisho hili. Huenda kuingia kumeacha kufanya kazi — unganisha akaunti tena. Au akaunti hii haina ruhusa ya kuona chapisho.${withExtension ? "\n\n💻 Unaweza pia kuipakua kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta." : ""}`,
+    `\n\n⚠️ Akaunti yako ya ${platform} iliyounganishwa haikuweza kufungua chapisho hili: kuingia kumeacha kufanya kazi au akaunti haina ruhusa ya kuliona. Unganisha akaunti tena kwa kitufe kilicho hapa chini.${withExtension ? "\n💻 Au ipakue kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta." : ""}`,
   connectAccountButton: "🔑 Unganisha akaunti",
   reconnectAccountButton: "🔑 Unganisha upya",
   extensionButton: "🧩 Pakua kwa kiendelezi",
@@ -1892,10 +1903,11 @@ const de: Messages = {
   extensionHint:
     "\n\n💻 Du kannst es am Computer mit der Browser-Erweiterung von Videoner herunterladen: " +
     "Sie lädt mit deiner eigenen Anmeldung auf der Plattform herunter, und weder Passwort noch Cookies verlassen deinen Browser.",
+  loginOnlyReason: (platform) => `${platform} zeigt diesen Beitrag nur angemeldeten Nutzern.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Um solche Beiträge herunterzuladen, verbinde dein ${platform}-Konto mit dem Bot — nur einmal. Danach lädt der Bot alles herunter, was du sehen kannst: private Beiträge, Reels und Storys, auch vom Handy aus. Der Button unten zeigt, wie es geht.${withExtension ? "\n\n💻 Oder lade es am Computer mit der Browser-Erweiterung von Videoner herunter." : ""}`,
+    `\n\n🔑 Verbinde dein ${platform}-Konto mit dem Bot — nur einmal, dann lädt der Bot solche Beiträge selbst herunter. Der Button unten zeigt, wie es geht.${withExtension ? "\n💻 Oder lade ihn am Computer mit der Browser-Erweiterung von Videoner herunter." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Dein verbundenes ${platform}-Konto konnte diesen Beitrag nicht öffnen. Vielleicht funktioniert die Anmeldung nicht mehr — verbinde das Konto erneut. Oder dieses Konto hat keinen Zugriff auf den Beitrag.${withExtension ? "\n\n💻 Du kannst es auch am Computer mit der Browser-Erweiterung von Videoner herunterladen." : ""}`,
+    `\n\n⚠️ Dein verbundenes ${platform}-Konto konnte diesen Beitrag nicht öffnen: Die Anmeldung funktioniert nicht mehr oder das Konto hat keinen Zugriff darauf. Verbinde das Konto über den Button unten erneut.${withExtension ? "\n💻 Oder lade ihn am Computer mit der Browser-Erweiterung von Videoner herunter." : ""}`,
   connectAccountButton: "🔑 Konto verbinden",
   reconnectAccountButton: "🔑 Erneut verbinden",
   extensionButton: "🧩 Mit der Erweiterung herunterladen",
@@ -2112,10 +2124,11 @@ const fr: Messages = {
   extensionHint:
     "\n\n💻 Vous pouvez la télécharger avec l'extension Videoner pour navigateur sur ordinateur : " +
     "elle télécharge avec votre propre connexion à la plateforme, et aucun mot de passe ni cookie ne quitte votre navigateur.",
+  loginOnlyReason: (platform) => `${platform} ne montre cette publication qu'aux utilisateurs connectés.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Pour télécharger ce type de publication, connectez votre compte ${platform} au bot — une seule fois. Ensuite, le bot télécharge tout ce que vous pouvez voir : publications privées, reels et stories, y compris depuis votre téléphone. Le bouton ci-dessous explique comment faire.${withExtension ? "\n\n💻 Ou téléchargez-la avec l'extension Videoner pour navigateur sur ordinateur." : ""}`,
+    `\n\n🔑 Connectez votre compte ${platform} au bot — une seule fois, et le bot téléchargera lui-même ce type de publication. Le bouton ci-dessous explique comment faire.${withExtension ? "\n💻 Ou téléchargez-la avec l'extension Videoner pour navigateur sur ordinateur." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Votre compte ${platform} connecté n'a pas pu ouvrir cette publication. La connexion ne fonctionne peut-être plus — reconnectez le compte. Ou ce compte n'a pas accès à la publication.${withExtension ? "\n\n💻 Vous pouvez aussi la télécharger avec l'extension Videoner pour navigateur sur ordinateur." : ""}`,
+    `\n\n⚠️ Votre compte ${platform} connecté n'a pas pu ouvrir cette publication : la connexion ne fonctionne plus ou ce compte n'y a pas accès. Reconnectez le compte avec le bouton ci-dessous.${withExtension ? "\n💻 Ou téléchargez-la avec l'extension Videoner pour navigateur sur ordinateur." : ""}`,
   connectAccountButton: "🔑 Connecter un compte",
   reconnectAccountButton: "🔑 Reconnecter",
   extensionButton: "🧩 Télécharger avec l'extension",
@@ -2332,10 +2345,11 @@ const it: Messages = {
   extensionHint:
     "\n\n💻 Puoi scaricarlo con l'estensione Videoner per il browser sul computer: " +
     "scarica usando il tuo accesso alla piattaforma, e nessuna password né cookie lascia il tuo browser.",
+  loginOnlyReason: (platform) => `${platform} mostra questo post solo a chi ha effettuato l'accesso.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Per scaricare post come questo, collega il tuo account ${platform} al bot — una volta sola. Dopo, il bot scarica tutto quello che puoi vedere tu: post privati, reel e storie, anche dal telefono. Il pulsante qui sotto spiega come fare.${withExtension ? "\n\n💻 Oppure scaricalo con l'estensione Videoner per il browser sul computer." : ""}`,
+    `\n\n🔑 Collega il tuo account ${platform} al bot — una volta sola, e il bot scaricherà da solo i post come questo. Il pulsante qui sotto spiega come fare.${withExtension ? "\n💻 Oppure scaricalo con l'estensione Videoner per il browser sul computer." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Il tuo account ${platform} collegato non è riuscito ad aprire questo post. L'accesso potrebbe non funzionare più — ricollega l'account. Oppure questo account non ha accesso al post.${withExtension ? "\n\n💻 Puoi anche scaricarlo con l'estensione Videoner per il browser sul computer." : ""}`,
+    `\n\n⚠️ Il tuo account ${platform} collegato non è riuscito ad aprire questo post: l'accesso non funziona più oppure l'account non ha accesso al post. Ricollega l'account con il pulsante qui sotto.${withExtension ? "\n💻 Oppure scaricalo con l'estensione Videoner per il browser sul computer." : ""}`,
   connectAccountButton: "🔑 Collega account",
   reconnectAccountButton: "🔑 Ricollega",
   extensionButton: "🧩 Scarica con l'estensione",
@@ -2552,10 +2566,11 @@ const pt: Messages = {
   extensionHint:
     "\n\n💻 Você pode baixá-lo com a extensão Videoner para navegador no computador: " +
     "ela baixa usando o seu próprio login na plataforma, e nenhuma senha ou cookie sai do seu navegador.",
+  loginOnlyReason: (platform) => `O ${platform} só mostra este post para quem fez login.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Para baixar posts como este, conecte sua conta do ${platform} ao bot — uma única vez. Depois disso, o bot baixa tudo o que você consegue ver: posts privados, reels e stories, inclusive pelo celular. O botão abaixo mostra como.${withExtension ? "\n\n💻 Ou baixe com a extensão Videoner para navegador no computador." : ""}`,
+    `\n\n🔑 Conecte sua conta do ${platform} ao bot — uma única vez, e o bot vai baixar posts como este sozinho. O botão abaixo mostra como.${withExtension ? "\n💻 Ou baixe com a extensão Videoner para navegador no computador." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Sua conta do ${platform} conectada não conseguiu abrir este post. O login pode ter parado de funcionar — conecte a conta de novo. Ou essa conta não tem acesso ao post.${withExtension ? "\n\n💻 Você também pode baixá-lo com a extensão Videoner para navegador no computador." : ""}`,
+    `\n\n⚠️ Sua conta do ${platform} conectada não conseguiu abrir este post: o login parou de funcionar ou a conta não tem acesso a ele. Conecte a conta de novo pelo botão abaixo.${withExtension ? "\n💻 Ou baixe com a extensão Videoner para navegador no computador." : ""}`,
   connectAccountButton: "🔑 Conectar conta",
   reconnectAccountButton: "🔑 Conectar de novo",
   extensionButton: "🧩 Baixar com a extensão",
@@ -2772,10 +2787,11 @@ const es: Messages = {
   extensionHint:
     "\n\n💻 Puedes descargarlo con la extensión de Videoner para el navegador en un ordenador: " +
     "descarga con tu propia sesión en la plataforma, y ninguna contraseña ni cookie sale de tu navegador.",
+  loginOnlyReason: (platform) => `${platform} solo muestra esta publicación a usuarios con sesión iniciada.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Para descargar publicaciones como esta, conecta tu cuenta de ${platform} al bot — una sola vez. Después el bot descarga todo lo que tú puedes ver: publicaciones privadas, reels e historias, también desde el móvil. El botón de abajo muestra cómo.${withExtension ? "\n\n💻 O descárgalo con la extensión de Videoner para el navegador en un ordenador." : ""}`,
+    `\n\n🔑 Conecta tu cuenta de ${platform} al bot — una sola vez, y el bot descargará por sí mismo publicaciones como esta. El botón de abajo muestra cómo.${withExtension ? "\n💻 O descárgala con la extensión de Videoner para el navegador en un ordenador." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Tu cuenta de ${platform} conectada no pudo abrir esta publicación. Puede que la sesión haya dejado de funcionar — vuelve a conectar la cuenta. O esa cuenta no tiene acceso a la publicación.${withExtension ? "\n\n💻 También puedes descargarlo con la extensión de Videoner para el navegador en un ordenador." : ""}`,
+    `\n\n⚠️ Tu cuenta de ${platform} conectada no pudo abrir esta publicación: la sesión dejó de funcionar o la cuenta no tiene acceso a ella. Vuelve a conectar la cuenta con el botón de abajo.${withExtension ? "\n💻 O descárgala con la extensión de Videoner para el navegador en un ordenador." : ""}`,
   connectAccountButton: "🔑 Conectar cuenta",
   reconnectAccountButton: "🔑 Volver a conectar",
   extensionButton: "🧩 Descargar con la extensión",
@@ -2992,10 +3008,11 @@ const uz: Messages = {
   extensionHint:
     "\n\n💻 Uni kompyuterda Videoner brauzer kengaytmasi orqali yuklab olishingiz mumkin: " +
     "u platformadagi oʻz akkauntingiz orqali yuklab oladi, parol ham, cookie fayllar ham brauzeringizdan tashqariga chiqmaydi.",
+  loginOnlyReason: (platform) => `${platform} bu postni faqat akkauntga kirganlarga koʻrsatadi.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Bunday postlarni yuklab olish uchun ${platform} akkauntingizni botga ulang — bir marta. Shundan soʻng bot siz koʻra oladigan hamma narsani yuklab oladi: yopiq postlar, reels va storislar, telefondan ham. Buni qanday qilish — quyidagi tugmada.${withExtension ? "\n\n💻 Yoki uni kompyuterda Videoner brauzer kengaytmasi orqali yuklab oling." : ""}`,
+    `\n\n🔑 ${platform} akkauntingizni botga ulang — bir marta, shunda bot bunday postlarni oʻzi yuklab oladi. Qanday qilish — quyidagi tugmada.${withExtension ? "\n💻 Yoki uni kompyuterda Videoner brauzer kengaytmasi orqali yuklab oling." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Ulangan ${platform} akkauntingiz bu postni ocha olmadi. Ehtimol, kirish ishlamay qolgan — akkauntni qayta ulang. Yoki bu akkauntda postga ruxsat yoʻq.${withExtension ? "\n\n💻 Uni kompyuterda Videoner brauzer kengaytmasi orqali ham yuklab olishingiz mumkin." : ""}`,
+    `\n\n⚠️ Ulangan ${platform} akkauntingiz bu postni ocha olmadi: kirish ishlamay qolgan yoki akkauntda unga ruxsat yoʻq. Akkauntni quyidagi tugma orqali qayta ulang.${withExtension ? "\n💻 Yoki uni kompyuterda Videoner brauzer kengaytmasi orqali yuklab oling." : ""}`,
   connectAccountButton: "🔑 Akkauntni ulash",
   reconnectAccountButton: "🔑 Qayta ulash",
   extensionButton: "🧩 Kengaytma orqali yuklab olish",
@@ -3212,10 +3229,11 @@ const tr: Messages = {
   extensionHint:
     "\n\n💻 Bilgisayarda Videoner tarayıcı eklentisiyle indirebilirsiniz: " +
     "eklenti, platformdaki kendi oturumunuzla indirir; hiçbir şifre veya çerez tarayıcınızdan çıkmaz.",
+  loginOnlyReason: (platform) => `${platform} bu gönderiyi yalnızca giriş yapmış kullanıcılara gösteriyor.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Bu tür gönderileri indirmek için ${platform} hesabınızı bota bağlayın — bir kez. Bundan sonra bot sizin görebildiğiniz her şeyi indirir: gizli gönderiler, Reels videoları ve hikayeler, telefondan da. Nasıl yapılacağını aşağıdaki düğme gösteriyor.${withExtension ? "\n\n💻 Ya da bilgisayarda Videoner tarayıcı eklentisiyle indirin." : ""}`,
+    `\n\n🔑 ${platform} hesabınızı bota bağlayın — bir kez; sonra bot bu tür gönderileri kendisi indirir. Nasıl yapılacağını aşağıdaki düğme gösteriyor.${withExtension ? "\n💻 Ya da bilgisayarda Videoner tarayıcı eklentisiyle indirin." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Bağlı ${platform} hesabınız bu gönderiyi açamadı. Oturum çalışmayı durdurmuş olabilir — hesabı tekrar bağlayın. Ya da bu hesabın gönderiye erişimi yok.${withExtension ? "\n\n💻 Bilgisayarda Videoner tarayıcı eklentisiyle da indirebilirsiniz." : ""}`,
+    `\n\n⚠️ Bağlı ${platform} hesabınız bu gönderiyi açamadı: oturum çalışmayı durdurmuş ya da hesabın gönderiye erişimi yok. Hesabı aşağıdaki düğmeyle tekrar bağlayın.${withExtension ? "\n💻 Ya da bilgisayarda Videoner tarayıcı eklentisiyle indirin." : ""}`,
   connectAccountButton: "🔑 Hesap bağla",
   reconnectAccountButton: "🔑 Tekrar bağla",
   extensionButton: "🧩 Eklentiyle indir",
@@ -3432,10 +3450,11 @@ const fa: Messages = {
   extensionHint:
     "\n\n💻 می‌توانید آن را با افزونهٔ مرورگر Videoner روی کامپیوتر دانلود کنید: " +
     "افزونه با ورود خود شما به پلتفرم دانلود می‌کند و هیچ رمز عبور یا کوکی‌ای از مرورگرتان خارج نمی‌شود.",
+  loginOnlyReason: (platform) => `${platform} این پست را فقط به کاربرانی نشان می‌دهد که وارد حساب شده‌اند.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 برای دانلود چنین پست‌هایی، حساب ${platform} خود را به ربات متصل کنید — فقط یک بار. بعد از آن ربات هر چیزی را که شما می‌بینید دانلود می‌کند: پست‌های خصوصی، ریلز و استوری‌ها، از گوشی هم. دکمهٔ زیر روشش را نشان می‌دهد.${withExtension ? "\n\n💻 یا آن را با افزونهٔ مرورگر Videoner روی کامپیوتر دانلود کنید." : ""}`,
+    `\n\n🔑 حساب ${platform} خود را به ربات متصل کنید — فقط یک بار، و ربات چنین پست‌هایی را خودش دانلود می‌کند. دکمهٔ زیر روشش را نشان می‌دهد.${withExtension ? "\n💻 یا آن را با افزونهٔ مرورگر Videoner روی کامپیوتر دانلود کنید." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ حساب ${platform} متصل‌شدهٔ شما نتوانست این پست را باز کند. شاید ورود به حساب دیگر کار نمی‌کند — حساب را دوباره متصل کنید. یا این حساب به پست دسترسی ندارد.${withExtension ? "\n\n💻 همچنین می‌توانید آن را با افزونهٔ مرورگر Videoner روی کامپیوتر دانلود کنید." : ""}`,
+    `\n\n⚠️ حساب ${platform} متصل‌شدهٔ شما نتوانست این پست را باز کند: ورود به حساب دیگر کار نمی‌کند یا این حساب به پست دسترسی ندارد. با دکمهٔ زیر حساب را دوباره متصل کنید.${withExtension ? "\n💻 یا آن را با افزونهٔ مرورگر Videoner روی کامپیوتر دانلود کنید." : ""}`,
   connectAccountButton: "🔑 اتصال حساب",
   reconnectAccountButton: "🔑 اتصال دوباره",
   extensionButton: "🧩 دانلود با افزونه",
@@ -3652,10 +3671,11 @@ const vi: Messages = {
   extensionHint:
     "\n\n💻 Bạn có thể tải video này bằng tiện ích trình duyệt Videoner trên máy tính: " +
     "tiện ích tải bằng chính phiên đăng nhập của bạn trên nền tảng, mật khẩu và cookie không rời khỏi trình duyệt của bạn.",
+  loginOnlyReason: (platform) => `${platform} chỉ hiển thị bài đăng này cho người dùng đã đăng nhập.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Để tải những bài đăng như thế này, hãy kết nối tài khoản ${platform} của bạn với bot — chỉ một lần. Sau đó bot tải được mọi thứ bạn xem được: bài đăng riêng tư, reels và story, cả trên điện thoại. Nút bên dưới sẽ hướng dẫn cách làm.${withExtension ? "\n\n💻 Hoặc tải bằng tiện ích trình duyệt Videoner trên máy tính." : ""}`,
+    `\n\n🔑 Hãy kết nối tài khoản ${platform} của bạn với bot — chỉ một lần, rồi bot sẽ tự tải những bài đăng như thế này. Nút bên dưới sẽ hướng dẫn cách làm.${withExtension ? "\n💻 Hoặc tải bằng tiện ích trình duyệt Videoner trên máy tính." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Tài khoản ${platform} bạn đã kết nối không mở được bài đăng này. Có thể phiên đăng nhập đã hết hiệu lực — hãy kết nối lại tài khoản. Hoặc tài khoản này không có quyền xem bài đăng.${withExtension ? "\n\n💻 Bạn cũng có thể tải bằng tiện ích trình duyệt Videoner trên máy tính." : ""}`,
+    `\n\n⚠️ Tài khoản ${platform} bạn đã kết nối không mở được bài đăng này: phiên đăng nhập đã hết hiệu lực hoặc tài khoản không có quyền xem bài đăng. Hãy kết nối lại tài khoản bằng nút bên dưới.${withExtension ? "\n💻 Hoặc tải bằng tiện ích trình duyệt Videoner trên máy tính." : ""}`,
   connectAccountButton: "🔑 Kết nối tài khoản",
   reconnectAccountButton: "🔑 Kết nối lại",
   extensionButton: "🧩 Tải bằng tiện ích",
@@ -3873,10 +3893,11 @@ const bn: Messages = {
   extensionHint:
     "\n\n💻 কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়ে এটি ডাউনলোড করতে পারেন: " +
     "এটি প্ল্যাটফর্মে আপনার নিজের সাইন ইন ব্যবহার করে ডাউনলোড করে, আর কোনো পাসওয়ার্ড বা কুকি আপনার ব্রাউজারের বাইরে যায় না।",
+  loginOnlyReason: (platform) => `${platform} এই পোস্টটি শুধু সাইন ইন করা ব্যবহারকারীদের দেখায়।`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 এমন পোস্ট ডাউনলোড করতে আপনার ${platform} অ্যাকাউন্ট বটের সাথে যুক্ত করুন — একবারই। এরপর আপনি যা দেখতে পান বট সবই ডাউনলোড করবে: প্রাইভেট পোস্ট, রিলস ও স্টোরি, ফোন থেকেও। কীভাবে করবেন, নিচের বাটনে দেখানো আছে।${withExtension ? "\n\n💻 অথবা কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়ে ডাউনলোড করুন।" : ""}`,
+    `\n\n🔑 আপনার ${platform} অ্যাকাউন্ট বটের সাথে যুক্ত করুন — একবারই, তারপর বট নিজেই এমন পোস্ট ডাউনলোড করবে। কীভাবে করবেন, নিচের বাটনে দেখানো আছে।${withExtension ? "\n💻 অথবা কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়ে ডাউনলোড করুন।" : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ আপনার যুক্ত করা ${platform} অ্যাকাউন্ট এই পোস্টটি খুলতে পারেনি। হয়তো লগ ইন আর কাজ করছে না — অ্যাকাউন্টটি আবার যুক্ত করুন। অথবা এই অ্যাকাউন্টের পোস্টটিতে অ্যাক্সেস নেই।${withExtension ? "\n\n💻 কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়েও এটি ডাউনলোড করতে পারেন।" : ""}`,
+    `\n\n⚠️ আপনার যুক্ত করা ${platform} অ্যাকাউন্ট এই পোস্টটি খুলতে পারেনি: লগ ইন আর কাজ করছে না, অথবা এই অ্যাকাউন্টের পোস্টটিতে অ্যাক্সেস নেই। নিচের বাটন দিয়ে অ্যাকাউন্টটি আবার যুক্ত করুন।${withExtension ? "\n💻 অথবা কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়ে ডাউনলোড করুন।" : ""}`,
   connectAccountButton: "🔑 অ্যাকাউন্ট যুক্ত করুন",
   reconnectAccountButton: "🔑 আবার যুক্ত করুন",
   extensionButton: "🧩 এক্সটেনশন দিয়ে ডাউনলোড করুন",
@@ -4093,10 +4114,11 @@ const ur: Messages = {
   extensionHint:
     "\n\n💻 آپ اسے کمپیوٹر پر Videoner براؤزر ایکسٹینشن سے ڈاؤن لوڈ کر سکتے ہیں: " +
     "یہ پلیٹ فارم پر آپ کے اپنے سائن ان سے ڈاؤن لوڈ کرتی ہے، اور کوئی پاس ورڈ یا کوکیز آپ کے براؤزر سے باہر نہیں جاتیں۔",
+  loginOnlyReason: (platform) => `${platform} یہ پوسٹ صرف سائن ان کیے ہوئے صارفین کو دکھاتا ہے۔`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 ایسی پوسٹس ڈاؤن لوڈ کرنے کے لیے اپنا ${platform} اکاؤنٹ بوٹ سے جوڑیں — صرف ایک بار۔ اس کے بعد بوٹ وہ سب ڈاؤن لوڈ کرے گا جو آپ دیکھ سکتے ہیں: پرائیویٹ پوسٹس، ریلز اور اسٹوریز، فون سے بھی۔ نیچے والا بٹن طریقہ بتاتا ہے۔${withExtension ? "\n\n💻 یا اسے کمپیوٹر پر Videoner براؤزر ایکسٹینشن سے ڈاؤن لوڈ کریں۔" : ""}`,
+    `\n\n🔑 اپنا ${platform} اکاؤنٹ بوٹ سے جوڑیں — صرف ایک بار، پھر بوٹ ایسی پوسٹس خود ڈاؤن لوڈ کرے گا۔ نیچے والا بٹن طریقہ بتاتا ہے۔${withExtension ? "\n💻 یا اسے کمپیوٹر پر Videoner براؤزر ایکسٹینشن سے ڈاؤن لوڈ کریں۔" : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ آپ کا جوڑا ہوا ${platform} اکاؤنٹ یہ پوسٹ نہیں کھول سکا۔ ہو سکتا ہے لاگ ان نے کام کرنا چھوڑ دیا ہو — اکاؤنٹ دوبارہ جوڑیں۔ یا اس اکاؤنٹ کو پوسٹ تک رسائی نہیں ہے۔${withExtension ? "\n\n💻 آپ اسے کمپیوٹر پر Videoner براؤزر ایکسٹینشن سے بھی ڈاؤن لوڈ کر سکتے ہیں۔" : ""}`,
+    `\n\n⚠️ آپ کا جوڑا ہوا ${platform} اکاؤنٹ یہ پوسٹ نہیں کھول سکا: لاگ ان نے کام کرنا چھوڑ دیا ہے یا اس اکاؤنٹ کو پوسٹ تک رسائی نہیں ہے۔ نیچے والے بٹن سے اکاؤنٹ دوبارہ جوڑیں۔${withExtension ? "\n💻 یا اسے کمپیوٹر پر Videoner براؤزر ایکسٹینشن سے ڈاؤن لوڈ کریں۔" : ""}`,
   connectAccountButton: "🔑 اکاؤنٹ جوڑیں",
   reconnectAccountButton: "🔑 دوبارہ جوڑیں",
   extensionButton: "🧩 ایکسٹینشن سے ڈاؤن لوڈ کریں",
@@ -4313,10 +4335,11 @@ const pl: Messages = {
   extensionHint:
     "\n\n💻 Możesz go pobrać na komputerze przez rozszerzenie Videoner do przeglądarki: " +
     "pobiera ono przy użyciu twojego własnego logowania na platformie, a żadne hasło ani pliki cookie nie opuszczają twojej przeglądarki.",
+  loginOnlyReason: (platform) => `${platform} pokazuje ten post tylko zalogowanym użytkownikom.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Aby pobierać takie posty, połącz swoje konto ${platform} z botem — jednorazowo. Potem bot pobiera wszystko, co możesz zobaczyć: prywatne posty, rolki i relacje, także z telefonu. Przycisk poniżej pokazuje, jak to zrobić.${withExtension ? "\n\n💻 Albo pobierz to na komputerze przez rozszerzenie Videoner do przeglądarki." : ""}`,
+    `\n\n🔑 Połącz swoje konto ${platform} z botem — jednorazowo, a bot sam będzie pobierał takie posty. Przycisk poniżej pokazuje, jak to zrobić.${withExtension ? "\n💻 Albo pobierz go na komputerze przez rozszerzenie Videoner do przeglądarki." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Twoje połączone konto ${platform} nie mogło otworzyć tego posta. Logowanie mogło przestać działać — połącz konto ponownie. Albo to konto nie ma dostępu do posta.${withExtension ? "\n\n💻 Możesz to też pobrać na komputerze przez rozszerzenie Videoner do przeglądarki." : ""}`,
+    `\n\n⚠️ Twoje połączone konto ${platform} nie mogło otworzyć tego posta: logowanie przestało działać albo to konto nie ma do niego dostępu. Połącz konto ponownie przyciskiem poniżej.${withExtension ? "\n💻 Albo pobierz go na komputerze przez rozszerzenie Videoner do przeglądarki." : ""}`,
   connectAccountButton: "🔑 Połącz konto",
   reconnectAccountButton: "🔑 Połącz ponownie",
   extensionButton: "🧩 Pobierz przez rozszerzenie",
@@ -4533,10 +4556,11 @@ const ja: Messages = {
   extensionHint:
     "\n\n💻 パソコンなら Videoner のブラウザ拡張機能でダウンロードできます。" +
     "プラットフォームでのご自身のログインを使ってダウンロードし、パスワードや Cookie がブラウザの外に出ることはありません。",
+  loginOnlyReason: (platform) => `${platform} では、この投稿はログインしたユーザーにしか表示されません。`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 このような投稿をダウンロードするには、${platform} アカウントをボットに一度だけ接続してください。接続後は、あなたが閲覧できるもの（非公開の投稿、リール、ストーリー）をスマートフォンからでもダウンロードできます。方法は下のボタンからご確認ください。${withExtension ? "\n\n💻 または、パソコンで Videoner のブラウザ拡張機能を使ってダウンロードしてください。" : ""}`,
+    `\n\n🔑 ${platform} アカウントをボットに一度接続すれば、このような投稿もボットが自動でダウンロードします。方法は下のボタンからご確認ください。${withExtension ? "\n💻 または、パソコンで Videoner のブラウザ拡張機能を使ってダウンロードしてください。" : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ 接続済みの ${platform} アカウントでこの投稿を開けませんでした。ログインが無効になった可能性があります。アカウントをもう一度接続してください。または、このアカウントにはこの投稿へのアクセス権がありません。${withExtension ? "\n\n💻 パソコンで Videoner のブラウザ拡張機能を使ってダウンロードすることもできます。" : ""}`,
+    `\n\n⚠️ 接続済みの ${platform} アカウントでこの投稿を開けませんでした。ログインが無効になったか、このアカウントに閲覧権限がありません。下のボタンからアカウントをもう一度接続してください。${withExtension ? "\n💻 または、パソコンで Videoner のブラウザ拡張機能を使ってダウンロードしてください。" : ""}`,
   connectAccountButton: "🔑 アカウントを接続",
   reconnectAccountButton: "🔑 再接続",
   extensionButton: "🧩 拡張機能でダウンロード",
@@ -4753,10 +4777,11 @@ const ko: Messages = {
   extensionHint:
     "\n\n💻 컴퓨터에서 Videoner 브라우저 확장 프로그램으로 다운로드할 수 있어요. " +
     "플랫폼에 로그인된 내 계정으로 다운로드하며, 비밀번호나 쿠키는 브라우저 밖으로 나가지 않아요.",
+  loginOnlyReason: (platform) => `${platform}에서는 로그인한 사용자에게만 이 게시물을 보여 줘요.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 이런 게시물을 다운로드하려면 ${platform} 계정을 봇에 한 번만 연결해 주세요. 그러면 내가 볼 수 있는 비공개 게시물, 릴스, 스토리를 휴대폰에서도 봇이 다운로드해 드려요. 방법은 아래 버튼에서 확인하세요.${withExtension ? "\n\n💻 또는 컴퓨터에서 Videoner 브라우저 확장 프로그램으로 다운로드하세요." : ""}`,
+    `\n\n🔑 ${platform} 계정을 봇에 한 번만 연결하면 이런 게시물도 봇이 알아서 다운로드해요. 방법은 아래 버튼에서 확인하세요.${withExtension ? "\n💻 또는 컴퓨터에서 Videoner 브라우저 확장 프로그램으로 다운로드하세요." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ 연결된 ${platform} 계정으로 이 게시물을 열지 못했어요. 로그인이 만료되었을 수 있으니 계정을 다시 연결해 주세요. 또는 이 계정에 게시물을 볼 권한이 없는 경우예요.${withExtension ? "\n\n💻 컴퓨터에서 Videoner 브라우저 확장 프로그램으로 다운로드할 수도 있어요." : ""}`,
+    `\n\n⚠️ 연결된 ${platform} 계정으로 이 게시물을 열지 못했어요. 로그인이 만료되었거나 이 계정에 볼 권한이 없어요. 아래 버튼으로 계정을 다시 연결해 주세요.${withExtension ? "\n💻 또는 컴퓨터에서 Videoner 브라우저 확장 프로그램으로 다운로드하세요." : ""}`,
   connectAccountButton: "🔑 계정 연결",
   reconnectAccountButton: "🔑 다시 연결",
   extensionButton: "🧩 확장 프로그램으로 다운로드",
@@ -4973,10 +4998,11 @@ const th: Messages = {
   extensionHint:
     "\n\n💻 ดาวน์โหลดได้ด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์: " +
     "ส่วนขยายจะดาวน์โหลดโดยใช้การล็อกอินของคุณบนแพลตฟอร์ม และรหัสผ่านหรือคุกกี้จะไม่ออกไปจากเบราว์เซอร์ของคุณ",
+  loginOnlyReason: (platform) => `${platform} แสดงโพสต์นี้เฉพาะผู้ใช้ที่ล็อกอินอยู่เท่านั้น`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 หากต้องการดาวน์โหลดโพสต์แบบนี้ ให้เชื่อมต่อบัญชี ${platform} ของคุณกับบอทเพียงครั้งเดียว หลังจากนั้นบอทจะดาวน์โหลดทุกอย่างที่คุณเห็นได้ ทั้งโพสต์ส่วนตัว รีล และสตอรี่ จากมือถือก็ได้ ดูวิธีได้ที่ปุ่มด้านล่าง${withExtension ? "\n\n💻 หรือดาวน์โหลดด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์" : ""}`,
+    `\n\n🔑 เชื่อมต่อบัญชี ${platform} ของคุณกับบอทเพียงครั้งเดียว แล้วบอทจะดาวน์โหลดโพสต์แบบนี้ให้เอง ดูวิธีได้ที่ปุ่มด้านล่าง${withExtension ? "\n💻 หรือดาวน์โหลดด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์" : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ บัญชี ${platform} ที่เชื่อมต่อไว้เปิดโพสต์นี้ไม่ได้ การล็อกอินอาจใช้งานไม่ได้แล้ว ลองเชื่อมต่อบัญชีใหม่อีกครั้ง หรือบัญชีนี้อาจไม่มีสิทธิ์เข้าถึงโพสต์${withExtension ? "\n\n💻 หรือดาวน์โหลดด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์ก็ได้" : ""}`,
+    `\n\n⚠️ บัญชี ${platform} ที่เชื่อมต่อไว้เปิดโพสต์นี้ไม่ได้ เพราะการล็อกอินใช้งานไม่ได้แล้ว หรือบัญชีนี้ไม่มีสิทธิ์เข้าถึงโพสต์ เชื่อมต่อบัญชีใหม่อีกครั้งด้วยปุ่มด้านล่าง${withExtension ? "\n💻 หรือดาวน์โหลดด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์" : ""}`,
   connectAccountButton: "🔑 เชื่อมต่อบัญชี",
   reconnectAccountButton: "🔑 เชื่อมต่อใหม่",
   extensionButton: "🧩 ดาวน์โหลดด้วยส่วนขยาย",
@@ -5193,10 +5219,11 @@ const am: Messages = {
   extensionHint:
     "\n\n💻 በኮምፒውተር ላይ በVideoner የአሳሽ ቅጥያ ማውረድ ይችላሉ፦ " +
     "በመድረኩ ላይ ያለዎትን የራስዎን መግቢያ ተጠቅሞ ያወርዳል፤ የይለፍ ቃልም ሆነ ኩኪዎች ከአሳሽዎ አይወጡም።",
+  loginOnlyReason: (platform) => `${platform} ይህን ልጥፍ የሚያሳየው ለገቡ ተጠቃሚዎች ብቻ ነው።`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 እንደዚህ ያሉ ልጥፎችን ለማውረድ የ${platform} መለያዎን ከቦቱ ጋር ያገናኙ — አንድ ጊዜ ብቻ። ከዚያ በኋላ ቦቱ እርስዎ ማየት የሚችሉትን ሁሉ ያወርዳል፦ የግል ልጥፎችን፣ ሪልሶችን እና ስቶሪዎችን፣ ከስልክዎም ጭምር። እንዴት እንደሆነ ከታች ያለው ቁልፍ ያሳያል።${withExtension ? "\n\n💻 ወይም በኮምፒውተር ላይ በVideoner የአሳሽ ቅጥያ ያውርዱት።" : ""}`,
+    `\n\n🔑 የ${platform} መለያዎን ከቦቱ ጋር ያገናኙ — አንድ ጊዜ ብቻ፤ ከዚያ ቦቱ እንደዚህ ያሉ ልጥፎችን ራሱ ያወርዳል። እንዴት እንደሆነ ከታች ያለው ቁልፍ ያሳያል።${withExtension ? "\n💻 ወይም በኮምፒውተር ላይ በVideoner የአሳሽ ቅጥያ ያውርዱት።" : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ ያገናኙት የ${platform} መለያ ይህን ልጥፍ መክፈት አልቻለም። መግቢያው መስራት አቁሞ ሊሆን ይችላል — መለያውን እንደገና ያገናኙ። ወይም ይህ መለያ ልጥፉን የማየት መዳረሻ የለውም።${withExtension ? "\n\n💻 እንዲሁም በኮምፒውተር ላይ በVideoner የአሳሽ ቅጥያ ማውረድ ይችላሉ።" : ""}`,
+    `\n\n⚠️ ያገናኙት የ${platform} መለያ ይህን ልጥፍ መክፈት አልቻለም፦ መግቢያው መስራት አቁሟል ወይም መለያው ልጥፉን የማየት መዳረሻ የለውም። መለያውን ከታች ባለው ቁልፍ እንደገና ያገናኙ።${withExtension ? "\n💻 ወይም በኮምፒውተር ላይ በVideoner የአሳሽ ቅጥያ ያውርዱት።" : ""}`,
   connectAccountButton: "🔑 መለያ ያገናኙ",
   reconnectAccountButton: "🔑 እንደገና ያገናኙ",
   extensionButton: "🧩 በቅጥያው ያውርዱ",
@@ -5413,10 +5440,11 @@ const om: Messages = {
   extensionHint:
     "\n\n💻 Kompiitara irratti dabalata biraawuzarii Videoner'n buufachuu dandeessu: " +
     "seensa keessan waltajjicha irratti fayyadamee buufata, jechi icciitii ykn kuukiin tokkollee biraawuzarii keessan keessaa hin ba'u.",
+  loginOnlyReason: (platform) => `${platform} maxxansa kana namoota seenan qofaaf agarsiisa.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Maxxansoota akkasii buufachuuf, akkaawuntii ${platform} keessan bootii wajjin walqabsiisaa — al tokko qofa. Sana booda bootiin waan isin argitan hunda buufata: maxxansoota dhuunfaa, reels fi istooriiwwan, bilbila irraas. Qabduun armaan gadii akkamitti akka ta'u agarsiisa.${withExtension ? "\n\n💻 Ykn kompiitara irratti dabalata biraawuzarii Videoner'n buufadhaa." : ""}`,
+    `\n\n🔑 Akkaawuntii ${platform} keessan bootii wajjin walqabsiisaa — al tokko qofa, sana booda bootiin maxxansoota akkasii ofiin buufata. Qabduun armaan gadii akkamitti akka ta'u agarsiisa.${withExtension ? "\n💻 Ykn kompiitara irratti dabalata biraawuzarii Videoner'n buufadhaa." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Akkaawuntiin ${platform} keessan kan walqabsiifame maxxansa kana banuu hin dandeenye. Seensi hojjechuu dhiisee ta'uu danda'a — akkaawuntii irra deebi'aa walqabsiisaa. Ykn akkaawuntiin kun maxxansa kanaaf hayyama hin qabu.${withExtension ? "\n\n💻 Akkasumas kompiitara irratti dabalata biraawuzarii Videoner'n buufachuu dandeessu." : ""}`,
+    `\n\n⚠️ Akkaawuntiin ${platform} keessan kan walqabsiifame maxxansa kana banuu hin dandeenye: seensi hojjechuu dhiiseera ykn akkaawuntiin kun maxxansa kanaaf hayyama hin qabu. Qabduu armaan gadiitiin akkaawuntii irra deebi'aa walqabsiisaa.${withExtension ? "\n💻 Ykn kompiitara irratti dabalata biraawuzarii Videoner'n buufadhaa." : ""}`,
   connectAccountButton: "🔑 Akkaawuntii walqabsiisaa",
   reconnectAccountButton: "🔑 Irra deebi'aa walqabsiisaa",
   extensionButton: "🧩 Dabalataan buufadhaa",
@@ -5633,10 +5661,11 @@ const ha: Messages = {
   extensionHint:
     "\n\n💻 Kuna iya sauke shi da ƙarin burauza na Videoner a kwamfuta: " +
     "yana saukewa ta amfani da shigarku a dandalin, kuma babu kalmar sirri ko cookies da ke barin burauzarku.",
+  loginOnlyReason: (platform) => `${platform} na nuna wannan wallafa ga waɗanda suka shiga asusu kawai.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Don sauke irin waɗannan wallafe-wallafe, ku haɗa asusunku na ${platform} da bot — sau ɗaya. Bayan haka bot zai sauke duk abin da kuke iya gani: wallafe-wallafe na sirri, reels da stories, har daga wayarku. Maɓallin da ke ƙasa yana nuna yadda ake yi.${withExtension ? "\n\n💻 Ko ku sauke shi da ƙarin burauza na Videoner a kwamfuta." : ""}`,
+    `\n\n🔑 Ku haɗa asusunku na ${platform} da bot — sau ɗaya, sannan bot zai sauke irin waɗannan wallafe-wallafe da kansa. Maɓallin da ke ƙasa yana nuna yadda ake yi.${withExtension ? "\n💻 Ko ku sauke shi da ƙarin burauza na Videoner a kwamfuta." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Asusunku na ${platform} da aka haɗa bai iya buɗe wannan wallafa ba. Wataƙila shigar ta daina aiki — ku sake haɗa asusun. Ko kuma wannan asusu ba shi da damar ganin wallafar.${withExtension ? "\n\n💻 Kuna kuma iya sauke shi da ƙarin burauza na Videoner a kwamfuta." : ""}`,
+    `\n\n⚠️ Asusunku na ${platform} da aka haɗa bai iya buɗe wannan wallafa ba: shigar ta daina aiki ko kuma asusun ba shi da damar ganin ta. Ku sake haɗa asusun da maɓallin da ke ƙasa.${withExtension ? "\n💻 Ko ku sauke shi da ƙarin burauza na Videoner a kwamfuta." : ""}`,
   connectAccountButton: "🔑 Haɗa asusu",
   reconnectAccountButton: "🔑 Sake haɗawa",
   extensionButton: "🧩 Sauke da ƙarin burauza",
@@ -5853,10 +5882,11 @@ const so: Messages = {
   extensionHint:
     "\n\n💻 Waxaad ku soo dejin kartaa kordhiyaha biraawsarka Videoner ee kombiyuutarka: " +
     "wuxuu soo dejiyaa isagoo adeegsanaya gelitaankaaga madasha, eraygaaga sirta ah iyo cookies-kaagu kama baxaan biraawsarkaaga.",
+  loginOnlyReason: (platform) => `${platform} boostadan waxay u muujisaa oo keliya dadka akoonkooda galay.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Si aad u soo dejiso boostooyinka noocan ah, ku xir akoonkaaga ${platform} bot-ka — hal mar. Intaa kadib bot-ku wuxuu soo dejiyaa wax kasta oo aad arki karto: boostooyinka gaarka ah, reels iyo stories, xitaa taleefankaaga. Badhanka hoose ayaa ku tusaya sida.${withExtension ? "\n\n💻 Ama ku soo deji kordhiyaha biraawsarka Videoner ee kombiyuutarka." : ""}`,
+    `\n\n🔑 Ku xir akoonkaaga ${platform} bot-ka — hal mar, kadibna bot-ku wuxuu isagu soo dejin doonaa boostooyinka noocan ah. Badhanka hoose ayaa ku tusaya sida.${withExtension ? "\n💻 Ama ku soo deji kordhiyaha biraawsarka Videoner ee kombiyuutarka." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Akoonkaaga ${platform} ee ku xiran ma furi karin boostadan. Gelitaanku waxaa laga yaabaa inuu joojiyay shaqada — mar kale ku xir akoonka. Ama akoonkani ma laha gelitaan boostada.${withExtension ? "\n\n💻 Waxaad sidoo kale ku soo dejin kartaa kordhiyaha biraawsarka Videoner ee kombiyuutarka." : ""}`,
+    `\n\n⚠️ Akoonkaaga ${platform} ee ku xiran ma furi karin boostadan: gelitaanku wuu joojiyay shaqada ama akoonku ma laha gelitaan boostada. Mar kale ku xir akoonka adigoo isticmaalaya badhanka hoose.${withExtension ? "\n💻 Ama ku soo deji kordhiyaha biraawsarka Videoner ee kombiyuutarka." : ""}`,
   connectAccountButton: "🔑 Ku xir akoonka",
   reconnectAccountButton: "🔑 Dib u xir",
   extensionButton: "🧩 Ku soo deji kordhiyaha",
@@ -6073,10 +6103,11 @@ const az: Messages = {
   extensionHint:
     "\n\n💻 Onu kompüterdə Videoner brauzer genişlənməsi ilə yükləyə bilərsiniz: " +
     "o, platformadakı öz hesabınızla yükləyir, parol və ya cookies brauzerinizdən kənara çıxmır.",
+  loginOnlyReason: (platform) => `${platform} bu paylaşımı yalnız hesaba daxil olmuş istifadəçilərə göstərir.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Belə paylaşımları yükləmək üçün ${platform} hesabınızı bota qoşun — bir dəfə. Bundan sonra bot sizin gördüyünüz hər şeyi yükləyəcək: qapalı paylaşımları, reels və storiləri, telefondan da. Bunu necə etmək lazım olduğunu aşağıdakı düymə göstərir.${withExtension ? "\n\n💻 Və ya onu kompüterdə Videoner brauzer genişlənməsi ilə yükləyin." : ""}`,
+    `\n\n🔑 ${platform} hesabınızı bota qoşun — bir dəfə, sonra bot belə paylaşımları özü yükləyəcək. Necə etmək lazım olduğunu aşağıdakı düymə göstərir.${withExtension ? "\n💻 Və ya onu kompüterdə Videoner brauzer genişlənməsi ilə yükləyin." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Qoşulmuş ${platform} hesabınız bu paylaşımı aça bilmədi. Ola bilər ki, giriş artıq işləmir — hesabı yenidən qoşun. Və ya bu hesabın paylaşıma girişi yoxdur.${withExtension ? "\n\n💻 Onu kompüterdə Videoner brauzer genişlənməsi ilə də yükləyə bilərsiniz." : ""}`,
+    `\n\n⚠️ Qoşulmuş ${platform} hesabınız bu paylaşımı aça bilmədi: giriş artıq işləmir və ya hesabın paylaşıma girişi yoxdur. Hesabı aşağıdakı düymə ilə yenidən qoşun.${withExtension ? "\n💻 Və ya onu kompüterdə Videoner brauzer genişlənməsi ilə yükləyin." : ""}`,
   connectAccountButton: "🔑 Hesabı qoş",
   reconnectAccountButton: "🔑 Yenidən qoş",
   extensionButton: "🧩 Genişlənmə ilə yüklə",
@@ -6293,10 +6324,11 @@ const ky: Messages = {
   extensionHint:
     "\n\n💻 Муну компьютерде Videoner браузер кеңейтүүсү менен жүктөп алсаңыз болот: " +
     "ал платформадагы өз аккаунтуңуз аркылуу жүктөйт, сырсөз да, cookie да браузериңизден эч жакка чыкпайт.",
+  loginOnlyReason: (platform) => `${platform} бул постту аккаунтуна кирген колдонуучуларга гана көрсөтөт.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Мындай постторду жүктөп алуу үчүн ${platform} аккаунтуңузду ботко бир жолу туташтырыңыз. Андан кийин бот Сиз көргөндүн баарын жүктөп берет: жабык постторду, рилстерди жана стористерди, телефондон да. Кантип туташтырууну төмөнкү баскыч көрсөтөт.${withExtension ? "\n\n💻 Же аны компьютерде Videoner браузер кеңейтүүсү менен жүктөп алыңыз." : ""}`,
+    `\n\n🔑 ${platform} аккаунтуңузду ботко бир жолу туташтырыңыз — андан кийин бот мындай постторду өзү жүктөп алат. Кантип туташтырууну төмөнкү баскыч көрсөтөт.${withExtension ? "\n💻 Же аны компьютерде Videoner браузер кеңейтүүсү менен жүктөп алыңыз." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Туташтырылган ${platform} аккаунтуңуз бул постту ача алган жок. Балким, кирүү иштебей калгандыр — аккаунтту кайра туташтырыңыз. Же бул аккаунттун постко жетүү мүмкүнчүлүгү жок.${withExtension ? "\n\n💻 Аны компьютерде Videoner браузер кеңейтүүсү менен да жүктөп алсаңыз болот." : ""}`,
+    `\n\n⚠️ Туташтырылган ${platform} аккаунтуңуз бул постту ача алган жок: кирүү иштебей калды же аккаунттун постко жетүү мүмкүнчүлүгү жок. Аккаунтту төмөнкү баскыч аркылуу кайра туташтырыңыз.${withExtension ? "\n💻 Же аны компьютерде Videoner браузер кеңейтүүсү менен жүктөп алыңыз." : ""}`,
   connectAccountButton: "🔑 Аккаунтту туташтыруу",
   reconnectAccountButton: "🔑 Кайра туташтыруу",
   extensionButton: "🧩 Кеңейтүү менен жүктөп алуу",
@@ -6513,10 +6545,11 @@ const tg: Messages = {
   extensionHint:
     "\n\n💻 Онро дар компютер бо васеъкунандаи браузерии Videoner боргирӣ кардан мумкин аст: " +
     "он бо воридшавии худи Шумо дар платформа боргирӣ мекунад ва на парол, на cookie аз браузери Шумо берун намебароянд.",
+  loginOnlyReason: (platform) => `${platform} ин постро танҳо ба корбарони воридшуда нишон медиҳад.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Барои боргирии чунин постҳо аккаунти ${platform}-и худро як маротиба ба бот пайваст кунед. Баъд аз ин бот ҳар чизеро, ки Шумо мебинед, боргирӣ мекунад: постҳои пӯшида, рилсҳо ва сторисҳо, аз телефон ҳам. Чӣ тавр пайваст кардан — тугмаи поён нишон медиҳад.${withExtension ? "\n\n💻 Ё онро дар компютер бо васеъкунандаи браузерии Videoner боргирӣ кунед." : ""}`,
+    `\n\n🔑 Аккаунти худро дар ${platform} як маротиба ба бот пайваст кунед — баъд бот чунин постҳоро худаш боргирӣ мекунад. Чӣ тавр пайваст кардан — тугмаи поён нишон медиҳад.${withExtension ? "\n💻 Ё онро дар компютер бо васеъкунандаи браузерии Videoner боргирӣ кунед." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Аккаунти пайвастшудаи ${platform}-и Шумо ин постро кушода натавонист. Шояд воридшавӣ дигар кор намекунад — аккаунтро аз нав пайваст кунед. Ё ин аккаунт ба пост дастрасӣ надорад.${withExtension ? "\n\n💻 Инчунин онро дар компютер бо васеъкунандаи браузерии Videoner боргирӣ кардан мумкин аст." : ""}`,
+    `\n\n⚠️ Аккаунти пайвастшудаи Шумо дар ${platform} ин постро кушода натавонист: воридшавӣ дигар кор намекунад ё аккаунт ба пост дастрасӣ надорад. Аккаунтро бо тугмаи поён аз нав пайваст кунед.${withExtension ? "\n💻 Ё онро дар компютер бо васеъкунандаи браузерии Videoner боргирӣ кунед." : ""}`,
   connectAccountButton: "🔑 Пайваст кардани аккаунт",
   reconnectAccountButton: "🔑 Аз нав пайваст кардан",
   extensionButton: "🧩 Боргирӣ бо васеъкунанда",
@@ -6733,10 +6766,11 @@ const ms: Messages = {
   extensionHint:
     "\n\n💻 Anda boleh memuat turunnya dengan sambungan pelayar Videoner di komputer: " +
     "ia memuat turun menggunakan log masuk anda sendiri di platform, dan tiada kata laluan atau kuki yang keluar dari pelayar anda.",
+  loginOnlyReason: (platform) => `${platform} hanya memaparkan hantaran ini kepada pengguna yang telah log masuk.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Untuk memuat turun hantaran seperti ini, sambungkan akaun ${platform} anda ke bot — sekali sahaja. Selepas itu bot akan memuat turun apa sahaja yang anda boleh lihat: hantaran peribadi, reels dan story, termasuk dari telefon anda. Butang di bawah menunjukkan caranya.${withExtension ? "\n\n💻 Atau muat turunnya dengan sambungan pelayar Videoner di komputer." : ""}`,
+    `\n\n🔑 Sambungkan akaun ${platform} anda ke bot — sekali sahaja, dan bot akan memuat turun hantaran seperti ini dengan sendirinya. Butang di bawah menunjukkan caranya.${withExtension ? "\n💻 Atau muat turunnya dengan sambungan pelayar Videoner di komputer." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Akaun ${platform} anda yang disambungkan tidak dapat membuka hantaran ini. Log masuk mungkin sudah tidak berfungsi — sambungkan akaun itu sekali lagi. Atau akaun ini tiada akses ke hantaran tersebut.${withExtension ? "\n\n💻 Anda juga boleh memuat turunnya dengan sambungan pelayar Videoner di komputer." : ""}`,
+    `\n\n⚠️ Akaun ${platform} anda yang disambungkan tidak dapat membuka hantaran ini: log masuk sudah tidak berfungsi atau akaun itu tiada akses kepadanya. Sambungkan akaun itu sekali lagi dengan butang di bawah.${withExtension ? "\n💻 Atau muat turunnya dengan sambungan pelayar Videoner di komputer." : ""}`,
   connectAccountButton: "🔑 Sambungkan akaun",
   reconnectAccountButton: "🔑 Sambungkan semula",
   extensionButton: "🧩 Muat turun dengan sambungan",
@@ -6953,10 +6987,11 @@ const nl: Messages = {
   extensionHint:
     "\n\n💻 Je kunt hem downloaden met de browserextensie van Videoner op een computer: " +
     "die downloadt met je eigen login op het platform, en er verlaten geen wachtwoord of cookies je browser.",
+  loginOnlyReason: (platform) => `${platform} toont deze post alleen aan ingelogde gebruikers.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Om zulke posts te downloaden, koppel je je ${platform}-account aan de bot — één keer. Daarna downloadt de bot alles wat jij kunt zien: privéposts, reels en story's, ook vanaf je telefoon. De knop hieronder laat zien hoe.${withExtension ? "\n\n💻 Of download hem met de browserextensie van Videoner op een computer." : ""}`,
+    `\n\n🔑 Koppel je ${platform}-account aan de bot — één keer, en daarna downloadt de bot zulke posts zelf. De knop hieronder laat zien hoe.${withExtension ? "\n💻 Of download hem met de browserextensie van Videoner op een computer." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Je gekoppelde ${platform}-account kon deze post niet openen. Misschien werkt de login niet meer — koppel het account opnieuw. Of dit account heeft geen toegang tot de post.${withExtension ? "\n\n💻 Je kunt hem ook downloaden met de browserextensie van Videoner op een computer." : ""}`,
+    `\n\n⚠️ Je gekoppelde ${platform}-account kon deze post niet openen: de login werkt niet meer of het account heeft er geen toegang toe. Koppel het account opnieuw met de knop hieronder.${withExtension ? "\n💻 Of download hem met de browserextensie van Videoner op een computer." : ""}`,
   connectAccountButton: "🔑 Account koppelen",
   reconnectAccountButton: "🔑 Opnieuw koppelen",
   extensionButton: "🧩 Downloaden met de extensie",
@@ -7173,10 +7208,11 @@ const ro: Messages = {
   extensionHint:
     "\n\n💻 Îl poți descărca pe calculator cu extensia de browser Videoner: " +
     "descarcă folosind propria ta autentificare pe platformă, iar nicio parolă sau cookie nu părăsește browserul tău.",
+  loginOnlyReason: (platform) => `${platform} afișează această postare doar utilizatorilor conectați.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Ca să descarci astfel de postări, conectează-ți contul ${platform} la bot — o singură dată. După aceea botul descarcă tot ce poți vedea tu: postări private, reels și povești, inclusiv de pe telefon. Butonul de mai jos îți arată cum.${withExtension ? "\n\n💻 Sau descarcă-l pe calculator cu extensia de browser Videoner." : ""}`,
+    `\n\n🔑 Conectează-ți contul ${platform} la bot — o singură dată, iar botul va descărca singur astfel de postări. Butonul de mai jos îți arată cum.${withExtension ? "\n💻 Sau descarc-o pe calculator cu extensia de browser Videoner." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Contul tău ${platform} conectat nu a putut deschide această postare. Probabil autentificarea nu mai funcționează — conectează din nou contul. Sau acest cont nu are acces la postare.${withExtension ? "\n\n💻 O poți descărca și pe calculator cu extensia de browser Videoner." : ""}`,
+    `\n\n⚠️ Contul tău ${platform} conectat nu a putut deschide această postare: autentificarea nu mai funcționează sau contul nu are acces la ea. Conectează din nou contul cu butonul de mai jos.${withExtension ? "\n💻 Sau descarc-o pe calculator cu extensia de browser Videoner." : ""}`,
   connectAccountButton: "🔑 Conectează contul",
   reconnectAccountButton: "🔑 Reconectează",
   extensionButton: "🧩 Descarcă cu extensia",
@@ -7393,10 +7429,11 @@ const ps: Messages = {
   extensionHint:
     "\n\n💻 تاسو یې په کمپیوټر کې د Videoner د براوزر په توسیع ښکته کولای شئ: " +
     "توسیع ستاسو په خپل ننوتلو سره په پلاټفارم کې ښکته کوي، او هېڅ پټنوم یا cookies ستاسو له براوزر نه وځي.",
+  loginOnlyReason: (platform) => `${platform} دا پوسټ یوازې هغو کاروونکو ته ښیي چې ننوتي وي.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 د داسې پوسټونو د ښکته کولو لپاره، خپل ${platform} حساب له بوټ سره وصل کړئ — یوازې یو ځل. له هغې وروسته بوټ هر هغه څه ښکته کوي چې تاسو یې لیدلای شئ: شخصي پوسټونه، ریلز او سټورۍ، له موبایل څخه هم. لاندې تڼۍ یې طریقه ښیي.${withExtension ? "\n\n💻 یا یې په کمپیوټر کې د Videoner د براوزر په توسیع ښکته کړئ." : ""}`,
+    `\n\n🔑 خپل ${platform} حساب له بوټ سره وصل کړئ — یوازې یو ځل، بیا به بوټ داسې پوسټونه پخپله ښکته کوي. لاندې تڼۍ یې طریقه ښیي.${withExtension ? "\n💻 یا یې په کمپیوټر کې د Videoner د براوزر په توسیع ښکته کړئ." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ ستاسو وصل شوي ${platform} حساب دا پوسټ پرانیستلای نه شو. کېدای شي ننوتل نور کار نه کوي — حساب بیا وصل کړئ. یا دا حساب پوسټ ته لاسرسی نه لري.${withExtension ? "\n\n💻 همدارنګه یې په کمپیوټر کې د Videoner د براوزر په توسیع ښکته کولای شئ." : ""}`,
+    `\n\n⚠️ ستاسو وصل شوي ${platform} حساب دا پوسټ پرانیستلای نه شو: ننوتل نور کار نه کوي یا دا حساب پوسټ ته لاسرسی نه لري. د لاندې تڼۍ په مرسته حساب بیا وصل کړئ.${withExtension ? "\n💻 یا یې په کمپیوټر کې د Videoner د براوزر په توسیع ښکته کړئ." : ""}`,
   connectAccountButton: "🔑 حساب وصل کړئ",
   reconnectAccountButton: "🔑 بیا وصل کړئ",
   extensionButton: "🧩 په توسیع ښکته کول",
@@ -7613,10 +7650,11 @@ const ckb: Messages = {
   extensionHint:
     "\n\n💻 دەتوانیت لەسەر کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگریت: " +
     "بە چوونەژوورەوەی خۆت لە پلاتفۆرمەکە دایدەگرێت، و هیچ وشەی نهێنی یان cookies لە وێبگەڕەکەت دەرناچێت.",
+  loginOnlyReason: (platform) => `${platform} ئەم پۆستە تەنها پیشانی ئەو بەکارهێنەرانە دەدات کە چوونەتە ژوورەوە.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 بۆ داگرتنی ئەم جۆرە پۆستانە، هەژماری ${platform} بە بۆتەوە ببەستەوە — تەنها یەک جار. دوای ئەوە بۆتەکە هەر شتێک دادەگرێت کە تۆ دەیبینیت: پۆستە تایبەتەکان، ڕیلز و ستۆرییەکان، لە مۆبایلیشەوە. دوگمەی خوارەوە ڕێگاکەی پیشان دەدات.${withExtension ? "\n\n💻 یان لەسەر کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگرە." : ""}`,
+    `\n\n🔑 هەژماری ${platform} بە بۆتەوە ببەستەوە — تەنها یەک جار، ئیتر بۆتەکە خۆی ئەم جۆرە پۆستانە دادەگرێت. دوگمەی خوارەوە ڕێگاکەی پیشان دەدات.${withExtension ? "\n💻 یان لەسەر کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگرە." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ هەژمارە بەستراوەکەی ${platform} نەیتوانی ئەم پۆستە بکاتەوە. لەوانەیە چوونەژوورەوەکە ئیتر کار نەکات — هەژمارەکە دووبارە ببەستەوە. یان ئەم هەژمارە دەستی بەم پۆستە ناگات.${withExtension ? "\n\n💻 هەروەها دەتوانیت لەسەر کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگریت." : ""}`,
+    `\n\n⚠️ هەژمارە بەستراوەکەی ${platform} نەیتوانی ئەم پۆستە بکاتەوە: چوونەژوورەوەکە ئیتر کار ناکات یان ئەم هەژمارە دەستی بەم پۆستە ناگات. بە دوگمەی خوارەوە هەژمارەکە دووبارە ببەستەوە.${withExtension ? "\n💻 یان لەسەر کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگرە." : ""}`,
   connectAccountButton: "🔑 بەستنەوەی هەژمار",
   reconnectAccountButton: "🔑 دووبارە بەستنەوە",
   extensionButton: "🧩 داگرتن بە پێوەکراو",
@@ -7833,10 +7871,11 @@ const ku: Messages = {
   extensionHint:
     "\n\n💻 Tu dikarî wê bi pêveka gerokê ya Videoner li ser komputerê daxînî: " +
     "ew bi têketina te ya li ser platformê dadixîne, û ti şîfre an cookies ji geroka te dernakevin.",
+  loginOnlyReason: (platform) => `${platform} vê postê tenê nîşanî bikarhênerên têketî dide.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Ji bo daxistina postên wiha, hesabê xwe yê ${platform} bi botê ve girê bide — tenê carekê. Piştre bot her tiştê ku tu dikarî bibînî dadixîne: postên taybet, reels û story, ji telefonê jî. Bişkoka li jêr nîşan dide çawa.${withExtension ? "\n\n💻 An jî wê bi pêveka gerokê ya Videoner li ser komputerê daxîne." : ""}`,
+    `\n\n🔑 Hesabê xwe yê ${platform} bi botê ve girê bide — tenê carekê, û piştre bot postên wiha bi xwe dadixîne. Bişkoka li jêr nîşan dide çawa.${withExtension ? "\n💻 An jî wê bi pêveka gerokê ya Videoner li ser komputerê daxîne." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Hesabê te yê ${platform} ê girêdayî nikarî vê postê veke. Dibe ku têketin êdî nexebite — hesabê dîsa girê bide. An jî ev hesab nikare xwe bigihîne vê postê.${withExtension ? "\n\n💻 Tu dikarî wê bi pêveka gerokê ya Videoner li ser komputerê jî daxînî." : ""}`,
+    `\n\n⚠️ Hesabê te yê ${platform} ê girêdayî nikarî vê postê veke: têketin êdî naxebite an jî ev hesab nikare xwe bigihîne vê postê. Bi bişkoka li jêr hesabê dîsa girê bide.${withExtension ? "\n💻 An jî wê bi pêveka gerokê ya Videoner li ser komputerê daxîne." : ""}`,
   connectAccountButton: "🔑 Hesab girê bide",
   reconnectAccountButton: "🔑 Dîsa girê bide",
   extensionButton: "🧩 Bi pêvekê daxîne",
@@ -8053,10 +8092,11 @@ const ug: Messages = {
   extensionHint:
     "\n\n💻 ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرەلەيسىز: " +
     "ئۇ سۇپىدىكى ئۆز ھېساباتىڭىز ئارقىلىق چۈشۈرىدۇ، ھېچقانداق پارول ياكى cookies توركۆرگۈڭىزدىن سىرتقا چىقمايدۇ.",
+  loginOnlyReason: (platform) => `${platform} بۇ يوللانمىنى پەقەت ھېساباتىغا كىرگەن ئىشلەتكۈچىلەرگىلا كۆرسىتىدۇ.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 بۇنداق يوللانمىلارنى چۈشۈرۈش ئۈچۈن ${platform} ھېساباتىڭىزنى بوتقا باغلاڭ — پەقەت بىر قېتىم. ئۇنىڭدىن كېيىن بوت سىز كۆرەلەيدىغان ھەممىنى چۈشۈرىدۇ: شەخسىي يوللانمىلار، Reels ۋە ھېكايىلەرنى، تېلېفونىڭىزدىنمۇ. قانداق قىلىشنى تۆۋەندىكى كۇنۇپكا كۆرسىتىدۇ.${withExtension ? "\n\n💻 ياكى ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرۈڭ." : ""}`,
+    `\n\n🔑 ${platform} ھېساباتىڭىزنى بوتقا باغلاڭ — پەقەت بىر قېتىم، ئاندىن بوت بۇنداق يوللانمىلارنى ئۆزى چۈشۈرىدۇ. قانداق قىلىشنى تۆۋەندىكى كۇنۇپكا كۆرسىتىدۇ.${withExtension ? "\n💻 ياكى ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرۈڭ." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ باغلانغان ${platform} ھېساباتىڭىز بۇ يوللانمىنى ئاچالمىدى. كىرىش ئىناۋەتسىز بولۇپ قالغان بولۇشى مۇمكىن — ھېساباتنى قايتا باغلاڭ. ياكى بۇ ھېساباتنىڭ بۇ يوللانمىنى كۆرۈش ھوقۇقى يوق.${withExtension ? "\n\n💻 ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىقمۇ چۈشۈرەلەيسىز." : ""}`,
+    `\n\n⚠️ باغلانغان ${platform} ھېساباتىڭىز بۇ يوللانمىنى ئاچالمىدى: كىرىش ئىناۋەتسىز بولۇپ قالغان ياكى بۇ ھېساباتنىڭ بۇ يوللانمىنى كۆرۈش ھوقۇقى يوق. ھېساباتنى تۆۋەندىكى كۇنۇپكا ئارقىلىق قايتا باغلاڭ.${withExtension ? "\n💻 ياكى ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرۈڭ." : ""}`,
   connectAccountButton: "🔑 ھېسابات باغلاش",
   reconnectAccountButton: "🔑 قايتا باغلاش",
   extensionButton: "🧩 قىستۇرما ئارقىلىق چۈشۈرۈش",
@@ -8273,10 +8313,11 @@ const tk: Messages = {
   extensionHint:
     "\n\n💻 Muny kompýuterde Videoner brauzer giňeltmesi bilen ýükläp bilersiňiz: " +
     "ol platformadaky öz hasabyňyz arkaly ýükleýär, açar söz hem, cookie hem brauzeriňizden çykmaýar.",
+  loginOnlyReason: (platform) => `${platform} bu ýazgyny diňe hasabyna giren ulanyjylara görkezýär.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Beýle ýazgylary ýüklemek üçin ${platform} hasabyňyzy bota bir gezek birikdiriň. Şondan soň bot Siziň görýän zatlaryňyzyň hemmesini ýükläp berer: ýapyk ýazgylary, reelsleri we storisleri, telefondan hem. Nädip birikdirmelidigini aşakdaky düwme görkezýär.${withExtension ? "\n\n💻 Ýa-da ony kompýuterde Videoner brauzer giňeltmesi bilen ýükläň." : ""}`,
+    `\n\n🔑 ${platform} hasabyňyzy bota bir gezek birikdiriň — şondan soň bot beýle ýazgylary özi ýükläp berer. Nädip birikdirmelidigini aşakdaky düwme görkezýär.${withExtension ? "\n💻 Ýa-da ony kompýuterde Videoner brauzer giňeltmesi bilen ýükläň." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Birikdirilen ${platform} hasabyňyz bu ýazgyny açyp bilmedi. Belki, giriş işlemesini bes edendir — hasaby täzeden birikdiriň. Ýa-da bu hasabyň ýazga elýeterliligi ýok.${withExtension ? "\n\n💻 Ony kompýuterde Videoner brauzer giňeltmesi bilen hem ýükläp bilersiňiz." : ""}`,
+    `\n\n⚠️ Birikdirilen ${platform} hasabyňyz bu ýazgyny açyp bilmedi: giriş işlemesini bes etdi ýa-da hasabyň bu ýazga elýeterliligi ýok. Hasaby aşakdaky düwme arkaly täzeden birikdiriň.${withExtension ? "\n💻 Ýa-da ony kompýuterde Videoner brauzer giňeltmesi bilen ýükläň." : ""}`,
   connectAccountButton: "🔑 Hasaby birikdir",
   reconnectAccountButton: "🔑 Täzeden birikdir",
   extensionButton: "🧩 Giňeltme bilen ýükle",
@@ -8493,10 +8534,11 @@ const tt: Messages = {
   extensionHint:
     "\n\n💻 Мондый видеоны компьютерда Videoner браузер киңәйтмәсе белән йөкләп алырга мөмкин: " +
     "ул платформадагы сезнең аккаунт аша йөкли, серсүз һәм cookie файллары браузердан беркая да китми.",
+  loginOnlyReason: (platform) => `${platform} бу постны аккаунтка кергән кулланучыларга гына күрсәтә.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Мондый постны йөкләп алу өчен ботка ${platform} аккаунтыгызны тоташтырыгыз — бер тапкыр. Аннары бот сезгә күренгәннәрнең барысын да үзе йөкләп ала: ябык постларны, рилсларны һәм сторисларны, шул исәптән телефоннан да. Ничек эшләргә икәнен астагы төймә күрсәтәчәк.${withExtension ? "\n\n💻 Яисә бу постны компьютерда Videoner браузер киңәйтмәсе белән йөкләп алыгыз." : ""}`,
+    `\n\n🔑 Ботка ${platform} аккаунтыгызны тоташтырыгыз — бер тапкыр, аннары бот мондый постларны үзе йөкләп ала. Ничек эшләргә икәнен астагы төймә күрсәтәчәк.${withExtension ? "\n💻 Яисә бу постны компьютерда Videoner браузер киңәйтмәсе белән йөкләп алыгыз." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Тоташтырылган ${platform} аккаунтыгыз бу постны ача алмады. Бәлки, керү эшләүдән туктагандыр — аккаунтны яңадан тоташтырыгыз. Яисә бу аккаунтның постка керү мөмкинлеге юк.${withExtension ? "\n\n💻 Шулай ук аны компьютерда Videoner браузер киңәйтмәсе белән йөкләп алырга мөмкин." : ""}`,
+    `\n\n⚠️ Тоташтырылган ${platform} аккаунтыгыз бу постны ача алмады: керү эшләүдән туктады яисә аккаунтның постка керү мөмкинлеге юк. Аккаунтны астагы төймә аша яңадан тоташтырыгыз.${withExtension ? "\n💻 Яисә бу постны компьютерда Videoner браузер киңәйтмәсе белән йөкләп алыгыз." : ""}`,
   connectAccountButton: "🔑 Аккаунтны тоташтыру",
   reconnectAccountButton: "🔑 Яңадан тоташтыру",
   extensionButton: "🧩 Киңәйтмә аша йөкләп алу",
@@ -8713,10 +8755,11 @@ const sq: Messages = {
   extensionHint:
     "\n\n💻 Mund ta shkarkoni me shtesën e shfletuesit Videoner në kompjuter: " +
     "ajo shkarkon me identifikimin tuaj në platformë, dhe asnjë fjalëkalim apo cookie nuk del nga shfletuesi juaj.",
+  loginOnlyReason: (platform) => `${platform} e shfaq këtë postim vetëm për përdoruesit e identifikuar.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Për të shkarkuar postime të tilla, lidhni llogarinë tuaj ${platform} me botin — vetëm një herë. Pas kësaj boti shkarkon gjithçka që ju shihni: postime private, reels dhe story, edhe nga telefoni. Butoni më poshtë tregon si.${withExtension ? "\n\n💻 Ose shkarkojeni me shtesën e shfletuesit Videoner në kompjuter." : ""}`,
+    `\n\n🔑 Lidhni llogarinë tuaj ${platform} me botin — vetëm një herë, dhe boti do t'i shkarkojë vetë postimet e tilla. Butoni më poshtë tregon si.${withExtension ? "\n💻 Ose shkarkojeni me shtesën e shfletuesit Videoner në kompjuter." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Llogaria juaj e lidhur ${platform} nuk arriti ta hapë këtë postim. Identifikimi mund të ketë pushuar së funksionuari — lidhni llogarinë sërish. Ose kjo llogari nuk ka qasje në postim.${withExtension ? "\n\n💻 Mund ta shkarkoni edhe me shtesën e shfletuesit Videoner në kompjuter." : ""}`,
+    `\n\n⚠️ Llogaria juaj e lidhur ${platform} nuk arriti ta hapë këtë postim: identifikimi ka pushuar së funksionuari ose llogaria nuk ka qasje në të. Lidhni llogarinë sërish me butonin më poshtë.${withExtension ? "\n💻 Ose shkarkojeni me shtesën e shfletuesit Videoner në kompjuter." : ""}`,
   connectAccountButton: "🔑 Lidhni llogarinë",
   reconnectAccountButton: "🔑 Lidheni sërish",
   extensionButton: "🧩 Shkarko me shtesën",
@@ -8943,10 +8986,11 @@ const bs: Messages = {
   extensionHint:
     "\n\n💻 Možete ga preuzeti na računaru pomoću proširenja preglednika Videoner: " +
     "ono preuzima uz vašu vlastitu prijavu na platformi, a nikakva lozinka ni kolačići ne napuštaju vaš preglednik.",
+  loginOnlyReason: (platform) => `${platform} prikazuje ovu objavu samo prijavljenim korisnicima.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Da biste preuzimali ovakve objave, povežite svoj ${platform} račun s botom — jednom. Nakon toga bot preuzima sve što vi možete vidjeti: privatne objave, reelse i priče, i s telefona. Dugme ispod pokazuje kako.${withExtension ? "\n\n💻 Ili ga preuzmite na računaru pomoću proširenja preglednika Videoner." : ""}`,
+    `\n\n🔑 Povežite svoj ${platform} račun s botom — jednom, i bot će sam preuzimati ovakve objave. Dugme ispod pokazuje kako.${withExtension ? "\n💻 Ili je preuzmite na računaru pomoću proširenja preglednika Videoner." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Vaš povezani ${platform} račun nije mogao otvoriti ovu objavu. Prijava je možda prestala raditi — povežite račun ponovo. Ili ovaj račun nema pristup objavi.${withExtension ? "\n\n💻 Možete ga preuzeti i na računaru pomoću proširenja preglednika Videoner." : ""}`,
+    `\n\n⚠️ Vaš povezani ${platform} račun nije mogao otvoriti ovu objavu: prijava je prestala raditi ili račun nema pristup objavi. Povežite račun ponovo pomoću dugmeta ispod.${withExtension ? "\n💻 Ili je preuzmite na računaru pomoću proširenja preglednika Videoner." : ""}`,
   connectAccountButton: "🔑 Poveži račun",
   reconnectAccountButton: "🔑 Poveži ponovo",
   extensionButton: "🧩 Preuzmi pomoću proširenja",
@@ -9163,10 +9207,11 @@ const ce: Messages = {
   extensionHint:
     "\n\n💻 Компьютер тӀехь Videoner браузеран расширенин гӀоьнца чуяккха мега: " +
     "иза платформехь Шайн аккаунтца чуйоккху, пароль а, cookies а Шайн браузерал арахь ца йолу.",
+  loginOnlyReason: (platform) => `Платформо (${platform}) хӀара пост аккаунт чохь хьоьжучарна бен ца гойту.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Иштта посташ чуяха, Шайн аккаунт ботна тӀетасийша (${platform}) — цкъа. Цул тӀаьхьа Шуна гуш дерг массо а бото чуйоккху: къайла посташ, рилсаш, сторисаш, телефонера а. Муха дан деза лахара кнопкано гойту.${withExtension ? "\n\n💻 Я компьютер тӀехь Videoner браузеран расширенин гӀоьнца чуяккха." : ""}`,
+    `\n\n🔑 Шайн аккаунт (${platform}) ботна тӀетасийша — цкъа, цул тӀаьхьа иштта посташ бото ша чуйоккхур. Муха дан деза лахара кнопкано гойту.${withExtension ? "\n💻 Я компьютер тӀехь Videoner браузеран расширенин гӀоьнца чуяккха." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Шайн тӀетесначу аккаунтца (${platform}) хӀара пост схьаелла ца делира. Логин болх беш хила тарлуш яц — аккаунт юха тӀетасийша. Я хӀокху аккаунтан хӀокху постана доступ яц.${withExtension ? "\n\n💻 Компьютер тӀехь Videoner браузеран расширенин гӀоьнца а чуяккха мега." : ""}`,
+    `\n\n⚠️ Шайн тӀетесначу аккаунтца (${platform}) хӀара пост схьаелла ца делира: логин болх беш яц я хӀокху аккаунтан хӀокху постана доступ яц. Лахара кнопкица аккаунт юха тӀетасийша.${withExtension ? "\n💻 Я компьютер тӀехь Videoner браузеран расширенин гӀоьнца чуяккха." : ""}`,
   connectAccountButton: "🔑 Аккаунт тӀетаса",
   reconnectAccountButton: "🔑 Юха тӀетаса",
   extensionButton: "🧩 Расширенин гӀоьнца чуяккха",
@@ -9383,10 +9428,11 @@ const inh: Messages = {
   extensionHint:
     "\n\n💻 Компьютер тӀа Videoner браузера расширени гӀонца чуяккха мег: " +
     "из платформа тӀа Шоай аккаунтаца чуйоаккх, пароль а cookies а Шун браузерал арахьа долхац.",
+  loginOnlyReason: (platform) => `Платформа (${platform}) ер пост аккаунта чу бола наха мара хьахьокхац.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Иштта посташ чуяккха, Шун ${platform} аккаунт ботага тӀатохал — цкъа. Цул тӀехьа Шоана гуш дерригаш бота чуйоаккх: къайла посташ, рилсаш, сторисаш, телефона тӀара а. Мишта де деза кӀалара кнопка хьахьокх.${withExtension ? "\n\n💻 Е компьютер тӀа Videoner браузера расширени гӀонца чуяккха." : ""}`,
+    `\n\n🔑 Шун ${platform} аккаунт ботага тӀатохал — цкъа, цул тӀехьа иштта посташ бота ше чуйоаккх. Мишта де деза кӀалара кнопка хьахьокх.${withExtension ? "\n💻 Е компьютер тӀа Videoner браузера расширени гӀонца чуяккха." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Шо тӀатехача ${platform} аккаунтаца ер пост дӀаелла ца ялар. Логин болх беш хила тарлац — аккаунт кхы а цкъа тӀатохал. Е укх аккаунта укх поста доступ яц.${withExtension ? "\n\n💻 Компьютер тӀа Videoner браузера расширени гӀонца а чуяккха мег." : ""}`,
+    `\n\n⚠️ Шо тӀатехача ${platform} аккаунтаца ер пост дӀаелла ца ялар: логин болх беш яц е укх аккаунта укх поста доступ яц. КӀалара кнопкаца аккаунт кхы а цкъа тӀатохал.${withExtension ? "\n💻 Е компьютер тӀа Videoner браузера расширени гӀонца чуяккха." : ""}`,
   connectAccountButton: "🔑 Аккаунт тӀатоха",
   reconnectAccountButton: "🔑 Кхы а цкъа тӀатоха",
   extensionButton: "🧩 Расширени гӀонца чуяккха",
@@ -9603,10 +9649,11 @@ const av: Messages = {
   extensionHint:
     "\n\n💻 Компьютералда Videoner браузералъул расширениялдалъун босизе бегьула: " +
     "гьелъ платформаялда нужер аккаунталдалъун босула, пароль ва cookies нужер браузералдаса къватӀире инаро.",
+  loginOnlyReason: (platform) => `Платформаялъ (${platform}) гьаб пост жаниве лъугьарал гӀадамазе гурони бихьизабуларо.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Гьединал постал росизе, нужер ${platform} аккаунт боталда бухьинабе — цо нухалъ. Гьелдаса хадуб нужее бихьулеб тӀолабго жо боталъ босила: къалъарал постал, рилсал ва сторисал, телефоналдасаги. Кин гьабизе кколебали гъоркь бугеб кнопкаялъ бихьизабула.${withExtension ? "\n\n💻 Яги компьютералда Videoner браузералъул расширениялдалъун босе." : ""}`,
+    `\n\n🔑 Нужер ${platform} аккаунт боталда бухьинабе — цо нухалъ, гьелдаса хадуб гьединал постал боталъ росила. Кин гьабизе кколебали гъоркь бугеб кнопкаялъ бихьизабула.${withExtension ? "\n💻 Яги компьютералда Videoner браузералъул расширениялдалъун босе." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Нужер бухьинабураб ${platform} аккаунталдалъун гьаб пост рагьизе кӀвечӀо. Логин хӀалтӀулеб гьечӀеб букӀин бегьула — аккаунт цӀидасан бухьинабе. Яги гьаб аккаунталъе гьаб посталде доступ гьечӀо.${withExtension ? "\n\n💻 Компьютералда Videoner браузералъул расширениялдалъунги босизе бегьула." : ""}`,
+    `\n\n⚠️ Нужер бухьинабураб ${platform} аккаунталдалъун гьаб пост рагьизе кӀвечӀо: логин хӀалтӀулеб гьечӀо яги гьаб аккаунталъе гьаб посталде доступ гьечӀо. Гъоркь бугеб кнопкаялдалъун аккаунт цӀидасан бухьинабе.${withExtension ? "\n💻 Яги компьютералда Videoner браузералъул расширениялдалъун босе." : ""}`,
   connectAccountButton: "🔑 Аккаунт бухьинабизе",
   reconnectAccountButton: "🔑 ЦӀидасан бухьинабизе",
   extensionButton: "🧩 Расширениялдалъун босизе",
@@ -9823,10 +9870,11 @@ const tl: Messages = {
   extensionHint:
     "\n\n💻 Maaari mo itong i-download gamit ang Videoner browser extension sa computer: " +
     "nagda-download ito gamit ang sarili mong sign-in sa platform, at walang password o cookies na lumalabas sa iyong browser.",
+  loginOnlyReason: (platform) => `Ipinapakita lang ng ${platform} ang post na ito sa mga naka-sign in.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Para ma-download ang mga ganitong post, i-connect ang iyong ${platform} account sa bot — isang beses lang. Pagkatapos noon, ida-download ng bot ang anumang nakikita mo: mga private post, reels at stories, pati mula sa iyong phone. Ipinapakita ng button sa ibaba kung paano.${withExtension ? "\n\n💻 O i-download ito gamit ang Videoner browser extension sa computer." : ""}`,
+    `\n\n🔑 I-connect ang iyong ${platform} account sa bot — isang beses lang, at kusa nang ida-download ng bot ang mga ganitong post. Ipinapakita ng button sa ibaba kung paano.${withExtension ? "\n💻 O i-download ito gamit ang Videoner browser extension sa computer." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Hindi mabuksan ng naka-connect mong ${platform} account ang post na ito. Maaaring hindi na gumagana ang login — i-connect ulit ang account. O walang access ang account na ito sa post.${withExtension ? "\n\n💻 Maaari mo rin itong i-download gamit ang Videoner browser extension sa computer." : ""}`,
+    `\n\n⚠️ Hindi mabuksan ng naka-connect mong ${platform} account ang post na ito: hindi na gumagana ang login o walang access ang account sa post. I-connect ulit ang account gamit ang button sa ibaba.${withExtension ? "\n💻 O i-download ito gamit ang Videoner browser extension sa computer." : ""}`,
   connectAccountButton: "🔑 I-connect ang account",
   reconnectAccountButton: "🔑 I-connect ulit",
   extensionButton: "🧩 I-download gamit ang extension",
@@ -10043,10 +10091,11 @@ const uk: Messages = {
   extensionHint:
     "\n\n💻 Таке відео можна завантажити розширенням Videoner для браузера на комп'ютері: " +
     "воно завантажує під вашим входом на платформі, пароль і куки нікуди не передаються.",
+  loginOnlyReason: (platform) => `${platform} показує цей допис лише тим, хто ввійшов в акаунт.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Щоб завантажити такий допис, підключіть до бота свій акаунт ${platform} — один раз. Далі бот сам завантажує те, що бачите ви: закриті дописи, рілси й сторіс, зокрема з телефона. Кнопка нижче покаже, як це зробити.${withExtension ? "\n\n💻 Або завантажте його розширенням Videoner для браузера на комп'ютері." : ""}`,
+    `\n\n🔑 Підключіть до бота свій акаунт ${platform} — один раз, і бот сам завантажуватиме такі дописи. Кнопка нижче покаже, як це зробити.${withExtension ? "\n💻 Або завантажте його розширенням Videoner для браузера на комп'ютері." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Ваш підключений акаунт ${platform} не відкрив цей допис. Можливо, вхід перестав працювати — підключіть акаунт заново. Або в цього акаунта немає доступу до допису.${withExtension ? "\n\n💻 Можна також завантажити його розширенням Videoner для браузера на комп'ютері." : ""}`,
+    `\n\n⚠️ Ваш підключений акаунт ${platform} не відкрив цей допис: вхід перестав працювати або в акаунта немає до нього доступу. Підключіть акаунт заново кнопкою нижче.${withExtension ? "\n💻 Або завантажте його розширенням Videoner для браузера на комп'ютері." : ""}`,
   connectAccountButton: "🔑 Підключити акаунт",
   reconnectAccountButton: "🔑 Підключити заново",
   extensionButton: "🧩 Завантажити через розширення",
@@ -10269,10 +10318,11 @@ const kk: Messages = {
   extensionHint:
     "\n\n💻 Мұндай видеоны компьютердегі браузерге арналған Videoner кеңейтімімен жүктеп алуға болады: " +
     "ол платформадағы сіздің аккаунтыңыз арқылы жүктейді, құпиясөз бен куки ешқайда жіберілмейді.",
+  loginOnlyReason: (platform) => `${platform} бұл жазбаны аккаунтқа кірген пайдаланушыларға ғана көрсетеді.`,
   privateConnectHint: (platform, withExtension) =>
-    `\n\n🔑 Мұндай жазбаны жүктеп алу үшін ${platform} аккаунтыңызды ботқа бір рет қосыңыз. Содан кейін бот сізге көрінетіннің бәрін өзі жүктейді: жабық жазбаларды, рилстерді және стористерді, телефоннан да. Төмендегі батырма мұны қалай жасау керегін көрсетеді.${withExtension ? "\n\n💻 Немесе оны компьютердегі браузерге арналған Videoner кеңейтімімен жүктеп алыңыз." : ""}`,
+    `\n\n🔑 ${platform} аккаунтыңызды ботқа бір рет қосыңыз — содан кейін бот мұндай жазбаларды өзі жүктеп алады. Төмендегі батырма мұны қалай жасау керегін көрсетеді.${withExtension ? "\n💻 Немесе оны компьютердегі браузерге арналған Videoner кеңейтімімен жүктеп алыңыз." : ""}`,
   privateReconnectHint: (platform, withExtension) =>
-    `\n\n⚠️ Қосылған ${platform} аккаунтыңыз бұл жазбаны аша алмады. Мүмкін, кіру жұмысын тоқтатқан шығар — аккаунтты қайта қосыңыз. Немесе бұл аккаунттың жазбаға қолжетімділігі жоқ.${withExtension ? "\n\n💻 Оны компьютердегі браузерге арналған Videoner кеңейтімімен де жүктеп алуға болады." : ""}`,
+    `\n\n⚠️ Қосылған ${platform} аккаунтыңыз бұл жазбаны аша алмады: кіру жұмысын тоқтатты немесе аккаунттың жазбаға қолжетімділігі жоқ. Аккаунтты төмендегі батырма арқылы қайта қосыңыз.${withExtension ? "\n💻 Немесе оны компьютердегі браузерге арналған Videoner кеңейтімімен жүктеп алыңыз." : ""}`,
   connectAccountButton: "🔑 Аккаунтты қосу",
   reconnectAccountButton: "🔑 Қайта қосу",
   extensionButton: "🧩 Кеңейтім арқылы жүктеп алу",

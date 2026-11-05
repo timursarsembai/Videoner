@@ -4334,6 +4334,8 @@ export function friendlyError(error) {
     msg.includes("empty media response") ||
     msg.includes("without being logged-in") ||
     msg.includes("rate-limit reached") ||
+    // Instagram не пускает наш сервер без входа (05.11.2026).
+    msg.includes("accessing posts anonymously") ||
     msg.includes("confirm you're not a bot") ||
     msg.includes("confirm you’re not a bot")
   ) {

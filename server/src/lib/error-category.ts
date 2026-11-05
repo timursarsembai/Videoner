@@ -31,6 +31,9 @@ export function categorizeError(raw: string): ErrorCategory {
     msg.includes('log in') ||
     msg.includes('login required') ||
     msg.includes('requires authentication') ||
+    // Instagram не пускает наш адрес без входа (05.11.2026): «redirected to
+    // the login page … rate-limit for accessing posts anonymously».
+    msg.includes('accessing posts anonymously') ||
     msg.includes('private') ||
     // Экстракторы Meta (Facebook, Instagram) на закрытой записи не сообщают
     // «нужен вход», а падают на разборе страницы: вместо поста им приходит

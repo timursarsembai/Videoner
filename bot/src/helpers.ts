@@ -235,10 +235,14 @@ export function friendlyError(raw: string, lang: Lang): string {
   // по-английски). «Запись недоступна без входа» тут была бы неправдой.
   // Сюда же антибот-проверка YouTube: она про наш сервер, а не про ролик.
   // Стоит раньше проверки на вход — в обоих текстах есть «sign in»/«--cookies».
+  // С 05.11.2026 Instagram отвечает и так: «The webpage request was redirected
+  // to the login page. You have exceeded the rate-limit for accessing posts
+  // anonymously» — тоже про наш адрес, а не про ролик.
   if (
     msg.includes("empty media response") ||
     msg.includes("without being logged-in") ||
     msg.includes("rate-limit reached") ||
+    msg.includes("accessing posts anonymously") ||
     msg.includes("confirm you're not a bot") ||
     msg.includes("confirm you’re not a bot")
   ) {

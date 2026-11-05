@@ -193,6 +193,10 @@ export function userCookiesMayHelp(message: string): boolean {
     /cannot parse data/i,
     /empty media response/i,
     /without being logged-in/i,
+    // Instagram ограничил анонимный доступ с адреса сервера (05.11.2026):
+    // «redirected to the login page … rate-limit for accessing posts
+    // anonymously». С входом человека запись открывается.
+    /accessing posts anonymously/i,
     /sign in/i,
     /log in/i,
     THREADS_NO_MEDIA,

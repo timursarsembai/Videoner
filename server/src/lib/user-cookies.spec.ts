@@ -107,6 +107,11 @@ describe('user cookies', () => {
     expect(userCookiesMayHelp('This video is private')).toBe(true);
     expect(userCookiesMayHelp("Sign in to confirm you're not a bot")).toBe(false);
     expect(userCookiesMayHelp('Read timed out')).toBe(false);
+    expect(
+      userCookiesMayHelp(
+        '[Instagram] DfVBWzxuw5J: The webpage request was redirected to the login page. You have exceeded the rate-limit for accessing posts anonymously.',
+      ),
+    ).toBe(true);
     expect(userCookiesMayHelp('[threads] DeYFuUkmnev: No video or photo is visible in this Threads post: it is either a text-only post, or its media is shown only to signed-in users and cannot be downloaded without logging in')).toBe(true);
   });
 

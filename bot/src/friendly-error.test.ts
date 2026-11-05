@@ -92,3 +92,10 @@ test("отказ по суточному лимиту YouTube переводит
   assert.equal(friendlyError(raw, "ru"), messages.ru.errorYoutubeDailyLimit(25));
   assert.ok(friendlyError(raw, "en").includes("25 GB"));
 });
+
+test("Instagram ограничил анонимный доступ с нашего адреса — «площадка не отдала», не общий текст", () => {
+  // Дословно из логов 05.11.2026.
+  const raw =
+    "[Instagram] DfVBWzxuw5J: The webpage request was redirected to the login page. You have exceeded the rate-limit for accessing posts anonymously. Use --cookies-from-browser or --cookies for the authentication.";
+  assert.equal(friendlyError(raw, "ru"), messages.ru.errorPlatformRefused);
+});

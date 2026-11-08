@@ -10,7 +10,7 @@ const PHOTO_RE = /^https?:\/\/(?:www\.|m\.)?tiktok\.com\/@([\w.-]+)\/photo\/(\d+
 // Так yt-dlp пишет развёрнутую короткую ссылку (vt.tiktok.com/…) в ошибке.
 const PHOTO_IN_TEXT_RE = /https?:\/\/(?:www\.|m\.)?tiktok\.com\/@[\w.-]+\/photo\/\d+/i;
 
-const USER_AGENT =
+export const USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36';
 
 export function isTiktokPhotoUrl(url: string): boolean {
@@ -63,7 +63,9 @@ export function tiktokPhotoInfoFromItem(item: ImagePostItem, url: string): any {
     webpage_url: url,
     uploader: author,
     thumbnail: images[0].imageURL!.urlList![0],
-    ...(audio ? { duration: audio.duration, vn_audio: audio } : {}),
+    // Длину звука в общее поле duration не кладём: по нему меряются лимиты
+    // длительности и статистика, а фото — не ролик. Только в vn_audio.
+    ...(audio ? { vn_audio: audio } : {}),
     entries: images.map((img, i) => ({
       id: `${id}-${i + 1}`,
       title,

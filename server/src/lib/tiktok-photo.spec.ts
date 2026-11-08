@@ -45,6 +45,6 @@ describe('tiktok photo posts', () => {
       'https://www.tiktok.com/@a/photo/7',
     );
     expect(info.vn_audio).toEqual({ url: 'https://cdn/sound.mp3', duration: 491, title: 'Автор — оригинальный звук' });
-    expect(info.duration).toBe(491);
+    expect(info.duration).toBeUndefined();
   });
 });

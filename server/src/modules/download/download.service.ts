@@ -71,6 +71,7 @@ import {
 } from 'src/lib/playlist';
 import { parseUiLang } from 'src/lib/languages';
 import { parseCountry } from 'src/lib/countries';
+import { USER_AGENT as TIKTOK_USER_AGENT } from 'src/lib/tiktok-photo';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -990,6 +991,15 @@ export class DownloadService {
     // «<имя>-NN.<расш.>», и в пост они не попадут, даже если не удалятся.
     const silent = join(downloadDir, `${base}-silent.mp4`);
     const sound = join(downloadDir, `${base}-sound.mp3`);
+    // Звук качаем, пока кодируется видео: шаги друг от друга не зависят.
+    // Ошибку ловим сразу — иначе, пока ffmpeg работает, отказ стал бы
+    // «необработанным»; разбираем её ниже, после видео.
+    const soundReady = audio
+      ? this.fetchPostAudio(audio, sound).then(
+          () => null,
+          (error: unknown) => error,
+        )
+      : null;
     try {
       await execFileAsync(
         'ffmpeg',
@@ -1002,10 +1012,14 @@ export class DownloadService {
       );
       if (audio) {
         try {
-          await this.fetchPostAudio(audio, sound);
+          const soundError = await soundReady;
+          if (soundError) throw soundError;
+          // Длина — по самому файлу: площадка её сообщает не всегда, а файл
+          // не врёт. Не прочитали — то, что сказала площадка.
+          const seconds = (await this.probeVideoDimensions(sound)).duration ?? audio.duration;
           await execFileAsync(
             'ffmpeg',
-            addAudioArgs(silent, sound, audioSlideshowSeconds(usable.length, audio.duration), output),
+            addAudioArgs(silent, sound, audioSlideshowSeconds(usable.length, seconds), output),
             // Видео не перекодируется, звук — да: полчаса AAC — секунды.
             { timeout: 180_000 },
           );
@@ -1018,6 +1032,8 @@ export class DownloadService {
       await fs.promises.unlink(output).catch(() => {});
       throw error;
     } finally {
+      // Видео упало раньше, чем дождались звука, — ждём, чтобы удалить и его.
+      await soundReady;
       await fs.promises.unlink(silent).catch(() => {});
       await fs.promises.unlink(sound).catch(() => {});
     }
@@ -1028,22 +1044,40 @@ export class DownloadService {
 
   // Звук фото-поста (lib/slideshow.ts postAudio) — готовый mp3 на CDN
   // площадки: забираем как есть, без yt-dlp. Потолок размера — с запасом на
-  // полчаса в 320 кбит/с: больше — значит, ссылка ведёт не туда.
+  // полчаса в 320 кбит/с: больше — значит, ссылка ведёт не туда. Пишем на
+  // диск по кускам и считаем байты по пути: целиком в память не берём.
   private async fetchPostAudio(audio: PostAudio, path: string): Promise<void> {
+    const limit = 80 * 1024 * 1024;
     const response = await fetch(audio.url, {
-      headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36',
-        Referer: 'https://www.tiktok.com/',
-      },
+      headers: { 'User-Agent': TIKTOK_USER_AGENT, Referer: 'https://www.tiktok.com/' },
       signal: AbortSignal.timeout(120_000),
     });
-    if (!response.ok) throw new Error(`Post audio: HTTP ${response.status}`);
-    const bytes = Buffer.from(await response.arrayBuffer());
-    if (!bytes.length || bytes.length > 80 * 1024 * 1024) {
-      throw new Error(`Post audio: unexpected size ${bytes.length}`);
+    if (!response.ok || !response.body) throw new Error(`Post audio: HTTP ${response.status}`);
+    if (Number(response.headers.get('content-length')) > limit) {
+      await response.body.cancel().catch(() => {});
+      throw new Error('Post audio: too large');
     }
-    await fs.promises.writeFile(path, bytes);
+    const file = await fs.promises.open(path, 'w');
+    let size = 0;
+    try {
+      const reader = response.body.getReader();
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        size += value.length;
+        if (size > limit) {
+          await reader.cancel().catch(() => {});
+          throw new Error('Post audio: too large');
+        }
+        await file.write(value);
+      }
+      if (!size) throw new Error('Post audio: empty');
+    } catch (error) {
+      await file.close();
+      await fs.promises.unlink(path).catch(() => {});
+      throw error;
+    }
+    await file.close();
   }
 
   /**

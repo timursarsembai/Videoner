@@ -618,8 +618,9 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
     // Замок с HD-качеств снят вместе с платными функциями: все качества
     // доступны всем без исключения.
     // "original" сервер присылает для поста, где нет ни одного видео —
-    // снимки в исходном размере; у поста из нескольких фото рядом ещё
-    // "slideshow" (видео из снимков) и "gallery" (видео и снимки).
+    // снимки в исходном размере; у поста из нескольких фото или со своим
+    // звуком (фото-посты TikTok) рядом ещё "slideshow" (видео из снимков,
+    // со звуком, если он есть) и "gallery" (видео и снимки).
     const label =
       q === "original"
         ? m.photoButton
@@ -630,8 +631,9 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
             : sized(`🎬 ${q}`, current.sizes?.video[q]);
     kb.text(label, `v|${q}`).row();
   }
-  // У поста из одних фотографий звуковой дорожки нет — кнопку не рисуем,
-  // иначе она вела бы в заведомую ошибку.
+  // У поста из одних фотографий звуковой дорожки обычно нет — тогда сервер
+  // не присылает аудио-качеств, и кнопку не рисуем: иначе она вела бы в
+  // заведомую ошибку. Фото-пост TikTok со звуком присылает "128Kbps".
   if (current.qualities?.audio.length) {
     kb.text(sized(m.audioOnlyButton, current.sizes?.audio["128Kbps"]), "a|128Kbps").row();
   }

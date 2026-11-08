@@ -28,6 +28,7 @@ type ImagePostItem = {
   id?: string;
   desc?: string;
   author?: { uniqueId?: string; nickname?: string };
+  music?: { playUrl?: string; duration?: number; title?: string; authorName?: string };
   imagePost?: {
     title?: string;
     images?: { imageURL?: { urlList?: string[] }; imageWidth?: number; imageHeight?: number }[];
@@ -35,13 +36,24 @@ type ImagePostItem = {
 };
 
 // Ответ в форме yt-dlp: плейлист, элементы без форматов (= фото), снимок —
-// последняя запись thumbnails (bestPhotoUrl).
+// последняя запись thumbnails (bestPhotoUrl). Звук поста (music.playUrl —
+// готовый mp3 на CDN TikTok) — в своём поле vn_audio (lib/slideshow.ts):
+// из него собирается слайдшоу со звуком и отдаётся «только звук».
 export function tiktokPhotoInfoFromItem(item: ImagePostItem, url: string): any {
   const images = (item.imagePost?.images ?? []).filter((img) => img.imageURL?.urlList?.length);
   if (!images.length) throw new Error('TikTok photo post has no images');
   const id = item.id ?? url.match(PHOTO_RE)?.[2] ?? 'tiktok';
   const author = item.author?.nickname || item.author?.uniqueId;
   const title = (item.desc || item.imagePost?.title || (author ? `TikTok · ${author}` : 'TikTok photo')).trim();
+  const music = item.music;
+  const audio =
+    music?.playUrl && /^https:\/\//.test(music.playUrl)
+      ? {
+          url: music.playUrl,
+          duration: music.duration && music.duration > 0 ? music.duration : undefined,
+          title: [music.authorName, music.title].filter(Boolean).join(' — ') || undefined,
+        }
+      : undefined;
   return {
     _type: 'playlist',
     id,
@@ -51,6 +63,7 @@ export function tiktokPhotoInfoFromItem(item: ImagePostItem, url: string): any {
     webpage_url: url,
     uploader: author,
     thumbnail: images[0].imageURL!.urlList![0],
+    ...(audio ? { duration: audio.duration, vn_audio: audio } : {}),
     entries: images.map((img, i) => ({
       id: `${id}-${i + 1}`,
       title,

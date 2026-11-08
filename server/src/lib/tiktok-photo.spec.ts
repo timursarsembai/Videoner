@@ -32,5 +32,19 @@ describe('tiktok photo posts', () => {
       { position: 2, url: 'https://cdn/b.jpg' },
     ]);
     expect(info.title).toBe('Пост');
+    expect(info.vn_audio).toBeUndefined();
+  });
+
+  it('keeps the post sound for the slideshow and audio-only download', () => {
+    const info = tiktokPhotoInfoFromItem(
+      {
+        id: '7',
+        imagePost: { images: [{ imageURL: { urlList: ['https://cdn/a.jpg'] } }] },
+        music: { playUrl: 'https://cdn/sound.mp3', duration: 491, title: 'оригинальный звук', authorName: 'Автор' },
+      },
+      'https://www.tiktok.com/@a/photo/7',
+    );
+    expect(info.vn_audio).toEqual({ url: 'https://cdn/sound.mp3', duration: 491, title: 'Автор — оригинальный звук' });
+    expect(info.duration).toBe(491);
   });
 });

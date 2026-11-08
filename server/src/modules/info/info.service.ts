@@ -1,4 +1,4 @@
-import { photoQualities } from 'src/lib/slideshow';
+import { photoQualities, postAudio } from 'src/lib/slideshow';
 import { DownloadSource } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
@@ -247,10 +247,14 @@ export class InfoService {
     const photoOnly =
       videoFormats.length === 0 && playlistEntries(info).length > 0;
 
+    // Своя звуковая дорожка фото-поста (TikTok): слайдшоу со звуком и
+    // «только звук» в 128 кбит/с — в таком виде TikTok её и отдаёт.
+    const hasAudio = photoOnly && postAudio(info) !== null;
+
     const allFormats = {
-      // У поста из нескольких фото — ещё слайдшоу (lib/slideshow.ts).
-      video: photoOnly ? photoQualities(playlistEntries(info).length) : [...new Set(videoFormats)],
-      audio: photoOnly ? [] : [...new Set(audioFormats)],
+      // У поста из нескольких фото или со звуком — ещё слайдшоу (lib/slideshow.ts).
+      video: photoOnly ? photoQualities(playlistEntries(info).length, hasAudio) : [...new Set(videoFormats)],
+      audio: photoOnly ? (hasAudio ? ['128Kbps'] : []) : [...new Set(audioFormats)],
     };
 
     return { allFormats, allExtensions };

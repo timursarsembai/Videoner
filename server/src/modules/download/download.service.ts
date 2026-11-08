@@ -1,4 +1,13 @@
-import { GALLERY, SLIDESHOW, isSlideshowQuality, slideshowArgs } from 'src/lib/slideshow';
+import {
+  GALLERY,
+  SLIDESHOW,
+  addAudioArgs,
+  audioSlideshowSeconds,
+  isSlideshowQuality,
+  postAudio,
+  slideshowArgs,
+  type PostAudio,
+} from 'src/lib/slideshow';
 import {
   BadRequestException,
   ForbiddenException,
@@ -117,6 +126,24 @@ interface CachedFile {
 const TELEGRAM_FILE_ID_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 const execFileAsync = promisify(execFile);
+
+// Перекодировка готового mp3 в запрошенный вид — для звука фото-поста,
+// который приходит mp3 (downloadAudio). Кодек и контейнер — явно: по одному
+// расширению ffmpeg «vorbis» не узнает.
+const AUDIO_CODECS: Record<string, string[]> = {
+  wav: ['-c:a', 'pcm_s16le', '-f', 'wav'],
+  aac: ['-c:a', 'aac', '-b:a', '128k', '-f', 'adts'],
+  m4a: ['-c:a', 'aac', '-b:a', '128k', '-f', 'ipod'],
+  opus: ['-c:a', 'libopus', '-b:a', '128k', '-f', 'ogg'],
+  vorbis: ['-c:a', 'libvorbis', '-q:a', '5', '-f', 'ogg'],
+  flac: ['-c:a', 'flac', '-f', 'flac'],
+};
+
+function convertAudioArgs(input: string, extension: string, output: string): string[] {
+  const codec = AUDIO_CODECS[extension];
+  if (!codec) throw new Error(`Unsupported audio extension: ${extension}`);
+  return ['-v', 'error', '-y', '-i', input, '-vn', ...codec, output];
+}
 
 @Injectable()
 export class DownloadService {
@@ -943,31 +970,80 @@ export class DownloadService {
    * первым элементом поста (номер 00), фото — следом, если их оставляем.
    * Снимки, которые ffmpeg не прочитает (не JPEG после неудачной
    * перекодировки), в видео не берём.
+   *
+   * Есть у поста звук — видео идёт со звуком: сначала немой круг снимков,
+   * потом к нему дорожка (addAudioArgs). Звук не скачался или не лёг — отдаём
+   * немое слайдшоу, а не ошибку: снимки-то есть.
    */
-  private async buildSlideshow(downloadDir: string, fileName: string, { keepPhotos }: { keepPhotos: boolean }) {
+  private async buildSlideshow(
+    downloadDir: string,
+    fileName: string,
+    { keepPhotos, audio }: { keepPhotos: boolean; audio?: PostAudio | null },
+  ) {
     const photos = this.collectPlaylistFiles(downloadDir, fileName).filter((f) => isPhotoExtension(f.ext));
     const usable = photos.filter((f) => ['jpg', 'jpeg', 'png', 'webp'].includes(f.ext));
     if (!usable.length) throw new Error('Не из чего собрать слайдшоу');
     const dot = fileName.lastIndexOf('.');
     const base = dot > 0 ? fileName.slice(0, dot) : fileName;
     const output = join(downloadDir, `${base}-00.mp4`);
+    // Временные файлы — без номера: collectPlaylistFiles берёт только
+    // «<имя>-NN.<расш.>», и в пост они не попадут, даже если не удалятся.
+    const silent = join(downloadDir, `${base}-silent.mp4`);
+    const sound = join(downloadDir, `${base}-sound.mp3`);
     try {
       await execFileAsync(
         'ffmpeg',
         slideshowArgs(
           usable.map((f) => join(downloadDir, f.name)),
-          output,
+          audio ? silent : output,
         ),
         // Минута на десяток снимков с запасом; длиннее — что-то не так.
         { timeout: 180_000 },
       );
+      if (audio) {
+        try {
+          await this.fetchPostAudio(audio, sound);
+          await execFileAsync(
+            'ffmpeg',
+            addAudioArgs(silent, sound, audioSlideshowSeconds(usable.length, audio.duration), output),
+            // Видео не перекодируется, звук — да: полчаса AAC — секунды.
+            { timeout: 180_000 },
+          );
+        } catch (error) {
+          console.error('Слайдшоу без звука: дорожку добавить не удалось:', error);
+          await fs.promises.rename(silent, output);
+        }
+      }
     } catch (error) {
       await fs.promises.unlink(output).catch(() => {});
       throw error;
+    } finally {
+      await fs.promises.unlink(silent).catch(() => {});
+      await fs.promises.unlink(sound).catch(() => {});
     }
     if (!keepPhotos) {
       await Promise.all(photos.map((f) => fs.promises.unlink(join(downloadDir, f.name)).catch(() => {})));
     }
+  }
+
+  // Звук фото-поста (lib/slideshow.ts postAudio) — готовый mp3 на CDN
+  // площадки: забираем как есть, без yt-dlp. Потолок размера — с запасом на
+  // полчаса в 320 кбит/с: больше — значит, ссылка ведёт не туда.
+  private async fetchPostAudio(audio: PostAudio, path: string): Promise<void> {
+    const response = await fetch(audio.url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36',
+        Referer: 'https://www.tiktok.com/',
+      },
+      signal: AbortSignal.timeout(120_000),
+    });
+    if (!response.ok) throw new Error(`Post audio: HTTP ${response.status}`);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    if (!bytes.length || bytes.length > 80 * 1024 * 1024) {
+      throw new Error(`Post audio: unexpected size ${bytes.length}`);
+    }
+    await fs.promises.writeFile(path, bytes);
   }
 
   /**
@@ -1384,7 +1460,10 @@ export class DownloadService {
               throw new Error('Ни одну фотографию поста скачать не удалось');
             }
             if (isSlideshowQuality(quality)) {
-              await this.buildSlideshow(downloadDir, baseFileName, { keepPhotos: (quality as string) === GALLERY });
+              await this.buildSlideshow(downloadDir, baseFileName, {
+                keepPhotos: (quality as string) === GALLERY,
+                audio: postAudio(info),
+              });
             }
             await this.completePlaylistDownload(
               download.id,
@@ -1517,10 +1596,13 @@ export class DownloadService {
       const { info, userCookies } = await this.infoForDownload(url, req, meta);
 
       const downloadDir = this.ensureDownloadDirectory();
+      // Фото-пост со своим звуком (TikTok): yt-dlp его не умеет, дорожку
+      // забираем сами (fetchPostAudio) — одним файлом.
+      const postSound = hasVideoEntries(info) ? null : postAudio(info);
       // Пост из нескольких файлов и в аудио остаётся несколькими файлами.
       // Без шаблона с номером yt-dlp писал бы все дорожки в ОДНО имя, и от
       // карусели оставалась бы последняя — молча, без всякой ошибки.
-      const multi = isPlaylist(info);
+      const multi = isPlaylist(info) && !postSound;
       // Значение по умолчанию обязательно: поле extension необязательное, и без
       // него имя файла собиралось с пустым хвостом («...123.»), а проверка
       // имени такое отвергает — запрос падал с «File name not valid» вместо
@@ -1597,6 +1679,36 @@ export class DownloadService {
       await this.updateDownloadStatus(download.id, {
         status: DownloadStatus.DOWNLOADING,
       });
+
+      if (postSound) {
+        void (async () => {
+          const target = join(downloadDir, baseFileName);
+          try {
+            if (audioExtension === 'mp3') {
+              await this.fetchPostAudio(postSound, target);
+            } else {
+              const source = join(downloadDir, `${baseFileName}.source.mp3`);
+              try {
+                await this.fetchPostAudio(postSound, source);
+                await execFileAsync('ffmpeg', convertAudioArgs(source, audioExtension, target), { timeout: 180_000 });
+              } finally {
+                await fs.promises.unlink(source).catch(() => {});
+              }
+            }
+            await this.completeDownload(download.id, `/downloads/${baseFileName}`, target, progressSubject);
+          } catch (error) {
+            await fs.promises.unlink(target).catch(() => {});
+            await this.markDownloadFailed(download.id, error, progressSubject);
+          }
+        })();
+        return {
+          message: 'Download started',
+          ...(userCookies ? { viaUserCookies: true } : {}),
+          downloadId: download.id,
+          fileName: baseFileName,
+          itemCount: 1,
+        };
+      }
 
       // Audio download
       const progress$ = await this.ytdlp.download(url, (req as any).platform, {

@@ -187,8 +187,33 @@ export class YtdlpProcessService implements OnModuleInit {
     /access denied/i,
   ];
 
-  private isBlockError(message: string): boolean {
-    return YtdlpProcessService.BLOCK_PATTERNS.some((re) => re.test(message));
+  // Отказ гостю, который у площадки означает блокировку нашего адреса, хотя
+  // звучит как «войдите». Instagram с ноября 2026 время от времени перестаёт
+  // пускать IP сервера без входа целиком (08.11.2026: 10 скачиваний за
+  // сутки вместо обычных 50): любой публичный Reels уходит на страницу входа. Тот же
+  // запрос с другого адреса проходит. Считаем это блокировкой ТОЛЬКО для
+  // запроса без кук: с куками такой ответ значит, что вход протух, и прокси
+  // тут не поможет.
+  private static readonly ANONYMOUS_BLOCK_PATTERNS: Record<string, RegExp[]> = {
+    instagram: [
+      /redirected to the login page/i,
+      /rate-?limit reached or login required/i,
+      /accessing posts anonymously/i,
+    ],
+  };
+
+  private isBlockError(message: string, platform: string | null, withCookies: boolean): boolean {
+    if (YtdlpProcessService.BLOCK_PATTERNS.some((re) => re.test(message))) return true;
+    if (withCookies || !platform) return false;
+    return (YtdlpProcessService.ANONYMOUS_BLOCK_PATTERNS[platform] ?? []).some((re) => re.test(message));
+  }
+
+  // Запрос с подключённым аккаунтом человека в Instagram через прокси не
+  // пускаем: вход из чужой страны Instagram видит как подозрительный и может
+  // заблокировать человеку аккаунт. Такие запросы идут с адреса сервера, как
+  // и раньше, — с куками он работает.
+  private proxyAllowed(platform: string | null, withUserCookies: boolean): boolean {
+    return !(withUserCookies && platform === 'instagram');
   }
 
   // Антибот-заглушки: площадка отдала не страницу видео, а проверку, и
@@ -582,7 +607,8 @@ export class YtdlpProcessService implements OnModuleInit {
       //   антибот-заглушка     -> тот же путь, но после паузы.
       // Первый повтор адреса не тратит попытки второго: смена маршрута и
       // ожидание, пока площадка «отпустит», — разные вещи.
-      let useProxy = this.needsProxy(platform);
+      const proxyAllowed = this.proxyAllowed(platform, Boolean(options?.cookiesContent));
+      let useProxy = proxyAllowed && this.needsProxy(platform);
       let switchedToProxy = false;
       let transientAttempt = 0;
 
@@ -613,7 +639,12 @@ export class YtdlpProcessService implements OnModuleInit {
           const message = attemptError?.message ?? '';
 
           // Блокировка по адресу — уходим на прокси, если ещё не там.
-          if (!useProxy && this.youtubeProxyUrl && this.isBlockError(message)) {
+          if (
+            !useProxy &&
+            proxyAllowed &&
+            this.youtubeProxyUrl &&
+            this.isBlockError(message, platform, useCookies && disposableCookies !== null)
+          ) {
             console.warn(
               `[proxy] ${platform ?? 'unknown'}: прямой запрос упёрся в блокировку, повторяю через прокси`,
             );
@@ -923,11 +954,12 @@ export class YtdlpProcessService implements OnModuleInit {
     let proxyMarkedByUs = false;
     let useCookies = disposableCookies !== null;
     let cookiesDropped = false;
+    const proxyAllowed = this.proxyAllowed(platform, Boolean(extras?.cookiesContent));
 
     const startAttempt = () => {
       // Решение о прокси перечитываем на каждой попытке: предыдущая могла
       // наткнуться на блокировку и пометить площадку.
-      const useProxyNow = this.needsProxy(platform);
+      const useProxyNow = proxyAllowed && this.needsProxy(platform);
       const attemptArgs = [
         ...(useInfoFile ? ['--load-info-json', infoFile as string] : [parseUrl]),
         ...processArgs,
@@ -1009,10 +1041,11 @@ export class YtdlpProcessService implements OnModuleInit {
           // следующие запросы зря пошли бы в обход.
           if (
             !useProxyNow &&
+            proxyAllowed &&
             !proxySwitchTried &&
             !progressEmitted &&
             this.youtubeProxyUrl &&
-            this.isBlockError(errorMessage)
+            this.isBlockError(errorMessage, platform, useCookies && disposableCookies !== null)
           ) {
             proxySwitchTried = true;
             pendingRetry = 'proxy';

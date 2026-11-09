@@ -23,6 +23,7 @@ import type {
   ActivePeriodPoint,
   BlockedPoint,
   ErrorDatum,
+  ErrorPlatformPoint,
   ErrorTimeseriesPoint,
   OverviewData,
   PlatformDatum,
@@ -551,6 +552,7 @@ export function ErrorsByCategoryChart() {
   return (
     <ChartCard
       title={`Ошибки по категориям — ${lower(q.label)}`}
+      hint="Упавшие скачивания и, с 09.11.2026, отказы площадки ещё при разборе ссылки"
       period={q.period}
       onPeriod={q.setPeriod}
       loading={q.loading}
@@ -577,6 +579,59 @@ export function ErrorsByCategoryChart() {
   );
 }
 
+// Ошибки по дням стопкой по площадкам: всплеск у одной площадки — почти
+// всегда её блокировка или поломка (так 08.11.2026 Instagram перестал
+// пускать сервер без входа).
+export function ErrorsByPlatformChart() {
+  const q = usePeriodQuery<ErrorPlatformPoint[]>("errors/platforms");
+  const rows = q.data ?? [];
+  const platforms = Array.from(new Set(rows.map((r) => r.platform))).sort();
+  const byDay = new Map<string, Record<string, number>>();
+  for (const row of rows) {
+    byDay.set(row.day, { ...(byDay.get(row.day) ?? {}), [row.platform]: (byDay.get(row.day)?.[row.platform] ?? 0) + row.count });
+  }
+  const data = rangeDayKeys(q.range).map((key) => {
+    const point: Record<string, string | number> = { label: formatDay(key) };
+    for (const platform of platforms) point[platform] = byDay.get(key)?.[platform] ?? 0;
+    return point;
+  });
+  const color = (platform: string) => PLATFORM_COLORS[platform.toUpperCase()] ?? "#9ca3af";
+  // Как и на остальных графиках по площадкам — имя площадки заглавными.
+  const name = (platform: string) => platform.toUpperCase();
+
+  return (
+    <ChartCard
+      title={`Ошибки по площадкам — ${lower(q.label)}`}
+      hint="Упавшие скачивания и отказы при разборе ссылки по дням (UTC)"
+      period={q.period}
+      onPeriod={q.setPeriod}
+      loading={q.loading}
+      error={q.error}
+      wide
+    >
+      {rows.length ? (
+        <ScrollableChart
+          points={data.length}
+          pointWidth={BAR_POINT}
+          legend={platforms.map((p) => ({ label: name(p), color: color(p) }))}
+        >
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+            <XAxis dataKey="label" fontSize={12} />
+            <YAxis fontSize={12} allowDecimals={false} />
+            <Tooltip />
+            {platforms.map((platform) => (
+              <Bar key={platform} dataKey={platform} name={name(platform)} stackId="platforms" fill={color(platform)} />
+            ))}
+          </BarChart>
+        </ScrollableChart>
+      ) : (
+        <EmptyChart>{q.loading ? "Загрузка…" : "За период ошибок нет"}</EmptyChart>
+      )}
+    </ChartCard>
+  );
+}
+
 // Ошибки по дням стопкой по категориям. Дни без ошибок — нулями, чтобы ось
 // не сжималась.
 export function ErrorsTimeseriesChart() {
@@ -594,7 +649,7 @@ export function ErrorsTimeseriesChart() {
   return (
     <ChartCard
       title={`Ошибки по дням — ${lower(q.label)}`}
-      hint="Динамика по категориям (UTC)"
+      hint="Динамика по категориям (UTC). С 09.11.2026 — и отказы при разборе ссылки, когда до скачивания не дошло."
       period={q.period}
       onPeriod={q.setPeriod}
       loading={q.loading}

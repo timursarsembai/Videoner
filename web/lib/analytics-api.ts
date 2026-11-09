@@ -95,6 +95,14 @@ export interface ErrorTimeseriesPoint {
   count: number;
 }
 
+// Ошибки за день по площадке (/analytics/errors/platforms); площадка — в
+// нижнем регистре, как в ссылке: "instagram", "youtube".
+export interface ErrorPlatformPoint {
+  day: string;
+  platform: string;
+  count: number;
+}
+
 
 // Одна попытка скачивания — строка журнала. Отдаются ВСЕ статусы, включая
 // успешные: список нужен именно как хронология «кто что запрашивал», а не как

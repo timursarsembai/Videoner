@@ -2,6 +2,7 @@ import { BadRequestException, Body, Controller, HttpStatus, Post, Req, UseGuards
 import { youtubePlaylistId } from 'src/lib/youtube-playlist';
 import { YtdlpFormatService } from '../ytdlp/ytdlp-format.service';
 import { Request } from 'express';
+import { DownloadSource } from '@prisma/client';
 import { isBotRequest } from 'src/lib/bot-auth';
 import {
   ApiOperation,
@@ -61,6 +62,9 @@ export class InfoController {
       delete dto.cookieScope;
       delete dto.cookieFallbackScope;
     }
+    // Откуда запрос — для статистики отказов (InfoService.recordFailure):
+    // сайт и расширение source ставят сами (через прокси сайта), бот — нет.
+    if (!dto.source) dto.source = isBotRequest(req) ? DownloadSource.BOT : DownloadSource.API;
     return this.infoService.getVideoInfo(dto);
   }
 }

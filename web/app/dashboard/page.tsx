@@ -21,6 +21,7 @@ import {
   DownloadStatCards,
   DownloadsUsersChart,
   ErrorsByCategoryChart,
+  ErrorsByPlatformChart,
   ErrorsTimeseriesChart,
   PlatformCountsChart,
   PlatformsPie,
@@ -175,6 +176,7 @@ function ErrorsTab() {
     <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <ErrorsByCategoryChart />
       <ErrorsTimeseriesChart />
+      <ErrorsByPlatformChart />
     </section>
   );
 }

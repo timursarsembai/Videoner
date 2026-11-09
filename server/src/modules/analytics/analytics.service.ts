@@ -537,14 +537,24 @@ export class AnalyticsService {
     }));
   }
 
+  // Ошибки — это и упавшие скачивания (Download FAILED), и отказы ещё при
+  // разборе ссылки (LinkFailure): во втором случае скачивание не начиналось
+  // вовсе, и без этой таблицы блокировка площадки в статистике не видна.
   async errors(range: DateRange) {
-    const rows = await this.prisma.download.groupBy({
-      by: ['errorCategory'],
-      where: { status: DownloadStatus.FAILED, createdAt: this.created(range) },
-      _count: { _all: true },
-    });
+    const [downloads, links] = await Promise.all([
+      this.prisma.download.groupBy({
+        by: ['errorCategory'],
+        where: { status: DownloadStatus.FAILED, createdAt: this.created(range) },
+        _count: { _all: true },
+      }),
+      this.prisma.linkFailure.groupBy({
+        by: ['errorCategory'],
+        where: { createdAt: this.created(range) },
+        _count: { _all: true },
+      }),
+    ]);
     return mergeNullableGroups(
-      rows,
+      [...downloads, ...links],
       (row) => row.errorCategory,
       (row) => row._count._all,
     );
@@ -559,10 +569,42 @@ export class AnalyticsService {
     return this.prisma.$queryRaw<
       { day: Date; category: string; count: number }[]
     >`
-      SELECT date_trunc('day', "createdAt") AS day, COALESCE("errorCategory"::text, 'OTHER') AS category, COUNT(*)::int AS count
-      FROM "Download"
-      WHERE status = 'FAILED'
-        AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+      SELECT date_trunc('day', "createdAt") AS day, category, COUNT(*)::int AS count
+      FROM (
+        SELECT "createdAt", COALESCE("errorCategory"::text, 'OTHER') AS category
+        FROM "Download"
+        WHERE status = 'FAILED'
+          AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+        UNION ALL
+        SELECT "createdAt", "errorCategory"::text
+        FROM "LinkFailure"
+        WHERE "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+      ) e
+      GROUP BY 1, 2
+      ORDER BY 1 ASC
+    `;
+  }
+
+  // Ошибки по дням и площадкам: всплеск у одной площадки — почти всегда
+  // её блокировка или поломка, а не случайные отказы. У Download площадка —
+  // downloader (YOUTUBE → youtube), у LinkFailure она записана как есть.
+  async errorsPlatforms(range: DateRange) {
+    const from = day(range.from);
+    const to = day(range.to);
+    return this.prisma.$queryRaw<
+      { day: Date; platform: string; count: number }[]
+    >`
+      SELECT date_trunc('day', "createdAt") AS day, platform, COUNT(*)::int AS count
+      FROM (
+        SELECT "createdAt", lower(downloader::text) AS platform
+        FROM "Download"
+        WHERE status = 'FAILED'
+          AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+        UNION ALL
+        SELECT "createdAt", platform
+        FROM "LinkFailure"
+        WHERE "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+      ) e
       GROUP BY 1, 2
       ORDER BY 1 ASC
     `;

@@ -1,6 +1,8 @@
 import { photoQualities, postAudio } from 'src/lib/slideshow';
 import { DownloadSource } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { categorizeError } from 'src/lib/error-category';
 import {
   audioExtensionLabel,
   audioQualityLabel,
@@ -56,6 +58,7 @@ export class InfoService {
     private alert: AlertService,
     private botUser: BotUserService,
     private userCookies: UserCookiesService,
+    private prisma: PrismaService,
   ) {}
 
   async getVideoInfo(dto: GetVideoInfoDto): Promise<VideoInfoResponse> {
@@ -134,8 +137,24 @@ export class InfoService {
       return videoInfo;
     } catch (error) {
       const errorMessage = this.handleError(error, platform, alerts);
+      this.recordFailure(platform, dto.source ?? DownloadSource.API, errorMessage);
       throw new BadRequestException(errorMessage);
     }
+  }
+
+  // Отказ при разборе ссылки — в статистику ошибок (модель LinkFailure).
+  // Не ждём записи и не роняем ответ, если она не удалась.
+  private recordFailure(platform: string, source: DownloadSource, message: string) {
+    this.prisma.linkFailure
+      .create({
+        data: {
+          platform,
+          source,
+          errorCategory: categorizeError(message),
+          message: message.replace(/https?:\/\/\S+/g, '<url>').slice(0, 300),
+        },
+      })
+      .catch((e) => console.error('Не удалось записать отказ разбора ссылки:', e));
   }
 
   // Обычный путь не дал метаданных, а человек (или его группа) подключил свой

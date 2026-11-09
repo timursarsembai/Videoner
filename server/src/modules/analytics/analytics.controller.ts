@@ -44,6 +44,7 @@ export class AnalyticsController {
     'users/top': (q) => this.analyticsService.topUsers(this.limit(q.limit, 20, 100)),
     errors: (q) => this.analyticsService.errors(this.range(q)),
     'errors/timeseries': (q) => this.analyticsService.errorsTimeseries(this.range(q)),
+    'errors/platforms': (q) => this.analyticsService.errorsPlatforms(this.range(q)),
   };
 
   constructor(
@@ -191,6 +192,11 @@ export class AnalyticsController {
   @Get('errors')
   errors(@Query() q: QueryParams) {
     return this.queries.errors(q);
+  }
+
+  @Get('errors/platforms')
+  errorsPlatforms(@Query() q: QueryParams) {
+    return this.queries['errors/platforms'](q);
   }
 
   @Get('errors/timeseries')

@@ -81,7 +81,7 @@ export function DownloadStatCards() {
       loading={q.loading}
       error={q.error}
     >
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
         <StatCard label="Попыток" value={value(o?.totalDownloads)} />
         <StatCard label="Успешных" value={value(o?.completedDownloads)} />
         <StatCard label="Ошибок" value={value(o?.failedDownloads)} />
@@ -89,6 +89,11 @@ export function DownloadStatCards() {
           label="Успешность"
           value={o ? (o.successRate !== null ? `${Math.round(o.successRate * 100)}%` : "—") : "…"}
           hint="Успешные из завершённых"
+        />
+        <StatCard
+          label="Отказов площадки"
+          value={value(o?.linkFailures)}
+          hint="Ссылку не удалось разобрать — до скачивания не дошло (с 09.11.2026)"
         />
       </div>
     </ChartCard>

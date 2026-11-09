@@ -102,7 +102,7 @@ export class AnalyticsService {
       createdAt: this.created(range),
       source: { not: DownloadSource.API },
     };
-    const [total, completed, failed, totalBotUsers, webLoginUsers] =
+    const [total, completed, failed, totalBotUsers, webLoginUsers, linkFailures] =
       await Promise.all([
         this.prisma.download.count({ where: scope }),
         this.prisma.download.count({ where: { ...scope, status: { in: SUCCESS } } }),
@@ -111,6 +111,9 @@ export class AnalyticsService {
         }),
         this.prisma.botUser.count(),
         this.prisma.botUser.count({ where: { lastWebLoginAt: { not: null } } }),
+        // Отказы ещё при разборе ссылки (LinkFailure) — отдельно: скачивания
+        // не было, в «Ошибок» и успешность скачиваний они не входят.
+        this.prisma.linkFailure.count({ where: scope }),
       ]);
 
     const finished = completed + failed;
@@ -122,6 +125,7 @@ export class AnalyticsService {
       successRate: finished > 0 ? completed / finished : null,
       totalBotUsers,
       webLoginUsers,
+      linkFailures,
     };
   }
 

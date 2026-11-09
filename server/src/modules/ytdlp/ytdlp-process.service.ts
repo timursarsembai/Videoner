@@ -208,12 +208,12 @@ export class YtdlpProcessService implements OnModuleInit {
     return (YtdlpProcessService.ANONYMOUS_BLOCK_PATTERNS[platform] ?? []).some((re) => re.test(message));
   }
 
-  // Запрос с подключённым аккаунтом человека в Instagram через прокси не
-  // пускаем: вход из чужой страны Instagram видит как подозрительный и может
-  // заблокировать человеку аккаунт. Такие запросы идут с адреса сервера, как
-  // и раньше, — с куками он работает.
-  private proxyAllowed(platform: string | null, withUserCookies: boolean): boolean {
-    return !(withUserCookies && platform === 'instagram');
+  // Запрос в Instagram с чьим-либо входом (подключённый аккаунт человека или
+  // куки сервера) через прокси не пускаем: вход из чужой страны Instagram
+  // видит как подозрительный и может заблокировать аккаунт. Такие запросы
+  // идут с адреса сервера, как и раньше, — с куками он работает.
+  private proxyAllowed(platform: string | null, withCookies: boolean): boolean {
+    return !(withCookies && platform === 'instagram');
   }
 
   // Антибот-заглушки: площадка отдала не страницу видео, а проверку, и
@@ -607,7 +607,7 @@ export class YtdlpProcessService implements OnModuleInit {
       //   антибот-заглушка     -> тот же путь, но после паузы.
       // Первый повтор адреса не тратит попытки второго: смена маршрута и
       // ожидание, пока площадка «отпустит», — разные вещи.
-      const proxyAllowed = this.proxyAllowed(platform, Boolean(options?.cookiesContent));
+      const proxyAllowed = this.proxyAllowed(platform, disposableCookies !== null);
       let useProxy = proxyAllowed && this.needsProxy(platform);
       let switchedToProxy = false;
       let transientAttempt = 0;
@@ -954,7 +954,7 @@ export class YtdlpProcessService implements OnModuleInit {
     let proxyMarkedByUs = false;
     let useCookies = disposableCookies !== null;
     let cookiesDropped = false;
-    const proxyAllowed = this.proxyAllowed(platform, Boolean(extras?.cookiesContent));
+    const proxyAllowed = this.proxyAllowed(platform, disposableCookies !== null);
 
     const startAttempt = () => {
       // Решение о прокси перечитываем на каждой попытке: предыдущая могла

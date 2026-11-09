@@ -10,6 +10,8 @@ export interface OverviewData {
   completedDownloads: number;
   failedDownloads: number;
   successRate: number | null;
+  // Отказы площадки при разборе ссылки (до скачивания не дошло).
+  linkFailures: number;
   webLoginUsers: number;
   totalBotUsers: number;
 }

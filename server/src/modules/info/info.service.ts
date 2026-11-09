@@ -84,9 +84,18 @@ export class InfoService {
         .catch((e) => console.error(`Failed to upsert BotUser ${telegramId}:`, e));
     }
 
+    let info: any;
     try {
-      const info = await this.fetchInfoWithUserCookies(url, platform, alerts, userCookieScopes(dto));
+      info = await this.fetchInfoWithUserCookies(url, platform, alerts, userCookieScopes(dto));
+    } catch (error) {
+      // В статистику — только отказ площадки (сам запрос за данными), а не
+      // наши ошибки в обработке ответа ниже. Категория — по исходному тексту
+      // yt-dlp: handleError его переписывает для людей.
+      this.recordFailure(platform, dto.source ?? DownloadSource.API, error);
+      throw new BadRequestException(this.handleError(error, platform, alerts));
+    }
 
+    try {
       const { allFormats, allExtensions } = this.getPlatformFormats(
         info,
         platform,
@@ -137,14 +146,18 @@ export class InfoService {
       return videoInfo;
     } catch (error) {
       const errorMessage = this.handleError(error, platform, alerts);
-      this.recordFailure(platform, dto.source ?? DownloadSource.API, errorMessage);
       throw new BadRequestException(errorMessage);
     }
   }
 
   // Отказ при разборе ссылки — в статистику ошибок (модель LinkFailure).
-  // Не ждём записи и не роняем ответ, если она не удалась.
-  private recordFailure(platform: string, source: DownloadSource, message: string) {
+  // Не ждём записи и не роняем ответ, если она не удалась. Расширение не
+  // пишем: оно спрашивает /info на каждой открытой странице с видео (сторис,
+  // закрытые, вовсе не видео), и этот шум заглушил бы всплеск блокировки, ради
+  // которого таблица заведена, — по той же причине ему не шлются алерты.
+  private recordFailure(platform: string, source: DownloadSource, error: unknown) {
+    if (source === DownloadSource.EXTENSION) return;
+    const message = error instanceof Error ? error.message : String(error);
     this.prisma.linkFailure
       .create({
         data: {
@@ -203,6 +216,10 @@ export class InfoService {
       // уведомить админа), если нет — показываем исходную ошибку, она
       // информативнее, чем ошибка повторной попытки.
       const message = error instanceof Error ? error.message : String(error);
+      // Своих кук Instagram у сервера нет (общий аккаунт отклонён): первая
+      // попытка и так была без кук, повтор «без кук» — тот же запрос, а с
+      // ноября и тот же круг через прокси. Не гоняем его дважды.
+      if (platform === 'instagram' && !this.ytdlp.hasServerCookies(platform)) throw error;
       try {
         const result = await this.ytdlp.getYtdlpVideoInfo(url, {
           skipCookies: true,

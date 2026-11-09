@@ -1,0 +1,6 @@
+# Сообщить об уязвимости в Videoner (сайт, бот @VideonerBot, расширение).
+# Report a security vulnerability in Videoner (site, @VideonerBot, extension).
+Contact: mailto:info@sarsembai.dev
+Expires: 2027-11-01T00:00:00.000Z
+Preferred-Languages: ru, en
+Canonical: https://videoner.download/.well-known/security.txt

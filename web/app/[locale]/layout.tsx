@@ -1,5 +1,6 @@
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
+import { ExtensionPromo } from "@/components/common/ExtensionPromo";
 import { LanguageProvider } from "@/lib/i18n/context";
 import { AuthProvider } from "@/lib/auth/context";
 import { LANGUAGES, Language, isRtl } from "@/lib/i18n/translations";
@@ -32,6 +33,7 @@ const Layout = async ({
           <Navbar />
           {children}
           <Footer />
+          <ExtensionPromo />
         </main>
       </AuthProvider>
     </LanguageProvider>

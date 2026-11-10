@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { ArrowLeft, Download, ExternalLink } from "lucide-react";
 
 import { ChromeLogo, FirefoxLogo } from "@/components/common/browser-logos";
+import { FIREFOX_AMO, isFirefoxUserAgent, isMobileUserAgent } from "@/lib/extension-links";
 
 import { extensionPage } from "@/lib/extension-page";
 import { EXTENSION_VERSION } from "@/lib/extension-version";
@@ -22,9 +23,6 @@ import { detectPlatform } from "@/lib/validations/url";
 // переходят на каталог сами через firefox-updates.json). Кнопку браузера
 // посетителя выделяем и ставим его инструкцию первой; браузер узнаём по
 // User-Agent: ошибиться тут не страшно, обе кнопки на странице всегда есть.
-
-// Без языка в адресе: каталог сам откроется на языке браузера.
-const FIREFOX_AMO = "https://addons.mozilla.org/firefox/addon/videoner-video-downloader/";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -55,8 +53,8 @@ export default async function ExtensionPage({ params, searchParams }: Props) {
   // Firefox для Android сюда не относится: дополнения не из каталога Mozilla
   // он не ставит.
   const userAgent = (await headers()).get("user-agent") ?? "";
-  const isMobile = /Android|Mobile|iPhone|iPad/.test(userAgent);
-  const isFirefox = /Firefox\//.test(userAgent) && !isMobile;
+  const isMobile = isMobileUserAgent(userAgent);
+  const isFirefox = isFirefoxUserAgent(userAgent);
 
   const chromeButton = (
     <BrowserButton

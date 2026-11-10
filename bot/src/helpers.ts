@@ -179,9 +179,6 @@ export function isYoutubeDailyLimitError(raw: string): boolean {
   return (raw || "").toLowerCase().includes("daily youtube limit for your account");
 }
 
-// Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
-// Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
-// только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.
 // Скачивание упало уже на сервере (статус FAILED): объясняем по категории,
 // которую сервер отдаёт в статусе. Площадка не отдала файл нашему серверу
 // (403, 10.11.2026 — заблокированный прокси) — не «загрузка не удалась», а
@@ -191,6 +188,9 @@ export function failedDownloadText(errorCategory: string | null | undefined, lan
   return errorCategory === "SERVER_BLOCKED" ? m.errorPlatformRefused : m.downloadFailed;
 }
 
+// Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
+// Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
+// только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.
 export function friendlyError(raw: string, lang: Lang): string {
   const msg = (raw || "").toLowerCase();
   const m = messages[lang];
@@ -253,12 +253,7 @@ export function friendlyError(raw: string, lang: Lang): string {
     msg.includes("rate-limit reached") ||
     msg.includes("accessing posts anonymously") ||
     msg.includes("confirm you're not a bot") ||
-    msg.includes("confirm you’re not a bot") ||
-    // Сам файл площадка нашему серверу не отдала (10.11.2026: YouTube
-    // заблокировал прокси, и каждое скачивание получало 403). Раньше бот
-    // писал общее «загрузка завершилась ошибкой».
-    msg.includes("http error 403") ||
-    msg.includes("403: forbidden")
+    msg.includes("confirm you’re not a bot")
   ) {
     return m.errorPlatformRefused;
   }
@@ -281,6 +276,14 @@ export function friendlyError(raw: string, lang: Lang): string {
 
   if (msg.includes("unsupported platform") || msg.includes("invalid url")) {
     return m.errorUnsupportedPlatform;
+  }
+
+  // Сам файл площадка нашему серверу не отдала (10.11.2026: YouTube
+  // заблокировал прокси, и каждое скачивание получало 403). Раньше бот писал
+  // общее «загрузка завершилась ошибкой». После проверки на вход: 403 у
+  // закрытой записи — это про вход.
+  if ((msg.includes("http error 403") || msg.includes("403: forbidden")) && !msg.includes("tunnel connection failed")) {
+    return m.errorPlatformRefused;
   }
 
   // Сервер отказал заранее (см. server/src/lib/file-size.ts) или Telegram не

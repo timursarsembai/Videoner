@@ -158,18 +158,34 @@ export class YtdlpProcessService implements OnModuleInit {
     return this.proxyPool.length > 0;
   }
 
-  // Прокси для попытки: первый незаблокированный, кроме уже испробованных в
-  // этом запросе. Заблокированы все — тот, чья блокировка кончится раньше:
-  // без прокси YouTube не работает вовсе, лучше попробовать.
-  private pickProxy(exclude: ReadonlySet<string> = new Set()): string | undefined {
-    const now = Date.now();
-    const candidates = this.proxyPool.filter((p) => !exclude.has(p));
+  private isProxyBlocked(proxy: string): boolean {
+    return (this.proxyBlockedUntil.get(proxy) ?? 0) > Date.now();
+  }
+
+  // Прокси для запроса: первый незаблокированный. Заблокированы все — тот, чья
+  // блокировка кончится раньше: без прокси YouTube не работает вовсе.
+  private pickProxy(): string | undefined {
     return (
-      candidates.find((p) => (this.proxyBlockedUntil.get(p) ?? 0) <= now) ??
-      [...candidates].sort(
-        (a, b) => (this.proxyBlockedUntil.get(a) ?? 0) - (this.proxyBlockedUntil.get(b) ?? 0),
-      )[0]
+      this.proxyPool.find((p) => !this.isProxyBlocked(p)) ??
+      this.proxyPool
+        .slice()
+        .sort((a, b) => (this.proxyBlockedUntil.get(a) ?? 0) - (this.proxyBlockedUntil.get(b) ?? 0))[0]
     );
+  }
+
+  // Запасной после отказа (403) на current: только незаблокированный и ещё не
+  // испробованный в этом запросе. Заведомо заблокированные не перебираем —
+  // если 403 про само видео, а не про адрес, это лишние прогоны через прокси.
+  private nextProxy(current: string, refused: readonly string[]): string | undefined {
+    return this.proxyPool.find((p) => p !== current && !refused.includes(p) && !this.isProxyBlocked(p));
+  }
+
+  // Отказ, после которого стоит сменить прокси: площадка не пустила адрес.
+  // Сбой самого прокси («Tunnel connection failed: 403», 30.10.2026) сюда не
+  // относится — он разовый, его повторяют тем же путём (TRANSIENT_PATTERNS),
+  // а иначе исправный прокси выбыл бы на несколько часов.
+  private refusedByPlatform(message: string, platform: string | null, withCookies: boolean): boolean {
+    return this.isBlockError(message, platform, withCookies) && !this.isTransientError(message);
   }
 
   // Ставим, только когда СЛЕДУЮЩИЙ прокси прошёл: если не прошёл и он, дело не
@@ -177,7 +193,9 @@ export class YtdlpProcessService implements OnModuleInit {
   private blockProxies(proxies: string[]): void {
     for (const proxy of proxies) {
       this.proxyBlockedUntil.set(proxy, Date.now() + this.PROXY_BLOCK_MS);
-      console.warn(`[proxy] ${proxyHost(proxy)}: площадка его не пускает, 6 ч берём следующий`);
+      console.warn(
+        `[proxy] ${proxyHost(proxy)}: площадка его не пускает, ${this.PROXY_BLOCK_MS / 3_600_000} ч берём следующий`,
+      );
     }
   }
 
@@ -696,9 +714,12 @@ export class YtdlpProcessService implements OnModuleInit {
           }
 
           // Блокировка уже на прокси — пробуем следующий из списка.
-          if (useProxy && proxy && blocked) {
-            const tried = new Set([...refusedProxies, proxy]);
-            const next = this.pickProxy(tried);
+          if (
+            useProxy &&
+            proxy &&
+            this.refusedByPlatform(message, platform, useCookies && disposableCookies !== null)
+          ) {
+            const next = this.nextProxy(proxy, refusedProxies);
             if (next) {
               console.warn(
                 `[proxy] ${platform ?? 'unknown'}: ${proxyHost(proxy)} не пустили, повторяю через ${proxyHost(next)}`,
@@ -1121,8 +1142,8 @@ export class YtdlpProcessService implements OnModuleInit {
             useProxyNow &&
             downloadProxy &&
             !progressEmitted &&
-            blocked &&
-            this.pickProxy(new Set([...refusedProxies, downloadProxy]))
+            this.refusedByPlatform(errorMessage, platform, useCookies && disposableCookies !== null) &&
+            this.nextProxy(downloadProxy, refusedProxies)
           ) {
             pendingRetry = 'nextproxy';
             return;
@@ -1209,7 +1230,7 @@ export class YtdlpProcessService implements OnModuleInit {
             return;
           }
           if (pendingRetry === 'nextproxy' && downloadProxy) {
-            const next = this.pickProxy(new Set([...refusedProxies, downloadProxy]));
+            const next = this.nextProxy(downloadProxy, refusedProxies);
             if (next) {
               console.warn(
                 `[proxy] ${platform}: ${proxyHost(downloadProxy)} не пустили на загрузке, повторяю через ${proxyHost(next)}`,

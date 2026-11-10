@@ -54,6 +54,7 @@ services:
       BOT_TOKEN: ${BOT_TOKEN}
       ADMIN_CHAT_ID: ${ADMIN_CHAT_ID}
       YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
+      YOUTUBE_PROXY_URLS: ${YOUTUBE_PROXY_URLS:-}
       # Резолвер Threads берём из прод-стека — он в общей сети internal, как и
       # bgutil-provider. Второй Chromium ради staging поднимать незачем.
       THREADS_RESOLVER_URL: http://threads-resolver:4417

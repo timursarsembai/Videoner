@@ -182,13 +182,22 @@ export function isYoutubeDailyLimitError(raw: string): boolean {
 // Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
 // Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
 // только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.
+// Скачивание упало уже на сервере (статус FAILED): объясняем по категории,
+// которую сервер отдаёт в статусе. Площадка не отдала файл нашему серверу
+// (403, 10.11.2026 — заблокированный прокси) — не «загрузка не удалась», а
+// честное «площадка не отдала, попробуйте позже».
+export function failedDownloadText(errorCategory: string | null | undefined, lang: Lang): string {
+  const m = messages[lang];
+  return errorCategory === "SERVER_BLOCKED" ? m.errorPlatformRefused : m.downloadFailed;
+}
+
 export function friendlyError(raw: string, lang: Lang): string {
   const msg = (raw || "").toLowerCase();
   const m = messages[lang];
 
   // Свои, уже переведённые тексты: бот сам бросает их как ошибки
   // (performDownload), и заменять их общим «не удалось» незачем.
-  if (raw === m.downloadFailed || raw === m.downloadTimeout) {
+  if (raw === m.downloadFailed || raw === m.downloadTimeout || raw === m.errorPlatformRefused) {
     return raw;
   }
 
@@ -244,7 +253,12 @@ export function friendlyError(raw: string, lang: Lang): string {
     msg.includes("rate-limit reached") ||
     msg.includes("accessing posts anonymously") ||
     msg.includes("confirm you're not a bot") ||
-    msg.includes("confirm you’re not a bot")
+    msg.includes("confirm you’re not a bot") ||
+    // Сам файл площадка нашему серверу не отдала (10.11.2026: YouTube
+    // заблокировал прокси, и каждое скачивание получало 403). Раньше бот
+    // писал общее «загрузка завершилась ошибкой».
+    msg.includes("http error 403") ||
+    msg.includes("403: forbidden")
   ) {
     return m.errorPlatformRefused;
   }

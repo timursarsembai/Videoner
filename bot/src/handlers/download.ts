@@ -13,6 +13,7 @@ import {
   isYoutubeDailyLimitError,
   siteLinkFor,
   friendlyError,
+  failedDownloadText,
   checkUserRateLimit,
   API_URL,
   BOT_API_ROOT,
@@ -311,7 +312,13 @@ export async function performDownload(
       fileSize?: number;
     };
     let status:
-      | { status: string; downloadUrl?: string; items?: StatusItem[]; progress?: LiveProgress | null }
+      | {
+          status: string;
+          downloadUrl?: string;
+          items?: StatusItem[];
+          progress?: LiveProgress | null;
+          errorCategory?: string | null;
+        }
       | undefined;
     // Живой ход скачивания: процент и оставшееся время, которые yt-dlp считает
     // по реальной скорости. Прогноз заранее по размеру не годится — один и
@@ -339,7 +346,7 @@ export async function performDownload(
       }
     }
     if (!status || status.status !== "COMPLETED") {
-      throw new Error(status?.status === "FAILED" ? m.downloadFailed : m.downloadTimeout);
+      throw new Error(status?.status === "FAILED" ? failedDownloadText(status.errorCategory, lang) : m.downloadTimeout);
     }
     if (send.isCancelled?.()) {
       await clearServiceMessages();

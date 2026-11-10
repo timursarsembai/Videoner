@@ -771,6 +771,10 @@ export class DownloadService {
       return {
         status: download.status,
         downloadUrl: download.downloadUrl,
+        // Причина неудачи — только категория, без текста ошибки: по ней бот
+        // объясняет человеку, что случилось (SERVER_BLOCKED — площадка не
+        // отдала файл нашему серверу), а раньше писал общее «не получилось».
+        errorCategory: download.status === DownloadStatus.FAILED ? download.errorCategory : null,
         // Ход скачивания для бота: он опрашивает статус, а не слушает поток
         // событий, как сайт. null — ещё не началось (ждёт свободного места)
         // или уже закончилось.

@@ -10,6 +10,7 @@ import {
   CLOUD_SIZE_LIMIT,
   api,
   checkUserRateLimit,
+  failedDownloadText,
   friendlyError,
 } from "../helpers.js";
 import { isChannelMember } from "./membership.js";
@@ -192,14 +193,14 @@ export function registerInlineHandlers(bot: Bot) {
           }
         }
 
-        let status: { status: string; items?: { filename: string }[] } | undefined;
+        let status: { status: string; items?: { filename: string }[]; errorCategory?: string | null } | undefined;
         for (let i = 0; i < 400; i++) {
           await new Promise((r) => setTimeout(r, 3000));
           status = await api(`/download/${started.downloadId}/status`);
           if (status && (status.status === "COMPLETED" || status.status === "FAILED")) break;
         }
         if (!status || status.status !== "COMPLETED") {
-          throw new Error(status?.status === "FAILED" ? m.downloadFailed : m.downloadTimeout);
+          throw new Error(status?.status === "FAILED" ? failedDownloadText(status.errorCategory, lang) : m.downloadTimeout);
         }
 
         const fileName = encodeURIComponent(status.items?.[0]?.filename ?? started.fileName);

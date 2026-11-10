@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { extensionLinkFor, extensionPageFor, friendlyError, isYoutubeDailyLimitError, siteLinkFor } from "./helpers.js";
+import { extensionLinkFor, extensionPageFor, failedDownloadText, friendlyError, isYoutubeDailyLimitError, siteLinkFor } from "./helpers.js";
 import { messages } from "./i18n.js";
 
 test("Instagram: пустой ответ — понятный текст, а не сырой yt-dlp", () => {
@@ -98,4 +98,12 @@ test("Instagram ограничил анонимный доступ с нашег
   const raw =
     "[Instagram] DfVBWzxuw5J: The webpage request was redirected to the login page. You have exceeded the rate-limit for accessing posts anonymously. Use --cookies-from-browser or --cookies for the authentication.";
   assert.equal(friendlyError(raw, "ru"), messages.ru.errorPlatformRefused);
+});
+
+test("сервер не получил файл от площадки (403) — честное «площадка не отдала»", () => {
+  assert.equal(failedDownloadText("SERVER_BLOCKED", "ru"), messages.ru.errorPlatformRefused);
+  assert.equal(failedDownloadText("OTHER", "ru"), messages.ru.downloadFailed);
+  assert.equal(failedDownloadText(null, "ru"), messages.ru.downloadFailed);
+  assert.equal(friendlyError(messages.ru.errorPlatformRefused, "ru"), messages.ru.errorPlatformRefused);
+  assert.equal(friendlyError("ERROR: unable to download video data: HTTP Error 403: Forbidden", "ru"), messages.ru.errorPlatformRefused);
 });

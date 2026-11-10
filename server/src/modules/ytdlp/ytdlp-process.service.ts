@@ -12,6 +12,7 @@ import { promisify } from 'util';
 import { parseDownloadOptions, stringToProgress } from '../../lib/helper';
 import { PROGRESS_STRING } from '../../lib/utils';
 import { getPlatform } from '../../validate/url';
+import { parseProxyPool, proxyHost } from '../../lib/proxy-pool';
 import {
   BinPathType,
   DownloadKeyWord,
@@ -111,9 +112,21 @@ export class YtdlpProcessService implements OnModuleInit {
   private readonly binariesDir: string;
   private readonly cookiesDir: string;
   private readonly cookiesFilePath: string;
-  // Статический ISP-прокси (IPRoyal) — только для YouTube: датацентр-IP VPS
-  // заблокирован антибот-защитой YouTube, остальные площадки прокси не требуют.
-  private readonly youtubeProxyUrl?: string;
+  // Статические ISP-прокси (IPRoyal): YouTube всегда (датацентр-IP VPS он не
+  // пускает), остальные площадки — когда упёрлись в блокировку нашего адреса.
+  //
+  // Прокси несколько (YOUTUBE_PROXY_URLS через запятую; без него — один
+  // YOUTUBE_PROXY_URL). Работает первый незаблокированный по порядку списка.
+  // По кругу их НЕ чередуем: ссылки на видео YouTube привязаны к адресу, с
+  // которого их получили, и скачивание через другой прокси ловит 403.
+  // 10.11.2026 YouTube заблокировал единственный прокси (403 на каждом
+  // скачивании), и YouTube у бота не работал весь день.
+  private readonly proxyPool: string[];
+  // Прокси -> до какого момента его не берём: на нём площадка ответила 403,
+  // а следующий по списку прошёл (blockProxy). Блокировки снимают — через
+  // PROXY_BLOCK_MS прокси снова в строю.
+  private readonly proxyBlockedUntil = new Map<string, number>();
+  private readonly PROXY_BLOCK_MS = 6 * 60 * 60 * 1000;
   private readonly youtubeSemaphore = new Semaphore(YOUTUBE_MAX_CONCURRENT);
   private readonly globalDownloadSemaphore = new Semaphore(
     GLOBAL_MAX_CONCURRENT_DOWNLOADS,
@@ -138,7 +151,34 @@ export class YtdlpProcessService implements OnModuleInit {
     // чья именно сессия протухла, можно было только разбором файла по доменам.
     this.cookiesDir = path.resolve(process.cwd(), 'cookies');
     this.cookiesFilePath = path.join(this.cookiesDir, 'cookies.txt');
-    this.youtubeProxyUrl = process.env.YOUTUBE_PROXY_URL || undefined;
+    this.proxyPool = parseProxyPool(process.env.YOUTUBE_PROXY_URLS, process.env.YOUTUBE_PROXY_URL);
+  }
+
+  private get hasProxy(): boolean {
+    return this.proxyPool.length > 0;
+  }
+
+  // Прокси для попытки: первый незаблокированный, кроме уже испробованных в
+  // этом запросе. Заблокированы все — тот, чья блокировка кончится раньше:
+  // без прокси YouTube не работает вовсе, лучше попробовать.
+  private pickProxy(exclude: ReadonlySet<string> = new Set()): string | undefined {
+    const now = Date.now();
+    const candidates = this.proxyPool.filter((p) => !exclude.has(p));
+    return (
+      candidates.find((p) => (this.proxyBlockedUntil.get(p) ?? 0) <= now) ??
+      [...candidates].sort(
+        (a, b) => (this.proxyBlockedUntil.get(a) ?? 0) - (this.proxyBlockedUntil.get(b) ?? 0),
+      )[0]
+    );
+  }
+
+  // Ставим, только когда СЛЕДУЮЩИЙ прокси прошёл: если не прошёл и он, дело не
+  // в адресе (ролик удалён, ссылки протухли), и блокировать прокси не за что.
+  private blockProxies(proxies: string[]): void {
+    for (const proxy of proxies) {
+      this.proxyBlockedUntil.set(proxy, Date.now() + this.PROXY_BLOCK_MS);
+      console.warn(`[proxy] ${proxyHost(proxy)}: площадка его не пускает, 6 ч берём следующий`);
+    }
   }
 
   private isYoutubeUrl(url: string): boolean {
@@ -302,7 +342,7 @@ export class YtdlpProcessService implements OnModuleInit {
   private readonly MAX_TRANSIENT_RETRIES = 2;
 
   private needsProxy(platform: string | null): boolean {
-    if (!this.youtubeProxyUrl || !platform) {
+    if (!this.hasProxy || !platform) {
       return false;
     }
     if (this.alwaysProxyPlatforms.has(platform)) {
@@ -611,14 +651,18 @@ export class YtdlpProcessService implements OnModuleInit {
       let useProxy = proxyAllowed && this.needsProxy(platform);
       let switchedToProxy = false;
       let transientAttempt = 0;
+      // Прокси этого запроса и те, что уже отказали (403) — их заблокируем,
+      // только если следующий прокси пройдёт.
+      let proxy = useProxy ? this.pickProxy() : undefined;
+      const refusedProxies: string[] = [];
 
       for (;;) {
         const attemptArgs = [...finalArgs];
         if (useCookies && disposableCookies) {
           attemptArgs.push('--cookies', disposableCookies);
         }
-        if (useProxy) {
-          attemptArgs.push('--proxy', this.youtubeProxyUrl as string);
+        if (useProxy && proxy) {
+          attemptArgs.push('--proxy', proxy);
         }
         // Логин и пароль прокси в лог не пишем: логи читают при разборе
         // ошибок, копируют и пересылают, а это доступ к платному прокси.
@@ -634,23 +678,35 @@ export class YtdlpProcessService implements OnModuleInit {
           if (switchedToProxy) {
             this.rememberProxyNeeded(platform);
           }
+          this.blockProxies(refusedProxies);
           return result;
         } catch (attemptError: any) {
           const message = attemptError?.message ?? '';
+          const blocked = this.isBlockError(message, platform, useCookies && disposableCookies !== null);
 
           // Блокировка по адресу — уходим на прокси, если ещё не там.
-          if (
-            !useProxy &&
-            proxyAllowed &&
-            this.youtubeProxyUrl &&
-            this.isBlockError(message, platform, useCookies && disposableCookies !== null)
-          ) {
+          if (!useProxy && proxyAllowed && this.hasProxy && blocked) {
             console.warn(
               `[proxy] ${platform ?? 'unknown'}: прямой запрос упёрся в блокировку, повторяю через прокси`,
             );
             useProxy = true;
             switchedToProxy = true;
+            proxy = this.pickProxy();
             continue;
+          }
+
+          // Блокировка уже на прокси — пробуем следующий из списка.
+          if (useProxy && proxy && blocked) {
+            const tried = new Set([...refusedProxies, proxy]);
+            const next = this.pickProxy(tried);
+            if (next) {
+              console.warn(
+                `[proxy] ${platform ?? 'unknown'}: ${proxyHost(proxy)} не пустили, повторяю через ${proxyHost(next)}`,
+              );
+              refusedProxies.push(proxy);
+              proxy = next;
+              continue;
+            }
           }
 
           // Протухшие куки — пробуем анонимно тем же маршрутом.
@@ -955,11 +1011,17 @@ export class YtdlpProcessService implements OnModuleInit {
     let useCookies = disposableCookies !== null;
     let cookiesDropped = false;
     const proxyAllowed = this.proxyAllowed(platform, disposableCookies !== null);
+    // Прокси скачивания держим одним на все попытки, пока он не отказал (403):
+    // повторы по другим причинам (протухшие ссылки, антибот) идут тем же
+    // адресом. Отказавшие блокируем, только если следующий прошёл.
+    let downloadProxy: string | undefined;
+    const refusedProxies: string[] = [];
 
     const startAttempt = () => {
       // Решение о прокси перечитываем на каждой попытке: предыдущая могла
       // наткнуться на блокировку и пометить площадку.
       const useProxyNow = proxyAllowed && this.needsProxy(platform);
+      if (useProxyNow && !downloadProxy) downloadProxy = this.pickProxy();
       const attemptArgs = [
         ...(useInfoFile ? ['--load-info-json', infoFile as string] : [parseUrl]),
         ...processArgs,
@@ -967,8 +1029,8 @@ export class YtdlpProcessService implements OnModuleInit {
       if (useCookies && disposableCookies) {
         attemptArgs.push('--cookies', disposableCookies);
       }
-      if (useProxyNow) {
-        attemptArgs.push('--proxy', this.youtubeProxyUrl as string);
+      if (useProxyNow && downloadProxy) {
+        attemptArgs.push('--proxy', downloadProxy);
       }
 
       // cwd=/tmp — см. комментарий в runProcess() выше: контейнер не от root,
@@ -980,7 +1042,7 @@ export class YtdlpProcessService implements OnModuleInit {
       let hasError = false;
       let errorMessage = '';
       // null — повторов не будет, ошибка окончательная.
-      let pendingRetry: 'transient' | 'proxy' | 'nocookies' | 'fresh' | null =
+      let pendingRetry: 'transient' | 'proxy' | 'nextproxy' | 'nocookies' | 'fresh' | null =
         null;
 
       childProcess.stdout.on('data', (data) => {
@@ -1039,16 +1101,30 @@ export class YtdlpProcessService implements OnModuleInit {
           // а CDN отдал 403): уходим на прокси и пробуем ещё раз. Площадку
           // пометим только если через прокси действительно получилось — иначе
           // следующие запросы зря пошли бы в обход.
+          const blocked = this.isBlockError(errorMessage, platform, useCookies && disposableCookies !== null);
           if (
             !useProxyNow &&
             proxyAllowed &&
             !proxySwitchTried &&
             !progressEmitted &&
-            this.youtubeProxyUrl &&
-            this.isBlockError(errorMessage, platform, useCookies && disposableCookies !== null)
+            this.hasProxy &&
+            blocked
           ) {
             proxySwitchTried = true;
             pendingRetry = 'proxy';
+            return;
+          }
+
+          // Отказ уже на прокси (так 10.11.2026 YouTube отвечал 403 на каждое
+          // скачивание через заблокированный прокси) — следующий из списка.
+          if (
+            useProxyNow &&
+            downloadProxy &&
+            !progressEmitted &&
+            blocked &&
+            this.pickProxy(new Set([...refusedProxies, downloadProxy]))
+          ) {
+            pendingRetry = 'nextproxy';
             return;
           }
 
@@ -1132,6 +1208,21 @@ export class YtdlpProcessService implements OnModuleInit {
             startAttempt();
             return;
           }
+          if (pendingRetry === 'nextproxy' && downloadProxy) {
+            const next = this.pickProxy(new Set([...refusedProxies, downloadProxy]));
+            if (next) {
+              console.warn(
+                `[proxy] ${platform}: ${proxyHost(downloadProxy)} не пустили на загрузке, повторяю через ${proxyHost(next)}`,
+              );
+              refusedProxies.push(downloadProxy);
+              downloadProxy = next;
+              // Готовые метаданные получены через прежний прокси, и ссылки в
+              // них привязаны к его адресу — с нового берём заново.
+              useInfoFile = false;
+              startAttempt();
+              return;
+            }
+          }
           if (pendingRetry === 'nocookies') {
             useCookies = false;
             cookiesDropped = true;
@@ -1141,14 +1232,20 @@ export class YtdlpProcessService implements OnModuleInit {
             startAttempt();
             return;
           }
-          const wait = this.transientRetryDelay(transientAttempt);
-          transientAttempt++;
-          console.warn(
-            `[retry] ${platform}: антибот-заглушка или сетевой сбой до первого байта, попытка ${transientAttempt + 1} из ${this.MAX_TRANSIENT_RETRIES + 1} через ${wait} мс`,
-          );
-          setTimeout(startAttempt, wait);
-          return;
+          if (pendingRetry === 'transient') {
+            const wait = this.transientRetryDelay(transientAttempt);
+            transientAttempt++;
+            console.warn(
+              `[retry] ${platform}: антибот-заглушка или сетевой сбой до первого байта, попытка ${transientAttempt + 1} из ${this.MAX_TRANSIENT_RETRIES + 1} через ${wait} мс`,
+            );
+            setTimeout(startAttempt, wait);
+            return;
+          }
+          // 'nextproxy', а свободного прокси не осталось, — ошибка окончательная.
         }
+
+        // Скачалось через запасной прокси — прежние и правда не пускают.
+        if (code === 0) this.blockProxies(refusedProxies);
 
         // Через прокси тоже не вышло — значит адрес был ни при чём, снимаем
         // отметку, чтобы следующие запросы снова шли коротким путём.

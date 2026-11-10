@@ -93,6 +93,10 @@ services:
       USER_COOKIES_KEY: ${USER_COOKIES_KEY:-}
       # Статический ISP-прокси (IPRoyal) для YouTube — обходит блокировку по IP дата-центра VPS
       YOUTUBE_PROXY_URL: ${YOUTUBE_PROXY_URL}
+      # Все прокси через запятую, по порядку: первый незаблокированный — рабочий,
+      # на 403 сервер сам переходит к следующему (server/src/lib/proxy-pool.ts).
+      # Не задан — один YOUTUBE_PROXY_URL.
+      YOUTUBE_PROXY_URLS: ${YOUTUBE_PROXY_URLS:-}
       # Экономия трафика прокси (оплата за гигабайты), см. server/src/lib/youtube-budget.ts:
       # потолок качества YouTube, потолок пониже для роликов длиннее N минут и
       # суточный лимит трафика YouTube с одного IP на сайте (0 — без лимита). Менять в

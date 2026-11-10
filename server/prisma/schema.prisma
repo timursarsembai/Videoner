@@ -204,6 +204,9 @@ enum ErrorCategory {
   TIMEOUT
   NO_VIDEO_CONTENT
   REGION_BLOCKED
+  // Площадка отказала нашему серверу (HTTP 403 на скачивании): обычно это
+  // блокировка адреса прокси, а не что-то с самим видео (10.11.2026).
+  SERVER_BLOCKED
   OTHER
 }
 

@@ -23,6 +23,13 @@ export function categorizeError(raw: string): ErrorCategory {
     return ErrorCategory.YOUTUBE_AUTH_REQUIRED;
   }
 
+  // Страница открылась, а сам файл площадка нашему адресу не отдаёт (403).
+  // Так 10.11.2026 весь день падали скачивания YouTube: заблокировали прокси.
+  // Раньше это уходило в OTHER, и в журнале проблему было не разглядеть.
+  if (/http error 403|403:?\s*forbidden/.test(msg)) {
+    return ErrorCategory.SERVER_BLOCKED;
+  }
+
   if (
     msg.includes('certain audiences') ||
     msg.includes('age-restricted') ||

@@ -35,6 +35,7 @@ export const ERROR_COLORS: Record<string, string> = {
   FORMAT_UNAVAILABLE: "#8b5cf6",
   YOUTUBE_AUTH_REQUIRED: "#ef4444",
   TIMEOUT: "#3b82f6",
+  SERVER_BLOCKED: "#dc2626",
   OTHER: "#9ca3af",
 };
 

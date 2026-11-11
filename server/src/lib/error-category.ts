@@ -19,7 +19,10 @@ export function categorizeError(raw: string): ErrorCategory {
     return ErrorCategory.REGION_BLOCKED;
   }
 
-  if (/sign in to confirm/.test(msg)) {
+  // Только антибот-проверка YouTube по адресу сервера. «Sign in to confirm
+  // your age» (видео 18+, 11.11.2026) — это про ролик, а не про сервер: оно
+  // ниже уходит в LOGIN_REQUIRED.
+  if (/confirm you.?re not a bot/.test(msg)) {
     return ErrorCategory.YOUTUBE_AUTH_REQUIRED;
   }
 
@@ -27,6 +30,7 @@ export function categorizeError(raw: string): ErrorCategory {
     msg.includes('certain audiences') ||
     msg.includes('age-restricted') ||
     msg.includes('age restricted') ||
+    msg.includes('confirm your age') ||
     msg.includes('sign in') ||
     msg.includes('log in') ||
     msg.includes('login required') ||

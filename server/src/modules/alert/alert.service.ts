@@ -15,7 +15,8 @@ export class AlertService {
     const text =
       '⚠️ YouTube требует авторизацию (антибот-защита).\n\n' +
       'yt-dlp получил: "Sign in to confirm you\'re not a bot".\n' +
-      'Нужно переэкспортировать server/cookies/<платформа>.txt (см. README) и перезапустить server.\n\n' +
+      'Это проверка по адресу сервера: обычно значит, что YouTube ограничил прокси. ' +
+      'Если повторяется — проверьте прокси (запасные в YOUTUBE_PROXY_URLS).\n\n' +
       `Исходная ошибка: ${rawError.slice(0, 300)}`;
 
     await this.notifyWithCooldown('youtube', text);

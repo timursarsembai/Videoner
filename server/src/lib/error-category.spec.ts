@@ -18,5 +18,15 @@ describe('categorizeError', () => {
 
   it('keeps the YouTube bot check as YOUTUBE_AUTH_REQUIRED', () => {
     expect(categorizeError("Sign in to confirm you're not a bot")).toBe(ErrorCategory.YOUTUBE_AUTH_REQUIRED);
+    expect(categorizeError('Sign in to confirm you\u2019re not a bot')).toBe(ErrorCategory.YOUTUBE_AUTH_REQUIRED);
+  });
+
+  it('puts an 18+ video under LOGIN_REQUIRED, not the bot check', () => {
+    // Дословно ошибка 11.11.2026.
+    expect(
+      categorizeError(
+        '[youtube] tJbzMqJGH4k: Sign in to confirm your age. Use --cookies-from-browser or --cookies for the authentication.',
+      ),
+    ).toBe(ErrorCategory.LOGIN_REQUIRED);
   });
 });

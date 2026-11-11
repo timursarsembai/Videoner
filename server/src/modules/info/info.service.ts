@@ -341,7 +341,10 @@ export class InfoService {
       errorMessage = msg || errorMessage;
     }
 
-    if (alerts && /sign in to confirm/i.test(errorMessage)) {
+    // Только антибот-проверка: «Sign in to confirm your age» приходит на любое
+    // видео 18+ — это не поломка, и админу о нём писать незачем (11.11.2026
+    // такое сообщение приняли за блокировку прокси).
+    if (alerts && /confirm you.?re not a bot/i.test(errorMessage)) {
       // Не ждём отправки — не задерживаем ответ пользователю алертом в Telegram.
       void this.alert.notifyYoutubeAuthRequired(errorMessage);
     }

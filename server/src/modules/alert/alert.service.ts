@@ -50,8 +50,9 @@ export class AlertService {
       '🚨 ISP-прокси не отвечает.\n\n' +
       `Проверка: GET ${probeUrl} через ${maskedProxyUrl}\n` +
       `Причина: ${reason}\n\n` +
-      'Пока он лежит, YouTube не работает СОВСЕМ (он ходит через прокси всегда, ' +
-      'без попытки напрямую), а Threads не открывается по коротким ссылкам.\n\n' +
+      'Сервер обходит его запасными прокси из YOUTUBE_PROXY_URLS, если они есть. ' +
+      'Если это был последний живой — YouTube не работает СОВСЕМ (он ходит через ' +
+      'прокси всегда), а Threads не открывается по коротким ссылкам.\n\n' +
       this.proxyAdvice(reason);
 
     await this.send(text);
@@ -95,6 +96,18 @@ export class AlertService {
       'такой: обновить YOUTUBE_PROXY_URL в Infisical в ОБОИХ окружениях (prod и ' +
       'staging), затем ./scripts/deploy.sh server threads-resolver и ' +
       './scripts/deploy-staging.sh server.'
+    );
+  }
+
+  // Прокси живы, но площадка отказала каждому из них (403): её пользователи
+  // получают ошибку. Так 10.11.2026 YouTube заблокировал единственный прокси.
+  async notifyAllProxiesBlocked(platform: string, proxyCount: number) {
+    await this.send(
+      `🚨 ${platform}: площадка не пускает ни один из прокси (${proxyCount} шт.).\n\n` +
+        'Сами прокси отвечают, но на скачивание этой площадки каждый получает отказ ' +
+        '(обычно HTTP 403), и пользователи видят ошибку. Блокировка снимается сама ' +
+        'через 6 часов, но надёжнее купить ещё один прокси в IPRoyal и добавить его ' +
+        'в YOUTUBE_PROXY_URLS в Infisical (prod), затем ./scripts/deploy.sh server threads-resolver.',
     );
   }
 

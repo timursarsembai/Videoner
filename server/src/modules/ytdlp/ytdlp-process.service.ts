@@ -122,9 +122,11 @@ export class YtdlpProcessService implements OnModuleInit {
   // 10.11.2026 YouTube заблокировал единственный прокси (403 на каждом
   // скачивании), и YouTube у бота не работал весь день.
   private readonly proxyPool: string[];
-  // Прокси -> до какого момента его не берём: на нём площадка ответила 403,
-  // а следующий по списку прошёл (blockProxy). Блокировки снимают — через
-  // PROXY_BLOCK_MS прокси снова в строю.
+  // «площадка|прокси» -> до какого момента его не берём: на нём площадка
+  // ответила 403, а следующий по списку прошёл (blockProxies). Отдельно по
+  // площадкам: YouTube 10.11.2026 заблокировал прокси, а Instagram и Threads
+  // через него ходили как ни в чём не бывало — выключать его для всех незачем.
+  // Блокировки снимают — через PROXY_BLOCK_MS прокси снова в строю.
   private readonly proxyBlockedUntil = new Map<string, number>();
   private readonly PROXY_BLOCK_MS = 6 * 60 * 60 * 1000;
   private readonly youtubeSemaphore = new Semaphore(YOUTUBE_MAX_CONCURRENT);
@@ -158,26 +160,50 @@ export class YtdlpProcessService implements OnModuleInit {
     return this.proxyPool.length > 0;
   }
 
-  private isProxyBlocked(proxy: string): boolean {
-    return (this.proxyBlockedUntil.get(proxy) ?? 0) > Date.now();
+  private blockKey(platform: string | null, proxy: string): string {
+    return `${platform ?? 'unknown'}|${proxy}`;
   }
 
-  // Прокси для запроса: первый незаблокированный. Заблокированы все — тот, чья
-  // блокировка кончится раньше: без прокси YouTube не работает вовсе.
-  private pickProxy(): string | undefined {
+  private blockedUntil(platform: string | null, proxy: string): number {
+    return this.proxyBlockedUntil.get(this.blockKey(platform, proxy)) ?? 0;
+  }
+
+  private isProxyBlocked(platform: string | null, proxy: string): boolean {
+    return this.blockedUntil(platform, proxy) > Date.now();
+  }
+
+  // Прокси для запроса: первый незаблокированный для этой площадки.
+  // Заблокированы все — тот, чья блокировка кончится раньше: без прокси
+  // YouTube не работает вовсе.
+  private pickProxy(platform: string | null): string | undefined {
     return (
-      this.proxyPool.find((p) => !this.isProxyBlocked(p)) ??
+      this.proxyPool.find((p) => !this.isProxyBlocked(platform, p)) ??
       this.proxyPool
         .slice()
-        .sort((a, b) => (this.proxyBlockedUntil.get(a) ?? 0) - (this.proxyBlockedUntil.get(b) ?? 0))[0]
+        .sort((a, b) => this.blockedUntil(platform, a) - this.blockedUntil(platform, b))[0]
     );
   }
 
   // Запасной после отказа (403) на current: только незаблокированный и ещё не
   // испробованный в этом запросе. Заведомо заблокированные не перебираем —
   // если 403 про само видео, а не про адрес, это лишние прогоны через прокси.
-  private nextProxy(current: string, refused: readonly string[]): string | undefined {
-    return this.proxyPool.find((p) => p !== current && !refused.includes(p) && !this.isProxyBlocked(p));
+  private nextProxy(platform: string | null, current: string, refused: readonly string[]): string | undefined {
+    return this.proxyPool.find(
+      (p) => p !== current && !refused.includes(p) && !this.isProxyBlocked(platform, p),
+    );
+  }
+
+  // Для проверки прокси (ProxyHealthService): площадки, на которых сейчас
+  // заблокированы ВСЕ прокси, — дальше пользователи этой площадки получают
+  // ошибку, пора менять или докупать прокси.
+  platformsWithAllProxiesBlocked(): string[] {
+    if (!this.hasProxy) return [];
+    const platforms = new Set([...this.proxyBlockedUntil.keys()].map((k) => k.split('|')[0]));
+    return [...platforms].filter((platform) => this.proxyPool.every((p) => this.isProxyBlocked(platform, p)));
+  }
+
+  get proxies(): readonly string[] {
+    return this.proxyPool;
   }
 
   // Отказ, после которого стоит сменить прокси: площадка не пустила адрес.
@@ -190,11 +216,11 @@ export class YtdlpProcessService implements OnModuleInit {
 
   // Ставим, только когда СЛЕДУЮЩИЙ прокси прошёл: если не прошёл и он, дело не
   // в адресе (ролик удалён, ссылки протухли), и блокировать прокси не за что.
-  private blockProxies(proxies: string[]): void {
+  private blockProxies(platform: string | null, proxies: string[]): void {
     for (const proxy of proxies) {
-      this.proxyBlockedUntil.set(proxy, Date.now() + this.PROXY_BLOCK_MS);
+      this.proxyBlockedUntil.set(this.blockKey(platform, proxy), Date.now() + this.PROXY_BLOCK_MS);
       console.warn(
-        `[proxy] ${proxyHost(proxy)}: площадка его не пускает, ${this.PROXY_BLOCK_MS / 3_600_000} ч берём следующий`,
+        `[proxy] ${platform ?? 'unknown'}: ${proxyHost(proxy)} не пускает, ${this.PROXY_BLOCK_MS / 3_600_000} ч берём следующий`,
       );
     }
   }
@@ -671,7 +697,7 @@ export class YtdlpProcessService implements OnModuleInit {
       let transientAttempt = 0;
       // Прокси этого запроса и те, что уже отказали (403) — их заблокируем,
       // только если следующий прокси пройдёт.
-      let proxy = useProxy ? this.pickProxy() : undefined;
+      let proxy = useProxy ? this.pickProxy(platform) : undefined;
       const refusedProxies: string[] = [];
 
       for (;;) {
@@ -696,7 +722,7 @@ export class YtdlpProcessService implements OnModuleInit {
           if (switchedToProxy) {
             this.rememberProxyNeeded(platform);
           }
-          this.blockProxies(refusedProxies);
+          this.blockProxies(platform, refusedProxies);
           return result;
         } catch (attemptError: any) {
           const message = attemptError?.message ?? '';
@@ -709,7 +735,7 @@ export class YtdlpProcessService implements OnModuleInit {
             );
             useProxy = true;
             switchedToProxy = true;
-            proxy = this.pickProxy();
+            proxy = this.pickProxy(platform);
             continue;
           }
 
@@ -719,7 +745,7 @@ export class YtdlpProcessService implements OnModuleInit {
             proxy &&
             this.refusedByPlatform(message, platform, useCookies && disposableCookies !== null)
           ) {
-            const next = this.nextProxy(proxy, refusedProxies);
+            const next = this.nextProxy(platform, proxy, refusedProxies);
             if (next) {
               console.warn(
                 `[proxy] ${platform ?? 'unknown'}: ${proxyHost(proxy)} не пустили, повторяю через ${proxyHost(next)}`,
@@ -1042,7 +1068,7 @@ export class YtdlpProcessService implements OnModuleInit {
       // Решение о прокси перечитываем на каждой попытке: предыдущая могла
       // наткнуться на блокировку и пометить площадку.
       const useProxyNow = proxyAllowed && this.needsProxy(platform);
-      if (useProxyNow && !downloadProxy) downloadProxy = this.pickProxy();
+      if (useProxyNow && !downloadProxy) downloadProxy = this.pickProxy(platform);
       const attemptArgs = [
         ...(useInfoFile ? ['--load-info-json', infoFile as string] : [parseUrl]),
         ...processArgs,
@@ -1143,7 +1169,7 @@ export class YtdlpProcessService implements OnModuleInit {
             downloadProxy &&
             !progressEmitted &&
             this.refusedByPlatform(errorMessage, platform, useCookies && disposableCookies !== null) &&
-            this.nextProxy(downloadProxy, refusedProxies)
+            this.nextProxy(platform, downloadProxy, refusedProxies)
           ) {
             pendingRetry = 'nextproxy';
             return;
@@ -1230,7 +1256,7 @@ export class YtdlpProcessService implements OnModuleInit {
             return;
           }
           if (pendingRetry === 'nextproxy' && downloadProxy) {
-            const next = this.nextProxy(downloadProxy, refusedProxies);
+            const next = this.nextProxy(platform, downloadProxy, refusedProxies);
             if (next) {
               console.warn(
                 `[proxy] ${platform}: ${proxyHost(downloadProxy)} не пустили на загрузке, повторяю через ${proxyHost(next)}`,
@@ -1266,7 +1292,7 @@ export class YtdlpProcessService implements OnModuleInit {
         }
 
         // Скачалось через запасной прокси — прежние и правда не пускают.
-        if (code === 0) this.blockProxies(refusedProxies);
+        if (code === 0) this.blockProxies(platform, refusedProxies);
 
         // Через прокси тоже не вышло — значит адрес был ни при чём, снимаем
         // отметку, чтобы следующие запросы снова шли коротким путём.

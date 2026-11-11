@@ -200,6 +200,10 @@ export function userCookiesMayHelp(message: string): boolean {
     /sign in/i,
     /log in/i,
     THREADS_NO_MEDIA,
+    // Резервный резолвер Threads (threads-resolver) не нашёл пост ни через
+    // один прокси (11.11.2026, ссылка /share/): обычно это пост «только для
+    // подписчиков» или из закрытого профиля — под входом человека он виден.
+    /\[threads\] Пост не найден или недоступен/i,
   ].some((re) => re.test(message));
 }
 

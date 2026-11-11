@@ -41,7 +41,17 @@ const EXTRACT_TIMEOUT_MS = Number(process.env.EXTRACT_TIMEOUT_MS || 12000);
 // досиживает таймаут, поэтому попыток можно позволить больше.
 const ATTEMPTS = Number(process.env.ATTEMPTS || 5);
 const IDLE_SHUTDOWN_MS = Number(process.env.IDLE_SHUTDOWN_MS || 5 * 60 * 1000);
-const PROXY_URL = process.env.THREADS_PROXY_URL || '';
+// Прокси несколько (THREADS_PROXY_URLS через запятую — тот же список, что у
+// сервера; без него один THREADS_PROXY_URL). Работаем через текущий, а после
+// неудачной попытки следующая идёт уже через другой: 10.11.2026 YouTube
+// заблокировал единственный прокси, и держать резолвер на одном адресе —
+// та же уязвимость. Удачный прокси остаётся текущим.
+const PROXIES = (process.env.THREADS_PROXY_URLS || process.env.THREADS_PROXY_URL || '')
+  .split(',')
+  .map((p) => p.trim().replace(/^['"]|['"]$/g, ''))
+  .filter(Boolean);
+const PROXY_URL = PROXIES[0] || '';
+let proxyIndex = 0;
 
 // Три формы адреса: канонический пост, короткая ссылка /t/ и ссылка
 // «Поделиться» /share/ из мобильного приложения. У последней код СВОЙ и с
@@ -59,8 +69,8 @@ let browser = null;
 let idleTimer = null;
 
 function proxyConfig() {
-  if (!PROXY_URL) return undefined;
-  const u = new URL(PROXY_URL);
+  if (!PROXIES.length) return undefined;
+  const u = new URL(PROXIES[proxyIndex % PROXIES.length]);
   return {
     server: `${u.protocol}//${u.hostname}:${u.port}`,
     username: decodeURIComponent(u.username),
@@ -230,6 +240,11 @@ async function resolve(rawUrl) {
     if (last.ok) return last;
     // Ссылка заведомо не та — повторять нечего.
     if (last.fatal) return last;
+    // Следующая попытка — через другой прокси, если их несколько.
+    if (PROXIES.length > 1) {
+      proxyIndex = (proxyIndex + 1) % PROXIES.length;
+      console.log(`попытка ${attempt} не удалась, следующая через прокси №${proxyIndex + 1}`);
+    }
     // Следующую попытку делаем с нуля, а не только с новым контекстом: по
     // логам промахи шли пачками внутри одного запущенного браузера, а сразу
     // после его перезапуска ответ приходил нормальный. Чистого контекста

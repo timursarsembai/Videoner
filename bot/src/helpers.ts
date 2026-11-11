@@ -88,6 +88,11 @@ export function fmtSize(bytes: number, lang: Lang): string {
 // ожидания в performDownload (DOWNLOAD_WAIT_POLLS × 3с) — пользователь
 // весь это время видел "⏬ Скачиваю..." без единого сообщения об ошибке.
 const API_TIMEOUT_MS = 30_000;
+// Разбор ссылки дольше: у Threads сервер может пройти резервный резолвер с
+// повторами через несколько прокси (threads-resolver), а при отказе — ещё и
+// повтор от подключённого аккаунта. За 30 секунд это не успевало, и человек
+// получал «не удалось скачать» вместо настоящей причины (11.11.2026).
+const INFO_TIMEOUT_MS = 90_000;
 
 // Подпись «это бот» (server/src/lib/bot-auth.ts): HMAC от токена бота, сам
 // токен по сети не ходит. Без неё сервер не даст ни подключённых людьми кук,
@@ -99,7 +104,11 @@ const BOT_SIGNATURE = process.env.BOT_TOKEN
 // timeoutMs — для запросов, без которых можно обойтись (язык ответа): бот
 // обрабатывает обновления по одному, и зависший сервер не должен держать
 // всех по 30 секунд.
-export async function api<T = any>(path: string, body?: unknown, { timeoutMs = API_TIMEOUT_MS } = {}): Promise<T> {
+export async function api<T = any>(
+  path: string,
+  body?: unknown,
+  { timeoutMs = path === "/info" ? INFO_TIMEOUT_MS : API_TIMEOUT_MS } = {},
+): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   let res: Response;

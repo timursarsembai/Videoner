@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { request as httpRequest } from 'node:http';
 import { AlertService } from '../alert/alert.service';
+import { YtdlpProcessService } from '../ytdlp/ytdlp-process.service';
 
 // Раз в час проверяет, что ISP-прокси жив, и пишет админу в Telegram, если нет.
 //
@@ -40,9 +41,17 @@ export class ProxyHealthService {
   // Чтобы отправить «снова работает» ровно один раз, а не после каждой удачной
   // проверки. Живёт в памяти: после передеплоя сервера состояние теряется, и
   // сообщения о восстановлении не будет — не беда, оно и так вторично.
-  private failing = false;
+  // По прокси: с 10.11.2026 их несколько (YOUTUBE_PROXY_URLS), и проверяем
+  // все — запасной, умерший молча, подвёл бы ровно тогда, когда нужен.
+  private readonly failing = new Set<string>();
+  // Площадки, для которых уже сообщили «заблокированы все прокси», — чтобы
+  // не повторять каждый час, пока ничего не изменилось.
+  private allBlockedReported = new Set<string>();
 
-  constructor(private readonly alert: AlertService) {}
+  constructor(
+    private readonly alert: AlertService,
+    private readonly ytdlp: YtdlpProcessService,
+  ) {}
 
   // Расписание из окружения (по умолчанию раз в час) — чтобы прогнать весь
   // сценарий на staging, поставив «каждую минуту», и не ждать час.
@@ -56,12 +65,26 @@ export class ProxyHealthService {
       return;
     }
 
-    const proxyUrl = process.env.YOUTUBE_PROXY_URL;
-    if (!proxyUrl) {
-      // Прокси не настроен вовсе — это не поломка, а конфигурация.
-      return;
+    // Прокси не настроены вовсе — это не поломка, а конфигурация.
+    for (const proxyUrl of this.ytdlp.proxies) {
+      await this.checkOne(proxyUrl);
     }
+    await this.checkBlockedPlatforms();
+  }
 
+  // Площадка отказала всем прокси (403 на каждом, ytdlp-process.service.ts):
+  // сами прокси живы, но пользователи этой площадки получают ошибку.
+  private async checkBlockedPlatforms() {
+    const blocked = new Set(this.ytdlp.platformsWithAllProxiesBlocked());
+    for (const platform of blocked) {
+      if (this.allBlockedReported.has(platform)) continue;
+      this.logger.error(`${platform}: заблокированы все прокси`);
+      await this.alert.notifyAllProxiesBlocked(platform, this.ytdlp.proxies.length);
+    }
+    this.allBlockedReported = blocked;
+  }
+
+  private async checkOne(proxyUrl: string) {
     let verdict = await this.probe(proxyUrl, this.PROBE_URLS[0]);
 
     // Ответ, по которому нельзя судить о прокси (не 200 и не 407) — идём на
@@ -97,7 +120,7 @@ export class ProxyHealthService {
     const masked = this.maskCredentials(proxyUrl);
 
     if (reason) {
-      this.failing = true;
+      this.failing.add(proxyUrl);
       this.logger.error(`Прокси ${masked} не отвечает: ${reason}`);
       await this.alert.notifyProxyDown(
         masked,
@@ -107,8 +130,8 @@ export class ProxyHealthService {
       return;
     }
 
-    if (this.failing) {
-      this.failing = false;
+    if (this.failing.has(proxyUrl)) {
+      this.failing.delete(proxyUrl);
       this.logger.log(`Прокси ${masked} снова отвечает`);
       await this.alert.notifyProxyRecovered(masked);
     }
@@ -129,7 +152,7 @@ export class ProxyHealthService {
         target = new URL(probeUrl);
       } catch {
         resolve({
-          reason: 'YOUTUBE_PROXY_URL не разбирается как адрес',
+          reason: 'адрес прокси не разбирается (YOUTUBE_PROXY_URLS)',
           proxyFault: true,
         });
         return;

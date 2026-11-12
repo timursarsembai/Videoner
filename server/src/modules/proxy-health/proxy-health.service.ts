@@ -66,16 +66,16 @@ export class ProxyHealthService {
     }
 
     // Прокси не настроены вовсе — это не поломка, а конфигурация.
-    for (const proxyUrl of this.ytdlp.proxies) {
-      await this.checkOne(proxyUrl);
-    }
+    // Проверки прокси друг от друга не зависят — параллельно.
+    await Promise.all(this.ytdlp.proxies.map((proxyUrl) => this.checkOne(proxyUrl)));
     await this.checkBlockedPlatforms();
   }
 
-  // Площадка отказала всем прокси (403 на каждом, ytdlp-process.service.ts):
-  // сами прокси живы, но пользователи этой площадки получают ошибку.
+  // Площадка отказывала на всех прокси (403 и на последнем доступном,
+  // ytdlp-process.service.ts): сами прокси живы, но пользователи этой площадки
+  // получают ошибку.
   private async checkBlockedPlatforms() {
-    const blocked = new Set(this.ytdlp.platformsWithAllProxiesBlocked());
+    const blocked = new Set(this.ytdlp.platformsRefusingAllProxies());
     for (const platform of blocked) {
       if (this.allBlockedReported.has(platform)) continue;
       this.logger.error(`${platform}: заблокированы все прокси`);

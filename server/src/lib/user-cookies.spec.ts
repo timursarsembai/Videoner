@@ -105,7 +105,9 @@ describe('user cookies', () => {
   it('tries user cookies only for login-like failures', () => {
     expect(userCookiesMayHelp('This content is unreachable')).toBe(true);
     expect(userCookiesMayHelp('This video is private')).toBe(true);
-    expect(userCookiesMayHelp('ERROR: [threads] Пост не найден или недоступен')).toBe(true);
+    // Отказ резервного резолвера Threads: он куки не использует, повтор от
+    // входа человека дал бы тот же ответ вдвое дольше.
+    expect(userCookiesMayHelp('ERROR: [threads] Пост не найден или недоступен')).toBe(false);
     expect(userCookiesMayHelp("Sign in to confirm you're not a bot")).toBe(false);
     expect(userCookiesMayHelp('Read timed out')).toBe(false);
     expect(

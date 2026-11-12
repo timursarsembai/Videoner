@@ -544,16 +544,22 @@ export class AnalyticsService {
   // Ошибки — это и упавшие скачивания (Download FAILED), и отказы ещё при
   // разборе ссылки (LinkFailure): во втором случае скачивание не начиналось
   // вовсе, и без этой таблицы блокировка площадки в статистике не видна.
+  // Без API (ручные проверки) — во всех графиках вкладки и в журнале, чтобы
+  // их числа сходились.
   async errors(range: DateRange) {
     const [downloads, links] = await Promise.all([
       this.prisma.download.groupBy({
         by: ['errorCategory'],
-        where: { status: DownloadStatus.FAILED, createdAt: this.created(range) },
+        where: {
+          status: DownloadStatus.FAILED,
+          source: { not: DownloadSource.API },
+          createdAt: this.created(range),
+        },
         _count: { _all: true },
       }),
       this.prisma.linkFailure.groupBy({
         by: ['errorCategory'],
-        where: { createdAt: this.created(range) },
+        where: { source: { not: DownloadSource.API }, createdAt: this.created(range) },
         _count: { _all: true },
       }),
     ]);
@@ -577,12 +583,13 @@ export class AnalyticsService {
       FROM (
         SELECT "createdAt", COALESCE("errorCategory"::text, 'OTHER') AS category
         FROM "Download"
-        WHERE status = 'FAILED'
+        WHERE status = 'FAILED' AND source <> 'API'
           AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
         UNION ALL
         SELECT "createdAt", "errorCategory"::text
         FROM "LinkFailure"
-        WHERE "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+        WHERE source <> 'API'
+          AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
       ) e
       GROUP BY 1, 2
       ORDER BY 1 ASC
@@ -602,12 +609,13 @@ export class AnalyticsService {
       FROM (
         SELECT "createdAt", lower(downloader::text) AS platform
         FROM "Download"
-        WHERE status = 'FAILED'
+        WHERE status = 'FAILED' AND source <> 'API'
           AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
         UNION ALL
         SELECT "createdAt", platform
         FROM "LinkFailure"
-        WHERE "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
+        WHERE source <> 'API'
+          AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp
       ) e
       GROUP BY 1, 2
       ORDER BY 1 ASC
@@ -670,8 +678,11 @@ export class AnalyticsService {
           AND (${category} = '' OR category = ${category})
         -- Старые отказы разбора ссылки без самой ссылки не склеиваем в одну
         -- строку: группируем их ещё и по тексту ошибки.
+        -- Склеиваем повторы одного человека бота; посетителей сайта по
+        -- человеку не различить, их строки не склеиваем вовсе.
         GROUP BY stage, platform, source, category, uid, country, url,
-                 CASE WHEN url IS NULL THEN message END
+                 CASE WHEN url IS NULL THEN message END,
+                 CASE WHEN uid IS NULL THEN at END
       )
       SELECT g.stage, g.platform, g.source, g.category, g.country, g.url, g.message,
              g."lastAt", g."firstAt", g.count, b.username, b."telegramId"::text AS "telegramId",

@@ -46,10 +46,15 @@ const IDLE_SHUTDOWN_MS = Number(process.env.IDLE_SHUTDOWN_MS || 5 * 60 * 1000);
 // неудачной попытки следующая идёт уже через другой: 10.11.2026 YouTube
 // заблокировал единственный прокси, и держать резолвер на одном адресе —
 // та же уязвимость. Удачный прокси остаётся текущим.
-const PROXIES = (process.env.THREADS_PROXY_URLS || process.env.THREADS_PROXY_URL || '')
-  .split(',')
-  .map((p) => p.trim().replace(/^['"]|['"]$/g, ''))
-  .filter(Boolean);
+// Разбор — как у сервера (server/src/lib/proxy-pool.ts): кавычки срезаем,
+// повторы убираем, а если список после чистки пуст — берём одиночный адрес.
+function parseProxies(list, single) {
+  const clean = (value) => value.trim().replace(/^['"]|['"]$/g, '').trim();
+  const fromList = (list || '').split(',').map(clean).filter(Boolean);
+  const all = fromList.length ? fromList : [clean(single || '')].filter(Boolean);
+  return [...new Set(all)];
+}
+const PROXIES = parseProxies(process.env.THREADS_PROXY_URLS, process.env.THREADS_PROXY_URL);
 const PROXY_URL = PROXIES[0] || '';
 let proxyIndex = 0;
 

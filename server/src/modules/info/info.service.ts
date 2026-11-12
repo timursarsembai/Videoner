@@ -167,9 +167,13 @@ export class InfoService {
     if (source === DownloadSource.EXTENSION) return;
     const message = error instanceof Error ? error.message : String(error);
     void (async () => {
-      const botUser = dto.telegramId
+      // telegramId верим только от бота: сайт и расширение могут прислать
+      // любой, и чужие ошибки легли бы в журнал на настоящего человека.
+      const telegramId =
+        source === DownloadSource.BOT && Number.isSafeInteger(dto.telegramId) ? dto.telegramId : undefined;
+      const botUser = telegramId
         ? await this.prisma.botUser.findUnique({
-            where: { telegramId: BigInt(dto.telegramId) },
+            where: { telegramId: BigInt(telegramId) },
             select: { id: true },
           })
         : null;

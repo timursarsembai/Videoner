@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { ErrorLogPage } from "@/lib/analytics-api";
 import { ChartCard, usePeriodQuery } from "./chart-card";
@@ -34,6 +34,11 @@ const STAGE_LABELS: Record<string, string> = {
   download: "Скачивание",
 };
 
+// Первая и последняя попытка в один день (по Алматы) — показываем только время.
+function sameDay(a: string, b: string): boolean {
+  return formatAttemptTime(a).slice(0, 10) === formatAttemptTime(b).slice(0, 10);
+}
+
 const selectClass =
   "h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring";
 
@@ -47,8 +52,6 @@ export function ErrorsLog() {
     limit: PAGE_SIZE,
     offset,
   });
-  // Новый период — с первой страницы, как и смена фильтра.
-  useEffect(() => setOffset(0), [q.period]);
 
   const rows = q.data?.rows ?? [];
   const total = q.data?.total ?? 0;
@@ -58,9 +61,13 @@ export function ErrorsLog() {
   return (
     <ChartCard
       title={`Журнал ошибок — ${q.label.toLowerCase()}`}
-      hint="Упавшие скачивания и отказы при разборе ссылки; повторы одной ссылки одним человеком — одной строкой. Время — Алматы."
+      hint="Упавшие скачивания и отказы при разборе ссылки; повторы одной ссылки одним человеком бота — одной строкой. Время — Алматы."
       period={q.period}
-      onPeriod={q.setPeriod}
+      // Новый период — с первой страницы, как и смена фильтра.
+      onPeriod={(value) => {
+        setOffset(0);
+        q.setPeriod(value);
+      }}
       loading={q.loading}
       error={q.error}
       wide
@@ -123,7 +130,7 @@ export function ErrorsLog() {
                       className="text-xs text-foreground/50"
                       title={`Первая попытка: ${formatAttemptTime(row.firstAt)}`}
                     >
-                      ×{row.count}, с {formatAttemptTime(row.firstAt).slice(12)}
+                      ×{row.count}, с {sameDay(row.firstAt, row.lastAt) ? formatAttemptTime(row.firstAt).slice(12) : formatAttemptTime(row.firstAt)}
                     </div>
                   )}
                 </td>

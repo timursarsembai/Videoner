@@ -193,13 +193,33 @@ export class YtdlpProcessService implements OnModuleInit {
     );
   }
 
-  // Для проверки прокси (ProxyHealthService): площадки, на которых сейчас
-  // заблокированы ВСЕ прокси, — дальше пользователи этой площадки получают
-  // ошибку, пора менять или докупать прокси.
-  platformsWithAllProxiesBlocked(): string[] {
+  // Запросы, которым площадка отказала (403) на последнем доступном прокси, —
+  // запасных не осталось, человек получил ошибку. Блокировкой это не
+  // отметить: блокируем прокси, только когда следующий прошёл, а тут его нет.
+  private readonly allRefusedAt = new Map<string, number[]>();
+  private readonly ALL_REFUSED_WINDOW_MS = 60 * 60 * 1000;
+  // Один такой отказ бывает и у самого видео (ссылки протухли), поэтому
+  // тревога — только когда их несколько за час.
+  private readonly ALL_REFUSED_ALERT_COUNT = 3;
+
+  private noteAllRefused(platform: string | null): void {
+    const key = platform ?? 'unknown';
+    const since = Date.now() - this.ALL_REFUSED_WINDOW_MS;
+    const recent = (this.allRefusedAt.get(key) ?? []).filter((t) => t > since);
+    recent.push(Date.now());
+    this.allRefusedAt.set(key, recent);
+    console.warn(`[proxy] ${key}: отказ на последнем прокси, запасных нет`);
+  }
+
+  // Для проверки прокси (ProxyHealthService): площадки, которые за последний
+  // час не раз отказали на всех прокси, — их пользователи получают ошибку,
+  // пора менять или докупать прокси.
+  platformsRefusingAllProxies(): string[] {
     if (!this.hasProxy) return [];
-    const platforms = new Set([...this.proxyBlockedUntil.keys()].map((k) => k.split('|')[0]));
-    return [...platforms].filter((platform) => this.proxyPool.every((p) => this.isProxyBlocked(platform, p)));
+    const since = Date.now() - this.ALL_REFUSED_WINDOW_MS;
+    return [...this.allRefusedAt.entries()]
+      .filter(([, times]) => times.filter((t) => t > since).length >= this.ALL_REFUSED_ALERT_COUNT)
+      .map(([platform]) => platform);
   }
 
   get proxies(): readonly string[] {
@@ -754,6 +774,7 @@ export class YtdlpProcessService implements OnModuleInit {
               proxy = next;
               continue;
             }
+            this.noteAllRefused(platform);
           }
 
           // Протухшие куки — пробуем анонимно тем же маршрутом.
@@ -1168,11 +1189,13 @@ export class YtdlpProcessService implements OnModuleInit {
             useProxyNow &&
             downloadProxy &&
             !progressEmitted &&
-            this.refusedByPlatform(errorMessage, platform, useCookies && disposableCookies !== null) &&
-            this.nextProxy(platform, downloadProxy, refusedProxies)
+            this.refusedByPlatform(errorMessage, platform, useCookies && disposableCookies !== null)
           ) {
-            pendingRetry = 'nextproxy';
-            return;
+            if (this.nextProxy(platform, downloadProxy, refusedProxies)) {
+              pendingRetry = 'nextproxy';
+              return;
+            }
+            this.noteAllRefused(platform);
           }
 
           // Протухшая сессия в куках — повторяем анонимно. Именно этого не

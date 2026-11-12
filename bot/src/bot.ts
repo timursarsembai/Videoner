@@ -1,8 +1,8 @@
 import "dotenv/config";
 import { Bot, GrammyError, InlineKeyboard } from "grammy";
 import { LANGS, NEWS_CHANNEL, messages, sitePath, type Lang } from "./i18n.js";
-import { langOf } from "./language.js";
-import { COMMANDS, GROUP_COMMANDS } from "./commands.js";
+import { fetchChosenLanguage, langOf, languageVersion } from "./language.js";
+import { COMMANDS, GROUP_COMMANDS, applyChatCommands } from "./commands.js";
 import { API_KEY, BOT_API_ROOT } from "./helpers.js";
 import { registerAdminHandlers } from "./handlers/admin.js";
 import { registerMembershipHandlers } from "./handlers/membership.js";
@@ -35,6 +35,34 @@ if (!API_KEY) {
 }
 
 const bot = new Bot(BOT_TOKEN, BOT_API_ROOT ? { client: { apiRoot: BOT_API_ROOT } } : undefined);
+
+// Личное меню команд у тех, кто сам выбирал язык (/language), ставится на
+// чат и перекрывает общее. При выборе оно запоминало тогдашний список, и
+// новые команды (например /settings, 12.11.2026) у этих людей не появлялись.
+// Обновляем его при первом сообщении человека после запуска бота — в фоне,
+// чтобы не задерживать ответ.
+const chatMenusRefreshed = new Set<number>();
+bot.use(async (ctx, next) => {
+  const id = ctx.from?.id;
+  // Только сообщения и кнопки: my_chat_member приходит и от заблокировавших.
+  const active = ctx.message || ctx.callbackQuery;
+  if (active && ctx.chat?.type === "private" && id && !chatMenusRefreshed.has(id)) {
+    if (chatMenusRefreshed.size > 100_000) chatMenusRefreshed.clear();
+    chatMenusRefreshed.add(id);
+    const version = languageVersion(id);
+    fetchChosenLanguage(id)
+      .then(async (lang) => {
+        // Пока шёл запрос, человек выбрал язык сам — его меню уже свежее.
+        if (lang && languageVersion(id) === version) await applyChatCommands(ctx.api, id, lang, false);
+      })
+      .catch((e) => {
+        // Сервер не ответил — попробуем при следующем сообщении.
+        chatMenusRefreshed.delete(id);
+        console.error(`Меню команд ${id}:`, e?.message ?? e);
+      });
+  }
+  await next();
+});
 
 bot.command("start", async (ctx) => {
   const lang = await langOf(ctx);

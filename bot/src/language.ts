@@ -20,16 +20,27 @@ const ERROR_TTL_MS = 60_000;
 const LOOKUP_TIMEOUT_MS = 2_000;
 const chosen = new Map<number, { value: Lang | null; expiresAt: number }>();
 
+// Номер выбора языка: растёт при каждом сохранении. Ответ сервера, запрошенный
+// до сохранения, не должен затереть свежий выбор ни в кэше, ни в меню.
+const versions = new Map<number, number>();
+export const languageVersion = (userId: number) => versions.get(userId) ?? 0;
+
+// С сервера, мимо кэша; бросает, если сервер не ответил.
+export async function fetchChosenLanguage(userId: number, now = Date.now()): Promise<Lang | null> {
+  const version = languageVersion(userId);
+  const { language } = await api<{ language: string | null }>(`/bot-users/${userId}/language`, undefined, {
+    timeoutMs: LOOKUP_TIMEOUT_MS,
+  });
+  const value = isLang(language) ? language : null;
+  if (languageVersion(userId) === version) remember(userId, value, now + TTL_MS);
+  return value;
+}
+
 export async function chosenLanguage(userId: number, now = Date.now()): Promise<Lang | null> {
   const hit = chosen.get(userId);
   if (hit && hit.expiresAt > now) return hit.value;
   try {
-    const { language } = await api<{ language: string | null }>(`/bot-users/${userId}/language`, undefined, {
-      timeoutMs: LOOKUP_TIMEOUT_MS,
-    });
-    const value = isLang(language) ? language : null;
-    remember(userId, value, now + TTL_MS);
-    return value;
+    return await fetchChosenLanguage(userId, now);
   } catch (e: any) {
     console.error(`Язык ${userId}: не загрузился:`, e?.message ?? e);
     remember(userId, null, now + ERROR_TTL_MS);
@@ -39,6 +50,8 @@ export async function chosenLanguage(userId: number, now = Date.now()): Promise<
 
 export async function saveChosenLanguage(userId: number, lang: Lang | null) {
   await api(`/bot-users/${userId}/language`, { language: lang });
+  if (versions.size > 50_000) versions.clear();
+  versions.set(userId, languageVersion(userId) + 1);
   remember(userId, lang, Date.now() + TTL_MS);
 }
 

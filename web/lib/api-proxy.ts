@@ -201,6 +201,8 @@ export async function proxyApiRequest(
       if (body) {
         delete body.turnstileToken;
         body.source = options.source;
+        // Страна — для журнала ошибок дашборда, если ссылку разобрать не вышло.
+        body.clientCountry = getClientCountry(request);
       }
     }
 

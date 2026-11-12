@@ -71,6 +71,7 @@ import {
 } from 'src/lib/playlist';
 import { parseUiLang } from 'src/lib/languages';
 import { parseCountry } from 'src/lib/countries';
+import { errorText } from 'src/lib/error-text';
 import { USER_AGENT as TIKTOK_USER_AGENT } from 'src/lib/tiktok-photo';
 
 export interface DownloadRequestMeta {
@@ -668,6 +669,7 @@ export class DownloadService {
       downloadUrl?: string | null;
       fileSize?: bigint;
       errorCategory?: ErrorCategory;
+      errorMessage?: string;
       videoWidth?: number;
       videoHeight?: number;
       videoDuration?: number;
@@ -873,6 +875,7 @@ export class DownloadService {
       status: DownloadStatus.FAILED,
       downloadUrl: null,
       errorCategory: categorizeError(message),
+      errorMessage: errorText(message),
     }).catch((e) => console.error('Failed to mark download as FAILED:', e));
     progressSubject.error(error);
   }

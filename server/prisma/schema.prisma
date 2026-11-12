@@ -60,6 +60,9 @@ model Download {
   videoHeight   Int?
   fileSize      BigInt?
   errorCategory ErrorCategory?
+  // Текст ошибки (без ссылок, до 500 символов) — для журнала ошибок дашборда.
+  // С 12.11.2026, у прежних неудачных скачиваний его нет.
+  errorMessage  String?
   // Повторы одного и того же ролика отдаются без нового скачивания (см.
   // DownloadService.findCached): YouTube идёт через прокси с оплатой за
   // гигабайты. cacheKey — площадка, id ролика, тип и качество; у карусели и
@@ -157,6 +160,7 @@ model BotUser {
   blockedAt         DateTime?
   downloads         Download[]
   activityDays      UserActivityDay[]
+  linkFailures      LinkFailure[]
   blockEvents       BotBlockEvent[]
   firstSeenAt       DateTime          @default(now())
   lastSeenAt        DateTime          @default(now())
@@ -222,6 +226,11 @@ model LinkFailure {
   errorCategory ErrorCategory
   // Текст ошибки без ссылок, не длиннее 300 символов.
   message       String
+  // Для журнала ошибок (с 12.11.2026): какая ссылка, кто и откуда.
+  url           String?
+  botUser       BotUser?       @relation(fields: [botUserId], references: [id], onDelete: SetNull)
+  botUserId     String?
+  country       String?
   createdAt     DateTime       @default(now())
 
   @@index([createdAt])

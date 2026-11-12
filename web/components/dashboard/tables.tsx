@@ -164,7 +164,7 @@ const STATUS_CLASSES: Record<string, string> = {
 // местном. Часовой пояс задан явно, а не берётся из браузера: журнал часто
 // открывают с телефона в поездке, и «19:35» должно означать одно и то же
 // время независимо от того, где сейчас находится смотрящий.
-function formatAttemptTime(iso: string): string {
+export function formatAttemptTime(iso: string): string {
   return new Date(iso).toLocaleString("ru-RU", {
     timeZone: "Asia/Almaty",
     day: "2-digit",

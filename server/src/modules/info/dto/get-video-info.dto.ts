@@ -49,6 +49,13 @@ export class GetVideoInfoDto {
   @IsEnum(DownloadSource)
   source?: DownloadSource;
 
+  // Страна посетителя сайта или расширения (заголовок Cloudflare, ставит прокси
+  // сайта) — для журнала ошибок, если ссылку разобрать не вышло.
+  @ApiProperty({ description: 'Visitor country (set by the site proxy)', required: false })
+  @IsOptional()
+  @IsString()
+  clientCountry?: string;
+
   // Где человек подключил свои куки — только от бота (lib/cookie-scope.ts).
   @ApiProperty({
     description: 'Where the requester connected their own cookies: user:<telegramId> or chat:<chatId> (bot only)',

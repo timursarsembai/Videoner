@@ -97,6 +97,28 @@ export interface ErrorTimeseriesPoint {
   count: number;
 }
 
+// Строка журнала ошибок (/analytics/errors/log): повторы одной ссылки одним
+// человеком на одном этапе с одной причиной склеены, count — сколько их было.
+export interface ErrorLogRow {
+  stage: "download" | "link";
+  platform: string;
+  source: string;
+  category: string;
+  country: string | null;
+  url: string | null;
+  message: string | null;
+  lastAt: string;
+  firstAt: string;
+  count: number;
+  username: string | null;
+  telegramId: string | null;
+}
+
+export interface ErrorLogPage {
+  total: number;
+  rows: ErrorLogRow[];
+}
+
 // Ошибки за день по площадке (/analytics/errors/platforms); площадка — в
 // нижнем регистре, как в ссылке: "instagram", "youtube".
 export interface ErrorPlatformPoint {

@@ -31,6 +31,7 @@ import {
   VolumePie,
   WeekdayChart,
 } from "@/components/dashboard/charts";
+import { ErrorsLog } from "@/components/dashboard/errors-log";
 import { CountriesTab } from "@/components/dashboard/countries";
 import { LanguagesTab } from "@/components/dashboard/languages";
 import { AttemptsLog, BlockedUsersTable, TopUsersTable } from "@/components/dashboard/tables";
@@ -177,6 +178,7 @@ function ErrorsTab() {
       <ErrorsByCategoryChart />
       <ErrorsTimeseriesChart />
       <ErrorsByPlatformChart />
+      <ErrorsLog />
     </section>
   );
 }

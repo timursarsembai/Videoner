@@ -614,6 +614,82 @@ export class AnalyticsService {
     `;
   }
 
+  // Журнал ошибок: упавшие скачивания (Download FAILED) и отказы при разборе
+  // ссылки (LinkFailure) одним списком, новые сверху. Повторы — тот же человек,
+  // та же ссылка, тот же этап и причина — одной строкой со счётчиком: четыре
+  // попытки одной ссылки подряд читались бы как четыре разные проблемы.
+  // API (ручные проверки) не показываем, как и в остальной статистике.
+  async errorsLog(
+    range: DateRange,
+    filter: { platform?: string; category?: string },
+    limit: number,
+    offset: number,
+  ) {
+    const from = day(range.from);
+    const to = day(range.to);
+    const platform = filter.platform ?? '';
+    const category = filter.category ?? '';
+    const rows = await this.prisma.$queryRaw<
+      {
+        stage: 'download' | 'link';
+        platform: string;
+        source: string;
+        category: string;
+        country: string | null;
+        url: string | null;
+        message: string | null;
+        lastAt: Date;
+        firstAt: Date;
+        count: number;
+        username: string | null;
+        telegramId: string | null;
+        total: number;
+      }[]
+    >`
+      WITH e AS (
+        SELECT 'download' AS stage, d."createdAt" AS at, d."originalUrl" AS url,
+               lower(d.downloader::text) AS platform, d.source::text AS source,
+               COALESCE(d."errorCategory"::text, 'OTHER') AS category,
+               d."errorMessage" AS message, d."botUserId" AS uid, d.country
+        FROM "Download" d
+        WHERE d.status = 'FAILED' AND d.source <> 'API'
+          AND d."createdAt" >= ${from}::timestamp AND d."createdAt" < ${to}::timestamp
+        UNION ALL
+        SELECT 'link', l."createdAt", l.url, l.platform, l.source::text,
+               l."errorCategory"::text, l.message, l."botUserId", l.country
+        FROM "LinkFailure" l
+        WHERE l.source <> 'API'
+          AND l."createdAt" >= ${from}::timestamp AND l."createdAt" < ${to}::timestamp
+      ),
+      g AS (
+        SELECT stage, platform, source, category, uid, country, url,
+               max(at) AS "lastAt", min(at) AS "firstAt", count(*)::int AS count,
+               (array_agg(message ORDER BY at DESC))[1] AS message
+        FROM e
+        WHERE (${platform} = '' OR platform = ${platform})
+          AND (${category} = '' OR category = ${category})
+        -- Старые отказы разбора ссылки без самой ссылки не склеиваем в одну
+        -- строку: группируем их ещё и по тексту ошибки.
+        GROUP BY stage, platform, source, category, uid, country, url,
+                 CASE WHEN url IS NULL THEN message END
+      )
+      SELECT g.stage, g.platform, g.source, g.category, g.country, g.url, g.message,
+             g."lastAt", g."firstAt", g.count, b.username, b."telegramId"::text AS "telegramId",
+             count(*) OVER()::int AS total
+      FROM g LEFT JOIN "BotUser" b ON b.id = g.uid
+      ORDER BY g."lastAt" DESC
+      LIMIT ${limit} OFFSET ${offset}
+    `;
+    return {
+      total: rows[0]?.total ?? 0,
+      rows: rows.map(({ total: _total, lastAt, firstAt, ...row }) => ({
+        ...row,
+        lastAt: lastAt.toISOString(),
+        firstAt: firstAt.toISOString(),
+      })),
+    };
+  }
+
   async attempts(
     limit: number,
     offset: number,

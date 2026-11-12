@@ -3,6 +3,8 @@ import { DownloadSource } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { categorizeError } from 'src/lib/error-category';
+import { errorText } from 'src/lib/error-text';
+import { parseCountry } from 'src/lib/countries';
 import {
   audioExtensionLabel,
   audioQualityLabel,
@@ -91,7 +93,7 @@ export class InfoService {
       // В статистику — только отказ площадки (сам запрос за данными), а не
       // наши ошибки в обработке ответа ниже. Категория — по исходному тексту
       // yt-dlp: handleError его переписывает для людей.
-      this.recordFailure(platform, dto.source ?? DownloadSource.API, error);
+      this.recordFailure(platform, dto, error);
       throw new BadRequestException(this.handleError(error, platform, alerts));
     }
 
@@ -155,19 +157,34 @@ export class InfoService {
   // пишем: оно спрашивает /info на каждой открытой странице с видео (сторис,
   // закрытые, вовсе не видео), и этот шум заглушил бы всплеск блокировки, ради
   // которого таблица заведена, — по той же причине ему не шлются алерты.
-  private recordFailure(platform: string, source: DownloadSource, error: unknown) {
+  //
+  // Для журнала ошибок — ещё ссылка, кто (пользователь бота) и откуда (страна
+  // посетителя сайта). Пользователя ищем по telegramId: создаёт его тот же
+  // запрос параллельно (upsertBotUser выше), и на самой первой ссылке нового
+  // человека запись может ещё не успеть появиться — тогда без него.
+  private recordFailure(platform: string, dto: GetVideoInfoDto, error: unknown) {
+    const source = dto.source ?? DownloadSource.API;
     if (source === DownloadSource.EXTENSION) return;
     const message = error instanceof Error ? error.message : String(error);
-    this.prisma.linkFailure
-      .create({
+    void (async () => {
+      const botUser = dto.telegramId
+        ? await this.prisma.botUser.findUnique({
+            where: { telegramId: BigInt(dto.telegramId) },
+            select: { id: true },
+          })
+        : null;
+      await this.prisma.linkFailure.create({
         data: {
           platform,
           source,
           errorCategory: categorizeError(message),
-          message: message.replace(/https?:\/\/\S+/g, '<url>').slice(0, 300),
+          message: errorText(message),
+          url: dto.url.slice(0, 2000),
+          botUserId: botUser?.id ?? null,
+          country: parseCountry(dto.clientCountry),
         },
-      })
-      .catch((e) => console.error('Не удалось записать отказ разбора ссылки:', e));
+      });
+    })().catch((e) => console.error('Не удалось записать отказ разбора ссылки:', e));
   }
 
   // Обычный путь не дал метаданных, а человек (или его группа) подключил свой

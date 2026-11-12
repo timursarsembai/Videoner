@@ -45,6 +45,18 @@ export class AnalyticsController {
     errors: (q) => this.analyticsService.errors(this.range(q)),
     'errors/timeseries': (q) => this.analyticsService.errorsTimeseries(this.range(q)),
     'errors/platforms': (q) => this.analyticsService.errorsPlatforms(this.range(q)),
+    'errors/log': (q) =>
+      this.analyticsService.errorsLog(
+        this.range(q),
+        {
+          // Фильтры — только то, что похоже на площадку и категорию: остальное
+          // молча игнорируем, как в журнале попыток.
+          platform: typeof q.platform === 'string' && /^[a-z]{1,20}$/.test(q.platform) ? q.platform : undefined,
+          category: typeof q.category === 'string' && /^[A-Z_]{1,40}$/.test(q.category) ? q.category : undefined,
+        },
+        this.limit(q.limit, 50, 200),
+        this.offset(q.offset),
+      ),
   };
 
   constructor(
@@ -54,6 +66,11 @@ export class AnalyticsController {
 
   private range(q: QueryParams, maxDays?: number): DateRange {
     return parseRange(q.from, q.to, maxDays);
+  }
+
+  private offset(value: unknown): number {
+    const parsed = parseInt(String(value ?? 0), 10);
+    return Number.isFinite(parsed) && parsed > 0 ? Math.min(parsed, 100_000) : 0;
   }
 
   private limit(value: unknown, fallback: number, max: number): number {
@@ -197,6 +214,11 @@ export class AnalyticsController {
   @Get('errors/platforms')
   errorsPlatforms(@Query() q: QueryParams) {
     return this.queries['errors/platforms'](q);
+  }
+
+  @Get('errors/log')
+  errorsLog(@Query() q: QueryParams) {
+    return this.queries['errors/log'](q);
   }
 
   @Get('errors/timeseries')

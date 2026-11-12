@@ -12,6 +12,9 @@ export interface OverviewData {
   successRate: number | null;
   // Отказы площадки при разборе ссылки (до скачивания не дошло).
   linkFailures: number;
+  // За всё время, независимо от периода карточки.
+  allTimeTotal: number;
+  allTimeCompleted: number;
   webLoginUsers: number;
   totalBotUsers: number;
 }

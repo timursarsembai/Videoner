@@ -102,7 +102,8 @@ export class AnalyticsService {
       createdAt: this.created(range),
       source: { not: DownloadSource.API },
     };
-    const [total, completed, failed, totalBotUsers, webLoginUsers, linkFailures] =
+    const allTime = { source: { not: DownloadSource.API } };
+    const [total, completed, failed, totalBotUsers, webLoginUsers, linkFailures, allTimeTotal, allTimeCompleted] =
       await Promise.all([
         this.prisma.download.count({ where: scope }),
         this.prisma.download.count({ where: { ...scope, status: { in: SUCCESS } } }),
@@ -114,6 +115,11 @@ export class AnalyticsService {
         // Отказы ещё при разборе ссылки (LinkFailure) — отдельно: скачивания
         // не было, в «Ошибок» и успешность скачиваний они не входят.
         this.prisma.linkFailure.count({ where: scope }),
+        // Итог за всё время — рядом с периодом: «последние 30 дней» — окно,
+        // которое каждый день сдвигается, и его сумма держится на месте или
+        // даже уменьшается; без общего итога это читалось как сбой учёта.
+        this.prisma.download.count({ where: allTime }),
+        this.prisma.download.count({ where: { ...allTime, status: { in: SUCCESS } } }),
       ]);
 
     const finished = completed + failed;
@@ -126,6 +132,8 @@ export class AnalyticsService {
       totalBotUsers,
       webLoginUsers,
       linkFailures,
+      allTimeTotal,
+      allTimeCompleted,
     };
   }
 

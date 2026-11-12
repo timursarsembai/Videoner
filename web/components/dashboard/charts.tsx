@@ -42,6 +42,7 @@ import {
   SOURCE_LABELS,
   formatBytes,
   formatDay,
+  formatLongDate,
   formatMonth,
   formatWeek,
   pickByteUnit,
@@ -68,6 +69,18 @@ export function StatCard({ label, value, hint }: { label: string; value: string 
 
 // Счётчики скачиваний за выбранный период: бот, сайт и расширение, без
 // запросов напрямую в API (это проверки при разработке).
+// Даты периода для подписи: «14 октября 2026 — 12 ноября 2026 (по сегодня)».
+// to в периоде не включается, последний день — накануне. Дни — по UTC, как
+// и вся статистика.
+function rangeText(range: { from: string; to: string }): string {
+  const last = new Date(Date.parse(`${range.to}T00:00:00Z`) - 24 * 60 * 60 * 1000).toISOString();
+  const today = new Date().toISOString().slice(0, 10);
+  const first = formatLongDate(`${range.from}T00:00:00Z`);
+  const end = formatLongDate(last);
+  const suffix = last.slice(0, 10) === today ? " (сегодня — по текущий момент, дни по UTC)" : "";
+  return first === end ? `${first}${suffix}` : `${first} — ${end}${suffix}`;
+}
+
 export function DownloadStatCards() {
   const q = usePeriodQuery<OverviewData>("overview");
   const o = q.data;
@@ -75,7 +88,7 @@ export function DownloadStatCards() {
   return (
     <ChartCard
       title={`Скачивания — ${lower(q.label)}`}
-      hint="Бот, сайт и расширение; успешные — включая файлы, уже удалённые с диска"
+      hint={`${rangeText(q.range)}. Бот, сайт и расширение; успешные — включая файлы, уже удалённые с диска`}
       period={q.period}
       onPeriod={q.setPeriod}
       loading={q.loading}
@@ -96,6 +109,13 @@ export function DownloadStatCards() {
           hint="Ссылку не удалось разобрать — до скачивания не дошло (с 09.11.2026)"
         />
       </div>
+      {o && (
+        <p className="mt-3 text-sm text-foreground/60">
+          За всё время: <span className="font-medium text-foreground">{o.allTimeTotal.toLocaleString("ru-RU")}</span>{" "}
+          попыток, из них успешных —{" "}
+          <span className="font-medium text-foreground">{o.allTimeCompleted.toLocaleString("ru-RU")}</span>
+        </p>
+      )}
     </ChartCard>
   );
 }

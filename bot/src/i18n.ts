@@ -189,6 +189,8 @@ interface Messages {
   skipButton: string;
   skipped: string;
   chooseTimedOut: string;
+  // Не выбрали за пару минут — бот сам качает видео (handlers/download.ts).
+  chooseAutoPicked: string;
   queueLostOnRestart: (count: number) => string;
   // Субтитры YouTube (см. subtitles.ts).
   subtitlesButton: string;
@@ -459,6 +461,7 @@ const ru: Messages = {
   skipButton: "✖️ Не скачивать",
   skipped: "⏭ Эту ссылку пропустил.",
   chooseTimedOut: "⌛ Качество не выбрано за 30 минут — эту ссылку пропускаю.",
+  chooseAutoPicked: "⌛ Качество не выбрано за 2 минуты — скачиваю видео сам.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот перезапускается для обновления — очередь сброшена (ссылок: ${count}). Пришлите их снова через минуту.`,
   subtitlesButton: "📝 Субтитры",
@@ -680,6 +683,7 @@ const en: Messages = {
   skipButton: "✖️ Don't download",
   skipped: "⏭ Skipped this link.",
   chooseTimedOut: "⌛ No quality chosen within 30 minutes — skipping this link.",
+  chooseAutoPicked: "⌛ No quality chosen within 2 minutes — downloading the video for you.",
   queueLostOnRestart: (count) =>
     `⚠️ The bot is restarting for an update — the queue was reset (links: ${count}). Please send them again in a minute.`,
   subtitlesButton: "📝 Subtitles",
@@ -901,6 +905,7 @@ const ar: Messages = {
   skipButton: "✖️ لا تنزّل",
   skipped: "⏭ تم تخطي هذا الرابط.",
   chooseTimedOut: "⌛ لم تُختر جودة خلال 30 دقيقة — تخطيت هذا الرابط.",
+  chooseAutoPicked: "⌛ لم تُختر جودة خلال دقيقتين — أنزّل الفيديو تلقائيًا.",
   queueLostOnRestart: (count) =>
     `⚠️ يُعاد تشغيل البوت للتحديث — أُعيد ضبط قائمة الانتظار (الروابط: ${count}). يُرجى إرسالها مرة أخرى بعد دقيقة.`,
   subtitlesButton: "📝 الترجمة",
@@ -1122,6 +1127,7 @@ const zh: Messages = {
   skipButton: "✖️ 不下载",
   skipped: "⏭ 已跳过这个链接。",
   chooseTimedOut: "⌛ 30 分钟内没有选择画质，已跳过这个链接。",
+  chooseAutoPicked: "⌛ 2 分钟内没有选择画质，自动为你下载视频。",
   queueLostOnRestart: (count) =>
     `⚠️ 机器人正在重启更新，队列已被清空（链接：${count} 个）。请过一分钟重新发送。`,
   subtitlesButton: "📝 字幕",
@@ -1343,6 +1349,7 @@ const hi: Messages = {
   skipButton: "✖️ डाउनलोड न करें",
   skipped: "⏭ यह लिंक छोड़ दिया।",
   chooseTimedOut: "⌛ 30 मिनट में कोई क्वालिटी नहीं चुनी गई — यह लिंक छोड़ रहा हूँ।",
+  chooseAutoPicked: "⌛ 2 मिनट में कोई क्वालिटी नहीं चुनी गई — वीडियो खुद डाउनलोड कर रहा हूँ।",
   queueLostOnRestart: (count) =>
     `⚠️ अपडेट के लिए बॉट रीस्टार्ट हो रहा है — कतार खाली हो गई (लिंक: ${count})। कृपया एक मिनट बाद उन्हें फिर से भेजें।`,
   subtitlesButton: "📝 सबटाइटल",
@@ -1564,6 +1571,7 @@ const indonesian: Messages = {
   skipButton: "✖️ Jangan unduh",
   skipped: "⏭ Tautan ini dilewati.",
   chooseTimedOut: "⌛ Tidak ada kualitas yang dipilih dalam 30 menit — tautan ini dilewati.",
+  chooseAutoPicked: "⌛ Tidak ada kualitas yang dipilih dalam 2 menit — videonya saya unduh otomatis.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot sedang dimulai ulang untuk pembaruan — antrean diatur ulang (tautan: ${count}). Silakan kirim lagi dalam satu menit.`,
   subtitlesButton: "📝 Subtitle",
@@ -1785,6 +1793,7 @@ const sw: Messages = {
   skipButton: "✖️ Usipakue",
   skipped: "⏭ Nimeiruka linki hii.",
   chooseTimedOut: "⌛ Hakuna ubora uliochaguliwa ndani ya dakika 30 — ninairuka linki hii.",
+  chooseAutoPicked: "⌛ Hakuna ubora uliochaguliwa ndani ya dakika 2 — ninapakua video mwenyewe.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot inaanzishwa upya kwa ajili ya sasisho — foleni imefutwa (linki: ${count}). Tafadhali zitume tena baada ya dakika moja.`,
   subtitlesButton: "📝 Manukuu",
@@ -2006,6 +2015,7 @@ const de: Messages = {
   skipButton: "✖️ Nicht herunterladen",
   skipped: "⏭ Link übersprungen.",
   chooseTimedOut: "⌛ Innerhalb von 30 Minuten wurde keine Qualität gewählt — ich überspringe diesen Link.",
+  chooseAutoPicked: "⌛ Innerhalb von 2 Minuten wurde keine Qualität gewählt — ich lade das Video automatisch herunter.",
   queueLostOnRestart: (count) =>
     `⚠️ Der Bot startet für ein Update neu — die Warteschlange wurde zurückgesetzt (Links: ${count}). Schick sie bitte in einer Minute noch einmal.`,
   subtitlesButton: "📝 Untertitel",
@@ -2227,6 +2237,7 @@ const fr: Messages = {
   skipButton: "✖️ Ne pas télécharger",
   skipped: "⏭ Lien ignoré.",
   chooseTimedOut: "⌛ Aucune qualité choisie en 30 minutes — ce lien est ignoré.",
+  chooseAutoPicked: "⌛ Aucune qualité choisie en 2 minutes — je télécharge la vidéo automatiquement.",
   queueLostOnRestart: (count) =>
     `⚠️ Le bot redémarre pour une mise à jour — la file d'attente a été réinitialisée (liens : ${count}). Renvoyez-les dans une minute.`,
   subtitlesButton: "📝 Sous-titres",
@@ -2448,6 +2459,7 @@ const it: Messages = {
   skipButton: "✖️ Non scaricare",
   skipped: "⏭ Link saltato.",
   chooseTimedOut: "⌛ Nessuna qualità scelta entro 30 minuti — salto questo link.",
+  chooseAutoPicked: "⌛ Nessuna qualità scelta entro 2 minuti — scarico il video in automatico.",
   queueLostOnRestart: (count) =>
     `⚠️ Il bot si sta riavviando per un aggiornamento — la coda è stata azzerata (link: ${count}). Rimandali tra un minuto.`,
   subtitlesButton: "📝 Sottotitoli",
@@ -2669,6 +2681,7 @@ const pt: Messages = {
   skipButton: "✖️ Não baixar",
   skipped: "⏭ Pulei este link.",
   chooseTimedOut: "⌛ Nenhuma qualidade escolhida em 30 minutos — pulando este link.",
+  chooseAutoPicked: "⌛ Nenhuma qualidade escolhida em 2 minutos — baixando o vídeo automaticamente.",
   queueLostOnRestart: (count) =>
     `⚠️ O bot está reiniciando para uma atualização — a fila foi zerada (links: ${count}). Mande-os de novo daqui a um minuto.`,
   subtitlesButton: "📝 Legendas",
@@ -2890,6 +2903,7 @@ const es: Messages = {
   skipButton: "✖️ No descargar",
   skipped: "⏭ Enlace omitido.",
   chooseTimedOut: "⌛ No se eligió ninguna calidad en 30 minutos — omito este enlace.",
+  chooseAutoPicked: "⌛ No se eligió ninguna calidad en 2 minutos — descargo el vídeo automáticamente.",
   queueLostOnRestart: (count) =>
     `⚠️ El bot se está reiniciando por una actualización — la cola se vació (enlaces: ${count}). Envíalos de nuevo dentro de un minuto.`,
   subtitlesButton: "📝 Subtítulos",
@@ -3111,6 +3125,7 @@ const uz: Messages = {
   skipButton: "✖️ Yuklab olmaslik",
   skipped: "⏭ Bu havola oʻtkazib yuborildi.",
   chooseTimedOut: "⌛ 30 daqiqa ichida sifat tanlanmadi — bu havola oʻtkazib yuborildi.",
+  chooseAutoPicked: "⌛ 2 daqiqa ichida sifat tanlanmadi — videoni oʻzim yuklab olaman.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot yangilanish uchun qayta ishga tushmoqda — navbat tozalandi (havolalar: ${count}). Bir daqiqadan soʻng ularni qayta yuboring.`,
   subtitlesButton: "📝 Subtitrlar",
@@ -3332,6 +3347,7 @@ const tr: Messages = {
   skipButton: "✖️ İndirme",
   skipped: "⏭ Bu bağlantı atlandı.",
   chooseTimedOut: "⌛ 30 dakika içinde kalite seçilmedi — bu bağlantıyı atlıyorum.",
+  chooseAutoPicked: "⌛ 2 dakika içinde kalite seçilmedi — videoyu otomatik indiriyorum.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot bir güncelleme için yeniden başlatılıyor — kuyruk sıfırlandı (bağlantılar: ${count}). Lütfen bir dakika sonra onları tekrar gönderin.`,
   subtitlesButton: "📝 Altyazılar",
@@ -3553,6 +3569,7 @@ const fa: Messages = {
   skipButton: "✖️ دانلود نشود",
   skipped: "⏭ از این لینک گذشتم.",
   chooseTimedOut: "⌛ در 30 دقیقه کیفیتی انتخاب نشد — از این لینک می‌گذرم.",
+  chooseAutoPicked: "⌛ در ۲ دقیقه کیفیتی انتخاب نشد — ویدیو را خودکار دانلود می‌کنم.",
   queueLostOnRestart: (count) =>
     `⚠️ ربات برای به‌روزرسانی در حال راه‌اندازی مجدد است — صف خالی شد (لینک‌ها: ${count}). لطفاً یک دقیقهٔ دیگر آن‌ها را دوباره بفرستید.`,
   subtitlesButton: "📝 زیرنویس",
@@ -3774,6 +3791,7 @@ const vi: Messages = {
   skipButton: "✖️ Không tải",
   skipped: "⏭ Đã bỏ qua link này.",
   chooseTimedOut: "⌛ Không có chất lượng nào được chọn trong 30 phút — bỏ qua link này.",
+  chooseAutoPicked: "⌛ Không có chất lượng nào được chọn trong 2 phút — tự động tải video.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot đang khởi động lại để cập nhật — hàng đợi đã bị xóa (số link: ${count}). Hãy gửi lại sau một phút nhé.`,
   subtitlesButton: "📝 Phụ đề",
@@ -3996,6 +4014,7 @@ const bn: Messages = {
   skipButton: "✖️ ডাউনলোড করবেন না",
   skipped: "⏭ এই লিংকটি বাদ দেওয়া হয়েছে।",
   chooseTimedOut: "⌛ 30 মিনিটের মধ্যে কোনো কোয়ালিটি বাছাই করা হয়নি — এই লিংকটি বাদ দিচ্ছি।",
+  chooseAutoPicked: "⌛ 2 মিনিটের মধ্যে কোনো কোয়ালিটি বাছাই করা হয়নি — ভিডিওটি নিজেই ডাউনলোড করছি।",
   queueLostOnRestart: (count) =>
     `⚠️ আপডেটের জন্য বট রিস্টার্ট হচ্ছে — সারি রিসেট হয়ে গেছে (লিংক: ${count})। এক মিনিট পরে সেগুলো আবার পাঠান।`,
   subtitlesButton: "📝 সাবটাইটেল",
@@ -4217,6 +4236,7 @@ const ur: Messages = {
   skipButton: "✖️ ڈاؤن لوڈ نہ کریں",
   skipped: "⏭ یہ لنک چھوڑ دیا۔",
   chooseTimedOut: "⌛ 30 منٹ میں کوئی کوالٹی منتخب نہیں کی گئی — یہ لنک چھوڑ رہا ہوں۔",
+  chooseAutoPicked: "⌛ 2 منٹ میں کوئی کوالٹی منتخب نہیں کی گئی — ویڈیو خود ڈاؤن لوڈ کر رہا ہوں۔",
   queueLostOnRestart: (count) =>
     `⚠️ اپ ڈیٹ کے لیے بوٹ ری اسٹارٹ ہو رہا ہے — قطار خالی ہو گئی (لنکس: ${count})۔ براہ کرم ایک منٹ بعد انہیں دوبارہ بھیجیں۔`,
   subtitlesButton: "📝 سب ٹائٹلز",
@@ -4438,6 +4458,7 @@ const pl: Messages = {
   skipButton: "✖️ Nie pobieraj",
   skipped: "⏭ Pominięto ten link.",
   chooseTimedOut: "⌛ Nie wybrano jakości w ciągu 30 minut — pomijam ten link.",
+  chooseAutoPicked: "⌛ Nie wybrano jakości w ciągu 2 minut — pobieram wideo automatycznie.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot uruchamia się ponownie po aktualizacji — kolejka została wyczyszczona (linki: ${count}). Wyślij je ponownie za minutę.`,
   subtitlesButton: "📝 Napisy",
@@ -4659,6 +4680,7 @@ const ja: Messages = {
   skipButton: "✖️ ダウンロードしない",
   skipped: "⏭ このリンクをスキップしました。",
   chooseTimedOut: "⌛ 30 分以内に画質が選ばれなかったため、このリンクをスキップします。",
+  chooseAutoPicked: "⌛ 2 分以内に画質が選ばれなかったため、動画を自動でダウンロードします。",
   queueLostOnRestart: (count) =>
     `⚠️ アップデートのためボットを再起動しています。キューがリセットされました（リンク：${count} 件）。1 分ほどしてからもう一度送ってください。`,
   subtitlesButton: "📝 字幕",
@@ -4880,6 +4902,7 @@ const ko: Messages = {
   skipButton: "✖️ 다운로드 안 함",
   skipped: "⏭ 이 링크를 건너뛰었어요.",
   chooseTimedOut: "⌛ 30분 동안 화질을 선택하지 않아서 이 링크를 건너뛸게요.",
+  chooseAutoPicked: "⌛ 2분 동안 화질을 선택하지 않아서 영상을 자동으로 받을게요.",
   queueLostOnRestart: (count) =>
     `⚠️ 업데이트를 위해 봇을 다시 시작하고 있어서 대기열이 초기화되었어요 (링크: ${count}개). 1분 뒤에 다시 보내 주세요.`,
   subtitlesButton: "📝 자막",
@@ -5101,6 +5124,7 @@ const th: Messages = {
   skipButton: "✖️ ไม่ต้องดาวน์โหลด",
   skipped: "⏭ ข้ามลิงก์นี้แล้ว",
   chooseTimedOut: "⌛ ไม่ได้เลือกคุณภาพภายใน 30 นาที ข้ามลิงก์นี้",
+  chooseAutoPicked: "⌛ ไม่ได้เลือกคุณภาพภายใน 2 นาที กำลังดาวน์โหลดวิดีโอให้อัตโนมัติ",
   queueLostOnRestart: (count) =>
     `⚠️ บอทกำลังรีสตาร์ทเพื่ออัปเดต คิวถูกรีเซ็ต (ลิงก์: ${count}) ส่งลิงก์มาอีกครั้งในอีกสักนาทีนะ`,
   subtitlesButton: "📝 ซับไตเติล",
@@ -5322,6 +5346,7 @@ const am: Messages = {
   skipButton: "✖️ አያውርዱ",
   skipped: "⏭ ይህን ሊንክ ዘልዬዋለሁ።",
   chooseTimedOut: "⌛ በ30 ደቂቃ ውስጥ ምንም ጥራት አልተመረጠም — ይህን ሊንክ እዘላለሁ።",
+  chooseAutoPicked: "⌛ በ2 ደቂቃ ውስጥ ምንም ጥራት አልተመረጠም — ቪዲዮውን ራሴ እያወረድኩ ነው።",
   queueLostOnRestart: (count) =>
     `⚠️ ቦቱ ለማዘመን እንደገና እየጀመረ ነው — ወረፋው ተሰርዟል (ሊንኮች፦ ${count})። እባክዎ ከአንድ ደቂቃ በኋላ እንደገና ይላኳቸው።`,
   subtitlesButton: "📝 የትርጉም ጽሑፎች",
@@ -5543,6 +5568,7 @@ const om: Messages = {
   skipButton: "✖️ Hin buufatinaa",
   skipped: "⏭ Liinkii kana irra darbeera.",
   chooseTimedOut: "⌛ Daqiiqaa 30 keessatti qulqullinni hin filatamne — liinkii kana irra darbaa jira.",
+  chooseAutoPicked: "⌛ Daqiiqaa 2 keessatti qulqullinni hin filatamne — viidiyoo ofumaan buusaa jira.",
   queueLostOnRestart: (count) =>
     `⚠️ Bootiin fooyya'iinsaaf irra deebi'ee ka'aa jira — tarreen eegumsaa haqameera (liinkiiwwan: ${count}). Daqiiqaa tokko booda irra deebi'aa ergaa.`,
   subtitlesButton: "📝 Barreeffama jalaa",
@@ -5764,6 +5790,7 @@ const ha: Messages = {
   skipButton: "✖️ Kada a sauke",
   skipped: "⏭ An tsallake wannan hanyar haɗi.",
   chooseTimedOut: "⌛ Ba a zaɓi inganci cikin minti 30 ba — ana tsallake wannan hanyar haɗi.",
+  chooseAutoPicked: "⌛ Ba a zaɓi inganci cikin minti 2 ba — ina sauke bidiyon da kaina.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot yana sake farawa don sabuntawa — an share layin (hanyoyin haɗi: ${count}). Don Allah ku sake aiko da su bayan minti ɗaya.`,
   subtitlesButton: "📝 Rubutun ƙasa",
@@ -5985,6 +6012,7 @@ const so: Messages = {
   skipButton: "✖️ Ha soo dejin",
   skipped: "⏭ Link-gan waa laga gudbay.",
   chooseTimedOut: "⌛ Tayo lama dooran 30 daqiiqo gudahood — link-gan waa laga gudbayaa.",
+  chooseAutoPicked: "⌛ Tayo lama dooran 2 daqiiqo gudahood — muuqaalka si toos ah ayaan u soo dejinayaa.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot-ka ayaa dib loo bilaabayaa si loo cusbooneysiiyo — safka waa la tirtiray (link-yo: ${count}). Fadlan mar kale soo dir daqiiqad kadib.`,
   subtitlesButton: "📝 Qoraalka hoose",
@@ -6206,6 +6234,7 @@ const az: Messages = {
   skipButton: "✖️ Yükləmə",
   skipped: "⏭ Bu linki keçdim.",
   chooseTimedOut: "⌛ 30 dəqiqə ərzində keyfiyyət seçilmədi — bu linki keçirəm.",
+  chooseAutoPicked: "⌛ 2 dəqiqə ərzində keyfiyyət seçilmədi — videonu özüm yükləyirəm.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot yeniləmə üçün yenidən başladılır — növbə sıfırlandı (linklər: ${count}). Bir dəqiqədən sonra onları yenidən göndərin.`,
   subtitlesButton: "📝 Subtitrlər",
@@ -6427,6 +6456,7 @@ const ky: Messages = {
   skipButton: "✖️ Жүктөп албоо",
   skipped: "⏭ Бул шилтеме өткөрүлүп жиберилди.",
   chooseTimedOut: "⌛ 30 мүнөттүн ичинде сапат тандалган жок — бул шилтемени өткөрүп жиберем.",
+  chooseAutoPicked: "⌛ 2 мүнөттүн ичинде сапат тандалган жок — видеону өзүм жүктөп берем.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот жаңыртуу үчүн кайра иштетилүүдө — кезек тазаланды (шилтемелер: ${count}). Бир мүнөттөн кийин аларды кайра жөнөтүңүз.`,
   subtitlesButton: "📝 Субтитрлер",
@@ -6648,6 +6678,7 @@ const tg: Messages = {
   skipButton: "✖️ Боргирӣ накардан",
   skipped: "⏭ Ин пайванд гузаронида шуд.",
   chooseTimedOut: "⌛ Дар давоми 30 дақиқа сифат интихоб нашуд — ин пайвандро мегузаронам.",
+  chooseAutoPicked: "⌛ Дар давоми 2 дақиқа сифат интихоб нашуд — видеоро худам зеркашӣ мекунам.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот барои навсозӣ аз нав оғоз мешавад — навбат тоза шуд (пайвандҳо: ${count}). Лутфан, баъд аз як дақиқа онҳоро боз фиристед.`,
   subtitlesButton: "📝 Субтитрҳо",
@@ -6869,6 +6900,7 @@ const ms: Messages = {
   skipButton: "✖️ Jangan muat turun",
   skipped: "⏭ Pautan ini dilangkau.",
   chooseTimedOut: "⌛ Tiada kualiti dipilih dalam masa 30 minit — pautan ini dilangkau.",
+  chooseAutoPicked: "⌛ Tiada kualiti dipilih dalam masa 2 minit — video dimuat turun secara automatik.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot sedang dimulakan semula untuk kemas kini — baris gilir telah ditetapkan semula (pautan: ${count}). Sila hantar semula dalam seminit.`,
   subtitlesButton: "📝 Sari kata",
@@ -7090,6 +7122,7 @@ const nl: Messages = {
   skipButton: "✖️ Niet downloaden",
   skipped: "⏭ Deze link overgeslagen.",
   chooseTimedOut: "⌛ Binnen 30 minuten geen kwaliteit gekozen — ik sla deze link over.",
+  chooseAutoPicked: "⌛ Binnen 2 minuten geen kwaliteit gekozen — ik download de video automatisch.",
   queueLostOnRestart: (count) =>
     `⚠️ De bot wordt opnieuw gestart voor een update — de wachtrij is gewist (links: ${count}). Stuur ze over een minuut opnieuw.`,
   subtitlesButton: "📝 Ondertiteling",
@@ -7311,6 +7344,7 @@ const ro: Messages = {
   skipButton: "✖️ Nu descărca",
   skipped: "⏭ Am sărit peste acest link.",
   chooseTimedOut: "⌛ Nu a fost aleasă nicio calitate în 30 de minute — sar peste acest link.",
+  chooseAutoPicked: "⌛ Nu a fost aleasă nicio calitate în 2 minute — descarc automat videoclipul.",
   queueLostOnRestart: (count) =>
     `⚠️ Botul repornește pentru o actualizare — coada a fost golită (linkuri: ${count}). Trimite-le din nou peste un minut.`,
   subtitlesButton: "📝 Subtitrări",
@@ -7532,6 +7566,7 @@ const ps: Messages = {
   skipButton: "✖️ مه یې ښکته کوئ",
   skipped: "⏭ دا لینک پرېښودل شو.",
   chooseTimedOut: "⌛ په 30 دقیقو کې هېڅ کیفیت ونه ټاکل شو — دا لینک پرېږدم.",
+  chooseAutoPicked: "⌛ په 2 دقیقو کې هېڅ کیفیت ونه ټاکل شو — ویډیو پخپله ښکته کوم.",
   queueLostOnRestart: (count) =>
     `⚠️ بوټ د تازه کولو لپاره بیا پیل کېږي — کتار خالي شو (لینکونه: ${count}). مهرباني وکړئ یوه دقیقه وروسته یې بیا ولېږئ.`,
   subtitlesButton: "📝 زیرنویس",
@@ -7753,6 +7788,7 @@ const ckb: Messages = {
   skipButton: "✖️ دایمەگرە",
   skipped: "⏭ ئەم بەستەرە تێپەڕێنرا.",
   chooseTimedOut: "⌛ لە ماوەی 30 خولەکدا هیچ کوالیتییەک هەڵنەبژێردرا — ئەم بەستەرە تێدەپەڕێنم.",
+  chooseAutoPicked: "⌛ لە ماوەی 2 خولەکدا هیچ کوالیتییەک هەڵنەبژێردرا — ڤیدیۆکە خۆکارانە دادەگرم.",
   queueLostOnRestart: (count) =>
     `⚠️ بۆتەکە بۆ نوێکردنەوە دەستپێدەکاتەوە — ڕیزەکە سفر کرایەوە (بەستەرەکان: ${count}). تکایە دوای خولەکێک دووبارە بیاننێرە.`,
   subtitlesButton: "📝 ژێرنووس",
@@ -7974,6 +8010,7 @@ const ku: Messages = {
   skipButton: "✖️ Derbas bike",
   skipped: "⏭ Ev lînk hate derbaskirin.",
   chooseTimedOut: "⌛ Di nav 30 deqeyan de kalîte nehat hilbijartin — ev lînk tê derbaskirin.",
+  chooseAutoPicked: "⌛ Di nav 2 deqeyan de kalîte nehat hilbijartin — vîdyoyê bixweber dadixînim.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot ji bo nûkirinê ji nû ve dest pê dike — rêz hate valakirin (lînk: ${count}). Ji kerema xwe piştî deqeyekê wan dîsa bişîne.`,
   subtitlesButton: "📝 Binnivîs",
@@ -8195,6 +8232,7 @@ const ug: Messages = {
   skipButton: "✖️ چۈشۈرمەسلىك",
   skipped: "⏭ بۇ ئۇلانمىدىن ئاتلاپ ئۆتتۈم.",
   chooseTimedOut: "⌛ 30 مىنۇت ئىچىدە سۈپەت تاللانمىدى — بۇ ئۇلانمىدىن ئاتلاپ ئۆتىمەن.",
+  chooseAutoPicked: "⌛ 2 مىنۇت ئىچىدە سۈپەت تاللانمىدى — سىننى ئۆزۈم چۈشۈرۈپ بېرىمەن.",
   queueLostOnRestart: (count) =>
     `⚠️ بوت يېڭىلاش ئۈچۈن قايتا قوزغىلىۋاتىدۇ — ئۆچىرەت تازىلاندى (ئۇلانمىلار: ${count}). بىر مىنۇتتىن كېيىن ئۇلارنى قايتا يوللاڭ.`,
   subtitlesButton: "📝 ئاستى خەت",
@@ -8416,6 +8454,7 @@ const tk: Messages = {
   skipButton: "✖️ Ýüklemeli däl",
   skipped: "⏭ Bu salgy geçildi.",
   chooseTimedOut: "⌛ 30 minudyň dowamynda hil saýlanmady — bu salgyny geçýärin.",
+  chooseAutoPicked: "⌛ 2 minudyň dowamynda hil saýlanmady — wideony özüm ýükläp berýärin.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot täzelenmek üçin täzeden işledilýär — nobat arassalandy (salgylar: ${count}). Olary bir minutdan soň täzeden iberiň.`,
   subtitlesButton: "📝 Subtitrler",
@@ -8637,6 +8676,7 @@ const tt: Messages = {
   skipButton: "✖️ Йөкләп алмаска",
   skipped: "⏭ Бу сылтаманы калдырдым.",
   chooseTimedOut: "⌛ 30 минут эчендә сыйфат сайланмады — бу сылтаманы калдырам.",
+  chooseAutoPicked: "⌛ 2 минут эчендә сыйфат сайланмады — видеоны үзем йөкләп бирәм.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот яңарту өчен яңадан кабызыла — чират бушатылды (сылтамалар: ${count}). Аларны бер минуттан соң яңадан җибәрегез.`,
   subtitlesButton: "📝 Субтитрлар",
@@ -8858,6 +8898,7 @@ const sq: Messages = {
   skipButton: "✖️ Mos e shkarko",
   skipped: "⏭ Kjo lidhje u anashkalua.",
   chooseTimedOut: "⌛ Nuk u zgjodh asnjë cilësi brenda 30 minutave — po e anashkaloj këtë lidhje.",
+  chooseAutoPicked: "⌛ Nuk u zgjodh asnjë cilësi brenda 2 minutave — po e shkarkoj videon automatikisht.",
   queueLostOnRestart: (count) =>
     `⚠️ Boti po riniset për një përditësim — radha u rivendos (lidhje: ${count}). Ju lutemi dërgojini sërish pas një minute.`,
   subtitlesButton: "📝 Titra",
@@ -9089,6 +9130,7 @@ const bs: Messages = {
   skipButton: "✖️ Ne preuzimaj",
   skipped: "⏭ Ovaj link je preskočen.",
   chooseTimedOut: "⌛ Kvalitet nije odabran u roku od 30 minuta — preskačem ovaj link.",
+  chooseAutoPicked: "⌛ Kvalitet nije odabran u roku od 2 minute — sam preuzimam video.",
   queueLostOnRestart: (count) =>
     `⚠️ Bot se ponovo pokreće zbog ažuriranja — red je poništen (linkovi: ${count}). Pošaljite ih ponovo za minutu.`,
   subtitlesButton: "📝 Titlovi",
@@ -9310,6 +9352,7 @@ const ce: Messages = {
   skipButton: "✖️ Ма чуяккха",
   skipped: "⏭ ХӀара хьажорг йитина.",
   chooseTimedOut: "⌛ 30 минотехь дикалла ца харжина — хӀара хьажорг йитина.",
+  chooseAutoPicked: "⌛ 2 минотехь дикалла ца харжина — видео сайга чудоьду.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот карлайоккхуш юха йолало — рогӀ цӀанйина (хьажоргаш: ${count}). Минот яьлча уьш юха дахийтийша.`,
   subtitlesButton: "📝 Субтитраш",
@@ -9531,6 +9574,7 @@ const inh: Messages = {
   skipButton: "✖️ Ма чуяккха",
   skipped: "⏭ Ер ссылка юта.",
   chooseTimedOut: "⌛ 30 минота чу качество ца хьаржаб — ер ссылка юта.",
+  chooseAutoPicked: "⌛ 2 минота чу качество ца хьаржаб — видео са йоахаду.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот обновлени деш юха доладу — рогӀ цӀенъяьй (ссылкаш: ${count}). Цхьа минот яьлча уж кхы а цкъа дахийтал.`,
   subtitlesButton: "📝 Субтитраш",
@@ -9752,6 +9796,7 @@ const av: Messages = {
   skipButton: "✖️ Босуге",
   skipped: "⏭ Гьаб ссылка тана.",
   chooseTimedOut: "⌛ 30 минуталъ сипат тӀаса бищичӀо — гьаб ссылка тана.",
+  chooseAutoPicked: "⌛ 2 минуталъ сипат тӀаса бищичӀо — видео дица гьабула.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот обновлениялъе цӀидасан рагьулеб буго — черх бацӀцӀад гьабуна (ссылкаби: ${count}). Цо минуталдасан гьел цӀидасан битӀе.`,
   subtitlesButton: "📝 Субтитраби",
@@ -9973,6 +10018,7 @@ const tl: Messages = {
   skipButton: "✖️ Huwag i-download",
   skipped: "⏭ Nilaktawan ang link na ito.",
   chooseTimedOut: "⌛ Walang napiling quality sa loob ng 30 minuto — nilalaktawan ang link na ito.",
+  chooseAutoPicked: "⌛ Walang napiling quality sa loob ng 2 minuto — ida-download ko na ang video.",
   queueLostOnRestart: (count) =>
     `⚠️ Nagre-restart ang bot para sa update — na-reset ang queue (mga link: ${count}). Pakipadala ulit sila pagkalipas ng isang minuto.`,
   subtitlesButton: "📝 Subtitles",
@@ -10195,6 +10241,7 @@ const uk: Messages = {
   skipButton: "✖️ Не завантажувати",
   skipped: "⏭ Це посилання пропустив.",
   chooseTimedOut: "⌛ Якість не обрано за 30 хвилин — це посилання пропускаю.",
+  chooseAutoPicked: "⌛ Якість не обрано за 2 хвилини — завантажую відео сам.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот перезапускається для оновлення — чергу скинуто (посилань: ${count}). Надішліть їх знову за хвилину.`,
   subtitlesButton: "📝 Субтитри",
@@ -10422,6 +10469,7 @@ const kk: Messages = {
   skipButton: "✖️ Жүктеп алмау",
   skipped: "⏭ Бұл сілтемені өткізіп жібердім.",
   chooseTimedOut: "⌛ 30 минут ішінде сапа таңдалмады — бұл сілтемені өткізіп жіберемін.",
+  chooseAutoPicked: "⌛ 2 минут ішінде сапа таңдалмады — бейнені өзім жүктеп беремін.",
   queueLostOnRestart: (count) =>
     `⚠️ Бот жаңарту үшін қайта іске қосылуда — кезек тазартылды (сілтемелер: ${count}). Бір минуттан кейін оларды қайта жіберіңіз.`,
   subtitlesButton: "📝 Субтитрлер",

@@ -119,7 +119,12 @@ function previewFileId(
 // и качество, а адрес живёт здесь.
 const queues = new LinkQueues();
 
-// Не нажали кнопку качества — очередь не должна стоять вечно.
+// Не нажали кнопку качества за пару минут — бот сам качает видео (720p или
+// ближайшее, что влезает в Telegram): по ссылке почти всегда нужно именно
+// видео, а человек, пока бот думал, часто ушёл в другие дела (просьба
+// пользователя, 12.11.2026). Скачать само нечего (нет видео, всё тяжелее
+// лимита) — ждём нажатия до CHOOSE_TIMEOUT_MS и пропускаем, как раньше.
+const AUTO_PICK_MS = 2 * 60 * 1000;
 const CHOOSE_TIMEOUT_MS = 30 * 60 * 1000;
 const chooseTimers = new Map<string, NodeJS.Timeout>();
 
@@ -802,16 +807,51 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
   }
 
   current.phase = "choosing";
-  clearChooseTimer(key);
   const token = current.token;
+  armChooseTimer(key, AUTO_PICK_MS, () => inBackground("Выбор по времени", autoPick(tg, key, token)));
+  return true;
+}
+
+function armChooseTimer(key: string, ms: number, fire: () => void) {
+  clearChooseTimer(key);
   const timer = setTimeout(() => {
     chooseTimers.delete(key);
-    inBackground("Пропуск по времени", skipByTimeout(tg, key, token));
-  }, CHOOSE_TIMEOUT_MS);
+    fire();
+  }, ms);
   // Таймер не должен держать процесс при остановке.
   timer.unref();
   chooseTimers.set(key, timer);
-  return true;
+}
+
+// Только пропуск по времени, без автовыбора: человек уже трогал клавиатуру
+// (субтитры) — значит, выбирает сам, качать за него видео нельзя.
+function armSkipTimer(tg: Api, key: string, token: number, ms = CHOOSE_TIMEOUT_MS) {
+  armChooseTimer(key, ms, () => inBackground("Пропуск по времени", skipByTimeout(tg, key, token)));
+}
+
+async function autoPick(tg: Api, key: string, token: number) {
+  const state = queues.get(key);
+  const current = state?.current;
+  if (!state || !current || current.token !== token || current.phase !== "choosing") return;
+  const choice = flagChoice("std", current);
+  if (!choice) {
+    armSkipTimer(tg, key, token, CHOOSE_TIMEOUT_MS - AUTO_PICK_MS);
+    return;
+  }
+  // Фаза меняется до первого await: нажатие, которое как раз прошло проверку
+  // подписки, увидит ссылку уже занятой и не запустит второе скачивание.
+  current.phase = "downloading";
+  // Пояснение остаётся вместо клавиатуры: иначе было бы непонятно, почему
+  // пришло видео, а не выбор. performDownload удалил бы это сообщение как
+  // сообщение выбора — поэтому отвязываем его.
+  const messageId = current.messageId;
+  current.messageId = undefined;
+  if (messageId) {
+    await tg
+      .editMessageText(state.chatId, messageId, messages[state.lang].chooseAutoPicked)
+      .catch((e) => console.error("Не удалось отметить автовыбор:", e?.message ?? e));
+  }
+  await startDownload(tg, key, state, current, choice.kind, choice.quality, sendersForApi(tg, state.chatId));
 }
 
 async function skipByTimeout(tg: Api, key: string, token: number) {
@@ -957,6 +997,7 @@ export function registerDownloadHandlers(bot: Bot) {
       return;
     }
     if (kind === "s") {
+      armSkipTimer(ctx.api, key, token);
       const tracks = current.subtitles ?? [];
       if (quality === "list" || quality === "back") {
         await ctx.answerCallbackQuery();
@@ -985,6 +1026,9 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.answerCallbackQuery({ text: m.sessionExpired });
       return;
     }
+    // Выбор сделан: автовыбор по времени не должен подменить его, пока идёт
+    // проверка подписки. Не прошла проверка — ссылка ждёт и пропустится сама.
+    armSkipTimer(ctx.api, key, token);
     await ctx.answerCallbackQuery();
 
     // Между присылкой ссылки и нажатием кнопки можно успеть отписаться.

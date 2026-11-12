@@ -72,6 +72,23 @@ export class BotUserService {
     });
   }
 
+  async getInstantVideo(telegramId: number): Promise<boolean> {
+    const row = await this.prisma.botUser.findUnique({
+      where: { telegramId: BigInt(telegramId) },
+      select: { instantVideo: true },
+    });
+    return row?.instantVideo ?? false;
+  }
+
+  // upsert — по той же причине, что и у языка.
+  async setInstantVideo(telegramId: number, instantVideo: boolean) {
+    await this.prisma.botUser.upsert({
+      where: { telegramId: BigInt(telegramId) },
+      create: { telegramId: BigInt(telegramId), instantVideo },
+      update: { instantVideo },
+    });
+  }
+
   // Человек заблокировал бота или разблокировал его. Событие для графиков
   // пишется только при смене состояния: Telegram может прислать то же самое
   // повторно. Смена и проверка — одним условным update, чтобы два

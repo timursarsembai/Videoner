@@ -143,6 +143,9 @@ model BotUser {
   // Язык бота, выбранный человеком вручную (/language): код вроде "uk".
   // null — по языку Telegram (languageCode).
   language          String?
+  // Режим «сразу видео» (/settings в личке): ссылка без выбора качества —
+  // бот сразу шлёт видео 720p с кнопкой «MP3» под ним. По умолчанию выключен.
+  instantVideo      Boolean           @default(false)
   // Безлимит выдаётся ТОЛЬКО вручную админом через /grant и срока не имеет.
   // Купить его нельзя: платных функций в сервисе нет.
   isUnlimited       Boolean           @default(false)

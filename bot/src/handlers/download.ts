@@ -1,3 +1,4 @@
+import { randomBytes } from "node:crypto";
 import { Api, Bot, Context, InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
 import { messages, type Lang } from "../i18n.js";
 import { langOf } from "../language.js";
@@ -27,6 +28,7 @@ import { blockUnlessSubscribed, isChannelMember, subscribeKeyboard } from "./mem
 import { LinkQueues, QUEUE_LIMIT, extractUrls, type Current, type OwnerState } from "../queue.js";
 import { orderTracks, type SubtitleTrack } from "../subtitles.js";
 import { shareLinkFor } from "../share-link.js";
+import { instantVideo } from "../instant-video.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -534,7 +536,18 @@ export function sendersFor(ctx: Context, chatId: number, opts: { replyTo?: numbe
 export function sendersForApi(
   tg: Api,
   chatId: number,
-  { replyTo, publish = true, thread = {} }: { replyTo?: number; publish?: boolean; thread?: { message_thread_id?: number } } = {},
+  {
+    replyTo,
+    publish = true,
+    thread = {},
+    videoMarkup,
+  }: {
+    replyTo?: number;
+    publish?: boolean;
+    thread?: { message_thread_id?: number };
+    // Кнопки под видео (режим «сразу видео» — «MP3»).
+    videoMarkup?: InlineKeyboard;
+  } = {},
 ) {
   // allow_sending_without_reply: сообщение со ссылкой могли удалить, пока шло
   // скачивание, — файл всё равно нужен.
@@ -549,7 +562,8 @@ export function sendersForApi(
     // ссылка на первоисточник и упоминание бота остаются с видео у любого,
     // кому его переслали.
     replyWithVideo: async (file: InputFile | string, caption: string, dims?: VideoDimensions) =>
-      (await tg.sendVideo(chatId, file, { caption, supports_streaming: true, ...dims, ...asReply })).video?.file_id,
+      (await tg.sendVideo(chatId, file, { caption, supports_streaming: true, ...dims, ...asReply, reply_markup: videoMarkup }))
+        .video?.file_id,
     replyWithAudio: async (file: InputFile | string, caption: string) =>
       (await tg.sendAudio(chatId, file, { caption, ...asReply })).audio?.file_id,
     replyWithPhoto: async (file: InputFile, caption: string) => {
@@ -718,6 +732,8 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
   try {
     messageId = (await tg.sendMessage(state.chatId, m.fetchingInfo)).message_id;
     current.messageId = messageId;
+    // Режим «сразу видео» — параллельно с анализом ссылки; instantVideo не бросает.
+    const instant = state.chatId > 0 ? instantVideo(state.userId) : Promise.resolve(false);
 
     const info = await api<{
       title: string;
@@ -734,6 +750,7 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       telegramLanguageCode: state.languageCode,
       cookieScope: state.chatId > 0 ? `user:${state.userId}` : `chat:${state.chatId}`,
     });
+    const instantOn = await instant;
     // Пока шёл анализ, человек всё остановил (/stop): ссылки больше нет —
     // убираем «Получаю информацию» и ничего не рисуем.
     if (queues.get(key)?.current?.token !== current.token) {
@@ -776,6 +793,17 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
     if (flag && state.playlistUrls?.has(current.url)) {
       await tg.editMessageText(state.chatId, messageId, `${m.skipped} ${current.title ?? ""}${current.sizeNote ?? ""}`.trim());
       return false;
+    }
+
+    // Режим «сразу видео» (/settings в личке): 720p без выбора, «MP3» — кнопкой
+    // под видео. Не влезает ничего — обычный выбор.
+    if (!flag && instantOn) {
+      const pick = flagChoice("std", current);
+      if (pick) {
+        const videoMarkup = current.qualities.audio.length ? mp3Keyboard(m, current.url, state.userId) : undefined;
+        await startDownload(tg, key, state, current, pick.kind, pick.quality, sendersForApi(tg, state.chatId, { videoMarkup }));
+        return true;
+      }
     }
 
     const kb = choiceKeyboard(m, current, lang);
@@ -827,6 +855,21 @@ function armChooseTimer(key: string, ms: number, fire: () => void) {
 // (субтитры) — значит, выбирает сам, качать за него видео нельзя.
 function armSkipTimer(tg: Api, key: string, token: number, ms = CHOOSE_TIMEOUT_MS) {
   armChooseTimer(key, ms, () => inBackground("Пропуск по времени", skipByTimeout(tg, key, token)));
+}
+
+// Кнопка «MP3» под видео режима «сразу видео». В callback_data не влезает
+// адрес (64 байта) — храним его здесь по короткому номеру. После перезапуска
+// бота кнопка ответит «сессия устарела»: ссылку можно прислать заново.
+const MP3_LINKS_LIMIT = 20_000;
+// Номер случайный и помнит, чья кнопка: подряд идущие номера после
+// перезапуска совпали бы со старыми кнопками и отдали бы чужую ссылку.
+const mp3Links = new Map<string, { url: string; userId: number }>();
+
+function mp3Keyboard(m: (typeof messages)[Lang], url: string, userId: number): InlineKeyboard {
+  const ref = randomBytes(9).toString("base64url");
+  if (mp3Links.size >= MP3_LINKS_LIMIT) mp3Links.delete(mp3Links.keys().next().value!);
+  mp3Links.set(ref, { url, userId });
+  return new InlineKeyboard().text(m.mp3Button, `mp3|${ref}`);
 }
 
 async function autoPick(tg: Api, key: string, token: number) {
@@ -881,7 +924,11 @@ async function skipByTimeout(tg: Api, key: string, token: number) {
 export async function handleLinks(
   ctx: Context,
   inputUrls: string[],
-  { resumed = false, flag = null }: { resumed?: boolean; flag?: LinkFlag | null } = {},
+  {
+    resumed = false,
+    flag = null,
+    offerPlaylists = true,
+  }: { resumed?: boolean; flag?: LinkFlag | null; offerPlaylists?: boolean } = {},
 ) {
   let urls = inputUrls;
   if (!ctx.from || !ctx.chat) return;
@@ -896,7 +943,7 @@ export async function handleLinks(
   // Плейлист YouTube: страница плейлиста — только плейлист; ролик из
   // плейлиста (&list=…) — сам ролик, и отдельно предложим весь плейлист.
   for (const url of urls) {
-    if (youtubePlaylistId(url)) inBackground("Плейлист", offerPlaylist(ctx, url, flag, lang));
+    if (offerPlaylists && youtubePlaylistId(url)) inBackground("Плейлист", offerPlaylist(ctx, url, flag, lang));
   }
   urls = urls.filter((url) => !isPlaylistPage(url));
   if (!urls.length) return;
@@ -906,6 +953,10 @@ export async function handleLinks(
   if (await blockUnlessSubscribed(ctx, lang, urls)) return;
 
   const key = LinkQueues.key(ctx.chat.id, ctx.from.id);
+  // Повтор ссылки в очередь не встаёт — и флаг ему не нужен: иначе он
+  // остался бы висеть и сработал на этой ссылке когда-нибудь потом.
+  const before = queues.get(key);
+  const fresh = urls.filter((u) => before?.current?.url !== u && !before?.pending.includes(u));
   const added = queues.enqueue(
     key,
     {
@@ -921,7 +972,7 @@ export async function handleLinks(
     const state = queues.get(key);
     if (state) {
       state.flags ??= new Map();
-      for (const url of urls) state.flags.set(url, flag);
+      for (const url of fresh) state.flags.set(url, flag);
     }
   }
 
@@ -961,6 +1012,30 @@ export function registerDownloadHandlers(bot: Bot) {
     const m = messages[lang];
     const data = ctx.callbackQuery.data;
     if (data.startsWith("pl|")) return playlistChoice(ctx, data, lang);
+    if (data.startsWith("mp3|")) {
+      const link = mp3Links.get(data.slice(4));
+      if (!link || link.userId !== ctx.from.id || ctx.chat?.type !== "private") {
+        await ctx.answerCallbackQuery({ text: m.sessionExpired, show_alert: true });
+        return;
+      }
+      await ctx.answerCallbackQuery();
+      // Видео уже в чате, но скачивание ещё закрывается (убрать «Скачиваю»,
+      // канал): ссылка пока текущая, и очередь сочла бы MP3 повтором.
+      // Ждём в фоне: обработчик держит обновления всех людей (см. inBackground).
+      const key = LinkQueues.key(ctx.chat.id, ctx.from.id);
+      inBackground(
+        "MP3 под видео",
+        (async () => {
+          for (let i = 0; i < 60 && queues.get(key)?.current?.url === link.url; i++) {
+            await new Promise((r) => setTimeout(r, 1000));
+          }
+          // Тот же путь, что у «ссылка -audio»: лимиты, подписка, очередь.
+          // Плейлист заново не предлагаем — его уже предложили по самой ссылке.
+          await handleLinks(ctx, [link.url], { flag: "audio", offerPlaylists: false });
+        })(),
+      );
+      return;
+    }
     if (data === "q|stop") {
       await ctx.answerCallbackQuery();
       await ctx.editMessageReplyMarkup().catch(() => {});

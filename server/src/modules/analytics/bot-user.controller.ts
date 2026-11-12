@@ -98,6 +98,23 @@ export class BotUserController {
     return { language };
   }
 
+  // Режим «сразу видео» (/settings в личке бота). Только для бота — как язык.
+  @Get(':telegramId/instant-video')
+  @UseGuards(BotOnlyGuard)
+  async getInstantVideo(@Param('telegramId') telegramId: string) {
+    return { instantVideo: await this.botUserService.getInstantVideo(parseTelegramId(telegramId)) };
+  }
+
+  @Post(':telegramId/instant-video')
+  @UseGuards(BotOnlyGuard)
+  async setInstantVideo(@Param('telegramId') telegramId: string, @Body() body: { instantVideo?: unknown }) {
+    if (typeof body?.instantVideo !== 'boolean') {
+      throw new BadRequestException('instantVideo must be boolean');
+    }
+    await this.botUserService.setInstantVideo(parseTelegramId(telegramId), body.instantVideo);
+    return { instantVideo: body.instantVideo };
+  }
+
   // Для обновления профиля на сайте (GET /api/auth/me) без повторной проверки
   // подписи Telegram при каждом заходе — сессия сайта уже подтверждает
   // личность, тут просто читаем актуальные данные по telegramId.

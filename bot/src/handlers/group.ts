@@ -4,6 +4,7 @@ import { langOf } from "../language.js";
 import { parseFlag, type LinkFlag } from "../flags.js";
 import { postDescription } from "../caption.js";
 import { loadSettings, saveSettings } from "../settings-store.js";
+import { fetchInstantVideo, instantVideo, saveInstantVideo } from "../instant-video.js";
 import { applyChatCommands } from "../commands.js";
 import {
   ADMIN_TELEGRAM_ID,
@@ -151,6 +152,11 @@ function settingsKeyboard(m: (typeof messages)[Lang], s: GroupSettings): InlineK
     .text(m.settingsDoneButton, "gs|done");
 }
 
+// /settings в личке — свои настройки, пока одна: «сразу видео».
+function personalKeyboard(m: (typeof messages)[Lang], on: boolean): InlineKeyboard {
+  return new InlineKeyboard().text(m.instantVideoButton(on), "us|iv").row().text(m.settingsDoneButton, "us|done");
+}
+
 // Текст и кнопки /settings — и для возврата из выбора языка (handlers/language.ts).
 export async function settingsMessage(ctx: Context, s: GroupSettings) {
   const m = messages[await langOf(ctx)];
@@ -281,7 +287,11 @@ export function registerGroupHandlers(bot: Bot) {
   // своего обработчика не доходила.
   bot.command("settings", async (ctx) => {
     const m = messages[await langOf(ctx)];
-    if (ctx.chat.type === "private" || ctx.chat.type === "channel") {
+    if (ctx.chat.type === "private") {
+      await ctx.reply(m.personalSettings, { reply_markup: personalKeyboard(m, await instantVideo(ctx.from!.id)) });
+      return;
+    }
+    if (ctx.chat.type === "channel") {
       await ctx.reply(m.settingsGroupsOnly);
       return;
     }
@@ -293,6 +303,34 @@ export function registerGroupHandlers(bot: Bot) {
     await ctx.reply(m.groupSettings(s, await botCanDelete(ctx, { fresh: true })), {
       reply_markup: settingsKeyboard(m, s),
     });
+  });
+
+  // Кнопки личных настроек. До bot.chatType(...) и до общего обработчика
+  // кнопок лички (handlers/download.ts) — по той же причине, что и команда.
+  bot.callbackQuery(/^us\|(iv|done)$/, async (ctx) => {
+    const m = messages[await langOf(ctx)];
+    if (ctx.chat?.type !== "private") {
+      await ctx.answerCallbackQuery();
+      return;
+    }
+    if (ctx.match![1] === "done") {
+      await ctx.answerCallbackQuery();
+      await ctx.editMessageReplyMarkup().catch(() => {});
+      return;
+    }
+    let on: boolean;
+    try {
+      on = !(await fetchInstantVideo(ctx.from.id));
+      await saveInstantVideo(ctx.from.id, on);
+    } catch (e: any) {
+      console.error(`Сразу видео ${ctx.from.id}: не сохранилось:`, e?.message ?? e);
+      await ctx.answerCallbackQuery({ text: m.settingsFailed, show_alert: true });
+      return;
+    }
+    await ctx.answerCallbackQuery();
+    await ctx
+      .editMessageReplyMarkup({ reply_markup: personalKeyboard(m, on) })
+      .catch((e) => console.error("Личные настройки:", e?.message ?? e));
   });
 
   const groups = bot.chatType(["group", "supergroup"]);

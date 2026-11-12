@@ -12,6 +12,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Подключить аккаунт по коду из расширения" },
     { command: "stop", description: "Остановить скачивание и очередь" },
     { command: "language", description: "Язык бота" },
+    { command: "settings", description: "Мои настройки" },
   ],
   uk: [
     { command: "start", description: "Як користуватися ботом" },
@@ -20,6 +21,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Підключити акаунт за кодом із розширення" },
     { command: "stop", description: "Зупинити завантаження й чергу" },
     { command: "language", description: "Мова бота" },
+    { command: "settings", description: "Мої налаштування" },
   ],
   kk: [
     { command: "start", description: "Ботты қалай пайдалану керек" },
@@ -28,6 +30,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Кеңейтімдегі код арқылы аккаунт қосу" },
     { command: "stop", description: "Жүктеу мен кезекті тоқтату" },
     { command: "language", description: "Бот тілі" },
+    { command: "settings", description: "Менің баптауларым" },
   ],
   en: [
     { command: "start", description: "How to use the bot" },
@@ -36,6 +39,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Connect an account with a code from the extension" },
     { command: "stop", description: "Stop the download and the queue" },
     { command: "language", description: "Bot language" },
+    { command: "settings", description: "My settings" },
   ],
   ar: [
     { command: "start", description: "طريقة استخدام البوت" },
@@ -44,6 +48,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "ربط حساب برمز من الإضافة" },
     { command: "stop", description: "إيقاف التنزيل وقائمة الانتظار" },
     { command: "language", description: "لغة البوت" },
+    { command: "settings", description: "إعداداتي" },
   ],
   zh: [
     { command: "start", description: "如何使用机器人" },
@@ -52,6 +57,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "用扩展中的代码连接账号" },
     { command: "stop", description: "停止下载和队列" },
     { command: "language", description: "机器人语言" },
+    { command: "settings", description: "我的设置" },
   ],
   hi: [
     { command: "start", description: "बॉट का इस्तेमाल कैसे करें" },
@@ -60,6 +66,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "एक्सटेंशन के कोड से खाता कनेक्ट करें" },
     { command: "stop", description: "डाउनलोड और कतार रोकें" },
     { command: "language", description: "बॉट की भाषा" },
+    { command: "settings", description: "मेरी सेटिंग्स" },
   ],
   id: [
     { command: "start", description: "Cara menggunakan bot" },
@@ -68,6 +75,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Hubungkan akun dengan kode dari ekstensi" },
     { command: "stop", description: "Hentikan unduhan dan antrean" },
     { command: "language", description: "Bahasa bot" },
+    { command: "settings", description: "Pengaturan saya" },
   ],
   sw: [
     { command: "start", description: "Jinsi ya kutumia bot" },
@@ -76,6 +84,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Unganisha akaunti kwa msimbo kutoka kwenye kiendelezi" },
     { command: "stop", description: "Simamisha upakuaji na foleni" },
     { command: "language", description: "Lugha ya bot" },
+    { command: "settings", description: "Mipangilio yangu" },
   ],
   de: [
     { command: "start", description: "So benutzt du den Bot" },
@@ -84,6 +93,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Konto mit einem Code aus der Erweiterung verbinden" },
     { command: "stop", description: "Download und Warteschlange stoppen" },
     { command: "language", description: "Sprache des Bots" },
+    { command: "settings", description: "Meine Einstellungen" },
   ],
   fr: [
     { command: "start", description: "Comment utiliser le bot" },
@@ -92,6 +102,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Connecter un compte avec un code de l'extension" },
     { command: "stop", description: "Arrêter le téléchargement et la file d'attente" },
     { command: "language", description: "Langue du bot" },
+    { command: "settings", description: "Mes réglages" },
   ],
   it: [
     { command: "start", description: "Come usare il bot" },
@@ -100,6 +111,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Collega un account con un codice dall'estensione" },
     { command: "stop", description: "Ferma il download e la coda" },
     { command: "language", description: "Lingua del bot" },
+    { command: "settings", description: "Le mie impostazioni" },
   ],
   pt: [
     { command: "start", description: "Como usar o bot" },
@@ -108,6 +120,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Conectar uma conta com um código da extensão" },
     { command: "stop", description: "Parar o download e a fila" },
     { command: "language", description: "Idioma do bot" },
+    { command: "settings", description: "Minhas configurações" },
   ],
   es: [
     { command: "start", description: "Cómo usar el bot" },
@@ -116,6 +129,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Conectar una cuenta con un código de la extensión" },
     { command: "stop", description: "Detener la descarga y la cola" },
     { command: "language", description: "Idioma del bot" },
+    { command: "settings", description: "Mis ajustes" },
   ],
   uz: [
     { command: "start", description: "Botdan qanday foydalanish" },
@@ -124,6 +138,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Kengaytmadagi kod bilan akkauntni ulash" },
     { command: "stop", description: "Yuklab olish va navbatni toʻxtatish" },
     { command: "language", description: "Bot tili" },
+    { command: "settings", description: "Mening sozlamalarim" },
   ],
   tr: [
     { command: "start", description: "Bot nasıl kullanılır" },
@@ -132,6 +147,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Uzantıdan alınan kodla hesap bağlayın" },
     { command: "stop", description: "İndirmeyi ve kuyruğu durdurun" },
     { command: "language", description: "Bot dili" },
+    { command: "settings", description: "Ayarlarım" },
   ],
   fa: [
     { command: "start", description: "نحوهٔ استفاده از ربات" },
@@ -140,6 +156,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "اتصال حساب با کد افزونه" },
     { command: "stop", description: "توقف دانلود و صف" },
     { command: "language", description: "زبان ربات" },
+    { command: "settings", description: "تنظیمات من" },
   ],
   vi: [
     { command: "start", description: "Cách dùng bot" },
@@ -148,6 +165,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Kết nối tài khoản bằng mã từ tiện ích" },
     { command: "stop", description: "Dừng tải và hàng đợi" },
     { command: "language", description: "Ngôn ngữ của bot" },
+    { command: "settings", description: "Cài đặt của tôi" },
   ],
   bn: [
     { command: "start", description: "বট কীভাবে ব্যবহার করবেন" },
@@ -156,6 +174,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "এক্সটেনশনের কোড দিয়ে অ্যাকাউন্ট যুক্ত করুন" },
     { command: "stop", description: "ডাউনলোড ও সারি থামান" },
     { command: "language", description: "বটের ভাষা" },
+    { command: "settings", description: "আমার সেটিংস" },
   ],
   ur: [
     { command: "start", description: "بوٹ کیسے استعمال کریں" },
@@ -164,6 +183,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "ایکسٹینشن کے کوڈ سے اکاؤنٹ جوڑیں" },
     { command: "stop", description: "ڈاؤن لوڈ اور قطار روکیں" },
     { command: "language", description: "بوٹ کی زبان" },
+    { command: "settings", description: "میری ترتیبات" },
   ],
   pl: [
     { command: "start", description: "Jak korzystać z bota" },
@@ -172,6 +192,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Połącz konto kodem z rozszerzenia" },
     { command: "stop", description: "Zatrzymaj pobieranie i kolejkę" },
     { command: "language", description: "Język bota" },
+    { command: "settings", description: "Moje ustawienia" },
   ],
   ja: [
     { command: "start", description: "ボットの使い方" },
@@ -180,6 +201,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "拡張機能のコードでアカウントを接続" },
     { command: "stop", description: "ダウンロードとキューを停止" },
     { command: "language", description: "ボットの言語" },
+    { command: "settings", description: "自分の設定" },
   ],
   ko: [
     { command: "start", description: "봇 사용 방법" },
@@ -188,6 +210,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "확장 프로그램의 코드로 계정 연결" },
     { command: "stop", description: "다운로드와 대기열 중지" },
     { command: "language", description: "봇 언어" },
+    { command: "settings", description: "내 설정" },
   ],
   th: [
     { command: "start", description: "วิธีใช้บอท" },
@@ -196,6 +219,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "เชื่อมต่อบัญชีด้วยรหัสจากส่วนขยาย" },
     { command: "stop", description: "หยุดการดาวน์โหลดและคิว" },
     { command: "language", description: "ภาษาของบอท" },
+    { command: "settings", description: "การตั้งค่าของฉัน" },
   ],
   tl: [
     { command: "start", description: "Paano gamitin ang bot" },
@@ -204,6 +228,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "I-connect ang account gamit ang code mula sa extension" },
     { command: "stop", description: "Ihinto ang mga download at ang queue" },
     { command: "language", description: "Wika ng bot" },
+    { command: "settings", description: "Aking settings" },
   ],
   am: [
     { command: "start", description: "ቦቱን እንዴት መጠቀም እንደሚቻል" },
@@ -212,6 +237,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "ከቅጥያው በሚገኝ ኮድ መለያ ያገናኙ" },
     { command: "stop", description: "ማውረዱን እና ወረፋውን ያቁሙ" },
     { command: "language", description: "የቦቱ ቋንቋ" },
+    { command: "settings", description: "የእኔ ቅንብሮች" },
   ],
   om: [
     { command: "start", description: "Bootii akkamitti akka fayyadamtan" },
@@ -220,6 +246,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Koodii dabalata irraa argameen akkaawuntii walqabsiisaa" },
     { command: "stop", description: "Buufachuu fi tarree eegumsaa dhaabaa" },
     { command: "language", description: "Afaan bootii" },
+    { command: "settings", description: "Qindaa'ina koo" },
   ],
   ha: [
     { command: "start", description: "Yadda ake amfani da bot" },
@@ -228,6 +255,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Haɗa asusu da lamba daga ƙarin burauza" },
     { command: "stop", description: "Tsayar da saukewa da layi" },
     { command: "language", description: "Harshen bot" },
+    { command: "settings", description: "Saitunana" },
   ],
   so: [
     { command: "start", description: "Sida loo isticmaalo bot-ka" },
@@ -236,6 +264,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Ku xir akoon adigoo isticmaalaya kood kordhiyaha ka yimid" },
     { command: "stop", description: "Jooji soo dejinta iyo safka" },
     { command: "language", description: "Luqadda bot-ka" },
+    { command: "settings", description: "Dejintayda" },
   ],
   az: [
     { command: "start", description: "Botdan necə istifadə etmək olar" },
@@ -244,6 +273,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Genişlənmədən alınan kodla hesabı qoşun" },
     { command: "stop", description: "Yükləməni və növbəni dayandırın" },
     { command: "language", description: "Botun dili" },
+    { command: "settings", description: "Ayarlarım" },
   ],
   ky: [
     { command: "start", description: "Ботту кантип колдонуу керек" },
@@ -252,6 +282,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Кеңейтүүдөн алынган код менен аккаунтту туташтыруу" },
     { command: "stop", description: "Жүктөп алууну жана кезекти токтотуу" },
     { command: "language", description: "Боттун тили" },
+    { command: "settings", description: "Менин жөндөөлөрүм" },
   ],
   tg: [
     { command: "start", description: "Чӣ тавр аз бот истифода бурдан" },
@@ -260,6 +291,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Пайваст кардани аккаунт бо коди васеъкунанда" },
     { command: "stop", description: "Қатъ кардани боргирӣ ва навбат" },
     { command: "language", description: "Забони бот" },
+    { command: "settings", description: "Танзимоти ман" },
   ],
   ms: [
     { command: "start", description: "Cara menggunakan bot" },
@@ -268,6 +300,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Sambungkan akaun dengan kod daripada sambungan" },
     { command: "stop", description: "Hentikan muat turun dan baris gilir" },
     { command: "language", description: "Bahasa bot" },
+    { command: "settings", description: "Tetapan saya" },
   ],
   nl: [
     { command: "start", description: "Hoe je de bot gebruikt" },
@@ -276,6 +309,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Account koppelen met een code uit de extensie" },
     { command: "stop", description: "Downloaden en wachtrij stoppen" },
     { command: "language", description: "Taal van de bot" },
+    { command: "settings", description: "Mijn instellingen" },
   ],
   ro: [
     { command: "start", description: "Cum folosești botul" },
@@ -284,6 +318,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Conectează un cont cu un cod din extensie" },
     { command: "stop", description: "Oprește descărcarea și coada" },
     { command: "language", description: "Limba botului" },
+    { command: "settings", description: "Setările mele" },
   ],
   ps: [
     { command: "start", description: "د بوټ د کارولو طریقه" },
@@ -292,6 +327,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "د توسیع د کوډ په واسطه حساب وصل کړئ" },
     { command: "stop", description: "ښکته کول او کتار ودروئ" },
     { command: "language", description: "د بوټ ژبه" },
+    { command: "settings", description: "زما امستنې" },
   ],
   ckb: [
     { command: "start", description: "چۆنیەتی بەکارهێنانی بۆت" },
@@ -300,6 +336,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "بەستنەوەی هەژمار بە کۆدێک لە پێوەکراوەکەوە" },
     { command: "stop", description: "ڕاگرتنی داگرتن و ڕیز" },
     { command: "language", description: "زمانی بۆت" },
+    { command: "settings", description: "ڕێکخستنەکانم" },
   ],
   ku: [
     { command: "start", description: "Bot çawa tê bikaranîn" },
@@ -308,6 +345,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Hesabekî bi koda ji pêvekê girê bide" },
     { command: "stop", description: "Daxistin û rêzê rawestîne" },
     { command: "language", description: "Zimanê botê" },
+    { command: "settings", description: "Mîhengên min" },
   ],
   ug: [
     { command: "start", description: "بوتنى قانداق ئىشلىتىش" },
@@ -316,6 +354,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "قىستۇرمىدىكى كود ئارقىلىق ھېسابات باغلاش" },
     { command: "stop", description: "چۈشۈرۈش ۋە ئۆچىرەتنى توختىتىش" },
     { command: "language", description: "بوت تىلى" },
+    { command: "settings", description: "تەڭشەكلىرىم" },
   ],
   tk: [
     { command: "start", description: "Boty nädip ulanmaly" },
@@ -324,6 +363,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Giňeltmedäki kod bilen hasaby birikdiriň" },
     { command: "stop", description: "Ýüklemäni we nobaty saklaň" },
     { command: "language", description: "Botuň dili" },
+    { command: "settings", description: "Sazlamalarym" },
   ],
   tt: [
     { command: "start", description: "Ботны ничек кулланырга" },
@@ -332,6 +372,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Киңәйтмәдәге код белән аккаунтны тоташтыру" },
     { command: "stop", description: "Йөкләп алуны һәм чиратны туктату" },
     { command: "language", description: "Бот теле" },
+    { command: "settings", description: "Минем көйләүләр" },
   ],
   sq: [
     { command: "start", description: "Si të përdoret boti" },
@@ -340,6 +381,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Lidhni një llogari me kodin nga shtesa" },
     { command: "stop", description: "Ndaloni shkarkimin dhe radhën" },
     { command: "language", description: "Gjuha e botit" },
+    { command: "settings", description: "Cilësimet e mia" },
   ],
   bs: [
     { command: "start", description: "Kako koristiti bota" },
@@ -348,6 +390,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Povežite račun kodom iz proširenja" },
     { command: "stop", description: "Zaustavite preuzimanje i red" },
     { command: "language", description: "Jezik bota" },
+    { command: "settings", description: "Moje postavke" },
   ],
   ce: [
     { command: "start", description: "Бот муха лело" },
@@ -356,6 +399,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Расширенера кодаца аккаунт тӀетаса" },
     { command: "stop", description: "Чуяккхар а, рогӀ а сацо" },
     { command: "language", description: "Ботан мотт" },
+    { command: "settings", description: "Сан нисдарш" },
   ],
   inh: [
     { command: "start", description: "Бот мишта леладе" },
@@ -364,6 +408,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Расширене тӀара кодаца аккаунт тӀатоха" },
     { command: "stop", description: "Чуяккхар а рогӀ а сацаде" },
     { command: "language", description: "Ботан мотт" },
+    { command: "settings", description: "Са нисдараш" },
   ],
   av: [
     { command: "start", description: "Бот кин хӀалтӀизабизе" },
@@ -372,6 +417,7 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
     { command: "connect", description: "Расширениялъул кодалдалъун аккаунт бухьинабизе" },
     { command: "stop", description: "Босиги черхги чӀезабизе" },
     { command: "language", description: "Боталъул мацӀ" },
+    { command: "settings", description: "Дир низамал" },
   ],
 };
 

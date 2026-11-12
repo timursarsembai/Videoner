@@ -191,6 +191,10 @@ interface Messages {
   chooseTimedOut: string;
   // Не выбрали за пару минут — бот сам качает видео (handlers/download.ts).
   chooseAutoPicked: string;
+  // Личные настройки (/settings в личке) и режим «сразу видео» (handlers/download.ts).
+  personalSettings: string;
+  instantVideoButton: (on: boolean) => string;
+  mp3Button: string;
   queueLostOnRestart: (count: number) => string;
   // Субтитры YouTube (см. subtitles.ts).
   subtitlesButton: string;
@@ -462,6 +466,9 @@ const ru: Messages = {
   skipped: "⏭ Эту ссылку пропустил.",
   chooseTimedOut: "⌛ Качество не выбрано за 30 минут — эту ссылку пропускаю.",
   chooseAutoPicked: "⌛ Качество не выбрано за 2 минуты — скачиваю видео сам.",
+  personalSettings: "⚙️ Ваши настройки\n\n⚡ Сразу видео: бот без выбора качества присылает видео 720p, а под ним — кнопку «🎵 MP3», если нужен звук. Нужно другое качество — выключите.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Сразу видео`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот перезапускается для обновления — очередь сброшена (ссылок: ${count}). Пришлите их снова через минуту.`,
   subtitlesButton: "📝 Субтитры",
@@ -684,6 +691,9 @@ const en: Messages = {
   skipped: "⏭ Skipped this link.",
   chooseTimedOut: "⌛ No quality chosen within 30 minutes — skipping this link.",
   chooseAutoPicked: "⌛ No quality chosen within 2 minutes — downloading the video for you.",
+  personalSettings: "⚙️ Your settings\n\n⚡ Instant video: the bot sends the video in 720p without asking for quality, with a «🎵 MP3» button below it if you need the audio. Need another quality — turn it off.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Instant video`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ The bot is restarting for an update — the queue was reset (links: ${count}). Please send them again in a minute.`,
   subtitlesButton: "📝 Subtitles",
@@ -906,6 +916,9 @@ const ar: Messages = {
   skipped: "⏭ تم تخطي هذا الرابط.",
   chooseTimedOut: "⌛ لم تُختر جودة خلال 30 دقيقة — تخطيت هذا الرابط.",
   chooseAutoPicked: "⌛ لم تُختر جودة خلال دقيقتين — أنزّل الفيديو تلقائيًا.",
+  personalSettings: "⚙️ إعداداتك\n\n⚡ فيديو فوري: يرسل البوت الفيديو بدقة 720p دون سؤالك عن الجودة، وتحته زر «🎵 MP3» إن احتجت الصوت. تحتاج جودة أخرى؟ أوقف الخيار.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ فيديو فوري`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ يُعاد تشغيل البوت للتحديث — أُعيد ضبط قائمة الانتظار (الروابط: ${count}). يُرجى إرسالها مرة أخرى بعد دقيقة.`,
   subtitlesButton: "📝 الترجمة",
@@ -1128,6 +1141,9 @@ const zh: Messages = {
   skipped: "⏭ 已跳过这个链接。",
   chooseTimedOut: "⌛ 30 分钟内没有选择画质，已跳过这个链接。",
   chooseAutoPicked: "⌛ 2 分钟内没有选择画质，自动为你下载视频。",
+  personalSettings: "⚙️ 你的设置\n\n⚡ 直接发视频：机器人不再询问画质，直接发送 720p 视频，下方附「🎵 MP3」按钮，需要音频时点它。需要其他画质就关闭此项。",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ 直接发视频`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ 机器人正在重启更新，队列已被清空（链接：${count} 个）。请过一分钟重新发送。`,
   subtitlesButton: "📝 字幕",
@@ -1350,6 +1366,9 @@ const hi: Messages = {
   skipped: "⏭ यह लिंक छोड़ दिया।",
   chooseTimedOut: "⌛ 30 मिनट में कोई क्वालिटी नहीं चुनी गई — यह लिंक छोड़ रहा हूँ।",
   chooseAutoPicked: "⌛ 2 मिनट में कोई क्वालिटी नहीं चुनी गई — वीडियो खुद डाउनलोड कर रहा हूँ।",
+  personalSettings: "⚙️ आपकी सेटिंग्स\n\n⚡ तुरंत वीडियो: बॉट क्वालिटी पूछे बिना 720p वीडियो भेजता है, और नीचे «🎵 MP3» बटन, अगर ऑडियो चाहिए। दूसरी क्वालिटी चाहिए तो इसे बंद करें।",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ तुरंत वीडियो`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ अपडेट के लिए बॉट रीस्टार्ट हो रहा है — कतार खाली हो गई (लिंक: ${count})। कृपया एक मिनट बाद उन्हें फिर से भेजें।`,
   subtitlesButton: "📝 सबटाइटल",
@@ -1572,6 +1591,9 @@ const indonesian: Messages = {
   skipped: "⏭ Tautan ini dilewati.",
   chooseTimedOut: "⌛ Tidak ada kualitas yang dipilih dalam 30 menit — tautan ini dilewati.",
   chooseAutoPicked: "⌛ Tidak ada kualitas yang dipilih dalam 2 menit — videonya saya unduh otomatis.",
+  personalSettings: "⚙️ Pengaturan Anda\n\n⚡ Video langsung: bot mengirim video 720p tanpa menanyakan kualitas, dengan tombol «🎵 MP3» di bawahnya jika butuh audio. Butuh kualitas lain — matikan.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Video langsung`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot sedang dimulai ulang untuk pembaruan — antrean diatur ulang (tautan: ${count}). Silakan kirim lagi dalam satu menit.`,
   subtitlesButton: "📝 Subtitle",
@@ -1794,6 +1816,9 @@ const sw: Messages = {
   skipped: "⏭ Nimeiruka linki hii.",
   chooseTimedOut: "⌛ Hakuna ubora uliochaguliwa ndani ya dakika 30 — ninairuka linki hii.",
   chooseAutoPicked: "⌛ Hakuna ubora uliochaguliwa ndani ya dakika 2 — ninapakua video mwenyewe.",
+  personalSettings: "⚙️ Mipangilio yako\n\n⚡ Video mara moja: boti inatuma video ya 720p bila kuuliza ubora, na chini yake kitufe «🎵 MP3» ukihitaji sauti. Unahitaji ubora mwingine — zima.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Video mara moja`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot inaanzishwa upya kwa ajili ya sasisho — foleni imefutwa (linki: ${count}). Tafadhali zitume tena baada ya dakika moja.`,
   subtitlesButton: "📝 Manukuu",
@@ -2016,6 +2041,9 @@ const de: Messages = {
   skipped: "⏭ Link übersprungen.",
   chooseTimedOut: "⌛ Innerhalb von 30 Minuten wurde keine Qualität gewählt — ich überspringe diesen Link.",
   chooseAutoPicked: "⌛ Innerhalb von 2 Minuten wurde keine Qualität gewählt — ich lade das Video automatisch herunter.",
+  personalSettings: "⚙️ Deine Einstellungen\n\n⚡ Sofort Video: Der Bot schickt das Video in 720p, ohne nach der Qualität zu fragen, darunter eine Schaltfläche «🎵 MP3», falls du den Ton brauchst. Andere Qualität nötig — ausschalten.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Sofort Video`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Der Bot startet für ein Update neu — die Warteschlange wurde zurückgesetzt (Links: ${count}). Schick sie bitte in einer Minute noch einmal.`,
   subtitlesButton: "📝 Untertitel",
@@ -2238,6 +2266,9 @@ const fr: Messages = {
   skipped: "⏭ Lien ignoré.",
   chooseTimedOut: "⌛ Aucune qualité choisie en 30 minutes — ce lien est ignoré.",
   chooseAutoPicked: "⌛ Aucune qualité choisie en 2 minutes — je télécharge la vidéo automatiquement.",
+  personalSettings: "⚙️ Vos réglages\n\n⚡ Vidéo directe : le bot envoie la vidéo en 720p sans demander la qualité, avec un bouton «🎵 MP3» dessous si vous voulez le son. Besoin d'une autre qualité — désactivez.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Vidéo directe`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Le bot redémarre pour une mise à jour — la file d'attente a été réinitialisée (liens : ${count}). Renvoyez-les dans une minute.`,
   subtitlesButton: "📝 Sous-titres",
@@ -2460,6 +2491,9 @@ const it: Messages = {
   skipped: "⏭ Link saltato.",
   chooseTimedOut: "⌛ Nessuna qualità scelta entro 30 minuti — salto questo link.",
   chooseAutoPicked: "⌛ Nessuna qualità scelta entro 2 minuti — scarico il video in automatico.",
+  personalSettings: "⚙️ Le tue impostazioni\n\n⚡ Video subito: il bot invia il video in 720p senza chiedere la qualità, con sotto un pulsante «🎵 MP3» se ti serve l'audio. Ti serve un'altra qualità — disattiva.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Video subito`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Il bot si sta riavviando per un aggiornamento — la coda è stata azzerata (link: ${count}). Rimandali tra un minuto.`,
   subtitlesButton: "📝 Sottotitoli",
@@ -2682,6 +2716,9 @@ const pt: Messages = {
   skipped: "⏭ Pulei este link.",
   chooseTimedOut: "⌛ Nenhuma qualidade escolhida em 30 minutos — pulando este link.",
   chooseAutoPicked: "⌛ Nenhuma qualidade escolhida em 2 minutos — baixando o vídeo automaticamente.",
+  personalSettings: "⚙️ Suas configurações\n\n⚡ Vídeo direto: o bot envia o vídeo em 720p sem perguntar a qualidade, com um botão «🎵 MP3» abaixo se precisar do áudio. Precisa de outra qualidade — desative.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Vídeo direto`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ O bot está reiniciando para uma atualização — a fila foi zerada (links: ${count}). Mande-os de novo daqui a um minuto.`,
   subtitlesButton: "📝 Legendas",
@@ -2904,6 +2941,9 @@ const es: Messages = {
   skipped: "⏭ Enlace omitido.",
   chooseTimedOut: "⌛ No se eligió ninguna calidad en 30 minutos — omito este enlace.",
   chooseAutoPicked: "⌛ No se eligió ninguna calidad en 2 minutos — descargo el vídeo automáticamente.",
+  personalSettings: "⚙️ Tus ajustes\n\n⚡ Vídeo directo: el bot envía el vídeo en 720p sin preguntar la calidad, con un botón «🎵 MP3» debajo si necesitas el audio. ¿Necesitas otra calidad? Desactívalo.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Vídeo directo`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ El bot se está reiniciando por una actualización — la cola se vació (enlaces: ${count}). Envíalos de nuevo dentro de un minuto.`,
   subtitlesButton: "📝 Subtítulos",
@@ -3126,6 +3166,9 @@ const uz: Messages = {
   skipped: "⏭ Bu havola oʻtkazib yuborildi.",
   chooseTimedOut: "⌛ 30 daqiqa ichida sifat tanlanmadi — bu havola oʻtkazib yuborildi.",
   chooseAutoPicked: "⌛ 2 daqiqa ichida sifat tanlanmadi — videoni oʻzim yuklab olaman.",
+  personalSettings: "⚙️ Sozlamalaringiz\n\n⚡ Darhol video: bot sifatni so‘ramasdan 720p video yuboradi, ostida esa ovoz kerak bo‘lsa «🎵 MP3» tugmasi. Boshqa sifat kerak bo‘lsa — o‘chiring.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Darhol video`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot yangilanish uchun qayta ishga tushmoqda — navbat tozalandi (havolalar: ${count}). Bir daqiqadan soʻng ularni qayta yuboring.`,
   subtitlesButton: "📝 Subtitrlar",
@@ -3348,6 +3391,9 @@ const tr: Messages = {
   skipped: "⏭ Bu bağlantı atlandı.",
   chooseTimedOut: "⌛ 30 dakika içinde kalite seçilmedi — bu bağlantıyı atlıyorum.",
   chooseAutoPicked: "⌛ 2 dakika içinde kalite seçilmedi — videoyu otomatik indiriyorum.",
+  personalSettings: "⚙️ Ayarların\n\n⚡ Hemen video: bot kalite sormadan videoyu 720p gönderir, altında ses gerekirse «🎵 MP3» düğmesi olur. Başka kalite mi lazım — kapat.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Hemen video`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot bir güncelleme için yeniden başlatılıyor — kuyruk sıfırlandı (bağlantılar: ${count}). Lütfen bir dakika sonra onları tekrar gönderin.`,
   subtitlesButton: "📝 Altyazılar",
@@ -3570,6 +3616,9 @@ const fa: Messages = {
   skipped: "⏭ از این لینک گذشتم.",
   chooseTimedOut: "⌛ در 30 دقیقه کیفیتی انتخاب نشد — از این لینک می‌گذرم.",
   chooseAutoPicked: "⌛ در ۲ دقیقه کیفیتی انتخاب نشد — ویدیو را خودکار دانلود می‌کنم.",
+  personalSettings: "⚙️ تنظیمات شما\n\n⚡ ویدیوی فوری: بات بدون پرسیدن کیفیت، ویدیو را با 720p می‌فرستد و زیر آن دکمهٔ «🎵 MP3» برای صدا. کیفیت دیگری لازم دارید؟ خاموشش کنید.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ ویدیوی فوری`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ ربات برای به‌روزرسانی در حال راه‌اندازی مجدد است — صف خالی شد (لینک‌ها: ${count}). لطفاً یک دقیقهٔ دیگر آن‌ها را دوباره بفرستید.`,
   subtitlesButton: "📝 زیرنویس",
@@ -3792,6 +3841,9 @@ const vi: Messages = {
   skipped: "⏭ Đã bỏ qua link này.",
   chooseTimedOut: "⌛ Không có chất lượng nào được chọn trong 30 phút — bỏ qua link này.",
   chooseAutoPicked: "⌛ Không có chất lượng nào được chọn trong 2 phút — tự động tải video.",
+  personalSettings: "⚙️ Cài đặt của bạn\n\n⚡ Video ngay: bot gửi video 720p mà không hỏi chất lượng, bên dưới có nút «🎵 MP3» nếu bạn cần âm thanh. Cần chất lượng khác — hãy tắt.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Video ngay`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot đang khởi động lại để cập nhật — hàng đợi đã bị xóa (số link: ${count}). Hãy gửi lại sau một phút nhé.`,
   subtitlesButton: "📝 Phụ đề",
@@ -4015,6 +4067,9 @@ const bn: Messages = {
   skipped: "⏭ এই লিংকটি বাদ দেওয়া হয়েছে।",
   chooseTimedOut: "⌛ 30 মিনিটের মধ্যে কোনো কোয়ালিটি বাছাই করা হয়নি — এই লিংকটি বাদ দিচ্ছি।",
   chooseAutoPicked: "⌛ 2 মিনিটের মধ্যে কোনো কোয়ালিটি বাছাই করা হয়নি — ভিডিওটি নিজেই ডাউনলোড করছি।",
+  personalSettings: "⚙️ আপনার সেটিংস\n\n⚡ সরাসরি ভিডিও: বট কোয়ালিটি না জিজ্ঞেস করে 720p ভিডিও পাঠায়, নিচে অডিও লাগলে «🎵 MP3» বোতাম। অন্য কোয়ালিটি লাগলে বন্ধ করুন।",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ সরাসরি ভিডিও`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ আপডেটের জন্য বট রিস্টার্ট হচ্ছে — সারি রিসেট হয়ে গেছে (লিংক: ${count})। এক মিনিট পরে সেগুলো আবার পাঠান।`,
   subtitlesButton: "📝 সাবটাইটেল",
@@ -4237,6 +4292,9 @@ const ur: Messages = {
   skipped: "⏭ یہ لنک چھوڑ دیا۔",
   chooseTimedOut: "⌛ 30 منٹ میں کوئی کوالٹی منتخب نہیں کی گئی — یہ لنک چھوڑ رہا ہوں۔",
   chooseAutoPicked: "⌛ 2 منٹ میں کوئی کوالٹی منتخب نہیں کی گئی — ویڈیو خود ڈاؤن لوڈ کر رہا ہوں۔",
+  personalSettings: "⚙️ آپ کی ترتیبات\n\n⚡ فوری ویڈیو: بوٹ کوالٹی پوچھے بغیر 720p ویڈیو بھیجتا ہے، اور نیچے آڈیو کے لیے «🎵 MP3» بٹن۔ دوسری کوالٹی چاہیے تو بند کریں۔",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ فوری ویڈیو`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ اپ ڈیٹ کے لیے بوٹ ری اسٹارٹ ہو رہا ہے — قطار خالی ہو گئی (لنکس: ${count})۔ براہ کرم ایک منٹ بعد انہیں دوبارہ بھیجیں۔`,
   subtitlesButton: "📝 سب ٹائٹلز",
@@ -4459,6 +4517,9 @@ const pl: Messages = {
   skipped: "⏭ Pominięto ten link.",
   chooseTimedOut: "⌛ Nie wybrano jakości w ciągu 30 minut — pomijam ten link.",
   chooseAutoPicked: "⌛ Nie wybrano jakości w ciągu 2 minut — pobieram wideo automatycznie.",
+  personalSettings: "⚙️ Twoje ustawienia\n\n⚡ Od razu wideo: bot wysyła wideo w 720p bez pytania o jakość, a pod nim przycisk «🎵 MP3», jeśli potrzebujesz dźwięku. Potrzebujesz innej jakości — wyłącz.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Od razu wideo`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot uruchamia się ponownie po aktualizacji — kolejka została wyczyszczona (linki: ${count}). Wyślij je ponownie za minutę.`,
   subtitlesButton: "📝 Napisy",
@@ -4681,6 +4742,9 @@ const ja: Messages = {
   skipped: "⏭ このリンクをスキップしました。",
   chooseTimedOut: "⌛ 30 分以内に画質が選ばれなかったため、このリンクをスキップします。",
   chooseAutoPicked: "⌛ 2 分以内に画質が選ばれなかったため、動画を自動でダウンロードします。",
+  personalSettings: "⚙️ あなたの設定\n\n⚡ すぐに動画：画質を聞かずに 720p の動画を送り、その下に音声が必要なとき用の「🎵 MP3」ボタンを付けます。別の画質が必要ならオフにしてください。",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ すぐに動画`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ アップデートのためボットを再起動しています。キューがリセットされました（リンク：${count} 件）。1 分ほどしてからもう一度送ってください。`,
   subtitlesButton: "📝 字幕",
@@ -4903,6 +4967,9 @@ const ko: Messages = {
   skipped: "⏭ 이 링크를 건너뛰었어요.",
   chooseTimedOut: "⌛ 30분 동안 화질을 선택하지 않아서 이 링크를 건너뛸게요.",
   chooseAutoPicked: "⌛ 2분 동안 화질을 선택하지 않아서 영상을 자동으로 받을게요.",
+  personalSettings: "⚙️ 내 설정\n\n⚡ 바로 영상: 화질을 묻지 않고 720p 영상을 보내고, 아래에 소리가 필요할 때 쓰는 「🎵 MP3」 버튼을 달아요. 다른 화질이 필요하면 끄세요.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ 바로 영상`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ 업데이트를 위해 봇을 다시 시작하고 있어서 대기열이 초기화되었어요 (링크: ${count}개). 1분 뒤에 다시 보내 주세요.`,
   subtitlesButton: "📝 자막",
@@ -5125,6 +5192,9 @@ const th: Messages = {
   skipped: "⏭ ข้ามลิงก์นี้แล้ว",
   chooseTimedOut: "⌛ ไม่ได้เลือกคุณภาพภายใน 30 นาที ข้ามลิงก์นี้",
   chooseAutoPicked: "⌛ ไม่ได้เลือกคุณภาพภายใน 2 นาที กำลังดาวน์โหลดวิดีโอให้อัตโนมัติ",
+  personalSettings: "⚙️ การตั้งค่าของคุณ\n\n⚡ ส่งวิดีโอทันที: บอทส่งวิดีโอ 720p โดยไม่ถามคุณภาพ และมีปุ่ม «🎵 MP3» ด้านล่างถ้าต้องการเสียง ต้องการคุณภาพอื่น ให้ปิด",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ ส่งวิดีโอทันที`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ บอทกำลังรีสตาร์ทเพื่ออัปเดต คิวถูกรีเซ็ต (ลิงก์: ${count}) ส่งลิงก์มาอีกครั้งในอีกสักนาทีนะ`,
   subtitlesButton: "📝 ซับไตเติล",
@@ -5347,6 +5417,9 @@ const am: Messages = {
   skipped: "⏭ ይህን ሊንክ ዘልዬዋለሁ።",
   chooseTimedOut: "⌛ በ30 ደቂቃ ውስጥ ምንም ጥራት አልተመረጠም — ይህን ሊንክ እዘላለሁ።",
   chooseAutoPicked: "⌛ በ2 ደቂቃ ውስጥ ምንም ጥራት አልተመረጠም — ቪዲዮውን ራሴ እያወረድኩ ነው።",
+  personalSettings: "⚙️ ቅንብሮችዎ\n\n⚡ ወዲያውኑ ቪዲዮ፦ ቦቱ ጥራት ሳይጠይቅ 720p ቪዲዮ ይልካል፣ ከስሩ ድምጽ ከፈለጉ «🎵 MP3» አዝራር አለ። ሌላ ጥራት ከፈለጉ ያጥፉት።",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ ወዲያውኑ ቪዲዮ`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ ቦቱ ለማዘመን እንደገና እየጀመረ ነው — ወረፋው ተሰርዟል (ሊንኮች፦ ${count})። እባክዎ ከአንድ ደቂቃ በኋላ እንደገና ይላኳቸው።`,
   subtitlesButton: "📝 የትርጉም ጽሑፎች",
@@ -5569,6 +5642,9 @@ const om: Messages = {
   skipped: "⏭ Liinkii kana irra darbeera.",
   chooseTimedOut: "⌛ Daqiiqaa 30 keessatti qulqullinni hin filatamne — liinkii kana irra darbaa jira.",
   chooseAutoPicked: "⌛ Daqiiqaa 2 keessatti qulqullinni hin filatamne — viidiyoo ofumaan buusaa jira.",
+  personalSettings: "⚙️ Qindaa'ina kee\n\n⚡ Viidiyoo battalumatti: botichi qulqullina osoo hin gaafatin viidiyoo 720p erga, jalatti immoo sagalee yoo barbaadde furtuu «🎵 MP3». Qulqullina biraa yoo barbaadde — dhaamsi.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Viidiyoo battalumatti`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bootiin fooyya'iinsaaf irra deebi'ee ka'aa jira — tarreen eegumsaa haqameera (liinkiiwwan: ${count}). Daqiiqaa tokko booda irra deebi'aa ergaa.`,
   subtitlesButton: "📝 Barreeffama jalaa",
@@ -5791,6 +5867,9 @@ const ha: Messages = {
   skipped: "⏭ An tsallake wannan hanyar haɗi.",
   chooseTimedOut: "⌛ Ba a zaɓi inganci cikin minti 30 ba — ana tsallake wannan hanyar haɗi.",
   chooseAutoPicked: "⌛ Ba a zaɓi inganci cikin minti 2 ba — ina sauke bidiyon da kaina.",
+  personalSettings: "⚙️ Saitunanka\n\n⚡ Bidiyo nan take: bot ɗin yana aiko bidiyo 720p ba tare da tambayar inganci ba, a ƙasa akwai maɓallin «🎵 MP3» idan kana buƙatar sauti. Kana buƙatar wani inganci — kashe shi.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Bidiyo nan take`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot yana sake farawa don sabuntawa — an share layin (hanyoyin haɗi: ${count}). Don Allah ku sake aiko da su bayan minti ɗaya.`,
   subtitlesButton: "📝 Rubutun ƙasa",
@@ -6013,6 +6092,9 @@ const so: Messages = {
   skipped: "⏭ Link-gan waa laga gudbay.",
   chooseTimedOut: "⌛ Tayo lama dooran 30 daqiiqo gudahood — link-gan waa laga gudbayaa.",
   chooseAutoPicked: "⌛ Tayo lama dooran 2 daqiiqo gudahood — muuqaalka si toos ah ayaan u soo dejinayaa.",
+  personalSettings: "⚙️ Dejintaada\n\n⚡ Muuqaal isla markiiba: botku wuxuu soo diraa muuqaal 720p isagoon tayada ku weydiin, hoostiisana badhanka «🎵 MP3» haddii aad codka u baahato. Tayo kale ma rabtaa — dami.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Muuqaal isla markiiba`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot-ka ayaa dib loo bilaabayaa si loo cusbooneysiiyo — safka waa la tirtiray (link-yo: ${count}). Fadlan mar kale soo dir daqiiqad kadib.`,
   subtitlesButton: "📝 Qoraalka hoose",
@@ -6235,6 +6317,9 @@ const az: Messages = {
   skipped: "⏭ Bu linki keçdim.",
   chooseTimedOut: "⌛ 30 dəqiqə ərzində keyfiyyət seçilmədi — bu linki keçirəm.",
   chooseAutoPicked: "⌛ 2 dəqiqə ərzində keyfiyyət seçilmədi — videonu özüm yükləyirəm.",
+  personalSettings: "⚙️ Ayarlarınız\n\n⚡ Dərhal video: bot keyfiyyəti soruşmadan 720p video göndərir, altında isə səs lazımdırsa «🎵 MP3» düyməsi. Başqa keyfiyyət lazımdırsa — söndürün.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Dərhal video`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot yeniləmə üçün yenidən başladılır — növbə sıfırlandı (linklər: ${count}). Bir dəqiqədən sonra onları yenidən göndərin.`,
   subtitlesButton: "📝 Subtitrlər",
@@ -6457,6 +6542,9 @@ const ky: Messages = {
   skipped: "⏭ Бул шилтеме өткөрүлүп жиберилди.",
   chooseTimedOut: "⌛ 30 мүнөттүн ичинде сапат тандалган жок — бул шилтемени өткөрүп жиберем.",
   chooseAutoPicked: "⌛ 2 мүнөттүн ичинде сапат тандалган жок — видеону өзүм жүктөп берем.",
+  personalSettings: "⚙️ Сиздин жөндөөлөрүңүз\n\n⚡ Дароо видео: бот сапатты сурабай 720p видео жиберет, анын астында үн керек болсо «🎵 MP3» баскычы. Башка сапат керек болсо — өчүрүңүз.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Дароо видео`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот жаңыртуу үчүн кайра иштетилүүдө — кезек тазаланды (шилтемелер: ${count}). Бир мүнөттөн кийин аларды кайра жөнөтүңүз.`,
   subtitlesButton: "📝 Субтитрлер",
@@ -6679,6 +6767,9 @@ const tg: Messages = {
   skipped: "⏭ Ин пайванд гузаронида шуд.",
   chooseTimedOut: "⌛ Дар давоми 30 дақиқа сифат интихоб нашуд — ин пайвандро мегузаронам.",
   chooseAutoPicked: "⌛ Дар давоми 2 дақиқа сифат интихоб нашуд — видеоро худам зеркашӣ мекунам.",
+  personalSettings: "⚙️ Танзимоти шумо\n\n⚡ Видео фавран: бот сифатро напурсида видеои 720p мефиристад, дар зераш агар садо лозим бошад, тугмаи «🎵 MP3». Сифати дигар лозим бошад — хомӯш кунед.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Видео фавран`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот барои навсозӣ аз нав оғоз мешавад — навбат тоза шуд (пайвандҳо: ${count}). Лутфан, баъд аз як дақиқа онҳоро боз фиристед.`,
   subtitlesButton: "📝 Субтитрҳо",
@@ -6901,6 +6992,9 @@ const ms: Messages = {
   skipped: "⏭ Pautan ini dilangkau.",
   chooseTimedOut: "⌛ Tiada kualiti dipilih dalam masa 30 minit — pautan ini dilangkau.",
   chooseAutoPicked: "⌛ Tiada kualiti dipilih dalam masa 2 minit — video dimuat turun secara automatik.",
+  personalSettings: "⚙️ Tetapan anda\n\n⚡ Video terus: bot menghantar video 720p tanpa bertanya kualiti, dengan butang «🎵 MP3» di bawahnya jika anda perlukan audio. Perlu kualiti lain — matikan.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Video terus`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot sedang dimulakan semula untuk kemas kini — baris gilir telah ditetapkan semula (pautan: ${count}). Sila hantar semula dalam seminit.`,
   subtitlesButton: "📝 Sari kata",
@@ -7123,6 +7217,9 @@ const nl: Messages = {
   skipped: "⏭ Deze link overgeslagen.",
   chooseTimedOut: "⌛ Binnen 30 minuten geen kwaliteit gekozen — ik sla deze link over.",
   chooseAutoPicked: "⌛ Binnen 2 minuten geen kwaliteit gekozen — ik download de video automatisch.",
+  personalSettings: "⚙️ Jouw instellingen\n\n⚡ Direct video: de bot stuurt de video in 720p zonder naar de kwaliteit te vragen, met eronder een knop «🎵 MP3» als je het geluid nodig hebt. Andere kwaliteit nodig — zet het uit.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Direct video`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ De bot wordt opnieuw gestart voor een update — de wachtrij is gewist (links: ${count}). Stuur ze over een minuut opnieuw.`,
   subtitlesButton: "📝 Ondertiteling",
@@ -7345,6 +7442,9 @@ const ro: Messages = {
   skipped: "⏭ Am sărit peste acest link.",
   chooseTimedOut: "⌛ Nu a fost aleasă nicio calitate în 30 de minute — sar peste acest link.",
   chooseAutoPicked: "⌛ Nu a fost aleasă nicio calitate în 2 minute — descarc automat videoclipul.",
+  personalSettings: "⚙️ Setările tale\n\n⚡ Video direct: botul trimite videoclipul în 720p fără să întrebe calitatea, cu un buton «🎵 MP3» dedesubt dacă ai nevoie de sunet. Ai nevoie de altă calitate — dezactivează.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Video direct`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Botul repornește pentru o actualizare — coada a fost golită (linkuri: ${count}). Trimite-le din nou peste un minut.`,
   subtitlesButton: "📝 Subtitrări",
@@ -7567,6 +7667,9 @@ const ps: Messages = {
   skipped: "⏭ دا لینک پرېښودل شو.",
   chooseTimedOut: "⌛ په 30 دقیقو کې هېڅ کیفیت ونه ټاکل شو — دا لینک پرېږدم.",
   chooseAutoPicked: "⌛ په 2 دقیقو کې هېڅ کیفیت ونه ټاکل شو — ویډیو پخپله ښکته کوم.",
+  personalSettings: "⚙️ ستاسو امستنې\n\n⚡ سمدستي ویډیو: بوټ له کیفیت پوښتلو پرته 720p ویډیو لېږي، او لاندې یې که غږ ته اړتیا وي د «🎵 MP3» تڼۍ. بل کیفیت ته اړتیا لرئ — یې بند کړئ.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ سمدستي ویډیو`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ بوټ د تازه کولو لپاره بیا پیل کېږي — کتار خالي شو (لینکونه: ${count}). مهرباني وکړئ یوه دقیقه وروسته یې بیا ولېږئ.`,
   subtitlesButton: "📝 زیرنویس",
@@ -7789,6 +7892,9 @@ const ckb: Messages = {
   skipped: "⏭ ئەم بەستەرە تێپەڕێنرا.",
   chooseTimedOut: "⌛ لە ماوەی 30 خولەکدا هیچ کوالیتییەک هەڵنەبژێردرا — ئەم بەستەرە تێدەپەڕێنم.",
   chooseAutoPicked: "⌛ لە ماوەی 2 خولەکدا هیچ کوالیتییەک هەڵنەبژێردرا — ڤیدیۆکە خۆکارانە دادەگرم.",
+  personalSettings: "⚙️ ڕێکخستنەکانت\n\n⚡ ڤیدیۆی ڕاستەوخۆ: بۆتەکە بێ پرسیاری کوالیتی ڤیدیۆی 720p دەنێرێت، و لە خوارەوەی دوگمەی «🎵 MP3» هەیە ئەگەر دەنگت پێویست بێت. کوالیتییەکی ترت دەوێت — بیکوژێنەوە.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ ڤیدیۆی ڕاستەوخۆ`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ بۆتەکە بۆ نوێکردنەوە دەستپێدەکاتەوە — ڕیزەکە سفر کرایەوە (بەستەرەکان: ${count}). تکایە دوای خولەکێک دووبارە بیاننێرە.`,
   subtitlesButton: "📝 ژێرنووس",
@@ -8011,6 +8117,9 @@ const ku: Messages = {
   skipped: "⏭ Ev lînk hate derbaskirin.",
   chooseTimedOut: "⌛ Di nav 30 deqeyan de kalîte nehat hilbijartin — ev lînk tê derbaskirin.",
   chooseAutoPicked: "⌛ Di nav 2 deqeyan de kalîte nehat hilbijartin — vîdyoyê bixweber dadixînim.",
+  personalSettings: "⚙️ Mîhengên te\n\n⚡ Vîdyo yekser: bot bêyî pirsîna kalîteyê vîdyoya 720p dişîne, li jêr jî heke deng hewce be bişkoka «🎵 MP3». Kalîteyeke din hewce ye — vemirîne.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Vîdyo yekser`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot ji bo nûkirinê ji nû ve dest pê dike — rêz hate valakirin (lînk: ${count}). Ji kerema xwe piştî deqeyekê wan dîsa bişîne.`,
   subtitlesButton: "📝 Binnivîs",
@@ -8233,6 +8342,9 @@ const ug: Messages = {
   skipped: "⏭ بۇ ئۇلانمىدىن ئاتلاپ ئۆتتۈم.",
   chooseTimedOut: "⌛ 30 مىنۇت ئىچىدە سۈپەت تاللانمىدى — بۇ ئۇلانمىدىن ئاتلاپ ئۆتىمەن.",
   chooseAutoPicked: "⌛ 2 مىنۇت ئىچىدە سۈپەت تاللانمىدى — سىننى ئۆزۈم چۈشۈرۈپ بېرىمەن.",
+  personalSettings: "⚙️ تەڭشەكلىرىڭىز\n\n⚡ دەرھال سىن: بوت سۈپەت سورىماي 720p سىن ئەۋەتىدۇ، ئاستىدا ئاۋاز كېرەك بولسا «🎵 MP3» كۇنۇپكىسى بار. باشقا سۈپەت كېرەك بولسا — ئۆچۈرۈڭ.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ دەرھال سىن`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ بوت يېڭىلاش ئۈچۈن قايتا قوزغىلىۋاتىدۇ — ئۆچىرەت تازىلاندى (ئۇلانمىلار: ${count}). بىر مىنۇتتىن كېيىن ئۇلارنى قايتا يوللاڭ.`,
   subtitlesButton: "📝 ئاستى خەت",
@@ -8455,6 +8567,9 @@ const tk: Messages = {
   skipped: "⏭ Bu salgy geçildi.",
   chooseTimedOut: "⌛ 30 minudyň dowamynda hil saýlanmady — bu salgyny geçýärin.",
   chooseAutoPicked: "⌛ 2 minudyň dowamynda hil saýlanmady — wideony özüm ýükläp berýärin.",
+  personalSettings: "⚙️ Sazlamalaryňyz\n\n⚡ Derrew wideo: bot hili soramazdan 720p wideo iberýär, aşagynda ses gerek bolsa «🎵 MP3» düwmesi bar. Başga hil gerek bolsa — öçüriň.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Derrew wideo`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot täzelenmek üçin täzeden işledilýär — nobat arassalandy (salgylar: ${count}). Olary bir minutdan soň täzeden iberiň.`,
   subtitlesButton: "📝 Subtitrler",
@@ -8677,6 +8792,9 @@ const tt: Messages = {
   skipped: "⏭ Бу сылтаманы калдырдым.",
   chooseTimedOut: "⌛ 30 минут эчендә сыйфат сайланмады — бу сылтаманы калдырам.",
   chooseAutoPicked: "⌛ 2 минут эчендә сыйфат сайланмады — видеоны үзем йөкләп бирәм.",
+  personalSettings: "⚙️ Сезнең көйләүләр\n\n⚡ Шунда ук видео: бот сыйфатны сорамыйча 720p видео җибәрә, астында тавыш кирәк булса «🎵 MP3» төймәсе. Башка сыйфат кирәк булса — сүндерегез.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Шунда ук видео`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот яңарту өчен яңадан кабызыла — чират бушатылды (сылтамалар: ${count}). Аларны бер минуттан соң яңадан җибәрегез.`,
   subtitlesButton: "📝 Субтитрлар",
@@ -8899,6 +9017,9 @@ const sq: Messages = {
   skipped: "⏭ Kjo lidhje u anashkalua.",
   chooseTimedOut: "⌛ Nuk u zgjodh asnjë cilësi brenda 30 minutave — po e anashkaloj këtë lidhje.",
   chooseAutoPicked: "⌛ Nuk u zgjodh asnjë cilësi brenda 2 minutave — po e shkarkoj videon automatikisht.",
+  personalSettings: "⚙️ Cilësimet e tua\n\n⚡ Video menjëherë: boti dërgon videon në 720p pa pyetur për cilësinë, me butonin «🎵 MP3» poshtë nëse të duhet zëri. Të duhet cilësi tjetër — çaktivizoje.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Video menjëherë`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Boti po riniset për një përditësim — radha u rivendos (lidhje: ${count}). Ju lutemi dërgojini sërish pas një minute.`,
   subtitlesButton: "📝 Titra",
@@ -9131,6 +9252,9 @@ const bs: Messages = {
   skipped: "⏭ Ovaj link je preskočen.",
   chooseTimedOut: "⌛ Kvalitet nije odabran u roku od 30 minuta — preskačem ovaj link.",
   chooseAutoPicked: "⌛ Kvalitet nije odabran u roku od 2 minute — sam preuzimam video.",
+  personalSettings: "⚙️ Tvoje postavke\n\n⚡ Odmah video: bot šalje video u 720p bez pitanja o kvalitetu, a ispod je dugme «🎵 MP3» ako ti treba zvuk. Treba ti drugi kvalitet — isključi.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Odmah video`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Bot se ponovo pokreće zbog ažuriranja — red je poništen (linkovi: ${count}). Pošaljite ih ponovo za minutu.`,
   subtitlesButton: "📝 Titlovi",
@@ -9353,6 +9477,9 @@ const ce: Messages = {
   skipped: "⏭ ХӀара хьажорг йитина.",
   chooseTimedOut: "⌛ 30 минотехь дикалла ца харжина — хӀара хьажорг йитина.",
   chooseAutoPicked: "⌛ 2 минотехь дикалла ца харжина — видео сайга чудоьду.",
+  personalSettings: "⚙️ Хьан нисдарш\n\n⚡ Сиха видео: ботас дикалла ца хоттуш 720p видео дохуьйту, цунна кӀел аз оьшуш хилча «🎵 MP3» кнопка. Кхин дикалла оьшу — дӀайайа.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Сиха видео`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот карлайоккхуш юха йолало — рогӀ цӀанйина (хьажоргаш: ${count}). Минот яьлча уьш юха дахийтийша.`,
   subtitlesButton: "📝 Субтитраш",
@@ -9575,6 +9702,9 @@ const inh: Messages = {
   skipped: "⏭ Ер ссылка юта.",
   chooseTimedOut: "⌛ 30 минота чу качество ца хьаржаб — ер ссылка юта.",
   chooseAutoPicked: "⌛ 2 минота чу качество ца хьаржаб — видео са йоахаду.",
+  personalSettings: "⚙️ Хьа нисдараш\n\n⚡ Сиха видео: бота качество ца хаттача 720p видео дахийт, цун кӀала оаз эшача «🎵 MP3» кнопка. Кхыча качество эша — дӀайоайа.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Сиха видео`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот обновлени деш юха доладу — рогӀ цӀенъяьй (ссылкаш: ${count}). Цхьа минот яьлча уж кхы а цкъа дахийтал.`,
   subtitlesButton: "📝 Субтитраш",
@@ -9797,6 +9927,9 @@ const av: Messages = {
   skipped: "⏭ Гьаб ссылка тана.",
   chooseTimedOut: "⌛ 30 минуталъ сипат тӀаса бищичӀо — гьаб ссылка тана.",
   chooseAutoPicked: "⌛ 2 минуталъ сипат тӀаса бищичӀо — видео дица гьабула.",
+  personalSettings: "⚙️ Дур низамал\n\n⚡ Цебе видео: боталъ сипат гьикъичӀого 720p видео витула, гьелъул гъоркь гьаракь хӀажалъани «🎵 MP3» кнопка. Цоги сипат хӀажалъани — тӀагӀинабе.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Цебе видео`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот обновлениялъе цӀидасан рагьулеб буго — черх бацӀцӀад гьабуна (ссылкаби: ${count}). Цо минуталдасан гьел цӀидасан битӀе.`,
   subtitlesButton: "📝 Субтитраби",
@@ -10019,6 +10152,9 @@ const tl: Messages = {
   skipped: "⏭ Nilaktawan ang link na ito.",
   chooseTimedOut: "⌛ Walang napiling quality sa loob ng 30 minuto — nilalaktawan ang link na ito.",
   chooseAutoPicked: "⌛ Walang napiling quality sa loob ng 2 minuto — ida-download ko na ang video.",
+  personalSettings: "⚙️ Iyong settings\n\n⚡ Video agad: ipinapadala ng bot ang video sa 720p nang hindi nagtatanong ng quality, may «🎵 MP3» button sa ilalim kung kailangan mo ang audio. Ibang quality ang kailangan — i-off.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Video agad`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Nagre-restart ang bot para sa update — na-reset ang queue (mga link: ${count}). Pakipadala ulit sila pagkalipas ng isang minuto.`,
   subtitlesButton: "📝 Subtitles",
@@ -10242,6 +10378,9 @@ const uk: Messages = {
   skipped: "⏭ Це посилання пропустив.",
   chooseTimedOut: "⌛ Якість не обрано за 30 хвилин — це посилання пропускаю.",
   chooseAutoPicked: "⌛ Якість не обрано за 2 хвилини — завантажую відео сам.",
+  personalSettings: "⚙️ Ваші налаштування\n\n⚡ Одразу відео: бот без вибору якості надсилає відео 720p, а під ним — кнопку «🎵 MP3», якщо потрібен звук. Потрібна інша якість — вимкніть.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Одразу відео`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот перезапускається для оновлення — чергу скинуто (посилань: ${count}). Надішліть їх знову за хвилину.`,
   subtitlesButton: "📝 Субтитри",
@@ -10470,6 +10609,9 @@ const kk: Messages = {
   skipped: "⏭ Бұл сілтемені өткізіп жібердім.",
   chooseTimedOut: "⌛ 30 минут ішінде сапа таңдалмады — бұл сілтемені өткізіп жіберемін.",
   chooseAutoPicked: "⌛ 2 минут ішінде сапа таңдалмады — бейнені өзім жүктеп беремін.",
+  personalSettings: "⚙️ Сіздің баптауларыңыз\n\n⚡ Бірден бейне: бот сапаны таңдатпай 720p бейне жібереді, ал астында дыбыс керек болса — «🎵 MP3» батырмасы. Басқа сапа керек болса — өшіріңіз.",
+  instantVideoButton: (on) => `${on ? "✅" : "⬜"} ⚡ Бірден бейне`,
+  mp3Button: "🎵 MP3",
   queueLostOnRestart: (count) =>
     `⚠️ Бот жаңарту үшін қайта іске қосылуда — кезек тазартылды (сілтемелер: ${count}). Бір минуттан кейін оларды қайта жіберіңіз.`,
   subtitlesButton: "📝 Субтитрлер",

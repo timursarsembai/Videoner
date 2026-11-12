@@ -102,8 +102,7 @@ export class AnalyticsService {
       createdAt: this.created(range),
       source: { not: DownloadSource.API },
     };
-    const allTime = { source: { not: DownloadSource.API } };
-    const [total, completed, failed, totalBotUsers, webLoginUsers, linkFailures, allTimeTotal, allTimeCompleted] =
+    const [total, completed, failed, totalBotUsers, webLoginUsers, linkFailures, allTime] =
       await Promise.all([
         this.prisma.download.count({ where: scope }),
         this.prisma.download.count({ where: { ...scope, status: { in: SUCCESS } } }),
@@ -118,8 +117,12 @@ export class AnalyticsService {
         // Итог за всё время — рядом с периодом: «последние 30 дней» — окно,
         // которое каждый день сдвигается, и его сумма держится на месте или
         // даже уменьшается; без общего итога это читалось как сбой учёта.
-        this.prisma.download.count({ where: allTime }),
-        this.prisma.download.count({ where: { ...allTime, status: { in: SUCCESS } } }),
+        // Одним проходом: оба числа из одной выборки.
+        this.prisma.$queryRaw<{ total: number; completed: number }[]>`
+          SELECT count(*)::int AS total,
+                 count(*) FILTER (WHERE status IN ('COMPLETED', 'EXPIRED'))::int AS completed
+          FROM "Download" WHERE source <> 'API'
+        `,
       ]);
 
     const finished = completed + failed;
@@ -132,8 +135,8 @@ export class AnalyticsService {
       totalBotUsers,
       webLoginUsers,
       linkFailures,
-      allTimeTotal,
-      allTimeCompleted,
+      allTimeTotal: allTime[0]?.total ?? 0,
+      allTimeCompleted: allTime[0]?.completed ?? 0,
     };
   }
 

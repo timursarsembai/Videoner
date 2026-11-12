@@ -73,6 +73,13 @@ export function periodRange(id: PeriodId, since: string, now = new Date()): DayR
 
 // Дни периода по порядку — ключи в том же виде, в каком сервер отдаёт
 // date_trunc('day'): ISO полуночи UTC.
+// Последний день периода (to в периоде не включается) и входит ли в период
+// сегодняшний день — тогда он ещё не закончился. Дни — по UTC.
+export function rangeEdges(range: DayRange, now = new Date()): { first: string; last: string; current: boolean } {
+  const last = iso(addDays(parseIso(range.to), -1));
+  return { first: range.from, last, current: last === iso(today(now)) };
+}
+
 export function rangeDayKeys(range: DayRange): string[] {
   const keys: string[] = [];
   for (let d = parseIso(range.from); d < parseIso(range.to); d = addDays(d, 1)) {

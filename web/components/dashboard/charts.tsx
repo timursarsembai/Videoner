@@ -32,7 +32,7 @@ import type {
   TrafficPoint,
   WeekdayPoint,
 } from "@/lib/analytics-api";
-import { rangeDayKeys, weekdayOccurrences } from "@/lib/dashboard/periods";
+import { rangeDayKeys, rangeEdges, weekdayOccurrences, type DayRange } from "@/lib/dashboard/periods";
 import { ChartCard, EmptyChart, ScrollableChart, usePeriodQuery } from "./chart-card";
 import {
   ERROR_COLORS,
@@ -67,20 +67,27 @@ export function StatCard({ label, value, hint }: { label: string; value: string 
   );
 }
 
-// Счётчики скачиваний за выбранный период: бот, сайт и расширение, без
-// запросов напрямую в API (это проверки при разработке).
-// Даты периода для подписи: «14 октября 2026 — 12 ноября 2026 (по сегодня)».
-// to в периоде не включается, последний день — накануне. Дни — по UTC, как
-// и вся статистика.
-function rangeText(range: { from: string; to: string }): string {
-  const last = new Date(Date.parse(`${range.to}T00:00:00Z`) - 24 * 60 * 60 * 1000).toISOString();
-  const today = new Date().toISOString().slice(0, 10);
-  const first = formatLongDate(`${range.from}T00:00:00Z`);
-  const end = formatLongDate(last);
-  const suffix = last.slice(0, 10) === today ? " (сегодня — по текущий момент, дни по UTC)" : "";
-  return first === end ? `${first}${suffix}` : `${first} — ${end}${suffix}`;
+// Даты периода для подписи: «14 октября 2026 — 12 ноября 2026 (сегодня — по
+// текущий момент, дни по UTC)». «г.», которое ru-RU ставит после года,
+// срезаем: за ним в подписи идёт своя точка.
+function rangeText(range: DayRange): string {
+  const { first, last, current } = rangeEdges(range);
+  const date = (day: string) => formatLongDate(`${day}T00:00:00Z`).replace(/\s*г\.$/, "");
+  const suffix = current ? " (сегодня — по текущий момент, дни по UTC)" : "";
+  return first === last ? `${date(first)}${suffix}` : `${date(first)} — ${date(last)}${suffix}`;
 }
 
+// «1 попытка», «3 попытки», «5 попыток».
+function attemptsWord(n: number): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return "попытка";
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return "попытки";
+  return "попыток";
+}
+
+// Счётчики скачиваний за выбранный период: бот, сайт и расширение, без
+// запросов напрямую в API (это проверки при разработке).
 export function DownloadStatCards() {
   const q = usePeriodQuery<OverviewData>("overview");
   const o = q.data;
@@ -109,11 +116,12 @@ export function DownloadStatCards() {
           hint="Ссылку не удалось разобрать — до скачивания не дошло (с 09.11.2026)"
         />
       </div>
-      {o && (
+      {/* Сайт мог обновиться раньше сервера — тогда этих полей ещё нет. */}
+      {o?.allTimeTotal !== undefined && o.allTimeCompleted !== undefined && (
         <p className="mt-3 text-sm text-foreground/60">
-          За всё время: <span className="font-medium text-foreground">{o.allTimeTotal.toLocaleString("ru-RU")}</span>{" "}
-          попыток, из них успешных —{" "}
-          <span className="font-medium text-foreground">{o.allTimeCompleted.toLocaleString("ru-RU")}</span>
+          За всё время: <span className="font-medium text-foreground">{o.allTimeTotal}</span>{" "}
+          {attemptsWord(o.allTimeTotal)}, из них успешных —{" "}
+          <span className="font-medium text-foreground">{o.allTimeCompleted}</span>
         </p>
       )}
     </ChartCard>

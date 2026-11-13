@@ -129,6 +129,19 @@ function touchIdle() {
  * отдали бы одну картинку вместо шести файлов, поэтому выбираем содержательного.
  */
 function extractInPage(code) {
+  // Заглушка, которую Threads показывает вместо поста, когда решил нам его не
+  // отдавать. Отличить её важно: без этого каждая неудачная попытка досиживала
+  // весь таймаут, и три попытки складывались в минуту с лишним, хотя ответ был
+  // ясен на второй секунде.
+  const text = document.body ? document.body.innerText : '';
+  const gone = /page is gone|link's not working|Sorry, this page/i.test(text);
+  // «This content isn't available to everyone — It can't be seen by certain
+  // audiences»: пост закрыт ограничением (возраст, регион) и виден только
+  // вошедшим. В отличие от заглушки выше, это не каприз Threads: 13.11.2026
+  // такие посты давали одно и то же на всех прокси во всех 15 попытках.
+  const restricted = /isn.t available to everyone|can.t be seen by certain audiences/i.test(text);
+  const stubs = { gone, restricted };
+
   // Ссылка «Поделиться» кода поста не содержит — достаём его из og:url.
   // Если поста нет, og:url вырождается в голый https://www.threads.com/,
   // шаблон не совпадёт и мы честно вернём «не найдено», а не первое
@@ -136,7 +149,7 @@ function extractInPage(code) {
   if (!code) {
     const og = document.querySelector('meta[property="og:url"]');
     const m = og && og.content.match(/\/@([^/?#]+)\/post\/([A-Za-z0-9_-]+)/);
-    if (!m) return { node: null, gone: false };
+    if (!m) return { node: null, ...stubs };
     code = m[2];
   }
 
@@ -189,19 +202,7 @@ function extractInPage(code) {
   }
   found.sort((a, b) => richness(b) - richness(a));
 
-  // Заглушка, которую Threads показывает вместо поста, когда решил нам его не
-  // отдавать. Отличить её важно: без этого каждая неудачная попытка досиживала
-  // весь таймаут, и три попытки складывались в минуту с лишним, хотя ответ был
-  // ясен на второй секунде.
-  const text = document.body ? document.body.innerText : '';
-  const gone = /page is gone|link's not working|Sorry, this page/i.test(text);
-  // «This content isn't available to everyone — It can't be seen by certain
-  // audiences»: пост закрыт ограничением (возраст, регион) и виден только
-  // вошедшим. В отличие от заглушки выше, это не каприз Threads: 13.11.2026
-  // такие посты давали одно и то же на всех прокси во всех 15 попытках.
-  const restricted = /isn.t available to everyone|can.t be seen by certain audiences/i.test(text);
-
-  return { node: found[0] || null, gone, restricted };
+  return { node: found[0] || null, ...stubs };
 }
 
 // Скачиваем не только видео: пост может нести фотографии, в том числе вперемешку

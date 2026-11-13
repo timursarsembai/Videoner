@@ -110,3 +110,13 @@ test("без https:// не ловим лишнего", () => {
   assert.deepEqual(extractUrls("me@youtube.com/x"), []);
   assert.deepEqual(extractUrls("netflix.com/title/1 box.com/s/1"), []);
 });
+
+test("extractUrls: ссылка, вставленная дважды без пробела", () => {
+  assert.deepEqual(
+    extractUrls("https://www.threads.com/share/HG34_c180https://www.threads.com/share/HG34_c180"),
+    ["https://www.threads.com/share/HG34_c180"],
+  );
+  assert.deepEqual(extractUrls("https://youtu.be/abchttps://vk.com/video-1_2"), ["https://youtu.be/abc", "https://vk.com/video-1_2"]);
+  assert.deepEqual(extractUrls("https://x.com/r?u=https://youtu.be/abc"), ["https://x.com/r?u=https://youtu.be/abc"]);
+  assert.deepEqual(extractUrls("https://web.archive.org/web/2020/https://youtu.be/abc"), ["https://web.archive.org/web/2020/https://youtu.be/abc"]);
+});

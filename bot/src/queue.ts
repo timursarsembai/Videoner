@@ -184,8 +184,14 @@ export class LinkQueues {
 const BARE_HOST = VIDEO_HOSTS.map((h) => h.replace(/\./g, "\\.")).join("|");
 const URL_RE = new RegExp(`https?:\\/\\/\\S+|(?<![\\w./@-])(?:[a-z0-9-]+\\.)*(?:${BARE_HOST})\\/\\S*`, "gi");
 
+// Ссылку иногда вставляют дважды без пробела («…/share/abchttps://…/share/abc»,
+// 13.11.2026): такой адрес не открывается. Режем перед «http(s)://», если тот
+// прилип к букве или цифре, — адрес внутри параметра («?u=https://…») или пути
+// («/web/2020/https://…») остаётся целым. Одинаковые половинки — одна ссылка.
+const GLUED_RE = /(?<=[A-Za-z0-9_-])(?=https?:\/\/)/i;
+
 export function extractUrls(text: string): string[] {
-  const found = text.match(URL_RE) ?? [];
+  const found = (text.match(URL_RE) ?? []).flatMap((u) => [...new Set(u.split(GLUED_RE))]);
   return found
     .map((u) => u.replace(/[.,;:!?)\]}»"'>]+$/, ""))
     .map((u) => (/^https?:\/\//i.test(u) ? u : `https://${u}`))

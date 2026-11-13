@@ -195,8 +195,13 @@ function extractInPage(code) {
   // ясен на второй секунде.
   const text = document.body ? document.body.innerText : '';
   const gone = /page is gone|link's not working|Sorry, this page/i.test(text);
+  // «This content isn't available to everyone — It can't be seen by certain
+  // audiences»: пост закрыт ограничением (возраст, регион) и виден только
+  // вошедшим. В отличие от заглушки выше, это не каприз Threads: 13.11.2026
+  // такие посты давали одно и то же на всех прокси во всех 15 попытках.
+  const restricted = /isn.t available to everyone|can.t be seen by certain audiences/i.test(text);
 
-  return { node: found[0] || null, gone };
+  return { node: found[0] || null, gone, restricted };
 }
 
 // Скачиваем не только видео: пост может нести фотографии, в том числе вперемешку
@@ -281,6 +286,7 @@ async function attemptResolve(parsed, code) {
   const page = await context.newPage();
 
   let node = null;
+  let restricted = false;
   try {
     await page.goto(parsed.toString(), {
       waitUntil: 'domcontentloaded',
@@ -300,7 +306,8 @@ async function attemptResolve(parsed, code) {
       try {
         const result = await page.evaluate(extractInPage, code);
         node = result.node;
-        if (!node && result.gone) {
+        restricted = !node && result.restricted;
+        if (!node && (result.gone || restricted)) {
           // Страница-заглушка: данных тут не появится, ждать нечего.
           break;
         }
@@ -323,6 +330,15 @@ async function attemptResolve(parsed, code) {
     touchIdle();
   }
 
+  // fatal: повторы и другие прокси ответ не меняют. «certain audiences» в
+  // тексте — по нему сервер и бот относят ошибку к «нужен вход».
+  if (restricted) {
+    return {
+      ok: false,
+      fatal: true,
+      error: "Threads: this content can't be seen by certain audiences — пост виден только вошедшим",
+    };
+  }
   if (!node) return { ok: false, error: 'Пост не найден или недоступен' };
   // fatal: пост открылся, медиа в нём просто нет — повторы ничего не изменят.
   if (!hasMedia(node)) {

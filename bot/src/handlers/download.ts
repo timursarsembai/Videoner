@@ -795,6 +795,13 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       return false;
     }
 
+    // Пост из одного фото без звука: сервер даёт единственный вариант
+    // «original» (photoQualities) — выбирать нечего, отправляем сразу.
+    if (!hidden.length && video.length === 1 && video[0] === "original" && !current.qualities.audio.length) {
+      await startDownload(tg, key, state, current, "v", "original", sendersForApi(tg, state.chatId));
+      return true;
+    }
+
     // Режим «сразу видео» (/settings в личке): 720p без выбора, «MP3» — кнопкой
     // под видео. Не влезает ничего — обычный выбор.
     if (!flag && instantOn) {

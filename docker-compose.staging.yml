@@ -43,6 +43,7 @@ services:
   server-staging:
     build: ./server
     container_name: videoner-server-staging
+    mem_limit: 768m  # против утечек: зависание 15.11.2026 из-за нехватки RAM
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/downloader_staging?schema=public
@@ -81,6 +82,7 @@ services:
         # переменная используется в коде web/, но не передаётся в сборку.
         NEXT_PUBLIC_YANDEX_METRIKA_ID: ${NEXT_PUBLIC_YANDEX_METRIKA_ID:-}
     container_name: videoner-web-staging
+    mem_limit: 768m  # против утечек: зависание 15.11.2026 из-за нехватки RAM
     restart: unless-stopped
     environment:
       NODE_ENV: production

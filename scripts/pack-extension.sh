@@ -40,7 +40,11 @@ version = manifest["version"]
 dist = pathlib.Path("dist")
 dist.mkdir(exist_ok=True)
 
-files = sorted(p for p in src.rglob("*") if p.is_file() and not p.name.startswith("."))
+# test/ — тесты и их файлы (extension/test), в расширение не идут.
+files = sorted(
+    p for p in src.rglob("*")
+    if p.is_file() and not p.name.startswith(".") and p.relative_to(src).parts[0] != "test"
+)
 
 # Файлы только одного из браузеров.
 CHROME_ONLY = {"gc-offscreen.html", "gc-offscreen.js"}

@@ -73,6 +73,7 @@ const PLATFORM_HOSTS = [
   /(^|\.)ok\.ru$/,
   /(^|\.)pinterest\.[a-z.]{2,}$/, /^pin\.it$/,
   /(^|\.)threads\.(net|com)$/,
+  /(^|\.)reddit\.com$/,
 ];
 
 // id плейлиста YouTube из ссылки (/playlist?list=… или ролик с &list=…).
@@ -123,7 +124,9 @@ const TEXTS = {
   ru: {
     loading: "Получаю информацию о видео…",
     notVideoPage:
-      "Откройте страницу с видео на YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest или Threads и нажмите на значок ещё раз. Урок GetCourse: если страница урока была открыта до установки расширения, обновите её.",
+      "Откройте страницу с видео на YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit или Threads и нажмите на значок ещё раз. Урок GetCourse: если страница урока была открыта до установки расширения, обновите её.",
+    adultContent: "Здесь контент для взрослых (18+). Videoner такой контент не скачивает.",
+    redditNoMedia: "В этом посте Reddit нет видео или фото, которое можно скачать.",
     gcLesson: "Урок GetCourse",
     gcPick: "В уроке несколько видео — выберите нужное",
     gcVideo: (n) => `Видео ${n}`,
@@ -212,7 +215,9 @@ const TEXTS = {
   uk: {
     loading: "Отримую інформацію про відео…",
     notVideoPage:
-      "Відкрийте сторінку з відео на YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest або Threads і натисніть на значок ще раз. Урок GetCourse: якщо сторінку уроку було відкрито до встановлення розширення, оновіть її.",
+      "Відкрийте сторінку з відео на YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit або Threads і натисніть на значок ще раз. Урок GetCourse: якщо сторінку уроку було відкрито до встановлення розширення, оновіть її.",
+    adultContent: "Тут контент для дорослих (18+). Videoner такий контент не завантажує.",
+    redditNoMedia: "У цьому пості Reddit немає відео чи фото, які можна завантажити.",
     gcLesson: "Урок GetCourse",
     gcPick: "В уроці кілька відео — оберіть потрібне",
     gcVideo: (n) => `Відео ${n}`,
@@ -301,7 +306,9 @@ const TEXTS = {
   kk: {
     loading: "Видео туралы ақпарат алынуда…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest немесе Threads сайтында видеосы бар бетті ашып, белгішені қайта басыңыз. GetCourse сабағы: егер сабақ беті кеңейтімді орнатпас бұрын ашылған болса, оны жаңартыңыз.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit немесе Threads сайтында видеосы бар бетті ашып, белгішені қайта басыңыз. GetCourse сабағы: егер сабақ беті кеңейтімді орнатпас бұрын ашылған болса, оны жаңартыңыз.",
+    adultContent: "Мұнда ересектерге арналған контент (18+). Videoner мұндай контентті жүктемейді.",
+    redditNoMedia: "Бұл Reddit постында жүктеп алуға болатын видео немесе фото жоқ.",
     gcLesson: "GetCourse сабағы",
     gcPick: "Сабақта бірнеше видео бар — керегін таңдаңыз",
     gcVideo: (n) => `Видео ${n}`,
@@ -390,7 +397,9 @@ const TEXTS = {
   ky: {
     loading: "Видео тууралуу маалымат алынууда…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest же Threads сайтында видеосу бар баракты ачып, сөлөкөттү кайра басыңыз. GetCourse сабагы: эгер сабактын барагы кеңейтүү орнотулганга чейин ачылган болсо, аны жаңыртыңыз.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit же Threads сайтында видеосу бар баракты ачып, сөлөкөттү кайра басыңыз. GetCourse сабагы: эгер сабактын барагы кеңейтүү орнотулганга чейин ачылган болсо, аны жаңыртыңыз.",
+    adultContent: "Бул чоңдорго арналган контент (18+). Videoner мындай контентти жүктөбөйт.",
+    redditNoMedia: "Бул Reddit постунда жүктөп алууга боло турган видео же сүрөт жок.",
     gcLesson: "GetCourse сабагы",
     gcPick: "Сабакта бир нече видео бар — керектүүсүн тандаңыз",
     gcVideo: (n) => `Видео ${n}`,
@@ -479,7 +488,9 @@ const TEXTS = {
   ce: {
     loading: "Видеох лаьцна хаам схьаоьцу…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest я Threads тӀехь видео йолу агӀо схьаеллийша, иштта значок тӀе юха а тӀетаӀийша. GetCourse урок: расширени дӀахӀоттале урокан агӀо схьаелла хиллехь, иза карлаяккхийша.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit я Threads тӀехь видео йолу агӀо схьаеллийша, иштта значок тӀе юха а тӀетаӀийша. GetCourse урок: расширени дӀахӀоттале урокан агӀо схьаелла хиллехь, иза карлаяккхийша.",
+    adultContent: "Укхаз баккхийчу нехан контент (18+) ю. Videoner иштта контент ца чIаъо.",
+    redditNoMedia: "Укх Reddit постехь чуьра даккха йиш йолу видео я фото яц.",
     gcLesson: "GetCourse урок",
     gcPick: "Урокехь масех видео ю — оьшург харжийша",
     gcVideo: (n) => `Видео ${n}`,
@@ -568,7 +579,9 @@ const TEXTS = {
   inh: {
     loading: "Видеох лаьца хоам хьаэцаш…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest е Threads тӀа видео йола оагӀув хьаеллал, тӀаккха значок тӀа юха а тӀатоӀал. GetCourse урок: расширени дӀахӀотталехьа урока оагӀув хьаелла хиннаяле, из карлаяккхал.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit е Threads тӀа видео йола оагӀув хьаеллал, тӀаккха значок тӀа юха а тӀатоӀал. GetCourse урок: расширени дӀахӀотталехьа урока оагӀув хьаелла хиннаяле, из карлаяккхал.",
+    adultContent: "И боахамечех долча контент (18+) да. Videoner иштта контент ца чIоагIдеш.",
+    redditNoMedia: "Из Reddit постехь чуэцаргдеш йола видео я фото яц.",
     gcLesson: "GetCourse урок",
     gcPick: "Урока цхьаннел дукхагӀа видео я — езаш йолар хьаржал",
     gcVideo: (n) => `Видео ${n}`,
@@ -657,7 +670,9 @@ const TEXTS = {
   av: {
     loading: "Видеоялъул баянал рачӀунел руго…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest яги Threads сайталда видео бугеб гьумер рагье ва значокалда цӀидасан чӀвае. GetCourse дарс: расширение лъелалде цебе дарсил гьумер рагьун букӀун батани, гьеб цӀидасан рагье.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit яги Threads сайталда видео бугеб гьумер рагье ва значокалда цӀидасан чӀвае. GetCourse дарс: расширение лъелалде цебе дарсил гьумер рагьун букӀун батани, гьеб цӀидасан рагье.",
+    adultContent: "Гьеб гIадамазул контент (18+) буго. Videoner гьеб кьабзул контент жубаларилароб.",
+    redditNoMedia: "Гьab Reddit посталда чӀезабизе бегьулеб видео яги фото гьечӀо.",
     gcLesson: "GetCourse дарс",
     gcPick: "Дарсида чанго видео буго — хӀажатаб бище",
     gcVideo: (n) => `Видео ${n}`,
@@ -746,7 +761,9 @@ const TEXTS = {
   tt: {
     loading: "Видео турында мәгълүмат алына…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest яки Threads сайтында видеолы битне ачыгыз һәм тамгачыкка тагын басыгыз. GetCourse дәресе: дәрес бите киңәйтмә урнаштырылганчы ачылган булса, аны яңартыгыз.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit яки Threads сайтында видеолы битне ачыгыз һәм тамгачыкка тагын басыгыз. GetCourse дәресе: дәрес бите киңәйтмә урнаштырылганчы ачылган булса, аны яңартыгыз.",
+    adultContent: "Монда олылар өчен эчтәлек (18+). Videoner мондый эчтәлекне йөкләми.",
+    redditNoMedia: "Бу Reddit постында йөкләп алырлык видео яки фото юк.",
     gcLesson: "GetCourse дәресе",
     gcPick: "Дәрестә берничә видео бар — кирәклесен сайлагыз",
     gcVideo: (n) => `Видео ${n}`,
@@ -835,7 +852,9 @@ const TEXTS = {
   tg: {
     loading: "Маълумот дар бораи видео гирифта мешавад…",
     notVideoPage:
-      "Саҳифаи видеоро дар YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ё Threads кушоед ва нишонаро боз пахш кунед. Дарси GetCourse: агар саҳифаи дарс пеш аз насби васеъкунанда кушода шуда бошад, онро навсозӣ кунед.",
+      "Саҳифаи видеоро дар YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ё Threads кушоед ва нишонаро боз пахш кунед. Дарси GetCourse: агар саҳифаи дарс пеш аз насби васеъкунанда кушода шуда бошад, онро навсозӣ кунед.",
+    adultContent: "Ин мундариҷаи барои калонсолон (18+) аст. Videoner чунин мундариҷаро зеркашӣ намекунад.",
+    redditNoMedia: "Дар ин пости Reddit видео ё аксе, ки зеркашӣ кардан мумкин бошад, нест.",
     gcLesson: "Дарси GetCourse",
     gcPick: "Дар дарс якчанд видео ҳаст — лозимашро интихоб кунед",
     gcVideo: (n) => `Видео ${n}`,
@@ -927,7 +946,9 @@ const TEXTS = {
   ar: {
     loading: "جارٍ جلب معلومات الفيديو…",
     notVideoPage:
-      "افتح صفحة فيديو على YouTube أو TikTok أو Instagram أو Facebook أو X أو Vimeo أو VK أو Rutube أو OK.ru أو Pinterest أو Threads، ثم انقر على الأيقونة مرة أخرى. درس GetCourse: إذا كانت صفحة الدرس مفتوحة قبل تثبيت الإضافة، فأعد تحميلها.",
+      "افتح صفحة فيديو على YouTube أو TikTok أو Instagram أو Facebook أو X أو Vimeo أو VK أو Rutube أو OK.ru أو Pinterest أو Reddit أو Threads، ثم انقر على الأيقونة مرة أخرى. درس GetCourse: إذا كانت صفحة الدرس مفتوحة قبل تثبيت الإضافة، فأعد تحميلها.",
+    adultContent: "هذا محتوى للبالغين (+18). لا يقوم Videoner بتنزيل هذا النوع من المحتوى.",
+    redditNoMedia: "لا يحتوي منشور Reddit هذا على فيديو أو صورة يمكن تنزيلها.",
     gcLesson: "درس GetCourse",
     gcPick: "يحتوي هذا الدرس على عدة مقاطع فيديو — اختر واحدًا",
     gcVideo: (n) => `فيديو ${n}`,
@@ -1018,7 +1039,9 @@ const TEXTS = {
   zh: {
     loading: "正在获取视频信息…",
     notVideoPage:
-      "请打开 YouTube、TikTok、Instagram、Facebook、X、Vimeo、VK、Rutube、OK.ru、Pinterest 或 Threads 上的视频页面，然后再次点击图标。GetCourse 课程：如果课程页面是在安装扩展之前打开的，请刷新该页面。",
+      "请打开 YouTube、TikTok、Instagram、Facebook、X、Vimeo、VK、Rutube、OK.ru、Pinterest、Reddit 或 Threads 上的视频页面，然后再次点击图标。GetCourse 课程：如果课程页面是在安装扩展之前打开的，请刷新该页面。",
+    adultContent: "这是成人内容（18+）。Videoner 不下载此类内容。",
+    redditNoMedia: "这条 Reddit 帖子中没有可下载的视频或图片。",
     gcLesson: "GetCourse 课程",
     gcPick: "本课程包含多个视频，请选择一个",
     gcVideo: (n) => `视频 ${n}`,
@@ -1110,7 +1133,9 @@ const TEXTS = {
   hi: {
     loading: "वीडियो की जानकारी ली जा रही है…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest या Threads पर किसी वीडियो का पेज खोलें और फिर से आइकन पर क्लिक करें। GetCourse लेसन: अगर लेसन का पेज एक्सटेंशन इंस्टॉल होने से पहले खुला था, तो उसे रीलोड करें।",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit या Threads पर किसी वीडियो का पेज खोलें और फिर से आइकन पर क्लिक करें। GetCourse लेसन: अगर लेसन का पेज एक्सटेंशन इंस्टॉल होने से पहले खुला था, तो उसे रीलोड करें।",
+    adultContent: "यह वयस्क सामग्री (18+) है। Videoner ऐसी सामग्री डाउनलोड नहीं करता।",
+    redditNoMedia: "इस Reddit पोस्ट में डाउनलोड करने लायक कोई वीडियो या फ़ोटो नहीं है।",
     gcLesson: "GetCourse लेसन",
     gcPick: "इस लेसन में कई वीडियो हैं — एक चुनें",
     gcVideo: (n) => `वीडियो ${n}`,
@@ -1199,7 +1224,9 @@ const TEXTS = {
   id: {
     loading: "Mengambil info video…",
     notVideoPage:
-      "Buka halaman video di YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest atau Threads, lalu klik ikonnya lagi. Pelajaran GetCourse: jika halaman pelajaran sudah terbuka sebelum ekstensi dipasang, muat ulang halaman tersebut.",
+      "Buka halaman video di YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit atau Threads, lalu klik ikonnya lagi. Pelajaran GetCourse: jika halaman pelajaran sudah terbuka sebelum ekstensi dipasang, muat ulang halaman tersebut.",
+    adultContent: "Ini konten dewasa (18+). Videoner tidak mengunduh konten semacam itu.",
+    redditNoMedia: "Postingan Reddit ini tidak memiliki video atau foto yang bisa diunduh.",
     gcLesson: "Pelajaran GetCourse",
     gcPick: "Pelajaran ini berisi beberapa video — pilih salah satu",
     gcVideo: (n) => `Video ${n}`,
@@ -1288,7 +1315,9 @@ const TEXTS = {
   sw: {
     loading: "Inapata maelezo ya video…",
     notVideoPage:
-      "Fungua ukurasa wa video kwenye YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest au Threads, kisha bofya ikoni tena. Somo la GetCourse: ikiwa ukurasa wa somo ulikuwa wazi kabla kiendelezi hakijasakinishwa, upakie upya.",
+      "Fungua ukurasa wa video kwenye YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit au Threads, kisha bofya ikoni tena. Somo la GetCourse: ikiwa ukurasa wa somo ulikuwa wazi kabla kiendelezi hakijasakinishwa, upakie upya.",
+    adultContent: "Hii ni maudhui ya watu wazima (18+). Videoner haipakui maudhui ya aina hiyo.",
+    redditNoMedia: "Chapisho hili la Reddit halina video wala picha ya kupakua.",
     gcLesson: "Somo la GetCourse",
     gcPick: "Somo hili lina video kadhaa — chagua moja",
     gcVideo: (n) => `Video ${n}`,
@@ -1377,7 +1406,9 @@ const TEXTS = {
   de: {
     loading: "Lade Video-Infos…",
     notVideoPage:
-      "Öffne eine Videoseite auf YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest oder Threads und klick erneut auf das Symbol. GetCourse-Lektion: War die Seite schon vor der Installation der Erweiterung offen, lade sie neu.",
+      "Öffne eine Videoseite auf YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit oder Threads und klick erneut auf das Symbol. GetCourse-Lektion: War die Seite schon vor der Installation der Erweiterung offen, lade sie neu.",
+    adultContent: "Das ist Inhalt für Erwachsene (18+). Videoner lädt solche Inhalte nicht herunter.",
+    redditNoMedia: "Dieser Reddit-Beitrag enthält kein Video und kein Foto zum Herunterladen.",
     gcLesson: "GetCourse-Lektion",
     gcPick: "Die Lektion hat mehrere Videos — wähl eins aus",
     gcVideo: (n) => `Video ${n}`,
@@ -1466,7 +1497,9 @@ const TEXTS = {
   fr: {
     loading: "Récupération des infos de la vidéo…",
     notVideoPage:
-      "Ouvrez la page d’une vidéo sur YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ou Threads et cliquez à nouveau sur l’icône. Leçon GetCourse : si la page était ouverte avant l’installation de l’extension, rechargez-la.",
+      "Ouvrez la page d’une vidéo sur YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ou Threads et cliquez à nouveau sur l’icône. Leçon GetCourse : si la page était ouverte avant l’installation de l’extension, rechargez-la.",
+    adultContent: "Il s’agit d’un contenu pour adultes (18+). Videoner ne télécharge pas ce type de contenu.",
+    redditNoMedia: "Ce post Reddit ne contient ni vidéo ni photo à télécharger.",
     gcLesson: "Leçon GetCourse",
     gcPick: "Cette leçon contient plusieurs vidéos — choisissez-en une",
     gcVideo: (n) => `Vidéo ${n}`,
@@ -1555,7 +1588,9 @@ const TEXTS = {
   it: {
     loading: "Recupero le info del video…",
     notVideoPage:
-      "Apri la pagina di un video su YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest o Threads e clicca di nuovo sull’icona. Lezione GetCourse: se la pagina era aperta prima dell’installazione dell’estensione, ricaricala.",
+      "Apri la pagina di un video su YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit o Threads e clicca di nuovo sull’icona. Lezione GetCourse: se la pagina era aperta prima dell’installazione dell’estensione, ricaricala.",
+    adultContent: "Questo è un contenuto per adulti (18+). Videoner non scarica contenuti di questo tipo.",
+    redditNoMedia: "Questo post di Reddit non contiene video o foto da scaricare.",
     gcLesson: "Lezione GetCourse",
     gcPick: "Questa lezione ha più video — scegline uno",
     gcVideo: (n) => `Video ${n}`,
@@ -1644,7 +1679,9 @@ const TEXTS = {
   pt: {
     loading: "Buscando informações do vídeo…",
     notVideoPage:
-      "Abra a página de um vídeo no YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ou Threads e clique no ícone de novo. Aula do GetCourse: se a página da aula estava aberta antes de instalar a extensão, recarregue-a.",
+      "Abra a página de um vídeo no YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ou Threads e clique no ícone de novo. Aula do GetCourse: se a página da aula estava aberta antes de instalar a extensão, recarregue-a.",
+    adultContent: "Este é um conteúdo adulto (18+). O Videoner não baixa esse tipo de conteúdo.",
+    redditNoMedia: "Este post do Reddit não tem vídeo nem foto para baixar.",
     gcLesson: "Aula do GetCourse",
     gcPick: "Esta aula tem vários vídeos — escolha um",
     gcVideo: (n) => `Vídeo ${n}`,
@@ -1733,7 +1770,9 @@ const TEXTS = {
   es: {
     loading: "Obteniendo información del video…",
     notVideoPage:
-      "Abre la página de un video en YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest o Threads y vuelve a hacer clic en el ícono. Clase de GetCourse: si la página de la clase estaba abierta antes de instalar la extensión, recárgala.",
+      "Abre la página de un video en YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit o Threads y vuelve a hacer clic en el ícono. Clase de GetCourse: si la página de la clase estaba abierta antes de instalar la extensión, recárgala.",
+    adultContent: "Este es contenido para adultos (18+). Videoner no descarga este tipo de contenido.",
+    redditNoMedia: "Esta publicación de Reddit no tiene video ni foto para descargar.",
     gcLesson: "Clase de GetCourse",
     gcPick: "Esta clase tiene varios videos: elige uno",
     gcVideo: (n) => `Video ${n}`,
@@ -1822,7 +1861,9 @@ const TEXTS = {
   uz: {
     loading: "Video maʼlumotlari olinmoqda…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest yoki Threads saytida video sahifasini oching va belgini yana bosing. GetCourse darsi: agar dars sahifasi kengaytma oʻrnatilishidan oldin ochilgan boʻlsa, uni qayta yuklang.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit yoki Threads saytida video sahifasini oching va belgini yana bosing. GetCourse darsi: agar dars sahifasi kengaytma oʻrnatilishidan oldin ochilgan boʻlsa, uni qayta yuklang.",
+    adultContent: "Bu kattalar uchun kontent (18+). Videoner bunday kontentni yuklab olmaydi.",
+    redditNoMedia: "Bu Reddit postida yuklab olish mumkin boʻlgan video yoki rasm yoʻq.",
     gcLesson: "GetCourse darsi",
     gcPick: "Bu darsda bir nechta video bor — bittasini tanlang",
     gcVideo: (n) => `Video ${n}`,
@@ -1911,7 +1952,9 @@ const TEXTS = {
   tr: {
     loading: "Video bilgileri alınıyor…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest veya Threads'te bir video sayfası açın ve simgeye tekrar tıklayın. GetCourse dersi: ders sayfası eklenti yüklenmeden önce açıldıysa sayfayı yenileyin.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit veya Threads'te bir video sayfası açın ve simgeye tekrar tıklayın. GetCourse dersi: ders sayfası eklenti yüklenmeden önce açıldıysa sayfayı yenileyin.",
+    adultContent: "Bu yetişkinlere yönelik bir içerik (18+). Videoner bu tür içerikleri indirmez.",
+    redditNoMedia: "Bu Reddit gönderisinde indirilebilecek video veya fotoğraf yok.",
     gcLesson: "GetCourse dersi",
     gcPick: "Bu derste birkaç video var — birini seçin",
     gcVideo: (n) => `Video ${n}`,
@@ -2003,7 +2046,9 @@ const TEXTS = {
   fa: {
     loading: "در حال دریافت اطلاعات ویدیو…",
     notVideoPage:
-      "یک صفحهٔ ویدیو در YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest یا Threads باز کنید و دوباره روی نماد کلیک کنید. درس GetCourse: اگر صفحهٔ درس پیش از نصب افزونه باز بوده، آن را دوباره بارگیری کنید.",
+      "یک صفحهٔ ویدیو در YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest، Reddit یا Threads باز کنید و دوباره روی نماد کلیک کنید. درس GetCourse: اگر صفحهٔ درس پیش از نصب افزونه باز بوده، آن را دوباره بارگیری کنید.",
+    adultContent: "این محتوای بزرگسالان (+18) است. Videoner چنین محتوایی را دانلود نمی‌کند.",
+    redditNoMedia: "این پست Reddit ویدیو یا عکسی برای دانلود ندارد.",
     gcLesson: "درس GetCourse",
     gcPick: "این درس چند ویدیو دارد — یکی را انتخاب کنید",
     gcVideo: (n) => `ویدیو ${n}`,
@@ -2095,7 +2140,9 @@ const TEXTS = {
   ps: {
     loading: "د ویډیو معلومات راوړل کېږي…",
     notVideoPage:
-      "په YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest یا Threads کې د یوې ویډیو پاڼه پرانیزئ او بیا په آیکن کلیک وکړئ. د GetCourse درس: که د درس پاڼه د توسیع له نصبولو مخکې پرانیستل شوې وه، هغه بیا تازه کړئ.",
+      "په YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest، Reddit یا Threads کې د یوې ویډیو پاڼه پرانیزئ او بیا په آیکن کلیک وکړئ. د GetCourse درس: که د درس پاڼه د توسیع له نصبولو مخکې پرانیستل شوې وه، هغه بیا تازه کړئ.",
+    adultContent: "دا د لویانو منځپانگه (+18) ده. Videoner دا ډول منځپانگه نه ډاونلوډوي.",
+    redditNoMedia: "دې Reddit پوسټ کې د ډاونلوډ وړ ویډیو یا انځور نشته.",
     gcLesson: "د GetCourse درس",
     gcPick: "په دې درس کې څو ویډیوګانې دي — یوه یې وټاکئ",
     gcVideo: (n) => `ویډیو ${n}`,
@@ -2187,7 +2234,9 @@ const TEXTS = {
   ckb: {
     loading: "زانیاریی ڤیدیۆکە وەردەگیرێت…",
     notVideoPage:
-      "لە YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest یان Threads پەڕەی ڤیدیۆیەک بکەرەوە و دووبارە کرتە لە ئایکۆنەکە بکە. وانەی GetCourse: ئەگەر پەڕەی وانەکە پێش دامەزراندنی پێوەکراوەکە کرابووەوە، نوێی بکەرەوە.",
+      "لە YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest، Reddit یان Threads پەڕەی ڤیدیۆیەک بکەرەوە و دووبارە کرتە لە ئایکۆنەکە بکە. وانەی GetCourse: ئەگەر پەڕەی وانەکە پێش دامەزراندنی پێوەکراوەکە کرابووەوە، نوێی بکەرەوە.",
+    adultContent: "ئەمە ناوەڕۆکی گەورەسالانە (+18). Videoner ئەم جۆرە ناوەڕۆکە دابەزێنێت نەکات.",
+    redditNoMedia: "ئەم پۆستی Reddit ـە ڤیدیۆ یان وێنەیەکی نییە بۆ دابەزاندن.",
     gcLesson: "وانەی GetCourse",
     gcPick: "ئەم وانەیە چەند ڤیدیۆیەکی تێدایە — یەکێکیان هەڵبژێرە",
     gcVideo: (n) => `ڤیدیۆی ${n}`,
@@ -2279,7 +2328,9 @@ const TEXTS = {
   ug: {
     loading: "ۋىدىيو ئۇچۇرى ئېلىنىۋاتىدۇ…",
     notVideoPage:
-      "YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest ياكى Threads دىكى ۋىدىيو بېتىنى ئېچىپ، سىنبەلگىنى قايتا چېكىڭ. GetCourse دەرسى: ئەگەر دەرس بېتى قىستۇرما ئورنىتىلىشتىن بۇرۇن ئېچىلغان بولسا، ئۇنى يېڭىلاڭ.",
+      "YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest، Reddit ياكى Threads دىكى ۋىدىيو بېتىنى ئېچىپ، سىنبەلگىنى قايتا چېكىڭ. GetCourse دەرسى: ئەگەر دەرس بېتى قىستۇرما ئورنىتىلىشتىن بۇرۇن ئېچىلغان بولسا، ئۇنى يېڭىلاڭ.",
+    adultContent: "بۇ چوڭلارغا مەنسۇپ مەزمۇن (+18). Videoner بۇنداق مەزمۇننى چۈشۈرمەيدۇ.",
+    redditNoMedia: "بۇ Reddit يازمىسىدا چۈشۈرگىلى بولىدىغان ۋىدىيو ياكى رەسىم يوق.",
     gcLesson: "GetCourse دەرسى",
     gcPick: "بۇ دەرستە بىر قانچە ۋىدىيو بار — بىرىنى تاللاڭ",
     gcVideo: (n) => `${n}-ۋىدىيو`,
@@ -2369,7 +2420,9 @@ const TEXTS = {
   vi: {
     loading: "Đang lấy thông tin video…",
     notVideoPage:
-      "Mở trang video trên YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest hoặc Threads rồi nhấn lại vào biểu tượng. Bài học GetCourse: nếu trang bài học đã mở trước khi cài tiện ích, hãy tải lại trang.",
+      "Mở trang video trên YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit hoặc Threads rồi nhấn lại vào biểu tượng. Bài học GetCourse: nếu trang bài học đã mở trước khi cài tiện ích, hãy tải lại trang.",
+    adultContent: "Đây là nội dung người lớn (18+). Videoner không tải loại nội dung này.",
+    redditNoMedia: "Bài đăng Reddit này không có video hoặc ảnh nào để tải xuống.",
     gcLesson: "Bài học GetCourse",
     gcPick: "Bài học này có nhiều video — hãy chọn một",
     gcVideo: (n) => `Video ${n}`,
@@ -2458,7 +2511,9 @@ const TEXTS = {
   bn: {
     loading: "ভিডিওর তথ্য আনা হচ্ছে…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest বা Threads-এ একটি ভিডিওর পেজ খুলে আবার আইকনে ক্লিক করুন। GetCourse লেসন: এক্সটেনশন ইনস্টলের আগে লেসনের পেজ খোলা থাকলে পেজটি রিলোড করুন।",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit বা Threads-এ একটি ভিডিওর পেজ খুলে আবার আইকনে ক্লিক করুন। GetCourse লেসন: এক্সটেনশন ইনস্টলের আগে লেসনের পেজ খোলা থাকলে পেজটি রিলোড করুন।",
+    adultContent: "এটি প্রাপ্তবয়স্কদের কনটেন্ট (18+)। Videoner এ ধরনের কনটেন্ট ডাউনলোড করে না।",
+    redditNoMedia: "এই Reddit পোস্টে ডাউনলোড করার মতো কোনো ভিডিও বা ছবি নেই।",
     gcLesson: "GetCourse লেসন",
     gcPick: "এই লেসনে কয়েকটি ভিডিও আছে — একটি বেছে নিন",
     gcVideo: (n) => `ভিডিও ${n}`,
@@ -2550,7 +2605,9 @@ const TEXTS = {
   ur: {
     loading: "ویڈیو کی معلومات حاصل کی جا رہی ہیں…",
     notVideoPage:
-      "YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest یا Threads پر کسی ویڈیو کا صفحہ کھولیں اور دوبارہ آئیکن پر کلک کریں۔ GetCourse سبق: اگر سبق کا صفحہ ایکسٹینشن انسٹال کرنے سے پہلے کھلا تھا تو اسے دوبارہ لوڈ کریں۔",
+      "YouTube، TikTok، Instagram، Facebook، X، Vimeo، VK، Rutube، OK.ru، Pinterest، Reddit یا Threads پر کسی ویڈیو کا صفحہ کھولیں اور دوبارہ آئیکن پر کلک کریں۔ GetCourse سبق: اگر سبق کا صفحہ ایکسٹینشن انسٹال کرنے سے پہلے کھلا تھا تو اسے دوبارہ لوڈ کریں۔",
+    adultContent: "یہ بالغوں کا مواد (+18) ہے۔ Videoner اس طرح کا مواد ڈاؤن لوڈ نہیں کرتا۔",
+    redditNoMedia: "اس Reddit پوسٹ میں ڈاؤن لوڈ کرنے کے لیے کوئی ویڈیو یا تصویر نہیں ہے۔",
     gcLesson: "GetCourse سبق",
     gcPick: "اس سبق میں کئی ویڈیوز ہیں — ایک منتخب کریں",
     gcVideo: (n) => `ویڈیو ${n}`,
@@ -2639,7 +2696,9 @@ const TEXTS = {
   pl: {
     loading: "Pobieram informacje o filmie…",
     notVideoPage:
-      "Otwórz stronę z filmem na YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest lub Threads i kliknij ikonę jeszcze raz. Lekcja GetCourse: jeśli strona lekcji była otwarta przed instalacją rozszerzenia, odśwież ją.",
+      "Otwórz stronę z filmem na YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit lub Threads i kliknij ikonę jeszcze raz. Lekcja GetCourse: jeśli strona lekcji była otwarta przed instalacją rozszerzenia, odśwież ją.",
+    adultContent: "To treść dla dorosłych (18+). Videoner nie pobiera takich treści.",
+    redditNoMedia: "Ten post na Reddit nie zawiera filmu ani zdjęcia do pobrania.",
     gcLesson: "Lekcja GetCourse",
     gcPick: "W tej lekcji jest kilka filmów — wybierz jeden",
     gcVideo: (n) => `Film ${n}`,
@@ -2731,7 +2790,9 @@ const TEXTS = {
   ja: {
     loading: "動画情報を取得しています…",
     notVideoPage:
-      "YouTube、TikTok、Instagram、Facebook、X、Vimeo、VK、Rutube、OK.ru、Pinterest、Threads の動画ページを開いて、もう一度アイコンをクリックしてください。GetCourse のレッスン：拡張機能をインストールする前からレッスンページを開いていた場合は、ページを再読み込みしてください。",
+      "YouTube、TikTok、Instagram、Facebook、X、Vimeo、VK、Rutube、OK.ru、Pinterest、Reddit、Threads の動画ページを開いて、もう一度アイコンをクリックしてください。GetCourse のレッスン：拡張機能をインストールする前からレッスンページを開いていた場合は、ページを再読み込みしてください。",
+    adultContent: "これはアダルトコンテンツ（18+）です。Videoner はこのようなコンテンツをダウンロードしません。",
+    redditNoMedia: "このRedditの投稿には、ダウンロードできる動画や写真がありません。",
     gcLesson: "GetCourse のレッスン",
     gcPick: "このレッスンには動画が複数あります。1 つ選んでください",
     gcVideo: (n) => `動画 ${n}`,
@@ -2822,7 +2883,9 @@ const TEXTS = {
   ko: {
     loading: "동영상 정보를 가져오는 중…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest 또는 Threads의 동영상 페이지를 열고 아이콘을 다시 클릭하세요. GetCourse 강의: 확장 프로그램을 설치하기 전에 강의 페이지를 열어 두었다면 페이지를 새로고침하세요.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit 또는 Threads의 동영상 페이지를 열고 아이콘을 다시 클릭하세요. GetCourse 강의: 확장 프로그램을 설치하기 전에 강의 페이지를 열어 두었다면 페이지를 새로고침하세요.",
+    adultContent: "성인용 콘텐츠(18+)입니다. Videoner는 이러한 콘텐츠를 다운로드하지 않습니다.",
+    redditNoMedia: "이 Reddit 게시물에는 다운로드할 수 있는 동영상이나 사진이 없습니다.",
     gcLesson: "GetCourse 강의",
     gcPick: "이 강의에는 동영상이 여러 개 있어요. 하나를 선택하세요",
     gcVideo: (n) => `동영상 ${n}`,
@@ -2913,7 +2976,9 @@ const TEXTS = {
   th: {
     loading: "กำลังดึงข้อมูลวิดีโอ…",
     notVideoPage:
-      "เปิดหน้าวิดีโอบน YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest หรือ Threads แล้วคลิกไอคอนอีกครั้ง บทเรียน GetCourse: หากเปิดหน้าบทเรียนไว้ก่อนติดตั้งส่วนขยาย ให้โหลดหน้านั้นใหม่",
+      "เปิดหน้าวิดีโอบน YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit หรือ Threads แล้วคลิกไอคอนอีกครั้ง บทเรียน GetCourse: หากเปิดหน้าบทเรียนไว้ก่อนติดตั้งส่วนขยาย ให้โหลดหน้านั้นใหม่",
+    adultContent: "นี่เป็นเนื้อหาสำหรับผู้ใหญ่ (18+) Videoner ไม่ดาวน์โหลดเนื้อหาลักษณะนี้",
+    redditNoMedia: "โพสต์ Reddit นี้ไม่มีวิดีโอหรือรูปภาพที่ดาวน์โหลดได้",
     gcLesson: "บทเรียน GetCourse",
     gcPick: "บทเรียนนี้มีวิดีโอหลายรายการ เลือกหนึ่งรายการ",
     gcVideo: (n) => `วิดีโอ ${n}`,
@@ -3002,7 +3067,9 @@ const TEXTS = {
   tl: {
     loading: "Kinukuha ang info ng video…",
     notVideoPage:
-      "Magbukas ng video page sa YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest o Threads at i-click ulit ang icon. GetCourse lesson: kung bukas na ang lesson page bago na-install ang extension, i-reload ito.",
+      "Magbukas ng video page sa YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit o Threads at i-click ulit ang icon. GetCourse lesson: kung bukas na ang lesson page bago na-install ang extension, i-reload ito.",
+    adultContent: "Ito ay nilalamang pang-adulto (18+). Hindi dina-download ng Videoner ang ganitong nilalaman.",
+    redditNoMedia: "Walang video o larawang ma-download sa Reddit post na ito.",
     gcLesson: "GetCourse lesson",
     gcPick: "May ilang video sa lesson na ito — pumili ng isa",
     gcVideo: (n) => `Video ${n}`,
@@ -3091,7 +3158,9 @@ const TEXTS = {
   am: {
     loading: "የቪዲዮ መረጃ በመጫን ላይ…",
     notVideoPage:
-      "በYouTube፣ TikTok፣ Instagram፣ Facebook፣ X፣ Vimeo፣ VK፣ Rutube፣ OK.ru፣ Pinterest ወይም Threads ላይ የቪዲዮ ገጽ ይክፈቱና አዶውን እንደገና ጠቅ ያድርጉ። የGetCourse ትምህርት፦ ቅጥያው ከመጫኑ በፊት የትምህርቱ ገጽ ተከፍቶ ከነበረ ገጹን እንደገና ይጫኑት።",
+      "በYouTube፣ TikTok፣ Instagram፣ Facebook፣ X፣ Vimeo፣ VK፣ Rutube፣ OK.ru፣ Pinterest፣ Reddit ወይም Threads ላይ የቪዲዮ ገጽ ይክፈቱና አዶውን እንደገና ጠቅ ያድርጉ። የGetCourse ትምህርት፦ ቅጥያው ከመጫኑ በፊት የትምህርቱ ገጽ ተከፍቶ ከነበረ ገጹን እንደገና ይጫኑት።",
+    adultContent: "ይህ የአዋቂዎች ይዘት (18+) ነው። Videoner እንዲህ ያለውን ይዘት አያወርድም።",
+    redditNoMedia: "በዚህ የReddit ልጥፍ ውስጥ ማውረድ የሚቻል ቪዲዮ ወይም ፎቶ የለም።",
     gcLesson: "የGetCourse ትምህርት",
     gcPick: "ይህ ትምህርት በርካታ ቪዲዮዎች አሉት — አንዱን ይምረጡ",
     gcVideo: (n) => `ቪዲዮ ${n}`,
@@ -3180,7 +3249,9 @@ const TEXTS = {
   om: {
     loading: "Odeeffannoo viidiyoo fidaa jira…",
     notVideoPage:
-      "Fuula viidiyoo YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ykn Threads irratti banaatii mallattoo sana irra deebi'aa cuqaasaa. Barnoota GetCourse: fuulli barnootaa osoo dabalanni hin diriirfamin dura banamee yoo ture, irra deebi'aa fe'aa.",
+      "Fuula viidiyoo YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ykn Threads irratti banaatii mallattoo sana irra deebi'aa cuqaasaa. Barnoota GetCourse: fuulli barnootaa osoo dabalanni hin diriirfamin dura banamee yoo ture, irra deebi'aa fe'aa.",
+    adultContent: "Kun qabiyyee ga'eessotaa (18+) dha. Videoner qabiyyee akkasii hin buufatu.",
+    redditNoMedia: "Barreeffama Reddit kana keessa viidiyoon yookaan suuraan buufatamu hin jiru.",
     gcLesson: "Barnoota GetCourse",
     gcPick: "Barnoonni kun viidiyoowwan hedduu qaba — tokko filadhaa",
     gcVideo: (n) => `Viidiyoo ${n}`,
@@ -3269,7 +3340,9 @@ const TEXTS = {
   ha: {
     loading: "Ana samo bayanan bidiyo…",
     notVideoPage:
-      "Ku buɗe shafin bidiyo a YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ko Threads, sannan ku sake danna alamar. Darasin GetCourse: idan shafin darasin a buɗe yake kafin a saka ƙarin, ku sake loda shi.",
+      "Ku buɗe shafin bidiyo a YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ko Threads, sannan ku sake danna alamar. Darasin GetCourse: idan shafin darasin a buɗe yake kafin a saka ƙarin, ku sake loda shi.",
+    adultContent: "Wannan abun manya ne (18+). Videoner ba ya sauke irin wannan abun.",
+    redditNoMedia: "Wannan rubutun Reddit ba shi da bidiyo ko hoto da za a sauke.",
     gcLesson: "Darasin GetCourse",
     gcPick: "Wannan darasi yana da bidiyo da yawa — ku zaɓi ɗaya",
     gcVideo: (n) => `Bidiyo ${n}`,
@@ -3358,7 +3431,9 @@ const TEXTS = {
   so: {
     loading: "Waxaa la soo helayaa xogta muuqaalka…",
     notVideoPage:
-      "Fur bog muuqaal ah oo ku yaal YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ama Threads, kadibna mar kale guji astaanta. Casharka GetCourse: haddii bogga casharku furnaa ka hor intaan kordhiyaha la rakibin, dib u soo rar.",
+      "Fur bog muuqaal ah oo ku yaal YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ama Threads, kadibna mar kale guji astaanta. Casharka GetCourse: haddii bogga casharku furnaa ka hor intaan kordhiyaha la rakibin, dib u soo rar.",
+    adultContent: "Tani waa nuxur dadka waaweyn ah (18+). Videoner nuxurka noocaas ah ma soo dejiyo.",
+    redditNoMedia: "Boostadan Reddit ma laha muuqaal ama sawir la soo dejin karo.",
     gcLesson: "Casharka GetCourse",
     gcPick: "Casharkan wuxuu leeyahay dhowr muuqaal — dooro mid",
     gcVideo: (n) => `Muuqaal ${n}`,
@@ -3447,7 +3522,9 @@ const TEXTS = {
   ku: {
     loading: "Agahiyên vîdyoyê tên wergirtin…",
     notVideoPage:
-      "Li YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest an Threads rûpeleke vîdyoyê veke û dîsa li îkonê bitikîne. Dersa GetCourse: heke rûpela dersê berî sazkirina pêvekê vekirî bû, wê ji nû ve bar bike.",
+      "Li YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit an Threads rûpeleke vîdyoyê veke û dîsa li îkonê bitikîne. Dersa GetCourse: heke rûpela dersê berî sazkirina pêvekê vekirî bû, wê ji nû ve bar bike.",
+    adultContent: "Ev naveroka mezinan e (18+). Videoner naveroka bi vî rengî dananeke.",
+    redditNoMedia: "Di vê postê ya Reddit de vîdyo an wêneyek ji bo daxistinê tune ye.",
     gcLesson: "Dersa GetCourse",
     gcPick: "Di vê dersê de çend vîdyo hene — yekê hilbijêre",
     gcVideo: (n) => `Vîdyo ${n}`,
@@ -3536,7 +3613,9 @@ const TEXTS = {
   az: {
     loading: "Video məlumatları alınır…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest və ya Threads-də video səhifəsini açın və ikona yenidən klikləyin. GetCourse dərsi: dərs səhifəsi genişlənmə quraşdırılmazdan əvvəl açılıbsa, onu yeniləyin.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit və ya Threads-də video səhifəsini açın və ikona yenidən klikləyin. GetCourse dərsi: dərs səhifəsi genişlənmə quraşdırılmazdan əvvəl açılıbsa, onu yeniləyin.",
+    adultContent: "Bu yetkinlər üçün məzmundur (18+). Videoner belə məzmunu yükləmir.",
+    redditNoMedia: "Bu Reddit paylaşımında yüklənə biləcək video və ya foto yoxdur.",
     gcLesson: "GetCourse dərsi",
     gcPick: "Bu dərsdə bir neçə video var — birini seçin",
     gcVideo: (n) => `Video ${n}`,
@@ -3625,7 +3704,9 @@ const TEXTS = {
   tk: {
     loading: "Wideo barada maglumat alynýar…",
     notVideoPage:
-      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ýa-da Threads saýtynda wideoly sahypany açyň we nyşana täzeden basyň. GetCourse sapagy: eger sapagyň sahypasy giňeltme gurnalmazdan öň açylan bolsa, ony täzeläň.",
+      "YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ýa-da Threads saýtynda wideoly sahypany açyň we nyşana täzeden basyň. GetCourse sapagy: eger sapagyň sahypasy giňeltme gurnalmazdan öň açylan bolsa, ony täzeläň.",
+    adultContent: "Bu uly adamlar üçin mazmun (18+). Videoner şeýle mazmuny ýükläp almaýar.",
+    redditNoMedia: "Bu Reddit postunda ýükläp alyp boljak wideo ýa-da surat ýok.",
     gcLesson: "GetCourse sapagy",
     gcPick: "Sapakda birnäçe wideo bar — gereklisini saýlaň",
     gcVideo: (n) => `Wideo ${n}`,
@@ -3714,7 +3795,9 @@ const TEXTS = {
   ms: {
     loading: "Mendapatkan maklumat video…",
     notVideoPage:
-      "Buka halaman video di YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest atau Threads dan klik ikon sekali lagi. Pelajaran GetCourse: jika halaman pelajaran dibuka sebelum sambungan dipasang, muat semula halaman itu.",
+      "Buka halaman video di YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit atau Threads dan klik ikon sekali lagi. Pelajaran GetCourse: jika halaman pelajaran dibuka sebelum sambungan dipasang, muat semula halaman itu.",
+    adultContent: "Ini kandungan dewasa (18+). Videoner tidak memuat turun kandungan sebegini.",
+    redditNoMedia: "Hantaran Reddit ini tiada video atau foto untuk dimuat turun.",
     gcLesson: "Pelajaran GetCourse",
     gcPick: "Pelajaran ini ada beberapa video — pilih satu",
     gcVideo: (n) => `Video ${n}`,
@@ -3803,7 +3886,9 @@ const TEXTS = {
   nl: {
     loading: "Video-info ophalen…",
     notVideoPage:
-      "Open een videopagina op YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest of Threads en klik nog eens op het pictogram. GetCourse-les: was de lespagina al open vóór de installatie van de extensie, laad hem dan opnieuw.",
+      "Open een videopagina op YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit of Threads en klik nog eens op het pictogram. GetCourse-les: was de lespagina al open vóór de installatie van de extensie, laad hem dan opnieuw.",
+    adultContent: "Dit is inhoud voor volwassenen (18+). Videoner downloadt dergelijke inhoud niet.",
+    redditNoMedia: "Deze Reddit-post bevat geen video of foto om te downloaden.",
     gcLesson: "GetCourse-les",
     gcPick: "Deze les heeft meerdere video's — kies er een",
     gcVideo: (n) => `Video ${n}`,
@@ -3892,7 +3977,9 @@ const TEXTS = {
   ro: {
     loading: "Se încarcă informațiile despre videoclip…",
     notVideoPage:
-      "Deschide pagina unui videoclip pe YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest sau Threads și apasă din nou pe pictogramă. Lecție GetCourse: dacă pagina lecției era deschisă înainte de instalarea extensiei, reîncarc-o.",
+      "Deschide pagina unui videoclip pe YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit sau Threads și apasă din nou pe pictogramă. Lecție GetCourse: dacă pagina lecției era deschisă înainte de instalarea extensiei, reîncarc-o.",
+    adultContent: "Acesta este conținut pentru adulți (18+). Videoner nu descarcă astfel de conținut.",
+    redditNoMedia: "Această postare Reddit nu conține video sau fotografii de descărcat.",
     gcLesson: "Lecție GetCourse",
     gcPick: "Lecția are mai multe videoclipuri — alege unul",
     gcVideo: (n) => `Videoclipul ${n}`,
@@ -3981,7 +4068,9 @@ const TEXTS = {
   sq: {
     loading: "Po merren të dhënat e videos…",
     notVideoPage:
-      "Hapni faqen e një videoje në YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ose Threads dhe klikoni sërish ikonën. Mësim GetCourse: nëse faqja e mësimit ishte hapur para instalimit të shtesës, ringarkojeni.",
+      "Hapni faqen e një videoje në YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ose Threads dhe klikoni sërish ikonën. Mësim GetCourse: nëse faqja e mësimit ishte hapur para instalimit të shtesës, ringarkojeni.",
+    adultContent: "Ky është përmbajtje për të rritur (18+). Videoner nuk shkarkon përmbajtje të tillë.",
+    redditNoMedia: "Ky postim në Reddit nuk ka video apo foto për t’u shkarkuar.",
     gcLesson: "Mësim GetCourse",
     gcPick: "Ky mësim ka disa video — zgjidhni një",
     gcVideo: (n) => `Video ${n}`,
@@ -4072,7 +4161,9 @@ const TEXTS = {
   bs: {
     loading: "Preuzimanje podataka o videu…",
     notVideoPage:
-      "Otvorite stranicu s videom na YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest ili Threads i ponovo kliknite ikonu. Lekcija GetCourse: ako je stranica lekcije bila otvorena prije instaliranja proširenja, ponovo je učitajte.",
+      "Otvorite stranicu s videom na YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit ili Threads i ponovo kliknite ikonu. Lekcija GetCourse: ako je stranica lekcije bila otvorena prije instaliranja proširenja, ponovo je učitajte.",
+    adultContent: "Ovo je sadržaj za odrasle (18+). Videoner ne preuzima takav sadržaj.",
+    redditNoMedia: "Ova Reddit objava nema video ni fotografiju za preuzimanje.",
     gcLesson: "Lekcija GetCourse",
     gcPick: "Ova lekcija ima nekoliko videozapisa — odaberite jedan",
     gcVideo: (n) => `Video ${n}`,
@@ -4161,7 +4252,9 @@ const TEXTS = {
   en: {
     loading: "Fetching video info…",
     notVideoPage:
-      "Open a video page on YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest or Threads and click the icon again. GetCourse lesson: if the lesson page was open before the extension was installed, reload it.",
+      "Open a video page on YouTube, TikTok, Instagram, Facebook, X, Vimeo, VK, Rutube, OK.ru, Pinterest, Reddit or Threads and click the icon again. GetCourse lesson: if the lesson page was open before the extension was installed, reload it.",
+    adultContent: "This is adult content (18+). Videoner doesn't download such content.",
+    redditNoMedia: "This Reddit post has no video or photo to download.",
     gcLesson: "GetCourse lesson",
     gcPick: "This lesson has several videos — pick one",
     gcVideo: (n) => `Video ${n}`,
@@ -4308,6 +4401,8 @@ export function friendlyError(error) {
   const msg = String(error?.message ?? "").toLowerCase();
 
   if (status === 0 || msg === "network") return t.errNetwork;
+  // Контент 18+ сервер не отдаёт (server/src/lib/adult-content.ts).
+  if (msg.startsWith("adult content")) return t.adultContent;
   if (status === 429 || msg.includes("rate limit exceeded") || msg.includes("too many requests")) {
     return t.errRateLimit;
   }

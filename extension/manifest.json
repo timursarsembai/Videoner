@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "description": "__MSG_extDescription__",
-  "version": "1.6.12",
+  "version": "1.7.0",
   "default_locale": "ru",
   "icons": {
     "16": "icons/icon-16.png",
@@ -61,6 +61,18 @@
     },
     {
       "matches": [
+        "https://*.reddit.com/*"
+      ],
+      "js": [
+        "video-pages.js",
+        "page-media.js",
+        "reddit-mux.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
         "https://*.gceuproxy.com/sign-player/*",
         "https://*.gcvh.ru/sign-player/*",
         "https://*.getcourse.ru/sign-player/*"
@@ -98,7 +110,8 @@
         "https://*.pinterest.com/*",
         "https://*.pinterest.ru/*",
         "https://*.threads.net/*",
-        "https://*.threads.com/*"
+        "https://*.threads.com/*",
+        "https://*.reddit.com/*"
       ]
     },
     {

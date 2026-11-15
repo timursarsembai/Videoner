@@ -1,4 +1,4 @@
-/* global videonerIsVideoPage, videonerFindPageMedia */
+/* global videonerIsVideoPage, videonerFindPageMedia, videonerMergeFmp4 */
 // Кнопка «Скачать» на странице видео. Плавающая, в углу экрана, а не вставка
 // рядом с плеером: у одиннадцати площадок своя вёрстка, и вставки ломались бы
 // при каждом их редизайне. По клику над кнопкой открывается то же окошко,
@@ -206,6 +206,12 @@
       videonerFindPageMedia().then(sendResponse, () => sendResponse(null));
       return true;
     }
+    if (message?.type === "videoner:reddit-fetch") {
+      redditFetch(message)
+        .then((size) => sendResponse({ ok: true, size }))
+        .catch((e) => sendResponse({ ok: false, error: String(e?.message ?? e) }));
+      return true;
+    }
     if (message?.type === "videoner:page-fetch") {
       pageFetch(message)
         .then((size) => sendResponse({ ok: true, size }))
@@ -238,15 +244,110 @@
     }
     if (!received) throw new Error("empty file");
 
-    // Ссылка на blob страницы с атрибутом download: такой файл браузер
-    // сохраняет в «Загрузки» под нашим именем, как обычную загрузку.
-    const href = URL.createObjectURL(new Blob(chunks, { type: res.headers.get("content-type") || "video/mp4" }));
+    saveBlob(new Blob(chunks, { type: res.headers.get("content-type") || "video/mp4" }), filename);
+    return received;
+  }
+
+  // ---- Reddit: видео и звук отдельными файлами, склейка — reddit-mux.js ----
+
+  // Лучшее видео и звук из DASH-плейлиста ролика. Не вышло — видео из
+  // fallback_url, а звук ищем по обычным именам файлов Reddit.
+  async function redditStreams(fallbackUrl, dashUrl, hasAudio) {
+    let video = fallbackUrl;
+    let audio = null;
+    if (dashUrl) {
+      try {
+        const res = await fetch(dashUrl, { credentials: "omit" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const xml = new DOMParser().parseFromString(await res.text(), "application/xml");
+        let bestVideo = null;
+        let bestAudio = null;
+        for (const rep of xml.getElementsByTagNameNS("*", "Representation")) {
+          const set = rep.parentElement;
+          const mime = rep.getAttribute("mimeType") || set?.getAttribute("mimeType") || set?.getAttribute("contentType") || "";
+          const codecs = rep.getAttribute("codecs") || set?.getAttribute("codecs") || "";
+          const base = rep.getElementsByTagNameNS("*", "BaseURL")[0]?.textContent?.trim();
+          if (!base) continue;
+          const item = { url: new URL(base, dashUrl).href, bandwidth: Number(rep.getAttribute("bandwidth")) || 0 };
+          const isAudio = /audio/i.test(mime) || /^(mp4a|opus|ac-3|ec-3)/i.test(codecs);
+          if (isAudio) {
+            if (!bestAudio || item.bandwidth > bestAudio.bandwidth) bestAudio = item;
+          } else if (!bestVideo || item.bandwidth > bestVideo.bandwidth) {
+            bestVideo = item;
+          }
+        }
+        if (bestVideo) video = bestVideo.url;
+        if (bestAudio) audio = bestAudio.url;
+      } catch (e) {
+        console.debug("Videoner: reddit dash", e);
+      }
+    }
+    if (!audio && hasAudio) {
+      for (const name of ["DASH_AUDIO_128.mp4", "DASH_AUDIO_64.mp4", "DASH_audio.mp4", "audio"]) {
+        const candidate = new URL(name, fallbackUrl).href;
+        const res = await fetch(candidate, { method: "HEAD", credentials: "omit" }).catch(() => null);
+        if (res?.ok) {
+          audio = candidate;
+          break;
+        }
+      }
+    }
+    return { video, audio };
+  }
+
+  // Качаем файлы разом, ход — общий по всем.
+  async function fetchAll(urls, jobUrl) {
+    const responses = await Promise.all(urls.map((u) => fetch(u, { credentials: "omit" })));
+    for (const res of responses) if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
+    const sizes = responses.map((res) => Number(res.headers.get("content-length")) || 0);
+    const total = sizes.every(Boolean) ? sizes.reduce((a, b) => a + b, 0) : null;
+    let received = 0;
+    let reportedAt = 0;
+    return Promise.all(
+      responses.map(async (res) => {
+        const reader = res.body.getReader();
+        const chunks = [];
+        let length = 0;
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          length += value.length;
+          received += value.length;
+          if (Date.now() - reportedAt > PROGRESS_EVERY_MS) {
+            reportedAt = Date.now();
+            chrome.runtime.sendMessage({ type: "videoner:direct-progress", jobUrl, received, total }).catch(() => {});
+          }
+        }
+        const bytes = new Uint8Array(length);
+        let at = 0;
+        for (const chunk of chunks) {
+          bytes.set(chunk, at);
+          at += chunk.length;
+        }
+        return bytes;
+      })
+    );
+  }
+
+  async function redditFetch({ url, dashUrl, hasAudio, duration, filename, jobUrl }) {
+    const streams = await redditStreams(url, dashUrl, hasAudio);
+    const [video, audio] = await fetchAll([streams.video, streams.audio].filter(Boolean), jobUrl);
+    if (!video?.length) throw new Error("empty file");
+    const file = audio ? videonerMergeFmp4(video, audio, duration) : video;
+    saveBlob(new Blob([file], { type: "video/mp4" }), filename);
+    return file.length;
+  }
+
+  // Ссылка на blob страницы с атрибутом download: такой файл браузер
+  // сохраняет в «Загрузки» под нашим именем, как обычную загрузку.
+  function saveBlob(blob, filename) {
+    const href = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = href;
     link.download = filename;
     link.click();
     setTimeout(() => URL.revokeObjectURL(href), 60_000);
-    return received;
   }
 
   update();

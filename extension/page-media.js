@@ -29,6 +29,13 @@
 // данных то же, но вживую не проверено: на сервере аккаунта нет. Не нашли —
 // null и обычный путь через сервер.
 //
+//   Reddit    — данные поста из <пост>.json того же сайта (с входом человека).
+//             Видео — DASH: видео и звук отдельными файлами на v.redd.it; их
+//             качает и склеивает content.js (reddit-mux.js). Фото — один файл
+//             i.redd.it, его берёт chrome.downloads. Сервер Reddit не качает
+//             вовсе: Reddit блокирует его адрес (13.11.2026). Пост 18+ (over_18)
+//             не качаем — решение владельца 15.11.2026.
+//
 // Не взяты: Pinterest (ссылка лежит во внутреннем формате вперемешку с
 // соседними пинами), X, VK, Rutube (видео идёт потоком HLS/DASH, не файлом).
 // Для них и для любого сбоя здесь — обычный путь через сервер.
@@ -47,6 +54,7 @@ async function videonerFindPageMedia() {
     if (host === "threads.net" || host === "threads.com") return threadsMedia();
     if (host === "instagram.com") return await instagramMedia();
     if (host === "facebook.com") return facebookMedia();
+    if (host === "reddit.com" || host.endsWith(".reddit.com")) return await redditMedia();
   } catch (e) {
     console.debug("Videoner: page media", e);
   }
@@ -269,5 +277,42 @@ function findNode(node, matches, depth = 0) {
     const found = findNode(value, matches, depth + 1);
     if (found) return found;
   }
+  return null;
+}
+
+// Reddit: пост по номеру из адреса — /r/<сообщество>/comments/<id>/… и
+// короткое /comments/<id>. Репост (crosspost) берёт видео из исходного поста.
+async function redditMedia() {
+  const id = location.pathname.match(/\/comments\/([a-z0-9]+)/i)?.[1];
+  if (!id) return null;
+  const res = await fetch(`${location.origin}/comments/${id}.json?raw_json=1`, { credentials: "include" });
+  if (!res.ok) return null;
+  const post = (await res.json())?.[0]?.data?.children?.[0]?.data;
+  if (!post || post.id !== id) return null;
+  const source = post.crosspost_parent_list?.[0] ?? post;
+  const preview = source.preview?.images?.[0]?.source?.url;
+  const base = {
+    pageUrl: location.href,
+    method: "reddit",
+    title: post.title || "",
+    thumbnail: preview || (/^https:/.test(source.thumbnail) ? source.thumbnail : ""),
+  };
+  // 18+ не отдаём, даже если человек видит пост под своим входом.
+  if (post.over_18 || source.over_18) return { ...base, url: "adult", adult: true };
+
+  const video = source.secure_media?.reddit_video ?? source.media?.reddit_video ?? source.preview?.reddit_video_preview;
+  if (video?.fallback_url) {
+    return {
+      ...base,
+      url: video.fallback_url,
+      dashUrl: video.dash_url || null,
+      duration: video.duration || null,
+      // Гифка Reddit — ролик без звука.
+      hasAudio: video.has_audio !== false && !video.is_gif,
+    };
+  }
+  // Одна картинка на i.redd.it — обычная загрузка браузера.
+  const ext = source.url?.match(/^https:\/\/i\.redd\.it\/[^?#]+\.(jpe?g|png|gif|webp)(?:[?#]|$)/i)?.[1]?.toLowerCase();
+  if (ext) return { ...base, url: source.url, method: "download", ext: ext === "jpeg" ? "jpg" : ext };
   return null;
 }

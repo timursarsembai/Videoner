@@ -244,6 +244,14 @@ function showSubtitles() {
   );
 }
 
+function isRedditUrl(value) {
+  try {
+    return /(^|\.)reddit\.com$/i.test(new URL(value).hostname);
+  } catch {
+    return false;
+  }
+}
+
 function startDirectDownload() {
   chrome.runtime.sendMessage({ type: "direct", url, tabId, media });
   showLoading(t.starting);
@@ -252,9 +260,10 @@ function startDirectDownload() {
 function showDirect() {
   show(
     videoCard(),
-    el("button", { class: "primary", onclick: startDirectDownload }, media?.ext === "jpg" ? t.directPhoto : t.directDownload),
+    el("button", { class: "primary", onclick: startDirectDownload }, media?.ext ? t.directPhoto : t.directDownload),
     el("div", { class: "note" }, t.directNote),
-    el("button", { class: "secondary", onclick: showServerChoices }, t.moreOptions)
+    // Reddit сервер не качает — других качеств у нас для него нет.
+    isRedditUrl(url) ? null : el("button", { class: "secondary", onclick: showServerChoices }, t.moreOptions)
   );
 }
 
@@ -712,6 +721,18 @@ async function main() {
   }
 
   media = await findMedia();
+  // Пост 18+ (пока только Reddit, page-media.js) — не качаем ни в браузере,
+  // ни сервером.
+  if (media?.adult) {
+    showMessage(t.adultContent, { error: true });
+    return;
+  }
+  // Пост Reddit без видео и фото (текст, галерея, внешняя ссылка): сервер
+  // Reddit не качает, спрашивать его незачем.
+  if (!media && isRedditUrl(url)) {
+    showMessage(t.redditNoMedia, { error: true });
+    return;
+  }
   if (media) {
     // Название и обложку берём со страницы — /info не нужен, пока человек не
     // попросит другие качества.

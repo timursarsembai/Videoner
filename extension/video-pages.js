@@ -43,6 +43,11 @@ function videonerIsVideoPage(href) {
     case "threads.net":
     case "threads.com":
       return /^\/(@[^/]+\/post|t)\/[\w-]+/.test(path);
+    case "reddit.com":
+    case "old.reddit.com":
+    case "new.reddit.com":
+    case "sh.reddit.com":
+      return /^\/(r\/[^/]+\/)?comments\/[a-z0-9]+/.test(path);
     default:
       if (/^([a-z]{2}\.)?pinterest\.[a-z.]{2,}$/.test(host)) return /^\/pin\/\d+/.test(path);
       return false;

@@ -225,14 +225,22 @@ async function startDirect({ url, tabId, media }) {
     const title = media.title;
     await updateJob(url, () => ({ url, title, kind: "video", direct: true, state: "downloading", progress: null, startedAt: Date.now() }));
 
-    // ext — фото-сторис Instagram (page-media.js), остальное — mp4.
-    const filename = `${safeFileName(title)}.${media.ext === "jpg" ? "jpg" : "mp4"}`;
+    // ext — фото (сторис Instagram, картинка Reddit), иначе mp4.
+    const filename = `${safeFileName(title)}.${media.ext || "mp4"}`;
     let size;
     try {
       size = media.method === "page-fetch"
         ? await pageFetch(tabId, media.url, filename, url)
-        : await chromeDownload(media.url, filename, url);
+        : media.method === "reddit"
+          ? await redditFetch(tabId, media, filename, url)
+          : await chromeDownload(media.url, filename, url);
     } catch (e) {
+      // Reddit сервер не качает (блокирует его адрес) — запасного пути нет.
+      if (isReddit(url)) {
+        console.warn("Videoner: reddit download failed", e);
+        await updateJob(url, (job) => ({ ...job, state: "error", error: friendlyError({ message: "failed" }) }));
+        return;
+      }
       console.warn("Videoner: browser download failed, falling back to the server", e);
       await fallbackToServer(url, title);
       return;
@@ -241,7 +249,7 @@ async function startDirect({ url, tabId, media }) {
     // Отчёт — только для статистики: его сбой не должен портить человеку
     // скачанный файл.
     api("/download/report", { url, fileSize: size, title, lang: uiLang }).catch((e) => console.warn("Videoner: report", e));
-    void addToHistory({ url, title, kind: media.ext === "jpg" ? "photo" : "video" });
+    void addToHistory({ url, title, kind: media.ext ? "photo" : "video" });
     await updateJob(url, (job) => ({ ...job, state: "done", progress: null }));
   } finally {
     active.delete(url);
@@ -255,6 +263,29 @@ async function pageFetch(tabId, mediaUrl, filename, jobUrl) {
   if (!result?.ok) throw new Error(result?.error ?? "page fetch failed");
   return result.size;
 }
+
+// Reddit: видео и звук качает и склеивает страница (content.js, reddit-mux.js).
+async function redditFetch(tabId, media, filename, jobUrl) {
+  const result = await chrome.tabs.sendMessage(tabId, {
+    type: "videoner:reddit-fetch",
+    url: media.url,
+    dashUrl: media.dashUrl,
+    hasAudio: media.hasAudio,
+    duration: media.duration,
+    filename,
+    jobUrl,
+  });
+  if (!result?.ok) throw new Error(result?.error ?? "reddit fetch failed");
+  return result.size;
+}
+
+const isReddit = (url) => {
+  try {
+    return /(^|\.)reddit\.com$/i.test(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+};
 
 function directProgress({ jobUrl, received, total }) {
   updateJob(jobUrl, (job) => {

@@ -180,6 +180,33 @@ export interface BlockedUser {
   downloadCount: number;
   blocked: boolean;
   lastEvent: { blocked: boolean; source: string; at: string } | null;
+  // За всё время: скачанные файлы и ошибки (упавшие скачивания и отказы при
+  // разборе ссылки — по пользователю только с 12.11.2026), по площадкам.
+  ok: number;
+  failed: number;
+  platforms: UserPlatformOutcome[];
+}
+
+// platform — строчными: youtube, okru…
+export interface UserPlatformOutcome {
+  platform: string;
+  ok: number;
+  failed: number;
+}
+
+// Группа пользователей бота по исходу их попыток за всё время.
+export interface OutcomeGroup {
+  users: number;
+  none: number;
+  failedOnly: number;
+  mixed: number;
+  okOnly: number;
+}
+
+export interface BlockedOutcomes {
+  groups: { blocked: OutcomeGroup; active: OutcomeGroup };
+  // Только заблокировавшие сейчас; users — сколько из них пробовали площадку.
+  platforms: (UserPlatformOutcome & { users: number })[];
 }
 
 export interface BlockedSummary {

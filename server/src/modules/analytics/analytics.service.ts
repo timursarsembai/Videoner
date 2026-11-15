@@ -471,7 +471,7 @@ export class AnalyticsService {
   // последним событием: его source говорит, насколько точно известно время
   // (telegram — точное, check — время проверки, baseline — неизвестно).
   async blockedSummary() {
-    const [total, blocked, users] = await Promise.all([
+    const [total, blocked, users, outcomes] = await Promise.all([
       this.prisma.botUser.count(),
       this.prisma.botUser.count({ where: { blockedAt: { not: null } } }),
       this.prisma.botUser.findMany({
@@ -483,13 +483,16 @@ export class AnalyticsService {
           blockEvents: { orderBy: { at: 'desc' }, take: 1 },
         },
       }),
+      this.userOutcomes(),
     ]);
     return {
       total,
       blocked,
       users: users.map((user) => {
         const last = user.blockEvents[0];
+        const stats = outcomes.get(user.id) ?? { ok: 0, failed: 0, platforms: [] };
         return {
+          ...stats,
           telegramId: user.telegramId.toString(),
           username: user.username,
           firstName: user.firstName,
@@ -503,6 +506,86 @@ export class AnalyticsService {
             : null,
         };
       }),
+    };
+  }
+
+  // Удачные и неудачные попытки каждого пользователя бота по площадкам — за
+  // всё время. Удача — скачанный файл (COMPLETED, EXPIRED — тот же файл, уже
+  // убранный с диска); неудача — упавшее скачивание и отказ при разборе
+  // ссылки (LinkFailure, по пользователю — только с 12.11.2026). Площадка —
+  // строчными, как в LinkFailure.platform. Незавершённые не считаются.
+  private async userOutcomes() {
+    const rows = await this.prisma.$queryRaw<
+      { uid: string; platform: string; ok: number; failed: number }[]
+    >`
+      WITH e AS (
+        SELECT d."botUserId" AS uid, lower(d.downloader::text) AS platform,
+               d.status IN ('COMPLETED', 'EXPIRED') AS ok, d.status = 'FAILED' AS failed
+        FROM "Download" d
+        WHERE d."botUserId" IS NOT NULL AND d.source <> 'API'
+        UNION ALL
+        SELECT l."botUserId", l.platform, false, true
+        FROM "LinkFailure" l
+        WHERE l."botUserId" IS NOT NULL AND l.source <> 'API'
+      )
+      SELECT uid, platform,
+             count(*) FILTER (WHERE ok)::int AS ok,
+             count(*) FILTER (WHERE failed)::int AS failed
+      FROM e
+      GROUP BY uid, platform
+      HAVING count(*) FILTER (WHERE ok OR failed) > 0
+    `;
+    const byUser = new Map<
+      string,
+      { ok: number; failed: number; platforms: { platform: string; ok: number; failed: number }[] }
+    >();
+    for (const { uid, platform, ok, failed } of rows) {
+      const entry = byUser.get(uid) ?? { ok: 0, failed: 0, platforms: [] };
+      entry.ok += ok;
+      entry.failed += failed;
+      entry.platforms.push({ platform, ok, failed });
+      byUser.set(uid, entry);
+    }
+    for (const entry of byUser.values()) {
+      entry.platforms.sort((a, b) => b.ok + b.failed - (a.ok + a.failed));
+    }
+    return byUser;
+  }
+
+  // Связь блокировок с ошибками: у заблокировавших бота сейчас и у
+  // остальных — доля тех, кто ничего не скачал, у кого были только ошибки,
+  // и ошибки, и удачи, только удачи. И по площадкам — где заблокировавшие
+  // скачивали удачно, а где нет. За всё время, без периода: блокировка —
+  // состояние «сейчас».
+  async blockedOutcomes() {
+    const [users, outcomes] = await Promise.all([
+      this.prisma.botUser.findMany({ select: { id: true, blockedAt: true } }),
+      this.userOutcomes(),
+    ]);
+    const empty = () => ({ users: 0, none: 0, failedOnly: 0, mixed: 0, okOnly: 0 });
+    const groups = { blocked: empty(), active: empty() };
+    const platforms = new Map<string, { platform: string; ok: number; failed: number; users: number }>();
+    for (const user of users) {
+      const blocked = user.blockedAt !== null;
+      const group = blocked ? groups.blocked : groups.active;
+      const stats = outcomes.get(user.id);
+      group.users++;
+      if (!stats) group.none++;
+      else if (!stats.ok) group.failedOnly++;
+      else if (stats.failed) group.mixed++;
+      else group.okOnly++;
+      if (!blocked || !stats) continue;
+      for (const p of stats.platforms) {
+        const entry = platforms.get(p.platform) ?? { platform: p.platform, ok: 0, failed: 0, users: 0 };
+        entry.ok += p.ok;
+        entry.failed += p.failed;
+        entry.users++;
+        platforms.set(p.platform, entry);
+      }
+    }
+    return {
+      groups,
+      platforms: [...platforms.values()].sort((a, b) => b.ok + b.failed - (a.ok + a.failed)),
     };
   }
 

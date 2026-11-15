@@ -66,16 +66,20 @@ export function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
       <h2 className="mb-1 text-sm font-medium text-foreground/70">Заблокировали бота</h2>
       <p className="mb-4 text-xs text-foreground/50">
         Кто заблокировал бота или удалил аккаунт, и кто потом вернулся. «Но пользуется» — заблокировал
-        личку с ботом, но качает через инлайн-режим или в группах. Время — по Алматы.
+        личку с ботом, но качает через инлайн-режим или в группах. «Удачно / ошибок» и «Где» — за всё
+        время; отказы при разборе ссылки — с 12.11.2026. Время — по Алматы.
       </p>
       <div className="max-h-[420px] overflow-auto">
-        <table className="w-full min-w-[640px] text-sm">
+        <table className="w-full min-w-[820px] text-sm">
           <thead className="sticky top-0 bg-background text-left text-foreground/60">
             <tr>
               <th className="pb-2 font-medium">Пользователь</th>
               <th className="pb-2 font-medium">Язык</th>
               <th className="pb-2 font-medium">Пришёл</th>
-              <th className="pb-2 text-right font-medium">Скачиваний</th>
+              <th className="pb-2 text-right font-medium" title="Скачанные файлы / ошибки">
+                Удачно / ошибок
+              </th>
+              <th className="pb-2 pl-4 font-medium">Где</th>
               <th className="pb-2 pl-4 font-medium">Когда</th>
               <th className="pb-2 font-medium">Сейчас</th>
             </tr>
@@ -102,7 +106,21 @@ export function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
                   </td>
                   <td className="py-2 text-foreground/60">{u.languageCode ?? "—"}</td>
                   <td className="py-2 tabular-nums text-foreground/60">{formatShortDate(u.firstSeenAt)}</td>
-                  <td className="py-2 text-right tabular-nums">{u.downloadCount}</td>
+                  <td className="whitespace-nowrap py-2 text-right tabular-nums">
+                    <span className="text-emerald-600">{u.ok}</span>
+                    <span className="text-foreground/40"> / </span>
+                    <span className={u.failed ? "text-red-600" : "text-foreground/40"}>{u.failed}</span>
+                  </td>
+                  <td className="py-2 pl-4 text-xs text-foreground/70">
+                    {u.platforms.length
+                      ? u.platforms.map((p) => (
+                          <span key={p.platform} className="mr-2 inline-block whitespace-nowrap">
+                            {p.platform.toUpperCase()} {p.ok}
+                            {p.failed > 0 && <span className="text-red-600"> / {p.failed}</span>}
+                          </span>
+                        ))
+                      : "—"}
+                  </td>
                   <td className="whitespace-nowrap py-2 pl-4 tabular-nums text-foreground/80" title={when.hint}>
                     {when.text}
                   </td>
@@ -128,7 +146,7 @@ export function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
             })}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={6} className="py-6 text-center text-foreground/40">
+                <td colSpan={7} className="py-6 text-center text-foreground/40">
                   Пока никто не блокировал бота
                 </td>
               </tr>
@@ -376,7 +394,7 @@ export function AttemptsLog() {
             ))}
             {!loading && page.length === 0 && !error && (
               <tr>
-                <td colSpan={6} className="py-6 text-center text-foreground/40">
+                <td colSpan={7} className="py-6 text-center text-foreground/40">
                   {platform || status || source
                     ? "По выбранному фильтру ничего нет"
                     : "Пока ни одной попытки"}

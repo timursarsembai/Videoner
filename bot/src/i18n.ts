@@ -87,6 +87,8 @@ interface Messages {
   // Сторис Instagram: их видно только вошедшим, сервер их не получит.
   errorInstagramStory: string;
   errorStoryNeedsId: string;
+  // Ссылка на страницу звука Instagram (/reels/audio/…), а не на видео.
+  errorInstagramAudioPage: string;
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
   errorNoVideoContent: string;
@@ -327,6 +329,8 @@ const ru: Messages = {
     "Скачать это и любое другое видео бесплатно: @VideonerBot",
   errorStoryNeedsId:
     "пришлите ссылку на конкретную сторис: в приложении Instagram откройте её и нажмите «Поделиться» → «Копировать ссылку».",
+  errorInstagramAudioPage:
+    "это страница звука Instagram, а не видео. Пришлите ссылку на любой рилс с этим звуком — звук из него можно скачать кнопкой «🎵 Только аудио (mp3)».",
   errorInstagramStory:
     "сторис Instagram видны только тем, кто вошёл в аккаунт.",
   errorLoginRequired:
@@ -553,6 +557,8 @@ const en: Messages = {
     "Download this and any other video for free: @VideonerBot",
   errorStoryNeedsId:
     "send a link to a specific story: open it in the Instagram app and tap Share → Copy link.",
+  errorInstagramAudioPage:
+    "this is an Instagram audio page, not a video. Send a link to any reel that uses this sound — you can get the sound from it with the “🎵 Audio only (mp3)” button.",
   errorInstagramStory:
     "Instagram stories are visible only to people who are signed in.",
   errorLoginRequired:
@@ -778,6 +784,8 @@ const ar: Messages = {
     "نزّل هذا الفيديو وأي فيديو آخر مجانًا: ‎@VideonerBot",
   errorStoryNeedsId:
     "أرسل رابط قصة محددة: افتحها في تطبيق Instagram واضغط مشاركة ← نسخ الرابط.",
+  errorInstagramAudioPage:
+    "هذه صفحة صوت على Instagram وليست فيديو. أرسل رابط أي ريلز يستخدم هذا الصوت — ويمكنك تنزيل الصوت منه بزر «🎵 الصوت فقط (mp3)».",
   errorInstagramStory:
     "قصص Instagram مرئية فقط لمن سجّلوا الدخول إلى حساباتهم.",
   errorLoginRequired:
@@ -1003,6 +1011,8 @@ const zh: Messages = {
     "免费下载这个视频和其他任何视频：@VideonerBot",
   errorStoryNeedsId:
     "请发送某一条快拍的链接：在 Instagram 应用中打开它，点击「分享」→「复制链接」。",
+  errorInstagramAudioPage:
+    "这是 Instagram 的音频页面，不是视频。请发送任意使用该音频的 Reels 链接——用 「🎵 仅音频（mp3）」 按钮即可从中获取音频。",
   errorInstagramStory:
     "Instagram 快拍只有登录用户才能看到。",
   errorLoginRequired:
@@ -1228,6 +1238,8 @@ const hi: Messages = {
     "यह और कोई भी दूसरा वीडियो मुफ़्त में डाउनलोड करें: @VideonerBot",
   errorStoryNeedsId:
     "किसी खास स्टोरी का लिंक भेजें: उसे Instagram ऐप में खोलें और Share → Copy link दबाएँ।",
+  errorInstagramAudioPage:
+    "यह Instagram का ऑडियो पेज है, वीडियो नहीं। इस साउंड वाली किसी भी रील का लिंक भेजें — उससे साउंड «🎵 सिर्फ़ ऑडियो (mp3)» बटन से डाउनलोड किया जा सकता है।",
   errorInstagramStory:
     "Instagram स्टोरीज़ सिर्फ़ साइन-इन किए हुए लोगों को दिखती हैं।",
   errorLoginRequired:
@@ -1453,6 +1465,8 @@ const indonesian: Messages = {
     "Unduh video ini dan video lainnya secara gratis: @VideonerBot",
   errorStoryNeedsId:
     "kirimkan tautan ke story tertentu: buka di aplikasi Instagram, lalu ketuk Bagikan → Salin tautan.",
+  errorInstagramAudioPage:
+    "ini adalah halaman audio Instagram, bukan video. Kirim tautan reel mana pun yang memakai suara ini — suaranya bisa diunduh dengan tombol «🎵 Audio saja (mp3)».",
   errorInstagramStory:
     "Story Instagram hanya dapat dilihat oleh orang yang sudah masuk.",
   errorLoginRequired:
@@ -1678,6 +1692,8 @@ const sw: Messages = {
     "Pakua video hii na nyingine yoyote bila malipo: @VideonerBot",
   errorStoryNeedsId:
     "tuma linki ya story mahususi: ifungue kwenye programu ya Instagram kisha ugonge Shiriki → Nakili linki.",
+  errorInstagramAudioPage:
+    "hii ni ukurasa wa sauti wa Instagram, si video. Tuma kiungo cha reel yoyote inayotumia sauti hii — unaweza kupakua sauti kutoka humo kwa kitufe cha «🎵 Sauti pekee (mp3)».",
   errorInstagramStory:
     "Story za Instagram zinaonekana tu kwa watu walioingia kwenye akaunti.",
   errorLoginRequired:
@@ -1903,6 +1919,8 @@ const de: Messages = {
     "Dieses und jedes andere Video kostenlos herunterladen: @VideonerBot",
   errorStoryNeedsId:
     "schick einen Link zu einer bestimmten Story: Öffne sie in der Instagram-App und tippe auf Teilen → Link kopieren.",
+  errorInstagramAudioPage:
+    "das ist eine Instagram-Audioseite, kein Video. Sende den Link zu einem beliebigen Reel mit diesem Sound — den Sound kannst du daraus mit der Schaltfläche „🎵 Nur Audio (mp3)“ herunterladen.",
   errorInstagramStory:
     "Instagram-Storys sind nur für angemeldete Nutzer sichtbar.",
   errorLoginRequired:
@@ -2128,6 +2146,8 @@ const fr: Messages = {
     "Téléchargez cette vidéo et toutes les autres gratuitement : @VideonerBot",
   errorStoryNeedsId:
     "envoyez le lien d'une story précise : ouvrez-la dans l'application Instagram et appuyez sur Partager → Copier le lien.",
+  errorInstagramAudioPage:
+    "ceci est une page audio Instagram, pas une vidéo. Envoyez le lien d'un reel qui utilise ce son — vous pouvez en récupérer le son avec le bouton «🎵 Audio seul (mp3)».",
   errorInstagramStory:
     "Les stories Instagram ne sont visibles que par les personnes connectées.",
   errorLoginRequired:
@@ -2353,6 +2373,8 @@ const it: Messages = {
     "Scarica gratis questo e qualsiasi altro video: @VideonerBot",
   errorStoryNeedsId:
     "manda il link di una storia specifica: aprila nell'app Instagram e tocca Condividi → Copia link.",
+  errorInstagramAudioPage:
+    "questa è una pagina audio di Instagram, non un video. Invia il link di un reel qualsiasi che usa questo suono: puoi scaricarne l'audio con il pulsante «🎵 Solo audio (mp3)».",
   errorInstagramStory:
     "Le storie di Instagram sono visibili solo a chi ha effettuato l'accesso.",
   errorLoginRequired:
@@ -2578,6 +2600,8 @@ const pt: Messages = {
     "Baixe este e qualquer outro vídeo de graça: @VideonerBot",
   errorStoryNeedsId:
     "mande o link de um story específico: abra-o no app do Instagram e toque em Compartilhar → Copiar link.",
+  errorInstagramAudioPage:
+    "esta é uma página de áudio do Instagram, não um vídeo. Envie o link de qualquer reel que use este som — você pode baixar o som dele com o botão “🎵 Só áudio (mp3)”.",
   errorInstagramStory:
     "Os stories do Instagram só ficam visíveis para quem está logado.",
   errorLoginRequired:
@@ -2803,6 +2827,8 @@ const es: Messages = {
     "Descarga este y cualquier otro video gratis: @VideonerBot",
   errorStoryNeedsId:
     "envía el enlace de una historia concreta: ábrela en la app de Instagram y toca Compartir → Copiar enlace.",
+  errorInstagramAudioPage:
+    "esta es una página de audio de Instagram, no un vídeo. Envía el enlace de cualquier reel que use este sonido: con el botón «🎵 Solo audio (mp3)» puedes descargar el sonido.",
   errorInstagramStory:
     "Las historias de Instagram solo son visibles para quienes han iniciado sesión.",
   errorLoginRequired:
@@ -3028,6 +3054,8 @@ const uz: Messages = {
     "Bu va istalgan boshqa videoni bepul yuklab oling: @VideonerBot",
   errorStoryNeedsId:
     "aniq bir storisga havola yuboring: uni Instagram ilovasida oching va «Ulashish» → «Havolani nusxalash» tugmasini bosing.",
+  errorInstagramAudioPage:
+    "bu Instagram audio sahifasi, video emas. Shu ovozdan foydalangan istalgan reel havolasini yuboring — ovozni undan «🎵 Faqat audio (mp3)» tugmasi bilan yuklab olish mumkin.",
   errorInstagramStory:
     "Instagram storislarini faqat akkauntiga kirgan foydalanuvchilar koʻra oladi.",
   errorLoginRequired:
@@ -3253,6 +3281,8 @@ const tr: Messages = {
     "Bu ve diğer tüm videoları ücretsiz indirin: @VideonerBot",
   errorStoryNeedsId:
     "belirli bir hikayenin bağlantısını gönderin: hikayeyi Instagram uygulamasında açın ve Paylaş → Bağlantıyı kopyala'ya dokunun.",
+  errorInstagramAudioPage:
+    "bu bir Instagram ses sayfası, video değil. Bu sesi kullanan herhangi bir reel'in bağlantısını gönderin — sesi oradan “🎵 Yalnızca ses (mp3)” düğmesiyle indirebilirsiniz.",
   errorInstagramStory:
     "Instagram hikayelerini yalnızca oturum açmış kişiler görebilir.",
   errorLoginRequired:
@@ -3478,6 +3508,8 @@ const fa: Messages = {
     "این ویدیو و هر ویدیوی دیگری را رایگان دانلود کنید: ‎@VideonerBot",
   errorStoryNeedsId:
     "لینک یک استوری مشخص را بفرستید: آن را در اپلیکیشن Instagram باز کنید و «اشتراک‌گذاری ← کپی لینک» را بزنید.",
+  errorInstagramAudioPage:
+    "این صفحهٔ صدای Instagram است، نه ویدیو. پیوند هر ریلزی را که از این صدا استفاده می‌کند بفرستید — صدا را از آن می‌توانید با دکمهٔ «🎵 فقط صدا (mp3)» دانلود کنید.",
   errorInstagramStory:
     "استوری‌های Instagram فقط برای کسانی که وارد حساب خود شده‌اند قابل مشاهده است.",
   errorLoginRequired:
@@ -3703,6 +3735,8 @@ const vi: Messages = {
     "Tải video này và mọi video khác miễn phí: @VideonerBot",
   errorStoryNeedsId:
     "hãy gửi link tới một story cụ thể: mở story trong ứng dụng Instagram và bấm Chia sẻ → Sao chép liên kết.",
+  errorInstagramAudioPage:
+    "đây là trang âm thanh của Instagram, không phải video. Hãy gửi liên kết của bất kỳ reel nào dùng âm thanh này — bạn có thể tải âm thanh từ đó bằng nút “🎵 Chỉ âm thanh (mp3)”.",
   errorInstagramStory:
     "Story trên Instagram chỉ hiển thị với người đã đăng nhập.",
   errorLoginRequired:
@@ -3929,6 +3963,8 @@ const bn: Messages = {
     "এটি এবং যেকোনো ভিডিও বিনামূল্যে ডাউনলোড করুন: @VideonerBot",
   errorStoryNeedsId:
     "নির্দিষ্ট একটি স্টোরির লিংক পাঠান: Instagram অ্যাপে সেটি খুলে Share → Copy link চাপুন।",
+  errorInstagramAudioPage:
+    "এটি Instagram-এর অডিও পেজ, ভিডিও নয়। এই সাউন্ড ব্যবহার করা যেকোনো রিলের লিংক পাঠান — সেখান থেকে «🎵 শুধু অডিও (mp3)» বোতাম দিয়ে সাউন্ডটি ডাউনলোড করা যাবে।",
   errorInstagramStory:
     "Instagram স্টোরি শুধু সাইন ইন করা ব্যবহারকারীরাই দেখতে পান।",
   errorLoginRequired:
@@ -4154,6 +4190,8 @@ const ur: Messages = {
     "یہ اور کوئی بھی دوسری ویڈیو مفت ڈاؤن لوڈ کریں: ‎@VideonerBot",
   errorStoryNeedsId:
     "کسی مخصوص اسٹوری کا لنک بھیجیں: اسے Instagram ایپ میں کھولیں اور شیئر ← لنک کاپی کریں پر ٹیپ کریں۔",
+  errorInstagramAudioPage:
+    "یہ Instagram کا آڈیو صفحہ ہے، ویڈیو نہیں۔ اس آواز والی کسی بھی ریل کا لنک بھیجیں — اس سے آواز «🎵 صرف آڈیو (mp3)» بٹن کے ذریعے ڈاؤنلوڈ کی جا سکتی ہے۔",
   errorInstagramStory:
     "Instagram اسٹوریز صرف سائن ان کیے ہوئے لوگوں کو نظر آتی ہیں۔",
   errorLoginRequired:
@@ -4379,6 +4417,8 @@ const pl: Messages = {
     "Pobierz ten i każdy inny film za darmo: @VideonerBot",
   errorStoryNeedsId:
     "wyślij link do konkretnej relacji: otwórz ją w aplikacji Instagram i stuknij Udostępnij → Kopiuj link.",
+  errorInstagramAudioPage:
+    "to strona dźwięku z Instagrama, a nie wideo. Wyślij link do dowolnego rolka z tym dźwiękiem — dźwięk można z niego pobrać przyciskiem „🎵 Tylko dźwięk (mp3)”.",
   errorInstagramStory:
     "Relacje na Instagramie widzą tylko zalogowane osoby.",
   errorLoginRequired:
@@ -4604,6 +4644,8 @@ const ja: Messages = {
     "この動画もほかの動画も無料でダウンロード：@VideonerBot",
   errorStoryNeedsId:
     "特定のストーリーへのリンクを送ってください。Instagram アプリでストーリーを開き、「シェア」→「リンクをコピー」をタップしてください。",
+  errorInstagramAudioPage:
+    "これは Instagram の音声ページで、動画ではありません。この音声を使っているリールのリンクを送ってください。そのリールから 「🎵 音声のみ（mp3）」 ボタンで音声を保存できます。",
   errorInstagramStory:
     "Instagram のストーリーはログインしているユーザーにしか表示されません。",
   errorLoginRequired:
@@ -4829,6 +4871,8 @@ const ko: Messages = {
     "이 동영상과 다른 동영상도 무료로 다운로드하세요: @VideonerBot",
   errorStoryNeedsId:
     "특정 스토리의 링크를 보내 주세요. Instagram 앱에서 스토리를 열고 공유 → 링크 복사를 눌러 주세요.",
+  errorInstagramAudioPage:
+    "이것은 Instagram 오디오 페이지이며 동영상이 아닙니다. 이 사운드를 사용한 아무 릴스 링크나 보내 주세요 — 그 릴스에서 “🎵 오디오만 (mp3)” 버튼으로 사운드를 받을 수 있습니다.",
   errorInstagramStory:
     "Instagram 스토리는 로그인한 사용자에게만 보여요.",
   errorLoginRequired:
@@ -5054,6 +5098,8 @@ const th: Messages = {
     "ดาวน์โหลดวิดีโอนี้และวิดีโออื่น ๆ ได้ฟรี: @VideonerBot",
   errorStoryNeedsId:
     "ส่งลิงก์ของสตอรี่ที่ต้องการ: เปิดสตอรี่ในแอป Instagram แล้วแตะ แชร์ → คัดลอกลิงก์",
+  errorInstagramAudioPage:
+    "นี่คือหน้าเสียงของ Instagram ไม่ใช่วิดีโอ โปรดส่งลิงก์ของรีลใดก็ได้ที่ใช้เสียงนี้ — คุณดาวน์โหลดเสียงจากรีลนั้นได้ด้วยปุ่ม «🎵 เฉพาะเสียง (mp3)»",
   errorInstagramStory:
     "สตอรี่ Instagram จะเห็นได้เฉพาะคนที่ล็อกอินอยู่เท่านั้น",
   errorLoginRequired:
@@ -5279,6 +5325,8 @@ const am: Messages = {
     "ይህንና ሌላ ማንኛውንም ቪዲዮ በነፃ ያውርዱ፦ @VideonerBot",
   errorStoryNeedsId:
     "የአንድን የተወሰነ ስቶሪ ሊንክ ይላኩ፦ በInstagram መተግበሪያ ውስጥ ይክፈቱትና Share → Copy link የሚለውን ይንኩ።",
+  errorInstagramAudioPage:
+    "ይህ የ Instagram የድምፅ ገጽ ነው እንጂ ቪዲዮ አይደለም። ይህን ድምፅ የሚጠቀም ማንኛውንም ሪል አገናኝ ላኩ — ድምፁን ከእሱ በ«🎵 ድምፅ ብቻ (mp3)» አዝራር ማውረድ ይችላሉ።",
   errorInstagramStory:
     "የInstagram ስቶሪዎች የሚታዩት ለገቡ (sign in ላደረጉ) ሰዎች ብቻ ነው።",
   errorLoginRequired:
@@ -5504,6 +5552,8 @@ const om: Messages = {
     "Viidiyoo kanaa fi kan biroo kamiyyuu bilisaan buufadhaa: @VideonerBot",
   errorStoryNeedsId:
     "liinkii istoorii murtaa'aa tokkoo ergaa: app Instagram keessatti banaatii Qoodi → Liinkii garagalchi tuqaa.",
+  errorInstagramAudioPage:
+    "kun fuula sagalee Instagram malee viidiyoo miti. Liinkii reel sagalee kana fayyadamu kamiyyuu ergi — sagalee isaa kallattii “🎵 Sagalee qofa (mp3)” tuqudhaan buufachuu dandeessa.",
   errorInstagramStory:
     "Istooriiwwan Instagram kan mul'atan namoota seenaniif qofa.",
   errorLoginRequired:
@@ -5729,6 +5779,8 @@ const ha: Messages = {
     "Ku sauke wannan da kowane bidiyo kyauta: @VideonerBot",
   errorStoryNeedsId:
     "ku aiko da hanyar haɗi ta takamaiman labari (story): ku buɗe shi a manhajar Instagram sannan ku danna Share → Copy link.",
+  errorInstagramAudioPage:
+    "wannan shafin sautin Instagram ne, ba bidiyo ba. Aika hanyar haɗin kowane reel da ke amfani da wannan sautin — za ka iya sauke sautin daga gare shi da maɓallin “🎵 Sauti kawai (mp3)”.",
   errorInstagramStory:
     "Labaran (stories) Instagram suna bayyana ne kawai ga mutanen da suka shiga asusunsu.",
   errorLoginRequired:
@@ -5954,6 +6006,8 @@ const so: Messages = {
     "Bilaash ku soo deji kan iyo muuqaal kasta oo kale: @VideonerBot",
   errorStoryNeedsId:
     "soo dir link-ga story gaar ah: ka fur app-ka Instagram oo taabo Share → Copy link.",
+  errorInstagramAudioPage:
+    "tani waa bog codka Instagram, ma aha fiidiyoo. Soo dir linkiga reel kasta oo isticmaalaya codkan — codka waxaad ka soo dejin kartaa badhanka “🎵 Cod oo keliya (mp3)”.",
   errorInstagramStory:
     "Stories-ka Instagram waxaa arki kara oo keliya dadka akoonkooda galay.",
   errorLoginRequired:
@@ -6179,6 +6233,8 @@ const az: Messages = {
     "Bu və istənilən başqa videonu pulsuz yükləyin: @VideonerBot",
   errorStoryNeedsId:
     "konkret storinin linkini göndərin: onu Instagram tətbiqində açın və «Paylaş» → «Linki kopyala» düyməsini basın.",
+  errorInstagramAudioPage:
+    "bu Instagram səs səhifəsidir, video deyil. Bu səsdən istifadə edən istənilən reelsin keçidini göndərin — səsi ondan «🎵 Yalnız audio (mp3)» düyməsi ilə yükləyə bilərsiniz.",
   errorInstagramStory:
     "Instagram storiləri yalnız hesaba daxil olmuş istifadəçilərə görünür.",
   errorLoginRequired:
@@ -6404,6 +6460,8 @@ const ky: Messages = {
     "Бул жана каалаган башка видеону акысыз жүктөп алыңыз: @VideonerBot",
   errorStoryNeedsId:
     "белгилүү бир сториске шилтеме жөнөтүңүз: аны Instagram колдонмосунда ачып, «Поделиться» (Бөлүшүү) → «Копировать ссылку» (Шилтемени көчүрүү) баскычын басыңыз.",
+  errorInstagramAudioPage:
+    "бул Instagram үн баракчасы, видео эмес. Ушул үндү колдонгон каалаган рилстин шилтемесин жөнөтүңүз — үндү андан «🎵 Аудио гана (mp3)» баскычы менен жүктөп алса болот.",
   errorInstagramStory:
     "Instagram стористерин аккаунтка киргендер гана көрө алат.",
   errorLoginRequired:
@@ -6629,6 +6687,8 @@ const tg: Messages = {
     "Ин ва ҳар видеои дигарро ройгон боргирӣ кунед: @VideonerBot",
   errorStoryNeedsId:
     "пайванди сторисии мушаххасро фиристед: онро дар барномаи Instagram кушоед ва «Поделиться» (Мубодила) → «Копировать ссылку» (Нусха бардоштани пайванд)-ро пахш кунед.",
+  errorInstagramAudioPage:
+    "ин саҳифаи садои Instagram аст, на видео. Истиноди ҳар як рилсеро, ки ин садоро истифода мебарад, фиристед — садоро аз он бо тугмаи «🎵 Фақат аудио (mp3)» зеркашӣ кардан мумкин аст.",
   errorInstagramStory:
     "Сторисҳои Instagram-ро танҳо касоне мебинанд, ки ба аккаунт ворид шудаанд.",
   errorLoginRequired:
@@ -6854,6 +6914,8 @@ const ms: Messages = {
     "Muat turun video ini dan video lain secara percuma: @VideonerBot",
   errorStoryNeedsId:
     "hantar pautan ke story tertentu: bukanya dalam aplikasi Instagram dan ketik Share → Copy link.",
+  errorInstagramAudioPage:
+    "ini ialah halaman audio Instagram, bukan video. Hantar pautan mana-mana reel yang menggunakan bunyi ini — anda boleh memuat turun bunyi itu daripadanya dengan butang “🎵 Audio sahaja (mp3)”.",
   errorInstagramStory:
     "Story Instagram hanya boleh dilihat oleh orang yang telah log masuk.",
   errorLoginRequired:
@@ -7079,6 +7141,8 @@ const nl: Messages = {
     "Download deze en elke andere video gratis: @VideonerBot",
   errorStoryNeedsId:
     "stuur een link naar een specifieke story: open hem in de Instagram-app en tik op Delen → Link kopiëren.",
+  errorInstagramAudioPage:
+    "dit is een Instagram-audiopagina, geen video. Stuur de link naar een reel die dit geluid gebruikt — het geluid kun je daaruit downloaden met de knop “🎵 Alleen audio (mp3)”.",
   errorInstagramStory:
     "Instagram-story's zijn alleen zichtbaar voor mensen die zijn ingelogd.",
   errorLoginRequired:
@@ -7304,6 +7368,8 @@ const ro: Messages = {
     "Descarcă gratuit acest videoclip și oricare altul: @VideonerBot",
   errorStoryNeedsId:
     "trimite linkul unei anumite povești: deschide-o în aplicația Instagram și atinge Distribuie → Copiază linkul.",
+  errorInstagramAudioPage:
+    "aceasta este o pagină de sunet Instagram, nu un videoclip. Trimite linkul oricărui reel care folosește acest sunet — sunetul îl poți descărca de acolo cu butonul „🎵 Doar audio (mp3)”.",
   errorInstagramStory:
     "Poveștile Instagram sunt vizibile doar pentru cei conectați.",
   errorLoginRequired:
@@ -7529,6 +7595,8 @@ const ps: Messages = {
     "دا او هره بله ویډیو وړیا ښکته کړئ: ‎@VideonerBot",
   errorStoryNeedsId:
     "د یوې ټاکلې سټورۍ لینک ولېږئ: هغه د Instagram په اپلیکیشن کې پرانیزئ او «شریکول ← لینک کاپي کړئ» کېکاږئ.",
+  errorInstagramAudioPage:
+    "دا د Instagram د غږ پاڼه ده، ویډیو نه ده. د هر هغه ریل لینک ولېږئ چې دا غږ کاروي — غږ ترې د «🎵 یوازې آډیو (mp3)» تڼۍ په مرسته ښکته کولی شئ.",
   errorInstagramStory:
     "د Instagram سټورۍ یوازې هغه کسان لیدلای شي چې خپل حساب ته ننوتي وي.",
   errorLoginRequired:
@@ -7754,6 +7822,8 @@ const ckb: Messages = {
     "ئەمە و هەر ڤیدیۆیەکی تر بە خۆڕایی دابگرە: ‎@VideonerBot",
   errorStoryNeedsId:
     "بەستەری ستۆرییەکی دیاریکراو بنێرە: لە ئەپی Instagram بیکەرەوە و کرتە لە «هاوبەشکردن ← کۆپیکردنی بەستەر» بکە.",
+  errorInstagramAudioPage:
+    "ئەمە پەڕەی دەنگی Instagram ـە، ڤیدیۆ نییە. بەستەری هەر ریلێک بنێرە کە ئەم دەنگە بەکاردەهێنێت — دەتوانیت دەنگەکەی لێ بە دوگمەی «🎵 تەنها دەنگ (mp3)» دابگریت.",
   errorInstagramStory:
     "ستۆرییەکانی Instagram تەنها بۆ ئەو کەسانە دیارن کە چوونەتە ژوورەوە.",
   errorLoginRequired:
@@ -7979,6 +8049,8 @@ const ku: Messages = {
     "Vê û her vîdyoyeke din belaş daxîne: @VideonerBot",
   errorStoryNeedsId:
     "lînka story-yeke diyar bişîne: wê di sepana Instagram de veke û Share → Copy link bitikîne.",
+  errorInstagramAudioPage:
+    "ev rûpela dengê ya Instagram e, ne vîdyo ye. Lînka her reelekê ya ku vî dengî bi kar tîne bişîne — tu dikarî dengê wê bi bişkoja “🎵 Tenê deng (mp3)” dakî.",
   errorInstagramStory:
     "Story-yên Instagram tenê ji kesên têketî re xuya dibin.",
   errorLoginRequired:
@@ -8204,6 +8276,8 @@ const ug: Messages = {
     "بۇ ۋە باشقا ھەرقانداق ۋىدىيونى ھەقسىز چۈشۈرۈڭ: ‎@VideonerBot",
   errorStoryNeedsId:
     "مەلۇم بىر ھېكايىنىڭ ئۇلانمىسىنى يوللاڭ: ئۇنى Instagram ئەپىدە ئېچىپ، «ھەمبەھىرلەش ← ئۇلانمىنى كۆچۈرۈش» نى بېسىڭ.",
+  errorInstagramAudioPage:
+    "بۇ Instagram ئاۋاز بېتى، سىن ئەمەس. بۇ ئاۋازنى ئىشلەتكەن ئىختىيارى بىر ريلنىڭ ئۇلىنىشىنى ئەۋەتىڭ — ئاۋازنى ئۇنىڭدىن «🎵 پەقەت ئاۋاز (mp3)» كۇنوپكىسى ئارقىلىق چۈشۈرەلەيسىز.",
   errorInstagramStory:
     "Instagram ھېكايىلىرىنى پەقەت ھېساباتىغا كىرگەن كىشىلەرلا كۆرەلەيدۇ.",
   errorLoginRequired:
@@ -8429,6 +8503,8 @@ const tk: Messages = {
     "Muny we islendik başga wideony mugt ýükläň: @VideonerBot",
   errorStoryNeedsId:
     "belli bir storisiň salgysyny iberiň: ony Instagram programmasynda açyp, «Поделиться» (Paýlaş) → «Копировать ссылку» (Salgyny göçür) düwmesine basyň.",
+  errorInstagramAudioPage:
+    "bu Instagram ses sahypasy, wideo däl. Bu sesi ulanýan islendik reeliň baglanyşygyny iberiň — sesi ondan “🎵 Diňe ses (mp3)” düwmesi bilen ýükläp bilersiňiz.",
   errorInstagramStory:
     "Instagram storislerini diňe hasabyna giren ulanyjylar görüp bilýär.",
   errorLoginRequired:
@@ -8654,6 +8730,8 @@ const tt: Messages = {
     "Бу һәм теләсә нинди башка видеоны бушлай йөкләп алыгыз: @VideonerBot",
   errorStoryNeedsId:
     "конкрет бер сторис сылтамасын җибәрегез: аны Instagram кушымтасында ачыгыз һәм «Поделиться» (Уртаклашу) → «Копировать ссылку» (Сылтаманы күчерү) төймәсенә басыгыз.",
+  errorInstagramAudioPage:
+    "бу Instagram аудио бите, видео түгел. Бу тавышны кулланган теләсә кайсы рилс сылтамасын җибәрегез — тавышны аннан «🎵 Аудио гына (mp3)» төймәсе белән йөкләп була.",
   errorInstagramStory:
     "Instagram сторислары аккаунтка кергән кешеләргә генә күренә.",
   errorLoginRequired:
@@ -8879,6 +8957,8 @@ const sq: Messages = {
     "Shkarkoni falas këtë dhe çdo video tjetër: @VideonerBot",
   errorStoryNeedsId:
     "dërgoni lidhjen e një story-je të caktuar: hapeni në aplikacionin Instagram dhe prekni Share → Copy link.",
+  errorInstagramAudioPage:
+    "ky është një faqe audio e Instagram-it, jo video. Dërgo lidhjen e çdo reel-i që e përdor këtë tingull — tingullin mund ta marrësh prej tij me butonin “🎵 Vetëm audio (mp3)”.",
   errorInstagramStory:
     "Story-t e Instagram janë të dukshme vetëm për përdoruesit e identifikuar.",
   errorLoginRequired:
@@ -9114,6 +9194,8 @@ const bs: Messages = {
     "Preuzmite ovaj i bilo koji drugi video besplatno: @VideonerBot",
   errorStoryNeedsId:
     "pošaljite link na konkretnu priču: otvorite je u aplikaciji Instagram i dodirnite Podijeli → Kopiraj link.",
+  errorInstagramAudioPage:
+    "ovo je Instagram audio stranica, a ne video. Pošalji link na bilo koji reel koji koristi ovaj zvuk — zvuk iz njega možeš preuzeti dugmetom „🎵 Samo audio (mp3)“.",
   errorInstagramStory:
     "Instagram priče vide samo prijavljeni korisnici.",
   errorLoginRequired:
@@ -9339,6 +9421,8 @@ const ce: Messages = {
     "ХӀара а, кхин муьлхха а видео маьхза чуяккха: @VideonerBot",
   errorStoryNeedsId:
     "билгалчу сторисан хьажорг дахийтийша: Instagram приложенехь иза схьа а еллина, «Поделиться» (ДӀасадекъа) → «Копировать ссылку» (Хьажорг копи ян) тӀетаӀалаш.",
+  errorInstagramAudioPage:
+    "иза Instagram аудион агӀо ю, видео дац. Хьажорг дахийтийша и аудио лело йолу цхьаъ рилсан — аудио цуьнгара «🎵 Аудио бен (mp3)» кнопкица яккха мега.",
   errorInstagramStory:
     "Instagram сторисаш аккаунт чохь хьоьжучу адамашна бен ца го.",
   errorLoginRequired:
@@ -9564,6 +9648,8 @@ const inh: Messages = {
     "Ер а кхыдола моллагӀа видео а мехаза чуяккха: @VideonerBot",
   errorStoryNeedsId:
     "цхьа билгала сторис ссылка дахийтал: Instagram приложене чу из дӀа а елла, «Поделиться» → «Копировать ссылку» тӀатаӀал.",
+  errorInstagramAudioPage:
+    "из Instagram аудион агӀо я, видео яц. Из аудио лелаш йола цхьаъ рилсан ссылка дахийтал — аудио цунгара «🎵 Аудио мара (mp3)» кнопкаца даккха ов.",
   errorInstagramStory:
     "Instagram сторисаш аккаунта чу бола наха мара гуш яц.",
   errorLoginRequired:
@@ -9789,6 +9875,8 @@ const av: Messages = {
     "Гьаб ва цогидабги щибаб видео мухьгьечӀого босе: @VideonerBot",
   errorStoryNeedsId:
     "цо хасаб сторисалъул ссылка битӀе: гьеб Instagram приложениялда рагьун, «Поделиться» → «Копировать ссылку» кнопкабазда квер бай.",
+  errorInstagramAudioPage:
+    "гьеб Instagram-алъул аудиоялъул гьумер буго, видео гьечӀо. Гьеб аудио хӀалтӀизабулеб ракъкъалиял рилсалъул ссылка битӀе — аудио гьелдасан «🎵 Аудио гурони (mp3)» кнопкаялдалъун босизе бегьула.",
   errorInstagramStory:
     "Instagram сторисал аккаунталде жаниве лъугьарал гӀадамазе гурони рихьуларо.",
   errorLoginRequired:
@@ -10014,6 +10102,8 @@ const tl: Messages = {
     "I-download ito at anumang ibang video nang libre: @VideonerBot",
   errorStoryNeedsId:
     "magpadala ng link ng isang partikular na story: buksan ito sa Instagram app at i-tap ang Share → Copy link.",
+  errorInstagramAudioPage:
+    "ito ay audio page ng Instagram, hindi video. Magpadala ng link ng kahit anong reel na gumagamit ng tunog na ito — makukuha mo ang tunog mula roon gamit ang button na “🎵 Audio lang (mp3)”.",
   errorInstagramStory:
     "Ang mga Instagram story ay nakikita lang ng mga naka-sign in.",
   errorLoginRequired:
@@ -10239,6 +10329,8 @@ const uk: Messages = {
     "Завантажити це й будь-яке інше відео безкоштовно: @VideonerBot",
   errorStoryNeedsId:
     "надішліть посилання на конкретну сторіс: у застосунку Instagram відкрийте її й натисніть «Поділитися» → «Копіювати посилання».",
+  errorInstagramAudioPage:
+    "це сторінка звуку Instagram, а не відео. Надішліть посилання на будь-який рілс із цим звуком — звук із нього можна завантажити кнопкою «🎵 Лише аудіо (mp3)».",
   errorInstagramStory:
     "сторіс Instagram видно лише тим, хто увійшов в акаунт.",
   errorLoginRequired:
@@ -10470,6 +10562,8 @@ const kk: Messages = {
     "Осы және кез келген басқа видеоны тегін жүктеп алу: @VideonerBot",
   errorStoryNeedsId:
     "нақты сториске сілтеме жіберіңіз: Instagram қолданбасында оны ашып, «Бөлісу» → «Сілтемені көшіру» түймесін басыңыз.",
+  errorInstagramAudioPage:
+    "бұл Instagram дыбыс беті, видео емес. Осы дыбысты қолданатын кез келген рилстің сілтемесін жіберіңіз — дыбысты одан «🎵 Тек аудио (mp3)» түймесімен жүктеп алуға болады.",
   errorInstagramStory:
     "Instagram стористері тек аккаунтқа кіргендерге ғана көрінеді.",
   errorLoginRequired:

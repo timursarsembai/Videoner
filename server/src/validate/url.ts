@@ -102,6 +102,23 @@ export const isFacebookUrl = (url: string) => {
   }
 };
 
+// Страница звука Instagram (/reels/audio/<id>): музыка или оригинальный звук и
+// все рилсы с ним. Самого видео там нет, и yt-dlp её не разбирает («Unsupported
+// URL»). Отвечаем понятно: прислать ссылку на рилс с этим звуком. Текст без
+// «sign in», «private» и т. п. — иначе бот и сайт приняли бы его за «нужен вход».
+// Бот и сайт узнают его по началу «Instagram audio page».
+export const INSTAGRAM_AUDIO_PAGE_ERROR =
+  'Instagram audio page: this link opens a sound page, not a video — send a link to a reel that uses this sound.';
+
+export const isInstagramAudioPage = (url: string) => {
+  try {
+    const { hostname, pathname } = new URL(url);
+    return /(^|\.)instagram\.com$/i.test(hostname) && /^\/reels?\/audio\//i.test(pathname);
+  } catch {
+    return false;
+  }
+};
+
 export const isInstagramUrl = (url: string) => {
   try {
     const urlObj = new URL(url);

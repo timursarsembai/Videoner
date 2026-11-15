@@ -107,3 +107,10 @@ test("сервер не получил файл от площадки (403) — 
   assert.equal(friendlyError(messages.ru.errorPlatformRefused, "ru"), messages.ru.errorPlatformRefused);
   assert.equal(friendlyError("ERROR: unable to download video data: HTTP Error 403: Forbidden", "ru"), messages.ru.errorPlatformRefused);
 });
+
+test("friendlyError: страница звука Instagram", () => {
+  assert.equal(
+    friendlyError("Instagram audio page: this link opens a sound page, not a video — send a link to a reel that uses this sound.", "ru"),
+    messages.ru.errorInstagramAudioPage,
+  );
+});

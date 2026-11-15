@@ -11,7 +11,7 @@ import {
   videoExtensionLabel,
 } from 'src/lib/config';
 import { YtdlpFormatService } from '../ytdlp/ytdlp-format.service';
-import { getPlatform } from 'src/validate/url';
+import { INSTAGRAM_AUDIO_PAGE_ERROR, getPlatform, isInstagramAudioPage } from 'src/validate/url';
 import { VideoInfoResponse } from 'src/types/youtube';
 import { FacebookVideoQuality } from 'src/types/facebook';
 import { getVideoFormats } from 'src/lib/helper';
@@ -74,6 +74,10 @@ export class InfoService {
     const platform = getPlatform(url);
     if (!platform) {
       throw new BadRequestException('Unsupported platform or invalid URL');
+    }
+    // Не отказ площадки, а не та ссылка — в статистику ошибок не пишем.
+    if (isInstagramAudioPage(url)) {
+      throw new BadRequestException(INSTAGRAM_AUDIO_PAGE_ERROR);
     }
 
     if (telegramId) {

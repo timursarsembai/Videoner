@@ -107,6 +107,8 @@ const en = {
     needsBrowser:
       "The platform didn't give this video to our server: it's only available to signed-in users, or access is temporarily limited. You can download it with the Videoner browser extension on a computer — it downloads using your own sign-in.",
     needsBrowserLink: "Get the extension →",
+    instagramAudioPage:
+      "This is an Instagram audio page, not a video. Paste a link to any reel that uses this sound and choose “Audio only (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -460,6 +462,8 @@ const es: Translations = {
     needsBrowser:
       "La plataforma no entregó este video a nuestro servidor: solo está disponible para usuarios con sesión iniciada o el acceso está limitado temporalmente. Puedes descargarlo con la extensión de Videoner para el navegador en un ordenador: descarga con tu propia sesión.",
     needsBrowserLink: "Obtener la extensión →",
+    instagramAudioPage:
+      "Esta es una página de audio de Instagram, no un vídeo. Pega el enlace de cualquier reel que use este sonido y elige «Solo audio (mp3)».",
   },
   platforms: {
     youtube: {
@@ -811,6 +815,8 @@ const ru: Translations = {
     needsBrowser:
       "Площадка не отдала это видео нашему серверу: оно доступно только после входа в аккаунт, или площадка временно ограничила доступ. Его можно скачать расширением Videoner для браузера на компьютере — оно качает под вашим входом.",
     needsBrowserLink: "Установить расширение →",
+    instagramAudioPage:
+      "Это страница звука Instagram, а не видео. Вставьте ссылку на любой рилс с этим звуком и выберите «Только звук (mp3)».",
   },
   platforms: {
     youtube: {
@@ -1162,6 +1168,8 @@ const uk: Translations = {
     needsBrowser:
       "Платформа не віддала це відео нашому серверу: воно доступне лише після входу в акаунт, або платформа тимчасово обмежила доступ. Його можна завантажити розширенням Videoner для браузера на комп'ютері — воно завантажує від вашого імені, з вашим входом.",
     needsBrowserLink: "Встановити розширення →",
+    instagramAudioPage:
+      "Це сторінка звуку Instagram, а не відео. Вставте посилання на будь-який рілс із цим звуком і виберіть «Лише звук (mp3)».",
   },
   platforms: {
     youtube: {
@@ -1513,6 +1521,8 @@ const kk: Translations = {
     needsBrowser:
       "Платформа бұл видеоны біздің серверге бермеді: ол тек аккаунтқа кіргеннен кейін қолжетімді немесе платформа қолжетімділікті уақытша шектеді. Оны компьютердегі Videoner браузер кеңейтімі арқылы жүктеп алуға болады — ол Сіздің аккаунтыңыз арқылы жүктейді.",
     needsBrowserLink: "Кеңейтімді орнату →",
+    instagramAudioPage:
+      "Бұл Instagram дыбыс беті, видео емес. Осы дыбысты қолданатын кез келген рилстің сілтемесін қойып, «Тек дыбыс (mp3)» таңдаңыз.",
   },
   platforms: {
     youtube: {
@@ -1864,6 +1874,8 @@ const ar: Translations = {
     needsBrowser:
       "لم تمنح المنصة هذا الفيديو لخادمنا: فهو متاح للمستخدمين المسجّلين فقط، أو أن الوصول مقيّد مؤقتًا. يمكنك تحميله بإضافة Videoner للمتصفح على الكمبيوتر — فهي تحمّل باستخدام تسجيل دخولك أنت.",
     needsBrowserLink: "احصل على الإضافة ←",
+    instagramAudioPage:
+      "هذه صفحة صوت على Instagram وليست فيديو. الصق رابط أي ريلز يستخدم هذا الصوت واختر «الصوت فقط (mp3)».",
   },
   platforms: {
     youtube: {
@@ -2215,6 +2227,8 @@ const zh: Translations = {
     needsBrowser:
       "该平台没有向我们的服务器提供这个视频：它仅对已登录用户可见，或访问暂时受限。你可以在电脑上用 Videoner 浏览器扩展下载，扩展会使用你自己的登录状态进行下载。",
     needsBrowserLink: "获取扩展 →",
+    instagramAudioPage:
+      "这是 Instagram 的音频页面，不是视频。请粘贴任意使用该音频的 Reels 链接，然后选择 「仅音频（mp3）」。",
   },
   platforms: {
     youtube: {
@@ -2566,6 +2580,8 @@ const hi: Translations = {
     needsBrowser:
       "प्लेटफ़ॉर्म ने यह वीडियो हमारे सर्वर को नहीं दिया: यह सिर्फ़ लॉग इन किए हुए यूज़र्स के लिए उपलब्ध है, या एक्सेस कुछ समय के लिए सीमित है। आप इसे कंप्यूटर पर Videoner ब्राउज़र एक्सटेंशन से डाउनलोड कर सकते हैं — यह आपके अपने लॉगिन से डाउनलोड करता है।",
     needsBrowserLink: "एक्सटेंशन पाएँ →",
+    instagramAudioPage:
+      "यह Instagram का ऑडियो पेज है, वीडियो नहीं। इस साउंड वाली किसी भी रील का लिंक पेस्ट करें और «सिर्फ़ ऑडियो (mp3)» चुनें।",
   },
   platforms: {
     youtube: {
@@ -2917,6 +2933,8 @@ const indonesian: Translations = {
     needsBrowser:
       "Platform tidak memberikan video ini ke server kami: video hanya tersedia untuk pengguna yang sudah masuk, atau aksesnya sedang dibatasi sementara. Anda bisa mengunduhnya dengan ekstensi browser Videoner di komputer — ekstensi mengunduh menggunakan login Anda sendiri.",
     needsBrowserLink: "Pasang ekstensi →",
+    instagramAudioPage:
+      "Ini adalah halaman audio Instagram, bukan video. Tempel tautan reel mana pun yang memakai suara ini dan pilih «Audio saja (mp3)».",
   },
   platforms: {
     youtube: {
@@ -3268,6 +3286,8 @@ const sw: Translations = {
     needsBrowser:
       "Jukwaa halikuipa seva yetu video hii: inapatikana kwa watumiaji walioingia pekee, au ufikiaji umezuiwa kwa muda. Unaweza kuipakua kwa kiendelezi cha kivinjari cha Videoner kwenye kompyuta — kinapakua kwa kutumia akaunti yako mwenyewe.",
     needsBrowserLink: "Pata kiendelezi →",
+    instagramAudioPage:
+      "Huu ni ukurasa wa sauti wa Instagram, si video. Bandika kiungo cha reel yoyote inayotumia sauti hii kisha uchague «Sauti pekee (mp3)».",
   },
   platforms: {
     youtube: {
@@ -3619,6 +3639,8 @@ const de: Translations = {
     needsBrowser:
       "Die Plattform hat dieses Video nicht an unseren Server herausgegeben: Es ist nur für angemeldete Nutzer verfügbar oder der Zugriff ist vorübergehend eingeschränkt. Du kannst es am Computer mit der Videoner-Browsererweiterung herunterladen – sie lädt über deine eigene Anmeldung herunter.",
     needsBrowserLink: "Erweiterung holen →",
+    instagramAudioPage:
+      "Das ist eine Instagram-Audioseite, kein Video. Füge den Link zu einem beliebigen Reel mit diesem Sound ein und wähle „Nur Audio (mp3)“.",
   },
   platforms: {
     youtube: {
@@ -3970,6 +3992,8 @@ const fr: Translations = {
     needsBrowser:
       "La plateforme n’a pas transmis cette vidéo à notre serveur : elle n’est accessible qu’aux utilisateurs connectés, ou l’accès est temporairement limité. Vous pouvez la télécharger avec l’extension de navigateur Videoner sur ordinateur : elle télécharge avec votre propre connexion.",
     needsBrowserLink: "Obtenir l’extension →",
+    instagramAudioPage:
+      "Ceci est une page audio Instagram, pas une vidéo. Collez le lien d'un reel qui utilise ce son et choisissez «Audio seul (mp3)».",
   },
   platforms: {
     youtube: {
@@ -4321,6 +4345,8 @@ const it: Translations = {
     needsBrowser:
       "La piattaforma non ha fornito questo video al nostro server: è disponibile solo per gli utenti che hanno effettuato l’accesso, oppure l’accesso è temporaneamente limitato. Puoi scaricarlo dal computer con l’estensione per browser Videoner, che scarica usando il tuo accesso.",
     needsBrowserLink: "Scarica l’estensione →",
+    instagramAudioPage:
+      "Questa è una pagina audio di Instagram, non un video. Incolla il link di un reel qualsiasi che usa questo suono e scegli «Solo audio (mp3)».",
   },
   platforms: {
     youtube: {
@@ -4672,6 +4698,8 @@ const pt: Translations = {
     needsBrowser:
       "A plataforma não liberou este vídeo para o nosso servidor: ele só está disponível para usuários logados, ou o acesso está temporariamente limitado. Você pode baixá-lo com a extensão Videoner para navegador no computador — ela baixa usando o seu próprio login.",
     needsBrowserLink: "Instalar a extensão →",
+    instagramAudioPage:
+      "Esta é uma página de áudio do Instagram, não um vídeo. Cole o link de qualquer reel que use este som e escolha “Só áudio (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -5023,6 +5051,8 @@ const uz: Translations = {
     needsBrowser:
       "Platforma bu videoni serverimizga bermadi: u faqat akkauntga kirgan foydalanuvchilar uchun ochiq yoki kirish vaqtincha cheklangan. Uni kompyuterda Videoner brauzer kengaytmasi orqali yuklab olishingiz mumkin — u sizning akkauntingiz orqali yuklab oladi.",
     needsBrowserLink: "Kengaytmani oʻrnatish →",
+    instagramAudioPage:
+      "Bu Instagram audio sahifasi, video emas. Shu ovozdan foydalangan istalgan reel havolasini kiriting va «Faqat ovoz (mp3)» ni tanlang.",
   },
   platforms: {
     youtube: {
@@ -5374,6 +5404,8 @@ const tr: Translations = {
     needsBrowser:
       "Platform bu videoyu sunucumuza vermedi: video yalnızca giriş yapmış kullanıcılara açık ya da erişim geçici olarak kısıtlanmış. Videoyu bilgisayarda Videoner tarayıcı eklentisiyle indirebilirsiniz — eklenti kendi oturumunuzu kullanarak indirir.",
     needsBrowserLink: "Eklentiyi edinin →",
+    instagramAudioPage:
+      "Bu bir Instagram ses sayfası, video değil. Bu sesi kullanan herhangi bir reel'in bağlantısını yapıştırın ve “Yalnızca ses (mp3)” seçeneğini seçin.",
   },
   platforms: {
     youtube: {
@@ -5725,6 +5757,8 @@ const fa: Translations = {
     needsBrowser:
       "پلتفرم این ویدیو را به سرور ما نداد: یا فقط برای کاربرانی که وارد حساب شده‌اند در دسترس است، یا دسترسی موقتاً محدود شده است. می‌توانید آن را با افزونه مرورگر Videoner روی کامپیوتر دانلود کنید؛ افزونه با حساب خود شما دانلود می‌کند.",
     needsBrowserLink: "دریافت افزونه ←",
+    instagramAudioPage:
+      "این صفحهٔ صدای Instagram است، نه ویدیو. پیوند هر ریلزی را که از این صدا استفاده می‌کند جای‌گذاری کنید و «فقط صدا (mp3)» را انتخاب کنید.",
   },
   platforms: {
     youtube: {
@@ -6076,6 +6110,8 @@ const vi: Translations = {
     needsBrowser:
       "Nền tảng không cho máy chủ của chúng tôi tải video này: video chỉ dành cho người đã đăng nhập, hoặc quyền truy cập đang tạm thời bị giới hạn. Bạn có thể tải video bằng tiện ích trình duyệt Videoner trên máy tính — tiện ích tải bằng chính tài khoản đăng nhập của bạn.",
     needsBrowserLink: "Cài tiện ích →",
+    instagramAudioPage:
+      "Đây là trang âm thanh của Instagram, không phải video. Hãy dán liên kết của bất kỳ reel nào dùng âm thanh này và chọn “Chỉ âm thanh (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -6427,6 +6463,8 @@ const bn: Translations = {
     needsBrowser:
       "প্ল্যাটফর্মটি এই ভিডিও আমাদের সার্ভারকে দেয়নি: এটি শুধু লগ ইন করা ব্যবহারকারীদের জন্য, অথবা অ্যাক্সেস সাময়িকভাবে সীমিত। কম্পিউটারে Videoner ব্রাউজার এক্সটেনশন দিয়ে আপনি এটি ডাউনলোড করতে পারবেন — এটি আপনার নিজের লগ ইন ব্যবহার করে ডাউনলোড করে।",
     needsBrowserLink: "এক্সটেনশন নিন →",
+    instagramAudioPage:
+      "এটি Instagram-এর অডিও পেজ, ভিডিও নয়। এই সাউন্ড ব্যবহার করা যেকোনো রিলের লিংক পেস্ট করুন এবং «শুধু অডিও (mp3)» বেছে নিন।",
   },
   platforms: {
     youtube: {
@@ -6778,6 +6816,8 @@ const ur: Translations = {
     needsBrowser:
       "پلیٹ فارم نے یہ ویڈیو ہمارے سرور کو نہیں دی: یہ صرف سائن ان صارفین کے لیے دستیاب ہے، یا رسائی عارضی طور پر محدود ہے۔ آپ اسے کمپیوٹر پر Videoner براؤزر ایکسٹینشن سے ڈاؤن لوڈ کر سکتے ہیں — یہ آپ کے اپنے سائن ان سے ڈاؤن لوڈ کرتی ہے۔",
     needsBrowserLink: "ایکسٹینشن حاصل کریں ←",
+    instagramAudioPage:
+      "یہ Instagram کا آڈیو صفحہ ہے، ویڈیو نہیں۔ اس آواز والی کسی بھی ریل کا لنک پیسٹ کریں اور «صرف آڈیو (mp3)» منتخب کریں۔",
   },
   platforms: {
     youtube: {
@@ -7129,6 +7169,8 @@ const pl: Translations = {
     needsBrowser:
       "Platforma nie udostępniła tego filmu naszemu serwerowi: jest dostępny tylko dla zalogowanych użytkowników albo dostęp jest chwilowo ograniczony. Możesz go pobrać na komputerze rozszerzeniem Videoner do przeglądarki — pobiera z użyciem twojego własnego logowania.",
     needsBrowserLink: "Pobierz rozszerzenie →",
+    instagramAudioPage:
+      "To strona dźwięku z Instagrama, a nie wideo. Wklej link do dowolnego rolka z tym dźwiękiem i wybierz „Tylko dźwięk (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -7480,6 +7522,8 @@ const ja: Translations = {
     needsBrowser:
       "プラットフォームがこの動画を当サーバーに提供しませんでした。ログインしたユーザーのみが視聴できる動画か、一時的にアクセスが制限されています。パソコンで Videoner のブラウザ拡張機能を使えば、ご自身のログイン状態でダウンロードできます。",
     needsBrowserLink: "拡張機能を入手 →",
+    instagramAudioPage:
+      "これは Instagram の音声ページで、動画ではありません。この音声を使っているリールのリンクを貼り付けて、「音声のみ（mp3）」 を選んでください。",
   },
   platforms: {
     youtube: {
@@ -7831,6 +7875,8 @@ const ko: Translations = {
     needsBrowser:
       "플랫폼이 이 동영상을 저희 서버에 제공하지 않았어요. 로그인한 사용자만 볼 수 있거나 접근이 일시적으로 제한된 상태예요. 컴퓨터에서 Videoner 브라우저 확장 프로그램을 사용하면 다운로드할 수 있어요. 확장 프로그램은 회원님의 로그인 정보로 다운로드해요.",
     needsBrowserLink: "확장 프로그램 받기 →",
+    instagramAudioPage:
+      "이것은 Instagram 오디오 페이지이며 동영상이 아닙니다. 이 사운드를 사용한 아무 릴스 링크나 붙여넣고 “오디오만 (mp3)”을(를) 선택하세요.",
   },
   platforms: {
     youtube: {
@@ -8182,6 +8228,8 @@ const th: Translations = {
     needsBrowser:
       "แพลตฟอร์มไม่ส่งวิดีโอนี้ให้เซิร์ฟเวอร์ของเรา: วิดีโอนี้ดูได้เฉพาะผู้ที่เข้าสู่ระบบ หรือการเข้าถึงถูกจำกัดชั่วคราว คุณสามารถดาวน์โหลดได้ด้วยส่วนขยายเบราว์เซอร์ Videoner บนคอมพิวเตอร์ — ส่วนขยายจะดาวน์โหลดโดยใช้การเข้าสู่ระบบของคุณเอง",
     needsBrowserLink: "ติดตั้งส่วนขยาย →",
+    instagramAudioPage:
+      "นี่คือหน้าเสียงของ Instagram ไม่ใช่วิดีโอ วางลิงก์ของรีลใดก็ได้ที่ใช้เสียงนี้ แล้วเลือก «เฉพาะเสียง (mp3)»",
   },
   platforms: {
     youtube: {
@@ -8533,6 +8581,8 @@ const am: Translations = {
     needsBrowser:
       "ፕላትፎርሙ ይህን ቪዲዮ ለሰርቨራችን አልሰጠም፦ ቪዲዮው የሚገኘው ለገቡ ተጠቃሚዎች ብቻ ነው፣ ወይም መዳረሻው ለጊዜው ተገድቧል። በኮምፒውተር ላይ በVideoner የብሮውዘር ኤክስቴንሽን ማውረድ ይችላሉ — በራስዎ መግቢያ ያወርዳል።",
     needsBrowserLink: "ኤክስቴንሽኑን ያግኙ →",
+    instagramAudioPage:
+      "ይህ የ Instagram የድምፅ ገጽ ነው እንጂ ቪዲዮ አይደለም። ይህን ድምፅ የሚጠቀም ማንኛውንም ሪል አገናኝ ለጥፈው «ድምፅ ብቻ (mp3)» ን ይምረጡ።",
   },
   platforms: {
     youtube: {
@@ -8884,6 +8934,8 @@ const om: Translations = {
     needsBrowser:
       "Waltajjiin kun viidiyoo kana sarvarii keenyaaf hin kennine: fayyadamtoota seenan qofaaf argama, ykn argamuun isaa yeroof daangeffameera. Kompiitara irratti dabalata biraawuzarii Videoner-iin buusuu dandeessu — seensa keessan mataa keessaniitiin buusa.",
     needsBrowserLink: "Dabalata argadhaa →",
+    instagramAudioPage:
+      "Kun fuula sagalee Instagram malee viidiyoo miti. Liinkii reel sagalee kana fayyadamu kamiyyuu maxxansii “Sagalee qofa (mp3)” filadhu.",
   },
   platforms: {
     youtube: {
@@ -9235,6 +9287,8 @@ const ha: Translations = {
     needsBrowser:
       "Dandalin bai ba sabar mu wannan bidiyo ba: masu shiga asusu ne kawai ke iya ganinsa, ko kuma an taƙaita samun dama na ɗan lokaci. Kuna iya sauke shi da ƙarin burauza na Videoner a kwamfuta — yana saukewa ta amfani da shigarku.",
     needsBrowserLink: "Samu ƙarin →",
+    instagramAudioPage:
+      "Wannan shafin sautin Instagram ne, ba bidiyo ba. Manna hanyar haɗin kowane reel da ke amfani da wannan sautin, sannan ka zaɓi “Sauti kawai (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -9586,6 +9640,8 @@ const so: Translations = {
     needsBrowser:
       "Goobtu muuqaalkan ma siinin server-kayaga: waxaa heli kara oo keliya isticmaalayaasha soo galay, ama gelitaanka si ku meel gaar ah ayaa loo xaddiday. Waxaad ku soo dejisan kartaa kordhiyaha biraawsarka Videoner ee kombiyuutarka — wuxuu ku soo dejiyaa gelitaankaaga adiga.",
     needsBrowserLink: "Hel kordhiyaha →",
+    instagramAudioPage:
+      "Tani waa bog codka Instagram, ma aha fiidiyoo. Ku dheji linkiga reel kasta oo isticmaalaya codkan oo dooro “Cod keliya (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -9937,6 +9993,8 @@ const az: Translations = {
     needsBrowser:
       "Platforma bu videonu serverimizə vermədi: video yalnız hesaba daxil olmuş istifadəçilər üçün əlçatandır və ya giriş müvəqqəti məhdudlaşdırılıb. Onu kompüterdə Videoner brauzer genişlənməsi ilə yükləyə bilərsiniz — genişlənmə sizin öz hesabınızla yükləyir.",
     needsBrowserLink: "Genişlənməni əldə edin →",
+    instagramAudioPage:
+      "Bu Instagram səs səhifəsidir, video deyil. Bu səsdən istifadə edən istənilən reelsin keçidini yapışdırın və «Yalnız audio (mp3)» seçin.",
   },
   platforms: {
     youtube: {
@@ -10288,6 +10346,8 @@ const ky: Translations = {
     needsBrowser:
       "Платформа бул видеону биздин серверге берген жок: ал аккаунтка киргенден кийин гана жеткиликтүү же платформа жеткиликтүүлүктү убактылуу чектеди. Аны компьютердеги Videoner браузер кеңейтүүсү аркылуу жүктөп алсаңыз болот — ал Сиздин аккаунтуңуз аркылуу жүктөйт.",
     needsBrowserLink: "Кеңейтүүнү орнотуу →",
+    instagramAudioPage:
+      "Бул Instagram үн баракчасы, видео эмес. Ушул үндү колдонгон каалаган рилстин шилтемесин чаптап, «Аудио гана (mp3)» тандаңыз.",
   },
   platforms: {
     youtube: {
@@ -10639,6 +10699,8 @@ const tg: Translations = {
     needsBrowser:
       "Платформа ин видеоро ба сервери мо надод: он танҳо пас аз воридшавӣ ба аккаунт дастрас аст ё дастрасӣ муваққатан маҳдуд шудааст. Шумо метавонед онро бо васеъкунандаи браузерии Videoner дар компютер боргирӣ кунед — он бо воридшавии худи Шумо боргирӣ мекунад.",
     needsBrowserLink: "Насб кардани васеъкунанда →",
+    instagramAudioPage:
+      "Ин саҳифаи садои Instagram аст, на видео. Истиноди ҳар як рилсеро, ки ин садоро истифода мебарад, гузоред ва «Танҳо аудио (mp3)»-ро интихоб кунед.",
   },
   platforms: {
     youtube: {
@@ -10990,6 +11052,8 @@ const ms: Translations = {
     needsBrowser:
       "Platform tidak memberikan video ini kepada pelayan kami: video ini hanya tersedia untuk pengguna yang log masuk, atau akses dihadkan buat sementara. Anda boleh memuat turunnya dengan sambungan pelayar Videoner pada komputer — ia memuat turun menggunakan log masuk anda sendiri.",
     needsBrowserLink: "Dapatkan sambungan →",
+    instagramAudioPage:
+      "Ini ialah halaman audio Instagram, bukan video. Tampal pautan mana-mana reel yang menggunakan bunyi ini dan pilih “Audio sahaja (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -11341,6 +11405,8 @@ const nl: Translations = {
     needsBrowser:
       "Het platform gaf deze video niet aan onze server: hij is alleen beschikbaar voor ingelogde gebruikers, of de toegang is tijdelijk beperkt. Je kunt hem downloaden met de Videoner-browserextensie op een computer — die downloadt met je eigen login.",
     needsBrowserLink: "Extensie installeren →",
+    instagramAudioPage:
+      "Dit is een Instagram-audiopagina, geen video. Plak de link naar een reel die dit geluid gebruikt en kies “Alleen audio (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -11692,6 +11758,8 @@ const ro: Translations = {
     needsBrowser:
       "Platforma nu a oferit acest videoclip serverului nostru: este disponibil doar utilizatorilor conectați sau accesul este limitat temporar. Îl poți descărca pe calculator cu extensia de browser Videoner — descarcă folosind propria ta conectare.",
     needsBrowserLink: "Instalează extensia →",
+    instagramAudioPage:
+      "Aceasta este o pagină de sunet Instagram, nu un videoclip. Lipește linkul oricărui reel care folosește acest sunet și alege „Doar audio (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -12043,6 +12111,8 @@ const ps: Translations = {
     needsBrowser:
       "پلیټفارم دا ویډیو زموږ سرور ته ورنه کړه: یا یوازې هغو کاروونکو ته شته چې خپل حساب ته ننوتي وي، یا لاسرسی په لنډمهاله توګه محدود شوی. تاسو یې په کمپیوټر کې د Videoner د براوزر توسیع سره ښکته کولی شئ؛ توسیع ستاسو په خپل حساب ښکته کوي.",
     needsBrowserLink: "توسیع ترلاسه کړئ ←",
+    instagramAudioPage:
+      "دا د Instagram د غږ پاڼه ده، ویډیو نه ده. د هر هغه ریل لینک پیسټ کړئ چې دا غږ کاروي او «یوازې آډیو (mp3)» غوره کړئ.",
   },
   platforms: {
     youtube: {
@@ -12394,6 +12464,8 @@ const ckb: Translations = {
     needsBrowser:
       "پلاتفۆرمەکە ئەم ڤیدیۆیەی نەدا بە سێرڤەرەکەمان: یان تەنها بۆ ئەو بەکارهێنەرانە بەردەستە کە چوونەتە ژوورەوە، یان دەستگەیشتن بە شێوەیەکی کاتی سنووردار کراوە. دەتوانیت لە کۆمپیوتەر بە پێوەکراوی وێبگەڕی Videoner دایبگریت؛ پێوەکراوەکە بە هەژماری خۆت دادەگرێت.",
     needsBrowserLink: "وەرگرتنی پێوەکراو ←",
+    instagramAudioPage:
+      "ئەمە پەڕەی دەنگی Instagram ـە، ڤیدیۆ نییە. بەستەری هەر ریلێک کە ئەم دەنگە بەکاردەهێنێت بلکێنە و «تەنها دەنگ (mp3)» هەڵبژێرە.",
   },
   platforms: {
     youtube: {
@@ -12745,6 +12817,8 @@ const ku: Translations = {
     needsBrowser:
       "Platformê ev vîdyo nedaye servera me: ew tenê ji bo bikarhênerên têketî heye, an jî gihîştin bi awayekî demkî sînordar e. Tu dikarî wê bi pêveka gerokê ya Videoner li ser komputerê daxînî — ew bi têketina te ya xwe dadixe.",
     needsBrowserLink: "Pêvekê bistîne →",
+    instagramAudioPage:
+      "Ev rûpela dengê ya Instagram e, ne vîdyo ye. Lînka her reelekê ya ku vî dengî bi kar tîne bineqîne û “Tenê deng (mp3)” hilbijêre.",
   },
   platforms: {
     youtube: {
@@ -13096,6 +13170,8 @@ const ug: Translations = {
     needsBrowser:
       "سۇپا بۇ ۋىدىيونى مۇلازىمېتىرىمىزغا بەرمىدى: ئۇ پەقەت كىرگەن ئىشلەتكۈچىلەرگىلا ئوچۇق، ياكى زىيارەت ۋاقىتلىق چەكلەنگەن. ئۇنى كومپيۇتېردا Videoner توركۆرگۈ قىستۇرمىسى ئارقىلىق چۈشۈرەلەيسىز — قىستۇرما سىزنىڭ ئۆز ھېساباتىڭىز ئارقىلىق چۈشۈرىدۇ.",
     needsBrowserLink: "قىستۇرمىنى ئورنىتىش ←",
+    instagramAudioPage:
+      "بۇ Instagram ئاۋاز بېتى، سىن ئەمەس. بۇ ئاۋازنى ئىشلەتكەن ئىختىيارى بىر ريلنىڭ ئۇلىنىشىنى چاپلاپ، «پەقەت ئاۋاز (mp3)» نى تاللاڭ.",
   },
   platforms: {
     youtube: {
@@ -13447,6 +13523,8 @@ const tk: Translations = {
     needsBrowser:
       "Platforma bu wideony biziň serwerimize bermedi: ol diňe hasabyna giren ulanyjylar üçin elýeterli ýa-da elýeterlilik wagtlaýyn çäklendirilen. Ony kompýuterde Videoner brauzer giňeltmesi bilen ýükläp bilersiňiz — ol Siziň öz girişiňiz arkaly ýükleýär.",
     needsBrowserLink: "Giňeltmäni alyň →",
+    instagramAudioPage:
+      "Bu Instagram ses sahypasy, wideo däl. Bu sesi ulanýan islendik reeliň baglanyşygyny goýuň we “Diňe ses (mp3)” saýlaň.",
   },
   platforms: {
     youtube: {
@@ -13798,6 +13876,8 @@ const tt: Translations = {
     needsBrowser:
       "Платформа бу видеоны безнең серверга бирмәде: ул аккаунтка кергәннән соң гына ачыла, яисә керү вакытлыча чикләнгән. Аны компьютерда Videoner браузер киңәйтмәсе ярдәмендә йөкләп ала аласыз — ул Сезнең аккаунтыгыз аша йөкли.",
     needsBrowserLink: "Киңәйтмәне урнаштыру →",
+    instagramAudioPage:
+      "Бу Instagram аудио бите, видео түгел. Бу тавышны кулланган теләсә кайсы рилс сылтамасын куегыз һәм «Аудио гына (mp3)» сайлагыз.",
   },
   platforms: {
     youtube: {
@@ -14149,6 +14229,8 @@ const sq: Translations = {
     needsBrowser:
       "Platforma nuk ia dha këtë video serverit tonë: ajo është e disponueshme vetëm për përdoruesit e identifikuar ose qasja është kufizuar përkohësisht. Mund ta shkarkoni me shtesën e shfletuesit Videoner në kompjuter — ajo shkarkon duke përdorur hyrjen tuaj.",
     needsBrowserLink: "Merrni shtesën →",
+    instagramAudioPage:
+      "Ky është një faqe audio e Instagram-it, jo video. Ngjit lidhjen e çdo reel-i që e përdor këtë tingull dhe zgjidh “Vetëm audio (mp3)”.",
   },
   platforms: {
     youtube: {
@@ -14500,6 +14582,8 @@ const bs: Translations = {
     needsBrowser:
       "Platforma nije dala ovaj video našem serveru: dostupan je samo prijavljenim korisnicima ili je pristup privremeno ograničen. Možete ga preuzeti pomoću Videoner proširenja preglednika na računaru — ono preuzima koristeći vašu prijavu.",
     needsBrowserLink: "Instalirajte proširenje →",
+    instagramAudioPage:
+      "Ovo je Instagram audio stranica, a ne video. Zalijepi link na bilo koji reel koji koristi ovaj zvuk i odaberi „Samo audio (mp3)“.",
   },
   platforms: {
     youtube: {
@@ -14851,6 +14935,8 @@ const ce: Translations = {
     needsBrowser:
       "Платформо хӀара видео тхан серверна ца елла: иза аккаунте чугӀоьртачарна бен гуш яц, я цуьнга тӀекхачар цхьана ханна доза хӀоттийна ду. Шуна иза компьютерехь Videoner браузеран расширенис чуяккха йиш ю — цо Шайн чугӀонца чуйоккху.",
     needsBrowserLink: "Расширени схьаэца →",
+    instagramAudioPage:
+      "Иза Instagram аудион агӀо ю, видео дац. И аудио лело йолу цхьаъ рилсан хьажорг чу хӀоттаде а, «Аудио бен (mp3)» харжа.",
   },
   platforms: {
     youtube: {
@@ -15202,6 +15288,8 @@ const inh: Translations = {
     needsBrowser:
       "Платформо ер видео тха серверага ла яц: из аккаунта чубаьнначарна мара гуш яц, е из хьаэца цхьа ханна доазув дилла да. Компьютер тӀа Videoner браузера расширеница из чуяккха йиш я — из Шун чуваларца чуйоккх.",
     needsBrowserLink: "Расширени хьаэца →",
+    instagramAudioPage:
+      "Из Instagram аудион агӀо я, видео яц. Из аудио лелаш йола цхьаъ рилсан ссылка чу хӀоттаде а, «Аудио мара (mp3)» харжа.",
   },
   platforms: {
     youtube: {
@@ -15553,6 +15641,8 @@ const av: Translations = {
     needsBrowser:
       "Платформаялъ гьаб видео нижер сервералде кьечӀо: гьеб аккаунталде жаниве лъугьаразе гурони бихьуларо, яги гьелде щвей заманалъе лимит гьабун буго. Компьютералда гьеб Videoner браузералъул расширениялдалъун босизе бегьула — гьелъ Нужер аккаунталдалъун босула.",
     needsBrowserLink: "Расширение босизе →",
+    instagramAudioPage:
+      "Гьеб Instagram-алъул аудиоялъул гьумер буго, видео гьечӀо. Гьеб аудио хӀалтӀизабулеб рилсалъул ссылка чӀвай ва «Аудио гурони (mp3)» тӀаса.",
   },
   platforms: {
     youtube: {
@@ -15904,6 +15994,8 @@ const tl: Translations = {
     needsBrowser:
       "Hindi ibinigay ng platform ang video na ito sa aming server: para lang ito sa mga naka-sign in na user, o pansamantalang limitado ang access. Maaari mo itong i-download gamit ang Videoner browser extension sa computer — nagda-download ito gamit ang sarili mong sign-in.",
     needsBrowserLink: "Kunin ang extension →",
+    instagramAudioPage:
+      "Ito ay audio page ng Instagram, hindi video. I-paste ang link ng kahit anong reel na gumagamit ng tunog na ito at piliin ang “Audio lang (mp3)”.",
   },
   platforms: {
     youtube: {

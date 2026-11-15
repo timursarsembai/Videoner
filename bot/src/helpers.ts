@@ -239,6 +239,10 @@ export function friendlyError(raw: string, lang: Lang): string {
   // входить негде; честно говорим, что бот их не качает, а расширение — да.
   // Ссылка /stories/<ник>/ без номера, а профиль Instagram серверу не отдал
   // (server/src/lib/instagram-story.ts) — просим ссылку на конкретную сторис.
+  // Страница звука, а не видео (server/src/validate/url.ts, isInstagramAudioPage).
+  if (msg.includes("instagram audio page")) {
+    return m.errorInstagramAudioPage;
+  }
   if (msg.includes("story link without an id")) {
     return m.errorStoryNeedsId;
   }

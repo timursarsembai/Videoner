@@ -17,6 +17,12 @@ export function showDownloadError(
   language: Language,
   t: (key: TranslationKey) => string
 ) {
+  // Страница звука Instagram, а не видео: сервер отвечает по-английски
+  // (server/src/validate/url.ts, INSTAGRAM_AUDIO_PAGE_ERROR) — показываем на языке сайта.
+  if (message.startsWith("Instagram audio page")) {
+    toast.error(t("toast.instagramAudioPage"));
+    return;
+  }
   if (!browserCanHelp(url, message)) {
     toast.error(message);
     return;

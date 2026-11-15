@@ -1,3 +1,4 @@
+import { ADULT_CONTENT_ERROR, isAdultContent } from 'src/lib/adult-content';
 import {
   GALLERY,
   SLIDESHOW,
@@ -215,6 +216,19 @@ export class DownloadService {
   // userCookies в ответе — значит, ролик виден только вошедшим: качать его
   // тоже с этими куками и мимо общего кеша (см. downloadVideo).
   private async infoForDownload(
+    url: string,
+    req: Request,
+    meta: DownloadRequestMeta,
+  ): Promise<{ info: any; userCookies?: string }> {
+    const found = await this.infoForDownloadAnyAccount(url, req, meta);
+    // Контент для взрослых не скачиваем ни от какого аккаунта (lib/adult-content.ts).
+    if (isAdultContent((req as any).platform, found.info)) {
+      throw new BadRequestException(ADULT_CONTENT_ERROR);
+    }
+    return found;
+  }
+
+  private async infoForDownloadAnyAccount(
     url: string,
     req: Request,
     meta: DownloadRequestMeta,

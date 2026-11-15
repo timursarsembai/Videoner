@@ -114,3 +114,20 @@ test("friendlyError: страница звука Instagram", () => {
     messages.ru.errorInstagramAudioPage,
   );
 });
+
+test("friendlyError: контент 18+ и твит без видео — свои тексты, без предложения войти", () => {
+  const m = messages.ru;
+  assert.equal(
+    friendlyError("Adult content (X age-restricted tweet): X hides this tweet from viewers without an account; Videoner does not download 18+ content.", "ru"),
+    m.errorTweetAdultHidden,
+  );
+  assert.equal(
+    friendlyError("Adult content: the platform marked this post as 18+; Videoner does not download such content.", "ru"),
+    m.errorAdultContent,
+  );
+  assert.equal(friendlyError("Tweet without video: there is no video in this tweet.", "ru"), m.errorTweetNoVideo);
+  assert.equal(
+    extensionLinkFor("Adult content (X age-restricted tweet): X hides this tweet from viewers without an account; Videoner does not download 18+ content.", "https://x.com/a/status/1", "ru"),
+    null,
+  );
+});

@@ -109,6 +109,12 @@ const en = {
     needsBrowserLink: "Get the extension →",
     instagramAudioPage:
       "This is an Instagram audio page, not a video. Paste a link to any reel that uses this sound and choose “Audio only (mp3)”.",
+    adultContent:
+      "This is adult content (18+). Videoner doesn't download such content.",
+    tweetAdultHidden:
+      "X shows this tweet only to adults signed in to an account — that's usually how 18+ content is marked. Videoner doesn't download such content.",
+    tweetNoVideo:
+      "There's no video in this tweet. If the video is in a reply or a quote, paste a link directly to that tweet.",
   },
   platforms: {
     youtube: {
@@ -464,6 +470,12 @@ const es: Translations = {
     needsBrowserLink: "Obtener la extensión →",
     instagramAudioPage:
       "Esta es una página de audio de Instagram, no un vídeo. Pega el enlace de cualquier reel que use este sonido y elige «Solo audio (mp3)».",
+    adultContent:
+      "Este es contenido para adultos (18+). Videoner no descarga este tipo de contenido.",
+    tweetAdultHidden:
+      "X muestra este tuit solo a adultos que han iniciado sesión — normalmente así se marca el contenido 18+. Videoner no descarga este tipo de contenido.",
+    tweetNoVideo:
+      "Este tuit no tiene vídeo. Si el vídeo está en una respuesta o en una cita, pega el enlace directamente a ese tuit.",
   },
   platforms: {
     youtube: {
@@ -817,6 +829,12 @@ const ru: Translations = {
     needsBrowserLink: "Установить расширение →",
     instagramAudioPage:
       "Это страница звука Instagram, а не видео. Вставьте ссылку на любой рилс с этим звуком и выберите «Только звук (mp3)».",
+    adultContent:
+      "Здесь контент для взрослых (18+). Videoner такой контент не скачивает.",
+    tweetAdultHidden:
+      "X показывает этот твит только взрослым, вошедшим в аккаунт, — обычно так помечен контент 18+. Videoner такой контент не скачивает.",
+    tweetNoVideo:
+      "В этом твите нет видео. Если видео в ответе или цитате, вставьте ссылку прямо на тот твит.",
   },
   platforms: {
     youtube: {
@@ -1170,6 +1188,12 @@ const uk: Translations = {
     needsBrowserLink: "Встановити розширення →",
     instagramAudioPage:
       "Це сторінка звуку Instagram, а не відео. Вставте посилання на будь-який рілс із цим звуком і виберіть «Лише звук (mp3)».",
+    adultContent:
+      "Тут контент для дорослих (18+). Videoner такий контент не завантажує.",
+    tweetAdultHidden:
+      "X показує цей твіт лише дорослим, які увійшли в обліковий запис, — зазвичай так позначено контент 18+. Videoner такий контент не завантажує.",
+    tweetNoVideo:
+      "У цьому твіті немає відео. Якщо відео у відповіді або цитаті, вставте посилання просто на той твіт.",
   },
   platforms: {
     youtube: {
@@ -1523,6 +1547,12 @@ const kk: Translations = {
     needsBrowserLink: "Кеңейтімді орнату →",
     instagramAudioPage:
       "Бұл Instagram дыбыс беті, видео емес. Осы дыбысты қолданатын кез келген рилстің сілтемесін қойып, «Тек дыбыс (mp3)» таңдаңыз.",
+    adultContent:
+      "Мұнда ересектерге арналған контент (18+). Videoner мұндай контентті жүктемейді.",
+    tweetAdultHidden:
+      "X бұл твитті тек аккаунтқа кірген ересектерге көрсетеді — әдетте 18+ контент осылай белгіленеді. Videoner мұндай контентті жүктемейді.",
+    tweetNoVideo:
+      "Бұл твитте бейне жоқ. Егер бейне жауапта немесе дәйексөзде болса, нақ сол твиттің сілтемесін қойыңыз.",
   },
   platforms: {
     youtube: {
@@ -1876,6 +1906,12 @@ const ar: Translations = {
     needsBrowserLink: "احصل على الإضافة ←",
     instagramAudioPage:
       "هذه صفحة صوت على Instagram وليست فيديو. الصق رابط أي ريلز يستخدم هذا الصوت واختر «الصوت فقط (mp3)».",
+    adultContent:
+      "هذا محتوى للبالغين (+18). لا يقوم Videoner بتنزيل هذا النوع من المحتوى.",
+    tweetAdultHidden:
+      "يعرض X هذه التغريدة للبالغين المسجّلين الدخول فقط — وعادةً ما يُوسَم محتوى +18 بهذه الطريقة. لا يقوم Videoner بتنزيل هذا النوع من المحتوى.",
+    tweetNoVideo:
+      "لا يوجد فيديو في هذه التغريدة. إذا كان الفيديو في رد أو اقتباس، فالصق رابط تلك التغريدة مباشرةً.",
   },
   platforms: {
     youtube: {
@@ -2229,6 +2265,12 @@ const zh: Translations = {
     needsBrowserLink: "获取扩展 →",
     instagramAudioPage:
       "这是 Instagram 的音频页面，不是视频。请粘贴任意使用该音频的 Reels 链接，然后选择 「仅音频（mp3）」。",
+    adultContent:
+      "这是成人内容（18+）。Videoner 不下载此类内容。",
+    tweetAdultHidden:
+      "X 仅向已登录账号的成年人显示这条推文——18+ 内容通常会这样标记。Videoner 不下载此类内容。",
+    tweetNoVideo:
+      "这条推文中没有视频。如果视频在回复或引用中，请直接粘贴那条推文的链接。",
   },
   platforms: {
     youtube: {
@@ -2582,6 +2624,12 @@ const hi: Translations = {
     needsBrowserLink: "एक्सटेंशन पाएँ →",
     instagramAudioPage:
       "यह Instagram का ऑडियो पेज है, वीडियो नहीं। इस साउंड वाली किसी भी रील का लिंक पेस्ट करें और «सिर्फ़ ऑडियो (mp3)» चुनें।",
+    adultContent:
+      "यह वयस्क सामग्री (18+) है। Videoner ऐसी सामग्री डाउनलोड नहीं करता।",
+    tweetAdultHidden:
+      "X यह ट्वीट केवल खाते में लॉग इन किए हुए वयस्कों को दिखाता है — आमतौर पर 18+ सामग्री इसी तरह चिह्नित की जाती है। Videoner ऐसी सामग्री डाउनलोड नहीं करता।",
+    tweetNoVideo:
+      "इस ट्वीट में कोई वीडियो नहीं है। अगर वीडियो किसी रिप्लाई या कोट में है, तो उसी ट्वीट का लिंक सीधे चिपकाएँ।",
   },
   platforms: {
     youtube: {
@@ -2935,6 +2983,12 @@ const indonesian: Translations = {
     needsBrowserLink: "Pasang ekstensi →",
     instagramAudioPage:
       "Ini adalah halaman audio Instagram, bukan video. Tempel tautan reel mana pun yang memakai suara ini dan pilih «Audio saja (mp3)».",
+    adultContent:
+      "Ini konten dewasa (18+). Videoner tidak mengunduh konten semacam itu.",
+    tweetAdultHidden:
+      "X hanya menampilkan tweet ini kepada orang dewasa yang masuk ke akun — biasanya begitulah konten 18+ ditandai. Videoner tidak mengunduh konten semacam itu.",
+    tweetNoVideo:
+      "Tidak ada video di tweet ini. Jika videonya ada di balasan atau kutipan, tempel tautan langsung ke tweet tersebut.",
   },
   platforms: {
     youtube: {
@@ -3288,6 +3342,12 @@ const sw: Translations = {
     needsBrowserLink: "Pata kiendelezi →",
     instagramAudioPage:
       "Huu ni ukurasa wa sauti wa Instagram, si video. Bandika kiungo cha reel yoyote inayotumia sauti hii kisha uchague «Sauti pekee (mp3)».",
+    adultContent:
+      "Hii ni maudhui ya watu wazima (18+). Videoner haipakui maudhui ya aina hiyo.",
+    tweetAdultHidden:
+      "X inaonyesha tweet hii kwa watu wazima walioingia kwenye akaunti pekee — kwa kawaida maudhui ya 18+ huwekewa alama hivyo. Videoner haipakui maudhui ya aina hiyo.",
+    tweetNoVideo:
+      "Hakuna video kwenye tweet hii. Ikiwa video iko kwenye jibu au nukuu, bandika kiungo moja kwa moja cha tweet hiyo.",
   },
   platforms: {
     youtube: {
@@ -3641,6 +3701,12 @@ const de: Translations = {
     needsBrowserLink: "Erweiterung holen →",
     instagramAudioPage:
       "Das ist eine Instagram-Audioseite, kein Video. Füge den Link zu einem beliebigen Reel mit diesem Sound ein und wähle „Nur Audio (mp3)“.",
+    adultContent:
+      "Das ist Inhalt für Erwachsene (18+). Videoner lädt solche Inhalte nicht herunter.",
+    tweetAdultHidden:
+      "X zeigt diesen Tweet nur angemeldeten Erwachsenen — so werden 18+-Inhalte üblicherweise gekennzeichnet. Videoner lädt solche Inhalte nicht herunter.",
+    tweetNoVideo:
+      "Dieser Tweet enthält kein Video. Wenn das Video in einer Antwort oder einem Zitat steckt, füge den Link direkt zu diesem Tweet ein.",
   },
   platforms: {
     youtube: {
@@ -3994,6 +4060,12 @@ const fr: Translations = {
     needsBrowserLink: "Obtenir l’extension →",
     instagramAudioPage:
       "Ceci est une page audio Instagram, pas une vidéo. Collez le lien d'un reel qui utilise ce son et choisissez «Audio seul (mp3)».",
+    adultContent:
+      "Il s’agit d’un contenu pour adultes (18+). Videoner ne télécharge pas ce type de contenu.",
+    tweetAdultHidden:
+      "X n’affiche ce tweet qu’aux adultes connectés à un compte — c’est généralement ainsi que les contenus 18+ sont signalés. Videoner ne télécharge pas ce type de contenu.",
+    tweetNoVideo:
+      "Il n’y a pas de vidéo dans ce tweet. Si la vidéo se trouve dans une réponse ou une citation, collez directement le lien de ce tweet.",
   },
   platforms: {
     youtube: {
@@ -4347,6 +4419,12 @@ const it: Translations = {
     needsBrowserLink: "Scarica l’estensione →",
     instagramAudioPage:
       "Questa è una pagina audio di Instagram, non un video. Incolla il link di un reel qualsiasi che usa questo suono e scegli «Solo audio (mp3)».",
+    adultContent:
+      "Questo è un contenuto per adulti (18+). Videoner non scarica contenuti di questo tipo.",
+    tweetAdultHidden:
+      "X mostra questo tweet solo agli adulti che hanno effettuato l’accesso a un account — di solito è così che vengono contrassegnati i contenuti 18+. Videoner non scarica contenuti di questo tipo.",
+    tweetNoVideo:
+      "In questo tweet non c’è nessun video. Se il video è in una risposta o in una citazione, incolla direttamente il link a quel tweet.",
   },
   platforms: {
     youtube: {
@@ -4700,6 +4778,12 @@ const pt: Translations = {
     needsBrowserLink: "Instalar a extensão →",
     instagramAudioPage:
       "Esta é uma página de áudio do Instagram, não um vídeo. Cole o link de qualquer reel que use este som e escolha “Só áudio (mp3)”.",
+    adultContent:
+      "Este é um conteúdo adulto (18+). O Videoner não baixa esse tipo de conteúdo.",
+    tweetAdultHidden:
+      "O X mostra este tweet apenas para adultos com sessão iniciada — geralmente é assim que o conteúdo 18+ é marcado. O Videoner não baixa esse tipo de conteúdo.",
+    tweetNoVideo:
+      "Não há vídeo neste tweet. Se o vídeo estiver em uma resposta ou citação, cole o link diretamente para esse tweet.",
   },
   platforms: {
     youtube: {
@@ -5053,6 +5137,12 @@ const uz: Translations = {
     needsBrowserLink: "Kengaytmani oʻrnatish →",
     instagramAudioPage:
       "Bu Instagram audio sahifasi, video emas. Shu ovozdan foydalangan istalgan reel havolasini kiriting va «Faqat ovoz (mp3)» ni tanlang.",
+    adultContent:
+      "Bu kattalar uchun kontent (18+). Videoner bunday kontentni yuklab olmaydi.",
+    tweetAdultHidden:
+      "X bu tvitni faqat akkauntga kirgan kattalarga ko‘rsatadi — odatda 18+ kontent shunday belgilanadi. Videoner bunday kontentni yuklab olmaydi.",
+    tweetNoVideo:
+      "Bu tvitda video yo‘q. Agar video javob yoki iqtibosda bo‘lsa, aynan o‘sha tvitga havolani joylashtiring.",
   },
   platforms: {
     youtube: {
@@ -5406,6 +5496,12 @@ const tr: Translations = {
     needsBrowserLink: "Eklentiyi edinin →",
     instagramAudioPage:
       "Bu bir Instagram ses sayfası, video değil. Bu sesi kullanan herhangi bir reel'in bağlantısını yapıştırın ve “Yalnızca ses (mp3)” seçeneğini seçin.",
+    adultContent:
+      "Bu yetişkinlere yönelik bir içerik (18+). Videoner bu tür içerikleri indirmez.",
+    tweetAdultHidden:
+      "X bu tweet’i yalnızca hesabına giriş yapmış yetişkinlere gösteriyor — 18+ içerikler genellikle bu şekilde işaretlenir. Videoner bu tür içerikleri indirmez.",
+    tweetNoVideo:
+      "Bu tweet’te video yok. Video bir yanıtta veya alıntıda ise doğrudan o tweet’in bağlantısını yapıştırın.",
   },
   platforms: {
     youtube: {
@@ -5759,6 +5855,12 @@ const fa: Translations = {
     needsBrowserLink: "دریافت افزونه ←",
     instagramAudioPage:
       "این صفحهٔ صدای Instagram است، نه ویدیو. پیوند هر ریلزی را که از این صدا استفاده می‌کند جای‌گذاری کنید و «فقط صدا (mp3)» را انتخاب کنید.",
+    adultContent:
+      "این محتوای بزرگسالان (+18) است. Videoner چنین محتوایی را دانلود نمی‌کند.",
+    tweetAdultHidden:
+      "X این توییت را فقط به بزرگسالانی نشان می‌دهد که وارد حساب کاربری شده‌اند — معمولاً محتوای +18 این‌طور علامت‌گذاری می‌شود. Videoner چنین محتوایی را دانلود نمی‌کند.",
+    tweetNoVideo:
+      "در این توییت ویدیویی وجود ندارد. اگر ویدیو در یک پاسخ یا نقل‌قول است، پیوند همان توییت را مستقیم جای‌گذاری کنید.",
   },
   platforms: {
     youtube: {
@@ -6112,6 +6214,12 @@ const vi: Translations = {
     needsBrowserLink: "Cài tiện ích →",
     instagramAudioPage:
       "Đây là trang âm thanh của Instagram, không phải video. Hãy dán liên kết của bất kỳ reel nào dùng âm thanh này và chọn “Chỉ âm thanh (mp3)”.",
+    adultContent:
+      "Đây là nội dung người lớn (18+). Videoner không tải loại nội dung này.",
+    tweetAdultHidden:
+      "X chỉ hiển thị tweet này cho người lớn đã đăng nhập tài khoản — thường thì nội dung 18+ được đánh dấu như vậy. Videoner không tải loại nội dung này.",
+    tweetNoVideo:
+      "Tweet này không có video. Nếu video nằm trong phần trả lời hoặc trích dẫn, hãy dán liên kết trực tiếp đến tweet đó.",
   },
   platforms: {
     youtube: {
@@ -6465,6 +6573,12 @@ const bn: Translations = {
     needsBrowserLink: "এক্সটেনশন নিন →",
     instagramAudioPage:
       "এটি Instagram-এর অডিও পেজ, ভিডিও নয়। এই সাউন্ড ব্যবহার করা যেকোনো রিলের লিংক পেস্ট করুন এবং «শুধু অডিও (mp3)» বেছে নিন।",
+    adultContent:
+      "এটি প্রাপ্তবয়স্কদের কনটেন্ট (18+)। Videoner এ ধরনের কনটেন্ট ডাউনলোড করে না।",
+    tweetAdultHidden:
+      "X এই টুইটটি শুধু অ্যাকাউন্টে লগ ইন করা প্রাপ্তবয়স্কদের দেখায় — সাধারণত 18+ কনটেন্ট এভাবেই চিহ্নিত করা হয়। Videoner এ ধরনের কনটেন্ট ডাউনলোড করে না।",
+    tweetNoVideo:
+      "এই টুইটে কোনো ভিডিও নেই। ভিডিওটি রিপ্লাই বা কোটে থাকলে সরাসরি সেই টুইটের লিংক পেস্ট করুন।",
   },
   platforms: {
     youtube: {
@@ -6818,6 +6932,12 @@ const ur: Translations = {
     needsBrowserLink: "ایکسٹینشن حاصل کریں ←",
     instagramAudioPage:
       "یہ Instagram کا آڈیو صفحہ ہے، ویڈیو نہیں۔ اس آواز والی کسی بھی ریل کا لنک پیسٹ کریں اور «صرف آڈیو (mp3)» منتخب کریں۔",
+    adultContent:
+      "یہ بالغوں کا مواد (+18) ہے۔ Videoner اس طرح کا مواد ڈاؤن لوڈ نہیں کرتا۔",
+    tweetAdultHidden:
+      "X یہ ٹویٹ صرف اکاؤنٹ میں لاگ اِن بالغ افراد کو دکھاتا ہے — عموماً +18 مواد اسی طرح نشان زد کیا جاتا ہے۔ Videoner اس طرح کا مواد ڈاؤن لوڈ نہیں کرتا۔",
+    tweetNoVideo:
+      "اس ٹویٹ میں کوئی ویڈیو نہیں ہے۔ اگر ویڈیو کسی جواب یا کوٹ میں ہے تو اسی ٹویٹ کا لنک براہِ راست پیسٹ کریں۔",
   },
   platforms: {
     youtube: {
@@ -7171,6 +7291,12 @@ const pl: Translations = {
     needsBrowserLink: "Pobierz rozszerzenie →",
     instagramAudioPage:
       "To strona dźwięku z Instagrama, a nie wideo. Wklej link do dowolnego rolka z tym dźwiękiem i wybierz „Tylko dźwięk (mp3)”.",
+    adultContent:
+      "To treść dla dorosłych (18+). Videoner nie pobiera takich treści.",
+    tweetAdultHidden:
+      "X pokazuje ten tweet tylko dorosłym zalogowanym na konto — zwykle tak oznaczane są treści 18+. Videoner nie pobiera takich treści.",
+    tweetNoVideo:
+      "W tym tweecie nie ma wideo. Jeśli wideo jest w odpowiedzi lub cytacie, wklej link bezpośrednio do tamtego tweeta.",
   },
   platforms: {
     youtube: {
@@ -7524,6 +7650,12 @@ const ja: Translations = {
     needsBrowserLink: "拡張機能を入手 →",
     instagramAudioPage:
       "これは Instagram の音声ページで、動画ではありません。この音声を使っているリールのリンクを貼り付けて、「音声のみ（mp3）」 を選んでください。",
+    adultContent:
+      "これはアダルトコンテンツ（18+）です。Videoner はこのようなコンテンツをダウンロードしません。",
+    tweetAdultHidden:
+      "X はこのポストを、アカウントにログインした成人にのみ表示します。18+ コンテンツは通常このように設定されています。Videoner はこのようなコンテンツをダウンロードしません。",
+    tweetNoVideo:
+      "このポストには動画がありません。動画が返信や引用に含まれている場合は、そのポストのリンクを直接貼り付けてください。",
   },
   platforms: {
     youtube: {
@@ -7877,6 +8009,12 @@ const ko: Translations = {
     needsBrowserLink: "확장 프로그램 받기 →",
     instagramAudioPage:
       "이것은 Instagram 오디오 페이지이며 동영상이 아닙니다. 이 사운드를 사용한 아무 릴스 링크나 붙여넣고 “오디오만 (mp3)”을(를) 선택하세요.",
+    adultContent:
+      "성인용 콘텐츠(18+)입니다. Videoner는 이러한 콘텐츠를 다운로드하지 않습니다.",
+    tweetAdultHidden:
+      "X는 이 트윗을 계정에 로그인한 성인에게만 보여 줍니다. 보통 18+ 콘텐츠가 이렇게 표시됩니다. Videoner는 이러한 콘텐츠를 다운로드하지 않습니다.",
+    tweetNoVideo:
+      "이 트윗에는 동영상이 없습니다. 동영상이 답글이나 인용에 있다면 해당 트윗의 링크를 직접 붙여넣어 주세요.",
   },
   platforms: {
     youtube: {
@@ -8230,6 +8368,12 @@ const th: Translations = {
     needsBrowserLink: "ติดตั้งส่วนขยาย →",
     instagramAudioPage:
       "นี่คือหน้าเสียงของ Instagram ไม่ใช่วิดีโอ วางลิงก์ของรีลใดก็ได้ที่ใช้เสียงนี้ แล้วเลือก «เฉพาะเสียง (mp3)»",
+    adultContent:
+      "นี่เป็นเนื้อหาสำหรับผู้ใหญ่ (18+) Videoner ไม่ดาวน์โหลดเนื้อหาลักษณะนี้",
+    tweetAdultHidden:
+      "X แสดงทวีตนี้เฉพาะผู้ใหญ่ที่เข้าสู่ระบบบัญชีเท่านั้น — โดยทั่วไปเนื้อหา 18+ จะถูกระบุไว้แบบนี้ Videoner ไม่ดาวน์โหลดเนื้อหาลักษณะนี้",
+    tweetNoVideo:
+      "ทวีตนี้ไม่มีวิดีโอ หากวิดีโออยู่ในการตอบกลับหรือการอ้างอิง โปรดวางลิงก์ของทวีตนั้นโดยตรง",
   },
   platforms: {
     youtube: {
@@ -8583,6 +8727,12 @@ const am: Translations = {
     needsBrowserLink: "ኤክስቴንሽኑን ያግኙ →",
     instagramAudioPage:
       "ይህ የ Instagram የድምፅ ገጽ ነው እንጂ ቪዲዮ አይደለም። ይህን ድምፅ የሚጠቀም ማንኛውንም ሪል አገናኝ ለጥፈው «ድምፅ ብቻ (mp3)» ን ይምረጡ።",
+    adultContent:
+      "ይህ የአዋቂዎች ይዘት (18+) ነው። Videoner እንዲህ ያለውን ይዘት አያወርድም።",
+    tweetAdultHidden:
+      "X ይህን ትዊት ወደ መለያ ለገቡ አዋቂዎች ብቻ ያሳያል — የ18+ ይዘት ብዙውን ጊዜ በዚህ መንገድ ምልክት ይደረግበታል። Videoner እንዲህ ያለውን ይዘት አያወርድም።",
+    tweetNoVideo:
+      "በዚህ ትዊት ውስጥ ቪዲዮ የለም። ቪዲዮው በምላሽ ወይም በጥቅስ ውስጥ ከሆነ የዚያን ትዊት አገናኝ በቀጥታ ይለጥፉ።",
   },
   platforms: {
     youtube: {
@@ -8936,6 +9086,12 @@ const om: Translations = {
     needsBrowserLink: "Dabalata argadhaa →",
     instagramAudioPage:
       "Kun fuula sagalee Instagram malee viidiyoo miti. Liinkii reel sagalee kana fayyadamu kamiyyuu maxxansii “Sagalee qofa (mp3)” filadhu.",
+    adultContent:
+      "Kun qabiyyee ga'eessotaa (18+) dha. Videoner qabiyyee akkasii hin buufatu.",
+    tweetAdultHidden:
+      "X tweet kana ga'eessota akkaawuntiitti seenan qofaaf agarsiisa — qabiyyeen 18+ yeroo baay'ee akkasitti mallatteeffama. Videoner qabiyyee akkasii hin buufatu.",
+    tweetNoVideo:
+      "Tweet kana keessa viidiyoon hin jiru. Viidiyoon deebii yookaan wabii keessa yoo jiraate, hidhata tweet sana kallattiin maxxansaa.",
   },
   platforms: {
     youtube: {
@@ -9289,6 +9445,12 @@ const ha: Translations = {
     needsBrowserLink: "Samu ƙarin →",
     instagramAudioPage:
       "Wannan shafin sautin Instagram ne, ba bidiyo ba. Manna hanyar haɗin kowane reel da ke amfani da wannan sautin, sannan ka zaɓi “Sauti kawai (mp3)”.",
+    adultContent:
+      "Wannan abun manya ne (18+). Videoner ba ya sauke irin wannan abun.",
+    tweetAdultHidden:
+      "X yana nuna wannan tweet ga manya da suka shiga asusu kawai — yawanci haka ake yi wa abun 18+ alama. Videoner ba ya sauke irin wannan abun.",
+    tweetNoVideo:
+      "Babu bidiyo a wannan tweet. Idan bidiyon yana cikin amsa ko kalaman da aka ambata, liƙa hanyar haɗin wannan tweet kai tsaye.",
   },
   platforms: {
     youtube: {
@@ -9642,6 +9804,12 @@ const so: Translations = {
     needsBrowserLink: "Hel kordhiyaha →",
     instagramAudioPage:
       "Tani waa bog codka Instagram, ma aha fiidiyoo. Ku dheji linkiga reel kasta oo isticmaalaya codkan oo dooro “Cod keliya (mp3)”.",
+    adultContent:
+      "Tani waa nuxur dadka waaweyn ah (18+). Videoner nuxurka noocaas ah ma soo dejiyo.",
+    tweetAdultHidden:
+      "X waxay tweet-kan tusaa oo kaliya dadka waaweyn ee akoonka galay — inta badan sidaas ayaa nuxurka 18+ loo calaamadiyaa. Videoner nuxurka noocaas ah ma soo dejiyo.",
+    tweetNoVideo:
+      "Tweet-kan fiidiyoo kuma jiro. Haddii fiidiyoowgu ku jiro jawaab ama soo-xigasho, si toos ah u dheji linkiga tweet-kaas.",
   },
   platforms: {
     youtube: {
@@ -9995,6 +10163,12 @@ const az: Translations = {
     needsBrowserLink: "Genişlənməni əldə edin →",
     instagramAudioPage:
       "Bu Instagram səs səhifəsidir, video deyil. Bu səsdən istifadə edən istənilən reelsin keçidini yapışdırın və «Yalnız audio (mp3)» seçin.",
+    adultContent:
+      "Bu yetkinlər üçün məzmundur (18+). Videoner belə məzmunu yükləmir.",
+    tweetAdultHidden:
+      "X bu tviti yalnız hesaba daxil olmuş yetkinlərə göstərir — adətən 18+ məzmun belə qeyd olunur. Videoner belə məzmunu yükləmir.",
+    tweetNoVideo:
+      "Bu tvitdə video yoxdur. Video cavabda və ya sitatdadırsa, birbaşa həmin tvitin linkini yerləşdirin.",
   },
   platforms: {
     youtube: {
@@ -10348,6 +10522,12 @@ const ky: Translations = {
     needsBrowserLink: "Кеңейтүүнү орнотуу →",
     instagramAudioPage:
       "Бул Instagram үн баракчасы, видео эмес. Ушул үндү колдонгон каалаган рилстин шилтемесин чаптап, «Аудио гана (mp3)» тандаңыз.",
+    adultContent:
+      "Бул чоңдорго арналган контент (18+). Videoner мындай контентти жүктөбөйт.",
+    tweetAdultHidden:
+      "X бул твитти аккаунтка кирген чоңдорго гана көрсөтөт — адатта 18+ контент ушундай белгиленет. Videoner мындай контентти жүктөбөйт.",
+    tweetNoVideo:
+      "Бул твитте видео жок. Эгер видео жооп же цитата ичинде болсо, түз ошол твиттин шилтемесин коюңуз.",
   },
   platforms: {
     youtube: {
@@ -10701,6 +10881,12 @@ const tg: Translations = {
     needsBrowserLink: "Насб кардани васеъкунанда →",
     instagramAudioPage:
       "Ин саҳифаи садои Instagram аст, на видео. Истиноди ҳар як рилсеро, ки ин садоро истифода мебарад, гузоред ва «Танҳо аудио (mp3)»-ро интихоб кунед.",
+    adultContent:
+      "Ин мундариҷаи барои калонсолон (18+) аст. Videoner чунин мундариҷаро зеркашӣ намекунад.",
+    tweetAdultHidden:
+      "X ин твитро танҳо ба калонсолоне нишон медиҳад, ки ба аккаунт ворид шудаанд — одатан мундариҷаи 18+ ҳамин тавр нишон дода мешавад. Videoner чунин мундариҷаро зеркашӣ намекунад.",
+    tweetNoVideo:
+      "Дар ин твит видео нест. Агар видео дар ҷавоб ё иқтибос бошад, истинодро мустақиман ба ҳамон твит гузоред.",
   },
   platforms: {
     youtube: {
@@ -11054,6 +11240,12 @@ const ms: Translations = {
     needsBrowserLink: "Dapatkan sambungan →",
     instagramAudioPage:
       "Ini ialah halaman audio Instagram, bukan video. Tampal pautan mana-mana reel yang menggunakan bunyi ini dan pilih “Audio sahaja (mp3)”.",
+    adultContent:
+      "Ini kandungan dewasa (18+). Videoner tidak memuat turun kandungan sebegini.",
+    tweetAdultHidden:
+      "X hanya memaparkan tweet ini kepada orang dewasa yang telah log masuk ke akaun — biasanya begitulah kandungan 18+ ditandakan. Videoner tidak memuat turun kandungan sebegini.",
+    tweetNoVideo:
+      "Tiada video dalam tweet ini. Jika video berada dalam balasan atau petikan, tampal pautan terus ke tweet tersebut.",
   },
   platforms: {
     youtube: {
@@ -11407,6 +11599,12 @@ const nl: Translations = {
     needsBrowserLink: "Extensie installeren →",
     instagramAudioPage:
       "Dit is een Instagram-audiopagina, geen video. Plak de link naar een reel die dit geluid gebruikt en kies “Alleen audio (mp3)”.",
+    adultContent:
+      "Dit is inhoud voor volwassenen (18+). Videoner downloadt dergelijke inhoud niet.",
+    tweetAdultHidden:
+      "X toont deze tweet alleen aan volwassenen die zijn ingelogd — zo wordt 18+-inhoud meestal gemarkeerd. Videoner downloadt dergelijke inhoud niet.",
+    tweetNoVideo:
+      "Er zit geen video in deze tweet. Staat de video in een reactie of een quote, plak dan de link rechtstreeks naar die tweet.",
   },
   platforms: {
     youtube: {
@@ -11760,6 +11958,12 @@ const ro: Translations = {
     needsBrowserLink: "Instalează extensia →",
     instagramAudioPage:
       "Aceasta este o pagină de sunet Instagram, nu un videoclip. Lipește linkul oricărui reel care folosește acest sunet și alege „Doar audio (mp3)”.",
+    adultContent:
+      "Acesta este conținut pentru adulți (18+). Videoner nu descarcă astfel de conținut.",
+    tweetAdultHidden:
+      "X afișează acest tweet doar adulților conectați la un cont — de obicei așa este marcat conținutul 18+. Videoner nu descarcă astfel de conținut.",
+    tweetNoVideo:
+      "Acest tweet nu conține video. Dacă videoclipul se află într-un răspuns sau într-o citare, lipește direct linkul către acel tweet.",
   },
   platforms: {
     youtube: {
@@ -12113,6 +12317,12 @@ const ps: Translations = {
     needsBrowserLink: "توسیع ترلاسه کړئ ←",
     instagramAudioPage:
       "دا د Instagram د غږ پاڼه ده، ویډیو نه ده. د هر هغه ریل لینک پیسټ کړئ چې دا غږ کاروي او «یوازې آډیو (mp3)» غوره کړئ.",
+    adultContent:
+      "دا د لویانو منځپانگه (+18) ده. Videoner دا ډول منځپانگه نه ډاونلوډوي.",
+    tweetAdultHidden:
+      "X دا ټویټ یوازې هغو لویانو ته ښيي چې حساب ته ننوتي دي — معمولاً د +18 منځپانگه همداسې نښه کیږي. Videoner دا ډول منځپانگه نه ډاونلوډوي.",
+    tweetNoVideo:
+      "پدې ټویټ کې ویډیو نشته. که ویډیو په ځواب یا نقل‌قول کې وي، د همغه ټویټ لینک مستقیم پیسټ کړئ.",
   },
   platforms: {
     youtube: {
@@ -12466,6 +12676,12 @@ const ckb: Translations = {
     needsBrowserLink: "وەرگرتنی پێوەکراو ←",
     instagramAudioPage:
       "ئەمە پەڕەی دەنگی Instagram ـە، ڤیدیۆ نییە. بەستەری هەر ریلێک کە ئەم دەنگە بەکاردەهێنێت بلکێنە و «تەنها دەنگ (mp3)» هەڵبژێرە.",
+    adultContent:
+      "ئەمە ناوەڕۆکی گەورەسالانە (+18). Videoner ئەم جۆرە ناوەڕۆکە دابەزێنێت نەکات.",
+    tweetAdultHidden:
+      "X ئەم تویتە تەنها بە گەورەسالانێک نیشان دەدات کە چووەتە ناو هەژمار — زۆرجار ناوەڕۆکی +18 بەم شێوەیە نیشانە دەکرێت. Videoner ئەم جۆرە ناوەڕۆکە دابەزێنێت نەکات.",
+    tweetNoVideo:
+      "لەم تویتەدا ڤیدیۆ نییە. ئەگەر ڤیدیۆکە لە وەڵام یان وەرگرتنەوەدایە، لینکی ئەو تویتە ڕاستەوخۆ بلکێنە.",
   },
   platforms: {
     youtube: {
@@ -12819,6 +13035,12 @@ const ku: Translations = {
     needsBrowserLink: "Pêvekê bistîne →",
     instagramAudioPage:
       "Ev rûpela dengê ya Instagram e, ne vîdyo ye. Lînka her reelekê ya ku vî dengî bi kar tîne bineqîne û “Tenê deng (mp3)” hilbijêre.",
+    adultContent:
+      "Ev naveroka mezinan e (18+). Videoner naveroka bi vî rengî dananeke.",
+    tweetAdultHidden:
+      "X vê tweetê tenê ji mezinên ku têketine hesabê nîşan dide — bi gelemperî naveroka 18+ bi vî rengî tê nîşankirin. Videoner naveroka bi vî rengî dananeke.",
+    tweetNoVideo:
+      "Di vê tweetê de vîdyo tune. Heke vîdyo di bersivekê an wekîlkirinekê de be, lînka wê tweetê rasterast bixe.",
   },
   platforms: {
     youtube: {
@@ -13172,6 +13394,12 @@ const ug: Translations = {
     needsBrowserLink: "قىستۇرمىنى ئورنىتىش ←",
     instagramAudioPage:
       "بۇ Instagram ئاۋاز بېتى، سىن ئەمەس. بۇ ئاۋازنى ئىشلەتكەن ئىختىيارى بىر ريلنىڭ ئۇلىنىشىنى چاپلاپ، «پەقەت ئاۋاز (mp3)» نى تاللاڭ.",
+    adultContent:
+      "بۇ چوڭلارغا مەنسۇپ مەزمۇن (+18). Videoner بۇنداق مەزمۇننى چۈشۈرمەيدۇ.",
+    tweetAdultHidden:
+      "X بۇ تۇۋىتنى پەقەت ھېساباتقا كىرگەن چوڭلارغىلا كۆرسىتىدۇ — +18 مەزمۇن ئادەتتە مۇشۇنداق بەلگىلىنىدۇ. Videoner بۇنداق مەزمۇننى چۈشۈرمەيدۇ.",
+    tweetNoVideo:
+      "بۇ تۇۋىتتا سىن يوق. ئەگەر سىن جاۋاب ياكى نەقىلدە بولسا، شۇ تۇۋىتنىڭ ئۇلانمىسىنى بىۋاسىتە چاپلاڭ.",
   },
   platforms: {
     youtube: {
@@ -13525,6 +13753,12 @@ const tk: Translations = {
     needsBrowserLink: "Giňeltmäni alyň →",
     instagramAudioPage:
       "Bu Instagram ses sahypasy, wideo däl. Bu sesi ulanýan islendik reeliň baglanyşygyny goýuň we “Diňe ses (mp3)” saýlaň.",
+    adultContent:
+      "Bu uly adamlar üçin mazmun (18+). Videoner şeýle mazmuny ýükläp almaýar.",
+    tweetAdultHidden:
+      "X bu tweeti diňe hasaba giren uly adamlara görkezýär — adatça 18+ mazmun şeýle bellenýär. Videoner şeýle mazmuny ýükläp almaýar.",
+    tweetNoVideo:
+      "Bu tweetde wideo ýok. Wideo jogapda ýa-da sitatada bolsa, gönüden-göni şol tweetiň baglanyşygyny goýuň.",
   },
   platforms: {
     youtube: {
@@ -13878,6 +14112,12 @@ const tt: Translations = {
     needsBrowserLink: "Киңәйтмәне урнаштыру →",
     instagramAudioPage:
       "Бу Instagram аудио бите, видео түгел. Бу тавышны кулланган теләсә кайсы рилс сылтамасын куегыз һәм «Аудио гына (mp3)» сайлагыз.",
+    adultContent:
+      "Монда олылар өчен эчтәлек (18+). Videoner мондый эчтәлекне йөкләми.",
+    tweetAdultHidden:
+      "X бу твитны аккаунтка кергән олыларга гына күрсәтә — гадәттә 18+ эчтәлек шулай билгеләнә. Videoner мондый эчтәлекне йөкләми.",
+    tweetNoVideo:
+      "Бу твитта видео юк. Әгәр видео җавапта яки цитатада булса, турыдан-туры шул твитка сылтаманы куегыз.",
   },
   platforms: {
     youtube: {
@@ -14231,6 +14471,12 @@ const sq: Translations = {
     needsBrowserLink: "Merrni shtesën →",
     instagramAudioPage:
       "Ky është një faqe audio e Instagram-it, jo video. Ngjit lidhjen e çdo reel-i që e përdor këtë tingull dhe zgjidh “Vetëm audio (mp3)”.",
+    adultContent:
+      "Ky është përmbajtje për të rritur (18+). Videoner nuk shkarkon përmbajtje të tillë.",
+    tweetAdultHidden:
+      "X e shfaq këtë tvit vetëm për të rritur që kanë hyrë në llogari — zakonisht kështu shënohet përmbajtja 18+. Videoner nuk shkarkon përmbajtje të tillë.",
+    tweetNoVideo:
+      "Në këtë tvit nuk ka video. Nëse videoja është në një përgjigje ose citim, ngjitni lidhjen direkt te ai tvit.",
   },
   platforms: {
     youtube: {
@@ -14584,6 +14830,12 @@ const bs: Translations = {
     needsBrowserLink: "Instalirajte proširenje →",
     instagramAudioPage:
       "Ovo je Instagram audio stranica, a ne video. Zalijepi link na bilo koji reel koji koristi ovaj zvuk i odaberi „Samo audio (mp3)“.",
+    adultContent:
+      "Ovo je sadržaj za odrasle (18+). Videoner ne preuzima takav sadržaj.",
+    tweetAdultHidden:
+      "X prikazuje ovaj tvit samo odraslima koji su prijavljeni na račun — obično se tako označava sadržaj 18+. Videoner ne preuzima takav sadržaj.",
+    tweetNoVideo:
+      "U ovom tvitu nema videa. Ako je video u odgovoru ili citatu, zalijepite link direktno na taj tvit.",
   },
   platforms: {
     youtube: {
@@ -14937,6 +15189,12 @@ const ce: Translations = {
     needsBrowserLink: "Расширени схьаэца →",
     instagramAudioPage:
       "Иза Instagram аудион агӀо ю, видео дац. И аудио лело йолу цхьаъ рилсан хьажорг чу хӀоттаде а, «Аудио бен (mp3)» харжа.",
+    adultContent:
+      "Укхаз баккхийчу нехан контент (18+) ю. Videoner иштта контент ца чIаъо.",
+    tweetAdultHidden:
+      "X оцу твитах гойту аккаунте чIаьвлла баккхийчу нехан бен — тахана 18+ контент иштта билгалдо. Videoner иштта контент ца чIаъо.",
+    tweetNoVideo:
+      "ХIокху твитехь видео яц. Видео жоп я цитата чохь елахь, цу твитан сайт кхеташ дIа­тоха.",
   },
   platforms: {
     youtube: {
@@ -15290,6 +15548,12 @@ const inh: Translations = {
     needsBrowserLink: "Расширени хьаэца →",
     instagramAudioPage:
       "Из Instagram аудион агӀо я, видео яц. Из аудио лелаш йола цхьаъ рилсан ссылка чу хӀоттаде а, «Аудио мара (mp3)» харжа.",
+    adultContent:
+      "И боахамечех долча контент (18+) да. Videoner иштта контент ца чIоагIдеш.",
+    tweetAdultHidden:
+      "X и твит аккаунте воагIа боахамечарна бен ца гойтадеш — укх 18+ контент иштта билгалъяь. Videoner иштта контент ца чIоагIдеш.",
+    tweetNoVideo:
+      "И твитехь видео яц. Видео жоп я цитата чу елахь, и твитан сылка схьа хьэвца.",
   },
   platforms: {
     youtube: {
@@ -15643,6 +15907,12 @@ const av: Translations = {
     needsBrowserLink: "Расширение босизе →",
     instagramAudioPage:
       "Гьеб Instagram-алъул аудиоялъул гьумер буго, видео гьечӀо. Гьеб аудио хӀалтӀизабулеб рилсалъул ссылка чӀвай ва «Аудио гурони (mp3)» тӀаса.",
+    adultContent:
+      "Гьеб гIадамазул контент (18+) буго. Videoner гьеб кьабзул контент жубаларилароб.",
+    tweetAdultHidden:
+      "X гьеб твит аккаунталде лъугьарав гIадамазухъ бидулеб — гьелда 18+ контент гьедин ккезабулеб. Videoner гьеб кьабзул контент жубаларилароб.",
+    tweetNoVideo:
+      "Гьеб твиталда видео гьечIо. Видео жаваб я цитатаялда бугони, гьеб твитазул ссылка лъела.",
   },
   platforms: {
     youtube: {
@@ -15996,6 +16266,12 @@ const tl: Translations = {
     needsBrowserLink: "Kunin ang extension →",
     instagramAudioPage:
       "Ito ay audio page ng Instagram, hindi video. I-paste ang link ng kahit anong reel na gumagamit ng tunog na ito at piliin ang “Audio lang (mp3)”.",
+    adultContent:
+      "Ito ay nilalamang pang-adulto (18+). Hindi dina-download ng Videoner ang ganitong nilalaman.",
+    tweetAdultHidden:
+      "Ipinapakita lang ng X ang tweet na ito sa mga nasa hustong gulang na naka-sign in sa account — karaniwan ay ganito minamarkahan ang nilalamang 18+. Hindi dina-download ng Videoner ang ganitong nilalaman.",
+    tweetNoVideo:
+      "Walang video sa tweet na ito. Kung ang video ay nasa reply o quote, i-paste nang direkta ang link sa tweet na iyon.",
   },
   platforms: {
     youtube: {

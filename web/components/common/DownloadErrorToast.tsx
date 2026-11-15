@@ -19,6 +19,20 @@ export function showDownloadError(
 ) {
   // Страница звука Instagram, а не видео: сервер отвечает по-английски
   // (server/src/validate/url.ts, INSTAGRAM_AUDIO_PAGE_ERROR) — показываем на языке сайта.
+  // Контент для взрослых и твит без видео (server/src/lib/adult-content.ts) —
+  // до проверки «поможет расширение»: тут оно не поможет и не должно.
+  if (message.startsWith("Adult content (X age-restricted tweet)")) {
+    toast.error(t("toast.tweetAdultHidden"));
+    return;
+  }
+  if (message.startsWith("Adult content")) {
+    toast.error(t("toast.adultContent"));
+    return;
+  }
+  if (message.startsWith("Tweet without video")) {
+    toast.error(t("toast.tweetNoVideo"));
+    return;
+  }
   if (message.startsWith("Instagram audio page")) {
     toast.error(t("toast.instagramAudioPage"));
     return;

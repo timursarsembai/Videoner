@@ -210,6 +210,13 @@ export function friendlyError(raw: string, lang: Lang): string {
     return raw;
   }
 
+  // Контент для взрослых Videoner не скачивает (server/src/lib/adult-content.ts).
+  // Первым: в тексте про скрытый твит есть слова, похожие на «нужен вход», а
+  // подключить аккаунт тут предлагать нельзя.
+  if (msg.includes("adult content (x age-restricted tweet)")) return m.errorTweetAdultHidden;
+  if (msg.includes("adult content")) return m.errorAdultContent;
+  if (msg.includes("tweet without video")) return m.errorTweetNoVideo;
+
   // Раньше проверки на вход: при региональной блокировке площадка отвечает
   // отказом, похожим на «нужна авторизация», но вход тут ничего не даёт —
   // ролик не отдают нашему адресу вообще. Сырой код TikTok (10231) ловим

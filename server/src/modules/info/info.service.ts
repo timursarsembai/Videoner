@@ -22,6 +22,13 @@ import { userCookieScopes } from 'src/lib/cookie-scope';
 import { userCookiesMayHelp } from 'src/lib/user-cookies';
 import { GetVideoInfoDto } from './dto/get-video-info.dto';
 import { listSubtitles } from 'src/lib/subtitles';
+import {
+  ADULT_CONTENT_ERROR,
+  ADULT_TWEET_ERROR,
+  TWEET_NO_VIDEO_ERROR,
+  isAdultContent,
+  tweetHiddenFromGuests,
+} from 'src/lib/adult-content';
 import { capYoutubeQualities } from 'src/lib/youtube-budget';
 import { estimateSizes } from 'src/lib/file-size';
 import {
@@ -97,8 +104,17 @@ export class InfoService {
       // В статистику — только отказ площадки (сам запрос за данными), а не
       // наши ошибки в обработке ответа ниже. Категория — по исходному тексту
       // yt-dlp: handleError его переписывает для людей.
-      this.recordFailure(platform, dto, error);
-      throw new BadRequestException(this.handleError(error, platform, alerts));
+      const refined = await this.refineTweetError(url, platform, error);
+      this.recordFailure(platform, dto, refined);
+      throw new BadRequestException(this.handleError(refined, platform, alerts));
+    }
+
+    // Контент для взрослых не отдаём, даже если он открылся (например, от
+    // подключённого аккаунта человека) — см. lib/adult-content.ts.
+    if (isAdultContent(platform, info)) {
+      const adult = new Error(ADULT_CONTENT_ERROR);
+      this.recordFailure(platform, dto, adult);
+      throw new BadRequestException(adult.message);
     }
 
     try {
@@ -166,6 +182,18 @@ export class InfoService {
   // посетителя сайта). Пользователя ищем по telegramId: создаёт его тот же
   // запрос параллельно (upsertBotUser выше), и на самой первой ссылке нового
   // человека запись может ещё не успеть появиться — тогда без него.
+  // yt-dlp на твит без видимого ролика отвечает одинаково — «No video could
+  // be found». За этим стоит либо твит без видео, либо твит, который X прячет
+  // от тех, кто не вошёл (обычно 18+). Различаем отдельным запросом к X; не
+  // вышло — ошибка остаётся как была.
+  private async refineTweetError(url: string, platform: string, error: unknown): Promise<unknown> {
+    const message = error instanceof Error ? error.message : String(error);
+    if (platform !== 'twitter' || !/no video could be found/i.test(message)) return error;
+    const hidden = await tweetHiddenFromGuests(url);
+    if (hidden === null) return error;
+    return new Error(hidden ? ADULT_TWEET_ERROR : TWEET_NO_VIDEO_ERROR);
+  }
+
   private recordFailure(platform: string, dto: GetVideoInfoDto, error: unknown) {
     const source = dto.source ?? DownloadSource.API;
     if (source === DownloadSource.EXTENSION) return;

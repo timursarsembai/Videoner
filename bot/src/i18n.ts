@@ -89,6 +89,11 @@ interface Messages {
   errorStoryNeedsId: string;
   // Ссылка на страницу звука Instagram (/reels/audio/…), а не на видео.
   errorInstagramAudioPage: string;
+  // Контент для взрослых: Videoner его не скачивает (15.11.2026).
+  errorAdultContent: string;
+  // Твит, который X прячет от тех, кто не вошёл (обычно 18+).
+  errorTweetAdultHidden: string;
+  errorTweetNoVideo: string;
   errorUnsupportedPlatform: string;
   errorFormatUnavailable: string;
   errorNoVideoContent: string;
@@ -331,6 +336,12 @@ const ru: Messages = {
     "пришлите ссылку на конкретную сторис: в приложении Instagram откройте её и нажмите «Поделиться» → «Копировать ссылку».",
   errorInstagramAudioPage:
     "это страница звука Instagram, а не видео. Пришлите ссылку на любой рилс с этим звуком — звук из него можно скачать кнопкой «🎵 Только аудио (mp3)».",
+  errorAdultContent:
+    "здесь контент для взрослых (18+). Videoner такой контент не скачивает.",
+  errorTweetAdultHidden:
+    "X показывает этот твит только взрослым, вошедшим в аккаунт, — обычно так помечен контент 18+. Videoner такой контент не скачивает.",
+  errorTweetNoVideo:
+    "в этом твите нет видео. Если видео в ответе или цитате, пришлите ссылку прямо на тот твит.",
   errorInstagramStory:
     "сторис Instagram видны только тем, кто вошёл в аккаунт.",
   errorLoginRequired:
@@ -559,6 +570,12 @@ const en: Messages = {
     "send a link to a specific story: open it in the Instagram app and tap Share → Copy link.",
   errorInstagramAudioPage:
     "this is an Instagram audio page, not a video. Send a link to any reel that uses this sound — you can get the sound from it with the “🎵 Audio only (mp3)” button.",
+  errorAdultContent:
+    "this is adult content (18+). Videoner doesn't download such content.",
+  errorTweetAdultHidden:
+    "X shows this tweet only to adults signed in to an account — that's usually how 18+ content is marked. Videoner doesn't download such content.",
+  errorTweetNoVideo:
+    "there's no video in this tweet. If the video is in a reply or a quote, send a link directly to that tweet.",
   errorInstagramStory:
     "Instagram stories are visible only to people who are signed in.",
   errorLoginRequired:
@@ -786,6 +803,12 @@ const ar: Messages = {
     "أرسل رابط قصة محددة: افتحها في تطبيق Instagram واضغط مشاركة ← نسخ الرابط.",
   errorInstagramAudioPage:
     "هذه صفحة صوت على Instagram وليست فيديو. أرسل رابط أي ريلز يستخدم هذا الصوت — ويمكنك تنزيل الصوت منه بزر «🎵 الصوت فقط (mp3)».",
+  errorAdultContent:
+    "هذا محتوى للبالغين (+18). لا يقوم Videoner بتنزيل هذا النوع من المحتوى.",
+  errorTweetAdultHidden:
+    "يعرض X هذه التغريدة للبالغين المسجّلين الدخول فقط — وعادةً ما يُوسَم محتوى +18 بهذه الطريقة. لا يقوم Videoner بتنزيل هذا النوع من المحتوى.",
+  errorTweetNoVideo:
+    "لا يوجد فيديو في هذه التغريدة. إذا كان الفيديو في رد أو اقتباس، فأرسل رابط تلك التغريدة مباشرةً.",
   errorInstagramStory:
     "قصص Instagram مرئية فقط لمن سجّلوا الدخول إلى حساباتهم.",
   errorLoginRequired:
@@ -1013,6 +1036,12 @@ const zh: Messages = {
     "请发送某一条快拍的链接：在 Instagram 应用中打开它，点击「分享」→「复制链接」。",
   errorInstagramAudioPage:
     "这是 Instagram 的音频页面，不是视频。请发送任意使用该音频的 Reels 链接——用 「🎵 仅音频（mp3）」 按钮即可从中获取音频。",
+  errorAdultContent:
+    "这是成人内容（18+）。Videoner 不下载此类内容。",
+  errorTweetAdultHidden:
+    "X 仅向已登录账号的成年人显示这条推文——18+ 内容通常会这样标记。Videoner 不下载此类内容。",
+  errorTweetNoVideo:
+    "这条推文中没有视频。如果视频在回复或引用中，请直接发送那条推文的链接。",
   errorInstagramStory:
     "Instagram 快拍只有登录用户才能看到。",
   errorLoginRequired:
@@ -1240,6 +1269,12 @@ const hi: Messages = {
     "किसी खास स्टोरी का लिंक भेजें: उसे Instagram ऐप में खोलें और Share → Copy link दबाएँ।",
   errorInstagramAudioPage:
     "यह Instagram का ऑडियो पेज है, वीडियो नहीं। इस साउंड वाली किसी भी रील का लिंक भेजें — उससे साउंड «🎵 सिर्फ़ ऑडियो (mp3)» बटन से डाउनलोड किया जा सकता है।",
+  errorAdultContent:
+    "यह वयस्क सामग्री (18+) है। Videoner ऐसी सामग्री डाउनलोड नहीं करता।",
+  errorTweetAdultHidden:
+    "X यह ट्वीट केवल खाते में लॉग इन किए हुए वयस्कों को दिखाता है — आमतौर पर 18+ सामग्री इसी तरह चिह्नित की जाती है। Videoner ऐसी सामग्री डाउनलोड नहीं करता।",
+  errorTweetNoVideo:
+    "इस ट्वीट में कोई वीडियो नहीं है। अगर वीडियो किसी रिप्लाई या कोट में है, तो उसी ट्वीट का लिंक सीधे भेजें।",
   errorInstagramStory:
     "Instagram स्टोरीज़ सिर्फ़ साइन-इन किए हुए लोगों को दिखती हैं।",
   errorLoginRequired:
@@ -1467,6 +1502,12 @@ const indonesian: Messages = {
     "kirimkan tautan ke story tertentu: buka di aplikasi Instagram, lalu ketuk Bagikan → Salin tautan.",
   errorInstagramAudioPage:
     "ini adalah halaman audio Instagram, bukan video. Kirim tautan reel mana pun yang memakai suara ini — suaranya bisa diunduh dengan tombol «🎵 Audio saja (mp3)».",
+  errorAdultContent:
+    "ini konten dewasa (18+). Videoner tidak mengunduh konten semacam itu.",
+  errorTweetAdultHidden:
+    "X hanya menampilkan tweet ini kepada orang dewasa yang masuk ke akun — biasanya begitulah konten 18+ ditandai. Videoner tidak mengunduh konten semacam itu.",
+  errorTweetNoVideo:
+    "tidak ada video di tweet ini. Jika videonya ada di balasan atau kutipan, kirim tautan langsung ke tweet tersebut.",
   errorInstagramStory:
     "Story Instagram hanya dapat dilihat oleh orang yang sudah masuk.",
   errorLoginRequired:
@@ -1694,6 +1735,12 @@ const sw: Messages = {
     "tuma linki ya story mahususi: ifungue kwenye programu ya Instagram kisha ugonge Shiriki → Nakili linki.",
   errorInstagramAudioPage:
     "hii ni ukurasa wa sauti wa Instagram, si video. Tuma kiungo cha reel yoyote inayotumia sauti hii — unaweza kupakua sauti kutoka humo kwa kitufe cha «🎵 Sauti pekee (mp3)».",
+  errorAdultContent:
+    "hii ni maudhui ya watu wazima (18+). Videoner haipakui maudhui ya aina hiyo.",
+  errorTweetAdultHidden:
+    "X inaonyesha tweet hii kwa watu wazima walioingia kwenye akaunti pekee — kwa kawaida maudhui ya 18+ huwekewa alama hivyo. Videoner haipakui maudhui ya aina hiyo.",
+  errorTweetNoVideo:
+    "hakuna video kwenye tweet hii. Ikiwa video iko kwenye jibu au nukuu, tuma kiungo moja kwa moja cha tweet hiyo.",
   errorInstagramStory:
     "Story za Instagram zinaonekana tu kwa watu walioingia kwenye akaunti.",
   errorLoginRequired:
@@ -1921,6 +1968,12 @@ const de: Messages = {
     "schick einen Link zu einer bestimmten Story: Öffne sie in der Instagram-App und tippe auf Teilen → Link kopieren.",
   errorInstagramAudioPage:
     "das ist eine Instagram-Audioseite, kein Video. Sende den Link zu einem beliebigen Reel mit diesem Sound — den Sound kannst du daraus mit der Schaltfläche „🎵 Nur Audio (mp3)“ herunterladen.",
+  errorAdultContent:
+    "das ist Inhalt für Erwachsene (18+). Videoner lädt solche Inhalte nicht herunter.",
+  errorTweetAdultHidden:
+    "X zeigt diesen Tweet nur angemeldeten Erwachsenen — so werden 18+-Inhalte üblicherweise gekennzeichnet. Videoner lädt solche Inhalte nicht herunter.",
+  errorTweetNoVideo:
+    "dieser Tweet enthält kein Video. Wenn das Video in einer Antwort oder einem Zitat steckt, sende den Link direkt zu diesem Tweet.",
   errorInstagramStory:
     "Instagram-Storys sind nur für angemeldete Nutzer sichtbar.",
   errorLoginRequired:
@@ -2148,6 +2201,12 @@ const fr: Messages = {
     "envoyez le lien d'une story précise : ouvrez-la dans l'application Instagram et appuyez sur Partager → Copier le lien.",
   errorInstagramAudioPage:
     "ceci est une page audio Instagram, pas une vidéo. Envoyez le lien d'un reel qui utilise ce son — vous pouvez en récupérer le son avec le bouton «🎵 Audio seul (mp3)».",
+  errorAdultContent:
+    "il s’agit d’un contenu pour adultes (18+). Videoner ne télécharge pas ce type de contenu.",
+  errorTweetAdultHidden:
+    "X n’affiche ce tweet qu’aux adultes connectés à un compte — c’est généralement ainsi que les contenus 18+ sont signalés. Videoner ne télécharge pas ce type de contenu.",
+  errorTweetNoVideo:
+    "il n’y a pas de vidéo dans ce tweet. Si la vidéo se trouve dans une réponse ou une citation, envoyez directement le lien de ce tweet.",
   errorInstagramStory:
     "Les stories Instagram ne sont visibles que par les personnes connectées.",
   errorLoginRequired:
@@ -2375,6 +2434,12 @@ const it: Messages = {
     "manda il link di una storia specifica: aprila nell'app Instagram e tocca Condividi → Copia link.",
   errorInstagramAudioPage:
     "questa è una pagina audio di Instagram, non un video. Invia il link di un reel qualsiasi che usa questo suono: puoi scaricarne l'audio con il pulsante «🎵 Solo audio (mp3)».",
+  errorAdultContent:
+    "questo è un contenuto per adulti (18+). Videoner non scarica contenuti di questo tipo.",
+  errorTweetAdultHidden:
+    "X mostra questo tweet solo agli adulti che hanno effettuato l’accesso a un account — di solito è così che vengono contrassegnati i contenuti 18+. Videoner non scarica contenuti di questo tipo.",
+  errorTweetNoVideo:
+    "in questo tweet non c’è nessun video. Se il video è in una risposta o in una citazione, invia direttamente il link a quel tweet.",
   errorInstagramStory:
     "Le storie di Instagram sono visibili solo a chi ha effettuato l'accesso.",
   errorLoginRequired:
@@ -2602,6 +2667,12 @@ const pt: Messages = {
     "mande o link de um story específico: abra-o no app do Instagram e toque em Compartilhar → Copiar link.",
   errorInstagramAudioPage:
     "esta é uma página de áudio do Instagram, não um vídeo. Envie o link de qualquer reel que use este som — você pode baixar o som dele com o botão “🎵 Só áudio (mp3)”.",
+  errorAdultContent:
+    "este é um conteúdo adulto (18+). O Videoner não baixa esse tipo de conteúdo.",
+  errorTweetAdultHidden:
+    "O X mostra este tweet apenas para adultos com sessão iniciada — geralmente é assim que o conteúdo 18+ é marcado. O Videoner não baixa esse tipo de conteúdo.",
+  errorTweetNoVideo:
+    "não há vídeo neste tweet. Se o vídeo estiver em uma resposta ou citação, envie o link diretamente para esse tweet.",
   errorInstagramStory:
     "Os stories do Instagram só ficam visíveis para quem está logado.",
   errorLoginRequired:
@@ -2829,6 +2900,12 @@ const es: Messages = {
     "envía el enlace de una historia concreta: ábrela en la app de Instagram y toca Compartir → Copiar enlace.",
   errorInstagramAudioPage:
     "esta es una página de audio de Instagram, no un vídeo. Envía el enlace de cualquier reel que use este sonido: con el botón «🎵 Solo audio (mp3)» puedes descargar el sonido.",
+  errorAdultContent:
+    "este es contenido para adultos (18+). Videoner no descarga este tipo de contenido.",
+  errorTweetAdultHidden:
+    "X muestra este tuit solo a adultos que han iniciado sesión — normalmente así se marca el contenido 18+. Videoner no descarga este tipo de contenido.",
+  errorTweetNoVideo:
+    "este tuit no tiene vídeo. Si el vídeo está en una respuesta o en una cita, envía el enlace directamente a ese tuit.",
   errorInstagramStory:
     "Las historias de Instagram solo son visibles para quienes han iniciado sesión.",
   errorLoginRequired:
@@ -3056,6 +3133,12 @@ const uz: Messages = {
     "aniq bir storisga havola yuboring: uni Instagram ilovasida oching va «Ulashish» → «Havolani nusxalash» tugmasini bosing.",
   errorInstagramAudioPage:
     "bu Instagram audio sahifasi, video emas. Shu ovozdan foydalangan istalgan reel havolasini yuboring — ovozni undan «🎵 Faqat audio (mp3)» tugmasi bilan yuklab olish mumkin.",
+  errorAdultContent:
+    "bu kattalar uchun kontent (18+). Videoner bunday kontentni yuklab olmaydi.",
+  errorTweetAdultHidden:
+    "X bu tvitni faqat akkauntga kirgan kattalarga ko‘rsatadi — odatda 18+ kontent shunday belgilanadi. Videoner bunday kontentni yuklab olmaydi.",
+  errorTweetNoVideo:
+    "bu tvitda video yo‘q. Agar video javob yoki iqtibosda bo‘lsa, aynan o‘sha tvitga havolani yuboring.",
   errorInstagramStory:
     "Instagram storislarini faqat akkauntiga kirgan foydalanuvchilar koʻra oladi.",
   errorLoginRequired:
@@ -3283,6 +3366,12 @@ const tr: Messages = {
     "belirli bir hikayenin bağlantısını gönderin: hikayeyi Instagram uygulamasında açın ve Paylaş → Bağlantıyı kopyala'ya dokunun.",
   errorInstagramAudioPage:
     "bu bir Instagram ses sayfası, video değil. Bu sesi kullanan herhangi bir reel'in bağlantısını gönderin — sesi oradan “🎵 Yalnızca ses (mp3)” düğmesiyle indirebilirsiniz.",
+  errorAdultContent:
+    "bu yetişkinlere yönelik bir içerik (18+). Videoner bu tür içerikleri indirmez.",
+  errorTweetAdultHidden:
+    "X bu tweet’i yalnızca hesabına giriş yapmış yetişkinlere gösteriyor — 18+ içerikler genellikle bu şekilde işaretlenir. Videoner bu tür içerikleri indirmez.",
+  errorTweetNoVideo:
+    "bu tweet’te video yok. Video bir yanıtta veya alıntıda ise doğrudan o tweet’in bağlantısını gönderin.",
   errorInstagramStory:
     "Instagram hikayelerini yalnızca oturum açmış kişiler görebilir.",
   errorLoginRequired:
@@ -3510,6 +3599,12 @@ const fa: Messages = {
     "لینک یک استوری مشخص را بفرستید: آن را در اپلیکیشن Instagram باز کنید و «اشتراک‌گذاری ← کپی لینک» را بزنید.",
   errorInstagramAudioPage:
     "این صفحهٔ صدای Instagram است، نه ویدیو. پیوند هر ریلزی را که از این صدا استفاده می‌کند بفرستید — صدا را از آن می‌توانید با دکمهٔ «🎵 فقط صدا (mp3)» دانلود کنید.",
+  errorAdultContent:
+    "این محتوای بزرگسالان (+18) است. Videoner چنین محتوایی را دانلود نمی‌کند.",
+  errorTweetAdultHidden:
+    "X این توییت را فقط به بزرگسالانی نشان می‌دهد که وارد حساب کاربری شده‌اند — معمولاً محتوای +18 این‌طور علامت‌گذاری می‌شود. Videoner چنین محتوایی را دانلود نمی‌کند.",
+  errorTweetNoVideo:
+    "در این توییت ویدیویی وجود ندارد. اگر ویدیو در یک پاسخ یا نقل‌قول است، پیوند همان توییت را مستقیم بفرستید.",
   errorInstagramStory:
     "استوری‌های Instagram فقط برای کسانی که وارد حساب خود شده‌اند قابل مشاهده است.",
   errorLoginRequired:
@@ -3737,6 +3832,12 @@ const vi: Messages = {
     "hãy gửi link tới một story cụ thể: mở story trong ứng dụng Instagram và bấm Chia sẻ → Sao chép liên kết.",
   errorInstagramAudioPage:
     "đây là trang âm thanh của Instagram, không phải video. Hãy gửi liên kết của bất kỳ reel nào dùng âm thanh này — bạn có thể tải âm thanh từ đó bằng nút “🎵 Chỉ âm thanh (mp3)”.",
+  errorAdultContent:
+    "đây là nội dung người lớn (18+). Videoner không tải loại nội dung này.",
+  errorTweetAdultHidden:
+    "X chỉ hiển thị tweet này cho người lớn đã đăng nhập tài khoản — thường thì nội dung 18+ được đánh dấu như vậy. Videoner không tải loại nội dung này.",
+  errorTweetNoVideo:
+    "tweet này không có video. Nếu video nằm trong phần trả lời hoặc trích dẫn, hãy gửi liên kết trực tiếp đến tweet đó.",
   errorInstagramStory:
     "Story trên Instagram chỉ hiển thị với người đã đăng nhập.",
   errorLoginRequired:
@@ -3965,6 +4066,12 @@ const bn: Messages = {
     "নির্দিষ্ট একটি স্টোরির লিংক পাঠান: Instagram অ্যাপে সেটি খুলে Share → Copy link চাপুন।",
   errorInstagramAudioPage:
     "এটি Instagram-এর অডিও পেজ, ভিডিও নয়। এই সাউন্ড ব্যবহার করা যেকোনো রিলের লিংক পাঠান — সেখান থেকে «🎵 শুধু অডিও (mp3)» বোতাম দিয়ে সাউন্ডটি ডাউনলোড করা যাবে।",
+  errorAdultContent:
+    "এটি প্রাপ্তবয়স্কদের কনটেন্ট (18+)। Videoner এ ধরনের কনটেন্ট ডাউনলোড করে না।",
+  errorTweetAdultHidden:
+    "X এই টুইটটি শুধু অ্যাকাউন্টে লগ ইন করা প্রাপ্তবয়স্কদের দেখায় — সাধারণত 18+ কনটেন্ট এভাবেই চিহ্নিত করা হয়। Videoner এ ধরনের কনটেন্ট ডাউনলোড করে না।",
+  errorTweetNoVideo:
+    "এই টুইটে কোনো ভিডিও নেই। ভিডিওটি রিপ্লাই বা কোটে থাকলে সরাসরি সেই টুইটের লিংক পাঠান।",
   errorInstagramStory:
     "Instagram স্টোরি শুধু সাইন ইন করা ব্যবহারকারীরাই দেখতে পান।",
   errorLoginRequired:
@@ -4192,6 +4299,12 @@ const ur: Messages = {
     "کسی مخصوص اسٹوری کا لنک بھیجیں: اسے Instagram ایپ میں کھولیں اور شیئر ← لنک کاپی کریں پر ٹیپ کریں۔",
   errorInstagramAudioPage:
     "یہ Instagram کا آڈیو صفحہ ہے، ویڈیو نہیں۔ اس آواز والی کسی بھی ریل کا لنک بھیجیں — اس سے آواز «🎵 صرف آڈیو (mp3)» بٹن کے ذریعے ڈاؤنلوڈ کی جا سکتی ہے۔",
+  errorAdultContent:
+    "یہ بالغوں کا مواد (+18) ہے۔ Videoner اس طرح کا مواد ڈاؤن لوڈ نہیں کرتا۔",
+  errorTweetAdultHidden:
+    "X یہ ٹویٹ صرف اکاؤنٹ میں لاگ اِن بالغ افراد کو دکھاتا ہے — عموماً +18 مواد اسی طرح نشان زد کیا جاتا ہے۔ Videoner اس طرح کا مواد ڈاؤن لوڈ نہیں کرتا۔",
+  errorTweetNoVideo:
+    "اس ٹویٹ میں کوئی ویڈیو نہیں ہے۔ اگر ویڈیو کسی جواب یا کوٹ میں ہے تو اسی ٹویٹ کا لنک براہِ راست بھیجیں۔",
   errorInstagramStory:
     "Instagram اسٹوریز صرف سائن ان کیے ہوئے لوگوں کو نظر آتی ہیں۔",
   errorLoginRequired:
@@ -4419,6 +4532,12 @@ const pl: Messages = {
     "wyślij link do konkretnej relacji: otwórz ją w aplikacji Instagram i stuknij Udostępnij → Kopiuj link.",
   errorInstagramAudioPage:
     "to strona dźwięku z Instagrama, a nie wideo. Wyślij link do dowolnego rolka z tym dźwiękiem — dźwięk można z niego pobrać przyciskiem „🎵 Tylko dźwięk (mp3)”.",
+  errorAdultContent:
+    "to treść dla dorosłych (18+). Videoner nie pobiera takich treści.",
+  errorTweetAdultHidden:
+    "X pokazuje ten tweet tylko dorosłym zalogowanym na konto — zwykle tak oznaczane są treści 18+. Videoner nie pobiera takich treści.",
+  errorTweetNoVideo:
+    "w tym tweecie nie ma wideo. Jeśli wideo jest w odpowiedzi lub cytacie, wyślij link bezpośrednio do tamtego tweeta.",
   errorInstagramStory:
     "Relacje na Instagramie widzą tylko zalogowane osoby.",
   errorLoginRequired:
@@ -4646,6 +4765,12 @@ const ja: Messages = {
     "特定のストーリーへのリンクを送ってください。Instagram アプリでストーリーを開き、「シェア」→「リンクをコピー」をタップしてください。",
   errorInstagramAudioPage:
     "これは Instagram の音声ページで、動画ではありません。この音声を使っているリールのリンクを送ってください。そのリールから 「🎵 音声のみ（mp3）」 ボタンで音声を保存できます。",
+  errorAdultContent:
+    "これはアダルトコンテンツ（18+）です。Videoner はこのようなコンテンツをダウンロードしません。",
+  errorTweetAdultHidden:
+    "X はこのポストを、アカウントにログインした成人にのみ表示します。18+ コンテンツは通常このように設定されています。Videoner はこのようなコンテンツをダウンロードしません。",
+  errorTweetNoVideo:
+    "このポストには動画がありません。動画が返信や引用に含まれている場合は、そのポストのリンクを直接送ってください。",
   errorInstagramStory:
     "Instagram のストーリーはログインしているユーザーにしか表示されません。",
   errorLoginRequired:
@@ -4873,6 +4998,12 @@ const ko: Messages = {
     "특정 스토리의 링크를 보내 주세요. Instagram 앱에서 스토리를 열고 공유 → 링크 복사를 눌러 주세요.",
   errorInstagramAudioPage:
     "이것은 Instagram 오디오 페이지이며 동영상이 아닙니다. 이 사운드를 사용한 아무 릴스 링크나 보내 주세요 — 그 릴스에서 “🎵 오디오만 (mp3)” 버튼으로 사운드를 받을 수 있습니다.",
+  errorAdultContent:
+    "성인용 콘텐츠(18+)입니다. Videoner는 이러한 콘텐츠를 다운로드하지 않습니다.",
+  errorTweetAdultHidden:
+    "X는 이 트윗을 계정에 로그인한 성인에게만 보여 줍니다. 보통 18+ 콘텐츠가 이렇게 표시됩니다. Videoner는 이러한 콘텐츠를 다운로드하지 않습니다.",
+  errorTweetNoVideo:
+    "이 트윗에는 동영상이 없습니다. 동영상이 답글이나 인용에 있다면 해당 트윗의 링크를 직접 보내 주세요.",
   errorInstagramStory:
     "Instagram 스토리는 로그인한 사용자에게만 보여요.",
   errorLoginRequired:
@@ -5100,6 +5231,12 @@ const th: Messages = {
     "ส่งลิงก์ของสตอรี่ที่ต้องการ: เปิดสตอรี่ในแอป Instagram แล้วแตะ แชร์ → คัดลอกลิงก์",
   errorInstagramAudioPage:
     "นี่คือหน้าเสียงของ Instagram ไม่ใช่วิดีโอ โปรดส่งลิงก์ของรีลใดก็ได้ที่ใช้เสียงนี้ — คุณดาวน์โหลดเสียงจากรีลนั้นได้ด้วยปุ่ม «🎵 เฉพาะเสียง (mp3)»",
+  errorAdultContent:
+    "นี่เป็นเนื้อหาสำหรับผู้ใหญ่ (18+) Videoner ไม่ดาวน์โหลดเนื้อหาลักษณะนี้",
+  errorTweetAdultHidden:
+    "X แสดงทวีตนี้เฉพาะผู้ใหญ่ที่เข้าสู่ระบบบัญชีเท่านั้น — โดยทั่วไปเนื้อหา 18+ จะถูกระบุไว้แบบนี้ Videoner ไม่ดาวน์โหลดเนื้อหาลักษณะนี้",
+  errorTweetNoVideo:
+    "ทวีตนี้ไม่มีวิดีโอ หากวิดีโออยู่ในการตอบกลับหรือการอ้างอิง โปรดส่งลิงก์ของทวีตนั้นโดยตรง",
   errorInstagramStory:
     "สตอรี่ Instagram จะเห็นได้เฉพาะคนที่ล็อกอินอยู่เท่านั้น",
   errorLoginRequired:
@@ -5327,6 +5464,12 @@ const am: Messages = {
     "የአንድን የተወሰነ ስቶሪ ሊንክ ይላኩ፦ በInstagram መተግበሪያ ውስጥ ይክፈቱትና Share → Copy link የሚለውን ይንኩ።",
   errorInstagramAudioPage:
     "ይህ የ Instagram የድምፅ ገጽ ነው እንጂ ቪዲዮ አይደለም። ይህን ድምፅ የሚጠቀም ማንኛውንም ሪል አገናኝ ላኩ — ድምፁን ከእሱ በ«🎵 ድምፅ ብቻ (mp3)» አዝራር ማውረድ ይችላሉ።",
+  errorAdultContent:
+    "ይህ የአዋቂዎች ይዘት (18+) ነው። Videoner እንዲህ ያለውን ይዘት አያወርድም።",
+  errorTweetAdultHidden:
+    "X ይህን ትዊት ወደ መለያ ለገቡ አዋቂዎች ብቻ ያሳያል — የ18+ ይዘት ብዙውን ጊዜ በዚህ መንገድ ምልክት ይደረግበታል። Videoner እንዲህ ያለውን ይዘት አያወርድም።",
+  errorTweetNoVideo:
+    "በዚህ ትዊት ውስጥ ቪዲዮ የለም። ቪዲዮው በምላሽ ወይም በጥቅስ ውስጥ ከሆነ የዚያን ትዊት አገናኝ በቀጥታ ይላኩ።",
   errorInstagramStory:
     "የInstagram ስቶሪዎች የሚታዩት ለገቡ (sign in ላደረጉ) ሰዎች ብቻ ነው።",
   errorLoginRequired:
@@ -5554,6 +5697,12 @@ const om: Messages = {
     "liinkii istoorii murtaa'aa tokkoo ergaa: app Instagram keessatti banaatii Qoodi → Liinkii garagalchi tuqaa.",
   errorInstagramAudioPage:
     "kun fuula sagalee Instagram malee viidiyoo miti. Liinkii reel sagalee kana fayyadamu kamiyyuu ergi — sagalee isaa kallattii “🎵 Sagalee qofa (mp3)” tuqudhaan buufachuu dandeessa.",
+  errorAdultContent:
+    "kun qabiyyee ga'eessotaa (18+) dha. Videoner qabiyyee akkasii hin buufatu.",
+  errorTweetAdultHidden:
+    "X tweet kana ga'eessota akkaawuntiitti seenan qofaaf agarsiisa — qabiyyeen 18+ yeroo baay'ee akkasitti mallatteeffama. Videoner qabiyyee akkasii hin buufatu.",
+  errorTweetNoVideo:
+    "tweet kana keessa viidiyoon hin jiru. Viidiyoon deebii yookaan wabii keessa yoo jiraate, hidhata tweet sana kallattiin ergaa.",
   errorInstagramStory:
     "Istooriiwwan Instagram kan mul'atan namoota seenaniif qofa.",
   errorLoginRequired:
@@ -5781,6 +5930,12 @@ const ha: Messages = {
     "ku aiko da hanyar haɗi ta takamaiman labari (story): ku buɗe shi a manhajar Instagram sannan ku danna Share → Copy link.",
   errorInstagramAudioPage:
     "wannan shafin sautin Instagram ne, ba bidiyo ba. Aika hanyar haɗin kowane reel da ke amfani da wannan sautin — za ka iya sauke sautin daga gare shi da maɓallin “🎵 Sauti kawai (mp3)”.",
+  errorAdultContent:
+    "wannan abun manya ne (18+). Videoner ba ya sauke irin wannan abun.",
+  errorTweetAdultHidden:
+    "X yana nuna wannan tweet ga manya da suka shiga asusu kawai — yawanci haka ake yi wa abun 18+ alama. Videoner ba ya sauke irin wannan abun.",
+  errorTweetNoVideo:
+    "babu bidiyo a wannan tweet. Idan bidiyon yana cikin amsa ko kalaman da aka ambata, aika hanyar haɗin wannan tweet kai tsaye.",
   errorInstagramStory:
     "Labaran (stories) Instagram suna bayyana ne kawai ga mutanen da suka shiga asusunsu.",
   errorLoginRequired:
@@ -6008,6 +6163,12 @@ const so: Messages = {
     "soo dir link-ga story gaar ah: ka fur app-ka Instagram oo taabo Share → Copy link.",
   errorInstagramAudioPage:
     "tani waa bog codka Instagram, ma aha fiidiyoo. Soo dir linkiga reel kasta oo isticmaalaya codkan — codka waxaad ka soo dejin kartaa badhanka “🎵 Cod oo keliya (mp3)”.",
+  errorAdultContent:
+    "tani waa nuxur dadka waaweyn ah (18+). Videoner nuxurka noocaas ah ma soo dejiyo.",
+  errorTweetAdultHidden:
+    "X waxay tweet-kan tusaa oo kaliya dadka waaweyn ee akoonka galay — inta badan sidaas ayaa nuxurka 18+ loo calaamadiyaa. Videoner nuxurka noocaas ah ma soo dejiyo.",
+  errorTweetNoVideo:
+    "tweet-kan fiidiyoo kuma jiro. Haddii fiidiyoowgu ku jiro jawaab ama soo-xigasho, si toos ah u soo dir linkiga tweet-kaas.",
   errorInstagramStory:
     "Stories-ka Instagram waxaa arki kara oo keliya dadka akoonkooda galay.",
   errorLoginRequired:
@@ -6235,6 +6396,12 @@ const az: Messages = {
     "konkret storinin linkini göndərin: onu Instagram tətbiqində açın və «Paylaş» → «Linki kopyala» düyməsini basın.",
   errorInstagramAudioPage:
     "bu Instagram səs səhifəsidir, video deyil. Bu səsdən istifadə edən istənilən reelsin keçidini göndərin — səsi ondan «🎵 Yalnız audio (mp3)» düyməsi ilə yükləyə bilərsiniz.",
+  errorAdultContent:
+    "bu yetkinlər üçün məzmundur (18+). Videoner belə məzmunu yükləmir.",
+  errorTweetAdultHidden:
+    "X bu tviti yalnız hesaba daxil olmuş yetkinlərə göstərir — adətən 18+ məzmun belə qeyd olunur. Videoner belə məzmunu yükləmir.",
+  errorTweetNoVideo:
+    "bu tvitdə video yoxdur. Video cavabda və ya sitatdadırsa, birbaşa həmin tvitin linkini göndərin.",
   errorInstagramStory:
     "Instagram storiləri yalnız hesaba daxil olmuş istifadəçilərə görünür.",
   errorLoginRequired:
@@ -6462,6 +6629,12 @@ const ky: Messages = {
     "белгилүү бир сториске шилтеме жөнөтүңүз: аны Instagram колдонмосунда ачып, «Поделиться» (Бөлүшүү) → «Копировать ссылку» (Шилтемени көчүрүү) баскычын басыңыз.",
   errorInstagramAudioPage:
     "бул Instagram үн баракчасы, видео эмес. Ушул үндү колдонгон каалаган рилстин шилтемесин жөнөтүңүз — үндү андан «🎵 Аудио гана (mp3)» баскычы менен жүктөп алса болот.",
+  errorAdultContent:
+    "бул чоңдорго арналган контент (18+). Videoner мындай контентти жүктөбөйт.",
+  errorTweetAdultHidden:
+    "X бул твитти аккаунтка кирген чоңдорго гана көрсөтөт — адатта 18+ контент ушундай белгиленет. Videoner мындай контентти жүктөбөйт.",
+  errorTweetNoVideo:
+    "бул твитте видео жок. Эгер видео жооп же цитата ичинде болсо, түз ошол твиттин шилтемесин жөнөтүңүз.",
   errorInstagramStory:
     "Instagram стористерин аккаунтка киргендер гана көрө алат.",
   errorLoginRequired:
@@ -6689,6 +6862,12 @@ const tg: Messages = {
     "пайванди сторисии мушаххасро фиристед: онро дар барномаи Instagram кушоед ва «Поделиться» (Мубодила) → «Копировать ссылку» (Нусха бардоштани пайванд)-ро пахш кунед.",
   errorInstagramAudioPage:
     "ин саҳифаи садои Instagram аст, на видео. Истиноди ҳар як рилсеро, ки ин садоро истифода мебарад, фиристед — садоро аз он бо тугмаи «🎵 Фақат аудио (mp3)» зеркашӣ кардан мумкин аст.",
+  errorAdultContent:
+    "ин мундариҷаи барои калонсолон (18+) аст. Videoner чунин мундариҷаро зеркашӣ намекунад.",
+  errorTweetAdultHidden:
+    "X ин твитро танҳо ба калонсолоне нишон медиҳад, ки ба аккаунт ворид шудаанд — одатан мундариҷаи 18+ ҳамин тавр нишон дода мешавад. Videoner чунин мундариҷаро зеркашӣ намекунад.",
+  errorTweetNoVideo:
+    "дар ин твит видео нест. Агар видео дар ҷавоб ё иқтибос бошад, истинодро мустақиман ба ҳамон твит фиристед.",
   errorInstagramStory:
     "Сторисҳои Instagram-ро танҳо касоне мебинанд, ки ба аккаунт ворид шудаанд.",
   errorLoginRequired:
@@ -6916,6 +7095,12 @@ const ms: Messages = {
     "hantar pautan ke story tertentu: bukanya dalam aplikasi Instagram dan ketik Share → Copy link.",
   errorInstagramAudioPage:
     "ini ialah halaman audio Instagram, bukan video. Hantar pautan mana-mana reel yang menggunakan bunyi ini — anda boleh memuat turun bunyi itu daripadanya dengan butang “🎵 Audio sahaja (mp3)”.",
+  errorAdultContent:
+    "ini kandungan dewasa (18+). Videoner tidak memuat turun kandungan sebegini.",
+  errorTweetAdultHidden:
+    "X hanya memaparkan tweet ini kepada orang dewasa yang telah log masuk ke akaun — biasanya begitulah kandungan 18+ ditandakan. Videoner tidak memuat turun kandungan sebegini.",
+  errorTweetNoVideo:
+    "tiada video dalam tweet ini. Jika video berada dalam balasan atau petikan, hantar pautan terus ke tweet tersebut.",
   errorInstagramStory:
     "Story Instagram hanya boleh dilihat oleh orang yang telah log masuk.",
   errorLoginRequired:
@@ -7143,6 +7328,12 @@ const nl: Messages = {
     "stuur een link naar een specifieke story: open hem in de Instagram-app en tik op Delen → Link kopiëren.",
   errorInstagramAudioPage:
     "dit is een Instagram-audiopagina, geen video. Stuur de link naar een reel die dit geluid gebruikt — het geluid kun je daaruit downloaden met de knop “🎵 Alleen audio (mp3)”.",
+  errorAdultContent:
+    "dit is inhoud voor volwassenen (18+). Videoner downloadt dergelijke inhoud niet.",
+  errorTweetAdultHidden:
+    "X toont deze tweet alleen aan volwassenen die zijn ingelogd — zo wordt 18+-inhoud meestal gemarkeerd. Videoner downloadt dergelijke inhoud niet.",
+  errorTweetNoVideo:
+    "er zit geen video in deze tweet. Staat de video in een reactie of een quote, stuur dan de link rechtstreeks naar die tweet.",
   errorInstagramStory:
     "Instagram-story's zijn alleen zichtbaar voor mensen die zijn ingelogd.",
   errorLoginRequired:
@@ -7370,6 +7561,12 @@ const ro: Messages = {
     "trimite linkul unei anumite povești: deschide-o în aplicația Instagram și atinge Distribuie → Copiază linkul.",
   errorInstagramAudioPage:
     "aceasta este o pagină de sunet Instagram, nu un videoclip. Trimite linkul oricărui reel care folosește acest sunet — sunetul îl poți descărca de acolo cu butonul „🎵 Doar audio (mp3)”.",
+  errorAdultContent:
+    "acesta este conținut pentru adulți (18+). Videoner nu descarcă astfel de conținut.",
+  errorTweetAdultHidden:
+    "X afișează acest tweet doar adulților conectați la un cont — de obicei așa este marcat conținutul 18+. Videoner nu descarcă astfel de conținut.",
+  errorTweetNoVideo:
+    "acest tweet nu conține video. Dacă videoclipul se află într-un răspuns sau într-o citare, trimite direct linkul către acel tweet.",
   errorInstagramStory:
     "Poveștile Instagram sunt vizibile doar pentru cei conectați.",
   errorLoginRequired:
@@ -7597,6 +7794,12 @@ const ps: Messages = {
     "د یوې ټاکلې سټورۍ لینک ولېږئ: هغه د Instagram په اپلیکیشن کې پرانیزئ او «شریکول ← لینک کاپي کړئ» کېکاږئ.",
   errorInstagramAudioPage:
     "دا د Instagram د غږ پاڼه ده، ویډیو نه ده. د هر هغه ریل لینک ولېږئ چې دا غږ کاروي — غږ ترې د «🎵 یوازې آډیو (mp3)» تڼۍ په مرسته ښکته کولی شئ.",
+  errorAdultContent:
+    "دا د لویانو منځپانگه (+18) ده. Videoner دا ډول منځپانگه نه ډاونلوډوي.",
+  errorTweetAdultHidden:
+    "X دا ټویټ یوازې هغو لویانو ته ښيي چې حساب ته ننوتي دي — معمولاً د +18 منځپانگه همداسې نښه کیږي. Videoner دا ډول منځپانگه نه ډاونلوډوي.",
+  errorTweetNoVideo:
+    "پدې ټویټ کې ویډیو نشته. که ویډیو په ځواب یا نقل‌قول کې وي، د همغه ټویټ لینک مستقیم ولېږئ.",
   errorInstagramStory:
     "د Instagram سټورۍ یوازې هغه کسان لیدلای شي چې خپل حساب ته ننوتي وي.",
   errorLoginRequired:
@@ -7824,6 +8027,12 @@ const ckb: Messages = {
     "بەستەری ستۆرییەکی دیاریکراو بنێرە: لە ئەپی Instagram بیکەرەوە و کرتە لە «هاوبەشکردن ← کۆپیکردنی بەستەر» بکە.",
   errorInstagramAudioPage:
     "ئەمە پەڕەی دەنگی Instagram ـە، ڤیدیۆ نییە. بەستەری هەر ریلێک بنێرە کە ئەم دەنگە بەکاردەهێنێت — دەتوانیت دەنگەکەی لێ بە دوگمەی «🎵 تەنها دەنگ (mp3)» دابگریت.",
+  errorAdultContent:
+    "ئەمە ناوەڕۆکی گەورەسالانە (+18). Videoner ئەم جۆرە ناوەڕۆکە دابەزێنێت نەکات.",
+  errorTweetAdultHidden:
+    "X ئەم تویتە تەنها بە گەورەسالانێک نیشان دەدات کە چووەتە ناو هەژمار — زۆرجار ناوەڕۆکی +18 بەم شێوەیە نیشانە دەکرێت. Videoner ئەم جۆرە ناوەڕۆکە دابەزێنێت نەکات.",
+  errorTweetNoVideo:
+    "لەم تویتەدا ڤیدیۆ نییە. ئەگەر ڤیدیۆکە لە وەڵام یان وەرگرتنەوەدایە، لینکی ئەو تویتە ڕاستەوخۆ بنێرە.",
   errorInstagramStory:
     "ستۆرییەکانی Instagram تەنها بۆ ئەو کەسانە دیارن کە چوونەتە ژوورەوە.",
   errorLoginRequired:
@@ -8051,6 +8260,12 @@ const ku: Messages = {
     "lînka story-yeke diyar bişîne: wê di sepana Instagram de veke û Share → Copy link bitikîne.",
   errorInstagramAudioPage:
     "ev rûpela dengê ya Instagram e, ne vîdyo ye. Lînka her reelekê ya ku vî dengî bi kar tîne bişîne — tu dikarî dengê wê bi bişkoja “🎵 Tenê deng (mp3)” dakî.",
+  errorAdultContent:
+    "ev naveroka mezinan e (18+). Videoner naveroka bi vî rengî dananeke.",
+  errorTweetAdultHidden:
+    "X vê tweetê tenê ji mezinên ku têketine hesabê nîşan dide — bi gelemperî naveroka 18+ bi vî rengî tê nîşankirin. Videoner naveroka bi vî rengî dananeke.",
+  errorTweetNoVideo:
+    "di vê tweetê de vîdyo tune. Heke vîdyo di bersivekê an wekîlkirinekê de be, lînka wê tweetê rasterast bişîne.",
   errorInstagramStory:
     "Story-yên Instagram tenê ji kesên têketî re xuya dibin.",
   errorLoginRequired:
@@ -8278,6 +8493,12 @@ const ug: Messages = {
     "مەلۇم بىر ھېكايىنىڭ ئۇلانمىسىنى يوللاڭ: ئۇنى Instagram ئەپىدە ئېچىپ، «ھەمبەھىرلەش ← ئۇلانمىنى كۆچۈرۈش» نى بېسىڭ.",
   errorInstagramAudioPage:
     "بۇ Instagram ئاۋاز بېتى، سىن ئەمەس. بۇ ئاۋازنى ئىشلەتكەن ئىختىيارى بىر ريلنىڭ ئۇلىنىشىنى ئەۋەتىڭ — ئاۋازنى ئۇنىڭدىن «🎵 پەقەت ئاۋاز (mp3)» كۇنوپكىسى ئارقىلىق چۈشۈرەلەيسىز.",
+  errorAdultContent:
+    "بۇ چوڭلارغا مەنسۇپ مەزمۇن (+18). Videoner بۇنداق مەزمۇننى چۈشۈرمەيدۇ.",
+  errorTweetAdultHidden:
+    "X بۇ تۇۋىتنى پەقەت ھېساباتقا كىرگەن چوڭلارغىلا كۆرسىتىدۇ — +18 مەزمۇن ئادەتتە مۇشۇنداق بەلگىلىنىدۇ. Videoner بۇنداق مەزمۇننى چۈشۈرمەيدۇ.",
+  errorTweetNoVideo:
+    "بۇ تۇۋىتتا سىن يوق. ئەگەر سىن جاۋاب ياكى نەقىلدە بولسا، شۇ تۇۋىتنىڭ ئۇلانمىسىنى بىۋاسىتە ئەۋەتىڭ.",
   errorInstagramStory:
     "Instagram ھېكايىلىرىنى پەقەت ھېساباتىغا كىرگەن كىشىلەرلا كۆرەلەيدۇ.",
   errorLoginRequired:
@@ -8505,6 +8726,12 @@ const tk: Messages = {
     "belli bir storisiň salgysyny iberiň: ony Instagram programmasynda açyp, «Поделиться» (Paýlaş) → «Копировать ссылку» (Salgyny göçür) düwmesine basyň.",
   errorInstagramAudioPage:
     "bu Instagram ses sahypasy, wideo däl. Bu sesi ulanýan islendik reeliň baglanyşygyny iberiň — sesi ondan “🎵 Diňe ses (mp3)” düwmesi bilen ýükläp bilersiňiz.",
+  errorAdultContent:
+    "bu uly adamlar üçin mazmun (18+). Videoner şeýle mazmuny ýükläp almaýar.",
+  errorTweetAdultHidden:
+    "X bu tweeti diňe hasaba giren uly adamlara görkezýär — adatça 18+ mazmun şeýle bellenýär. Videoner şeýle mazmuny ýükläp almaýar.",
+  errorTweetNoVideo:
+    "bu tweetde wideo ýok. Wideo jogapda ýa-da sitatada bolsa, gönüden-göni şol tweetiň baglanyşygyny iberiň.",
   errorInstagramStory:
     "Instagram storislerini diňe hasabyna giren ulanyjylar görüp bilýär.",
   errorLoginRequired:
@@ -8732,6 +8959,12 @@ const tt: Messages = {
     "конкрет бер сторис сылтамасын җибәрегез: аны Instagram кушымтасында ачыгыз һәм «Поделиться» (Уртаклашу) → «Копировать ссылку» (Сылтаманы күчерү) төймәсенә басыгыз.",
   errorInstagramAudioPage:
     "бу Instagram аудио бите, видео түгел. Бу тавышны кулланган теләсә кайсы рилс сылтамасын җибәрегез — тавышны аннан «🎵 Аудио гына (mp3)» төймәсе белән йөкләп була.",
+  errorAdultContent:
+    "монда олылар өчен эчтәлек (18+). Videoner мондый эчтәлекне йөкләми.",
+  errorTweetAdultHidden:
+    "X бу твитны аккаунтка кергән олыларга гына күрсәтә — гадәттә 18+ эчтәлек шулай билгеләнә. Videoner мондый эчтәлекне йөкләми.",
+  errorTweetNoVideo:
+    "бу твитта видео юк. Әгәр видео җавапта яки цитатада булса, турыдан-туры шул твитка сылтама җибәрегез.",
   errorInstagramStory:
     "Instagram сторислары аккаунтка кергән кешеләргә генә күренә.",
   errorLoginRequired:
@@ -8959,6 +9192,12 @@ const sq: Messages = {
     "dërgoni lidhjen e një story-je të caktuar: hapeni në aplikacionin Instagram dhe prekni Share → Copy link.",
   errorInstagramAudioPage:
     "ky është një faqe audio e Instagram-it, jo video. Dërgo lidhjen e çdo reel-i që e përdor këtë tingull — tingullin mund ta marrësh prej tij me butonin “🎵 Vetëm audio (mp3)”.",
+  errorAdultContent:
+    "ky është përmbajtje për të rritur (18+). Videoner nuk shkarkon përmbajtje të tillë.",
+  errorTweetAdultHidden:
+    "X e shfaq këtë tvit vetëm për të rritur që kanë hyrë në llogari — zakonisht kështu shënohet përmbajtja 18+. Videoner nuk shkarkon përmbajtje të tillë.",
+  errorTweetNoVideo:
+    "në këtë tvit nuk ka video. Nëse videoja është në një përgjigje ose citim, dërgoni lidhjen direkt te ai tvit.",
   errorInstagramStory:
     "Story-t e Instagram janë të dukshme vetëm për përdoruesit e identifikuar.",
   errorLoginRequired:
@@ -9196,6 +9435,12 @@ const bs: Messages = {
     "pošaljite link na konkretnu priču: otvorite je u aplikaciji Instagram i dodirnite Podijeli → Kopiraj link.",
   errorInstagramAudioPage:
     "ovo je Instagram audio stranica, a ne video. Pošalji link na bilo koji reel koji koristi ovaj zvuk — zvuk iz njega možeš preuzeti dugmetom „🎵 Samo audio (mp3)“.",
+  errorAdultContent:
+    "ovo je sadržaj za odrasle (18+). Videoner ne preuzima takav sadržaj.",
+  errorTweetAdultHidden:
+    "X prikazuje ovaj tvit samo odraslima koji su prijavljeni na račun — obično se tako označava sadržaj 18+. Videoner ne preuzima takav sadržaj.",
+  errorTweetNoVideo:
+    "u ovom tvitu nema videa. Ako je video u odgovoru ili citatu, pošaljite link direktno na taj tvit.",
   errorInstagramStory:
     "Instagram priče vide samo prijavljeni korisnici.",
   errorLoginRequired:
@@ -9423,6 +9668,12 @@ const ce: Messages = {
     "билгалчу сторисан хьажорг дахийтийша: Instagram приложенехь иза схьа а еллина, «Поделиться» (ДӀасадекъа) → «Копировать ссылку» (Хьажорг копи ян) тӀетаӀалаш.",
   errorInstagramAudioPage:
     "иза Instagram аудион агӀо ю, видео дац. Хьажорг дахийтийша и аудио лело йолу цхьаъ рилсан — аудио цуьнгара «🎵 Аудио бен (mp3)» кнопкица яккха мега.",
+  errorAdultContent:
+    "укхаз баккхийчу нехан контент (18+) ю. Videoner иштта контент ца чIаъо.",
+  errorTweetAdultHidden:
+    "X оцу твитах гойту аккаунте чIаьвлла баккхийчу нехан бен — тахана 18+ контент иштта билгалдо. Videoner иштта контент ца чIаъо.",
+  errorTweetNoVideo:
+    "хIокху твитехь видео яц. Видео жоп я цитата чохь елахь, цу твитан сайт кхеташ дIадахийта.",
   errorInstagramStory:
     "Instagram сторисаш аккаунт чохь хьоьжучу адамашна бен ца го.",
   errorLoginRequired:
@@ -9650,6 +9901,12 @@ const inh: Messages = {
     "цхьа билгала сторис ссылка дахийтал: Instagram приложене чу из дӀа а елла, «Поделиться» → «Копировать ссылку» тӀатаӀал.",
   errorInstagramAudioPage:
     "из Instagram аудион агӀо я, видео яц. Из аудио лелаш йола цхьаъ рилсан ссылка дахийтал — аудио цунгара «🎵 Аудио мара (mp3)» кнопкаца даккха ов.",
+  errorAdultContent:
+    "и боахамечех долча контент (18+) да. Videoner иштта контент ца чIоагIдеш.",
+  errorTweetAdultHidden:
+    "X и твит аккаунте воагIа боахамечарна бен ца гойтадеш — укх 18+ контент иштта билгалъяь. Videoner иштта контент ца чIоагIдеш.",
+  errorTweetNoVideo:
+    "и твитехь видео яц. Видео жоп я цитата чу елахь, и твитан сылка дIа ювца.",
   errorInstagramStory:
     "Instagram сторисаш аккаунта чу бола наха мара гуш яц.",
   errorLoginRequired:
@@ -9877,6 +10134,12 @@ const av: Messages = {
     "цо хасаб сторисалъул ссылка битӀе: гьеб Instagram приложениялда рагьун, «Поделиться» → «Копировать ссылку» кнопкабазда квер бай.",
   errorInstagramAudioPage:
     "гьеб Instagram-алъул аудиоялъул гьумер буго, видео гьечӀо. Гьеб аудио хӀалтӀизабулеб ракъкъалиял рилсалъул ссылка битӀе — аудио гьелдасан «🎵 Аудио гурони (mp3)» кнопкаялдалъун босизе бегьула.",
+  errorAdultContent:
+    "гьеб гIадамазул контент (18+) буго. Videoner гьеб кьабзул контент жубаларилароб.",
+  errorTweetAdultHidden:
+    "X гьеб твит аккаунталде лъугьарав гIадамазухъ бидулеб — гьелда 18+ контент гьедин ккезабулеб. Videoner гьеб кьабзул контент жубаларилароб.",
+  errorTweetNoVideo:
+    "гьеб твиталда видео гьечIо. Видео жаваб я цитатаялда бугони, гьеб твитазул ссылка нахъе ритIа.",
   errorInstagramStory:
     "Instagram сторисал аккаунталде жаниве лъугьарал гӀадамазе гурони рихьуларо.",
   errorLoginRequired:
@@ -10104,6 +10367,12 @@ const tl: Messages = {
     "magpadala ng link ng isang partikular na story: buksan ito sa Instagram app at i-tap ang Share → Copy link.",
   errorInstagramAudioPage:
     "ito ay audio page ng Instagram, hindi video. Magpadala ng link ng kahit anong reel na gumagamit ng tunog na ito — makukuha mo ang tunog mula roon gamit ang button na “🎵 Audio lang (mp3)”.",
+  errorAdultContent:
+    "ito ay nilalamang pang-adulto (18+). Hindi dina-download ng Videoner ang ganitong nilalaman.",
+  errorTweetAdultHidden:
+    "Ipinapakita lang ng X ang tweet na ito sa mga nasa hustong gulang na naka-sign in sa account — karaniwan ay ganito minamarkahan ang nilalamang 18+. Hindi dina-download ng Videoner ang ganitong nilalaman.",
+  errorTweetNoVideo:
+    "walang video sa tweet na ito. Kung ang video ay nasa reply o quote, ipadala nang direkta ang link sa tweet na iyon.",
   errorInstagramStory:
     "Ang mga Instagram story ay nakikita lang ng mga naka-sign in.",
   errorLoginRequired:
@@ -10331,6 +10600,12 @@ const uk: Messages = {
     "надішліть посилання на конкретну сторіс: у застосунку Instagram відкрийте її й натисніть «Поділитися» → «Копіювати посилання».",
   errorInstagramAudioPage:
     "це сторінка звуку Instagram, а не відео. Надішліть посилання на будь-який рілс із цим звуком — звук із нього можна завантажити кнопкою «🎵 Лише аудіо (mp3)».",
+  errorAdultContent:
+    "тут контент для дорослих (18+). Videoner такий контент не завантажує.",
+  errorTweetAdultHidden:
+    "X показує цей твіт лише дорослим, які увійшли в обліковий запис, — зазвичай так позначено контент 18+. Videoner такий контент не завантажує.",
+  errorTweetNoVideo:
+    "у цьому твіті немає відео. Якщо відео у відповіді або цитаті, надішліть посилання просто на той твіт.",
   errorInstagramStory:
     "сторіс Instagram видно лише тим, хто увійшов в акаунт.",
   errorLoginRequired:
@@ -10564,6 +10839,12 @@ const kk: Messages = {
     "нақты сториске сілтеме жіберіңіз: Instagram қолданбасында оны ашып, «Бөлісу» → «Сілтемені көшіру» түймесін басыңыз.",
   errorInstagramAudioPage:
     "бұл Instagram дыбыс беті, видео емес. Осы дыбысты қолданатын кез келген рилстің сілтемесін жіберіңіз — дыбысты одан «🎵 Тек аудио (mp3)» түймесімен жүктеп алуға болады.",
+  errorAdultContent:
+    "мұнда ересектерге арналған контент (18+). Videoner мұндай контентті жүктемейді.",
+  errorTweetAdultHidden:
+    "X бұл твитті тек аккаунтқа кірген ересектерге көрсетеді — әдетте 18+ контент осылай белгіленеді. Videoner мұндай контентті жүктемейді.",
+  errorTweetNoVideo:
+    "бұл твитте бейне жоқ. Егер бейне жауапта немесе дәйексөзде болса, нақ сол твиттің сілтемесін жіберіңіз.",
   errorInstagramStory:
     "Instagram стористері тек аккаунтқа кіргендерге ғана көрінеді.",
   errorLoginRequired:

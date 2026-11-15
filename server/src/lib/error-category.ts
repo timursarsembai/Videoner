@@ -5,6 +5,15 @@ import { ErrorCategory } from '@prisma/client';
 export function categorizeError(raw: string): ErrorCategory {
   const msg = (raw || '').toLowerCase();
 
+  // Отказ по нашему правилу «не скачиваем 18+» (lib/adult-content.ts) — первым:
+  // в тексте про скрытый твит есть слова, похожие на признаки «нужен вход».
+  if (msg.startsWith('adult content') || msg.includes('error: adult content')) {
+    return ErrorCategory.ADULT_CONTENT;
+  }
+  if (msg.includes('tweet without video')) {
+    return ErrorCategory.NO_VIDEO_CONTENT;
+  }
+
   // Региональная блокировка. Проверяется раньше LOGIN_REQUIRED намеренно:
   // вход тут не поможет, ролик не отдают нашему адресу в принципе. Ловим и
   // сырой код TikTok (10231 = "cross_border_violation"), и уже причёсанный

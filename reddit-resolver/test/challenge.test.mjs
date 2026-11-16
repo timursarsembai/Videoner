@@ -1,0 +1,42 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { solveChallenge } from '../challenge.mjs';
+
+function loadingPage({ anchorAfter = Infinity, text = 'Prove your humanity' } = {}) {
+  let elapsed = 0, clicked = false;
+  return {
+    now: () => elapsed,
+    page: {
+      frames: () => [],
+      locator: selector => selector === 'body' ? { innerText: async () => text }
+        : { count: async () => clicked ? 1 : 0 },
+      frameLocator: () => ({ locator: () => ({
+        count: async () => elapsed >= anchorAfter ? 1 : 0,
+        click: async () => { clicked = true; },
+      }) }),
+      waitForTimeout: async ms => { elapsed += ms; },
+    },
+  };
+}
+
+test('a missing captcha widget fails early enough to leave time for recovery', async () => {
+  const fixture = loadingPage();
+  await assert.rejects(solveChallenge(fixture.page, {
+    postId: '6rrwyj', deadline: 200000, now: fixture.now,
+  }), /CHALLENGE_NOT_LOADED/);
+  assert.ok(fixture.now() >= 20000 && fixture.now() < 30000);
+});
+
+test('a slowly loaded widget is allowed to complete within the loading window', async () => {
+  const fixture = loadingPage({ anchorAfter: 10000 });
+  assert.equal(await solveChallenge(fixture.page, {
+    postId: '6rrwyj', deadline: 200000, now: fixture.now,
+  }), '6rrwyj');
+});
+
+test('the early missing-widget error applies only to the known challenge page', async () => {
+  const fixture = loadingPage({ text: 'Loading a page' });
+  await assert.rejects(solveChallenge(fixture.page, {
+    postId: '6rrwyj', deadline: 30000, now: fixture.now,
+  }), /CHALLENGE_TIMEOUT/);
+});

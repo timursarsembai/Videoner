@@ -45,7 +45,7 @@ test('unavailable posts keep the warm session and repeated refusals avoid anothe
 });
 
 test('a failed image challenge gets one fresh session within the original request deadline', async () => {
-  for (const code of ['REDDIT_IMAGES_TIMEOUT', 'REDDIT_CHALLENGE_REJECTED', 'REDDIT_UNSUPPORTED_CHALLENGE']) {
+  for (const code of ['REDDIT_IMAGES_TIMEOUT', 'REDDIT_CHALLENGE_REJECTED', 'REDDIT_UNSUPPORTED_CHALLENGE', 'REDDIT_CHALLENGE_NOT_LOADED']) {
     const resolver = new RedditResolver(); let calls = 0; let closed = 0; const deadlines = [];
     resolver.close = async () => { closed++; };
     resolver.resolvePost = async (_parsed, _visited, deadline) => {

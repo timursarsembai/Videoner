@@ -14,7 +14,7 @@ async function visibleChallenge(page) {
   return null;
 }
 
-export async function solveChallenge(page, { deadline, postId, onEvent = () => {}, audio = false }) {
+export async function solveChallenge(page, { deadline, postId, onEvent = () => {}, audio = false, now = Date.now }) {
   const seen = new Map();
   let checkboxClicked = false;
   let audioAttempted = !audio;
@@ -22,7 +22,8 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
   let lastVerified = '';
   let repeatedVerification = 0;
   let expiredRestarts = 0;
-  for (let round = 0; round < 18 && Date.now() < deadline;) {
+  let widgetMissingSince = null;
+  for (let round = 0; round < 18 && now() < deadline;) {
     let currentId = postId || safeRedditPostUrl(page.url())?.id;
     if (!currentId) {
       const canonical = await page.locator('link[rel="canonical"]').getAttribute('href').catch(() => null);
@@ -54,7 +55,13 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
       if (!checkboxClicked) {
         const anchor = page.frameLocator('iframe[src*="recaptcha"][src*="anchor"]').locator('#recaptcha-anchor');
         if (await anchor.count().catch(() => 0)) {
+          widgetMissingSince = null;
           await anchor.click({ timeout: 5000 }); checkboxClicked = true;
+        } else if (/Prove your humanity/i.test(text)) {
+          widgetMissingSince ??= now();
+          if (now() - widgetMissingSince >= 20000) throw new Error('REDDIT_CHALLENGE_NOT_LOADED');
+        } else {
+          widgetMissingSince = null;
         }
       }
       await page.waitForTimeout(1500);

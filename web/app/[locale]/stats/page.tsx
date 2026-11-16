@@ -11,9 +11,11 @@ import { fetchPublicStats, formatRounded } from "@/lib/public-stats";
 import { statsPage } from "@/lib/stats-page";
 
 // «Videoner в цифрах»: масштаб проекта — сколько скачали всего, через что и
-// откуда, сколько людей в боте. Цифры с сервера (lib/public-stats.ts),
-// страница пересобирается раз в час. Числа округлены вниз («8 100+»).
-export const revalidate = 3600;
+// откуда, сколько людей в боте. Цифры с сервера (lib/public-stats.ts; он
+// пересчитывает их раз в час). Страница — при каждом запросе, а не заранее
+// при сборке: при сборке ключа API нет, и в неё запеклось бы «недоступно».
+// Числа округлены вниз («8 100+»).
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -54,15 +56,12 @@ export default async function StatsPage({ params }: Props) {
     EXTENSION: text.sourceExtension,
   };
   // «Другое» (API) — в одну строку в конце.
-  const sources = stats
-    ? [
-        ...stats.bySource.filter((s) => s.source in sourceLabel).map((s) => ({ label: sourceLabel[s.source], count: s.count })),
-        ...(() => {
-          const other = stats.bySource.filter((s) => !(s.source in sourceLabel)).reduce((a, s) => a + s.count, 0);
-          return other ? [{ label: text.sourceOther, count: other }] : [];
-        })(),
-      ]
-    : [];
+  const known = (stats?.bySource ?? []).filter((s) => s.source in sourceLabel);
+  const other = (stats?.bySource ?? []).filter((s) => !(s.source in sourceLabel)).reduce((a, s) => a + s.count, 0);
+  const sources = [
+    ...known.map((s) => ({ label: sourceLabel[s.source], count: s.count })),
+    ...(other ? [{ label: text.sourceOther, count: other }] : []),
+  ];
 
   return (
     <article className="container mx-auto max-w-3xl px-4 py-12">

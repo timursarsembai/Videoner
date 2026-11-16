@@ -1,6 +1,5 @@
 // Цифры страницы «Videoner в цифрах» (app/[locale]/stats): сервер считает их
-// не чаще раза в час (server public-stats.service.ts), сайт берёт с тем же
-// часом кеша Next.
+// не чаще раза в час (server public-stats.service.ts) и сам держит кеш.
 
 export interface PublicStats {
   updatedAt: string;
@@ -21,11 +20,13 @@ export async function fetchPublicStats(): Promise<PublicStats | null> {
   try {
     const res = await fetch(`${API_URL}/stats/public`, {
       headers: { "X-API-Key": API_KEY },
-      next: { revalidate: 3600 },
+      cache: "no-store",
       signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) return null;
-    return (await res.json()) as PublicStats;
+    const data = (await res.json()) as PublicStats;
+    // Сервер поменял поля — лучше «недоступно», чем NaN на публичной странице.
+    return Number.isFinite(data?.downloads) && Number.isFinite(data?.botUsers) && Array.isArray(data?.bySource) ? data : null;
   } catch {
     return null;
   }

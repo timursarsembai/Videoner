@@ -1,4 +1,4 @@
-import type { Api } from "grammy";
+import { GrammyError, type Api } from "grammy";
 import { api } from "./helpers.js";
 import { sitePath, type Lang } from "./i18n.js";
 import { PROMO_TEXTS, type PromoKey } from "./promo-texts.js";
@@ -15,8 +15,17 @@ export function promoText(key: PromoKey, lang: Lang): string {
   return PROMO_TEXTS[lang][key].replace("{url}", `videoner.download${sitePath(lang, "/extension")}`);
 }
 
-// Сбой не должен ничем мешать: файл уже у человека.
-export async function sendPromo(tg: Api, chatId: number, telegramId: number, lang: Lang): Promise<void> {
+// Сбой не должен ничем мешать: файл уже у человека. Дольше PROMO_WAIT_MS не
+// ждём: от подсказки ждёт выбор качества следующей ссылки.
+const PROMO_WAIT_MS = 10_000;
+export function sendPromo(tg: Api, chatId: number, telegramId: number, lang: Lang): Promise<void> {
+  return Promise.race([
+    trySendPromo(tg, chatId, telegramId, lang),
+    new Promise<void>((resolve) => setTimeout(resolve, PROMO_WAIT_MS)),
+  ]);
+}
+
+async function trySendPromo(tg: Api, chatId: number, telegramId: number, lang: Lang): Promise<void> {
   try {
     // Недолго: от ответа ждёт выбор качества следующей ссылки.
     const { key } = await api<{ key: string | null }>(`/bot-users/${telegramId}/promo`, { keys: BOT_PROMOS }, { timeoutMs: 5000 });
@@ -24,8 +33,12 @@ export async function sendPromo(tg: Api, chatId: number, telegramId: number, lan
     try {
       await tg.sendMessage(chatId, promoText(key as PromoKey, lang), { link_preview_options: { is_disabled: true } });
     } catch (e) {
-      // Не дошла — снимаем отметку о показе (BotUserService.promoFailed).
-      await api(`/bot-users/${telegramId}/promo/failed`, { key }).catch(() => {});
+      // Telegram отказал (лимит, бот заблокирован) — снимаем отметку о показе
+      // (BotUserService.promoFailed). Сбой сети не снимаем: сообщение могло
+      // и дойти, а показывать подсказку дважды нельзя.
+      if (e instanceof GrammyError) {
+        await api(`/bot-users/${telegramId}/promo/failed`, { key }, { timeoutMs: 5000 }).catch(() => {});
+      }
       throw e;
     }
   } catch (e: any) {

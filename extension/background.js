@@ -870,6 +870,9 @@ function attachPromo(key) {
           if (job?.state !== "done") return undefined;
           attached = true;
           return { ...job, promo };
+        }).catch((e) => {
+          attached = false;
+          console.warn("Videoner: promo attach", e);
         });
         if (attached) {
           state.last = Date.now();

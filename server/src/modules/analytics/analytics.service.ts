@@ -611,7 +611,7 @@ export class AnalyticsService {
       GROUP BY p."key"
       ORDER BY shown DESC`;
     const [first] = await this.prisma.$queryRaw<{ since: Date | null }[]>`
-      SELECT MIN("shownAt") AS since FROM "PromoShow"`;
+      SELECT MIN("shownAt") AS since FROM "PromoShow" WHERE "shownAt" < now() - interval '48 hours'`;
     if (!first?.since) return { since: null, keys, baseline: { days: 0, blocked: 0 } };
     const [baseline] = await this.prisma.$queryRaw<{ days: number; blocked: number }[]>`
       WITH d AS (
@@ -632,7 +632,7 @@ export class AnalyticsService {
         AND NOT EXISTS (
           SELECT 1 FROM "PromoShow" p
           WHERE p."botUserId" = d.u
-            AND p."shownAt" >= d.day AND p."shownAt" < d.last + interval '48 hours'
+            AND p."shownAt" >= d.day - interval '48 hours' AND p."shownAt" < d.last + interval '48 hours'
         )`;
     return { since: first.since, keys, baseline };
   }

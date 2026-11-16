@@ -46,6 +46,28 @@ variant also downloaded successfully. On 2026-11-16 live checks resolved photo
 `x7xpyo`, and rejected the explicit adult-content gate at `degtjo`.
 These selected checks do not establish general captcha reliability.
 
+Recovery behavior:
+
+- A deleted/private/missing post does not close a healthy anonymous browser
+  session or trigger the service-wide network cooldown.
+- Post-specific refusals are cached for 60 seconds (at most 100 entries).
+  Temporary network/challenge errors are never cached as post refusals.
+- Verified crosspost sources share the bounded metadata cache. A crosspost
+  inherits its source's expiry; wrapping a cached source does not extend the
+  lifetime of its age verification.
+- Recognizing a category name is not sufficient to answer a challenge: the
+  active classifier/detector must support it. Unsupported tasks are refreshed
+  within the existing bounds instead of submitting an empty selection.
+- An absent widget on the explicit humanity-check page fails after 20 seconds,
+  leaving time for a fresh proxy session. Failed image loading and rejected or
+  unsupported challenges also permit one retry, provided at least 60 seconds
+  remain in the original 200-second request budget. A second failure stops.
+
+These changes address specific failure modes; they do not guarantee that a
+fresh Reddit session will pass its captcha. Captcha timeouts still occur in
+live checks, and successful cache hits must not be counted as fresh-session
+successes when measuring availability.
+
 The resolver rejects explicit mature-content gates and marked posts. It follows
 crosspost sources and requires an independently checked source; an unresolved
 post or source fails closed. The API plugin requires `age_verified: true` and

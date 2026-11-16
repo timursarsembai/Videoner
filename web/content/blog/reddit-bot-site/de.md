@@ -1,8 +1,9 @@
 ---
 title: "Reddit im Bot und auf der Website herunterladen"
 summary: "Öffentliche Reddit-Videos und einzelne Bilder sind jetzt in @VideonerBot und auf der Videoner-Website verfügbar. Videos werden als MP4 gespeichert, mit Ton, wenn der Beitrag welchen enthält."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Öffentliche Reddit-Videos und einzelne Bilder sind jetzt in @VideonerBot und auf der Videoner-Website verfügbar. Videos werden als MP4 gespeichert, mit Ton, wenn der Beitrag welchen enthält.
 

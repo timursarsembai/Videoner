@@ -1,8 +1,9 @@
 ---
 title: "Reddit downloads in the bot and on the website"
 summary: "Public Reddit videos and single images are now available in @VideonerBot and on Videoner. Videos are saved as MP4, with sound when the post has it."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Public Reddit videos and single images are now available in @VideonerBot and on Videoner. Videos are saved as MP4, with sound when the post has it.
 

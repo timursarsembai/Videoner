@@ -1,8 +1,9 @@
 ---
 title: "ボットとサイトで Reddit をダウンロード"
 summary: "Reddit の公開動画と単一の画像を、@VideonerBot と Videoner のサイトでダウンロードできるようになりました。動画は MP4 で保存され、投稿に音声がある場合は音声も含まれます。"
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Reddit の公開動画と単一の画像を、@VideonerBot と Videoner のサイトでダウンロードできるようになりました。動画は MP4 で保存され、投稿に音声がある場合は音声も含まれます。
 

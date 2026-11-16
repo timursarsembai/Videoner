@@ -1,8 +1,9 @@
 ---
 title: "Reddit: botda və saytda yükləmə"
 summary: "Reddit-dəki açıq videolar və tək şəkillər artıq @VideonerBot və Videoner saytında mövcuddur. Videolar MP4 kimi saxlanılır, paylaşımda səs varsa, o da əlavə olunur."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Reddit-dəki açıq videolar və tək şəkillər artıq @VideonerBot və Videoner saytında mövcuddur. Videolar MP4 kimi saxlanılır, paylaşımda səs varsa, o da əlavə olunur.
 

@@ -11,7 +11,7 @@ export const revalidate = 3600;
 export function GET() {
   const ui = blogUi.ru;
   const posts = listPosts("ru")
-    .filter((post) => post.lang === "ru")
+    .filter((post) => post.lang === "ru" && post.channel !== false)
     .map((post) => {
       const url = `https://videoner.download/ru/blog/${post.slug}`;
       return {

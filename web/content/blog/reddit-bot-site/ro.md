@@ -1,8 +1,9 @@
 ---
 title: "Descarcă Reddit în bot și pe site"
 summary: "Videoclipurile publice și imaginile individuale de pe Reddit sunt acum disponibile în @VideonerBot și pe site-ul Videoner. Videoclipurile se salvează în MP4, cu sunet dacă postarea îl conține."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Videoclipurile publice și imaginile individuale de pe Reddit sunt acum disponibile în @VideonerBot și pe site-ul Videoner. Videoclipurile se salvează în MP4, cu sunet dacă postarea îl conține.
 

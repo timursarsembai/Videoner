@@ -1,8 +1,9 @@
 ---
 title: "Reddit: bot va saytda yuklab olish"
 summary: "Reddit’dagi ochiq videolar va alohida rasmlarni endi @VideonerBot va Videoner saytida yuklab olish mumkin. Videolar MP4 shaklida, postda ovoz bo‘lsa ovozi bilan saqlanadi."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Reddit’dagi ochiq videolar va alohida rasmlarni endi @VideonerBot va Videoner saytida yuklab olish mumkin. Videolar MP4 shaklida, postda ovoz bo‘lsa ovozi bilan saqlanadi.
 

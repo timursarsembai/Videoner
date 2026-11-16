@@ -1,8 +1,9 @@
 ---
 title: "Pakua Reddit kupitia boti na tovuti"
 summary: "Video za umma na picha moja moja za Reddit sasa zinapatikana kupitia @VideonerBot na tovuti ya Videoner. Video huhifadhiwa kama MP4, pamoja na sauti ikiwa ipo kwenye chapisho."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Video za umma na picha moja moja za Reddit sasa zinapatikana kupitia @VideonerBot na tovuti ya Videoner. Video huhifadhiwa kama MP4, pamoja na sauti ikiwa ipo kwenye chapisho.
 

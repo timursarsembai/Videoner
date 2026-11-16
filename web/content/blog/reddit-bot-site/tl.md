@@ -1,8 +1,9 @@
 ---
 title: "Mag-download ng Reddit sa bot at website"
 summary: "Puwede nang i-download ang mga pampublikong Reddit video at iisang larawan sa @VideonerBot at website ng Videoner. MP4 ang video, kasama ang tunog kung mayroon ang post."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Puwede nang i-download ang mga pampublikong Reddit video at iisang larawan sa @VideonerBot at website ng Videoner. MP4 ang video, kasama ang tunog kung mayroon ang post.
 

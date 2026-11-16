@@ -1,8 +1,9 @@
 ---
 title: "Tải Reddit qua bot và trang web"
 summary: "Video công khai và ảnh đơn trên Reddit hiện có thể tải bằng @VideonerBot và trang web Videoner. Video được lưu dưới dạng MP4, kèm âm thanh nếu bài đăng có âm thanh."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Video công khai và ảnh đơn trên Reddit hiện có thể tải bằng @VideonerBot và trang web Videoner. Video được lưu dưới dạng MP4, kèm âm thanh nếu bài đăng có âm thanh.
 

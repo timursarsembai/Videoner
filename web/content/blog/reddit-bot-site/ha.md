@@ -1,8 +1,9 @@
 ---
 title: "Sauke Reddit ta bot da shafin yanar gizo"
 summary: "Bidiyoyin Reddit na jama'a da hotuna ɗaiɗai suna samuwa yanzu a @VideonerBot da shafin Videoner. Ana adana bidiyo a MP4, tare da sauti idan sakon yana da shi."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Bidiyoyin Reddit na jama'a da hotuna ɗaiɗai suna samuwa yanzu a @VideonerBot da shafin Videoner. Ana adana bidiyo a MP4, tare da sauti idan sakon yana da shi.
 

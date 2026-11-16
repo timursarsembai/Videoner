@@ -1,8 +1,9 @@
 ---
 title: "봇과 웹사이트에서 Reddit 다운로드"
 summary: "이제 @VideonerBot과 Videoner 웹사이트에서 Reddit의 공개 동영상과 단일 이미지를 다운로드할 수 있습니다. 동영상은 MP4로 저장되며 게시물에 소리가 있으면 소리도 포함됩니다."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 이제 @VideonerBot과 Videoner 웹사이트에서 Reddit의 공개 동영상과 단일 이미지를 다운로드할 수 있습니다. 동영상은 MP4로 저장되며 게시물에 소리가 있으면 소리도 포함됩니다.
 

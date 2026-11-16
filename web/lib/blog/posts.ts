@@ -13,6 +13,7 @@ import { Block, parseBlocks } from "./markdown";
 //                          статей одного дня; без него статья ниже датированных
 //                          тем же днём со временем, между собой — по slug)
 //   updated: YYYY-MM-DD   (необязательно: дата заметной правки статьи)
+//   channel: false       (необязательно: статья только на сайте, без автоанонса)
 //   ---
 // Страницы блога собираются при сборке и пересобираются раз в час
 // (revalidate на страницах и в /api/blog/channel). Статьи с датой в будущем
@@ -31,6 +32,7 @@ export type BlogPost = {
   lang: Language;
   title: string;
   summary: string;
+  channel?: boolean;
   blocks: Block[];
 };
 
@@ -69,7 +71,7 @@ export function getPost(slug: string, lang: Language): BlogPost | null {
     const updated =
       ISO_DATE.test(meta.updated ?? "") && meta.updated > meta.date && meta.updated <= today() ? meta.updated : meta.date;
     const time = TIME.test(meta.time ?? "") ? meta.time : "";
-    return { slug, date: meta.date, time, updated, lang: l, title: meta.title, summary: meta.summary ?? "", blocks: parseBlocks(body) };
+    return { slug, date: meta.date, time, updated, lang: l, title: meta.title, summary: meta.summary ?? "", channel: meta.channel !== "false", blocks: parseBlocks(body) };
   }
   return null;
 }

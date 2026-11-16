@@ -1,8 +1,9 @@
 ---
 title: "在机器人和网站下载 Reddit 内容"
 summary: "现在可以通过 @VideonerBot 和 Videoner 网站下载 Reddit 的公开视频和单张图片。视频保存为 MP4，原帖有声音时会保留声音。"
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 现在可以通过 @VideonerBot 和 Videoner 网站下载 Reddit 的公开视频和单张图片。视频保存为 MP4，原帖有声音时会保留声音。
 

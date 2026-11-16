@@ -1,8 +1,9 @@
 ---
 title: "Reddit kala soo deg bot-ka iyo bogga"
 summary: "Fiidiyowyada dadweynaha iyo sawirrada keli-keli ah ee Reddit hadda waxaa laga heli karaa @VideonerBot iyo bogga Videoner. Fiidiyowga waxaa loo kaydiyaa MP4, codkana waa lagu daraa haddii uu jiro."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Fiidiyowyada dadweynaha iyo sawirrada keli-keli ah ee Reddit hadda waxaa laga heli karaa @VideonerBot iyo bogga Videoner. Fiidiyowga waxaa loo kaydiyaa MP4, codkana waa lagu daraa haddii uu jiro.
 

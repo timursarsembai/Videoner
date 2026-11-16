@@ -1,8 +1,9 @@
 ---
 title: "Reddit downloaden via de bot en website"
 summary: "Openbare Reddit-video's en losse afbeeldingen zijn nu beschikbaar in @VideonerBot en op de Videoner-website. Video's worden opgeslagen als MP4, met geluid als de post dat heeft."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Openbare Reddit-video's en losse afbeeldingen zijn nu beschikbaar in @VideonerBot en op de Videoner-website. Video's worden opgeslagen als MP4, met geluid als de post dat heeft.
 

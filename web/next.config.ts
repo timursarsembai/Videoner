@@ -31,6 +31,8 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Сборка делит VPS с API и ботом: один worker ограничивает пиковую память.
+  experimental: { cpus: 1 },
   images: {
     remotePatterns: [
       {

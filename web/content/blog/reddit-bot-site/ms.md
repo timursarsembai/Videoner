@@ -1,8 +1,9 @@
 ---
 title: "Muat turun Reddit melalui bot dan laman web"
 summary: "Video awam dan imej tunggal Reddit kini tersedia dalam @VideonerBot dan laman web Videoner. Video disimpan sebagai MP4, dengan bunyi jika siaran mempunyai bunyi."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Video awam dan imej tunggal Reddit kini tersedia dalam @VideonerBot dan laman web Videoner. Video disimpan sebagai MP4, dengan bunyi jika siaran mempunyai bunyi.
 

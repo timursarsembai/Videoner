@@ -1,8 +1,9 @@
 ---
 title: "Pobieranie z Reddita w bocie i na stronie"
 summary: "Publiczne filmy i pojedyncze zdjęcia z Reddita są teraz dostępne w @VideonerBot i na stronie Videoner. Filmy zapisują się jako MP4, z dźwiękiem, jeśli post go zawiera."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Publiczne filmy i pojedyncze zdjęcia z Reddita są teraz dostępne w @VideonerBot i na stronie Videoner. Filmy zapisują się jako MP4, z dźwiękiem, jeśli post go zawiera.
 

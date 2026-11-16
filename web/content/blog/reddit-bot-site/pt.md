@@ -1,8 +1,9 @@
 ---
 title: "Baixe do Reddit pelo bot e pelo site"
 summary: "Vídeos públicos e imagens individuais do Reddit agora estão disponíveis no @VideonerBot e no site Videoner. Os vídeos são salvos em MP4, com áudio quando a publicação tem som."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Vídeos públicos e imagens individuais do Reddit agora estão disponíveis no @VideonerBot e no site Videoner. Os vídeos são salvos em MP4, com áudio quando a publicação tem som.
 

@@ -1,8 +1,9 @@
 ---
 title: "Shkarkime nga Reddit në bot dhe në faqe"
 summary: "Videot publike dhe fotot e veçuara nga Reddit tani janë të disponueshme në @VideonerBot dhe faqen Videoner. Videot ruhen si MP4, me zë nëse postimi ka zë."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Videot publike dhe fotot e veçuara nga Reddit tani janë të disponueshme në @VideonerBot dhe faqen Videoner. Videot ruhen si MP4, me zë nëse postimi ka zë.
 

@@ -1,8 +1,9 @@
 ---
 title: "Télécharger Reddit dans le bot et sur le site"
 summary: "Les vidéos publiques et les images individuelles de Reddit sont désormais disponibles dans @VideonerBot et sur le site Videoner. Les vidéos sont enregistrées en MP4, avec le son si la publication en contient."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Les vidéos publiques et les images individuelles de Reddit sont désormais disponibles dans @VideonerBot et sur le site Videoner. Les vidéos sont enregistrées en MP4, avec le son si la publication en contient.
 

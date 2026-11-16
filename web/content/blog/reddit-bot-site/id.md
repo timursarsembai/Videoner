@@ -1,8 +1,9 @@
 ---
 title: "Unduh Reddit lewat bot dan situs"
 summary: "Video publik dan gambar tunggal dari Reddit kini tersedia di @VideonerBot dan situs Videoner. Video disimpan sebagai MP4 dengan suara jika postingannya memiliki suara."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Video publik dan gambar tunggal dari Reddit kini tersedia di @VideonerBot dan situs Videoner. Video disimpan sebagai MP4 dengan suara jika postingannya memiliki suara.
 

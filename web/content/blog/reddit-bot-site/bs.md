@@ -1,8 +1,9 @@
 ---
 title: "Reddit: preuzimanje u botu i na stranici"
 summary: "Javni Reddit videozapisi i pojedinačne fotografije sada su dostupni u @VideonerBot i na stranici Videoner. Videozapisi se spremaju kao MP4, sa zvukom ako ga objava sadrži."
-date: 2026-11-15
-time: 22:52:36
+date: 2026-11-16
+time: 03:19:52
+channel: false
 ---
 Javni Reddit videozapisi i pojedinačne fotografije sada su dostupni u @VideonerBot i na stranici Videoner. Videozapisi se spremaju kao MP4, sa zvukom ako ga objava sadrži.
 

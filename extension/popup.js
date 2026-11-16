@@ -424,7 +424,7 @@ function render(job) {
     case "saving":
       return showLoading(t.saving);
     case "done":
-      return showMessage(t.done, {
+      return showMessage(job.number ? `${t.done}\n⬇️ ${t.downloadNumber.replace("{n}", formatNumber(job.number))}` : t.done, {
         actions: [
           videoCard(),
           el("button", { class: "primary", onclick: resetJob }, t.again),
@@ -751,3 +751,8 @@ async function main() {
 }
 
 main();
+
+// «8 097»: разряды через неразрывный пробел, как в подписи бота и на сайте.
+function formatNumber(n) {
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+}

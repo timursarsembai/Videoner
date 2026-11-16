@@ -124,6 +124,7 @@ main {
 
 .message {
   margin: 4px 0 12px;
+  white-space: pre-line;
 }
 
 .message.error {

@@ -246,11 +246,11 @@ async function startDirect({ url, tabId, media }) {
       return;
     }
 
-    // Отчёт — только для статистики: его сбой не должен портить человеку
-    // скачанный файл.
-    api("/download/report", { url, fileSize: size, title, lang: uiLang }).catch((e) => console.warn("Videoner: report", e));
+    // Отчёт — для статистики и номера скачивания («Скачивание №…»): его сбой
+    // не должен портить человеку скачанный файл.
+    const number = await reportDownload({ url, fileSize: size, title, lang: uiLang });
     void addToHistory({ url, title, kind: media.ext ? "photo" : "video" });
-    await updateJob(url, (job) => ({ ...job, state: "done", progress: null }));
+    await updateJob(url, (job) => ({ ...job, state: "done", progress: null, number }));
   } finally {
     active.delete(url);
   }
@@ -493,11 +493,9 @@ async function getCourseDone({ key, href, size }) {
     if (!isBrowserGetCourse(job)) return;
     await updateJob(key, (current) => ({ ...current, state: "saving", progress: null }));
     await chromeDownload(href, `${safeFileName(job.title)}.mp4`, key);
-    api("/download/report", { url: reportUrl(job.gc.master), fileSize: size, title: job.title, lang: uiLang }).catch((e) =>
-      console.warn("Videoner: report", e)
-    );
+    const number = await reportDownload({ url: reportUrl(job.gc.master), fileSize: size, title: job.title, lang: uiLang });
     void addToHistory(historyEntry(job));
-    await updateJob(key, (current) => ({ ...current, state: "done", progress: null }));
+    await updateJob(key, (current) => ({ ...current, state: "done", progress: null, number }));
   } catch (e) {
     console.error("Videoner: getcourse save", e);
     await updateJob(key, (current) => ({ ...current, state: "error", error: friendlyError({ message: "failed" }) }));
@@ -591,7 +589,7 @@ async function follow(job) {
       try {
         await saveFiles(job, status);
         void addToHistory(historyEntry(job));
-        await setJob(job.url, { ...job, state: "done", progress: null });
+        await setJob(job.url, { ...job, state: "done", progress: null, number: validNumber(status.number) });
       } catch (e) {
         console.error("Videoner: save", e);
         await setJob(job.url, { ...job, state: "error", error: friendlyError(e) });
@@ -826,3 +824,24 @@ resumeJobs();
 // браузера и после установки или обновления самого расширения.
 chrome.runtime.onStartup.addListener(() => void checkForUpdate());
 chrome.runtime.onInstalled.addListener(() => void checkForUpdate({ force: true }));
+
+// Порядковый номер удачного скачивания среди всех (сервер) — «Скачивание
+// №8 097» в окошке. Не пришёл — просто не показываем.
+function validNumber(n) {
+  return Number.isInteger(n) && n > 0 ? n : null;
+}
+
+// Отчёт о скачанном браузером файле: статистика и номер скачивания. Ждём его
+// недолго — файл уже сохранён, и сбой отчёта ничего человеку не портит.
+async function reportDownload(body) {
+  try {
+    const result = await Promise.race([
+      api("/download/report", body),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 8000)),
+    ]);
+    return validNumber(result?.number);
+  } catch (e) {
+    console.warn("Videoner: report", e);
+    return null;
+  }
+}

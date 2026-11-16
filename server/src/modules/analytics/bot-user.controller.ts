@@ -132,6 +132,16 @@ export class BotUserController {
     return { key: await this.botUserService.nextPromo(parseTelegramId(telegramId), keys as string[]) };
   }
 
+  @Post(':telegramId/promo/failed')
+  @UseGuards(BotOnlyGuard)
+  async promoFailed(@Param('telegramId') telegramId: string, @Body() body: { key?: unknown }) {
+    if (typeof body?.key !== 'string' || !/^[a-z0-9-]{1,40}$/.test(body.key)) {
+      throw new BadRequestException('key is required');
+    }
+    await this.botUserService.promoFailed(parseTelegramId(telegramId), body.key);
+    return { ok: true };
+  }
+
   // Для обновления профиля на сайте (GET /api/auth/me) без повторной проверки
   // подписи Telegram при каждом заходе — сессия сайта уже подтверждает
   // личность, тут просто читаем актуальные данные по telegramId.

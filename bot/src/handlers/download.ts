@@ -1176,10 +1176,12 @@ async function startDownload(
     current.title ?? "",
     current.thumbnail,
     current.messageId,
-  ).then((delivered) => {
+  ).then(async (delivered) => {
     // Подсказка о Videoner — только в личке и только после дошедшего файла.
+    // Ждём её до выбора качества следующей ссылки: иначе она пришла бы после
+    // него и выглядела бы ответом на следующую ссылку. sendPromo не бросает.
     if (delivered && state.chatId > 0 && state.userId) {
-      inBackground("Подсказка", sendPromo(tg, state.chatId, state.userId, state.lang));
+      await sendPromo(tg, state.chatId, state.userId, state.lang);
     }
     return delivered;
   }).finally(() => {

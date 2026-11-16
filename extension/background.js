@@ -861,14 +861,22 @@ function attachPromo(key) {
       const state = { count: 0, last: 0, seen: [], ...(saved ?? {}) };
       state.count += 1;
       const fresh = PROMOS.filter((p) => !state.seen.includes(p));
-      let promo = null;
       if (state.count >= PROMO_MIN_DOWNLOADS && Date.now() - state.last >= PROMO_INTERVAL_MS && fresh.length) {
-        promo = fresh[Math.floor(Math.random() * fresh.length)];
-        state.last = Date.now();
-        state.seen = [...state.seen, promo];
+        const promo = fresh[Math.floor(Math.random() * fresh.length)];
+        // Показанной считаем, только если задача ещё «готово» и подсказка
+        // к ней прицепилась: человек мог уже нажать «Скачать ещё».
+        let attached = false;
+        await updateJob(key, (job) => {
+          if (job?.state !== "done") return undefined;
+          attached = true;
+          return { ...job, promo };
+        });
+        if (attached) {
+          state.last = Date.now();
+          state.seen = [...state.seen, promo];
+        }
       }
       await chrome.storage.local.set({ promo: state });
-      if (promo) await updateJob(key, (job) => (job?.state === "done" ? { ...job, promo } : undefined));
     })
     .catch((e) => console.warn("Videoner: promo", e));
   return promoWrites;

@@ -118,16 +118,29 @@ export class BotUserService {
     const fresh = keys.filter((k) => !seen.has(k));
     if (!fresh.length) return null;
     const key = fresh[Math.floor(rnd() * fresh.length)];
-    // Запись и проверка «не было за сутки» — одним условным INSERT: два
-    // одновременных вызова не выдадут две подсказки.
-    const inserted = await this.prisma.$executeRaw`
-      INSERT INTO "PromoShow" ("id", "botUserId", "key", "shownAt")
-      SELECT gen_random_uuid()::text, ${botUser.id}, ${key}, now()
-      WHERE NOT EXISTS (
-        SELECT 1 FROM "PromoShow" WHERE "botUserId" = ${botUser.id} AND ("shownAt" > ${since} OR "key" = ${key})
-      )
-      ON CONFLICT DO NOTHING`;
+    // Проверка «не было за сутки» и запись — под блокировкой на человека:
+    // два одновременных вызова (две ссылки подряд) иначе оба не увидели бы
+    // чужую ещё не закоммиченную запись и выдали бы две разные подсказки.
+    const inserted = await this.prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${'promo:' + botUser.id}))`;
+      return tx.$executeRaw`
+        INSERT INTO "PromoShow" ("id", "botUserId", "key", "shownAt")
+        SELECT gen_random_uuid()::text, ${botUser.id}, ${key}, now()
+        WHERE NOT EXISTS (
+          SELECT 1 FROM "PromoShow" WHERE "botUserId" = ${botUser.id} AND ("shownAt" > ${since} OR "key" = ${key})
+        )
+        ON CONFLICT DO NOTHING`;
+    });
     return inserted === 1 ? key : null;
+  }
+
+  // Бот не смог отправить выданную подсказку (лимит Telegram, сеть) —
+  // снимаем запись: иначе подсказка пропала бы, на сутки закрыла бы другие и
+  // попала бы в статистику дашборда как показанная.
+  async promoFailed(telegramId: number, key: string) {
+    await this.prisma.promoShow.deleteMany({
+      where: { key, botUser: { telegramId: BigInt(telegramId) }, shownAt: { gt: new Date(Date.now() - 10 * 60 * 1000) } },
+    });
   }
 
   // Человек заблокировал бота или разблокировал его. Событие для графиков

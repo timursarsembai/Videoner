@@ -14,7 +14,9 @@ function service(opts: { blocked?: boolean; successful: number; shows: { key: st
         .mockResolvedValue(opts.shows.map((s) => ({ key: s.key, shownAt: new Date(Date.now() - s.ago) }))),
     },
     $executeRaw: jest.fn().mockResolvedValue(opts.inserted ?? 1),
+    $transaction: jest.fn(),
   };
+  prisma.$transaction.mockImplementation((fn: (tx: unknown) => unknown) => fn(prisma));
   return { svc: new BotUserService(prisma as any), prisma };
 }
 

@@ -18,9 +18,16 @@ export function promoText(key: PromoKey, lang: Lang): string {
 // Сбой не должен ничем мешать: файл уже у человека.
 export async function sendPromo(tg: Api, chatId: number, telegramId: number, lang: Lang): Promise<void> {
   try {
-    const { key } = await api<{ key: string | null }>(`/bot-users/${telegramId}/promo`, { keys: BOT_PROMOS });
+    // Недолго: от ответа ждёт выбор качества следующей ссылки.
+    const { key } = await api<{ key: string | null }>(`/bot-users/${telegramId}/promo`, { keys: BOT_PROMOS }, { timeoutMs: 5000 });
     if (!key || !(BOT_PROMOS as string[]).includes(key)) return;
-    await tg.sendMessage(chatId, promoText(key as PromoKey, lang), { link_preview_options: { is_disabled: true } });
+    try {
+      await tg.sendMessage(chatId, promoText(key as PromoKey, lang), { link_preview_options: { is_disabled: true } });
+    } catch (e) {
+      // Не дошла — снимаем отметку о показе (BotUserService.promoFailed).
+      await api(`/bot-users/${telegramId}/promo/failed`, { key }).catch(() => {});
+      throw e;
+    }
   } catch (e: any) {
     console.error("Подсказка после скачивания не отправлена:", e?.message ?? e);
   }

@@ -589,15 +589,13 @@ export class AnalyticsService {
     };
   }
 
-  // Приток и отток по дням, неделям или месяцам, пересекающимся с периодом:
-  // сколько пришло новых (первое появление в боте или на сайте) и сколько
-  // заблокировали и разблокировали бота. Периоды без событий тоже нужны —
-  // иначе пустая неделя пропала бы с оси.
   // Подсказки после скачивания в боте (PromoShow): сколько раз показана
   // каждая и сколько из увидевших заблокировали бота в течение 48 часов.
   // Сравнение — дни без подсказки: человек удачно скачивал в боте, подсказки
   // в тот день не получал; заблокировал ли он бота в 48 часов после
-  // последнего скачивания того дня. Считается с первого показа подсказки.
+  // последнего скачивания того дня (и подсказки в эти 48 часов тоже не
+  // было). Считается с первого показа подсказки; последние 48 часов не
+  // берём — их окно ещё не закончилось и занизило бы обе доли.
   async promo() {
     const keys = await this.prisma.$queryRaw<{ key: string; shown: number; blocked: number; last: Date }[]>`
       SELECT p."key",
@@ -609,6 +607,7 @@ export class AnalyticsService {
              ))::int AS blocked,
              MAX(p."shownAt") AS last
       FROM "PromoShow" p
+      WHERE p."shownAt" < now() - interval '48 hours'
       GROUP BY p."key"
       ORDER BY shown DESC`;
     const [first] = await this.prisma.$queryRaw<{ since: Date | null }[]>`
@@ -629,12 +628,19 @@ export class AnalyticsService {
                  AND b.at >= d.last AND b.at < d.last + interval '48 hours'
              ))::int AS blocked
       FROM d
-      WHERE NOT EXISTS (
-        SELECT 1 FROM "PromoShow" p WHERE p."botUserId" = d.u AND date_trunc('day', p."shownAt") = d.day
-      )`;
+      WHERE d.last < now() - interval '48 hours'
+        AND NOT EXISTS (
+          SELECT 1 FROM "PromoShow" p
+          WHERE p."botUserId" = d.u
+            AND p."shownAt" >= d.day AND p."shownAt" < d.last + interval '48 hours'
+        )`;
     return { since: first.since, keys, baseline };
   }
 
+  // Приток и отток по дням, неделям или месяцам, пересекающимся с периодом:
+  // сколько пришло новых (первое появление в боте или на сайте) и сколько
+  // заблокировали и разблокировали бота. Периоды без событий тоже нужны —
+  // иначе пустая неделя пропала бы с оси.
   async blockedPeriods(unit: 'day' | 'week' | 'month', range: DateRange) {
     const from = day(range.from);
     const to = day(range.to);

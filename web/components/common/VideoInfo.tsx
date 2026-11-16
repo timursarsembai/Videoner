@@ -153,15 +153,20 @@ export const VideoInfoSection = ({
           void (async () => {
             const { items, number } = id ? await api.getDownloadResult(id) : { items: [], number: null };
             showDone(number);
-            // Подсказка о Videoner (lib/promo.ts) — чуть позже, отдельно от «готово».
-            const promo = nextSitePromo();
-            if (promo) setTimeout(() => showPromoToast(t(`promo.${promo}` as TranslationKey, { url: `videoner.download${localizedHref(language, "/extension")}` })), 2500);
+            // Подсказка о Videoner (lib/promo.ts) — только когда файл отдан
+            // человеку, чуть позже и отдельно от «готово».
+            const promoLater = () => {
+              const promo = nextSitePromo();
+              if (promo) setTimeout(() => showPromoToast(t(`promo.${promo}` as TranslationKey, { url: `videoner.download${localizedHref(language, "/extension")}` })), 2500);
+            };
             if (items.length > 1) {
               setPostItems(items);
+              promoLater();
               return;
             }
             if (downloadUrl) {
               downloadFile(downloadUrl);
+              promoLater();
             } else {
               toast.error(t("toast.downloadUrlNotReceived"));
             }

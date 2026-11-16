@@ -480,6 +480,9 @@ export class DownloadService {
       downloadId: download.id,
       fileName: hit.filename,
       itemCount: 1,
+      // Номер удачного скачивания (Download.downloadNumber): запись выдачи из
+      // кеша создаётся сразу удачной, и база уже его поставила.
+      number: download.downloadNumber,
       ...(hit.telegramFileId ? { telegramFileId: hit.telegramFileId } : {}),
     };
   }
@@ -722,7 +725,7 @@ export class DownloadService {
       Number.isInteger(size) && size > 0 && size <= MAX_REPORT_FILE_BYTES ? BigInt(size) : null;
     const title = typeof meta.title === 'string' ? meta.title.slice(0, 300) : null;
 
-    await this.prisma.download.create({
+    const created = await this.prisma.download.create({
       data: {
         originalUrl: url,
         status: DownloadStatus.COMPLETED,
@@ -738,8 +741,10 @@ export class DownloadService {
         lang: parseUiLang(meta.lang),
         country: parseCountry(meta.clientCountry),
       },
+      select: { downloadNumber: true },
     });
-    return { ok: true };
+    // Номер — для «Скачивание №…» в окошке расширения.
+    return { ok: true, number: created.downloadNumber };
   }
 
   private resolveDownloader(platform: string): Downloaders {
@@ -788,6 +793,9 @@ export class DownloadService {
       return {
         status: download.status,
         downloadUrl: download.downloadUrl,
+        // Порядковый номер удачного скачивания среди всех — «Скачивание
+        // №8 097» в подписи бота и на сайте. null, пока не завершилось.
+        number: download.downloadNumber,
         // Причина неудачи — только категория, без текста ошибки: по ней бот
         // объясняет человеку, что случилось (SERVER_BLOCKED — площадка не
         // отдала файл нашему серверу), а раньше писал общее «не получилось».

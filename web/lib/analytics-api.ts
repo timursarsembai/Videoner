@@ -233,6 +233,55 @@ export interface PromoStats {
   baseline: { days: number; blocked: number };
 }
 
+// Все пользователи бота (server analytics.service allUsers) — таблица «Все
+// пользователи» на вкладке «Пользователи».
+export interface BotUserRow {
+  telegramId: string;
+  username: string | null;
+  firstName: string | null;
+  languageCode: string | null;
+  firstSeenAt: string;
+  lastSeenAt: string;
+  lastDownloadAt: string | null;
+  blockedAt: string | null;
+  extension: boolean;
+  webLogin: boolean;
+  status: "active" | "inactive" | "blocked";
+  ok: number;
+  failed: number;
+  platforms: UserPlatformOutcome[];
+}
+
+// Журнал одного пользователя (server analytics.service userJournal).
+export interface UserJournal {
+  telegramId: string;
+  username: string | null;
+  firstName: string | null;
+  languageCode: string | null;
+  firstSeenAt: string;
+  lastSeenAt: string;
+  blockedAt: string | null;
+  instantVideo: boolean;
+  extensionLinkedAt: string | null;
+  lastWebLoginAt: string | null;
+  entries: {
+    at: string;
+    kind: "download" | "link-failure";
+    url: string;
+    platform: string;
+    source: string;
+    ok: boolean;
+    status: string;
+    number: number | null;
+    errorCategory: string | null;
+    fromCache: boolean;
+    title: string | null;
+    fileSize: number | null;
+  }[];
+  blocks: { blocked: boolean; source: string; at: string }[];
+  promos: { key: string; at: string }[];
+}
+
 export interface BlockedSummary {
   total: number;
   blocked: number;

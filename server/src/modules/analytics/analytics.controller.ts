@@ -42,6 +42,14 @@ export class AnalyticsController {
     'users/blocked': () => this.analyticsService.blockedSummary(),
     'users/blocked/outcomes': () => this.analyticsService.blockedOutcomes(),
     'users/promo': () => this.analyticsService.promo(),
+    'users/all': () => this.analyticsService.allUsers(),
+    'users/journal': async (q) => {
+      const id = typeof q.telegramId === 'string' && /^\d{1,16}$/.test(q.telegramId) ? BigInt(q.telegramId) : null;
+      if (id === null) throw new BadRequestException('telegramId is required');
+      const journal = await this.analyticsService.userJournal(id);
+      if (!journal) throw new NotFoundException('User not found');
+      return journal;
+    },
     'users/blocked/daily': (q) => this.analyticsService.blockedPeriods('day', this.range(q)),
     'users/blocked/weekly': (q) => this.analyticsService.blockedPeriods('week', this.range(q)),
     'users/blocked/monthly': (q) => this.analyticsService.blockedPeriods('month', this.range(q)),

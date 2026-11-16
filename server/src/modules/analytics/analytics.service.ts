@@ -67,6 +67,9 @@ const SUCCESS = [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED];
 
 // Каждый метод с периодом считает только записи внутри [from, to) — у каждого
 // графика на дашборде свой период (src/lib/analytics-range.ts).
+// Сколько последних записей показывает журнал одного пользователя.
+const USER_JOURNAL_MAX = 500;
+
 @Injectable()
 export class AnalyticsService {
   constructor(private prisma: PrismaService) {}
@@ -509,6 +512,139 @@ export class AnalyticsService {
     };
   }
 
+  // Все пользователи бота для таблицы «Все пользователи» (вкладка
+  // «Пользователи»): фильтры, поиск и сортировка — на дашборде, людей сотни.
+  // status: blocked — заблокировал бота сейчас; active — удачно скачивал за
+  // последние 30 дней (так же считает страница «Videoner в цифрах»);
+  // inactive — остальные.
+  async allUsers() {
+    const activeSince = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const [users, outcomes, active] = await Promise.all([
+      this.prisma.botUser.findMany({
+        select: {
+          id: true,
+          telegramId: true,
+          username: true,
+          firstName: true,
+          languageCode: true,
+          language: true,
+          firstSeenAt: true,
+          lastSeenAt: true,
+          blockedAt: true,
+          extensionLinkedAt: true,
+          lastWebLoginAt: true,
+        },
+      }),
+      this.userOutcomes(),
+      this.prisma.$queryRaw<{ uid: string; last: Date }[]>`
+        SELECT "botUserId" AS uid, MAX("createdAt") AS last FROM "Download"
+        WHERE "botUserId" IS NOT NULL AND "downloadNumber" IS NOT NULL
+        GROUP BY 1`,
+    ]);
+    const lastOk = new Map(active.map((r) => [r.uid, r.last]));
+    return users.map((u) => {
+      const stats = outcomes.get(u.id) ?? { ok: 0, failed: 0, platforms: [] };
+      const last = lastOk.get(u.id) ?? null;
+      return {
+        ...stats,
+        telegramId: u.telegramId.toString(),
+        username: u.username,
+        firstName: u.firstName,
+        languageCode: u.language ?? u.languageCode,
+        firstSeenAt: u.firstSeenAt,
+        lastSeenAt: u.lastSeenAt,
+        lastDownloadAt: last,
+        blockedAt: u.blockedAt,
+        extension: u.extensionLinkedAt !== null,
+        webLogin: u.lastWebLoginAt !== null,
+        status: u.blockedAt ? 'blocked' : last && last >= activeSince ? 'active' : 'inactive',
+      };
+    });
+  }
+
+  // Журнал одного пользователя бота (окно по нажатию на строку таблицы):
+  // все его скачивания и отказы при разборе ссылки (с 12.11.2026),
+  // блокировки и показанные подсказки. Последние USER_JOURNAL_MAX записей.
+  async userJournal(telegramId: bigint) {
+    const user = await this.prisma.botUser.findUnique({ where: { telegramId } });
+    if (!user) return null;
+    const [downloads, failures, blocks, promos] = await Promise.all([
+      this.prisma.download.findMany({
+        where: { botUserId: user.id },
+        orderBy: { createdAt: 'desc' },
+        take: USER_JOURNAL_MAX,
+        select: {
+          createdAt: true,
+          originalUrl: true,
+          downloader: true,
+          source: true,
+          status: true,
+          downloadNumber: true,
+          errorCategory: true,
+          fromCache: true,
+          clientSide: true,
+          videoTitle: true,
+          fileSize: true,
+        },
+      }),
+      this.prisma.linkFailure.findMany({
+        where: { botUserId: user.id },
+        orderBy: { createdAt: 'desc' },
+        take: USER_JOURNAL_MAX,
+        select: { createdAt: true, url: true, platform: true, source: true, errorCategory: true },
+      }),
+      this.prisma.botBlockEvent.findMany({ where: { botUserId: user.id }, orderBy: { at: 'desc' } }),
+      this.prisma.promoShow.findMany({ where: { botUserId: user.id }, orderBy: { shownAt: 'desc' } }),
+    ]);
+    const entries = [
+      ...downloads.map((d) => ({
+        at: d.createdAt,
+        kind: 'download' as const,
+        url: d.originalUrl,
+        platform: String(d.downloader).toLowerCase(),
+        source: d.source,
+        ok: d.downloadNumber !== null,
+        status: d.status,
+        number: d.downloadNumber,
+        errorCategory: d.errorCategory,
+        fromCache: d.fromCache,
+        title: d.videoTitle,
+        fileSize: d.fileSize === null ? null : Number(d.fileSize),
+      })),
+      ...failures.map((f) => ({
+        at: f.createdAt,
+        kind: 'link-failure' as const,
+        url: f.url,
+        platform: f.platform,
+        source: f.source,
+        ok: false,
+        status: 'FAILED',
+        number: null,
+        errorCategory: f.errorCategory,
+        fromCache: false,
+        title: null,
+        fileSize: null,
+      })),
+    ]
+      .sort((a, b) => b.at.getTime() - a.at.getTime())
+      .slice(0, USER_JOURNAL_MAX);
+    return {
+      telegramId: user.telegramId.toString(),
+      username: user.username,
+      firstName: user.firstName,
+      languageCode: user.language ?? user.languageCode,
+      firstSeenAt: user.firstSeenAt,
+      lastSeenAt: user.lastSeenAt,
+      blockedAt: user.blockedAt,
+      instantVideo: user.instantVideo,
+      extensionLinkedAt: user.extensionLinkedAt,
+      lastWebLoginAt: user.lastWebLoginAt,
+      entries,
+      blocks: blocks.map((b) => ({ blocked: b.blocked, source: b.source, at: b.at })),
+      promos: promos.map((p) => ({ key: p.key, at: p.shownAt })),
+    };
+  }
+
   // Удачные и неудачные попытки каждого пользователя бота по площадкам — за
   // всё время. Удача — скачанный файл (COMPLETED, EXPIRED — тот же файл, уже
   // убранный с диска); неудача — упавшее скачивание и отказ при разборе
@@ -520,7 +656,10 @@ export class AnalyticsService {
     >`
       WITH e AS (
         SELECT d."botUserId" AS uid, lower(d.downloader::text) AS platform,
-               d.status IN ('COMPLETED', 'EXPIRED') AS ok, d.status = 'FAILED' AS failed
+               -- Удача — скачивание с номером (Download.downloadNumber); EXPIRED
+               -- без номера — упавшее, которое очистка перевела в EXPIRED.
+               d."downloadNumber" IS NOT NULL AS ok,
+               d.status = 'FAILED' OR (d.status = 'EXPIRED' AND d."downloadNumber" IS NULL) AS failed
         FROM "Download" d
         WHERE d."botUserId" IS NOT NULL AND d.source <> 'API'
         UNION ALL

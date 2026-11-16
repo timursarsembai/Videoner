@@ -97,7 +97,7 @@ export function BlockedPlatformsChart() {
 // Подсказки после скачивания в боте (bot/src/promo.ts): не стали ли из-за них
 // чаще блокировать бота. Сравнение — дни, когда человек скачивал без
 // подсказки.
-const PROMO_LABELS: Record<string, string> = {
+export const PROMO_LABELS: Record<string, string> = {
   reddit: "Теперь и Reddit",
   extension: "Расширение",
   channel: "Канал новостей",

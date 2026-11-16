@@ -36,6 +36,7 @@ import { RedditSummary } from "@/components/dashboard/reddit-summary";
 import { CountriesTab } from "@/components/dashboard/countries";
 import { LanguagesTab } from "@/components/dashboard/languages";
 import { AttemptsLog, BlockedUsersTable, TopUsersTable } from "@/components/dashboard/tables";
+import { AllUsersTable, UserJournalModal } from "@/components/dashboard/users-table";
 import { BlockedOutcomesChart, BlockedPlatformsChart, PromoBlocksCard } from "@/components/dashboard/block-outcomes";
 
 // Дашборд. У каждого графика свой выбор периода (по умолчанию последние 30
@@ -95,9 +96,15 @@ function UserStatCards({ full }: { full: boolean }) {
   );
 }
 
-function BlockedUsersSection() {
+function BlockedUsersSection({ onOpen }: { onOpen: (telegramId: string) => void }) {
   const blocked = useAnalytics<BlockedSummary>("users/blocked");
-  return <BlockedUsersTable users={blocked.data?.users ?? []} />;
+  const users = blocked.data?.users ?? [];
+  return (
+    <>
+      <BlockedUsersTable users={users} mode="blocked" onOpen={onOpen} />
+      <BlockedUsersTable users={users} mode="unblocked" onOpen={onOpen} />
+    </>
+  );
 }
 
 function TopUsersSection() {
@@ -124,6 +131,9 @@ function OverviewTab() {
 }
 
 function UsersTab() {
+  // Журнал пользователя — общее окно для всех трёх таблиц.
+  const [journalFor, setJournalFor] = useState<string | null>(null);
+  const closeJournal = useCallback(() => setJournalFor(null), []);
   return (
     <>
       <UserStatCards full />
@@ -148,12 +158,17 @@ function UsersTab() {
         <BlockedOutcomesChart />
         <BlockedPlatformsChart />
         <PromoBlocksCard />
-        <BlockedUsersSection />
+        <BlockedUsersSection onOpen={setJournalFor} />
+      </section>
+      <h2 className="text-base font-semibold">Все пользователи</h2>
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <AllUsersTable onOpen={setJournalFor} />
       </section>
       <h2 className="text-base font-semibold">Самые активные</h2>
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <TopUsersSection />
       </section>
+      {journalFor && <UserJournalModal telegramId={journalFor} onClose={closeJournal} />}
     </>
   );
 }

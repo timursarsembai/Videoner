@@ -17,7 +17,7 @@ import { formatAttemptTime } from "./tables";
 
 const PAGE_SIZE = 50;
 
-const CATEGORY_LABELS: Record<string, string> = {
+export const CATEGORY_LABELS: Record<string, string> = {
   LOGIN_REQUIRED: "Нужен вход",
   YOUTUBE_AUTH_REQUIRED: "Антибот YouTube",
   SERVER_BLOCKED: "Площадка не пустила сервер",

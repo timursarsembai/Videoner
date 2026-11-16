@@ -11,7 +11,7 @@ import { countryFlag, countryName } from "./countries";
 
 // Время в днях и минутах (без секунд) — для таблиц, где важна дата, а не
 // точный момент; пояс тот же, что в журнале попыток.
-function formatShortTime(iso: string): string {
+export function formatShortTime(iso: string): string {
   return new Date(iso).toLocaleString("ru-RU", {
     timeZone: "Asia/Almaty",
     day: "2-digit",
@@ -22,7 +22,7 @@ function formatShortTime(iso: string): string {
   });
 }
 
-function formatShortDate(iso: string): string {
+export function formatShortDate(iso: string): string {
   return new Date(iso).toLocaleDateString("ru-RU", {
     timeZone: "Asia/Almaty",
     day: "2-digit",
@@ -59,15 +59,30 @@ function sortBlockedUsers(users: BlockedUser[]): BlockedUser[] {
   return [...users].sort((a, b) => time(b) - time(a));
 }
 
-export function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
-  const rows = sortBlockedUsers(users);
+// mode: blocked — заблокировал сейчас; unblocked — блокировал и вернулся.
+// Две готовые таблицы рядом с полной «Все пользователи» (users-table.tsx):
+// там то же можно найти фильтром, но смотреть их удобнее сразу.
+export function BlockedUsersTable({
+  users,
+  mode = "blocked",
+  onOpen,
+}: {
+  users: BlockedUser[];
+  mode?: "blocked" | "unblocked";
+  onOpen?: (telegramId: string) => void;
+}) {
+  const rows = sortBlockedUsers(users.filter((u) => (mode === "blocked" ? u.blocked : !u.blocked)));
   return (
     <div className="rounded-lg border border-border/60 bg-background/60 p-4 lg:col-span-2">
-      <h2 className="mb-1 text-sm font-medium text-foreground/70">Заблокировали бота</h2>
+      <h2 className="mb-1 text-sm font-medium text-foreground/70">
+        {mode === "blocked" ? "Заблокировали бота" : "Разблокировали бота"} · {rows.length}
+      </h2>
       <p className="mb-4 text-xs text-foreground/50">
-        Кто заблокировал бота или удалил аккаунт, и кто потом вернулся. «Но пользуется» — заблокировал
-        личку с ботом, но качает через инлайн-режим или в группах. «Удачно / ошибок» и «Где» — за всё
-        время; отказы при разборе ссылки — с 12.11.2026. Время — по Алматы.
+        {mode === "blocked"
+          ? "Кто сейчас заблокировал бота или удалил аккаунт. «Но пользуется» — заблокировал личку с ботом, но качает через инлайн-режим или в группах. "
+          : "Кто блокировал бота, а потом вернулся; «Когда» — время возвращения. "}
+        «Удачно / ошибок» и «Где» — за всё время; отказы при разборе ссылки — с 12.11.2026. Время — по
+        Алматы. Нажмите на строку — откроется журнал пользователя.
       </p>
       <div className="max-h-[420px] overflow-auto">
         <table className="w-full min-w-[820px] text-sm">
@@ -88,7 +103,11 @@ export function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
             {rows.map((u) => {
               const when = blockEventTime(u.lastEvent);
               return (
-                <tr key={u.telegramId} className="border-t border-border/40">
+                <tr
+                  key={u.telegramId}
+                  className={`border-t border-border/40 ${onOpen ? "cursor-pointer hover:bg-foreground/5" : ""}`}
+                  onClick={onOpen ? () => onOpen(u.telegramId) : undefined}
+                >
                   <td className="py-2">
                     {u.username ? (
                       <a
@@ -96,6 +115,7 @@ export function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:underline"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         @{u.username}
                       </a>
@@ -147,7 +167,7 @@ export function BlockedUsersTable({ users }: { users: BlockedUser[] }) {
             {rows.length === 0 && (
               <tr>
                 <td colSpan={7} className="py-6 text-center text-foreground/40">
-                  Пока никто не блокировал бота
+                  {mode === "blocked" ? "Сейчас никто не блокирует бота" : "Пока никто не возвращался"}
                 </td>
               </tr>
             )}

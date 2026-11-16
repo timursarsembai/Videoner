@@ -3,6 +3,7 @@ dist
 bin
 downloads
 cookies.txt
+cookies
 .env
 .env.*
 *.log

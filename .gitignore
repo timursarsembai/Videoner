@@ -40,3 +40,7 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# Кеш Python (тесты плагинов yt-dlp)
+__pycache__/
+*.pyc

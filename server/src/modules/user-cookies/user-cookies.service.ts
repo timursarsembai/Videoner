@@ -167,23 +167,19 @@ export class UserCookiesService {
     // его подсмотрели в группе.
     const row = await this.prisma.cookieConnectCode.delete({ where: { code } }).catch(() => null);
     if (!row || row.expiresAt < new Date()) throw new NotFoundException('Code not found');
+    const cookies = decryptCookies(row.data);
     // Код выдаёт только расширение — у человека оно есть (подсказки после
     // скачивания, BotUserService.nextPromo). Отмечаем до сохранения: даже если
-    // подключить не вышло (лимит аккаунтов), расширение у него стоит. Сбой
-    // отметки подключению не мешает.
+    // подключить не вышло (лимит аккаунтов), расширение у него стоит. Только
+    // уже знакомым боту людям: пустую запись тому, кто не писал боту (код
+    // ввели в группе), не заводим. Сбой отметки подключению не мешает.
     await this.prisma.botUser
-      .upsert({
-        where: { telegramId: BigInt(owner.telegramId) },
-        create: { telegramId: BigInt(owner.telegramId), extensionLinkedAt: new Date() },
-        update: {},
+      .updateMany({
+        where: { telegramId: BigInt(owner.telegramId), extensionLinkedAt: null },
+        data: { extensionLinkedAt: new Date() },
       })
-      .then((u) =>
-        u.extensionLinkedAt
-          ? undefined
-          : this.prisma.botUser.update({ where: { id: u.id }, data: { extensionLinkedAt: new Date() } }),
-      )
       .catch((e) => console.error('Failed to mark extension link:', e));
-    return this.save(scope, row.platform as CookiePlatform, decryptCookies(row.data), owner);
+    return this.save(scope, row.platform as CookiePlatform, cookies, owner);
   }
 
   private view(r: {

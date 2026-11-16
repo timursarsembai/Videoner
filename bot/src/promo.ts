@@ -16,11 +16,14 @@ export function promoText(key: PromoKey, lang: Lang): string {
 }
 
 // Сбой не должен ничем мешать: файл уже у человека. Дольше PROMO_WAIT_MS не
-// ждём: от подсказки ждёт выбор качества следующей ссылки.
+// ждём: от подсказки ждёт выбор качества следующей ссылки. Не успели к сроку —
+// подсказку не отправляем вовсе (опоздавшая пришла бы посреди выбора
+// качества следующей ссылки).
 const PROMO_WAIT_MS = 10_000;
 export function sendPromo(tg: Api, chatId: number, telegramId: number, lang: Lang): Promise<void> {
+  const deadline = Date.now() + PROMO_WAIT_MS;
   return Promise.race([
-    trySendPromo(tg, chatId, telegramId, lang),
+    trySendPromo(tg, chatId, telegramId, lang, deadline),
     new Promise<void>((resolve) => setTimeout(resolve, PROMO_WAIT_MS)),
   ]);
 }
@@ -40,7 +43,7 @@ async function inNewsChannel(tg: Api, telegramId: number): Promise<boolean> {
   }
 }
 
-async function trySendPromo(tg: Api, chatId: number, telegramId: number, lang: Lang): Promise<void> {
+async function trySendPromo(tg: Api, chatId: number, telegramId: number, lang: Lang, deadline: number): Promise<void> {
   try {
     // Недолго: от ответа ждёт выбор качества следующей ссылки.
     // Сначала — что человеку подходит сейчас (с 3-го скачивания, раз в
@@ -49,12 +52,18 @@ async function trySendPromo(tg: Api, chatId: number, telegramId: number, lang: L
     // Telegram, только если подсказка про канал среди подходящих: так не
     // дёргаем его на каждое скачивание.
     const path = `/bot-users/${telegramId}/promo`;
-    const { candidates } = await api<{ candidates: string[] }>(path, { keys: BOT_PROMOS, peek: true }, { timeoutMs: 5000 });
+    const { candidates } = await api<{ candidates?: unknown }>(path, { keys: BOT_PROMOS, peek: true }, { timeoutMs: 3000 });
+    // Сервер старее бота (peek не знает и уже записал показ) — не гадаем.
+    if (!Array.isArray(candidates)) return;
     let keys = BOT_PROMOS.filter((k) => candidates.includes(k));
     if (keys.includes("channel") && (await inNewsChannel(tg, telegramId))) keys = keys.filter((k) => k !== "channel");
     if (!keys.length) return;
-    const { key } = await api<{ key: string | null }>(path, { keys }, { timeoutMs: 5000 });
+    const { key } = await api<{ key: string | null }>(path, { keys }, { timeoutMs: 3000 });
     if (!key || !(keys as string[]).includes(key)) return;
+    if (Date.now() > deadline) {
+      await api(`${path}/failed`, { key }, { timeoutMs: 3000 }).catch(() => {});
+      return;
+    }
     try {
       await tg.sendMessage(chatId, promoText(key as PromoKey, lang), { link_preview_options: { is_disabled: true } });
     } catch (e) {

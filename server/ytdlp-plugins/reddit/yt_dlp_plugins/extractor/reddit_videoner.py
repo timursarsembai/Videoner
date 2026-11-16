@@ -68,7 +68,8 @@ def _cdn_url(value, hosts):
 
 
 class VideonerRedditIE(BuiltinRedditIE, plugin_name='videoner'):
-    _VALID_URL = r'(?i)https?://(?:(?:(?:www|old|m|np|new)\.)?reddit\.com/(?:(?:(?:r|user)/[^/?#]+/)?comments/[a-z0-9]+(?:/[^?#]*)?|r/[^/?#]+/s/[a-z0-9_-]+/?)|redd\.it/[a-z0-9]+/?)(?:[?#].*)?$'
+    # Короткие ссылки (/s/, redd.it) — VideonerRedditShareIE ниже.
+    _VALID_URL = r'(?i)https?://(?:(?:www|old|m|np|new)\.)?reddit\.com/(?:(?:r|user)/[^/?#]+/)?comments/[a-z0-9]+(?:/[^?#]*)?(?:[?#].*)?$'
 
     def _real_initialize(self):
         # No Reddit account, exported cookies, age opt-in or anonymous JSON API.
@@ -101,7 +102,7 @@ class VideonerRedditIE(BuiltinRedditIE, plugin_name='videoner'):
         if media.get('age_verified') is not True or media.get('over_18') is not False:
             raise ExtractorError(_UNAVAILABLE, expected=True)
         post_id = media.get('id')
-        expected = re.search(r'/comments/([a-z0-9]+)(?:/|[?#]|$)', url, re.I)
+        expected = re.search(r'/comments/([a-z0-9]+)(?:/|[?#]|$)', url, re.I) or re.search(r'//redd\.it/([a-z0-9]+)/?(?:[?#]|$)', url, re.I)
         if not isinstance(post_id, str) or not re.fullmatch(r'[a-z0-9]+', post_id, re.I) or (expected and expected[1].lower() != post_id.lower()):
             raise ExtractorError(_UNAVAILABLE, expected=True)
         info = {'id': post_id, 'title': media.get('title') or post_id,

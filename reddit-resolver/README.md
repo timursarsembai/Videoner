@@ -1,7 +1,7 @@
 # Experimental Reddit browser resolver
 
 An experimental browser resolver integrated with the API's Reddit yt-dlp plugin
-on the `codex/reddit-server` branch. **Not deployed.**
+developed on the `codex/reddit-server` branch. **Deployed to production on 2026-11-16.**
 It performs automatic reCAPTCHA image selection on a local CPU using a dedicated
 tile classifier and YOLOS ONNX models. Optional audio recognition (`--audio`) uses local Whisper;
 Google denied the audio challenge in the initial live test. No account
@@ -74,6 +74,16 @@ The adult gate was rejected in 14.7 seconds (repeat refusal: 0.6 seconds), after
 which photo `1ublsxv` still resolved in the same session in 7.1 seconds (repeat
 metadata: 0.3 seconds). This checks reuse and isolation of post refusals, not a
 statistically measured improvement in fresh-session captcha acceptance.
+
+Production release checks on 2026-11-16 passed: public website job creation
+returned 202 in 179 ms; polling through Cloudflare returned short responses;
+the video download completed with H.264 video and AAC audio, and the public file
+returned HTTP 206 for a 4096-byte range. The adult-gate job returned the adult
+refusal after 181 seconds without holding an HTTP request open. `/ru/reddit`
+returned 200; the held article returned 404 and was absent from the channel feed.
+The bot container was recreated and passed its startup check. An isolated test
+also confirmed that the released API starts and stays available without Reddit.
+These checks do not establish a general fresh-session captcha success rate.
 
 The resolver rejects explicit mature-content gates and marked posts. It follows
 crosspost sources and requires an independently checked source; an unresolved

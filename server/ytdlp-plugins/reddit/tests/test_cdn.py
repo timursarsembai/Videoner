@@ -73,6 +73,26 @@ class CdnReserveTests(unittest.TestCase):
                 patch.object(module, '_isp_pool', return_value=['http://isp.test:1234']):
             self.assertEqual(module._cdn_manifest(self.URL, time.monotonic() + 25), (None, True))
 
+    def test_relative_cmaf_manifest_has_absolute_base_for_video_and_audio(self):
+        media = {'kind': 'video', 'id': 'abc123', 'over_18': False, 'age_verified': True,
+                 'dash_url': 'https://v.redd.it/example/DASHPlaylist.mpd?quality=hd'}
+        opener = Mock(); opener.open.return_value = io.BytesIO(json.dumps({'ok': True, 'media': media}).encode())
+        extractor = module.VideonerRedditIE()
+        extractor._parse_xml = Mock(return_value='parsed manifest')
+        def formats(doc, **kwargs):
+            # SegmentBase index requests also need an absolute base before
+            # yt-dlp can even finish extracting modern CMAF manifests.
+            base = kwargs.get('mpd_base_url', '')
+            return [{'url': module.urllib.parse.urljoin(base, name)}
+                    for name in ['CMAF_220.mp4', 'CMAF_AUDIO_128.mp4']]
+        extractor._parse_mpd_formats = Mock(side_effect=formats)
+        with patch.object(module.urllib.request, 'build_opener', return_value=opener), \
+                patch.object(module, '_cdn_manifest', return_value=('<MPD/>', False)):
+            result = extractor._real_extract('https://www.reddit.com/comments/abc123/')
+        self.assertEqual([item['url'] for item in result['formats']],
+                         ['https://v.redd.it/example/CMAF_220.mp4', 'https://v.redd.it/example/CMAF_AUDIO_128.mp4'])
+        self.assertEqual(extractor._parse_mpd_formats.call_args.kwargs['mpd_url'], media['dash_url'])
+
     def test_adult_refusal_happens_before_any_cdn_or_isp_access(self):
         opener = Mock(); opener.open.return_value = io.BytesIO(json.dumps({'ok': True, 'media': {'over_18': True}}).encode())
         with patch.object(module.urllib.request, 'build_opener', return_value=opener), \

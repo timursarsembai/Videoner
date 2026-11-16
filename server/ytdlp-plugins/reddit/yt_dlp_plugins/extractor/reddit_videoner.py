@@ -116,7 +116,8 @@ class VideonerRedditIE(BuiltinRedditIE, plugin_name='videoner'):
         hls = _cdn_url(media.get('hls_url'), ('v.redd.it',))
         deadline = time.monotonic() + 25
         doc, blocked = _cdn_manifest(dash, deadline) if dash else (None, False)
-        formats = self._parse_mpd_formats(self._parse_xml(doc, post_id), mpd_id='dash', mpd_url=dash) if doc else []
+        formats = self._parse_mpd_formats(self._parse_xml(doc, post_id), mpd_id='dash', mpd_url=dash,
+            mpd_base_url=urllib.parse.urljoin(dash, '.')) if doc else []
         # MPD declares old DASH_2_4_M/audio and new DASH_720.mp4 /
         # DASH_AUDIO_128.mp4 correctly. Never guess an audio URL or assume
         # that a video without an audio adaptation set has sound.

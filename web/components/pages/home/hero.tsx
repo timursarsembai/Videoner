@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { HeroInput } from "@/components/ui/hero-input";
+import { PlatformLinks } from "./platform-links";
 import { downloaders } from "@/config/downloaders";
 import { useLanguage } from "@/lib/i18n/context";
 import { cn } from "@/lib/utils";
@@ -157,7 +158,8 @@ export function Hero() {
                 </motion.p>
               </motion.div>
 
-              {/* Download Form */}
+              {/* Download Form и под ним плитки площадок */}
+              <div className="flex w-full max-w-3xl flex-col items-center gap-6">
               <motion.form
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -197,6 +199,8 @@ export function Hero() {
                   </Button>
                 </div>
               </motion.form>
+              <PlatformLinks />
+              </div>
 
               {/* Stats */}
               {/* <motion.div

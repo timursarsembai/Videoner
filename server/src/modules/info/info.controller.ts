@@ -1,7 +1,9 @@
-import { BadRequestException, Body, Controller, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { youtubePlaylistId } from 'src/lib/youtube-playlist';
 import { YtdlpFormatService } from '../ytdlp/ytdlp-format.service';
-import { Request } from 'express';
+import { Request, Response } from 'express';
+import { isRedditUrl } from '../../validate/url';
+import { InfoJobsService } from './info-jobs.service';
 import { DownloadSource } from '@prisma/client';
 import { isBotRequest } from 'src/lib/bot-auth';
 import {
@@ -22,6 +24,7 @@ export class InfoController {
   constructor(
     private readonly infoService: InfoService,
     private readonly ytdlpFormat: YtdlpFormatService,
+    private readonly jobs: InfoJobsService,
   ) {}
 
   // Плейлист YouTube: только список видео. Скачивают их по одному обычным
@@ -56,7 +59,7 @@ export class InfoController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Invalid or missing API key',
   })
-  async getVideoInfo(@Body() dto: GetVideoInfoDto, @Req() req: Request) {
+  async getVideoInfo(@Body() dto: GetVideoInfoDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) {
     // Подключённые людьми куки — только для бота (lib/bot-auth.ts).
     if (!isBotRequest(req)) {
       delete dto.cookieScope;
@@ -65,6 +68,10 @@ export class InfoController {
     // Откуда запрос — для статистики отказов (InfoService.recordFailure):
     // сайт и расширение source ставят сами (через прокси сайта), бот — нет.
     if (!dto.source) dto.source = isBotRequest(req) ? DownloadSource.BOT : DownloadSource.API;
+    if (isRedditUrl(dto.url) && req.header('prefer') === 'respond-async') {
+      res.status(HttpStatus.ACCEPTED);
+      return this.jobs.start((req as any).apiKey.id, () => this.infoService.getVideoInfo(dto));
+    }
     return this.infoService.getVideoInfo(dto);
   }
 }

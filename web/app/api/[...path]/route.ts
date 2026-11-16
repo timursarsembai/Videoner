@@ -14,7 +14,7 @@ const VISITOR_RATE_LIMIT = Number(process.env.VISITOR_RATE_LIMIT) || 30; // за
 const allowVisitor = createVisitorRateLimiter(VISITOR_RATE_LIMIT);
 
 const SITE_PROXY: ProxyOptions = {
-  allowedPaths: [...DOWNLOAD_PROXY_PATHS, { method: "GET", path: "download/quota" }],
+  allowedPaths: [...DOWNLOAD_PROXY_PATHS, { method: "GET", path: "download/quota" }, { method: "GET", path: "info/jobs/:id" }],
   allowVisitor: (ip) => allowVisitor(ip),
   requireCaptcha: true,
   source: "WEB",

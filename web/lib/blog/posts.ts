@@ -65,6 +65,7 @@ export function getPost(slug: string, lang: Language): BlogPost | null {
     const parsed = parseFile(path.join(DIR, slug, `${l}.md`));
     if (!parsed) continue;
     const { meta, body } = parsed;
+    if (meta.draft === "true") return null;
     if (!meta.title || !ISO_DATE.test(meta.date ?? "") || meta.date > today()) return null;
     // Кривая дата правки (опечатка, правка «раньше» публикации или в будущем)
     // — не повод прятать статью: просто считаем, что правок не было.

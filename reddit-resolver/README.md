@@ -93,3 +93,16 @@ python3 scripts/check-reddit-isolation.py videoner-reddit-api-check
 Run these commands from the feature worktree. The check creates an internal
 Docker network, uses test credentials only, and removes its containers afterward.
 It does not deploy or access the production database, cookies or proxy.
+
+The website requests metadata with `Prefer: respond-async`: `POST /info`
+returns HTTP 202 and an opaque job ID, then `GET /info/jobs/:id` returns status
+or the normalized result/error. Each browser/proxy request has a 20-second
+timeout; extraction continues in the API process across polling requests.
+Creation keeps the existing Turnstile and URL checks. Jobs are API-key scoped,
+bounded, expire, and status replies use `Cache-Control: no-store`.
+The bot keeps its existing synchronous 240-second wait.
+
+Model downloads use a persistent BuildKit cache mount, copied into the final
+image during build. Runtime stays offline; ordinary resolver edits no longer
+invalidate model warmup. The release article is held outside the web build at
+`docs/drafts/reddit-bot-site/` pending owner review of production results.

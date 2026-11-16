@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { getSessionTelegramId } from "@/lib/auth/session";
+import { isRedditUrl } from "@/lib/validations/url";
 
 // Общая часть прокси к NestJS API для двух входов: сайта
 // (app/api/[...path]/route.ts) и браузерного расширения
@@ -87,8 +88,10 @@ function isAllowedPath(allowed: ProxyPath[], method: string, path: string[]): bo
   if (allowed.some((p) => p.method === method && p.path === joined)) {
     return true;
   }
-  // GET /download/:id/status — единственный путь с динамическим сегментом.
+  // Dynamic IDs are accepted only for download status and explicitly enabled jobs.
   return (
+    (method === "GET" && allowed.some(p => p.method === "GET" && p.path === "info/jobs/:id") &&
+      path.length === 3 && path[0] === "info" && path[1] === "jobs" && UUID_RE.test(path[2])) ||
     method === "GET" &&
     path.length === 3 &&
     path[0] === "download" &&
@@ -119,6 +122,7 @@ async function verifyTurnstile(token: unknown, remoteIp: string): Promise<boolea
 
   try {
     const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      signal: AbortSignal.timeout(10000),
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
@@ -244,19 +248,25 @@ export async function proxyApiRequest(
       targetUrl += `?telegramId=${encodeURIComponent(String(telegramId))}`;
     }
 
+    const asyncReddit = options.source === "WEB" && path.length === 1 && path[0] === "info" && isRedditUrl(body?.url);
+    const pollingReddit = options.source === "WEB" && path[0] === "info" && path[1] === "jobs";
     const response = await axios({
       method: request.method,
       url: targetUrl,
       data: body,
+      // Job creation/polling must finish well before the edge proxy timeout.
+      ...(asyncReddit || pollingReddit ? { timeout: 20000 } : {}),
       headers: {
         "Content-Type": "application/json",
         "X-API-Key": API_KEY,
         host: new URL(API_URL).host,
+        ...(asyncReddit ? { Prefer: "respond-async" } : {}),
       },
       validateStatus: () => true,
     });
 
     const headers = new Headers();
+    if (asyncReddit || pollingReddit) headers.set('Cache-Control', 'no-store');
 
     // Forward rate limit headers
     const rateLimitHeaders = [

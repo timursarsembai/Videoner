@@ -2,6 +2,8 @@ import { ApiError, DownloadResponse } from "@/types/api";
 import { VideoInfo } from "@/types/youtube";
 import { DownloadItem } from "@/types";
 import axios, { AxiosInstance, AxiosError } from "axios";
+import { waitForRedditInfo } from "./reddit-info-job";
+import { isRedditUrl } from "./validations/url";
 
 interface ProgressCallbacks {
   onProgress: (progress: ProgressData) => void;
@@ -49,11 +51,16 @@ class ApiClient {
   async getVideoInfo(url: string, turnstileToken: string): Promise<VideoInfo> {
     try {
       // const platform = detectPlatform(url)!;
-      const response = await this.client.post<VideoInfo>(`/info`, {
+      const response = await this.client.post<VideoInfo | { jobId: string }>(`/info`, {
         url,
         turnstileToken,
-      });
-      return response.data;
+      }, isRedditUrl(url) ? { timeout: 20000 } : {});
+      if (response.status === 202 && 'jobId' in response.data) {
+        const jobId = response.data.jobId;
+        return await waitForRedditInfo<VideoInfo>(async () =>
+          (await this.client.get(`/info/jobs/${encodeURIComponent(jobId)}`, { timeout: 20000 })).data);
+      }
+      return response.data as VideoInfo;
     } catch (error) {
       throw this.handleError(error);
     }

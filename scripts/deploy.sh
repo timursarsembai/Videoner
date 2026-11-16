@@ -88,8 +88,9 @@ if printf '%s\n' "$@" | grep -qx -e server -e bot && [ "$DRAIN_MAX_SEC" -gt 0 ];
 fi
 
 echo "==> Передеплоиваю: $*"
-$COMPOSE rm -sf "$@"
-$COMPOSE up -d "$@"
+# Compose replaces only the requested services. Do not remove containers first
+# or recreate dependencies/volumes as a side effect of a feature release.
+$COMPOSE up -d --no-deps "$@"
 
 for service in "$@"; do
   container="videoner-$service"

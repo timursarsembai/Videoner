@@ -6,11 +6,14 @@ RUN npm ci --omit=dev --no-audit --no-fund \
   && npx playwright install --with-deps chromium \
   && apt-get update && apt-get install -y --no-install-recommends xvfb ca-certificates \
   && rm -rf /var/lib/apt/lists/*
-COPY *.mjs ./
-COPY README.md THIRD_PARTY.md ./
+COPY vision.mjs tile-model.mjs selection.mjs ./
 # Models are pinned and fetched at build time, without proxy credentials.
 # Runtime never downloads models or browser executables.
-RUN node vision.mjs
+RUN --mount=type=cache,target=/model-download-cache \
+  MODEL_CACHE_DIR=/model-download-cache node vision.mjs \
+  && mkdir -p /models && cp -a /model-download-cache/. /models/
+COPY *.mjs ./
+COPY README.md THIRD_PARTY.md ./
 ENV MODEL_OFFLINE=1 NODE_ENV=production PORT=4418 DISPLAY=:99
 USER node
 EXPOSE 4418

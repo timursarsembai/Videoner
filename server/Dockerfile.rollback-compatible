@@ -1,0 +1,9 @@
+# Keep the previous application code while teaching its Prisma client the new
+# additive enum values. Build before release, using a saved local image tag.
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+USER root
+WORKDIR /app
+COPY prisma ./prisma
+RUN npx prisma generate
+USER node

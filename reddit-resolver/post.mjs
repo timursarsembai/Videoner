@@ -44,10 +44,14 @@ export function parsePost(snapshot, expectedId) {
     webpage_url: `https://www.reddit.com${a.permalink || `/comments/${expectedId}/`}` };
   const nested = snapshot.nestedPostIds?.find(id => /^t3_[a-z0-9]+$/i.test(id) && id !== a.id)?.slice(3);
   const declared = /^t3_([a-z0-9]+)$/i.exec(a['crosspost-parent-id'] || '')?.[1];
-  const contentPost = safeRedditPostUrl(a['content-href']);
+  const contentHref = a['content-href'];
+  // Reddit renders crosspost sources as site-relative content-href paths.
+  // Resolve against the fixed Reddit origin, then apply the same URL boundary.
+  const contentPost = safeRedditPostUrl(typeof contentHref === 'string' && contentHref.startsWith('/')
+    ? `https://www.reddit.com${contentHref}` : contentHref);
   const sourceId = declared || nested || (contentPost?.id !== expectedId ? contentPost?.id : null);
   if (sourceId) return { ...common, kind: 'crosspost', source_url: contentPost?.id === sourceId ? contentPost.url : `https://www.reddit.com/comments/${sourceId}/` };
-  if (a['post-type'] === 'crosspost') throw new Error('REDDIT_AGE_UNVERIFIED');
+  if (a['post-type'] === 'crosspost' || Object.hasOwn(a, 'is-crosspost')) throw new Error('REDDIT_AGE_UNVERIFIED');
 
   const image = mediaUrl(a['content-href'], ['i.redd.it']);
   if (image && /\.(?:jpe?g|png|webp|gif)(?:[?#]|$)/i.test(image)) return { ...common, kind: 'photo', image_url: image };

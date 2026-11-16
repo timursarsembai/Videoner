@@ -35,6 +35,12 @@ test('a crosspost must verify its source before returning any media', () => {
   const media = parsePost(post({ 'content-href': 'https://www.reddit.com/r/videos/comments/abc123/original/' }), '6rrwyj');
   assert.equal(media.kind, 'crosspost');
   assert.equal(media.source_url, 'https://www.reddit.com/r/videos/comments/abc123/original/');
+  const relative = parsePost(post({ 'post-type': 'crosspost', 'is-crosspost': '',
+    'content-href': '/r/aww/comments/x7xpyo/original/' }), '6rrwyj');
+  assert.equal(relative.source_url, 'https://www.reddit.com/r/aww/comments/x7xpyo/original/');
+  assert.throws(() => parsePost(post({ 'is-crosspost': '' }), '6rrwyj'), /AGE_UNVERIFIED/);
+  assert.throws(() => parsePost(post({ 'post-type': 'crosspost',
+    'content-href': '//example.com/comments/x7xpyo/' }), '6rrwyj'), /AGE_UNVERIFIED/);
   assert.throws(() => parsePost(post({ 'post-type': 'crosspost' }), '6rrwyj'), /AGE_UNVERIFIED/);
 });
 

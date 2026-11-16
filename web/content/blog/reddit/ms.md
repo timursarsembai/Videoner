@@ -3,6 +3,7 @@ title: Video Reddit — kini dalam sambungan Videoner
 summary: Sambungan pelayar memuat turun video dan gambar daripada hantaran Reddit dalam satu fail — dengan bunyi, dalam kualiti terbaik yang ada.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Sambungan pelayar Videoner kini menyokong **Reddit**. Buka hantaran dengan video — dan muat turun dengan satu klik.
 
@@ -18,7 +19,7 @@ Video datang sebagai **satu fail mp4 dengan bunyi**, dalam kualiti terbaik yang 
 
 Reddit menyimpan video dan bunyi sebagai fail berasingan, dan tidak membenarkan pelayan kami masuk. Jadi semua kerja dilakukan oleh pelayar anda: ia sendiri memuat turun video dan bunyi, lalu menggabungkannya menjadi satu fail — tanpa pengekodan semula, jadi kualiti tidak berkurang. Semasa muat turun berjalan, jangan tutup tab hantaran.
 
-Dalam bot dan di laman web, Reddit belum disokong.
+Sejak 16 November, Reddit disokong dalam bot dan di laman web — [maklumat lanjut dalam artikel baharu](https://videoner.download/ms/blog/reddit-bot-site).
 
 ## Apa yang tidak boleh dimuat turun
 

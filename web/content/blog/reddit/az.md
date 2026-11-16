@@ -3,6 +3,7 @@ title: Reddit videoları indi Videoner genişlənməsindədir
 summary: Brauzer genişlənməsi Reddit paylaşımlarındakı video və şəkilləri tək fayl kimi yükləyir — səslə birlikdə, mövcud ən yaxşı keyfiyyətdə.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Brauzer üçün Videoner genişlənməsi indi **Reddit**-i dəstəkləyir. Videolu paylaşımı açın və bir kliklə yükləyin.
 
@@ -18,7 +19,7 @@ Video **səslə birlikdə tək mp4 faylı** kimi, paylaşımda olan ən yaxşı 
 
 Reddit video və səsi ayrı fayllarda saxlayır və bizim serveri içəri buraxmır. Ona görə bütün işi brauzeriniz görür: video və səsi özü yükləyir və təkrar kodlaşdırmadan bir fayla birləşdirir — keyfiyyət itmir. Yükləmə davam edərkən paylaşımın vərəqini bağlamayın.
 
-Botda və saytda Reddit hələlik dəstəklənmir.
+16 noyabrdan etibarən Reddit həm botda, həm də saytda dəstəklənir — [ətraflı yeni məqalədə](https://videoner.download/az/blog/reddit-bot-site).
 
 ## Nələr yüklənmir
 

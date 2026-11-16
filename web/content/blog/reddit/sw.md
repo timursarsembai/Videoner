@@ -3,6 +3,7 @@ title: Video za Reddit — sasa kwenye kiendelezi cha Videoner
 summary: Kiendelezi cha kivinjari kinapakua video na picha kutoka machapisho ya Reddit kama faili moja — pamoja na sauti, kwa ubora bora unaopatikana.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Kiendelezi cha kivinjari cha Videoner sasa kinaunga mkono **Reddit**. Fungua chapisho lenye video na uipakue kwa kubofya mara moja.
 
@@ -18,7 +19,7 @@ Video inakuja kama **faili moja ya mp4 yenye sauti**, kwa ubora bora ambao chapi
 
 Reddit huhifadhi video na sauti kama faili tofauti, na hairuhusu seva yetu kuingia. Kwa hiyo kazi yote inafanywa na kivinjari chako: kinapakua video na sauti chenyewe na kuziunganisha kuwa faili moja — bila kusimbua upya, hivyo ubora haupotei. Wakati upakuaji unaendelea, usifunge kichupo chenye chapisho.
 
-Kwenye bot na kwenye tovuti, Reddit bado haitumiki.
+Kuanzia Novemba 16, Reddit inatumika kwenye bot na kwenye tovuti — [soma zaidi katika makala mpya](https://videoner.download/sw/blog/reddit-bot-site).
 
 ## Kisichopakuliwa
 

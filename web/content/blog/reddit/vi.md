@@ -3,6 +3,7 @@ title: Video Reddit nay đã có trong tiện ích Videoner
 summary: Tiện ích trình duyệt tải video và ảnh từ bài đăng Reddit thành một tệp duy nhất, có âm thanh, với chất lượng tốt nhất hiện có.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Tiện ích trình duyệt Videoner nay đã hỗ trợ **Reddit**. Mở bài đăng có video và tải xuống chỉ bằng một lần nhấp.
 
@@ -18,7 +19,7 @@ Video được tải về dưới dạng **một tệp mp4 duy nhất có âm th
 
 Reddit lưu video và âm thanh thành các tệp riêng, và không cho máy chủ của chúng tôi truy cập. Vì vậy mọi việc do trình duyệt của bạn đảm nhận: nó tự tải video và âm thanh rồi ghép thành một tệp — không mã hóa lại nên chất lượng không bị giảm. Trong lúc đang tải, đừng đóng tab của bài đăng.
 
-Bot và trang web hiện chưa hỗ trợ Reddit.
+Từ ngày 16 tháng 11, Reddit đã được hỗ trợ cả trong bot lẫn trên trang web — [xem thêm trong bài viết mới](https://videoner.download/vi/blog/reddit-bot-site).
 
 ## Những gì không tải được
 

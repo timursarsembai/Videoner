@@ -3,6 +3,7 @@ title: Videos de Reddit, ahora en la extensión de Videoner
 summary: La extensión del navegador descarga videos e imágenes de las publicaciones de Reddit en un solo archivo, con sonido y en la mejor calidad disponible.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 La extensión de Videoner para el navegador ya es compatible con **Reddit**. Abre una publicación con video y descárgalo con un solo clic.
 
@@ -18,7 +19,7 @@ El video llega en **un solo archivo mp4 con sonido**, en la mejor calidad que te
 
 Reddit guarda el video y el audio en archivos separados y no deja entrar a nuestro servidor. Por eso todo el trabajo lo hace tu navegador: descarga el video y el audio por sí mismo y los une en un solo archivo, sin recodificar, así que no se pierde calidad. Mientras dura la descarga, no cierres la pestaña con la publicación.
 
-En el bot y en el sitio web Reddit aún no es compatible.
+Desde el 16 de noviembre, Reddit es compatible tanto en el bot como en el sitio web: [más información en el nuevo artículo](https://videoner.download/es/blog/reddit-bot-site).
 
 ## Qué no se descarga
 

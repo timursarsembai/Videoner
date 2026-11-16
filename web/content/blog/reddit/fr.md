@@ -3,6 +3,7 @@ title: Vidéos Reddit — désormais dans l’extension Videoner
 summary: L’extension de navigateur télécharge les vidéos et les images des publications Reddit en un seul fichier — avec le son, dans la meilleure qualité disponible.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 L’extension de navigateur Videoner prend désormais en charge **Reddit**. Ouvrez une publication avec une vidéo et téléchargez-la en un clic.
 
@@ -18,7 +19,7 @@ La vidéo arrive en **un seul fichier mp4 avec le son**, dans la meilleure quali
 
 Reddit stocke la vidéo et le son dans des fichiers séparés, et ne laisse pas entrer notre serveur. C’est donc votre navigateur qui fait tout le travail : il télécharge lui-même la vidéo et le son, puis les assemble en un seul fichier — sans ré-encodage, donc sans perte de qualité. Pendant le téléchargement, ne fermez pas l’onglet de la publication.
 
-Dans le bot et sur le site, Reddit n’est pas encore pris en charge.
+Depuis le 16 novembre, Reddit est pris en charge à la fois par le bot et par le site — [plus de détails dans le nouvel article](https://videoner.download/fr/blog/reddit-bot-site).
 
 ## Ce qui ne se télécharge pas
 

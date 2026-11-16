@@ -3,6 +3,7 @@ title: Filmy z Reddita teraz w rozszerzeniu Videoner
 summary: Rozszerzenie do przeglądarki pobiera filmy i obrazy z postów na Reddicie jako jeden plik — z dźwiękiem i w najlepszej dostępnej jakości.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Rozszerzenie Videoner do przeglądarki obsługuje teraz **Reddit**. Otwórz post z filmem i pobierz go jednym kliknięciem.
 
@@ -18,7 +19,7 @@ Film trafia do Ciebie jako **jeden plik mp4 z dźwiękiem**, w najlepszej jakoś
 
 Reddit przechowuje film i dźwięk w osobnych plikach i nie wpuszcza naszego serwera. Dlatego całą pracę wykonuje Twoja przeglądarka: sama pobiera film i dźwięk i skleja je w jeden plik — bez ponownego kodowania, więc jakość nie spada. Dopóki trwa pobieranie, nie zamykaj karty z postem.
 
-W bocie i na stronie Reddit na razie nie jest obsługiwany.
+Od 16 listopada Reddit obsługują zarówno bot, jak i strona — [więcej w nowym artykule](https://videoner.download/pl/blog/reddit-bot-site).
 
 ## Czego nie da się pobrać
 

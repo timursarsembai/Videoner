@@ -3,6 +3,7 @@ title: Muuqaallada Reddit hadda waxay ku jiraan kordhiyaha Videoner
 summary: Kordhiyaha biraawsarku wuxuu ka soo dejiyaa muuqaallada iyo sawirada boostooyinka Reddit hal fayl — codkii la socdo, tayada ugu fiican ee jirta.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Kordhiyaha biraawsarka Videoner hadda wuxuu taageeraa **Reddit**. Fur boostada muuqaalka leh oo hal gujin ku soo deji.
 
@@ -18,7 +19,7 @@ Muuqaalku wuxuu yimaadaa **hal fayl mp4 ah oo cod leh**, tayada ugu fiican ee bo
 
 Reddit wuxuu muuqaalka iyo codka ku kaydiyaa faylal kala duwan, serferkeenana ma geliyo. Sidaas darteed shaqada oo dhan waxaa sameeya biraawsarkaaga: laftiisa ayuu soo dejiyaa muuqaalka iyo codka oo ku dhejiyaa hal fayl — dib u koodhayn la'aan, sidaas darteed tayadu ma dhacdo. Intii soo dejintu socoto, ha xirin tabka boostada.
 
-Bot-ka iyo goobta webka Reddit wali lagama taageero.
+Laga bilaabo 16-ka Noofambar, Reddit waa laga taageeraa bot-ka iyo goobta webka labadaba — [wax badan ka akhri maqaalka cusub](https://videoner.download/so/blog/reddit-bot-site).
 
 ## Waxa aan la soo dejin karin
 

@@ -3,6 +3,7 @@ title: Bidiyon Reddit yanzu a cikin ƙarin Videoner
 summary: Ƙarin burauza yana sauke bidiyo da hotuna daga wallafar Reddit a fayil guda — da sauti, kuma da mafi kyawun inganci da ake da shi.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Ƙarin burauza na Videoner yanzu yana tallafa wa **Reddit**. Buɗe wallafar da ke da bidiyo ku sauke ta da danna sau ɗaya.
 
@@ -18,7 +19,7 @@ Bidiyon yana zuwa a **fayil mp4 guda ɗaya da sauti**, da mafi kyawun ingancin d
 
 Reddit yana ajiye bidiyo da sauti a fayiloli daban-daban, kuma ba ya barin sabar mu ta shiga. Don haka burauzarku ce take yin dukan aikin: ita kanta tana sauke bidiyo da sauti ta haɗa su a fayil guda — ba tare da sake sarrafawa ba, don haka inganci ba ya raguwa. Yayin da ake saukewa, kada ku rufe shafin wallafar.
 
-A cikin bot da shafin yanar gizo, ba a tallafa wa Reddit tukuna.
+Tun daga 16 ga Nuwamba, ana tallafa wa Reddit a cikin bot da kuma shafin yanar gizo — [ƙarin bayani a sabuwar maƙala](https://videoner.download/ha/blog/reddit-bot-site).
 
 ## Abin da ba a sauke wa
 

@@ -3,6 +3,7 @@ title: Reddit videi — sada u proširenju Videoner
 summary: Proširenje za preglednik preuzima videe i slike iz Reddit objava u jednom fajlu — sa zvukom, u najboljem dostupnom kvalitetu.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Proširenje za preglednik Videoner sada podržava **Reddit**. Otvorite objavu s videom — i preuzmite ga jednim klikom.
 
@@ -18,7 +19,7 @@ Video stiže **kao jedan mp4 fajl sa zvukom**, u najboljem kvalitetu koji objava
 
 Reddit čuva video i zvuk kao odvojene fajlove, a naš server ne pušta unutra. Zato sav posao radi vaš preglednik: sam preuzima video i zvuk i spaja ih u jedan fajl — bez ponovnog kodiranja, tako da se kvalitet ne gubi. Dok traje preuzimanje, ne zatvarajte karticu s objavom.
 
-U botu i na web-stranici Reddit još nije podržan.
+Od 16. novembra Reddit podržavaju i bot i web-stranica — [više u novom članku](https://videoner.download/bs/blog/reddit-bot-site).
 
 ## Šta se ne preuzima
 

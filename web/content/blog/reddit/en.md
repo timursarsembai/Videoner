@@ -3,6 +3,7 @@ title: Reddit videos — now in the Videoner extension
 summary: The browser extension downloads videos and images from Reddit posts as a single file — with sound, in the best available quality.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 The Videoner browser extension now supports **Reddit**. Open a post with a video and download it in one click.
 
@@ -18,7 +19,7 @@ The video arrives as **a single mp4 file with sound**, in the best quality the p
 
 Reddit stores video and audio as separate files and doesn't let our server in. So your browser does all the work: it downloads the video and audio itself and joins them into one file — without re-encoding, so no quality is lost. While the download is running, don't close the tab with the post.
 
-Reddit is not supported in the bot or on the website yet.
+Since November 16, Reddit is supported by both the bot and the website — [read more in the new article](https://videoner.download/blog/reddit-bot-site).
 
 ## What can't be downloaded
 

@@ -3,6 +3,7 @@ title: Videoclipuri de pe Reddit — acum în extensia Videoner
 summary: Extensia de browser descarcă videoclipuri și imagini din postările Reddit într-un singur fișier — cu sunet, în cea mai bună calitate disponibilă.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Extensia de browser Videoner suportă acum **Reddit**. Deschide o postare cu videoclip — și descarc-o dintr-o singură apăsare.
 
@@ -18,7 +19,7 @@ Videoclipul vine **într-un singur fișier mp4, cu sunet**, în cea mai bună ca
 
 Reddit păstrează videoclipul și sunetul în fișiere separate și nu își lasă serverul nostru înăuntru. De aceea toată munca o face browserul tău: descarcă el însuși videoclipul și sunetul și le îmbină într-un singur fișier — fără recodare, deci calitatea nu se pierde. Cât timp se descarcă, nu închide fila cu postarea.
 
-În bot și pe site, Reddit nu este încă suportat.
+Din 16 noiembrie, Reddit este suportat atât în bot, cât și pe site — [mai multe în articolul nou](https://videoner.download/ro/blog/reddit-bot-site).
 
 ## Ce nu se descarcă
 

@@ -3,6 +3,7 @@ title: Reddit-Videos – jetzt in der Videoner-Erweiterung
 summary: Die Browsererweiterung lädt Videos und Bilder aus Reddit-Beiträgen als eine einzige Datei herunter – mit Ton und in der besten verfügbaren Qualität.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Die Videoner-Browsererweiterung unterstützt jetzt **Reddit**. Öffne einen Beitrag mit Video und lade es mit einem Klick herunter.
 
@@ -18,7 +19,7 @@ Das Video kommt als **eine einzige mp4-Datei mit Ton**, in der besten Qualität,
 
 Reddit speichert Video und Ton als getrennte Dateien und lässt unseren Server nicht herein. Deshalb erledigt dein Browser die ganze Arbeit: Er lädt Video und Ton selbst herunter und fügt sie zu einer Datei zusammen – ohne Neukodierung, die Qualität geht nicht verloren. Schließe den Tab mit dem Beitrag nicht, solange der Download läuft.
 
-Im Bot und auf der Website wird Reddit noch nicht unterstützt.
+Seit dem 16. November unterstützen sowohl der Bot als auch die Website Reddit – [mehr dazu im neuen Artikel](https://videoner.download/de/blog/reddit-bot-site).
 
 ## Was nicht heruntergeladen wird
 

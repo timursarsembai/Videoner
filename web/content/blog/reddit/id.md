@@ -3,6 +3,7 @@ title: Video Reddit — kini di ekstensi Videoner
 summary: Ekstensi browser mengunduh video dan gambar dari postingan Reddit dalam satu file — lengkap dengan suara, dalam kualitas terbaik yang tersedia.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Ekstensi browser Videoner kini mendukung **Reddit**. Buka postingan berisi video, lalu unduh dengan satu klik.
 
@@ -18,7 +19,7 @@ Video datang sebagai **satu file mp4 lengkap dengan suara**, dalam kualitas terb
 
 Reddit menyimpan video dan suara dalam file terpisah, dan tidak mengizinkan server kami masuk. Karena itu seluruh pekerjaan dilakukan browser Anda: ia mengunduh video dan suara sendiri, lalu menggabungkannya menjadi satu file — tanpa encode ulang, jadi kualitas tidak berkurang. Selama pengunduhan berlangsung, jangan tutup tab postingan.
 
-Di bot dan di situs web, Reddit belum didukung.
+Sejak 16 November, Reddit didukung di bot maupun di situs web — [selengkapnya di artikel baru](https://videoner.download/id/blog/reddit-bot-site).
 
 ## Yang tidak bisa diunduh
 

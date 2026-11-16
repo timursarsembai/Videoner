@@ -3,6 +3,7 @@ title: Video nga Reddit — tani në shtesën Videoner
 summary: Shtesa e shfletuesit shkarkon video dhe imazhe nga postimet e Reddit në një skedar të vetëm — me zë, në cilësinë më të mirë të disponueshme.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Shtesa e shfletuesit Videoner tani mbështet **Reddit**. Hapni një postim me video — dhe shkarkojeni me një klikim.
 
@@ -18,7 +19,7 @@ Videoja vjen **si një skedar i vetëm mp4 me zë**, në cilësinë më të mir�
 
 Reddit i ruan videon dhe zërin si skedarë të ndarë dhe nuk e lë serverin tonë brenda. Prandaj gjithë punën e bën shfletuesi juaj: vetë shkarkon videon dhe zërin dhe i bashkon në një skedar të vetëm — pa rikodim, ndaj cilësia nuk humbet. Gjatë shkarkimit, mos e mbyllni skedën me postimin.
 
-Në bot dhe në faqen e internetit Reddit ende nuk mbështetet.
+Nga 16 nëntori, Reddit mbështetet si në bot, ashtu edhe në faqen e internetit — [më shumë në artikullin e ri](https://videoner.download/sq/blog/reddit-bot-site).
 
 ## Çfarë nuk shkarkohet
 

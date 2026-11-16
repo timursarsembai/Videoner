@@ -3,6 +3,7 @@ title: Reddit videolari — endi Videoner kengaytmasida
 summary: Brauzer kengaytmasi Reddit postlaridagi video va rasmlarni bitta fayl qilib yuklab oladi — ovozi bilan, mavjud eng yaxshi sifatda.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Brauzer uchun Videoner kengaytmasida **Reddit** qoʻllab-quvvatlanadigan boʻldi. Videoli postni oching va bir bosishda yuklab oling.
 
@@ -18,7 +19,7 @@ Video **ovozi bilan bitta mp4 fayl** boʻlib keladi, postdagi eng yaxshi sifatda
 
 Reddit video va ovozni alohida fayllarda saqlaydi, bizning serverni esa oʻziga kiritmaydi. Shuning uchun butun ishni brauzeringiz qiladi: video va ovozni oʻzi yuklab oladi va bitta faylga birlashtiradi — qayta kodlashsiz, sifat yoʻqolmaydi. Yuklab olish davom etayotganda post ochiq turgan yorliqni yopmang.
 
-Botda va saytda Reddit hozircha qoʻllab-quvvatlanmaydi.
+16-noyabrdan boshlab Reddit’ni bot ham, sayt ham qoʻllab-quvvatlaydi — [batafsil yangi maqolada](https://videoner.download/uz/blog/reddit-bot-site).
 
 ## Nimalar yuklanmaydi
 

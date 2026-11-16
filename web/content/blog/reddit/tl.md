@@ -3,6 +3,7 @@ title: Mga video sa Reddit — nasa extension na ng Videoner
 summary: Dina-download ng browser extension ang mga video at larawan mula sa mga post sa Reddit bilang isang file — may tunog, sa pinakamagandang quality na available.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Sinusuportahan na ng browser extension ng Videoner ang **Reddit**. Buksan ang post na may video — at i-download ito sa isang pindot lang.
 
@@ -18,7 +19,7 @@ Dumarating ang video bilang **isang mp4 file na may tunog**, sa pinakamagandang 
 
 Magkahiwalay na file ang video at tunog sa Reddit, at hindi nito pinapapasok ang server namin. Kaya ang browser mo ang gumagawa ng lahat: siya mismo ang nagda-download ng video at tunog at pinagsasama ang mga ito sa isang file — walang re-encoding, kaya hindi nababawasan ang quality. Habang nagda-download, huwag isara ang tab ng post.
 
-Sa bot at sa website, hindi pa sinusuportahan ang Reddit.
+Mula Nobyembre 16, sinusuportahan na ang Reddit sa bot at sa website — [basahin ang higit pa sa bagong artikulo](https://videoner.download/tl/blog/reddit-bot-site).
 
 ## Ano ang hindi nada-download
 

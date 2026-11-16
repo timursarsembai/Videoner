@@ -3,6 +3,7 @@ title: Reddit wideolary — indi Videoner giňeltmesinde
 summary: Brauzer giňeltmesi Reddit ýazgylaryndaky wideolary we suratlary bir faýl edip ýükleýär — sesi bilen, elýeterli iň gowy hilde.
 date: 2026-11-15
 time: 15:30:00
+updated: 2026-11-16
 ---
 Videoner brauzer giňeltmesi indi **Reddit**-i goldaýar. Wideo bar ýazgyny açyň — we bir basyşda ýükläň.
 
@@ -18,7 +19,7 @@ Wideo **sesi bilen bir mp4 faýl** görnüşinde, ýazgynyň iň gowy hilinde ge
 
 Reddit wideony we sesi aýry faýllar edip saklaýar, biziň serverimizi bolsa içine goýbermeýär. Şonuň üçin ähli işi brauzeriňiz edýär: wideony we sesi özi ýükleýär we bir faýla birleşdirýär — gaýtadan kodlamasyz, şonuň üçin hil ýitmeýär. Ýükleme dowam edýärkä, ýazgy bar goýmany ýapmaň.
 
-Bot-da we saýtda Reddit entek goldanylmaýar.
+16-njy noýabrdan bäri Reddit-i bot hem, saýt hem goldaýar — [giňişleýin täze makalada](https://videoner.download/tk/blog/reddit-bot-site).
 
 ## Nämeler ýüklenmeýär
 

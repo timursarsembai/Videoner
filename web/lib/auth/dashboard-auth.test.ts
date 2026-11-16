@@ -16,7 +16,6 @@ import {
   verifyPassword,
 } from "./dashboard-auth";
 import { randomBytes } from "node:crypto";
-// @ts-expect-error — обычный JS-скрипт без типов
 import * as setup from "../../scripts/dashboard-setup.mjs";
 
 // Эталонный секрет из RFC 6238 (ASCII "12345678901234567890").

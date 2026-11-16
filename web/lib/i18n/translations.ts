@@ -2,6 +2,7 @@
 // истины (тип Translations выводится из него, поэтому остальные обязаны иметь
 // те же ключи).
 import { Platform } from "@/types";
+import { redditCopy } from "./reddit-copy";
 
 export { LANGUAGES, LANGUAGE_LABELS, isRtl, type Language } from "./languages";
 import type { Language } from "./languages";
@@ -373,12 +374,13 @@ const en = {
         { q: "Is it legal to download videos from Threads?", a: "Download only what you have the right to save — your own content or anything the author allows. Respect the Threads Terms of Use and copyright law." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-export type Translations = typeof en;
+type BaseTranslations = typeof en;
+export type Translations = Omit<BaseTranslations, "platforms"> & { platforms: BaseTranslations["platforms"] & { reddit: PlatformStrings } };
 
-const es: Translations = {
+const es: BaseTranslations = {
   nav: {
     home: "Inicio",
     downloaders: "Descargadores",
@@ -737,7 +739,7 @@ const es: Translations = {
   },
 };
 
-const ru: Translations = {
+const ru: BaseTranslations = {
   nav: {
     home: "Главная",
     downloaders: "Загрузчики",
@@ -1096,7 +1098,7 @@ const ru: Translations = {
   },
 };
 
-const uk: Translations = {
+const uk: BaseTranslations = {
   nav: {
     home: "Головна",
     downloaders: "Завантажувачі",
@@ -1455,7 +1457,7 @@ const uk: Translations = {
   },
 };
 
-const kk: Translations = {
+const kk: BaseTranslations = {
   nav: {
     home: "Басты бет",
     downloaders: "Жүктеушілер",
@@ -1814,7 +1816,7 @@ const kk: Translations = {
   },
 };
 
-const ar: Translations = {
+const ar: BaseTranslations = {
   nav: {
     home: "الرئيسية",
     downloaders: "أدوات التحميل",
@@ -2173,7 +2175,7 @@ const ar: Translations = {
   },
 };
 
-const zh: Translations = {
+const zh: BaseTranslations = {
   nav: {
     home: "首页",
     downloaders: "下载工具",
@@ -2529,10 +2531,10 @@ const zh: Translations = {
         { q: "从 Threads 下载视频合法吗？", a: "请只下载你有权保存的内容，例如你自己的内容或作者允许下载的内容。请遵守 Threads 使用条款和版权法。" },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const hi: Translations = {
+const hi: BaseTranslations = {
   nav: {
     home: "होम",
     downloaders: "डाउनलोडर",
@@ -2888,10 +2890,10 @@ const hi: Translations = {
         { q: "क्या Threads से वीडियो डाउनलोड करना कानूनी है?", a: "सिर्फ़ वही डाउनलोड करें जिसे सेव करने का आपको अधिकार है — आपका अपना कंटेंट या जिसकी लेखक ने अनुमति दी हो। Threads की उपयोग की शर्तों और कॉपीराइट कानून का सम्मान करें।" },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const indonesian: Translations = {
+const indonesian: BaseTranslations = {
   nav: {
     home: "Beranda",
     downloaders: "Pengunduh",
@@ -3247,10 +3249,10 @@ const indonesian: Translations = {
         { q: "Apakah legal mengunduh video dari Threads?", a: "Unduh hanya yang berhak Anda simpan — konten Anda sendiri atau apa pun yang diizinkan penulisnya. Patuhi Ketentuan Penggunaan Threads dan hukum hak cipta." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const sw: Translations = {
+const sw: BaseTranslations = {
   nav: {
     home: "Mwanzo",
     downloaders: "Vipakuzi",
@@ -3606,10 +3608,10 @@ const sw: Translations = {
         { q: "Je, ni halali kupakua video kutoka Threads?", a: "Pakua tu kile ambacho una haki ya kuhifadhi — maudhui yako mwenyewe au chochote ambacho mwandishi anaruhusu. Heshimu Masharti ya Matumizi ya Threads na sheria ya hakimiliki." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const de: Translations = {
+const de: BaseTranslations = {
   nav: {
     home: "Startseite",
     downloaders: "Downloader",
@@ -3965,10 +3967,10 @@ const de: Translations = {
         { q: "Ist es legal, Videos von Threads herunterzuladen?", a: "Lade nur herunter, was du speichern darfst – eigene Inhalte oder alles, was der Autor erlaubt. Beachte die Nutzungsbedingungen von Threads und das Urheberrecht." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const fr: Translations = {
+const fr: BaseTranslations = {
   nav: {
     home: "Accueil",
     downloaders: "Téléchargeurs",
@@ -4324,10 +4326,10 @@ const fr: Translations = {
         { q: "Est-il légal de télécharger des vidéos Threads ?", a: "Ne téléchargez que ce que vous avez le droit d’enregistrer : vos propres contenus ou tout ce que l’auteur autorise. Respectez les conditions d’utilisation de Threads et le droit d’auteur." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const it: Translations = {
+const it: BaseTranslations = {
   nav: {
     home: "Home",
     downloaders: "Downloader",
@@ -4683,10 +4685,10 @@ const it: Translations = {
         { q: "È legale scaricare video da Threads?", a: "Scarica solo ciò che hai il diritto di salvare: i tuoi contenuti o quelli che l’autore consente. Rispetta le Condizioni d’uso di Threads e le leggi sul diritto d’autore." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const pt: Translations = {
+const pt: BaseTranslations = {
   nav: {
     home: "Início",
     downloaders: "Downloaders",
@@ -5042,10 +5044,10 @@ const pt: Translations = {
         { q: "É legal baixar vídeos do Threads?", a: "Baixe apenas o que você tem o direito de salvar — seu próprio conteúdo ou qualquer coisa que o autor permita. Respeite os Termos de Uso do Threads e a lei de direitos autorais." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const uz: Translations = {
+const uz: BaseTranslations = {
   nav: {
     home: "Bosh sahifa",
     downloaders: "Yuklab olish",
@@ -5401,10 +5403,10 @@ const uz: Translations = {
         { q: "Threadsʼdan video yuklab olish qonuniymi?", a: "Faqat saqlashga huquqingiz bor narsani yuklab oling — oʻz kontentingiz yoki muallif ruxsat bergan har qanday narsa. Threads foydalanish shartlari va mualliflik huquqi qonunchiligini hurmat qiling." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const tr: Translations = {
+const tr: BaseTranslations = {
   nav: {
     home: "Ana sayfa",
     downloaders: "İndiriciler",
@@ -5760,10 +5762,10 @@ const tr: Translations = {
         { q: "Threads'ten video indirmek yasal mı?", a: "Yalnızca kaydetme hakkınız olan içerikleri indirin — kendi içeriğiniz ya da yazarın izin verdiği her şey. Threads Kullanım Koşulları'na ve telif hakkı yasalarına uyun." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const fa: Translations = {
+const fa: BaseTranslations = {
   nav: {
     home: "خانه",
     downloaders: "دانلودرها",
@@ -6119,10 +6121,10 @@ const fa: Translations = {
         { q: "آیا دانلود ویدیو از Threads قانونی است؟", a: "فقط چیزی را دانلود کنید که حق ذخیره‌اش را دارید: محتوای خودتان یا هر چیزی که نویسنده اجازه داده است. به شرایط استفاده از Threads و قانون کپی‌رایت احترام بگذارید." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const vi: Translations = {
+const vi: BaseTranslations = {
   nav: {
     home: "Trang chủ",
     downloaders: "Công cụ tải",
@@ -6478,10 +6480,10 @@ const vi: Translations = {
         { q: "Tải video từ Threads có hợp pháp không?", a: "Chỉ tải những gì bạn có quyền lưu — nội dung của chính bạn hoặc những gì tác giả cho phép. Hãy tôn trọng Điều khoản sử dụng của Threads và luật bản quyền." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const bn: Translations = {
+const bn: BaseTranslations = {
   nav: {
     home: "হোম",
     downloaders: "ডাউনলোডার",
@@ -6837,10 +6839,10 @@ const bn: Translations = {
         { q: "Threads থেকে ভিডিও ডাউনলোড করা কি বৈধ?", a: "শুধু সেটুকুই ডাউনলোড করুন যা সেভ করার অধিকার আপনার আছে — আপনার নিজের কনটেন্ট বা লেখক অনুমতি দিয়েছেন এমন কিছু। Threads-এর Terms of Use এবং কপিরাইট আইন মেনে চলুন।" },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ur: Translations = {
+const ur: BaseTranslations = {
   nav: {
     home: "ہوم",
     downloaders: "ڈاؤن لوڈرز",
@@ -7196,10 +7198,10 @@ const ur: Translations = {
         { q: "کیا Threads سے ویڈیوز ڈاؤن لوڈ کرنا قانونی ہے؟", a: "صرف وہی ڈاؤن لوڈ کریں جسے محفوظ کرنے کا آپ کو حق ہو — آپ کا اپنا مواد یا جس کی مصنف اجازت دے۔ Threads کی استعمال کی شرائط اور کاپی رائٹ قانون کا احترام کریں۔" },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const pl: Translations = {
+const pl: BaseTranslations = {
   nav: {
     home: "Strona główna",
     downloaders: "Pobieranie",
@@ -7555,10 +7557,10 @@ const pl: Translations = {
         { q: "Czy pobieranie filmów z Threads jest legalne?", a: "Pobieraj tylko to, do czego zapisania masz prawo — własne treści albo to, na co zgodził się autor. Przestrzegaj Warunków korzystania z Threads i prawa autorskiego." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ja: Translations = {
+const ja: BaseTranslations = {
   nav: {
     home: "ホーム",
     downloaders: "ダウンローダー",
@@ -7914,10 +7916,10 @@ const ja: Translations = {
         { q: "Threads の動画をダウンロードするのは合法ですか？", a: "保存する権利のあるもの（ご自身のコンテンツや投稿者が許可しているもの）のみダウンロードしてください。Threads の利用規約と著作権法を守ってご利用ください。" },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ko: Translations = {
+const ko: BaseTranslations = {
   nav: {
     home: "홈",
     downloaders: "다운로더",
@@ -8273,10 +8275,10 @@ const ko: Translations = {
         { q: "Threads 동영상을 다운로드하는 건 합법인가요?", a: "저장할 권리가 있는 콘텐츠만 다운로드하세요. 직접 만든 콘텐츠나 작성자가 허용한 콘텐츠 등이 해당돼요. Threads 이용 약관과 저작권법을 지켜 주세요." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const th: Translations = {
+const th: BaseTranslations = {
   nav: {
     home: "หน้าแรก",
     downloaders: "ตัวดาวน์โหลด",
@@ -8632,10 +8634,10 @@ const th: Translations = {
         { q: "ดาวน์โหลดวิดีโอจาก Threads ถูกกฎหมายไหม?", a: "โปรดดาวน์โหลดเฉพาะสิ่งที่คุณมีสิทธิ์บันทึก — เนื้อหาของคุณเองหรือสิ่งที่ผู้โพสต์อนุญาต และโปรดเคารพข้อกำหนดการใช้งานของ Threads และกฎหมายลิขสิทธิ์" },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const am: Translations = {
+const am: BaseTranslations = {
   nav: {
     home: "መነሻ",
     downloaders: "ማውረጃዎች",
@@ -8991,10 +8993,10 @@ const am: Translations = {
         { q: "ከThreads ቪዲዮዎችን ማውረድ ሕጋዊ ነው?", a: "ለማስቀመጥ መብት ያለዎትን ብቻ ያውርዱ — የራስዎን ይዘት ወይም ደራሲው የሚፈቅደውን ማንኛውንም ነገር። የThreads የአጠቃቀም ውሎችንና የቅጂ መብት ሕግን ያክብሩ።" },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const om: Translations = {
+const om: BaseTranslations = {
   nav: {
     home: "Fuula jalqabaa",
     downloaders: "Buusuuwwan",
@@ -9350,10 +9352,10 @@ const om: Translations = {
         { q: "Viidiyoo Threads irraa buusuun seeraan hayyamamaadhaa?", a: "Waan olkaa'uuf mirga qabdan qofa buusaa — qabiyyee mataa keessanii ykn kan barreessaan isaa hayyame. Haala Fayyadamaa Threads fi seera mirga qabeenyaa kabajaa." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ha: Translations = {
+const ha: BaseTranslations = {
   nav: {
     home: "Gida",
     downloaders: "Masu saukewa",
@@ -9709,10 +9711,10 @@ const ha: Translations = {
         { q: "Shin ya halatta a doka a sauke bidiyo daga Threads?", a: "Ku sauke abin da kuke da haƙƙin ajiyewa kawai — abubuwanku na kanku ko duk abin da marubucin ya yarda. Ku mutunta Sharuɗɗan Amfani na Threads da dokar haƙƙin mallaka." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const so: Translations = {
+const so: BaseTranslations = {
   nav: {
     home: "Bogga hore",
     downloaders: "Soo dejiyeyaal",
@@ -10068,10 +10070,10 @@ const so: Translations = {
         { q: "Ma sharci baa in muuqaallo laga soo dejiyo Threads?", a: "Soo deji oo keliya waxa aad xaq u leedahay inaad kaydiso — waxyaabahaaga ama wax kasta oo qoruhu oggolaado. Ixtiraam Shuruudaha Isticmaalka Threads iyo sharciga xuquuqda daabacaadda." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const az: Translations = {
+const az: BaseTranslations = {
   nav: {
     home: "Ana səhifə",
     downloaders: "Yükləyicilər",
@@ -10427,10 +10429,10 @@ const az: Translations = {
         { q: "Threads-dən video yükləmək qanunidir?", a: "Yalnız saxlamağa hüququnuz olanı yükləyin — öz məzmununuzu və ya müəllifin icazə verdiyi hər şeyi. Threads İstifadə Şərtlərinə və müəllif hüquqları qanununa hörmət edin." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ky: Translations = {
+const ky: BaseTranslations = {
   nav: {
     home: "Башкы бет",
     downloaders: "Жүктөгүчтөр",
@@ -10786,10 +10788,10 @@ const ky: Translations = {
         { q: "Threads'тен видео жүктөп алуу мыйзамдуубу?", a: "Сактоого укугуңуз бар нерсени гана жүктөп алыңыз — өзүңүздүн контентиңизди же автор уруксат бергенди. Threads колдонуу шарттарын жана автордук укукту сактаңыз." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const tg: Translations = {
+const tg: BaseTranslations = {
   nav: {
     home: "Саҳифаи асосӣ",
     downloaders: "Боргиркунандаҳо",
@@ -11145,10 +11147,10 @@ const tg: Translations = {
         { q: "Боргирии видео аз Threads қонунӣ аст?", a: "Танҳо он чизеро боргирӣ кунед, ки ҳуқуқи нигоҳ доштанашро доред — контенти худатон ё он чизе, ки муаллиф иҷозат медиҳад. Шартҳои истифодаи Threads ва ҳуқуқи муаллифро риоя кунед." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ms: Translations = {
+const ms: BaseTranslations = {
   nav: {
     home: "Laman Utama",
     downloaders: "Pemuat Turun",
@@ -11504,10 +11506,10 @@ const ms: Translations = {
         { q: "Adakah muat turun video daripada Threads sah di sisi undang-undang?", a: "Muat turun hanya apa yang anda berhak simpan — kandungan anda sendiri atau apa-apa yang dibenarkan oleh pengarang. Patuhi Syarat Penggunaan Threads dan undang-undang hak cipta." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const nl: Translations = {
+const nl: BaseTranslations = {
   nav: {
     home: "Home",
     downloaders: "Downloaders",
@@ -11863,10 +11865,10 @@ const nl: Translations = {
         { q: "Is het legaal om video's van Threads te downloaden?", a: "Download alleen wat je mag opslaan — je eigen content of alles waarvoor de maker toestemming geeft. Respecteer de Gebruiksvoorwaarden van Threads en het auteursrecht." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ro: Translations = {
+const ro: BaseTranslations = {
   nav: {
     home: "Acasă",
     downloaders: "Descărcătoare",
@@ -12222,10 +12224,10 @@ const ro: Translations = {
         { q: "Este legal să descarc videoclipuri de pe Threads?", a: "Descarcă doar ce ai dreptul să salvezi — propriul conținut sau orice permite autorul. Respectă Termenii de utilizare Threads și legislația privind drepturile de autor." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ps: Translations = {
+const ps: BaseTranslations = {
   nav: {
     home: "کور",
     downloaders: "ښکته کوونکي",
@@ -12581,10 +12583,10 @@ const ps: Translations = {
         { q: "ایا له Threads څخه ویډیو ښکته کول قانوني دي؟", a: "یوازې هغه څه ښکته کړئ چې د خوندي کولو حق یې لرئ — خپله منځپانګه یا هر څه چې لیکوال اجازه ورکړې وي. د Threads د کارونې شرایطو او د کاپي رایټ قانون ته درناوی وکړئ." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ckb: Translations = {
+const ckb: BaseTranslations = {
   nav: {
     home: "سەرەکی",
     downloaders: "داگرەکان",
@@ -12940,10 +12942,10 @@ const ckb: Translations = {
         { q: "ئایا داگرتنی ڤیدیۆ لە Threads یاساییە؟", a: "تەنها ئەوە دابگرە کە مافی پاشەکەوتکردنیت هەیە — ناوەڕۆکی خۆت یان هەر شتێک کە نووسەرەکە ڕێگەی پێداوە. ڕێز لە مەرجەکانی بەکارهێنانی Threads و یاسای مافی لەبەرگرتنەوە بگرە." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ku: Translations = {
+const ku: BaseTranslations = {
   nav: {
     home: "Serrûpel",
     downloaders: "Daxistin",
@@ -13299,10 +13301,10 @@ const ku: Translations = {
         { q: "Daxistina vîdyoyan ji Threads qanûnî ye?", a: "Tenê tiştê ku mafê te heye tomar bikî daxîne — naveroka te ya xwe an her tiştê ku nivîskar destûr dide. Mercên Bikaranînê yên Threads û qanûna mafê telîfê bi rêz bigire." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ug: Translations = {
+const ug: BaseTranslations = {
   nav: {
     home: "باش بەت",
     downloaders: "چۈشۈرگۈچلەر",
@@ -13658,10 +13660,10 @@ const ug: Translations = {
         { q: "Threads تىن ۋىدىيو چۈشۈرۈش قانۇنلۇقمۇ؟", a: "پەقەت ساقلاش ھوقۇقىڭىز بار نەرسىلەرنىلا چۈشۈرۈڭ — ئۆزىڭىزنىڭ مەزمۇنى ياكى ئاپتور رۇخسەت قىلغان ھەر قانداق نەرسە. Threads نىڭ ئىشلىتىش شەرتلىرى ۋە نەشر ھوقۇقى قانۇنىغا ھۆرمەت قىلىڭ." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const tk: Translations = {
+const tk: BaseTranslations = {
   nav: {
     home: "Baş sahypa",
     downloaders: "Ýükleýjiler",
@@ -14017,10 +14019,10 @@ const tk: Translations = {
         { q: "Threads-den wideo ýüklemek kanunymy?", a: "Diňe saklamaga hukugyňyz bar bolan zady ýükläň — öz mazmunyňyzy ýa-da awtoryň rugsat beren islendik zadyny. Threads-iň Ulanyş şertlerini we awtorlyk hukugy baradaky kanunlary hormatlaň." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const tt: Translations = {
+const tt: BaseTranslations = {
   nav: {
     home: "Баш бит",
     downloaders: "Йөкләүчеләр",
@@ -14376,10 +14378,10 @@ const tt: Translations = {
         { q: "Threads-тан видео йөкләп алу законлымы?", a: "Саклап калырга хокукыгыз булганны гына йөкләп алыгыз — үз контентыгызны яки автор рөхсәт иткәнне. Threads куллану шартларын һәм авторлык хокукын хөрмәт итегез." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const sq: Translations = {
+const sq: BaseTranslations = {
   nav: {
     home: "Kreu",
     downloaders: "Shkarkuesit",
@@ -14735,10 +14737,10 @@ const sq: Translations = {
         { q: "A është e ligjshme të shkarkosh video nga Threads?", a: "Shkarkoni vetëm atë që keni të drejtë të ruani — përmbajtjen tuaj ose çdo gjë që autori e lejon. Respektoni Kushtet e Përdorimit të Threads dhe ligjin për të drejtën e autorit." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const bs: Translations = {
+const bs: BaseTranslations = {
   nav: {
     home: "Početna",
     downloaders: "Preuzimanje",
@@ -15094,10 +15096,10 @@ const bs: Translations = {
         { q: "Da li je legalno preuzimati videozapise sa Threadsa?", a: "Preuzimajte samo ono što imate pravo sačuvati — vlastiti sadržaj ili sve što autor dozvoljava. Poštujte Threadsove Uslove korištenja i zakon o autorskim pravima." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const ce: Translations = {
+const ce: BaseTranslations = {
   nav: {
     home: "Коьрта агӀо",
     downloaders: "Чуйоккхурш",
@@ -15453,10 +15455,10 @@ const ce: Translations = {
         { q: "Threads-ера видео чуяккхар законехь дуй?", a: "Шуна Ӏалашдан бакъо йолу хӀума бен чудаккха ца мега — Шайн контент я авторо пурба делла хӀума. Threads-ан лелоран бакъонаш а, авторан бакъонийн закон а ларйийша." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const inh: Translations = {
+const inh: BaseTranslations = {
   nav: {
     home: "Кертера оагӀув",
     downloaders: "Чуяккхаргаш",
@@ -15812,10 +15814,10 @@ const inh: Translations = {
         { q: "Threads-ера видео чуяккхар законаца да?", a: "Ӏалашде бокъо йола хӀама мара чудаккха мегаш дац — Шун контент е автора бокъо енна хӀама. Threads-а бокъонаш а, автора бокъонай закон а лорадел." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const av: Translations = {
+const av: BaseTranslations = {
   nav: {
     home: "ТӀоцебесеб гьумер",
     downloaders: "Босулел алатал",
@@ -16171,10 +16173,10 @@ const av: Translations = {
         { q: "Threads-алдаса видео боси законалда рекъон бугищ?", a: "Нужее цӀунизе ихтияр бугеб жо гурони босуге — Нужерго контент яги авторас изну кьураб жо. Threads-алъул шартӀал ва авторасул ихтияралъул закон цӀуне." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-const tl: Translations = {
+const tl: BaseTranslations = {
   nav: {
     home: "Home",
     downloaders: "Mga Downloader",
@@ -16530,7 +16532,23 @@ const tl: Translations = {
         { q: "Legal ba ang pag-download ng video mula sa Threads?", a: "I-download lang ang may karapatan kang i-save — sarili mong content o anumang pinapayagan ng author. Igalang ang Terms of Use ng Threads at ang batas sa copyright." },
       ],
     },
-  } satisfies Record<Platform, PlatformStrings>,
+  } satisfies Record<Exclude<Platform, "reddit">, PlatformStrings>,
 };
 
-export const translations: Record<Language, Translations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq, bs, ce, inh, av };
+const baseTranslations: Record<Language, BaseTranslations> = { en, es, ru, uk, kk, ar, zh, hi, id: indonesian, sw, de, fr, it, pt, uz, tr, fa, vi, bn, ur, pl, ja, ko, th, am, om, ha, so, az, ky, tg, tl, ms, nl, ro, ps, ckb, ku, ug, tk, tt, sq, bs, ce, inh, av };
+
+
+export const translations = Object.fromEntries(Object.entries(baseTranslations).map(([code, data]) => {
+  const language = code as Language;
+  const copy = redditCopy[language];
+  const base = data.platforms.threads;
+  const rename = (value: string) => value.replaceAll("Threads", "Reddit").replaceAll("threads.com", "reddit.com").replaceAll("threads.net", "reddit.com");
+  const reddit: PlatformStrings = {
+    description: copy.summary, news: rename(base.news),
+    titleLine1: rename(base.titleLine1), titleLine2: rename(base.titleLine2),
+    pageDescription: `${copy.summary} ${copy.limits}`, placeholder: rename(base.placeholder),
+    howTo: [...copy.steps.slice(0, 2), `${copy.steps[2]} ${copy.note}`],
+    faq: base.faq.slice(0, 2).map(item => ({ q: rename(item.q), a: rename(item.a) })),
+  };
+  return [language, { ...data, platforms: { ...data.platforms, reddit } }];
+})) as Record<Language, Translations>;

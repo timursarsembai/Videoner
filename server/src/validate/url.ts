@@ -395,6 +395,17 @@ export const isGetCourseUrl = (url: string) => {
   }
 };
 
+export const isRedditUrl = (url: string) => {
+  try {
+    const u = new URL(url);
+    if (!['http:', 'https:'].includes(u.protocol)) return false;
+    if (u.hostname === 'redd.it') return /^\/[a-z0-9]+\/?$/i.test(u.pathname);
+    if (!/^(?:(?:www|old|m|np|new)\.)?reddit\.com$/i.test(u.hostname)) return false;
+    return /^\/(?:r\/[^/]+\/|user\/[^/]+\/)?comments\/[a-z0-9]+(?:\/|$)/i.test(u.pathname) ||
+      /^\/r\/[^/]+\/s\/[a-z0-9_-]+\/?$/i.test(u.pathname);
+  } catch { return false; }
+};
+
 export const getPlatform = (url: string) => {
   if (isYoutubeUrl(url)) return 'youtube';
   if (isFacebookUrl(url)) return 'facebook';
@@ -407,6 +418,7 @@ export const getPlatform = (url: string) => {
   if (isOkRuUrl(url)) return 'okru';
   if (isPinterestUrl(url)) return 'pinterest';
   if (isThreadsUrl(url)) return 'threads';
+  if (isRedditUrl(url)) return 'reddit';
   if (isGetCourseUrl(url)) return 'getcourse';
   return null;
 };

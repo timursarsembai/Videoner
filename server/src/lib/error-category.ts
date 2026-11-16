@@ -4,10 +4,11 @@ import { ErrorCategory } from '@prisma/client';
 // чтобы категории ошибок были одинаковыми для /info и /download.
 export function categorizeError(raw: string): ErrorCategory {
   const msg = (raw || '').toLowerCase();
+  if (msg.includes('reddit server access unavailable')) return ErrorCategory.SERVER_BLOCKED;
 
   // Отказ по нашему правилу «не скачиваем 18+» (lib/adult-content.ts) — первым:
   // в тексте про скрытый твит есть слова, похожие на признаки «нужен вход».
-  if (msg.startsWith('adult content') || msg.includes('error: adult content')) {
+  if (msg.startsWith('adult content') || msg.includes('adult content:') || msg.includes('error: adult content')) {
     return ErrorCategory.ADULT_CONTENT;
   }
   if (msg.includes('tweet without video')) {
@@ -67,7 +68,7 @@ export function categorizeError(raw: string): ErrorCategory {
   }
 
   if (
-    msg.includes('no video formats found') ||
+    msg.includes('no video formats found') || msg.includes('reddit no media') ||
     // Threads: пост без видимого медиа (текстовый или медиа только для вошедших).
     msg.includes('no video or photo is visible in this threads post')
   ) {

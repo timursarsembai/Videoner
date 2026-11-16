@@ -154,4 +154,5 @@ export type Platform =
   | 'okru'
   | 'pinterest'
   | 'threads'
+  | 'reddit'
   | 'getcourse';

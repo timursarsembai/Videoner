@@ -80,9 +80,14 @@ export function tilesForDetections(detections, target, side) {
 export function safeRedditPostUrl(value) {
   try {
     const u = new URL(value);
-    if (u.protocol !== 'https:' || !/^(?:www\.|old\.|m\.)?reddit\.com$/.test(u.hostname)) return null;
+    if (!['http:', 'https:'].includes(u.protocol) || u.username || u.password || u.port) return null;
+    if (u.hostname === 'redd.it') {
+      const id = /^\/([a-z0-9]+)\/?$/i.exec(u.pathname)?.[1];
+      return id ? { id: id.toLowerCase(), url: `https://www.reddit.com/comments/${id.toLowerCase()}/` } : null;
+    }
+    if (!/^(?:(?:www|old|m|np|new)\.)?reddit\.com$/.test(u.hostname)) return null;
     const id = /^\/(?:r\/[^/]+\/|user\/[^/]+\/)?comments\/([a-z0-9]+)(?:\/|$)/i.exec(u.pathname)?.[1];
-    if (!id) return null;
+    if (!id) return /^\/r\/[^/]+\/s\/[a-z0-9_-]+\/?$/i.test(u.pathname) ? { id: null, url: `https://www.reddit.com${u.pathname}` } : null;
     return { id: id.toLowerCase(), url: `https://www.reddit.com${u.pathname}` };
   } catch { return null; }
 }

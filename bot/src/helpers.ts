@@ -107,7 +107,9 @@ const BOT_SIGNATURE = process.env.BOT_TOKEN
 export async function api<T = any>(
   path: string,
   body?: unknown,
-  { timeoutMs = path === "/info" ? INFO_TIMEOUT_MS : API_TIMEOUT_MS } = {},
+  { timeoutMs = path === "/info" ?
+    (typeof (body as any)?.url === "string" && /https?:\/\/(?:[\w.-]+\.)?reddit\.com\/|https?:\/\/redd\.it\//i.test((body as any).url) ? 240_000 : INFO_TIMEOUT_MS)
+    : API_TIMEOUT_MS } = {},
 ): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -216,6 +218,7 @@ export function friendlyError(raw: string, lang: Lang): string {
   if (msg.includes("adult content (x age-restricted tweet)")) return m.errorTweetAdultHidden;
   if (msg.includes("adult content")) return m.errorAdultContent;
   if (msg.includes("tweet without video")) return m.errorTweetNoVideo;
+  if (msg.includes("reddit no media")) return m.errorNoVideoContent;
 
   // Раньше проверки на вход: при региональной блокировке площадка отвечает
   // отказом, похожим на «нужна авторизация», но вход тут ничего не даёт —
@@ -268,6 +271,7 @@ export function friendlyError(raw: string, lang: Lang): string {
   // to the login page. You have exceeded the rate-limit for accessing posts
   // anonymously» — тоже про наш адрес, а не про ролик.
   if (
+    msg.includes("reddit server access unavailable") ||
     msg.includes("empty media response") ||
     msg.includes("without being logged-in") ||
     msg.includes("rate-limit reached") ||
@@ -354,7 +358,7 @@ const EXTENSION_PAGE_BASE = (process.env.EXTENSION_PAGE_BASE ?? "https://videone
 // Площадки, которые расширение качает прямо в браузере, под входом человека
 // (extension/page-media.js). Остальные оно качает тем же сервером — там
 // предлагать его бессмысленно.
-const BROWSER_HOSTS = /(^|\.)(instagram\.com|facebook\.com|fb\.watch|tiktok\.com|threads\.(net|com))$/i;
+const BROWSER_HOSTS = /(^|\.)(instagram\.com|facebook\.com|fb\.watch|tiktok\.com|threads\.(net|com)|reddit\.com|redd\.it)$/i;
 
 // Файл тяжелее предела Telegram (2 ГБ): у сайта и расширения такого предела
 // нет. Ссылки ведут сразу к этому видео: сайт — через ссылку-префикс

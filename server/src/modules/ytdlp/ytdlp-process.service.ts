@@ -357,6 +357,9 @@ export class YtdlpProcessService implements OnModuleInit {
   // видит как подозрительный и может заблокировать аккаунт. Такие запросы
   // идут с адреса сервера, как и раньше, — с куками он работает.
   private proxyAllowed(platform: string | null, withCookies: boolean): boolean {
+    // Reddit page access belongs to its browser resolver. CDN downloads are
+    // direct and must never consume the YouTube/ISP proxy pool.
+    if (platform === 'reddit') return false;
     return !(withCookies && platform === 'instagram');
   }
 
@@ -738,7 +741,9 @@ export class YtdlpProcessService implements OnModuleInit {
       const platform = urlArg ? getPlatform(urlArg) : null;
 
       const finalArgs = [...args];
-      if (options?.cookiesContent) {
+      if (platform === 'reddit') {
+        // No account cookies or fallback cookie file for Reddit.
+      } else if (options?.cookiesContent) {
         disposableCookies = this.makeDisposableCookies(platform, options.cookiesContent);
       } else if (!options?.skipCookies) {
         disposableCookies = this.makeDisposableCookies(platform);
@@ -1049,7 +1054,7 @@ export class YtdlpProcessService implements OnModuleInit {
     let infoFile: string | null = null;
     // Сторис по готовым метаданным — и одиночная, и «все сторис человека»
     // (плейлист): yt-dlp сам их разобрать не может (lib/instagram-story.ts).
-    if (extras?.infoJson && ((platform === 'youtube' && !isPlaylistDownload) || extras.forceInfoJson)) {
+    if (extras?.infoJson && (((platform === 'youtube' || platform === 'reddit') && !isPlaylistDownload) || extras.forceInfoJson)) {
       try {
         infoFile = path.join(
           os.tmpdir(),
@@ -1071,7 +1076,7 @@ export class YtdlpProcessService implements OnModuleInit {
     // В аргументы НЕ вшивается: от кук может понадобиться отказаться на
     // повторной попытке (протухшая сессия), поэтому флаг добавляется в
     // startAttempt(). Удаляется в finalize() ниже.
-    const disposableCookies = extras?.cookiesContent
+    const disposableCookies = platform === 'reddit' ? null : extras?.cookiesContent
       ? this.makeDisposableCookies(platform, extras.cookiesContent)
       : this.makeDisposableCookies(platform);
 

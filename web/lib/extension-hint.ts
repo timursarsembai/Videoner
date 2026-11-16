@@ -10,7 +10,7 @@ import { detectPlatform } from "@/lib/validations/url";
 // сервером, и предлагать его там бессмысленно. Сигналы — те же, что у бота
 // (bot/src/helpers.ts friendlyError) и в server/src/lib/error-category.ts.
 
-const BROWSER_PLATFORMS = new Set(["instagram", "facebook", "tiktok", "threads"]);
+const BROWSER_PLATFORMS = new Set(["instagram", "facebook", "tiktok", "threads", "reddit"]);
 
 // Региональная блокировка похожа на «нужен вход», но это про страну, а не
 // про аккаунт — проверяется первой, как и у бота.
@@ -24,6 +24,7 @@ const REGION_SIGNALS = [
 ];
 
 const BROWSER_HELPS_SIGNALS = [
+  "reddit server access unavailable",
   // Площадка отказала нашему серверу.
   "empty media response",
   "without being logged-in",

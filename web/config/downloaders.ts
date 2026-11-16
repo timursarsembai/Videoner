@@ -5,6 +5,7 @@ import {
   isPinterestUrl,
   isRutubeUrl,
   isThreadsUrl,
+  isRedditUrl,
   isTikTokUrl,
   isTwitterUrl,
   isVimeoUrl,
@@ -69,6 +70,10 @@ export const downloaders: Downloader[] = [
     logo: "/images/logos/x_logo.svg",
     isComingSoon: false,
     isUrlValid: isTwitterUrl,
+  },
+  {
+    name: "Reddit", value: "reddit", href: "/reddit", description: "Reddit",
+    logo: "/images/logos/reddit.svg", isComingSoon: false, isUrlValid: isRedditUrl,
   },
   {
     name: "Pinterest",

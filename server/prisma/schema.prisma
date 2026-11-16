@@ -193,6 +193,7 @@ enum Downloaders {
   PINTEREST
   THREADS
   GETCOURSE
+  REDDIT
 }
 
 enum DownloadSource {

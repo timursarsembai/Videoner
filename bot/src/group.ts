@@ -27,6 +27,8 @@ export const VIDEO_HOSTS = [
   "pin.it",
   "threads.net",
   "threads.com",
+  "reddit.com",
+  "redd.it",
 ];
 
 export function isVideoHostUrl(url: string): boolean {

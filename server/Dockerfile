@@ -76,6 +76,7 @@ RUN pnpm run build
 # Кладём рядом с bgutil: каталог /etc/yt-dlp/plugins уже в списке поиска
 # (ключ --plugin-dirs в PyInstaller-сборке НЕ работает — проверено).
 COPY ytdlp-plugins/threads /etc/yt-dlp/plugins/threads
+COPY ytdlp-plugins/reddit /etc/yt-dlp/plugins/reddit
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh

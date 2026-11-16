@@ -370,11 +370,23 @@ export const isThreadsUrl = (url: string) => {
 // Порядок повторяет config/downloaders — он же порядок проверки на сервере
 // (server/src/validate/url.ts getPlatform). Площадки не пересекаются по доменам,
 // так что порядок влияет только на скорость, но пусть везде будет одинаковый.
+export const isRedditUrl = (url: string) => {
+  try {
+    const u = new URL(url);
+    if (!["http:", "https:"].includes(u.protocol)) return false;
+    if (u.hostname === "redd.it") return /^\/[a-z0-9]+\/?$/i.test(u.pathname);
+    if (!/^(?:(?:www|old|m|np|new)\.)?reddit\.com$/i.test(u.hostname)) return false;
+    return /^\/(?:r\/[^/]+\/|user\/[^/]+\/)?comments\/[a-z0-9]+(?:\/|$)/i.test(u.pathname) ||
+      /^\/r\/[^/]+\/s\/[a-z0-9_-]+\/?$/i.test(u.pathname);
+  } catch { return false; }
+};
+
 const PLATFORM_MATCHERS: readonly [Platform, (url: string) => boolean][] = [
   ["youtube", isYoutubeUrl],
   ["tiktok", isTikTokUrl],
   ["instagram", isInstagramUrl],
   ["threads", isThreadsUrl],
+  ["reddit", isRedditUrl],
   ["facebook", isFacebookUrl],
   ["twitter", isTwitterUrl],
   ["pinterest", isPinterestUrl],

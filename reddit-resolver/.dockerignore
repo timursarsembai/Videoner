@@ -1,0 +1,7 @@
+node_modules
+models
+reports
+test
+__pycache__
+*.pyc
+.env*

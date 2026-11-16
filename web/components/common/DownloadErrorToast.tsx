@@ -6,6 +6,8 @@ import { toast, type Toast } from "react-hot-toast";
 import { TranslationKey } from "@/lib/i18n/context";
 import { Language } from "@/lib/i18n/translations";
 import { browserCanHelp, extensionPageHref } from "@/lib/extension-hint";
+import { redditCopy } from "@/lib/i18n/reddit-copy";
+import { isRedditUrl } from "@/lib/validations/url";
 
 // Ошибка получения или скачивания ролика. Если площадка не отдала его нашему
 // серверу, а расширение для браузера скачает под входом человека (см.
@@ -25,8 +27,12 @@ export function showDownloadError(
     toast.error(t("toast.tweetAdultHidden"));
     return;
   }
-  if (message.startsWith("Adult content")) {
+  if (message.startsWith("Adult content") || message.includes("Adult content:")) {
     toast.error(t("toast.adultContent"));
+    return;
+  }
+  if (isRedditUrl(url) && /reddit no media|no video formats? found|doesn't contain a downloadable video/i.test(message)) {
+    toast.error(redditCopy[language].noMedia);
     return;
   }
   if (message.startsWith("Tweet without video")) {

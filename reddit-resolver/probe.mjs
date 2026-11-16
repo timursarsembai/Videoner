@@ -80,14 +80,14 @@ try {
   });
   await page.goto(post.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
   await page.waitForTimeout(2000);
-  await solveChallenge(page, { deadline: Date.now() + 180000, postId: post.id, onEvent: event, audio: input.audio === true });
+  const actualId = await solveChallenge(page, { deadline: Date.now() + 180000, postId: post.id, onEvent: event, audio: input.audio === true });
   const result = await page.evaluate(id => {
     const node = document.getElementById(`t3_${id}`);
     if (!node || node.tagName.toLowerCase() !== 'shreddit-post') return { matchedPost: false };
     return { matchedPost: true, attributes: Object.fromEntries([...node.attributes].map(a => [a.name, a.value])),
       players: [...node.querySelectorAll('shreddit-player,shreddit-player-2,video,source')]
         .map(n => ({ tag: n.tagName, attributes: Object.fromEntries([...n.attributes].map(a => [a.name, a.value])) })) };
-  }, post.id);
+  }, actualId);
   event({ stage: 'result', result, requests });
 } catch (error) {
   const code = /^REDDIT_[A-Z_]+$/.test(error?.message || '') ? error.message : 'REDDIT_PROBE_FAILED';

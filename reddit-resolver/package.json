@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "probe": "node probe.mjs",
-    "warmup": "node vision.mjs"
+    "warmup": "node vision.mjs",
+    "start": "node server.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "3.8.1",

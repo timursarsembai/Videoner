@@ -343,7 +343,9 @@ export class InfoService {
     const allFormats = {
       // У поста из нескольких фото или со звуком — ещё слайдшоу (lib/slideshow.ts).
       video: photoOnly ? photoQualities(playlistEntries(info).length, hasAudio) : [...new Set(videoFormats)],
-      audio: photoOnly ? (hasAudio ? ['128Kbps'] : []) : [...new Set(audioFormats)],
+      audio: photoOnly ? (hasAudio ? ['128Kbps'] : []) :
+        platform === 'reddit' && !playlistEntries(info).some(entry => entry.formats?.some(f => f.acodec && f.acodec !== 'none'))
+          ? [] : [...new Set(audioFormats)],
     };
 
     return { allFormats, allExtensions };
@@ -407,6 +409,12 @@ export class InfoService {
       // на деле это почти всегда пост без видео (например, пин с одними фото).
       errorMessage =
         "This link doesn't contain a downloadable video — the post appears to be photo-only content.";
+    }
+
+    if (platform === 'reddit') {
+      if (errorMessage.includes('Adult content:')) return ADULT_CONTENT_ERROR;
+      if (errorMessage.includes('Reddit server access unavailable')) return 'Reddit server access unavailable';
+      if (/no video formats? found|doesn't contain a downloadable video/i.test(errorMessage)) return 'Reddit no media';
     }
 
     // TikTok, статус 10231 — на странице он подписан "cross_border_violation":

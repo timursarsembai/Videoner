@@ -73,6 +73,20 @@ services:
     mem_limit: 1536m
     networks: [internal]
 
+  reddit-resolver:
+    build: ./reddit-resolver
+    container_name: videoner-reddit-resolver
+    restart: unless-stopped
+    init: true
+    environment:
+      REDDIT_PROXY_URL: ${REDDIT_PROXY_URL:-}
+      REDDIT_PROXY_COUNTRY: ${REDDIT_PROXY_COUNTRY:-gb}
+    # One browser and local inference worker; no publicly exposed port.
+    mem_limit: 1900m
+    cpus: 1.0
+    pids_limit: 200
+    networks: [internal]
+
   server:
     build: ./server
     container_name: videoner-server
@@ -136,6 +150,7 @@ services:
       # ниоткуда не видна, и переименование сервиса ломало бы резерв молча.
       # Переменная доезжает до yt-dlp сама — spawn наследует окружение.
       THREADS_RESOLVER_URL: http://threads-resolver:4417
+      REDDIT_RESOLVER_URL: http://reddit-resolver:4418
       # Одна подсказка человеку, который запустил бота и за 48 часов не прислал
       # ни одной ссылки (см. server/src/modules/nudge). Включено ТОЛЬКО здесь:
       # у staging своя БД, но тот же BOT_TOKEN, и без этого флага он писал бы

@@ -37,7 +37,7 @@ export function entryKind(entry: YtdlpVideoInfo): 'video' | 'photo' {
 // Instagram и Threads, — то есть пин с картинкой для нас неотличим от элемента
 // -фотографии. Оговорка одна: полноразмерного варианта Pinterest не отдаёт,
 // самый крупный обычно 564 пикселя по ширине (замер 13.08.2026).
-export const PHOTO_PLATFORMS = ['instagram', 'threads', 'pinterest'];
+export const PHOTO_PLATFORMS = ['instagram', 'threads', 'pinterest', 'reddit'];
 
 // Расширения, по которым файл поста опознаётся как фотография. В норме мы
 // кладём снимки только как .jpg (см. savePhoto), но если перекодировать не

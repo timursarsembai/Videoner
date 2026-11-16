@@ -5,7 +5,10 @@ import { challengeTarget, targetScore, safeRedditPostUrl, tilesForDetections } f
 test('only canonical Reddit post paths may reach the browser', () => {
   assert.deepEqual(safeRedditPostUrl('https://www.reddit.com/r/videos/comments/6rrwyj/title/?x=1'),
     { id: '6rrwyj', url: 'https://www.reddit.com/r/videos/comments/6rrwyj/title/' });
-  for (const url of ['http://reddit.com/comments/abc/', 'https://reddit.com.evil.test/comments/abc/',
+  assert.equal(safeRedditPostUrl('https://redd.it/abc123').id, 'abc123');
+  assert.equal(safeRedditPostUrl('http://reddit.com/comments/abc/').url, 'https://www.reddit.com/comments/abc/');
+  assert.equal(safeRedditPostUrl('https://www.reddit.com/r/videos/s/AbCd12/').id, null);
+  for (const url of ['ftp://reddit.com/comments/abc/', 'https://reddit.com.evil.test/comments/abc/',
     'https://127.0.0.1/comments/abc/', 'https://reddit.com/r/videos/', 'file:///comments/abc/']) {
     assert.equal(safeRedditPostUrl(url), null);
   }

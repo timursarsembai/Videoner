@@ -2,8 +2,17 @@ import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { classifyTiles, detectObjects } from './vision.mjs';
 import { splitGrid } from './tile-model.mjs';
-import { challengeTarget, targetScore, tilesForDetections, DETECTOR_LABELS } from './selection.mjs';
+import { challengeTarget, targetScore, tilesForDetections, DETECTOR_LABELS, safeRedditPostUrl } from './selection.mjs';
 import { tryAudioChallenge } from './audio.mjs';
+import { pageRefusal } from './post.mjs';
+
+async function visibleChallenge(page) {
+  for (const frame of page.frames()) {
+    if (!/\/recaptcha\/(?:api2|enterprise)\/bframe/.test(frame.url())) continue;
+    try { if (await (await frame.frameElement()).isVisible()) return frame; } catch { /* navigation */ }
+  }
+  return null;
+}
 
 export async function solveChallenge(page, { deadline, postId, onEvent = () => {}, audio = false }) {
   const seen = new Map();
@@ -12,12 +21,18 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
   let reloads = 0;
   let lastVerified = '';
   let repeatedVerification = 0;
+  let expiredRestarts = 0;
   for (let round = 0; round < 18 && Date.now() < deadline;) {
-    if (await page.locator(`shreddit-post[id="t3_${postId}"]`).count()) return;
+    let currentId = postId || safeRedditPostUrl(page.url())?.id;
+    if (!currentId) {
+      const canonical = await page.locator('link[rel="canonical"]').getAttribute('href').catch(() => null);
+      currentId = safeRedditPostUrl(canonical)?.id;
+    }
+    if (currentId && await page.locator(`shreddit-post[id="t3_${currentId}"]`).count()) return currentId;
     const text = await page.locator('body').innerText({ timeout: 3000 }).catch(() => '');
-    if (/Too Many Requests/i.test(text)) throw new Error('REDDIT_RATE_LIMITED');
-    if (/blocked by network security|network policy/i.test(text)) throw new Error('REDDIT_NETWORK_BLOCKED');
-    const frame = page.frames().find(f => /\/recaptcha\/(?:api2|enterprise)\/bframe/.test(f.url()));
+    const refusal = pageRefusal(text);
+    if (refusal) throw new Error(refusal);
+    const frame = await visibleChallenge(page);
     if (frame) {
       const message = await frame.locator('body').innerText({ timeout: 2000 }).catch(() => '');
       if (/sending automated queries|can't process your request|Try again later/i.test(message)) {
@@ -27,6 +42,15 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
     const tiles = frame?.locator('.rc-imageselect-tile');
     const count = tiles ? await tiles.count().catch(() => 0) : 0;
     if (!count) {
+      if (checkboxClicked) {
+        const anchorFrame = page.frames().find(f => /\/recaptcha\/(?:api2|enterprise)\/anchor/.test(f.url()));
+        const message = await anchorFrame?.locator('body').innerText({ timeout: 2000 }).catch(() => '');
+        if (/challenge expired|check the checkbox again/i.test(message || '')) {
+          if (++expiredRestarts > 1) throw new Error('REDDIT_CHALLENGE_EXPIRED');
+          checkboxClicked = false; lastVerified = ''; repeatedVerification = 0;
+          onEvent({ stage: 'challenge-expired-restart' });
+        }
+      }
       if (!checkboxClicked) {
         const anchor = page.frameLocator('iframe[src*="recaptcha"][src*="anchor"]').locator('#recaptcha-anchor');
         if (await anchor.count().catch(() => 0)) {
@@ -36,6 +60,20 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
       await page.waitForTimeout(1500);
       continue;
     }
+    const clickTiles = async indices => {
+      try {
+        for (const i of indices) {
+          if (!await tiles.nth(i).evaluate(e => e.classList.contains('rc-imageselect-tileselected'))) {
+            await tiles.nth(i).click({ timeout: 5000, force: true });
+            await page.waitForTimeout(200);
+          }
+        }
+        return true;
+      } catch (error) {
+        if (!await visibleChallenge(page)) return false;
+        throw error;
+      }
+    };
     const description = await frame.locator('.rc-imageselect-desc-wrapper').innerText({ timeout: 3000 });
     round++;
     const target = challengeTarget(description);
@@ -66,10 +104,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
       onEvent({ stage: 'localization', round, target, selected, detections });
       // reCAPTCHA expands the hovered/selected image over its neighbour.
       // Ignore that temporary overlay while clicking the original cell.
-      for (const i of selected) {
-        await tiles.nth(i).click({ timeout: 5000, force: true });
-        await page.waitForTimeout(200);
-      }
+      if (!await clickTiles(selected)) continue;
       await frame.locator('#recaptcha-verify-button').click({ timeout: 3000 });
       await page.waitForTimeout(7000);
       continue;
@@ -96,11 +131,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
     onEvent({ stage: 'classification', round, target, count, selected,
       scores: hashes.map(h => seen.get(`${target}:${h}`)) });
     const dynamic = /none left|once there are none/i.test(description);
-    for (const i of selected) {
-      if (!await tiles.nth(i).evaluate(e => e.classList.contains('rc-imageselect-tileselected'))) {
-        await tiles.nth(i).click({ timeout: 5000, force: true }); await page.waitForTimeout(250);
-      }
-    }
+    if (!await clickTiles(selected)) continue;
     if (!dynamic || selected.length === 0) {
       const fingerprint = `${target}:${hashes.join(':')}`;
       repeatedVerification = fingerprint === lastVerified ? repeatedVerification + 1 : 0;

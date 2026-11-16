@@ -113,7 +113,12 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
         ? quality
         : null;
 
-    if (facebookProgressive) {
+    if (platform === 'reddit') {
+      const long = height ? Math.ceil((Number(height) * 16) / 9) : null;
+      const cap = long ? `[width<=${long}][height<=${long}]` : '';
+      formatArr = ['-f', `bv${cap}+ba/b${cap}/bv${cap}`, '-S',
+        `res:${height || 2160},vcodec:avc1,acodec:aac`, '--merge-output-format', 'mp4'];
+    } else if (facebookProgressive) {
       // Отдаём ровно тот формат, который выбрал пользователь: `hd`/`sd` у
       // Facebook — это муксованные H.264 + AAC, единственное, что играет на
       // iPhone (все его DASH-потоки — VP9 или AV1, подробности ниже, в общей

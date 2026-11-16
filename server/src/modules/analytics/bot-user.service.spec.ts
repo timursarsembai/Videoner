@@ -2,10 +2,14 @@ import { BotUserService, PROMO_MIN_DOWNLOADS } from './bot-user.service';
 
 // Подсказки после скачивания: правила выбора (сама запись — условный INSERT,
 // он проверен на копии базы при разработке).
-function service(opts: { blocked?: boolean; successful: number; shows: { key: string; ago: number }[]; inserted?: number }) {
+function service(opts: { blocked?: boolean; extension?: boolean; successful: number; shows: { key: string; ago: number }[]; inserted?: number }) {
   const prisma = {
     botUser: {
-      findUnique: jest.fn().mockResolvedValue({ id: 'u1', blockedAt: opts.blocked ? new Date() : null }),
+      findUnique: jest.fn().mockResolvedValue({
+        id: 'u1',
+        blockedAt: opts.blocked ? new Date() : null,
+        extensionLinkedAt: opts.extension ? new Date() : null,
+      }),
     },
     download: { count: jest.fn().mockResolvedValue(opts.successful) },
     promoShow: {
@@ -47,5 +51,11 @@ describe('BotUserService.nextPromo', () => {
       await service({ successful: 10, shows: [{ key: 'channel', ago: 3 * DAY }] }).svc.nextPromo(1, ['channel']),
     ).toBeNull();
     expect(await service({ successful: 10, shows: [], inserted: 0 }).svc.nextPromo(1, ['channel'])).toBeNull();
+  });
+
+  it('skips the extension tip for people who connected an account from the extension', async () => {
+    const { svc } = service({ extension: true, successful: 10, shows: [] });
+    expect(await svc.nextPromo(1, ['extension'])).toBeNull();
+    expect(await svc.nextPromo(1, ['extension', 'audio'], () => 0)).toBe('audio');
   });
 });

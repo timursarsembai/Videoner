@@ -99,12 +99,16 @@ export class BotUserService {
   // подсказка уже была за последние сутки или все уже видел. Выбранная
   // сразу записывается как показанная: бот отправляет её следом, а повторный
   // вызов (две ссылки подряд) не должен выдать вторую в те же сутки.
+  // Подсказку про расширение не показываем тем, у кого оно есть
+  // (extensionLinkedAt); про канал бот убирает её сам — подписан ли
+  // человек, знает только Telegram.
   async nextPromo(telegramId: number, keys: string[], rnd: () => number = Math.random): Promise<string | null> {
     const botUser = await this.prisma.botUser.findUnique({
       where: { telegramId: BigInt(telegramId) },
-      select: { id: true, blockedAt: true },
+      select: { id: true, blockedAt: true, extensionLinkedAt: true },
     });
     if (!botUser || botUser.blockedAt) return null;
+    if (botUser.extensionLinkedAt) keys = keys.filter((k) => k !== 'extension');
     const since = new Date(Date.now() - PROMO_INTERVAL_MS);
     const [successful, shows] = await Promise.all([
       this.prisma.download.count({

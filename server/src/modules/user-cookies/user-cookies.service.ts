@@ -167,7 +167,16 @@ export class UserCookiesService {
     // его подсмотрели в группе.
     const row = await this.prisma.cookieConnectCode.delete({ where: { code } }).catch(() => null);
     if (!row || row.expiresAt < new Date()) throw new NotFoundException('Code not found');
-    return this.save(scope, row.platform as CookiePlatform, decryptCookies(row.data), owner);
+    const saved = await this.save(scope, row.platform as CookiePlatform, decryptCookies(row.data), owner);
+    // Код выдаёт только расширение — у человека оно есть (подсказки после
+    // скачивания, BotUserService.nextPromo). Сбой отметки подключению не мешает.
+    await this.prisma.botUser
+      .updateMany({
+        where: { telegramId: BigInt(owner.telegramId), extensionLinkedAt: null },
+        data: { extensionLinkedAt: new Date() },
+      })
+      .catch((e) => console.error('Failed to mark extension link:', e));
+    return saved;
   }
 
   private view(r: {

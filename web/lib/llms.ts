@@ -24,7 +24,7 @@ const YOUTUBE_GB_PER_TG_USER = 25;
 function header(): string {
   const en = translations.en;
   const platformNames =
-    "YouTube, TikTok, Instagram, Facebook, X/Twitter, Vimeo, VK, Rutube, OK.ru, Pinterest, Threads";
+    "YouTube, TikTok, Instagram, Facebook, X/Twitter, Vimeo, VK, Rutube, OK.ru, Pinterest, Threads, Reddit";
   const languages = LANGUAGES.filter((l) => l !== "en")
     .map((l) => `${l} (${LANGUAGE_LABELS[l]})`)
     .join(", ");

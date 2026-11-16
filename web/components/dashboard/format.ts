@@ -12,6 +12,7 @@ export const PLATFORM_COLORS: Record<string, string> = {
   RUTUBE: "#f97316",
   OKRU: "#eab308",
   PINTEREST: "#be123c",
+  REDDIT: "#ff4500",
   GETCOURSE: "#16a34a",
 };
 
@@ -105,5 +106,6 @@ export const PLATFORM_OPTIONS = [
   "OKRU",
   "PINTEREST",
   "THREADS",
+  "REDDIT",
   "GETCOURSE",
 ] as const;

@@ -102,6 +102,12 @@
   --primary-light: 107 114 128;
 }
 
+/* Фирменный оранжевый Reddit (#FF4500). */
+.reddit {
+  --primary: 255 69 0;
+  --primary-light: 255 107 51;
+}
+
 @layer base {
   * {
     @apply border-border;

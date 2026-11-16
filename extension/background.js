@@ -248,9 +248,9 @@ async function startDirect({ url, tabId, media }) {
 
     // Отчёт — для статистики и номера скачивания («Скачивание №…»): его сбой
     // не должен портить человеку скачанный файл.
-    const number = await reportDownload({ url, fileSize: size, title, lang: uiLang });
     void addToHistory({ url, title, kind: media.ext ? "photo" : "video" });
-    await updateJob(url, (job) => ({ ...job, state: "done", progress: null, number }));
+    await updateJob(url, (job) => ({ ...job, state: "done", progress: null }));
+    void reportDownload(url, { url, fileSize: size, title, lang: uiLang });
   } finally {
     active.delete(url);
   }
@@ -493,9 +493,9 @@ async function getCourseDone({ key, href, size }) {
     if (!isBrowserGetCourse(job)) return;
     await updateJob(key, (current) => ({ ...current, state: "saving", progress: null }));
     await chromeDownload(href, `${safeFileName(job.title)}.mp4`, key);
-    const number = await reportDownload({ url: reportUrl(job.gc.master), fileSize: size, title: job.title, lang: uiLang });
     void addToHistory(historyEntry(job));
-    await updateJob(key, (current) => ({ ...current, state: "done", progress: null, number }));
+    await updateJob(key, (current) => ({ ...current, state: "done", progress: null }));
+    void reportDownload(key, { url: reportUrl(job.gc.master), fileSize: size, title: job.title, lang: uiLang });
   } catch (e) {
     console.error("Videoner: getcourse save", e);
     await updateJob(key, (current) => ({ ...current, state: "error", error: friendlyError({ message: "failed" }) }));
@@ -831,17 +831,14 @@ function validNumber(n) {
   return Number.isInteger(n) && n > 0 ? n : null;
 }
 
-// Отчёт о скачанном браузером файле: статистика и номер скачивания. Ждём его
-// недолго — файл уже сохранён, и сбой отчёта ничего человеку не портит.
-async function reportDownload(body) {
+// Отчёт о скачанном браузером файле: статистика и номер скачивания. Задача
+// к этому времени уже «готово» — номер дописываем, когда придёт ответ; сбой
+// отчёта ничего человеку не портит.
+async function reportDownload(key, body) {
   try {
-    const result = await Promise.race([
-      api("/download/report", body),
-      new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 8000)),
-    ]);
-    return validNumber(result?.number);
+    const number = validNumber((await api("/download/report", body))?.number);
+    if (number) await updateJob(key, (job) => (job?.state === "done" ? { ...job, number } : undefined));
   } catch (e) {
     console.warn("Videoner: report", e);
-    return null;
   }
 }

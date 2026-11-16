@@ -200,16 +200,13 @@ class ApiClient {
     }
   }
 
-  // Файлы поста. У обычного скачивания список либо пуст, либо содержит одну
-  // запись — тогда сайт ведёт себя как раньше. Несколько записей — карусель.
-  async getDownloadItems(downloadId: string): Promise<DownloadItem[]> {
-    return (await this.getDownloadResult(downloadId)).items;
-  }
-
-  // Файлы поста и порядковый номер скачивания («Скачивание №8 097»).
+  // Файлы поста и порядковый номер скачивания («Скачивание №8 097»). У
+  // обычного скачивания список либо пуст, либо содержит одну запись — тогда
+  // сайт ведёт себя как раньше. Несколько записей — карусель. Ждём недолго:
+  // от ответа зависят «готово» и сохранение файла.
   async getDownloadResult(downloadId: string): Promise<{ items: DownloadItem[]; number: number | null }> {
     try {
-      const response = await this.client.get(`/download/${downloadId}/status`);
+      const response = await this.client.get(`/download/${downloadId}/status`, { timeout: 5000 });
       const number = response.data?.number;
       return { items: response.data?.items ?? [], number: Number.isInteger(number) && number > 0 ? number : null };
     } catch {

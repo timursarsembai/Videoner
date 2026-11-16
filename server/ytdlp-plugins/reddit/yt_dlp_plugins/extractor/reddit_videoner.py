@@ -8,6 +8,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from yt_dlp.extractor.common import InfoExtractor
 from yt_dlp.extractor.reddit import RedditIE as BuiltinRedditIE
 from yt_dlp.utils import ExtractorError
 
@@ -130,3 +131,18 @@ class VideonerRedditIE(BuiltinRedditIE, plugin_name='videoner'):
             raise ExtractorError(_UNAVAILABLE if blocked else 'No video formats found', expected=True)
         return {**info, 'formats': formats, 'duration': media.get('duration'),
                 'thumbnail': _cdn_url(media.get('thumbnail'), ('i.redd.it', 'preview.redd.it', 'external-preview.redd.it'))}
+
+
+# Короткие ссылки «Поделиться» из приложения (reddit.com/r/<sub>/s/<код>) и
+# redd.it/<id>. Сборка yt-dlp (PyInstaller) выбирает площадку по ленивому
+# списку со встроенным шаблоном RedditIE, а не по _VALID_URL плагина выше:
+# полные ссылки /comments/ встроенный шаблон узнаёт и дальше работает плагин,
+# а эти — нет, и они уходили в [generic], который получал от Reddit 403 и
+# ошибку «площадка не пустила сервер» (16.11.2026). Отдельный класс — не
+# переопределение встроенного, его yt-dlp проверяет сам, раньше встроенных.
+# Резолвер принимает такие ссылки как есть (reddit-resolver selection.mjs).
+class VideonerRedditShareIE(InfoExtractor):
+    IE_NAME = 'reddit:videoner-share'
+    _VALID_URL = r'(?i)https?://(?:(?:(?:www|old|m|np|new)\.)?reddit\.com/r/[^/?#]+/s/[a-z0-9_-]+/?|redd\.it/[a-z0-9]+/?)(?:[?#].*)?$'
+    _real_extract = VideonerRedditIE._real_extract
+

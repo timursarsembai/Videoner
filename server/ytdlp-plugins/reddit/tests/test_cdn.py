@@ -23,13 +23,15 @@ class ExtractionError(Exception):
 
 reddit = types.ModuleType('yt_dlp.extractor.reddit')
 reddit.RedditIE = Base
+common = types.ModuleType('yt_dlp.extractor.common')
+common.InfoExtractor = Base
 utils = types.ModuleType('yt_dlp.utils')
 utils.ExtractorError = ExtractionError
 source = Path(__file__).parents[1] / 'yt_dlp_plugins/extractor/reddit_videoner.py'
 spec = importlib.util.spec_from_file_location('reddit_cdn_under_test', source)
 module = importlib.util.module_from_spec(spec)
 with patch.dict(sys.modules, {'yt_dlp': types.ModuleType('yt_dlp'), 'yt_dlp.extractor': types.ModuleType('yt_dlp.extractor'),
-                            'yt_dlp.extractor.reddit': reddit, 'yt_dlp.utils': utils}):
+                            'yt_dlp.extractor.reddit': reddit, 'yt_dlp.extractor.common': common, 'yt_dlp.utils': utils}):
     spec.loader.exec_module(module)
 
 
@@ -99,6 +101,18 @@ class CdnReserveTests(unittest.TestCase):
                 patch.object(module, '_cdn_manifest', side_effect=AssertionError('must not fetch media')):
             with self.assertRaisesRegex(ExtractionError, 'Adult content:'):
                 module.VideonerRedditIE()._real_extract('https://www.reddit.com/comments/abc123/')
+
+
+class ShareLinkTests(unittest.TestCase):
+    # Короткие ссылки идут отдельным классом (см. VideonerRedditShareIE).
+    def test_share_links_match_only_the_share_extractor(self):
+        import re
+        share = re.compile(module.VideonerRedditShareIE._VALID_URL)
+        for url in ('https://www.reddit.com/r/mildlyinfuriating/s/SLn5ybPnDJ',
+                    'https://reddit.com/r/x/s/AbC_1-2?utm_source=share', 'https://redd.it/1xg31h3'):
+            self.assertTrue(share.match(url), url)
+        self.assertFalse(share.match('https://www.reddit.com/r/x/comments/1xg31h3/y/'))
+        self.assertIs(module.VideonerRedditShareIE._real_extract, module.VideonerRedditIE._real_extract)
 
 
 if __name__ == '__main__':

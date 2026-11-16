@@ -68,6 +68,13 @@ fresh Reddit session will pass its captcha. Captcha timeouts still occur in
 live checks, and successful cache hits must not be counted as fresh-session
 successes when measuring availability.
 
+A subsequent live run with recovery enabled on 2026-11-16 resolved crosspost
+`ze20j2` in 183.4 seconds and returned its cached source `x7xpyo` in 0.5 seconds.
+The adult gate was rejected in 14.7 seconds (repeat refusal: 0.6 seconds), after
+which photo `1ublsxv` still resolved in the same session in 7.1 seconds (repeat
+metadata: 0.3 seconds). This checks reuse and isolation of post refusals, not a
+statistically measured improvement in fresh-session captcha acceptance.
+
 The resolver rejects explicit mature-content gates and marked posts. It follows
 crosspost sources and requires an independently checked source; an unresolved
 post or source fails closed. The API plugin requires `age_verified: true` and

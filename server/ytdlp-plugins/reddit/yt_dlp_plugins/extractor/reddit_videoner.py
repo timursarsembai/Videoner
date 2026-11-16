@@ -1,7 +1,10 @@
-"""Reddit page metadata from the local browser; media goes straight to Reddit CDN."""
+"""Reddit page metadata from the local browser; media uses Reddit CDN directly, with ISP fallback."""
 import json
 import os
 import re
+import random
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -10,6 +13,46 @@ from yt_dlp.utils import ExtractorError
 
 _ADULT = 'Adult content: the platform marked this post as 18+; Videoner does not download such content.'
 _UNAVAILABLE = 'Reddit server access unavailable'
+
+
+def _isp_pool():
+    # Same precedence as parseProxyPool in the API. Never use REDDIT_PROXY_URL.
+    urls = os.environ.get('YOUTUBE_PROXY_URLS', '').split(',')
+    urls = [value.strip().strip('\"\'') for value in urls if value.strip().strip('\"\'')]
+    if not urls:
+        urls = [os.environ.get('YOUTUBE_PROXY_URL', '').strip().strip('\"\'')]
+    result = list(dict.fromkeys(value for value in urls if value.startswith(('http://', 'https://'))))
+    random.shuffle(result)
+    return result
+
+
+def _cdn_manifest(url, deadline):
+    # CDN requests are separate from the residential browser/post request.
+    # Do not read ISP credentials unless the direct CDN actually blocks us.
+    def read(proxy=None):
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({'http': proxy, 'https': proxy} if proxy else {}))
+        with opener.open(url, timeout=max(0.1, min(8, deadline - time.monotonic()))) as response:
+            data = response.read(2 * 1024 * 1024 + 1)
+            if len(data) > 2 * 1024 * 1024:
+                raise ValueError('oversized manifest')
+            return data.decode('utf-8-sig')
+    try:
+        return read(), False
+    except urllib.error.HTTPError as error:
+        if error.code not in (403, 429):
+            return None, False
+    except (urllib.error.URLError, TimeoutError, OSError):
+        pass
+    except Exception:
+        return None, False
+    for proxy in _isp_pool():
+        if time.monotonic() >= deadline:
+            break
+        try:
+            return read(proxy), False
+        except Exception:
+            pass
+    return None, True
 
 
 def _cdn_url(value, hosts):
@@ -71,13 +114,18 @@ class VideonerRedditIE(BuiltinRedditIE, plugin_name='videoner'):
             raise ExtractorError('No video formats found', expected=True)
         dash = _cdn_url(media.get('dash_url'), ('v.redd.it',))
         hls = _cdn_url(media.get('hls_url'), ('v.redd.it',))
-        formats = self._extract_mpd_formats(dash, post_id, mpd_id='dash', fatal=False) if dash else []
+        deadline = time.monotonic() + 25
+        doc, blocked = _cdn_manifest(dash, deadline) if dash else (None, False)
+        formats = self._parse_mpd_formats(self._parse_xml(doc, post_id), mpd_id='dash', mpd_url=dash) if doc else []
         # MPD declares old DASH_2_4_M/audio and new DASH_720.mp4 /
         # DASH_AUDIO_128.mp4 correctly. Never guess an audio URL or assume
         # that a video without an audio adaptation set has sound.
         if not formats and hls:
-            formats = self._extract_m3u8_formats(hls, post_id, 'mp4', m3u8_id='hls', fatal=False)
+            doc, hls_blocked = _cdn_manifest(hls, deadline)
+            blocked = blocked or hls_blocked
+            if doc:
+                formats, _ = self._parse_m3u8_formats_and_subtitles(doc, hls, 'mp4', m3u8_id='hls', fatal=False, video_id=post_id)
         if not formats:
-            raise ExtractorError('No video formats found', expected=True)
+            raise ExtractorError(_UNAVAILABLE if blocked else 'No video formats found', expected=True)
         return {**info, 'formats': formats, 'duration': media.get('duration'),
                 'thumbnail': _cdn_url(media.get('thumbnail'), ('i.redd.it', 'preview.redd.it', 'external-preview.redd.it'))}

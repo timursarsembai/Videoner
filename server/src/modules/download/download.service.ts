@@ -1,4 +1,5 @@
 import { ADULT_CONTENT_ERROR, isAdultContent } from 'src/lib/adult-content';
+import { fetchRedditPhoto } from 'src/lib/reddit-cdn';
 import {
   GALLERY,
   SLIDESHOW,
@@ -959,6 +960,7 @@ export class DownloadService {
     targets: { position: number; url: string }[],
     downloadDir: string,
     fileName: string,
+    platform?: string,
   ): Promise<number> {
     const dot = fileName.lastIndexOf('.');
     const base = dot > 0 ? fileName.slice(0, dot) : fileName;
@@ -967,6 +969,12 @@ export class DownloadService {
     for (const target of targets) {
       const name = `${base}-${String(target.position).padStart(2, '0')}`;
       try {
+        if (platform === 'reddit') {
+          const photo = await fetchRedditPhoto(target.url, this.ytdlp.redditMediaProxies());
+          await this.savePhoto(photo.bytes, photo.contentType, downloadDir, name);
+          saved += 1;
+          continue;
+        }
         const response = await fetch(target.url);
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
@@ -1510,7 +1518,7 @@ export class DownloadService {
       if (!hasVideo) {
         void (async () => {
           try {
-            const saved = await this.downloadPhotos(photos, downloadDir, baseFileName);
+            const saved = await this.downloadPhotos(photos, downloadDir, baseFileName, platform);
             if (!saved) {
               throw new Error('Ни одну фотографию поста скачать не удалось');
             }
@@ -1576,7 +1584,7 @@ export class DownloadService {
                 // Фотографии добираем после видео — они лежат в том же посте
                 // и должны попасть в ту же выдачу, с теми же номерами.
                 if (photos.length) {
-                  await this.downloadPhotos(photos, downloadDir, baseFileName);
+                  await this.downloadPhotos(photos, downloadDir, baseFileName, platform);
                 }
                 await this.completePlaylistDownload(
                   download.id,

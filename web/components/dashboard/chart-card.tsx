@@ -71,9 +71,9 @@ export function useAnalytics<T>(name: string, params: AnalyticsParams = {}): Que
 }
 
 // Период графика и его данные: по умолчанию последние 30 дней.
-export function usePeriodQuery<T>(name: string, extra: AnalyticsParams = {}) {
+export function usePeriodQuery<T>(name: string, extra: AnalyticsParams = {}, initialPeriod: PeriodId = DEFAULT_PERIOD) {
   const { since } = useDashboard();
-  const [period, setPeriod] = useState<PeriodId>(DEFAULT_PERIOD);
+  const [period, setPeriod] = useState<PeriodId>(initialPeriod);
   const range = periodRange(period, since);
   const query = useAnalytics<T>(name, { ...range, ...extra });
   return { period, setPeriod, range, label: periodLabel(period, since), ...query };

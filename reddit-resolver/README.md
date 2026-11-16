@@ -121,3 +121,19 @@ Model downloads use a persistent BuildKit cache mount, copied into the final
 image during build. Runtime stays offline; ordinary resolver edits no longer
 invalidate model warmup. The release article is held outside the web build at
 `docs/drafts/reddit-bot-site/` pending owner review of production results.
+
+Reddit media uses the server's direct connection first. CDN HTTP 403/429 enables
+the existing ISP pool (`YOUTUBE_PROXY_URLS`, falling back to `YOUTUBE_PROXY_URL`)
+for that download only; later downloads start direct again. Failed ISP addresses
+can be rotated. Video/audio retries keep verified metadata and resume files.
+DASH/HLS manifests and single photos also try ISP after direct blocking or a
+network failure; a missing file (404) does not trigger ISP traffic. Residential
+`REDDIT_PROXY_URL` remains exclusive to browser/post resolution and is never
+selected for media. CDN fallback does not bypass the age checks.
+
+The admin dashboard includes a Reddit summary (bot and website only), a daily
+chart and a Reddit-filtered error log. Completed/expired downloads, file failures,
+metadata failures, pending requests and adult-content refusals are separate.
+The displayed success percentage covers terminal file downloads only; it is
+not an end-to-end availability estimate. File volume includes cache deliveries
+and does not measure proxy consumption. The article remains a draft.

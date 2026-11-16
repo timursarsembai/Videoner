@@ -24,6 +24,22 @@ export interface PlatformDatum {
   count: number;
 }
 
+export interface RedditCounters {
+  completed: number;
+  failed: number;
+  pending: number;
+  linkFailures: number;
+  policyRefusals: number;
+  cached: number;
+  bytes: number;
+}
+
+export interface RedditSummaryData {
+  totals: RedditCounters;
+  daily: (RedditCounters & { day: string; source: 'BOT' | 'WEB' })[];
+  successRate: number | null;
+}
+
 export interface SourceDatum {
   source: string;
   count: number;

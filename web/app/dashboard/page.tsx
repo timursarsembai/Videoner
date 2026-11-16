@@ -32,6 +32,7 @@ import {
   WeekdayChart,
 } from "@/components/dashboard/charts";
 import { ErrorsLog } from "@/components/dashboard/errors-log";
+import { RedditSummary } from "@/components/dashboard/reddit-summary";
 import { CountriesTab } from "@/components/dashboard/countries";
 import { LanguagesTab } from "@/components/dashboard/languages";
 import { AttemptsLog, BlockedUsersTable, TopUsersTable } from "@/components/dashboard/tables";
@@ -48,6 +49,7 @@ const DASHBOARD_TABS = [
   { id: "users", label: "Пользователи" },
   { id: "downloads", label: "Скачивания" },
   { id: "errors", label: "Ошибки" },
+  { id: "reddit", label: "Reddit" },
   { id: "languages", label: "Языки" },
   { id: "countries", label: "Страны" },
   { id: "log", label: "Журнал" },
@@ -112,6 +114,7 @@ function OverviewTab() {
     <>
       <DownloadStatCards />
       <UserStatCards full={false} />
+      <RedditSummary compact />
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <DownloadsUsersChart />
         <BlockedChart unit="day" />
@@ -186,11 +189,19 @@ function ErrorsTab() {
   );
 }
 
+function RedditTab() {
+  return <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <RedditSummary />
+    <ErrorsLog initialPlatform="reddit" />
+  </section>;
+}
+
 const TAB_CONTENT: Record<DashboardTab, ComponentType> = {
   overview: OverviewTab,
   users: UsersTab,
   downloads: DownloadsTab,
   errors: ErrorsTab,
+  reddit: RedditTab,
   languages: LanguagesTab,
   countries: CountriesTab,
   log: AttemptsLog,

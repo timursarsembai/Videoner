@@ -76,5 +76,5 @@ except Exception:
     print(logs.stdout + logs.stderr, file=sys.stderr)
     raise
 finally:
-    docker('rm', '-f', api, database, check=False)
+    docker('rm', '-f', '-v', api, database, check=False)
     docker('network', 'rm', network, check=False)

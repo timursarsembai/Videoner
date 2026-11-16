@@ -9,7 +9,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { api } from "@/lib/api";
-import { useLanguage } from "@/lib/i18n/context";
+import { useLanguage, type TranslationKey } from "@/lib/i18n/context";
+import { localizedHref } from "@/lib/i18n/routing";
 import { downloadFile, extractErrorMessage, formatApproxSize, formatDuration } from "@/lib/utils";
 import { VideoInfo } from "@/types/youtube";
 import { DownloadItem } from "@/types";
@@ -28,6 +29,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { formatDownloadNumber } from "@/lib/download-number";
+import { nextSitePromo } from "@/lib/promo";
+import { showPromoToast } from "./PromoToast";
 import { NEWS_CHANNEL_URL } from "@/lib/blog/ui";
 import { SubtitlesPanel } from "./SubtitlesPanel";
 import { showDownloadError } from "./DownloadErrorToast";
@@ -150,6 +153,9 @@ export const VideoInfoSection = ({
           void (async () => {
             const { items, number } = id ? await api.getDownloadResult(id) : { items: [], number: null };
             showDone(number);
+            // Подсказка о Videoner (lib/promo.ts) — чуть позже, отдельно от «готово».
+            const promo = nextSitePromo();
+            if (promo) setTimeout(() => showPromoToast(t(`promo.${promo}` as TranslationKey, { url: `videoner.download${localizedHref(language, "/extension")}` })), 2500);
             if (items.length > 1) {
               setPostItems(items);
               return;

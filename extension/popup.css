@@ -426,3 +426,15 @@ a.history-title:hover {
   font-size: 12px;
   color: var(--muted);
 }
+
+/* Подсказка о Videoner под «Готово» (popup.js promoLine). */
+.promo {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--muted, inherit);
+}
+
+.promo a {
+  color: inherit;
+  font-weight: 600;
+}

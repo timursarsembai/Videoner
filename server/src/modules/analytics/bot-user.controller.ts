@@ -115,6 +115,23 @@ export class BotUserController {
     return { instantVideo: body.instantVideo };
   }
 
+  // Подсказка после удачного скачивания в личке (bot/src/promo.ts). Только
+  // для бота: запись о показе меняет, что человек увидит дальше.
+  @Post(':telegramId/promo')
+  @UseGuards(BotOnlyGuard)
+  async nextPromo(@Param('telegramId') telegramId: string, @Body() body: { keys?: unknown }) {
+    const keys = body?.keys;
+    if (
+      !Array.isArray(keys) ||
+      keys.length === 0 ||
+      keys.length > 50 ||
+      !keys.every((k) => typeof k === 'string' && /^[a-z0-9-]{1,40}$/.test(k))
+    ) {
+      throw new BadRequestException('keys must be a non-empty list of promo ids');
+    }
+    return { key: await this.botUserService.nextPromo(parseTelegramId(telegramId), keys as string[]) };
+  }
+
   // Для обновления профиля на сайте (GET /api/auth/me) без повторной проверки
   // подписи Telegram при каждом заходе — сессия сайта уже подтверждает
   // личность, тут просто читаем актуальные данные по telegramId.

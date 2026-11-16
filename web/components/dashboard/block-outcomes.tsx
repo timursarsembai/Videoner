@@ -1,7 +1,7 @@
 "use client";
 
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import type { BlockedOutcomes, OutcomeGroup } from "@/lib/analytics-api";
+import type { BlockedOutcomes, OutcomeGroup, PromoStats } from "@/lib/analytics-api";
 import { ChartCard, EmptyChart, useAnalytics } from "./chart-card";
 
 // Связь блокировок бота с ошибками скачивания (вкладка «Пользователи»): за
@@ -89,6 +89,69 @@ export function BlockedPlatformsChart() {
         </ResponsiveContainer>
       ) : (
         <EmptyChart height={160}>Заблокировавшие ничего не пробовали скачать</EmptyChart>
+      )}
+    </ChartCard>
+  );
+}
+
+// Подсказки после скачивания в боте (bot/src/promo.ts): не стали ли из-за них
+// чаще блокировать бота. Сравнение — дни, когда человек скачивал без
+// подсказки.
+const PROMO_LABELS: Record<string, string> = {
+  reddit: "Теперь и Reddit",
+  extension: "Расширение",
+  channel: "Канал новостей",
+  group: "Бот в группе",
+  audio: "-audio → mp3",
+  inline: "Видео в любой чат",
+  share: "Расскажите друзьям",
+};
+
+export function PromoBlocksCard() {
+  const q = useAnalytics<PromoStats>("users/promo");
+  const d = q.data;
+  const shown = d?.keys.reduce((n, k) => n + k.shown, 0) ?? 0;
+  const blocked = d?.keys.reduce((n, k) => n + k.blocked, 0) ?? 0;
+  return (
+    <ChartCard
+      title="Подсказки после скачивания и блокировки"
+      hint={
+        "Сколько раз бот показал каждую подсказку и сколько из увидевших заблокировали бота в течение 48 часов. " +
+        "Для сравнения — дни без подсказки: человек скачивал в боте и подсказку не получал; заблокировал ли он бота " +
+        "в 48 часов после этого. Считается с первого показа."
+      }
+      loading={q.loading}
+      error={q.error}
+    >
+      {d && d.keys.length ? (
+        <div className="space-y-3 text-sm">
+          <p>
+            После подсказки: <b>{pct(blocked, shown)}%</b> ({blocked} из {shown}) · без подсказки:{" "}
+            <b>{pct(d.baseline.blocked, d.baseline.days)}%</b> ({d.baseline.blocked} из {d.baseline.days} дней)
+          </p>
+          <table className="w-full">
+            <thead className="text-muted-foreground">
+              <tr>
+                <th className="text-left font-normal">Подсказка</th>
+                <th className="text-right font-normal">Показов</th>
+                <th className="text-right font-normal">Заблокировали за 48 ч</th>
+              </tr>
+            </thead>
+            <tbody>
+              {d.keys.map((k) => (
+                <tr key={k.key}>
+                  <td>{PROMO_LABELS[k.key] ?? k.key}</td>
+                  <td className="text-right tabular-nums">{k.shown}</td>
+                  <td className="text-right tabular-nums">
+                    {k.blocked} ({pct(k.blocked, k.shown)}%)
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <EmptyChart height={120}>Подсказок ещё не было</EmptyChart>
       )}
     </ChartCard>
   );

@@ -92,6 +92,13 @@ const en = {
     subtitlesDownload: "Download subtitles",
     subtitlesDownloading: "Preparing subtitles...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Reddit is here too! Paste a post link and we'll download the video with sound.",
+    extension: "Downloading on a computer? The Videoner extension adds a “Download” button right on the video page: {url}",
+    channel: "Be the first to hear about new platforms and features in the @videonerdownload channel",
+    share: "Like Videoner? Tell your friends, the bot is free: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Please enter a URL",
     enterValidUrl: "Please enter a valid URL",
@@ -455,6 +462,13 @@ const es: BaseTranslations = {
     subtitlesDownload: "Descargar subtítulos",
     subtitlesDownloading: "Preparando subtítulos...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "¡Ahora también Reddit! Pega el enlace de la publicación y descargamos el vídeo con sonido.",
+    extension: "¿Descargas desde el ordenador? La extensión de Videoner añade un botón «Descargar» directamente en la página del vídeo: {url}",
+    channel: "Nuevas plataformas y funciones, primero en el canal @videonerdownload",
+    share: "¿Te gusta Videoner? Cuéntaselo a tus amigos, el bot es gratis: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Por favor, introduce una URL",
     enterValidUrl: "Por favor, introduce una URL válida",
@@ -814,6 +828,13 @@ const ru: BaseTranslations = {
     subtitlesAuto: "авто",
     subtitlesDownload: "Скачать субтитры",
     subtitlesDownloading: "Готовлю субтитры...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Теперь и Reddit! Вставьте ссылку на пост — скачаем видео со звуком.",
+    extension: "Качаете на компьютере? Расширение Videoner добавит кнопку «Скачать» прямо на страницу видео: {url}",
+    channel: "Новые площадки и функции — первыми в канале @videonerdownload",
+    share: "Нравится Videoner? Расскажите друзьям — бот бесплатный: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Пожалуйста, введите ссылку",
@@ -1175,6 +1196,13 @@ const uk: BaseTranslations = {
     subtitlesDownload: "Завантажити субтитри",
     subtitlesDownloading: "Готую субтитри...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Тепер і Reddit! Вставте посилання на пост — завантажимо відео зі звуком.",
+    extension: "Завантажуєте на комп’ютері? Розширення Videoner додасть кнопку «Завантажити» просто на сторінку відео: {url}",
+    channel: "Нові платформи та функції — першими в каналі @videonerdownload",
+    share: "Подобається Videoner? Розкажіть друзям — бот безкоштовний: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Будь ласка, введіть посилання",
     enterValidUrl: "Будь ласка, введіть коректне посилання",
@@ -1534,6 +1562,13 @@ const kk: BaseTranslations = {
     subtitlesAuto: "авто",
     subtitlesDownload: "Субтитрлерді жүктеп алу",
     subtitlesDownloading: "Субтитрлер дайындалуда...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Енді Reddit-те бар! Посттың сілтемесін қойыңыз — видеоны дыбыспен жүктеп береміз.",
+    extension: "Компьютерден жүктейсіз бе? Videoner кеңейтімі видео бетіне тікелей «Жүктеу» түймесін қосады: {url}",
+    channel: "Жаңа платформалар мен функциялар — алдымен @videonerdownload арнасында",
+    share: "Videoner ұнай ма? Достарыңызға айтыңыз — бот тегін: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Сілтемені енгізіңіз",
@@ -1895,6 +1930,13 @@ const ar: BaseTranslations = {
     subtitlesDownload: "تحميل الترجمة",
     subtitlesDownloading: "جارٍ تجهيز الترجمة...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "أصبح Reddit مدعومًا الآن! الصق رابط المنشور وسنحمّل لك الفيديو مع الصوت.",
+    extension: "تحمّل من الكمبيوتر؟ سيضيف امتداد Videoner زر «تنزيل» مباشرةً في صفحة الفيديو: {url}",
+    channel: "المنصات والميزات الجديدة تصلك أولًا في قناة @videonerdownload",
+    share: "أعجبك Videoner؟ أخبر أصدقاءك، البوت مجاني: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "يرجى إدخال رابط",
     enterValidUrl: "يرجى إدخال رابط صالح",
@@ -2254,6 +2296,13 @@ const zh: BaseTranslations = {
     subtitlesAuto: "自动",
     subtitlesDownload: "下载字幕",
     subtitlesDownloading: "正在准备字幕……",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "现在支持 Reddit 了！粘贴帖子链接，我们就为你下载带声音的视频。",
+    extension: "在电脑上下载？Videoner 扩展会直接在视频页面添加“下载”按钮：{url}",
+    channel: "新平台和新功能，第一时间发布在 @videonerdownload 频道",
+    share: "喜欢 Videoner 吗？告诉你的朋友吧，机器人是免费的：t.me/VideonerBot",
   },
   toast: {
     enterUrl: "请输入链接",
@@ -2615,6 +2664,13 @@ const hi: BaseTranslations = {
     subtitlesDownload: "सबटाइटल डाउनलोड करें",
     subtitlesDownloading: "सबटाइटल तैयार हो रहे हैं...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "अब Reddit भी! पोस्ट का लिंक पेस्ट कीजिए — हम आवाज़ के साथ वीडियो डाउनलोड कर देंगे।",
+    extension: "कंप्यूटर पर डाउनलोड करते हैं? Videoner एक्सटेंशन वीडियो पेज पर ही “डाउनलोड” बटन जोड़ देगा: {url}",
+    channel: "नए प्लेटफ़ॉर्म और फ़ीचर सबसे पहले चैनल @videonerdownload में",
+    share: "Videoner पसंद आया? दोस्तों को बताइए — बॉट मुफ़्त है: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "कृपया लिंक डालें",
     enterValidUrl: "कृपया सही लिंक डालें",
@@ -2974,6 +3030,13 @@ const indonesian: BaseTranslations = {
     subtitlesAuto: "otomatis",
     subtitlesDownload: "Unduh subtitle",
     subtitlesDownloading: "Menyiapkan subtitle...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Kini Reddit juga! Tempel tautan postingan, kami unduh videonya lengkap dengan suara.",
+    extension: "Mengunduh di komputer? Ekstensi Videoner menambahkan tombol “Unduh” langsung di halaman video: {url}",
+    channel: "Platform dan fitur baru — pertama kali di kanal @videonerdownload",
+    share: "Suka Videoner? Ceritakan ke teman — botnya gratis: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Masukkan URL",
@@ -3335,6 +3398,13 @@ const sw: BaseTranslations = {
     subtitlesDownload: "Pakua manukuu",
     subtitlesDownloading: "Inaandaa manukuu...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Sasa na Reddit pia! Bandika kiungo cha chapisho — tutapakua video pamoja na sauti.",
+    extension: "Unapakua kwenye kompyuta? Kiendelezi cha Videoner huongeza kitufe cha “Pakua” moja kwa moja kwenye ukurasa wa video: {url}",
+    channel: "Majukwaa na vipengele vipya — kwanza kwenye kituo cha @videonerdownload",
+    share: "Unapenda Videoner? Waambie marafiki — bot ni bure: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Tafadhali weka kiungo (URL)",
     enterValidUrl: "Tafadhali weka kiungo (URL) sahihi",
@@ -3694,6 +3764,13 @@ const de: BaseTranslations = {
     subtitlesAuto: "auto",
     subtitlesDownload: "Untertitel laden",
     subtitlesDownloading: "Untertitel werden vorbereitet...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Jetzt auch Reddit! Füge den Link zum Beitrag ein – wir laden das Video mit Ton herunter.",
+    extension: "Du lädst am Computer herunter? Die Videoner-Erweiterung fügt direkt auf der Videoseite einen „Herunterladen“-Button hinzu: {url}",
+    channel: "Neue Plattformen und Funktionen – zuerst im Kanal @videonerdownload",
+    share: "Gefällt dir Videoner? Erzähl es Freunden – der Bot ist kostenlos: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Bitte gib einen Link ein",
@@ -4055,6 +4132,13 @@ const fr: BaseTranslations = {
     subtitlesDownload: "Télécharger les sous-titres",
     subtitlesDownloading: "Préparation des sous-titres…",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Reddit est désormais pris en charge ! Collez le lien du post, nous téléchargeons la vidéo avec le son.",
+    extension: "Vous téléchargez sur ordinateur ? L’extension Videoner ajoute un bouton « Télécharger » directement sur la page de la vidéo : {url}",
+    channel: "Nouvelles plateformes et fonctionnalités : d’abord sur le canal @videonerdownload",
+    share: "Vous aimez Videoner ? Parlez-en à vos amis, le bot est gratuit : t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Veuillez saisir un lien",
     enterValidUrl: "Veuillez saisir un lien valide",
@@ -4414,6 +4498,13 @@ const it: BaseTranslations = {
     subtitlesAuto: "auto",
     subtitlesDownload: "Scarica i sottotitoli",
     subtitlesDownloading: "Preparazione dei sottotitoli...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Ora anche Reddit! Incolla il link del post: scarichiamo il video con l’audio.",
+    extension: "Scarichi dal computer? L’estensione Videoner aggiunge un pulsante «Scarica» direttamente nella pagina del video: {url}",
+    channel: "Nuove piattaforme e funzioni: prima di tutto nel canale @videonerdownload",
+    share: "Ti piace Videoner? Dillo ai tuoi amici: il bot è gratuito: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Inserisci un link",
@@ -4775,6 +4866,13 @@ const pt: BaseTranslations = {
     subtitlesDownload: "Baixar legendas",
     subtitlesDownloading: "Preparando legendas...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Agora também Reddit! Cole o link do post e baixamos o vídeo com som.",
+    extension: "Baixa no computador? A extensão Videoner adiciona o botão “Baixar” direto na página do vídeo: {url}",
+    channel: "Novas plataformas e funções primeiro no canal @videonerdownload",
+    share: "Gostou do Videoner? Conte aos amigos, o bot é grátis: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Insira um link",
     enterValidUrl: "Insira um link válido",
@@ -5134,6 +5232,13 @@ const uz: BaseTranslations = {
     subtitlesAuto: "avto",
     subtitlesDownload: "Subtitrlarni yuklab olish",
     subtitlesDownloading: "Subtitrlar tayyorlanmoqda...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Endi Reddit ham! Post havolasini qo‘ying — videoni ovoz bilan yuklab beramiz.",
+    extension: "Kompyuterda yuklaysizmi? Videoner kengaytmasi video sahifasining o‘ziga “Yuklab olish” tugmasini qo‘shadi: {url}",
+    channel: "Yangi platformalar va funksiyalar — birinchi bo‘lib @videonerdownload kanalida",
+    share: "Videoner yoqdimi? Do‘stlaringizga ayting — bot bepul: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Iltimos, havolani kiriting",
@@ -5495,6 +5600,13 @@ const tr: BaseTranslations = {
     subtitlesDownload: "Altyazıları indir",
     subtitlesDownloading: "Altyazılar hazırlanıyor...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Artık Reddit de var! Gönderinin bağlantısını yapıştırın, videoyu sesiyle indirelim.",
+    extension: "Bilgisayarda mı indiriyorsunuz? Videoner eklentisi video sayfasına doğrudan “İndir” düğmesi ekler: {url}",
+    channel: "Yeni platformlar ve özellikler önce @videonerdownload kanalında",
+    share: "Videoner’ı beğendiniz mi? Arkadaşlarınıza anlatın — bot ücretsiz: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Lütfen bir bağlantı girin",
     enterValidUrl: "Lütfen geçerli bir bağlantı girin",
@@ -5854,6 +5966,13 @@ const fa: BaseTranslations = {
     subtitlesAuto: "خودکار",
     subtitlesDownload: "دانلود زیرنویس",
     subtitlesDownloading: "در حال آماده‌سازی زیرنویس...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "حالا Reddit هم هست! لینک پست را بچسبانید تا ویدیو را با صدا دانلود کنیم.",
+    extension: "روی کامپیوتر دانلود می‌کنید؟ افزونهٔ Videoner دکمهٔ «دانلود» را مستقیم در صفحهٔ ویدیو اضافه می‌کند: {url}",
+    channel: "پلتفرم‌ها و قابلیت‌های جدید را اول در کانال @videonerdownload ببینید",
+    share: "Videoner را دوست دارید؟ به دوستانتان بگویید، ربات رایگان است: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "لطفاً یک لینک وارد کنید",
@@ -6215,6 +6334,13 @@ const vi: BaseTranslations = {
     subtitlesDownload: "Tải phụ đề",
     subtitlesDownloading: "Đang chuẩn bị phụ đề...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Giờ đã có cả Reddit! Dán liên kết bài đăng, chúng tôi sẽ tải video kèm âm thanh.",
+    extension: "Tải trên máy tính? Tiện ích Videoner thêm nút “Tải xuống” ngay trên trang video: {url}",
+    channel: "Nền tảng và tính năng mới — có đầu tiên tại kênh @videonerdownload",
+    share: "Thích Videoner? Hãy kể với bạn bè — bot miễn phí: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Vui lòng nhập link",
     enterValidUrl: "Vui lòng nhập link hợp lệ",
@@ -6574,6 +6700,13 @@ const bn: BaseTranslations = {
     subtitlesAuto: "অটো",
     subtitlesDownload: "সাবটাইটেল ডাউনলোড",
     subtitlesDownloading: "সাবটাইটেল তৈরি হচ্ছে...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "এখন Reddit-ও! পোস্টের লিংক পেস্ট করুন — আমরা শব্দসহ ভিডিও ডাউনলোড করে দেব।",
+    extension: "কম্পিউটারে ডাউনলোড করেন? Videoner এক্সটেনশন ভিডিও পেজেই “ডাউনলোড” বোতাম যোগ করে দেবে: {url}",
+    channel: "নতুন প্ল্যাটফর্ম ও ফিচার — সবার আগে @videonerdownload চ্যানেলে",
+    share: "Videoner ভালো লাগছে? বন্ধুদের জানান — বটটি বিনামূল্যে: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "অনুগ্রহ করে একটি লিংক দিন",
@@ -6935,6 +7068,13 @@ const ur: BaseTranslations = {
     subtitlesDownload: "سب ٹائٹلز ڈاؤن لوڈ کریں",
     subtitlesDownloading: "سب ٹائٹلز تیار ہو رہے ہیں...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "اب Reddit بھی! پوسٹ کا لنک پیسٹ کریں — ہم آواز کے ساتھ ویڈیو ڈاؤن لوڈ کر دیں گے۔",
+    extension: "کمپیوٹر پر ڈاؤن لوڈ کرتے ہیں؟ Videoner ایکسٹینشن ویڈیو کے صفحے پر ہی «ڈاؤن لوڈ» بٹن شامل کر دے گی: {url}",
+    channel: "نئے پلیٹ فارمز اور فیچرز — سب سے پہلے چینل @videonerdownload پر",
+    share: "Videoner پسند آیا؟ دوستوں کو بتائیں — بوٹ مفت ہے: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "براہ کرم لنک درج کریں",
     enterValidUrl: "براہ کرم درست لنک درج کریں",
@@ -7294,6 +7434,13 @@ const pl: BaseTranslations = {
     subtitlesAuto: "auto",
     subtitlesDownload: "Pobierz napisy",
     subtitlesDownloading: "Przygotowuję napisy...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Teraz także Reddit! Wklej link do posta, a pobierzemy wideo z dźwiękiem.",
+    extension: "Pobierasz na komputerze? Rozszerzenie Videoner doda przycisk „Pobierz” prosto na stronie wideo: {url}",
+    channel: "Nowe platformy i funkcje – najpierw na kanale @videonerdownload",
+    share: "Podoba ci się Videoner? Powiedz znajomym – bot jest darmowy: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Wpisz link",
@@ -7655,6 +7802,13 @@ const ja: BaseTranslations = {
     subtitlesDownload: "字幕をダウンロード",
     subtitlesDownloading: "字幕を準備中…",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Reddit にも対応しました！投稿のリンクを貼り付けてください。音声付きで動画をダウンロードします。",
+    extension: "パソコンでダウンロードしますか？Videoner の拡張機能が動画ページに「ダウンロード」ボタンを追加します：{url}",
+    channel: "新しい対応サイトや機能は、まず @videonerdownload チャンネルで",
+    share: "Videoner は気に入りましたか？友だちにも教えてください。ボットは無料です：t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "URL を入力してください",
     enterValidUrl: "有効な URL を入力してください",
@@ -8014,6 +8168,13 @@ const ko: BaseTranslations = {
     subtitlesAuto: "자동",
     subtitlesDownload: "자막 다운로드",
     subtitlesDownloading: "자막 준비 중...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "이제 Reddit도 지원해요! 게시물 링크를 붙여넣으세요. 소리가 포함된 영상을 다운로드해 드립니다.",
+    extension: "컴퓨터에서 다운로드하시나요? Videoner 확장 프로그램이 영상 페이지에 바로 “다운로드” 버튼을 추가해 줍니다: {url}",
+    channel: "새로운 플랫폼과 기능은 @videonerdownload 채널에서 가장 먼저 만나보세요",
+    share: "Videoner가 마음에 드시나요? 친구들에게 알려 주세요. 봇은 무료입니다: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "URL을 입력하세요",
@@ -8375,6 +8536,13 @@ const th: BaseTranslations = {
     subtitlesDownload: "ดาวน์โหลดซับไตเติล",
     subtitlesDownloading: "กำลังเตรียมซับไตเติล...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "ตอนนี้รองรับ Reddit แล้ว! วางลิงก์โพสต์ แล้วเราจะดาวน์โหลดวิดีโอพร้อมเสียงให้",
+    extension: "ดาวน์โหลดบนคอมพิวเตอร์ใช่ไหม? ส่วนขยาย Videoner จะเพิ่มปุ่ม “ดาวน์โหลด” ไว้ที่หน้าวิดีโอเลย: {url}",
+    channel: "แพลตฟอร์มและฟีเจอร์ใหม่ ติดตามก่อนใครที่ช่อง @videonerdownload",
+    share: "ชอบ Videoner ไหม? บอกเพื่อน ๆ ได้เลย บอทใช้ฟรี: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "โปรดใส่ลิงก์",
     enterValidUrl: "โปรดใส่ลิงก์ที่ถูกต้อง",
@@ -8734,6 +8902,13 @@ const am: BaseTranslations = {
     subtitlesAuto: "አውቶ",
     subtitlesDownload: "የትርጉም ጽሑፍ አውርድ",
     subtitlesDownloading: "የትርጉም ጽሑፍ በማዘጋጀት ላይ...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "አሁን Reddit ንም ይደግፋል! የልጥፉን አገናኝ ይለጥፉ — ቪዲዮውን ከድምፅ ጋር እናወርደዋለን።",
+    extension: "በኮምፒውተር ያወርዳሉ? የVideoner ቅጥያ በቪዲዮ ገጹ ላይ በቀጥታ «አውርድ» ቁልፍ ይጨምራል፡ {url}",
+    channel: "አዳዲስ መድረኮችና ባህሪያት — መጀመሪያ በ@videonerdownload ቻናል",
+    share: "Videoner ወደዱት? ለጓደኞችዎ ይንገሩ — ቦቱ ነፃ ነው፡ t.me/VideonerBot",
   },
   toast: {
     enterUrl: "እባክዎ ሊንክ ያስገቡ",
@@ -9095,6 +9270,13 @@ const om: BaseTranslations = {
     subtitlesDownload: "Barreeffama jalaa buusi",
     subtitlesDownloading: "Barreeffamni jalaa qophaa'aa jira...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Amma Reddit illee ni jira! Hidhaa postii maxxansi — viidiyoo sagalee wajjin buusna.",
+    extension: "Kompiitara irratti buufattaa? Dabalataan Videoner button “Buusi” fuula viidiyoo irratti ni dabala: {url}",
+    channel: "Waltajjii fi amaloota haaraa — duraan chaanaalii @videonerdownload irratti",
+    share: "Videoner ni jaallattaa? Michuuwwan keetti himi — boonni bilisaa dha: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Maaloo liinkii galchaa",
     enterValidUrl: "Maaloo liinkii sirrii galchaa",
@@ -9454,6 +9636,13 @@ const ha: BaseTranslations = {
     subtitlesAuto: "atomatik",
     subtitlesDownload: "Sauke rubutun ƙasa",
     subtitlesDownloading: "Ana shirya rubutun ƙasa...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Yanzu har da Reddit! Manna hanyar haɗin post ɗin — za mu sauke bidiyon tare da sauti.",
+    extension: "Kuna saukewa a kwamfuta? Ƙarin Videoner yana ƙara maɓallin “Sauke” kai tsaye a shafin bidiyo: {url}",
+    channel: "Sabbin dandamali da fasaloli — da farko a tashar @videonerdownload",
+    share: "Kuna son Videoner? Ku gaya wa abokai — bot ɗin kyauta ne: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Ku shigar da hanyar haɗi",
@@ -9815,6 +10004,13 @@ const so: BaseTranslations = {
     subtitlesDownload: "Soo deji qoraalka hoose",
     subtitlesDownloading: "Qoraalka hoose waa la diyaarinayaa...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Hadda Reddit sidoo kale! Dheji linkiga boostada — waxaan soo dejinaynaa fiidiyoowga codkiisa la socda.",
+    extension: "Ma kombuyuutar ku soo dejisanaysaa? Kordhiyaha Videoner wuxuu bogga fiidiyoowga ku daraa badhanka “Soo deji”: {url}",
+    channel: "Goobo iyo features cusub — marka hore kanaalka @videonerdownload",
+    share: "Ma jeceshahay Videoner? U sheeg asxaabtaada — botku waa bilaash: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Fadlan geli link",
     enterValidUrl: "Fadlan geli link sax ah",
@@ -10174,6 +10370,13 @@ const az: BaseTranslations = {
     subtitlesAuto: "avto",
     subtitlesDownload: "Subtitrləri yüklə",
     subtitlesDownloading: "Subtitrlər hazırlanır...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "İndi Reddit də var! Postun linkini yapışdırın — videonu səslə yükləyək.",
+    extension: "Kompüterdə yükləyirsiniz? Videoner əlavəsi video səhifəsinə birbaşa “Yüklə” düyməsi əlavə edəcək: {url}",
+    channel: "Yeni platformalar və funksiyalar — ilk olaraq @videonerdownload kanalında",
+    share: "Videoner xoşunuza gəlir? Dostlarınıza danışın — bot pulsuzdur: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Zəhmət olmasa, link daxil edin",
@@ -10535,6 +10738,13 @@ const ky: BaseTranslations = {
     subtitlesDownload: "Субтитрлерди жүктөп алуу",
     subtitlesDownloading: "Субтитрлер даярдалууда...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Эми Reddit да бар! Посттун шилтемесин коюңуз — видеону үнү менен жүктөп беребиз.",
+    extension: "Компьютерден жүктөйсүзбү? Videoner кеңейтүүсү видео барагына түз эле «Жүктөө» баскычын кошот: {url}",
+    channel: "Жаңы платформалар жана функциялар — биринчи @videonerdownload каналында",
+    share: "Videoner жактыбы? Досторуңузга айтыңыз — бот акысыз: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Шилтемени киргизиңиз",
     enterValidUrl: "Туура шилтеме киргизиңиз",
@@ -10894,6 +11104,13 @@ const tg: BaseTranslations = {
     subtitlesAuto: "авто",
     subtitlesDownload: "Боргирии субтитрҳо",
     subtitlesDownloading: "Субтитрҳо омода мешаванд...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Акнун Reddit ҳам! Пайванди постро гузоред — видеоро бо садо зеркашӣ мекунем.",
+    extension: "Дар компютер зеркашӣ мекунед? Васеъшавии Videoner тугмаи «Зеркашӣ»-ро рост дар саҳифаи видео илова мекунад: {url}",
+    channel: "Платформаҳо ва имкониятҳои нав — аввал дар канали @videonerdownload",
+    share: "Videoner маъқул шуд? Ба дӯстон бигӯед — бот ройгон аст: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Лутфан, пайвандро ворид кунед",
@@ -11255,6 +11472,13 @@ const ms: BaseTranslations = {
     subtitlesDownload: "Muat turun sari kata",
     subtitlesDownloading: "Menyediakan sari kata...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Kini ada Reddit juga! Tampal pautan siaran — kami muat turun video bersama bunyi.",
+    extension: "Memuat turun di komputer? Sambungan Videoner menambah butang “Muat turun” terus pada halaman video: {url}",
+    channel: "Platform dan ciri baharu — terlebih dahulu di saluran @videonerdownload",
+    share: "Suka Videoner? Ceritakan kepada rakan — bot ini percuma: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Sila masukkan pautan",
     enterValidUrl: "Sila masukkan pautan yang sah",
@@ -11614,6 +11838,13 @@ const nl: BaseTranslations = {
     subtitlesAuto: "auto",
     subtitlesDownload: "Ondertiteling downloaden",
     subtitlesDownloading: "Ondertiteling voorbereiden...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Nu ook Reddit! Plak de link naar een post en we downloaden de video met geluid.",
+    extension: "Download je op de computer? De Videoner-extensie voegt een knop “Downloaden” toe op de videopagina zelf: {url}",
+    channel: "Nieuwe platforms en functies — eerst in het kanaal @videonerdownload",
+    share: "Vind je Videoner leuk? Vertel het je vrienden — de bot is gratis: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Voer een link in",
@@ -11975,6 +12206,13 @@ const ro: BaseTranslations = {
     subtitlesDownload: "Descarcă subtitrările",
     subtitlesDownloading: "Se pregătesc subtitrările...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Acum și Reddit! Lipește linkul postării și descărcăm videoclipul cu sunet.",
+    extension: "Descarci de pe computer? Extensia Videoner adaugă butonul „Descarcă” chiar pe pagina videoclipului: {url}",
+    channel: "Platforme și funcții noi — mai întâi pe canalul @videonerdownload",
+    share: "Îți place Videoner? Spune-le prietenilor — botul este gratuit: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Introdu un link",
     enterValidUrl: "Introdu un link valid",
@@ -12334,6 +12572,13 @@ const ps: BaseTranslations = {
     subtitlesAuto: "اتومات",
     subtitlesDownload: "زیرنویس ښکته کول",
     subtitlesDownloading: "زیرنویس چمتو کېږي...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "اوس Reddit هم! د پوسټ لینک پیسټ کړئ — موږ به ویډیو د غږ سره ډاونلوډ کړو.",
+    extension: "په کمپیوټر کې ډاونلوډ کوئ؟ د Videoner توسیع به د ویډیو پاڼې ته مستقیم «ډاونلوډ» تڼۍ ور اضافه کړي: {url}",
+    channel: "نوې پلاټفورمونه او ځانګړتیاوې — لومړی د @videonerdownload په چینل کې",
+    share: "Videoner مو خوښ شو؟ ملګرو ته یې ووایاست — بوټ وړیا دی: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "مهرباني وکړئ یو لینک ولیکئ",
@@ -12695,6 +12940,13 @@ const ckb: BaseTranslations = {
     subtitlesDownload: "داگرتنی ژێرنووس",
     subtitlesDownloading: "ژێرنووس ئامادە دەکرێت...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "ئێستا Reddit یش هەیە! لینکی پۆستەکە بلکێنە — ڤیدیۆکە لەگەڵ دەنگ دایدەگرین.",
+    extension: "لەسەر کۆمپیوتەر دایدەگریت؟ زیادکراوی Videoner دوگمەی «داگرتن» ڕاستەوخۆ لە پەڕەی ڤیدیۆکە زیاد دەکات: {url}",
+    channel: "پلاتفۆرم و تایبەتمەندیی نوێ — یەکەم جار لە کەناڵی @videonerdownload",
+    share: "Videoner ت بەدڵە؟ بە هاوڕێکانت بڵێ — بۆتەکە بێبەرامبەرە: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "تکایە بەستەرێک بنووسە",
     enterValidUrl: "تکایە بەستەرێکی دروست بنووسە",
@@ -13054,6 +13306,13 @@ const ku: BaseTranslations = {
     subtitlesAuto: "otomatîk",
     subtitlesDownload: "Binnivîsan daxîne",
     subtitlesDownloading: "Binnivîs tên amadekirin...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Niha Reddit jî heye! Lînka postê bixin — em vîdyoyê bi deng dadixin.",
+    extension: "Li ser komputerê dadixin? Pêveka Videoner bişkojka “Daxe” rasterast li rûpela vîdyoyê zêde dike: {url}",
+    channel: "Platform û taybetmendiyên nû — pêşî di kanala @videonerdownload de",
+    share: "Videoner bi dilê we ye? Ji hevalan re bibêjin — bot belaş e: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Ji kerema xwe lînkekî binivîse",
@@ -13415,6 +13674,13 @@ const ug: BaseTranslations = {
     subtitlesDownload: "ئاستى خەتنى چۈشۈرۈش",
     subtitlesDownloading: "ئاستى خەت تەييارلىنىۋاتىدۇ...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "ھازىر Reddit مۇ بار! يازما ئۇلانمىسىنى چاپلاڭ — سىننى ئاۋازى بىلەن چۈشۈرۈپ بېرىمىز.",
+    extension: "كومپيۇتېردا چۈشۈرەمسىز؟ Videoner كېڭەيتمىسى سىن بېتىگە بىۋاسىتە «چۈشۈرۈش» كۇنۇپكىسىنى قوشىدۇ: {url}",
+    channel: "يېڭى سۇپا ۋە ئىقتىدارلار — ئالدى بىلەن @videonerdownload قانىلىدا",
+    share: "Videoner ياقتىمۇ؟ دوستلىرىڭىزغا ئېيتىڭ — بوت ھەقسىز: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "ئۇلانما كىرگۈزۈڭ",
     enterValidUrl: "توغرا ئۇلانما كىرگۈزۈڭ",
@@ -13774,6 +14040,13 @@ const tk: BaseTranslations = {
     subtitlesAuto: "awto",
     subtitlesDownload: "Subtitrleri ýükle",
     subtitlesDownloading: "Subtitrler taýýarlanýar...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Indi Reddit hem bar! Postuň salgysyny goýuň — wideony sesi bilen ýükläp bereris.",
+    extension: "Kompýuterde ýükleýärsiňizmi? Videoner giňeltmesi wideo sahypasyna gönüden-göni “Ýükle” düwmesini goşýar: {url}",
+    channel: "Täze platformalar we funksiýalar — ilki bilen @videonerdownload kanalynda",
+    share: "Videoner ýaradýarmy? Dostlaryňyza aýdyň — bot mugt: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Salgyny giriziň",
@@ -14135,6 +14408,13 @@ const tt: BaseTranslations = {
     subtitlesDownload: "Субтитрларны йөкләү",
     subtitlesDownloading: "Субтитрлар әзерләнә...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Хәзер Reddit та бар! Постка сылтаманы куегыз — видеоны тавыш белән йөкләп бирербез.",
+    extension: "Компьютерда йөкләйсезме? Videoner киңәйтүе видео битенә турыдан-туры «Йөкләү» төймәсен өсти: {url}",
+    channel: "Яңа платформалар һәм функцияләр — беренче булып @videonerdownload каналында",
+    share: "Videoner ошыймы? Дусларыгызга сөйләгез — бот бушлай: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Сылтаманы кертегез",
     enterValidUrl: "Дөрес сылтама кертегез",
@@ -14494,6 +14774,13 @@ const sq: BaseTranslations = {
     subtitlesAuto: "auto",
     subtitlesDownload: "Shkarko titrat",
     subtitlesDownloading: "Po përgatiten titrat...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Tani edhe Reddit! Ngjit lidhjen e postimit dhe e shkarkojmë videon me zë.",
+    extension: "Shkarkon në kompjuter? Shtesa Videoner shton butonin «Shkarko» drejtpërdrejt në faqen e videos: {url}",
+    channel: "Platforma dhe funksione të reja — fillimisht në kanalin @videonerdownload",
+    share: "Të pëlqen Videoner? Tregoju shokëve — boti është falas: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Ju lutemi, futni një lidhje",
@@ -14855,6 +15142,13 @@ const bs: BaseTranslations = {
     subtitlesDownload: "Preuzmi titlove",
     subtitlesDownloading: "Pripremanje titlova...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Sada i Reddit! Zalijepi link objave i preuzet ćemo video sa zvukom.",
+    extension: "Preuzimaš na računaru? Proširenje Videoner dodaje dugme „Preuzmi“ direktno na stranicu videa: {url}",
+    channel: "Nove platforme i funkcije — prvo u kanalu @videonerdownload",
+    share: "Sviđa ti se Videoner? Reci prijateljima — bot je besplatan: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Unesite link",
     enterValidUrl: "Unesite ispravan link",
@@ -15214,6 +15508,13 @@ const ce: BaseTranslations = {
     subtitlesAuto: "авто",
     subtitlesDownload: "Субтитраш чудаккха",
     subtitlesDownloading: "Субтитраш кечйо...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Хӏинца Reddit а ду! Постан ссылка иллий — тхо видео аз цхьаьна чубоккхур бу.",
+    extension: "Компьютер тӀехь чудоккху? Videoner-ан шордар видеон агӀонна тӀе «Чудаккха» нопка тӀетуьллур ду: {url}",
+    channel: "Керла платформаш а, функцеш а — коьртехь @videonerdownload каналехь",
+    share: "Videoner дукха хазахета? Накъосташка ала — бот мах боцуш бу: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Хьажорг язйейша",
@@ -15575,6 +15876,13 @@ const inh: BaseTranslations = {
     subtitlesDownload: "Субтитраш чудаккха",
     subtitlesDownloading: "Субтитраш кечдеш...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "ХӀинца Reddit а я! Постан ссылка тоха — тхо видео аз цхьаьна дӀадоаккхар да.",
+    extension: "Компьютер тӀа чудоалара? Videoner-а шоръяр видео агӀо тӀа «Чудаккха» нопка тоаяр я: {url}",
+    channel: "Ц1ера платформаш а, функцеш а — хьалхарча @videonerdownload канал тӀа",
+    share: "Videoner хаза хета? Накъосташка ала — бот маьхза я: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Ссылка чуоттадел",
     enterValidUrl: "Нийса ссылка чуоттадел",
@@ -15935,6 +16243,13 @@ const av: BaseTranslations = {
     subtitlesDownload: "Субтитраби босизе",
     subtitlesDownloading: "Субтитраби хӀадурулел руго...",
   },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Гьанже Reddit-ги бугеб! Посталъул ссылка лъугьа — видео гьаракьалда цадахъ чӀезабизе.",
+    extension: "Компьютералда чӀезабулищ? Videoner-алъул хурхен видеоялъул страницалда «ЧӀезаби» кнопка бекизабила: {url}",
+    channel: "ЦӀияб платформаби ва функциял — цох-цох @videonerdownload каналалда",
+    share: "Videoner рохьдолищ? Рахъабазда абе — бот гьабизе гьечӀо: t.me/VideonerBot",
+  },
   toast: {
     enterUrl: "Ссылка лъе",
     enterValidUrl: "БитӀараб ссылка лъе",
@@ -16294,6 +16609,13 @@ const tl: BaseTranslations = {
     subtitlesAuto: "auto",
     subtitlesDownload: "I-download ang subtitles",
     subtitlesDownloading: "Inihahanda ang subtitles...",
+  },
+  // Подсказки после скачивания (lib/promo.ts); {url} — страница расширения.
+  promo: {
+    redditSite: "Ngayon, may Reddit na rin! I-paste ang link ng post — ida-download namin ang video na may tunog.",
+    extension: "Nagda-download sa computer? Magdaragdag ang extension ng Videoner ng button na “I-download” mismo sa pahina ng video: {url}",
+    channel: "Mga bagong platform at feature — una sa channel na @videonerdownload",
+    share: "Gusto mo ang Videoner? Sabihin sa mga kaibigan — libre ang bot: t.me/VideonerBot",
   },
   toast: {
     enterUrl: "Maglagay ng URL",

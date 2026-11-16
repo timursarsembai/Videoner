@@ -593,6 +593,48 @@ export class AnalyticsService {
   // сколько пришло новых (первое появление в боте или на сайте) и сколько
   // заблокировали и разблокировали бота. Периоды без событий тоже нужны —
   // иначе пустая неделя пропала бы с оси.
+  // Подсказки после скачивания в боте (PromoShow): сколько раз показана
+  // каждая и сколько из увидевших заблокировали бота в течение 48 часов.
+  // Сравнение — дни без подсказки: человек удачно скачивал в боте, подсказки
+  // в тот день не получал; заблокировал ли он бота в 48 часов после
+  // последнего скачивания того дня. Считается с первого показа подсказки.
+  async promo() {
+    const keys = await this.prisma.$queryRaw<{ key: string; shown: number; blocked: number; last: Date }[]>`
+      SELECT p."key",
+             COUNT(*)::int AS shown,
+             COUNT(*) FILTER (WHERE EXISTS (
+               SELECT 1 FROM "BotBlockEvent" b
+               WHERE b."botUserId" = p."botUserId" AND b.blocked
+                 AND b.at >= p."shownAt" AND b.at < p."shownAt" + interval '48 hours'
+             ))::int AS blocked,
+             MAX(p."shownAt") AS last
+      FROM "PromoShow" p
+      GROUP BY p."key"
+      ORDER BY shown DESC`;
+    const [first] = await this.prisma.$queryRaw<{ since: Date | null }[]>`
+      SELECT MIN("shownAt") AS since FROM "PromoShow"`;
+    if (!first?.since) return { since: null, keys, baseline: { days: 0, blocked: 0 } };
+    const [baseline] = await this.prisma.$queryRaw<{ days: number; blocked: number }[]>`
+      WITH d AS (
+        SELECT "botUserId" AS u, date_trunc('day', "createdAt") AS day, MAX("createdAt") AS last
+        FROM "Download"
+        WHERE "botUserId" IS NOT NULL AND source = 'BOT'
+          AND status IN ('COMPLETED', 'EXPIRED') AND "createdAt" >= ${first.since}
+        GROUP BY 1, 2
+      )
+      SELECT COUNT(*)::int AS days,
+             COUNT(*) FILTER (WHERE EXISTS (
+               SELECT 1 FROM "BotBlockEvent" b
+               WHERE b."botUserId" = d.u AND b.blocked
+                 AND b.at >= d.last AND b.at < d.last + interval '48 hours'
+             ))::int AS blocked
+      FROM d
+      WHERE NOT EXISTS (
+        SELECT 1 FROM "PromoShow" p WHERE p."botUserId" = d.u AND date_trunc('day', p."shownAt") = d.day
+      )`;
+    return { since: first.since, keys, baseline };
+  }
+
   async blockedPeriods(unit: 'day' | 'week' | 'month', range: DateRange) {
     const from = day(range.from);
     const to = day(range.to);

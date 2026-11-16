@@ -429,6 +429,7 @@ function render(job) {
           videoCard(),
           el("button", { class: "primary", onclick: resetJob }, t.again),
           el("button", { class: "link news-link", type: "button", onclick: () => openTab(NEWS_URL) }, t.news),
+          promoLine(job.promo),
         ],
       });
     case "error":
@@ -755,4 +756,22 @@ main();
 // «8 097»: разряды через неразрывный пробел, как в подписи бота и на сайте.
 function formatNumber(n) {
   return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
+}
+
+// Подсказка о Videoner под «Готово» (выбирает background.js attachPromo).
+// Канал и бот в тексте — ссылки.
+const PROMO_TEXT = { channel: "promoChannel", share: "promoShare" };
+function promoLine(promo) {
+  const text = PROMO_TEXT[promo] && t[PROMO_TEXT[promo]];
+  if (!text) return null;
+  const parts = text.split(/(@videonerdownload|t\.me\/VideonerBot)/);
+  return el(
+    "p",
+    { class: "promo" },
+    ...parts.map((part, i) => {
+      if (i % 2 === 0) return part;
+      const href = part === "@videonerdownload" ? NEWS_URL : `https://${part}`;
+      return el("a", { href, onclick: (e) => { e.preventDefault(); openTab(href); } }, part);
+    })
+  );
 }

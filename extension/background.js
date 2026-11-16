@@ -250,6 +250,7 @@ async function startDirect({ url, tabId, media }) {
     // не должен портить человеку скачанный файл.
     void addToHistory({ url, title, kind: media.ext ? "photo" : "video" });
     await updateJob(url, (job) => ({ ...job, state: "done", progress: null }));
+    void attachPromo(url);
     void reportDownload(url, { url, fileSize: size, title, lang: uiLang });
   } finally {
     active.delete(url);
@@ -495,6 +496,7 @@ async function getCourseDone({ key, href, size }) {
     await chromeDownload(href, `${safeFileName(job.title)}.mp4`, key);
     void addToHistory(historyEntry(job));
     await updateJob(key, (current) => ({ ...current, state: "done", progress: null }));
+    void attachPromo(key);
     void reportDownload(key, { url: reportUrl(job.gc.master), fileSize: size, title: job.title, lang: uiLang });
   } catch (e) {
     console.error("Videoner: getcourse save", e);
@@ -590,6 +592,7 @@ async function follow(job) {
         await saveFiles(job, status);
         void addToHistory(historyEntry(job));
         await setJob(job.url, { ...job, state: "done", progress: null, number: validNumber(status.number) });
+        void attachPromo(job.url);
       } catch (e) {
         console.error("Videoner: save", e);
         await setJob(job.url, { ...job, state: "error", error: friendlyError(e) });
@@ -841,4 +844,32 @@ async function reportDownload(key, body) {
   } catch (e) {
     console.warn("Videoner: report", e);
   }
+}
+
+// Подсказка о Videoner под «Готово» — те же правила, что в боте и на сайте
+// (web/lib/promo.ts): каждую человек видит один раз, не чаще одной в сутки и
+// начиная с 3-го удачного скачивания. Состояние — в chrome.storage.local.
+const PROMOS = ["channel", "share"];
+const PROMO_MIN_DOWNLOADS = 3;
+const PROMO_INTERVAL_MS = 24 * 60 * 60 * 1000;
+let promoWrites = Promise.resolve();
+
+function attachPromo(key) {
+  promoWrites = promoWrites
+    .then(async () => {
+      const { promo: saved } = await chrome.storage.local.get("promo");
+      const state = { count: 0, last: 0, seen: [], ...(saved ?? {}) };
+      state.count += 1;
+      const fresh = PROMOS.filter((p) => !state.seen.includes(p));
+      let promo = null;
+      if (state.count >= PROMO_MIN_DOWNLOADS && Date.now() - state.last >= PROMO_INTERVAL_MS && fresh.length) {
+        promo = fresh[Math.floor(Math.random() * fresh.length)];
+        state.last = Date.now();
+        state.seen = [...state.seen, promo];
+      }
+      await chrome.storage.local.set({ promo: state });
+      if (promo) await updateJob(key, (job) => (job?.state === "done" ? { ...job, promo } : undefined));
+    })
+    .catch((e) => console.warn("Videoner: promo", e));
+  return promoWrites;
 }

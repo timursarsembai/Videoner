@@ -36,7 +36,7 @@ import { RedditSummary } from "@/components/dashboard/reddit-summary";
 import { CountriesTab } from "@/components/dashboard/countries";
 import { LanguagesTab } from "@/components/dashboard/languages";
 import { AttemptsLog, BlockedUsersTable, TopUsersTable } from "@/components/dashboard/tables";
-import { BlockedOutcomesChart, BlockedPlatformsChart } from "@/components/dashboard/block-outcomes";
+import { BlockedOutcomesChart, BlockedPlatformsChart, PromoBlocksCard } from "@/components/dashboard/block-outcomes";
 
 // Дашборд. У каждого графика свой выбор периода (по умолчанию последние 30
 // дней) — общего переключателя в шапке нет. Графики вкладки грузятся одним
@@ -147,6 +147,7 @@ function UsersTab() {
         <BlockedChart unit="month" />
         <BlockedOutcomesChart />
         <BlockedPlatformsChart />
+        <PromoBlocksCard />
         <BlockedUsersSection />
       </section>
       <h2 className="text-base font-semibold">Самые активные</h2>

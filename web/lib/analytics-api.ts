@@ -225,6 +225,14 @@ export interface BlockedOutcomes {
   platforms: (UserPlatformOutcome & { users: number })[];
 }
 
+// Подсказки после скачивания в боте и блокировки в 48 часов после них
+// (server analytics.service promo).
+export interface PromoStats {
+  since: string | null;
+  keys: { key: string; shown: number; blocked: number; last: string }[];
+  baseline: { days: number; blocked: number };
+}
+
 export interface BlockedSummary {
   total: number;
   blocked: number;

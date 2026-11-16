@@ -75,7 +75,7 @@ model Download {
   fromCache      Boolean        @default(false)
   // Порядковый номер удачного скачивания среди всех (бот, сайт, расширение):
   // «Скачивание №8 097» в подписи бота и на сайте. Ставит сама база триггером
-  // assign_download_number, когда статус становится COMPLETED или EXPIRED, —
+  // assign_download_number, когда скачивание становится удачным, —
   // так номер получают все пути (скачивание, выдача из кеша, отчёт
   // расширения), а неудачные номер не тратят. Прежним удачным номера выданы
   // по дате при миграции 20261116100000_download_number.
@@ -172,6 +172,7 @@ model BotUser {
   activityDays      UserActivityDay[]
   linkFailures      LinkFailure[]
   blockEvents       BotBlockEvent[]
+  promoShows        PromoShow[]
   firstSeenAt       DateTime          @default(now())
   lastSeenAt        DateTime          @default(now())
 
@@ -371,4 +372,20 @@ model ChannelPost {
   slug        String   @id
   messageId   Int?
   publishedAt DateTime @default(now())
+}
+
+// Подсказка о Videoner после удачного скачивания в личке бота: «Теперь и
+// Reddit!», «Расширение для браузера» и т. п. (bot/src/promo.ts). Каждую
+// человек видит один раз, не чаще одной в сутки и только начиная с 3-го
+// удачного скачивания (BotUserService.nextPromo). По этой же таблице
+// дашборд сравнивает блокировки после подсказок с обычными.
+model PromoShow {
+  id        String   @id @default(uuid())
+  botUser   BotUser  @relation(fields: [botUserId], references: [id], onDelete: Cascade)
+  botUserId String
+  key       String
+  shownAt   DateTime @default(now())
+
+  @@unique([botUserId, key])
+  @@index([shownAt])
 }

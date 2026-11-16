@@ -24,6 +24,7 @@ import {
   fmtSize,
   downloadNumberLine,
 } from "../helpers.js";
+import { sendPromo } from "../promo.js";
 import { SHARE_CHANNEL, publishLink } from "./share.js";
 import { blockUnlessSubscribed, isChannelMember, subscribeKeyboard } from "./membership.js";
 import { LinkQueues, QUEUE_LIMIT, extractUrls, type Current, type OwnerState } from "../queue.js";
@@ -1175,7 +1176,13 @@ async function startDownload(
     current.title ?? "",
     current.thumbnail,
     current.messageId,
-  ).finally(() => {
+  ).then((delivered) => {
+    // Подсказка о Videoner — только в личке и только после дошедшего файла.
+    if (delivered && state.chatId > 0 && state.userId) {
+      inBackground("Подсказка", sendPromo(tg, state.chatId, state.userId, state.lang));
+    }
+    return delivered;
+  }).finally(() => {
     // Следующая ссылка получает выбор качества только после того, как файл
     // этой отправлен (или скачивание не удалось) — так и задумано.
     if (queues.finish(key, token)) inBackground("Анализ ссылки", showNextChoice(tg, key));

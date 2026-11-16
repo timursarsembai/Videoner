@@ -1,0 +1,49 @@
+import { BotUserService, PROMO_MIN_DOWNLOADS } from './bot-user.service';
+
+// Подсказки после скачивания: правила выбора (сама запись — условный INSERT,
+// он проверен на копии базы при разработке).
+function service(opts: { blocked?: boolean; successful: number; shows: { key: string; ago: number }[]; inserted?: number }) {
+  const prisma = {
+    botUser: {
+      findUnique: jest.fn().mockResolvedValue({ id: 'u1', blockedAt: opts.blocked ? new Date() : null }),
+    },
+    download: { count: jest.fn().mockResolvedValue(opts.successful) },
+    promoShow: {
+      findMany: jest
+        .fn()
+        .mockResolvedValue(opts.shows.map((s) => ({ key: s.key, shownAt: new Date(Date.now() - s.ago) }))),
+    },
+    $executeRaw: jest.fn().mockResolvedValue(opts.inserted ?? 1),
+  };
+  return { svc: new BotUserService(prisma as any), prisma };
+}
+
+const DAY = 24 * 60 * 60 * 1000;
+
+describe('BotUserService.nextPromo', () => {
+  it('waits for enough successful downloads', async () => {
+    const { svc, prisma } = service({ successful: PROMO_MIN_DOWNLOADS - 1, shows: [] });
+    expect(await svc.nextPromo(1, ['channel'])).toBeNull();
+    expect(prisma.$executeRaw).not.toHaveBeenCalled();
+  });
+
+  it('shows nothing to blocked users or within a day of the last tip', async () => {
+    expect(await service({ blocked: true, successful: 10, shows: [] }).svc.nextPromo(1, ['channel'])).toBeNull();
+    expect(
+      await service({ successful: 10, shows: [{ key: 'reddit', ago: DAY / 2 }] }).svc.nextPromo(1, ['channel']),
+    ).toBeNull();
+  });
+
+  it('picks a random unseen tip', async () => {
+    const { svc } = service({ successful: 10, shows: [{ key: 'reddit', ago: 2 * DAY }] });
+    expect(await svc.nextPromo(1, ['reddit', 'channel', 'audio'], () => 0.99)).toBe('audio');
+    expect(await svc.nextPromo(1, ['reddit', 'channel', 'audio'], () => 0)).toBe('channel');
+  });
+
+  it('stops when every tip was seen or a parallel call won', async () => {
+    expect(
+      await service({ successful: 10, shows: [{ key: 'channel', ago: 3 * DAY }] }).svc.nextPromo(1, ['channel']),
+    ).toBeNull();
+    expect(await service({ successful: 10, shows: [], inserted: 0 }).svc.nextPromo(1, ['channel'])).toBeNull();
+  });
+});

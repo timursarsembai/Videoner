@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { DownloadStatus } from '@prisma/client';
 
+// Подсказки после скачивания: с какого удачного скачивания и как часто.
+export const PROMO_MIN_DOWNLOADS = 3;
+export const PROMO_INTERVAL_MS = 24 * 60 * 60 * 1000;
+
 export interface UpsertBotUserInput {
   telegramId: number;
   username?: string;
@@ -87,6 +91,43 @@ export class BotUserService {
       create: { telegramId: BigInt(telegramId), instantVideo },
       update: { instantVideo },
     });
+  }
+
+  // Какую подсказку о Videoner показать после этого скачивания (бот,
+  // bot/src/promo.ts). keys — подсказки, которые бот умеет показывать.
+  // null — сейчас ничего: меньше PROMO_MIN_DOWNLOADS удачных скачиваний,
+  // подсказка уже была за последние сутки или все уже видел. Выбранная
+  // сразу записывается как показанная: бот отправляет её следом, а повторный
+  // вызов (две ссылки подряд) не должен выдать вторую в те же сутки.
+  async nextPromo(telegramId: number, keys: string[], rnd: () => number = Math.random): Promise<string | null> {
+    const botUser = await this.prisma.botUser.findUnique({
+      where: { telegramId: BigInt(telegramId) },
+      select: { id: true, blockedAt: true },
+    });
+    if (!botUser || botUser.blockedAt) return null;
+    const since = new Date(Date.now() - PROMO_INTERVAL_MS);
+    const [successful, shows] = await Promise.all([
+      this.prisma.download.count({
+        where: { botUserId: botUser.id, status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] } },
+      }),
+      this.prisma.promoShow.findMany({ where: { botUserId: botUser.id }, select: { key: true, shownAt: true } }),
+    ]);
+    if (successful < PROMO_MIN_DOWNLOADS) return null;
+    if (shows.some((s) => s.shownAt > since)) return null;
+    const seen = new Set(shows.map((s) => s.key));
+    const fresh = keys.filter((k) => !seen.has(k));
+    if (!fresh.length) return null;
+    const key = fresh[Math.floor(rnd() * fresh.length)];
+    // Запись и проверка «не было за сутки» — одним условным INSERT: два
+    // одновременных вызова не выдадут две подсказки.
+    const inserted = await this.prisma.$executeRaw`
+      INSERT INTO "PromoShow" ("id", "botUserId", "key", "shownAt")
+      SELECT gen_random_uuid()::text, ${botUser.id}, ${key}, now()
+      WHERE NOT EXISTS (
+        SELECT 1 FROM "PromoShow" WHERE "botUserId" = ${botUser.id} AND ("shownAt" > ${since} OR "key" = ${key})
+      )
+      ON CONFLICT DO NOTHING`;
+    return inserted === 1 ? key : null;
   }
 
   // Человек заблокировал бота или разблокировал его. Событие для графиков

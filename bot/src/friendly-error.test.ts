@@ -148,3 +148,17 @@ test("file caption ends its main part with the download number", async () => {
   assert.ok(c.includes("Скачано бесплатно через @VideonerBot\n⬇️ Скачивание №7"));
   assert.ok(!messages.ru.fileCaption("Видео", "https://x.com/a/status/1").includes("№"));
 });
+
+test("promo tips: every language has every bot tip, extension link is localized, ≤200 chars", async () => {
+  const { BOT_PROMOS, promoText } = await import("./promo.js");
+  const { LANGS } = await import("./i18n.js");
+  for (const lang of LANGS) {
+    for (const key of BOT_PROMOS) {
+      const text = promoText(key, lang);
+      assert.ok(text.length > 10 && text.length <= 200, `${lang}.${key}`);
+      assert.ok(!text.includes("{url}"), `${lang}.${key}`);
+    }
+  }
+  assert.ok(promoText("extension", "ru").includes("videoner.download/ru/extension"));
+  assert.ok(promoText("extension", "en").includes("videoner.download/extension"));
+});

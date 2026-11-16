@@ -41,6 +41,7 @@ export class AnalyticsController {
     'users/active/monthly': (q) => this.analyticsService.activePeriods('month', this.range(q)),
     'users/blocked': () => this.analyticsService.blockedSummary(),
     'users/blocked/outcomes': () => this.analyticsService.blockedOutcomes(),
+    'users/promo': () => this.analyticsService.promo(),
     'users/blocked/daily': (q) => this.analyticsService.blockedPeriods('day', this.range(q)),
     'users/blocked/weekly': (q) => this.analyticsService.blockedPeriods('week', this.range(q)),
     'users/blocked/monthly': (q) => this.analyticsService.blockedPeriods('month', this.range(q)),

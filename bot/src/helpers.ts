@@ -408,27 +408,21 @@ export function downloadNumberLine(n: unknown, lang: Lang): string | undefined {
 }
 
 // Строка «⬇️ Скачивание №8 097» в подписи — ссылка на страницу «Videoner в
-// цифрах» (videoner.download/<язык>/stats). Подпись — простой текст без
-// разметки (в ней чужие названия и описания), поэтому ссылку задаём
-// отдельной сущностью text_link: адреса в подписи не видно. Язык узнаём по
-// самой строке — отправителям файлов он не передаётся. Смещения Telegram
-// считает в UTF-16, как и строки JS.
-const NUMBER_LINE_PATTERNS: { lang: Lang; re: RegExp }[] = (Object.keys(messages) as Lang[]).map((lang) => {
-  const [before, after] = messages[lang].downloadNo("\u0000").split("\u0000");
-  const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return { lang, re: new RegExp(`(?:^|\\n)(${esc(before)}[\\d\\u00a0]+${esc(after)})(?=\\n|$)`, "g") };
-});
+// цифрах» (<сайт>/<язык>/stats). Подпись — простой текст без разметки (в ней
+// чужие названия и описания), поэтому ссылку задаём отдельной сущностью
+// text_link: адреса в подписи не видно, а ссылки и @-упоминания Telegram
+// по-прежнему распознаёт сам (проверено отправкой 16.11.2026). Ищем ровно ту
+// строку, что сами добавили, последнюю целиком: обрезанная (подпись группы у
+// предела) ссылкой не станет. Смещения Telegram считает в UTF-16, как и
+// строки JS; с управляющими символами в подписи (их Telegram вырезает и
+// смещения бы съехали) ссылку не ставим — файл важнее.
+export type CaptionEntity = { type: "text_link"; offset: number; length: number; url: string };
+export type FileCaption = { text: string; entities?: CaptionEntity[] };
 
-export function numberLinkEntities(
-  caption: string,
-): { type: "text_link"; offset: number; length: number; url: string }[] | undefined {
-  for (const { lang, re } of NUMBER_LINE_PATTERNS) {
-    let last: RegExpExecArray | null = null;
-    for (const m of caption.matchAll(re)) last = m as RegExpExecArray;
-    if (!last) continue;
-    const line = last[1];
-    const offset = last.index! + last[0].length - line.length;
-    return [{ type: "text_link", offset, length: line.length, url: `https://videoner.download${sitePath(lang, "/stats")}` }];
-  }
-  return undefined;
+export function withNumberLink(text: string, numberLine: string | undefined, lang: Lang): FileCaption {
+  if (!numberLine || /[\u0000-\u0008\u000b-\u001f\u007f]/.test(text)) return { text };
+  const offset = text.lastIndexOf(numberLine);
+  const end = offset + numberLine.length;
+  if (offset < 0 || (offset > 0 && text[offset - 1] !== "\n") || (end < text.length && text[end] !== "\n")) return { text };
+  return { text, entities: [{ type: "text_link", offset, length: numberLine.length, url: `${EXTENSION_PAGE_BASE}${sitePath(lang, "/stats")}` }] };
 }

@@ -133,15 +133,16 @@ export const VideoInfoSection = ({
           const showDone = (number: number | null) => toast.success(
             <span>
               {t("toast.downloadCompleted")}{" "}
-              {number && (
+              {number ? (
                 <a
                   href={localizedHref(language, "/stats")}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="block text-sm font-medium underline-offset-4 hover:underline"
                 >
                   ⬇️ {t("toast.downloadNumber", { n: formatDownloadNumber(number) })}
                 </a>
-              )}
+              ) : null}
               <span className="block text-sm opacity-80">
                 {t("toast.newsChannel")}{" "}
                 <a href={NEWS_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline-offset-4 hover:underline">

@@ -23,7 +23,8 @@ import {
   ADMIN_TELEGRAM_ID,
   fmtSize,
   downloadNumberLine,
-  numberLinkEntities,
+  withNumberLink,
+  type FileCaption,
 } from "../helpers.js";
 import { sendPromo } from "../promo.js";
 import { SHARE_CHANNEL, publishLink } from "./share.js";
@@ -207,11 +208,11 @@ export async function performDownload(
     editMessageText: (messageId: number, text: string, keyboard?: InlineKeyboard) => Promise<unknown>;
     // Файл или file_id из кеша. Возвращают file_id отправленного — его
     // запоминает сервер, чтобы повтор того же ролика переслать без скачивания.
-    replyWithVideo: (file: InputFile | string, caption: string, dims?: VideoDimensions) => Promise<string | undefined>;
-    replyWithAudio: (file: InputFile | string, caption: string) => Promise<string | undefined>;
+    replyWithVideo: (file: InputFile | string, caption: FileCaption, dims?: VideoDimensions) => Promise<string | undefined>;
+    replyWithAudio: (file: InputFile | string, caption: FileCaption) => Promise<string | undefined>;
     // Снимок отдаём именно фотографией: пост может состоять из одного фото, и
     // отправлять его видео нельзя — Telegram получил бы jpeg под видом ролика.
-    replyWithPhoto: (file: InputFile, caption: string) => Promise<string | undefined>;
+    replyWithPhoto: (file: InputFile, caption: FileCaption) => Promise<string | undefined>;
     deleteMessage: (messageId: number) => Promise<unknown>;
     publishToChannel: (
       url: string,
@@ -224,7 +225,7 @@ export async function performDownload(
     // канала (см. publishToChannel).
     replyWithAlbum: (
       items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
-      caption: string,
+      caption: FileCaption,
     ) => Promise<string | undefined>;
     // Своя подпись под файлом (настройки группы, handlers/group.ts). Нет —
     // обычная fileCaption.
@@ -256,8 +257,11 @@ export async function performDownload(
   // отправке файла она обычно уже готова. shareLinkFor не бросает.
   const shareLink = shareLinkFor(url);
   // number — порядковый номер скачивания (сервер): строка «Скачивание №…».
-  const caption = async (number?: unknown) =>
-    (send.formatCaption ?? m.fileCaption)(title, url, await shareLink, send.description, downloadNumberLine(number, lang));
+  const caption = async (number?: unknown): Promise<FileCaption> => {
+    const numberLine = downloadNumberLine(number, lang);
+    const text = (send.formatCaption ?? m.fileCaption)(title, url, await shareLink, send.description, numberLine);
+    return withNumberLink(text, numberLine, lang);
+  };
   const msg = await send.reply(m.downloading);
   // Файл уже в чате. Сбой после этого (убрать «Скачиваю», опубликовать в
   // канал) — не повод писать человеку «не получилось» поверх его видео.
@@ -567,13 +571,13 @@ export function sendersForApi(
     // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
     // ссылка на первоисточник и упоминание бота остаются с видео у любого,
     // кому его переслали.
-    replyWithVideo: async (file: InputFile | string, caption: string, dims?: VideoDimensions) =>
-      (await tg.sendVideo(chatId, file, { caption, caption_entities: numberLinkEntities(caption), supports_streaming: true, ...dims, ...asReply, reply_markup: videoMarkup }))
+    replyWithVideo: async (file: InputFile | string, caption: FileCaption, dims?: VideoDimensions) =>
+      (await tg.sendVideo(chatId, file, { caption: caption.text, caption_entities: caption.entities, supports_streaming: true, ...dims, ...asReply, reply_markup: videoMarkup }))
         .video?.file_id,
-    replyWithAudio: async (file: InputFile | string, caption: string) =>
-      (await tg.sendAudio(chatId, file, { caption, caption_entities: numberLinkEntities(caption), ...asReply })).audio?.file_id,
-    replyWithPhoto: async (file: InputFile, caption: string) => {
-      const sent = await tg.sendPhoto(chatId, file, { caption, caption_entities: numberLinkEntities(caption), ...asReply });
+    replyWithAudio: async (file: InputFile | string, caption: FileCaption) =>
+      (await tg.sendAudio(chatId, file, { caption: caption.text, caption_entities: caption.entities, ...asReply })).audio?.file_id,
+    replyWithPhoto: async (file: InputFile, caption: FileCaption) => {
+      const sent = await tg.sendPhoto(chatId, file, { caption: caption.text, caption_entities: caption.entities, ...asReply });
       return previewFileId(sent.photo);
     },
     deleteMessage: (messageId: number) => tg.deleteMessage(chatId, messageId),
@@ -586,7 +590,7 @@ export function sendersForApi(
     ) => (publish ? publishLink(tg, u, t, th, l, cover) : Promise.resolve()),
     replyWithAlbum: async (
       items: { filename: string; kind: string; width?: number; height?: number; duration?: number }[],
-      caption: string,
+      caption: FileCaption,
     ) => {
       // Telegram принимает не больше 10 элементов в одном альбоме, а в
       // карусели Instagram их бывает до двадцати — режем на части. Подпись
@@ -599,7 +603,7 @@ export function sendersForApi(
           const file = new InputFile(
             new URL(`${API_URL}/download/${encodeURIComponent(item.filename)}`),
           );
-          const withCaption = start === 0 && index === 0 ? { caption, caption_entities: numberLinkEntities(caption) } : {};
+          const withCaption = start === 0 && index === 0 ? { caption: caption.text, caption_entities: caption.entities } : {};
           return item.kind === "PHOTO"
             ? InputMediaBuilder.photo(file, withCaption)
             : InputMediaBuilder.video(file, {

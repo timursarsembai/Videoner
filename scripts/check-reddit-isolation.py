@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Smoke-test an already built API image with no Reddit resolver or production data."""
 import json
+from pathlib import Path
 import subprocess
 import sys
 import time
@@ -32,6 +33,11 @@ def request(method):
 
 
 try:
+    compose = json.loads(docker('compose', '--env-file', '/dev/null', '-f',
+                               str(Path(__file__).resolve().parents[1] / 'docker-compose.prod.yml'),
+                               'config', '--format', 'json').stdout)
+    assert 'reddit-resolver' not in compose['services']['server'].get('depends_on', {}), \
+        'API startup must not depend on the Reddit service'
     docker('network', 'create', '--internal', network)
     docker('run', '-d', '--name', database, '--network', network, '--memory', '256m',
            '-e', 'POSTGRES_PASSWORD=isolation-test-only', '-e', 'POSTGRES_DB=downloader',

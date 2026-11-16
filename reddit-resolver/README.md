@@ -41,8 +41,10 @@ and matched post `6rrwyj`, with an unchanged exit IP before/after. Other probes
 were rejected, expired, or received Reddit 429: this is not a reliability claim.
 The HTTP resolver subsequently returned that post's metadata. Its media was
 downloaded directly from Reddit CDN and merged into H.264/AAC MP4; a video-only
-variant also downloaded successfully. Live photo, crosspost and adult-content
-coverage remains incomplete; fixture tests alone do not establish reliability.
+variant also downloaded successfully. On 2026-11-16 live checks resolved photo
+`1ublsxv`, resolved crosspost `ze20j2` after independently checking its source
+`x7xpyo`, and rejected the explicit adult-content gate at `degtjo`.
+These selected checks do not establish general captcha reliability.
 
 The resolver rejects explicit mature-content gates and marked posts. It follows
 crosspost sources and requires an independently checked source; an unresolved

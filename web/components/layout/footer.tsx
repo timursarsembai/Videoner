@@ -3,7 +3,7 @@
 import { useLanguage } from "@/lib/i18n/context";
 import Image from "next/image";
 import Link from "next/link";
-import { Newspaper, Puzzle, Send } from "lucide-react";
+import { BarChart3, Newspaper, Puzzle, Send } from "lucide-react";
 import { NEWS_CHANNEL_URL } from "@/lib/blog/ui";
 import { localizedHref } from "@/lib/i18n/routing";
 import { legal } from "@/lib/legal/documents";
@@ -66,6 +66,13 @@ export function Footer() {
           >
             <Puzzle className="h-4 w-4" />
             {t("footer.extension")}
+          </Link>
+          <Link
+            href={localizedHref(language, "/stats")}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            <BarChart3 className="h-4 w-4" />
+            {t("footer.stats")}
           </Link>
           <a
             href={NEWS_CHANNEL_URL}

@@ -203,14 +203,20 @@ class ApiClient {
   // Файлы поста. У обычного скачивания список либо пуст, либо содержит одну
   // запись — тогда сайт ведёт себя как раньше. Несколько записей — карусель.
   async getDownloadItems(downloadId: string): Promise<DownloadItem[]> {
+    return (await this.getDownloadResult(downloadId)).items;
+  }
+
+  // Файлы поста и порядковый номер скачивания («Скачивание №8 097»).
+  async getDownloadResult(downloadId: string): Promise<{ items: DownloadItem[]; number: number | null }> {
     try {
       const response = await this.client.get(`/download/${downloadId}/status`);
-      return response.data?.items ?? [];
+      const number = response.data?.number;
+      return { items: response.data?.items ?? [], number: Number.isInteger(number) && number > 0 ? number : null };
     } catch {
-      // Список файлов — украшение, а не условие работы: если он не пришёл,
-      // основной файл уже скачан обычным путём, и ронять экран из-за этого
-      // нельзя.
-      return [];
+      // Список файлов и номер — украшение, а не условие работы: если они не
+      // пришли, основной файл уже скачан обычным путём, и ронять экран из-за
+      // этого нельзя.
+      return { items: [], number: null };
     }
   }
 

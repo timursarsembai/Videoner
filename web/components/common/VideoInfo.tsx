@@ -27,6 +27,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { formatDownloadNumber } from "@/lib/download-number";
 import { NEWS_CHANNEL_URL } from "@/lib/blog/ui";
 import { SubtitlesPanel } from "./SubtitlesPanel";
 import { showDownloadError } from "./DownloadErrorToast";
@@ -122,11 +123,18 @@ export const VideoInfoSection = ({
             downloadUrl,
             isConverting: false,
           }));
-          // Вместе с «готово» — канал новостей проекта, как в подписи к
-          // файлам бота.
-          toast.success(
+
+          const id = downloadState.id?.toString();
+          // Вместе с «готово» — номер скачивания среди всех и канал новостей
+          // проекта, как в подписи к файлам бота.
+          const showDone = (number: number | null) => toast.success(
             <span>
               {t("toast.downloadCompleted")}{" "}
+              {number && (
+                <span className="block text-sm font-medium">
+                  ⬇️ {t("toast.downloadNumber", { n: formatDownloadNumber(number) })}
+                </span>
+              )}
               <span className="block text-sm opacity-80">
                 {t("toast.newsChannel")}{" "}
                 <a href={NEWS_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline-offset-4 hover:underline">
@@ -136,13 +144,12 @@ export const VideoInfoSection = ({
             </span>,
             { duration: 8000 },
           );
-
           // Пост из нескольких файлов не начинаем качать сам: браузер не даст
           // запустить несколько загрузок подряд без ведома человека, да и
           // выбрать нужные из карусели он должен сам. Показываем список.
-          const id = downloadState.id?.toString();
           void (async () => {
-            const items = id ? await api.getDownloadItems(id) : [];
+            const { items, number } = id ? await api.getDownloadResult(id) : { items: [], number: null };
+            showDone(number);
             if (items.length > 1) {
               setPostItems(items);
               return;

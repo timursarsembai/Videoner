@@ -103,6 +103,7 @@ const en = {
     selectQuality: "Please select a quality",
     downloadStarted: "Download started!",
     downloadCompleted: "Download completed!",
+    downloadNumber: "Download #{n}",
     newsChannel: "Project news is on Telegram:",
     downloadUrlNotReceived: "Download URL not received",
     needsBrowser:
@@ -465,6 +466,7 @@ const es: BaseTranslations = {
     selectQuality: "Por favor, selecciona una calidad",
     downloadStarted: "¡Descarga iniciada!",
     downloadCompleted: "¡Descarga completada!",
+    downloadNumber: "Descarga n.º {n}",
     newsChannel: "Novedades del proyecto en Telegram:",
     downloadUrlNotReceived: "No se recibió la URL de descarga",
     needsBrowser:
@@ -824,6 +826,7 @@ const ru: BaseTranslations = {
     selectQuality: "Пожалуйста, выберите качество",
     downloadStarted: "Загрузка началась!",
     downloadCompleted: "Загрузка завершена!",
+    downloadNumber: "Скачивание №{n}",
     newsChannel: "Новости проекта — в Telegram:",
     downloadUrlNotReceived: "Ссылка на загрузку не получена",
     needsBrowser:
@@ -1183,6 +1186,7 @@ const uk: BaseTranslations = {
     selectQuality: "Будь ласка, оберіть якість",
     downloadStarted: "Завантаження почалося!",
     downloadCompleted: "Завантаження завершено!",
+    downloadNumber: "Завантаження №{n}",
     newsChannel: "Новини проєкту — у Telegram:",
     downloadUrlNotReceived: "Посилання для завантаження не отримано",
     needsBrowser:
@@ -1542,6 +1546,7 @@ const kk: BaseTranslations = {
     selectQuality: "Сапаны таңдаңыз",
     downloadStarted: "Жүктеу басталды!",
     downloadCompleted: "Жүктеу аяқталды!",
+    downloadNumber: "Жүктеу №{n}",
     newsChannel: "Жоба жаңалықтары — Telegram-да:",
     downloadUrlNotReceived: "Жүктеп алу сілтемесі алынбады",
     needsBrowser:
@@ -1901,6 +1906,7 @@ const ar: BaseTranslations = {
     selectQuality: "يرجى اختيار الجودة",
     downloadStarted: "بدأ التحميل!",
     downloadCompleted: "اكتمل التحميل!",
+    downloadNumber: "التنزيل رقم {n}",
     newsChannel: "أخبار المشروع على Telegram:",
     downloadUrlNotReceived: "لم يُستلم رابط التحميل",
     needsBrowser:
@@ -2260,6 +2266,7 @@ const zh: BaseTranslations = {
     selectQuality: "请选择画质",
     downloadStarted: "已开始下载！",
     downloadCompleted: "下载完成！",
+    downloadNumber: "第{n}次下载",
     newsChannel: "项目动态请关注 Telegram：",
     downloadUrlNotReceived: "未获取到下载链接",
     needsBrowser:
@@ -2619,6 +2626,7 @@ const hi: BaseTranslations = {
     selectQuality: "कृपया क्वालिटी चुनें",
     downloadStarted: "डाउनलोड शुरू हो गया!",
     downloadCompleted: "डाउनलोड पूरा हुआ!",
+    downloadNumber: "डाउनलोड क्र. {n}",
     newsChannel: "प्रोजेक्ट की खबरें Telegram पर:",
     downloadUrlNotReceived: "डाउनलोड लिंक नहीं मिला",
     needsBrowser:
@@ -2978,6 +2986,7 @@ const indonesian: BaseTranslations = {
     selectQuality: "Pilih kualitas",
     downloadStarted: "Unduhan dimulai!",
     downloadCompleted: "Unduhan selesai!",
+    downloadNumber: "Unduhan #{n}",
     newsChannel: "Berita proyek ada di Telegram:",
     downloadUrlNotReceived: "URL unduhan tidak diterima",
     needsBrowser:
@@ -3337,6 +3346,7 @@ const sw: BaseTranslations = {
     selectQuality: "Tafadhali chagua ubora",
     downloadStarted: "Upakuaji umeanza!",
     downloadCompleted: "Upakuaji umekamilika!",
+    downloadNumber: "Upakuaji #{n}",
     newsChannel: "Habari za mradi ziko kwenye Telegram:",
     downloadUrlNotReceived: "Kiungo cha kupakua hakijapokelewa",
     needsBrowser:
@@ -3696,6 +3706,7 @@ const de: BaseTranslations = {
     selectQuality: "Bitte wähle eine Qualität",
     downloadStarted: "Download gestartet!",
     downloadCompleted: "Download abgeschlossen!",
+    downloadNumber: "Download Nr. {n}",
     newsChannel: "Projekt-News gibt’s auf Telegram:",
     downloadUrlNotReceived: "Download-Link nicht erhalten",
     needsBrowser:
@@ -4055,6 +4066,7 @@ const fr: BaseTranslations = {
     selectQuality: "Veuillez choisir une qualité",
     downloadStarted: "Téléchargement lancé !",
     downloadCompleted: "Téléchargement terminé !",
+    downloadNumber: "Téléchargement n° {n}",
     newsChannel: "Les actualités du projet sont sur Telegram :",
     downloadUrlNotReceived: "Lien de téléchargement non reçu",
     needsBrowser:
@@ -4414,6 +4426,7 @@ const it: BaseTranslations = {
     selectQuality: "Scegli una qualità",
     downloadStarted: "Download avviato!",
     downloadCompleted: "Download completato!",
+    downloadNumber: "Download n. {n}",
     newsChannel: "Le novità del progetto sono su Telegram:",
     downloadUrlNotReceived: "Link per il download non ricevuto",
     needsBrowser:
@@ -4773,6 +4786,7 @@ const pt: BaseTranslations = {
     selectQuality: "Escolha uma qualidade",
     downloadStarted: "Download iniciado!",
     downloadCompleted: "Download concluído!",
+    downloadNumber: "Download n.º {n}",
     newsChannel: "As novidades do projeto estão no Telegram:",
     downloadUrlNotReceived: "Link de download não recebido",
     needsBrowser:
@@ -5132,6 +5146,7 @@ const uz: BaseTranslations = {
     selectQuality: "Iltimos, sifatni tanlang",
     downloadStarted: "Yuklab olish boshlandi!",
     downloadCompleted: "Yuklab olish tugadi!",
+    downloadNumber: "Yuklab olish №{n}",
     newsChannel: "Loyiha yangiliklari Telegramʼda:",
     downloadUrlNotReceived: "Yuklab olish havolasi olinmadi",
     needsBrowser:
@@ -5491,6 +5506,7 @@ const tr: BaseTranslations = {
     selectQuality: "Lütfen bir kalite seçin",
     downloadStarted: "İndirme başladı!",
     downloadCompleted: "İndirme tamamlandı!",
+    downloadNumber: "İndirme #{n}",
     newsChannel: "Proje haberleri Telegram'da:",
     downloadUrlNotReceived: "İndirme bağlantısı alınamadı",
     needsBrowser:
@@ -5850,6 +5866,7 @@ const fa: BaseTranslations = {
     selectQuality: "لطفاً یک کیفیت انتخاب کنید",
     downloadStarted: "دانلود شروع شد!",
     downloadCompleted: "دانلود تمام شد!",
+    downloadNumber: "دانلود شماره {n}",
     newsChannel: "اخبار پروژه در Telegram:",
     downloadUrlNotReceived: "لینک دانلود دریافت نشد",
     needsBrowser:
@@ -6209,6 +6226,7 @@ const vi: BaseTranslations = {
     selectQuality: "Vui lòng chọn chất lượng",
     downloadStarted: "Đã bắt đầu tải!",
     downloadCompleted: "Tải xong!",
+    downloadNumber: "Lượt tải #{n}",
     newsChannel: "Tin tức dự án có trên Telegram:",
     downloadUrlNotReceived: "Không nhận được link tải",
     needsBrowser:
@@ -6568,6 +6586,7 @@ const bn: BaseTranslations = {
     selectQuality: "অনুগ্রহ করে একটি কোয়ালিটি বেছে নিন",
     downloadStarted: "ডাউনলোড শুরু হয়েছে!",
     downloadCompleted: "ডাউনলোড সম্পন্ন!",
+    downloadNumber: "ডাউনলোড নং {n}",
     newsChannel: "প্রজেক্টের খবর Telegram-এ:",
     downloadUrlNotReceived: "ডাউনলোড লিংক পাওয়া যায়নি",
     needsBrowser:
@@ -6927,6 +6946,7 @@ const ur: BaseTranslations = {
     selectQuality: "براہ کرم کوالٹی منتخب کریں",
     downloadStarted: "ڈاؤن لوڈ شروع ہو گیا!",
     downloadCompleted: "ڈاؤن لوڈ مکمل ہو گیا!",
+    downloadNumber: "ڈاؤن لوڈ نمبر {n}",
     newsChannel: "پروجیکٹ کی خبریں Telegram پر:",
     downloadUrlNotReceived: "ڈاؤن لوڈ لنک موصول نہیں ہوا",
     needsBrowser:
@@ -7286,6 +7306,7 @@ const pl: BaseTranslations = {
     selectQuality: "Wybierz jakość",
     downloadStarted: "Pobieranie rozpoczęte!",
     downloadCompleted: "Pobieranie zakończone!",
+    downloadNumber: "Pobranie nr {n}",
     newsChannel: "Aktualności projektu znajdziesz na Telegramie:",
     downloadUrlNotReceived: "Nie otrzymano linku do pobrania",
     needsBrowser:
@@ -7645,6 +7666,7 @@ const ja: BaseTranslations = {
     selectQuality: "画質を選択してください",
     downloadStarted: "ダウンロードを開始しました！",
     downloadCompleted: "ダウンロードが完了しました！",
+    downloadNumber: "ダウンロード #{n}",
     newsChannel: "プロジェクトのお知らせは Telegram で配信しています：",
     downloadUrlNotReceived: "ダウンロード URL を取得できませんでした",
     needsBrowser:
@@ -8004,6 +8026,7 @@ const ko: BaseTranslations = {
     selectQuality: "화질을 선택하세요",
     downloadStarted: "다운로드를 시작했어요!",
     downloadCompleted: "다운로드가 완료됐어요!",
+    downloadNumber: "{n}번째 다운로드",
     newsChannel: "프로젝트 소식은 Telegram에서 확인하세요:",
     downloadUrlNotReceived: "다운로드 URL을 받지 못했어요",
     needsBrowser:
@@ -8363,6 +8386,7 @@ const th: BaseTranslations = {
     selectQuality: "โปรดเลือกคุณภาพ",
     downloadStarted: "เริ่มดาวน์โหลดแล้ว!",
     downloadCompleted: "ดาวน์โหลดเสร็จแล้ว!",
+    downloadNumber: "ดาวน์โหลดครั้งที่ {n}",
     newsChannel: "ติดตามข่าวสารของโปรเจกต์ได้ทาง Telegram:",
     downloadUrlNotReceived: "ไม่ได้รับลิงก์ดาวน์โหลด",
     needsBrowser:
@@ -8722,6 +8746,7 @@ const am: BaseTranslations = {
     selectQuality: "እባክዎ ጥራት ይምረጡ",
     downloadStarted: "ማውረድ ተጀምሯል!",
     downloadCompleted: "ማውረድ ተጠናቋል!",
+    downloadNumber: "ማውረድ ቁጥር {n}",
     newsChannel: "የፕሮጀክቱ ዜናዎች በTelegram ላይ፦",
     downloadUrlNotReceived: "የማውረጃ ሊንክ አልደረሰም",
     needsBrowser:
@@ -9081,6 +9106,7 @@ const om: BaseTranslations = {
     selectQuality: "Maaloo qulqullina filadhaa",
     downloadStarted: "Buusuun jalqabeera!",
     downloadCompleted: "Buusuun xumurameera!",
+    downloadNumber: "Buufata lakk. {n}",
     newsChannel: "Oduun pirojektii Telegram irratti argama:",
     downloadUrlNotReceived: "Liinkiin buusuu hin argamne",
     needsBrowser:
@@ -9440,6 +9466,7 @@ const ha: BaseTranslations = {
     selectQuality: "Ku zaɓi inganci",
     downloadStarted: "Saukewa ya fara!",
     downloadCompleted: "Saukewa ya kammala!",
+    downloadNumber: "Saukewa na {n}",
     newsChannel: "Labaran aikin suna kan Telegram:",
     downloadUrlNotReceived: "Ba a karɓi hanyar saukewa ba",
     needsBrowser:
@@ -9799,6 +9826,7 @@ const so: BaseTranslations = {
     selectQuality: "Fadlan dooro tayada",
     downloadStarted: "Soo dejintu way bilaabatay!",
     downloadCompleted: "Soo dejintu way dhammaatay!",
+    downloadNumber: "Soo dejin lambar {n}",
     newsChannel: "Wararka mashruuca waxay ku jiraan Telegram:",
     downloadUrlNotReceived: "Link-ga soo dejinta lama helin",
     needsBrowser:
@@ -10158,6 +10186,7 @@ const az: BaseTranslations = {
     selectQuality: "Zəhmət olmasa, keyfiyyət seçin",
     downloadStarted: "Yükləmə başladı!",
     downloadCompleted: "Yükləmə tamamlandı!",
+    downloadNumber: "Yükləmə №{n}",
     newsChannel: "Layihə xəbərləri Telegram-dadır:",
     downloadUrlNotReceived: "Yükləmə linki alınmadı",
     needsBrowser:
@@ -10517,6 +10546,7 @@ const ky: BaseTranslations = {
     selectQuality: "Сапатты тандаңыз",
     downloadStarted: "Жүктөп алуу башталды!",
     downloadCompleted: "Жүктөп алуу бүттү!",
+    downloadNumber: "Жүктөө №{n}",
     newsChannel: "Долбоордун жаңылыктары — Telegram'да:",
     downloadUrlNotReceived: "Жүктөп алуу шилтемеси алынган жок",
     needsBrowser:
@@ -10876,6 +10906,7 @@ const tg: BaseTranslations = {
     selectQuality: "Лутфан, сифатро интихоб кунед",
     downloadStarted: "Боргирӣ оғоз шуд!",
     downloadCompleted: "Боргирӣ анҷом ёфт!",
+    downloadNumber: "Боргирии №{n}",
     newsChannel: "Хабарҳои лоиҳа дар Telegram:",
     downloadUrlNotReceived: "Пайванди боргирӣ гирифта нашуд",
     needsBrowser:
@@ -11235,6 +11266,7 @@ const ms: BaseTranslations = {
     selectQuality: "Sila pilih kualiti",
     downloadStarted: "Muat turun bermula!",
     downloadCompleted: "Muat turun selesai!",
+    downloadNumber: "Muat turun #{n}",
     newsChannel: "Berita projek ada di Telegram:",
     downloadUrlNotReceived: "Pautan muat turun tidak diterima",
     needsBrowser:
@@ -11594,6 +11626,7 @@ const nl: BaseTranslations = {
     selectQuality: "Kies een kwaliteit",
     downloadStarted: "Download gestart!",
     downloadCompleted: "Download voltooid!",
+    downloadNumber: "Download nr. {n}",
     newsChannel: "Projectnieuws vind je op Telegram:",
     downloadUrlNotReceived: "Geen downloadlink ontvangen",
     needsBrowser:
@@ -11953,6 +11986,7 @@ const ro: BaseTranslations = {
     selectQuality: "Alege o calitate",
     downloadStarted: "Descărcarea a început!",
     downloadCompleted: "Descărcare finalizată!",
+    downloadNumber: "Descărcarea nr. {n}",
     newsChannel: "Noutățile proiectului sunt pe Telegram:",
     downloadUrlNotReceived: "Linkul de descărcare nu a fost primit",
     needsBrowser:
@@ -12312,6 +12346,7 @@ const ps: BaseTranslations = {
     selectQuality: "مهرباني وکړئ یو کیفیت وټاکئ",
     downloadStarted: "ښکته کول پیل شول!",
     downloadCompleted: "ښکته کول بشپړ شول!",
+    downloadNumber: "ډاونلوډ شمېره {n}",
     newsChannel: "د پروژې خبرونه په Telegram کې:",
     downloadUrlNotReceived: "د ښکته کولو لینک ترلاسه نه شو",
     needsBrowser:
@@ -12671,6 +12706,7 @@ const ckb: BaseTranslations = {
     selectQuality: "تکایە کوالیتییەک هەڵبژێرە",
     downloadStarted: "داگرتن دەستی پێکرد!",
     downloadCompleted: "داگرتن تەواو بوو!",
+    downloadNumber: "داگرتنی ژمارە {n}",
     newsChannel: "هەواڵەکانی پڕۆژە لە Telegram:",
     downloadUrlNotReceived: "بەستەری داگرتن وەرنەگیرا",
     needsBrowser:
@@ -13030,6 +13066,7 @@ const ku: BaseTranslations = {
     selectQuality: "Ji kerema xwe kalîteyekê hilbijêre",
     downloadStarted: "Daxistin dest pê kir!",
     downloadCompleted: "Daxistin qediya!",
+    downloadNumber: "Daxistin #{n}",
     newsChannel: "Nûçeyên projeyê li ser Telegram in:",
     downloadUrlNotReceived: "Lînkê daxistinê nehat wergirtin",
     needsBrowser:
@@ -13389,6 +13426,7 @@ const ug: BaseTranslations = {
     selectQuality: "سۈپەتنى تاللاڭ",
     downloadStarted: "چۈشۈرۈش باشلاندى!",
     downloadCompleted: "چۈشۈرۈش تاماملاندى!",
+    downloadNumber: "چۈشۈرۈش {n}-نومۇر",
     newsChannel: "تۈر خەۋەرلىرى Telegram قانىلىدا:",
     downloadUrlNotReceived: "چۈشۈرۈش ئۇلانمىسى تاپشۇرۇۋېلىنمىدى",
     needsBrowser:
@@ -13748,6 +13786,7 @@ const tk: BaseTranslations = {
     selectQuality: "Hili saýlaň",
     downloadStarted: "Ýükleme başlandy!",
     downloadCompleted: "Ýükleme tamamlandy!",
+    downloadNumber: "Ýükleme №{n}",
     newsChannel: "Taslamanyň täzelikleri Telegramda:",
     downloadUrlNotReceived: "Ýükleme salgysy alynmady",
     needsBrowser:
@@ -14107,6 +14146,7 @@ const tt: BaseTranslations = {
     selectQuality: "Сыйфатны сайлагыз",
     downloadStarted: "Йөкләү башланды!",
     downloadCompleted: "Йөкләү тәмамланды!",
+    downloadNumber: "Йөкләү №{n}",
     newsChannel: "Проект яңалыклары — Telegram-да:",
     downloadUrlNotReceived: "Йөкләү сылтамасы алынмады",
     needsBrowser:
@@ -14466,6 +14506,7 @@ const sq: BaseTranslations = {
     selectQuality: "Ju lutemi, zgjidhni një cilësi",
     downloadStarted: "Shkarkimi filloi!",
     downloadCompleted: "Shkarkimi përfundoi!",
+    downloadNumber: "Shkarkimi nr. {n}",
     newsChannel: "Lajmet e projektit janë në Telegram:",
     downloadUrlNotReceived: "Lidhja e shkarkimit nuk u mor",
     needsBrowser:
@@ -14825,6 +14866,7 @@ const bs: BaseTranslations = {
     selectQuality: "Odaberite kvalitet",
     downloadStarted: "Preuzimanje je počelo!",
     downloadCompleted: "Preuzimanje je završeno!",
+    downloadNumber: "Preuzimanje br. {n}",
     newsChannel: "Novosti projekta su na Telegramu:",
     downloadUrlNotReceived: "Link za preuzimanje nije primljen",
     needsBrowser:
@@ -15184,6 +15226,7 @@ const ce: BaseTranslations = {
     selectQuality: "Дикалла харжийша",
     downloadStarted: "Чуяккхар дӀадолийна!",
     downloadCompleted: "Чуяккхар чекхдаьлла!",
+    downloadNumber: "Чуяккхар №{n}",
     newsChannel: "Проектан керла хаамаш Telegram-ехь бу:",
     downloadUrlNotReceived: "Чуяккхаран хьажорг ца кхечи",
     needsBrowser:
@@ -15543,6 +15586,7 @@ const inh: BaseTranslations = {
     selectQuality: "Качество хьаржал",
     downloadStarted: "Чуяккхар доладелар!",
     downloadCompleted: "Чуяккхар чакхдаьлар!",
+    downloadNumber: "№{n}",
     newsChannel: "Проекта керда хоамаш Telegram-е да:",
     downloadUrlNotReceived: "Чуяккха ссылка кхаьчаяц",
     needsBrowser:
@@ -15902,6 +15946,7 @@ const av: BaseTranslations = {
     selectQuality: "Сипат тӀасабище",
     downloadStarted: "Боси байбихьана!",
     downloadCompleted: "Боси лъугӀана!",
+    downloadNumber: "№{n}",
     newsChannel: "Проекталъул хабарал Telegram-алда руго:",
     downloadUrlNotReceived: "Босизе ссылка щвечӀо",
     needsBrowser:
@@ -16261,6 +16306,7 @@ const tl: BaseTranslations = {
     selectQuality: "Pumili ng kalidad",
     downloadStarted: "Nagsimula na ang download!",
     downloadCompleted: "Tapos na ang download!",
+    downloadNumber: "Download Blg. {n}",
     newsChannel: "Nasa Telegram ang mga balita ng proyekto:",
     downloadUrlNotReceived: "Hindi natanggap ang download URL",
     needsBrowser:

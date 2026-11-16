@@ -119,7 +119,8 @@ export class BotUserController {
   // для бота: запись о показе меняет, что человек увидит дальше.
   @Post(':telegramId/promo')
   @UseGuards(BotOnlyGuard)
-  async nextPromo(@Param('telegramId') telegramId: string, @Body() body: { keys?: unknown }) {
+  // peek: true — только список подходящих сейчас, без записи о показе.
+  async nextPromo(@Param('telegramId') telegramId: string, @Body() body: { keys?: unknown; peek?: unknown }) {
     const keys = body?.keys;
     if (
       !Array.isArray(keys) ||
@@ -128,6 +129,10 @@ export class BotUserController {
       !keys.every((k) => typeof k === 'string' && /^[a-z0-9-]{1,40}$/.test(k))
     ) {
       throw new BadRequestException('keys must be a non-empty list of promo ids');
+    }
+    if (body?.peek === true) {
+      const found = await this.botUserService.promoCandidates(parseTelegramId(telegramId), keys as string[]);
+      return { candidates: found?.fresh ?? [] };
     }
     return { key: await this.botUserService.nextPromo(parseTelegramId(telegramId), keys as string[]) };
   }

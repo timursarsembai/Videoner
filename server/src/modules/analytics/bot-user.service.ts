@@ -103,6 +103,33 @@ export class BotUserService {
   // (extensionLinkedAt); про канал бот убирает её сам — подписан ли
   // человек, знает только Telegram.
   async nextPromo(telegramId: number, keys: string[], rnd: () => number = Math.random): Promise<string | null> {
+    const found = await this.promoCandidates(telegramId, keys);
+    if (!found) return null;
+    const { botUserId, fresh, since } = found;
+    const key = fresh[Math.floor(rnd() * fresh.length)];
+    // Проверка «не было за сутки» и запись — под блокировкой на человека:
+    // два одновременных вызова (две ссылки подряд) иначе оба не увидели бы
+    // чужую ещё не закоммиченную запись и выдали бы две разные подсказки.
+    const inserted = await this.prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${'promo:' + botUserId}))`;
+      return tx.$executeRaw`
+        INSERT INTO "PromoShow" ("id", "botUserId", "key", "shownAt")
+        SELECT gen_random_uuid()::text, ${botUserId}, ${key}, now()
+        WHERE NOT EXISTS (
+          SELECT 1 FROM "PromoShow" WHERE "botUserId" = ${botUserId} AND ("shownAt" > ${since} OR "key" = ${key})
+        )
+        ON CONFLICT DO NOTHING`;
+    });
+    return inserted === 1 ? key : null;
+  }
+
+  // Какие из keys человеку можно показать сейчас — без записи о показе. Бот
+  // спрашивает это первым и проверяет подписку на канал у Telegram, только
+  // если подсказка про канал среди подходящих (bot/src/promo.ts).
+  async promoCandidates(
+    telegramId: number,
+    keys: string[],
+  ): Promise<{ botUserId: string; fresh: string[]; since: Date } | null> {
     const botUser = await this.prisma.botUser.findUnique({
       where: { telegramId: BigInt(telegramId) },
       select: { id: true, blockedAt: true, extensionLinkedAt: true },
@@ -121,21 +148,7 @@ export class BotUserService {
     const seen = new Set(shows.map((s) => s.key));
     const fresh = keys.filter((k) => !seen.has(k));
     if (!fresh.length) return null;
-    const key = fresh[Math.floor(rnd() * fresh.length)];
-    // Проверка «не было за сутки» и запись — под блокировкой на человека:
-    // два одновременных вызова (две ссылки подряд) иначе оба не увидели бы
-    // чужую ещё не закоммиченную запись и выдали бы две разные подсказки.
-    const inserted = await this.prisma.$transaction(async (tx) => {
-      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${'promo:' + botUser.id}))`;
-      return tx.$executeRaw`
-        INSERT INTO "PromoShow" ("id", "botUserId", "key", "shownAt")
-        SELECT gen_random_uuid()::text, ${botUser.id}, ${key}, now()
-        WHERE NOT EXISTS (
-          SELECT 1 FROM "PromoShow" WHERE "botUserId" = ${botUser.id} AND ("shownAt" > ${since} OR "key" = ${key})
-        )
-        ON CONFLICT DO NOTHING`;
-    });
-    return inserted === 1 ? key : null;
+    return { botUserId: botUser.id, fresh, since };
   }
 
   // Бот не смог отправить выданную подсказку (лимит Telegram, сеть) —

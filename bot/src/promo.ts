@@ -26,8 +26,9 @@ export function sendPromo(tg: Api, chatId: number, telegramId: number, lang: Lan
 }
 
 // Подписан ли человек на канал новостей — тогда звать его туда незачем. Бот —
-// админ канала (публикует туда статьи блога), поэтому Telegram ему отвечает.
-// Не удалось проверить — считаем подписанным: лишний раз не зовём.
+// админ канала (публикует туда статьи блога, BLOG_CHANNEL), поэтому Telegram
+// ему отвечает. Не удалось проверить — приглашение покажем: иначе при сбое
+// (бота сняли с админов) подсказка про канал молча пропала бы у всех.
 const MEMBER = new Set(["creator", "administrator", "member"]);
 async function inNewsChannel(tg: Api, telegramId: number): Promise<boolean> {
   try {
@@ -35,17 +36,24 @@ async function inNewsChannel(tg: Api, telegramId: number): Promise<boolean> {
     return MEMBER.has(member.status) || (member.status === "restricted" && member.is_member);
   } catch (e: any) {
     console.error("Не удалось проверить подписку на канал для подсказки:", e?.message ?? e);
-    return true;
+    return false;
   }
 }
 
 async function trySendPromo(tg: Api, chatId: number, telegramId: number, lang: Lang): Promise<void> {
   try {
     // Недолго: от ответа ждёт выбор качества следующей ссылки.
-    // Про расширение сервер уберёт сам — он знает, подключал ли человек
-    // аккаунт кодом из расширения.
-    const keys = (await inNewsChannel(tg, telegramId)) ? BOT_PROMOS.filter((k) => k !== "channel") : BOT_PROMOS;
-    const { key } = await api<{ key: string | null }>(`/bot-users/${telegramId}/promo`, { keys }, { timeoutMs: 5000 });
+    // Сначала — что человеку подходит сейчас (с 3-го скачивания, раз в
+    // сутки, ещё не видел; про расширение сервер уберёт сам, если человек
+    // подключал аккаунт кодом из расширения). Подписку на канал спрашиваем у
+    // Telegram, только если подсказка про канал среди подходящих: так не
+    // дёргаем его на каждое скачивание.
+    const path = `/bot-users/${telegramId}/promo`;
+    const { candidates } = await api<{ candidates: string[] }>(path, { keys: BOT_PROMOS, peek: true }, { timeoutMs: 5000 });
+    let keys = BOT_PROMOS.filter((k) => candidates.includes(k));
+    if (keys.includes("channel") && (await inNewsChannel(tg, telegramId))) keys = keys.filter((k) => k !== "channel");
+    if (!keys.length) return;
+    const { key } = await api<{ key: string | null }>(path, { keys }, { timeoutMs: 5000 });
     if (!key || !(keys as string[]).includes(key)) return;
     try {
       await tg.sendMessage(chatId, promoText(key as PromoKey, lang), { link_preview_options: { is_disabled: true } });

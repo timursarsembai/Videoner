@@ -59,3 +59,11 @@ describe('BotUserService.nextPromo', () => {
     expect(await svc.nextPromo(1, ['extension', 'audio'], () => 0)).toBe('audio');
   });
 });
+
+describe('BotUserService.promoCandidates', () => {
+  it('lists what fits now without recording a show', async () => {
+    const { svc, prisma } = service({ extension: true, successful: 10, shows: [{ key: 'reddit', ago: 2 * DAY }] });
+    expect((await svc.promoCandidates(1, ['reddit', 'extension', 'channel']))?.fresh).toEqual(['channel']);
+    expect(prisma.$executeRaw).not.toHaveBeenCalled();
+  });
+});

@@ -264,6 +264,9 @@ export interface UserJournal {
   instantVideo: boolean;
   extensionLinkedAt: string | null;
   lastWebLoginAt: string | null;
+  ok: number;
+  failed: number;
+  truncated: boolean;
   entries: {
     at: string;
     kind: "download" | "link-failure";
@@ -271,6 +274,7 @@ export interface UserJournal {
     platform: string;
     source: string;
     ok: boolean;
+    pending: boolean;
     status: string;
     number: number | null;
     errorCategory: string | null;

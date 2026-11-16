@@ -499,7 +499,7 @@ export class AnalyticsService {
           telegramId: user.telegramId.toString(),
           username: user.username,
           firstName: user.firstName,
-          languageCode: user.languageCode,
+          languageCode: user.language ?? user.languageCode,
           firstSeenAt: user.firstSeenAt,
           lastSeenAt: user.lastSeenAt,
           downloadCount: user._count.downloads,
@@ -538,7 +538,7 @@ export class AnalyticsService {
       this.userOutcomes(),
       this.prisma.$queryRaw<{ uid: string; last: Date }[]>`
         SELECT "botUserId" AS uid, MAX("createdAt") AS last FROM "Download"
-        WHERE "botUserId" IS NOT NULL AND "downloadNumber" IS NOT NULL
+        WHERE "botUserId" IS NOT NULL AND "downloadNumber" IS NOT NULL AND source <> 'API'
         GROUP BY 1`,
     ]);
     const lastOk = new Map(active.map((r) => [r.uid, r.last]));
@@ -604,6 +604,8 @@ export class AnalyticsService {
         platform: String(d.downloader).toLowerCase(),
         source: d.source,
         ok: d.downloadNumber !== null,
+        // Ещё качается — не удача и не ошибка.
+        pending: d.downloadNumber === null && d.status !== 'FAILED' && d.status !== 'EXPIRED',
         status: d.status,
         number: d.downloadNumber,
         errorCategory: d.errorCategory,
@@ -618,6 +620,7 @@ export class AnalyticsService {
         platform: f.platform,
         source: f.source,
         ok: false,
+        pending: false,
         status: 'FAILED',
         number: null,
         errorCategory: f.errorCategory,
@@ -625,10 +628,14 @@ export class AnalyticsService {
         title: null,
         fileSize: null,
       })),
-    ]
-      .sort((a, b) => b.at.getTime() - a.at.getTime())
-      .slice(0, USER_JOURNAL_MAX);
+    ].sort((a, b) => b.at.getTime() - a.at.getTime());
+    const totals = (await this.userOutcomes()).get(user.id) ?? { ok: 0, failed: 0 };
     return {
+      // Итоги — те же, что в строке таблицы (за всё время, без API), а не по
+      // журналу: он обрезан до USER_JOURNAL_MAX записей.
+      ok: totals.ok,
+      failed: totals.failed,
+      truncated: entries.length > USER_JOURNAL_MAX,
       telegramId: user.telegramId.toString(),
       username: user.username,
       firstName: user.firstName,
@@ -639,18 +646,31 @@ export class AnalyticsService {
       instantVideo: user.instantVideo,
       extensionLinkedAt: user.extensionLinkedAt,
       lastWebLoginAt: user.lastWebLoginAt,
-      entries,
+      entries: entries.slice(0, USER_JOURNAL_MAX),
       blocks: blocks.map((b) => ({ blocked: b.blocked, source: b.source, at: b.at })),
       promos: promos.map((p) => ({ key: p.key, at: p.shownAt })),
     };
   }
 
   // Удачные и неудачные попытки каждого пользователя бота по площадкам — за
-  // всё время. Удача — скачанный файл (COMPLETED, EXPIRED — тот же файл, уже
-  // убранный с диска); неудача — упавшее скачивание и отказ при разборе
+  // всё время. Удача — скачивание с номером (Download.downloadNumber: файл
+  // был готов); неудача — упавшее скачивание без номера и отказ при разборе
   // ссылки (LinkFailure, по пользователю — только с 12.11.2026). Площадка —
   // строчными, как в LinkFailure.platform. Незавершённые не считаются.
-  private async userOutcomes() {
+  // Вкладка «Пользователи» просит её трижды за раз (blockedSummary,
+  // blockedOutcomes, allUsers) — один подсчёт на 30 секунд.
+  private outcomesCache: { at: number; value: ReturnType<AnalyticsService['computeUserOutcomes']> } | null = null;
+  private userOutcomes() {
+    if (this.outcomesCache && Date.now() - this.outcomesCache.at < 30_000) return this.outcomesCache.value;
+    const value = this.computeUserOutcomes();
+    this.outcomesCache = { at: Date.now(), value };
+    value.catch(() => {
+      if (this.outcomesCache?.value === value) this.outcomesCache = null;
+    });
+    return value;
+  }
+
+  private async computeUserOutcomes() {
     const rows = await this.prisma.$queryRaw<
       { uid: string; platform: string; ok: number; failed: number }[]
     >`
@@ -659,7 +679,7 @@ export class AnalyticsService {
                -- Удача — скачивание с номером (Download.downloadNumber); EXPIRED
                -- без номера — упавшее, которое очистка перевела в EXPIRED.
                d."downloadNumber" IS NOT NULL AS ok,
-               d.status = 'FAILED' OR (d.status = 'EXPIRED' AND d."downloadNumber" IS NULL) AS failed
+               d."downloadNumber" IS NULL AND d.status IN ('FAILED', 'EXPIRED') AS failed
         FROM "Download" d
         WHERE d."botUserId" IS NOT NULL AND d.source <> 'API'
         UNION ALL

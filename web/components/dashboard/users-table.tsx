@@ -104,12 +104,14 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
     for (const u of all) c[u.status]++;
     return c;
   }, [all]);
-  const page = rows.slice(offset, offset + PAGE_SIZE);
+  // После обновления данных список мог стать короче текущей страницы.
+  const start = offset < rows.length ? offset : Math.max(0, Math.floor((rows.length - 1) / PAGE_SIZE) * PAGE_SIZE);
+  const page = rows.slice(start, start + PAGE_SIZE);
 
   return (
     <ChartCard
       title={`Все пользователи бота · ${all.length}`}
-      hint="Активный — удачно скачивал за последние 30 дней (как на странице «Videoner в цифрах»), заблокировал — сейчас, неактивный — остальные. «Удачно / ошибок» и «Где» — за всё время; отказы при разборе ссылки — с 12.11.2026. Время — по Алматы. Нажмите на строку — откроется журнал пользователя."
+      hint="Активный — удачно скачивал за последние 30 дней (как на странице «Videoner в цифрах»), заблокировал — сейчас, неактивный — остальные. «Удачно / ошибок» и «Где» — за всё время, без API; отказы при разборе ссылки — с 12.11.2026. Время — по Алматы. Нажмите на строку — откроется журнал пользователя."
       loading={q.loading}
       error={q.error}
       wide
@@ -212,17 +214,17 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
       {rows.length > PAGE_SIZE && (
         <div className="mt-3 flex items-center justify-between text-xs text-foreground/60">
           <span>
-            {offset + 1}–{Math.min(offset + PAGE_SIZE, rows.length)} из {rows.length}
+            {start + 1}–{Math.min(start + PAGE_SIZE, rows.length)} из {rows.length}
           </span>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - PAGE_SIZE))}>
+            <Button variant="outline" size="sm" disabled={start === 0} onClick={() => setOffset(Math.max(0, start - PAGE_SIZE))}>
               Назад
             </Button>
             <Button
               variant="outline"
               size="sm"
-              disabled={offset + PAGE_SIZE >= rows.length}
-              onClick={() => setOffset(offset + PAGE_SIZE)}
+              disabled={start + PAGE_SIZE >= rows.length}
+              onClick={() => setOffset(start + PAGE_SIZE)}
             >
               Дальше
             </Button>
@@ -265,9 +267,9 @@ export function UserJournalModal({ telegramId, onClose }: { telegramId: string; 
 
   const j = q.data;
   const platforms = useMemo(() => [...new Set((j?.entries ?? []).map((e) => e.platform))].sort(), [j]);
-  const entries = (j?.entries ?? []).filter((e) => (!platform || e.platform === platform) && (!onlyFailed || !e.ok));
-  const ok = j?.entries.filter((e) => e.ok).length ?? 0;
-  const failed = (j?.entries.length ?? 0) - ok;
+  const entries = (j?.entries ?? []).filter(
+    (e) => (!platform || e.platform === platform) && (!onlyFailed || (!e.ok && !e.pending)),
+  );
 
   return (
     <div
@@ -304,7 +306,7 @@ export function UserJournalModal({ telegramId, onClose }: { telegramId: string; 
                 label="Бот"
                 value={j.blockedAt ? `заблокировал ${formatShortTime(j.blockedAt)}` : "не заблокирован"}
               />
-              <Item label="Удачно / ошибок" value={`${ok} / ${failed}`} />
+              <Item label="Удачно / ошибок" value={`${j.ok} / ${j.failed}`} />
               <Item
                 label="Расширение"
                 value={j.extensionLinkedAt ? `подключал аккаунт ${formatShortDate(j.extensionLinkedAt)}` : "—"}
@@ -354,7 +356,7 @@ export function UserJournalModal({ telegramId, onClose }: { telegramId: string; 
               </label>
               <span className="text-xs text-foreground/50">
                 Записей: {entries.length}
-                {j.entries.length >= 500 && " (последние 500)"}
+                {j.truncated && ` (последние ${j.entries.length})`}
               </span>
             </div>
 
@@ -382,6 +384,8 @@ export function UserJournalModal({ telegramId, onClose }: { telegramId: string; 
                             {e.fromCache && <span className="text-foreground/40"> · из кеша</span>}
                             {e.fileSize ? <span className="text-foreground/40"> · {fmtSize(e.fileSize)}</span> : null}
                           </span>
+                        ) : e.pending ? (
+                          <span className="text-foreground/50">качается…</span>
                         ) : (
                           <span className="text-red-600">
                             {e.kind === "link-failure" ? "Разбор ссылки: " : ""}

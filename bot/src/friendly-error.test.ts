@@ -131,3 +131,20 @@ test("friendlyError: контент 18+ и твит без видео — сво
     null,
   );
 });
+
+test("download number line: grouped digits, localized label, nothing for bad input", async () => {
+  const { downloadNumberLine } = await import("./helpers.js");
+  assert.equal(downloadNumberLine(8097, "ru"), "⬇️ Скачивание №8 097");
+  assert.equal(downloadNumberLine(1234567, "en"), "⬇️ Download #1 234 567");
+  assert.equal(downloadNumberLine(12, "en"), "⬇️ Download #12");
+  assert.equal(downloadNumberLine(null, "ru"), undefined);
+  assert.equal(downloadNumberLine(0, "ru"), undefined);
+  assert.equal(downloadNumberLine("5", "ru"), undefined);
+});
+
+test("file caption ends its main part with the download number", async () => {
+  const { messages } = await import("./i18n.js");
+  const c = messages.ru.fileCaption("Видео", "https://x.com/a/status/1", undefined, undefined, "⬇️ Скачивание №7");
+  assert.ok(c.includes("Скачано бесплатно через @VideonerBot\n⬇️ Скачивание №7"));
+  assert.ok(!messages.ru.fileCaption("Видео", "https://x.com/a/status/1").includes("№"));
+});

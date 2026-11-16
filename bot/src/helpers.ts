@@ -398,3 +398,11 @@ export function extensionLinkFor(raw: string, url: string, lang: Lang): string |
   }
   return extensionPageFor(url, lang);
 }
+
+// «⬇️ Скачивание №8 097» для подписи к файлу. Номер — порядковый среди всех
+// удачных скачиваний (сервер, Download.downloadNumber). Разряды — через
+// неразрывный пробел: одинаково читается на всех языках и не переносится.
+export function downloadNumberLine(n: unknown, lang: Lang): string | undefined {
+  if (typeof n !== "number" || !Number.isInteger(n) || n <= 0) return undefined;
+  return messages[lang].downloadNo(String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " "));
+}

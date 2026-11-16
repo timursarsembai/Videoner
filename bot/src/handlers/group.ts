@@ -249,13 +249,13 @@ async function downloadInGroup(
   }
 
   const byline = sender ? m.sentBy(sender) : "";
-  const formatCaption = (title: string, sourceUrl: string, shareUrl?: string, description?: string) => {
+  const formatCaption = (title: string, sourceUrl: string, shareUrl?: string, description?: string, numberLine?: string) => {
     const body =
       settings.caption === "none"
         ? ""
         : settings.caption === "short"
           ? m.fileCaptionShort(title, sourceUrl)
-          : m.fileCaption(title, sourceUrl, shareUrl, description);
+          : m.fileCaption(title, sourceUrl, shareUrl, description, numberLine);
     // Имя отправителя добавляется к подписи, которая и так могла быть у самого
     // предела, — режем, иначе Telegram отверг бы файл уже после скачивания.
     return [byline, body].filter(Boolean).join("\n\n").slice(0, CAPTION_LIMIT);

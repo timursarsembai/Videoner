@@ -12,6 +12,7 @@ import {
   checkUserRateLimit,
   failedDownloadText,
   friendlyError,
+  downloadNumberLine,
 } from "../helpers.js";
 import { isChannelMember } from "./membership.js";
 import { shareLinkFor } from "../share-link.js";
@@ -151,7 +152,7 @@ export function registerInlineHandlers(bot: Bot) {
         }
 
         const startDownload = (acceptTelegramFileId: boolean) =>
-          api<{ downloadId: string; fileName: string; telegramFileId?: string }>(
+          api<{ downloadId: string; fileName: string; telegramFileId?: string; number?: number | null }>(
             "/download/video",
             {
               url,
@@ -166,11 +167,11 @@ export function registerInlineHandlers(bot: Bot) {
           );
         // Как в performDownload: запрашиваем заранее, к замене заглушки готово.
         const shareLink = shareLinkFor(url);
-        const replaceStub = async (fileId: string) =>
+        const replaceStub = async (fileId: string, number?: unknown) =>
           bot.api.editMessageMediaInline(
             inlineMessageId,
             InputMediaBuilder.video(fileId, {
-              caption: m.fileCaption(info.title ?? "", url, await shareLink, postDescription(url, info.description)),
+              caption: m.fileCaption(info.title ?? "", url, await shareLink, postDescription(url, info.description), downloadNumberLine(number, lang)),
             }),
             {
               reply_markup: new InlineKeyboard().url(
@@ -185,7 +186,7 @@ export function registerInlineHandlers(bot: Bot) {
         // скачивания и промежуточной загрузки. Не сработал — качаем заново.
         if (started.telegramFileId) {
           try {
-            await replaceStub(started.telegramFileId);
+            await replaceStub(started.telegramFileId, started.number);
             return;
           } catch (e: any) {
             console.error(`file_id из кеша для ${url} не сработал, качаю заново:`, e?.message ?? e);
@@ -193,7 +194,7 @@ export function registerInlineHandlers(bot: Bot) {
           }
         }
 
-        let status: { status: string; items?: { filename: string }[]; errorCategory?: string | null } | undefined;
+        let status: { status: string; items?: { filename: string }[]; errorCategory?: string | null; number?: number | null } | undefined;
         for (let i = 0; i < 400; i++) {
           await new Promise((r) => setTimeout(r, 3000));
           status = await api(`/download/${started.downloadId}/status`);
@@ -254,7 +255,7 @@ export function registerInlineHandlers(bot: Bot) {
         api(`/download/${started.downloadId}/telegram-file`, { fileId }).catch((e) =>
           console.error("Не удалось запомнить file_id:", e?.message ?? e),
         );
-        await replaceStub(fileId);
+        await replaceStub(fileId, status.number);
 
         await bot.api
           .deleteMessage(ADMIN_TELEGRAM_ID, staged.message_id)

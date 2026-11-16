@@ -22,6 +22,7 @@ import {
   BOT_FILE_LIMIT,
   ADMIN_TELEGRAM_ID,
   fmtSize,
+  downloadNumberLine,
 } from "../helpers.js";
 import { SHARE_CHANNEL, publishLink } from "./share.js";
 import { blockUnlessSubscribed, isChannelMember, subscribeKeyboard } from "./membership.js";
@@ -225,7 +226,7 @@ export async function performDownload(
     ) => Promise<string | undefined>;
     // Своя подпись под файлом (настройки группы, handlers/group.ts). Нет —
     // обычная fileCaption.
-    formatCaption?: (title: string, sourceUrl: string, shareUrl?: string, description?: string) => string;
+    formatCaption?: (title: string, sourceUrl: string, shareUrl?: string, description?: string, numberLine?: string) => string;
     // Текст поста для подписи (caption.ts postDescription).
     description?: string;
     // true — человек остановил скачивание (/stop, кнопка плейлиста): файл
@@ -252,7 +253,9 @@ export async function performDownload(
   // Ссылку «Поделиться» запрашиваем сразу, параллельно со скачиванием: к
   // отправке файла она обычно уже готова. shareLinkFor не бросает.
   const shareLink = shareLinkFor(url);
-  const caption = async () => (send.formatCaption ?? m.fileCaption)(title, url, await shareLink, send.description);
+  // number — порядковый номер скачивания (сервер): строка «Скачивание №…».
+  const caption = async (number?: unknown) =>
+    (send.formatCaption ?? m.fileCaption)(title, url, await shareLink, send.description, downloadNumberLine(number, lang));
   const msg = await send.reply(m.downloading);
   // Файл уже в чате. Сбой после этого (убрать «Скачиваю», опубликовать в
   // канал) — не повод писать человеку «не получилось» поверх его видео.
@@ -272,7 +275,7 @@ export async function performDownload(
 
   try {
     const startDownload = (acceptTelegramFileId: boolean) =>
-      api<{ downloadId: string; fileName: string; telegramFileId?: string; viaUserCookies?: boolean }>(
+      api<{ downloadId: string; fileName: string; telegramFileId?: string; viaUserCookies?: boolean; number?: number | null }>(
         kind === "v" ? "/download/video" : "/download/audio",
         { url, quality, extension, source: "BOT", acceptTelegramFileId, ...dlMeta },
       );
@@ -290,9 +293,9 @@ export async function performDownload(
       try {
         await send.editMessageText(msg.message_id, m.sendingFile);
         if (kind === "v") {
-          await send.replyWithVideo(started.telegramFileId, await caption());
+          await send.replyWithVideo(started.telegramFileId, await caption(started.number));
         } else {
-          await send.replyWithAudio(started.telegramFileId, await caption());
+          await send.replyWithAudio(started.telegramFileId, await caption(started.number));
         }
         sentFromCache = true;
         delivered = true;
@@ -325,6 +328,7 @@ export async function performDownload(
           items?: StatusItem[];
           progress?: LiveProgress | null;
           errorCategory?: string | null;
+          number?: number | null;
         }
       | undefined;
     // Живой ход скачивания: процент и оставшееся время, которые yt-dlp считает
@@ -363,7 +367,7 @@ export async function performDownload(
     const items = status.items ?? [];
     if (items.length > 1) {
       await send.editMessageText(msg.message_id, m.sendingAlbum(items.length));
-      const cover = await send.replyWithAlbum(items, await caption());
+      const cover = await send.replyWithAlbum(items, await caption(status.number));
       delivered = true;
       await clearServiceMessages();
       await publish(url, title, thumbnail, lang, cover);
@@ -397,7 +401,7 @@ export async function performDownload(
     // такого поста нет), поэтому решает вид файла, а не kind: иначе jpeg уходил
     // бы в sendVideo.
     if (items[0]?.kind === "PHOTO") {
-      const cover = await send.replyWithPhoto(file, await caption());
+      const cover = await send.replyWithPhoto(file, await caption(status.number));
       delivered = true;
       await clearServiceMessages();
       await publish(url, title, thumbnail, lang, cover);
@@ -407,13 +411,13 @@ export async function performDownload(
     if (kind === "v") {
       // Размеры передаём явно: без них Telegram на iOS показывает вертикальное
       // видео сплющенным в квадрат (Desktop читает поток сам и рисует верно).
-      fileId = await send.replyWithVideo(file, await caption(), {
+      fileId = await send.replyWithVideo(file, await caption(status.number), {
         width: meta.width,
         height: meta.height,
         duration: meta.duration,
       });
     } else {
-      fileId = await send.replyWithAudio(file, await caption());
+      fileId = await send.replyWithAudio(file, await caption(status.number));
     }
     delivered = true;
     if (fileId) {

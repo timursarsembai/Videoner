@@ -60,7 +60,10 @@ interface Messages {
   sendingFile: string;
   sendingAlbum: (count: number) => string;
   failedPrefix: string;
-  fileCaption: (title: string, sourceUrl: string, shareUrl?: string, description?: string) => string;
+  // numberLine — «⬇️ Скачивание №8 097» (downloadNo), последняя строка основной части.
+  fileCaption: (title: string, sourceUrl: string, shareUrl?: string, description?: string, numberLine?: string) => string;
+  // Порядковый номер удачного скачивания среди всех (сервер, Download.downloadNumber).
+  downloadNo: (n: string) => string;
   // Инлайн-режим: «@бот <ссылка>» в любом чате (см. handlers/inline.ts).
   inlineHintButton: string;
   inlineResultTitle: string;
@@ -266,7 +269,9 @@ function composeCaption(
   body: string,
   newsLine: string,
   shareLine: string | undefined,
+  numberLine?: string,
 ): string {
+  if (numberLine) body = `${body}\n${numberLine}`;
   const { head, extra } = splitTitle(title, description);
   const headText = head ? `🎬 ${clip(head, 200)}` : "";
   const base = [headText, body].filter(Boolean).join("\n\n");
@@ -309,7 +314,7 @@ const ru: Messages = {
   // Telegram лимит 1024 символа, а название ролика бывает на пол-экрана.
   // shareUrl — ссылка-приглашение: кто её откроет, сразу получит этот же
   // ролик в боте (handlers/invite.ts).
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -318,6 +323,7 @@ const ru: Messages = {
         "Скачано бесплатно через @VideonerBot",
       `📣 Новости проекта: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Поделиться: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Чтобы скачивать, подпишитесь на наш канал ${channel} — это единственное условие, сервис остаётся бесплатным.\n\n` +
@@ -391,6 +397,7 @@ const ru: Messages = {
   newsButton: "📣 Новости проекта",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Новости проекта: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Скачивание №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Настройки бота в этой группе\n\n" +
@@ -543,7 +550,7 @@ const en: Messages = {
   sendingFile: "📤 Sending file...",
   sendingAlbum: (count) => `📤 This post has several files (${count}) — sending them as an album...`,
   failedPrefix: "❌ Failed: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -552,6 +559,7 @@ const en: Messages = {
         "Downloaded for free with @VideonerBot",
       `📣 Project news: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Share: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `To download, please subscribe to our channel ${channel} — that is the only condition, the service stays free.\n\n` +
@@ -625,6 +633,7 @@ const en: Messages = {
   newsButton: "📣 Project news",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Project news: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Download #${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bot settings for this group\n\n" +
@@ -776,7 +785,7 @@ const ar: Messages = {
   sendingFile: "📤 جارٍ إرسال الملف...",
   sendingAlbum: (count) => `📤 يحتوي هذا المنشور على عدة ملفات (${count}) — أرسلها كألبوم...`,
   failedPrefix: "❌ فشل: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -785,6 +794,7 @@ const ar: Messages = {
         "نُزّل مجانًا عبر ‎@VideonerBot",
       `📣 أخبار المشروع: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 مشاركة: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `للتنزيل، يُرجى الاشتراك في قناتنا ${channel} — هذا هو الشرط الوحيد، والخدمة تبقى مجانية.\n\n` +
@@ -858,6 +868,7 @@ const ar: Messages = {
   newsButton: "📣 أخبار المشروع",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 أخبار المشروع: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ التنزيل رقم ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ إعدادات البوت لهذه المجموعة\n\n" +
@@ -1009,7 +1020,7 @@ const zh: Messages = {
   sendingFile: "📤 正在发送文件……",
   sendingAlbum: (count) => `📤 这条帖子包含多个文件（${count} 个），将以相册形式发送……`,
   failedPrefix: "❌ 失败：",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -1018,6 +1029,7 @@ const zh: Messages = {
         "通过 @VideonerBot 免费下载",
       `📣 项目动态：${NEWS_CHANNEL}`,
       shareUrl && `🔗 分享：${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `下载前请先关注我们的频道 ${channel}——这是唯一的条件，服务依然免费。\n\n` +
@@ -1091,6 +1103,7 @@ const zh: Messages = {
   newsButton: "📣 项目动态",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 项目动态：${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ 第${n}次下载`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ 本群的机器人设置\n\n" +
@@ -1242,7 +1255,7 @@ const hi: Messages = {
   sendingFile: "📤 फ़ाइल भेजी जा रही है...",
   sendingAlbum: (count) => `📤 इस पोस्ट में कई फ़ाइलें हैं (${count}) — इन्हें एल्बम के रूप में भेज रहा हूँ...`,
   failedPrefix: "❌ नहीं हो सका: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -1251,6 +1264,7 @@ const hi: Messages = {
         "@VideonerBot से मुफ़्त में डाउनलोड किया गया",
       `📣 प्रोजेक्ट की खबरें: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 शेयर करें: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `डाउनलोड करने के लिए कृपया हमारे चैनल ${channel} को सब्सक्राइब करें — बस यही एक शर्त है, सर्विस मुफ़्त ही रहेगी।\n\n` +
@@ -1324,6 +1338,7 @@ const hi: Messages = {
   newsButton: "📣 प्रोजेक्ट की खबरें",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 प्रोजेक्ट की खबरें: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ डाउनलोड क्र. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ इस ग्रुप के लिए बॉट की सेटिंग्स\n\n" +
@@ -1475,7 +1490,7 @@ const indonesian: Messages = {
   sendingFile: "📤 Mengirim file...",
   sendingAlbum: (count) => `📤 Postingan ini berisi beberapa file (${count}) — mengirimnya sebagai album...`,
   failedPrefix: "❌ Gagal: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -1484,6 +1499,7 @@ const indonesian: Messages = {
         "Diunduh gratis dengan @VideonerBot",
       `📣 Berita proyek: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Bagikan: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Untuk mengunduh, silakan berlangganan saluran kami ${channel} — hanya itu syaratnya, layanan tetap gratis.\n\n` +
@@ -1557,6 +1573,7 @@ const indonesian: Messages = {
   newsButton: "📣 Berita proyek",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Berita proyek: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Unduhan #${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Pengaturan bot untuk grup ini\n\n" +
@@ -1708,7 +1725,7 @@ const sw: Messages = {
   sendingFile: "📤 Ninatuma faili...",
   sendingAlbum: (count) => `📤 Chapisho hili lina faili kadhaa (${count}) — ninazituma kama albamu...`,
   failedPrefix: "❌ Imeshindikana: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -1717,6 +1734,7 @@ const sw: Messages = {
         "Imepakuliwa bila malipo kwa @VideonerBot",
       `📣 Habari za mradi: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Shiriki: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Ili kupakua, tafadhali jiunge na chaneli yetu ${channel} — hilo ndilo sharti pekee, huduma inabaki bure.\n\n` +
@@ -1790,6 +1808,7 @@ const sw: Messages = {
   newsButton: "📣 Habari za mradi",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Habari za mradi: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Upakuaji #${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Mipangilio ya bot kwa kikundi hiki\n\n" +
@@ -1941,7 +1960,7 @@ const de: Messages = {
   sendingFile: "📤 Datei wird gesendet...",
   sendingAlbum: (count) => `📤 Dieser Beitrag enthält mehrere Dateien (${count}) — ich sende sie als Album...`,
   failedPrefix: "❌ Fehlgeschlagen: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -1950,6 +1969,7 @@ const de: Messages = {
         "Kostenlos heruntergeladen mit @VideonerBot",
       `📣 Projekt-News: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Teilen: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Um herunterzuladen, abonniere bitte unseren Kanal ${channel} — das ist die einzige Bedingung, der Dienst bleibt kostenlos.\n\n` +
@@ -2023,6 +2043,7 @@ const de: Messages = {
   newsButton: "📣 Projekt-News",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Projekt-News: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Download Nr. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bot-Einstellungen für diese Gruppe\n\n" +
@@ -2174,7 +2195,7 @@ const fr: Messages = {
   sendingFile: "📤 Envoi du fichier...",
   sendingAlbum: (count) => `📤 Cette publication contient plusieurs fichiers (${count}) — je les envoie sous forme d'album...`,
   failedPrefix: "❌ Échec : ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -2183,6 +2204,7 @@ const fr: Messages = {
         "Téléchargée gratuitement avec @VideonerBot",
       `📣 Actualités du projet : ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Partager : ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Pour télécharger, abonnez-vous à notre chaîne ${channel} — c'est la seule condition, le service reste gratuit.\n\n` +
@@ -2256,6 +2278,7 @@ const fr: Messages = {
   newsButton: "📣 Actualités du projet",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Actualités du projet : ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Téléchargement n° ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Paramètres du bot pour ce groupe\n\n" +
@@ -2407,7 +2430,7 @@ const it: Messages = {
   sendingFile: "📤 Invio del file...",
   sendingAlbum: (count) => `📤 Questo post contiene più file (${count}) — li invio come album...`,
   failedPrefix: "❌ Errore: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -2416,6 +2439,7 @@ const it: Messages = {
         "Scaricato gratis con @VideonerBot",
       `📣 Novità del progetto: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Condividi: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Per scaricare, iscriviti al nostro canale ${channel} — è l'unica condizione, il servizio resta gratuito.\n\n` +
@@ -2489,6 +2513,7 @@ const it: Messages = {
   newsButton: "📣 Novità del progetto",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novità del progetto: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Download n. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Impostazioni del bot per questo gruppo\n\n" +
@@ -2640,7 +2665,7 @@ const pt: Messages = {
   sendingFile: "📤 Enviando o arquivo...",
   sendingAlbum: (count) => `📤 Este post tem vários arquivos (${count}) — vou enviá-los como álbum...`,
   failedPrefix: "❌ Falhou: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -2649,6 +2674,7 @@ const pt: Messages = {
         "Baixado de graça com @VideonerBot",
       `📣 Novidades do projeto: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Compartilhar: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Para baixar, inscreva-se no nosso canal ${channel} — essa é a única condição, o serviço continua grátis.\n\n` +
@@ -2722,6 +2748,7 @@ const pt: Messages = {
   newsButton: "📣 Novidades do projeto",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novidades do projeto: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Download n.º ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Configurações do bot neste grupo\n\n" +
@@ -2873,7 +2900,7 @@ const es: Messages = {
   sendingFile: "📤 Enviando el archivo...",
   sendingAlbum: (count) => `📤 Esta publicación tiene varios archivos (${count}) — los envío como álbum...`,
   failedPrefix: "❌ Error: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -2882,6 +2909,7 @@ const es: Messages = {
         "Descargado gratis con @VideonerBot",
       `📣 Novedades del proyecto: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Compartir: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Para descargar, suscríbete a nuestro canal ${channel} — es la única condición, el servicio sigue siendo gratis.\n\n` +
@@ -2955,6 +2983,7 @@ const es: Messages = {
   newsButton: "📣 Novedades del proyecto",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novedades del proyecto: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Descarga n.º ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Configuración del bot en este grupo\n\n" +
@@ -3106,7 +3135,7 @@ const uz: Messages = {
   sendingFile: "📤 Fayl yuborilmoqda...",
   sendingAlbum: (count) => `📤 Bu postda bir nechta fayl bor (${count}) — ularni albom qilib yuboryapman...`,
   failedPrefix: "❌ Xatolik: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -3115,6 +3144,7 @@ const uz: Messages = {
         "@VideonerBot orqali bepul yuklab olindi",
       `📣 Loyiha yangiliklari: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Ulashish: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Yuklab olish uchun ${channel} kanalimizga obuna boʻling — bu yagona shart, xizmat bepulligicha qoladi.\n\n` +
@@ -3188,6 +3218,7 @@ const uz: Messages = {
   newsButton: "📣 Loyiha yangiliklari",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Loyiha yangiliklari: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Yuklab olish №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bu guruh uchun bot sozlamalari\n\n" +
@@ -3339,7 +3370,7 @@ const tr: Messages = {
   sendingFile: "📤 Dosya gönderiliyor...",
   sendingAlbum: (count) => `📤 Bu gönderide birden fazla dosya var (${count}) — albüm olarak gönderiyorum...`,
   failedPrefix: "❌ Başarısız: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -3348,6 +3379,7 @@ const tr: Messages = {
         "@VideonerBot ile ücretsiz indirildi",
       `📣 Proje haberleri: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Paylaş: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `İndirmek için lütfen ${channel} kanalımıza abone olun — tek koşul bu, hizmet ücretsiz kalmaya devam ediyor.\n\n` +
@@ -3421,6 +3453,7 @@ const tr: Messages = {
   newsButton: "📣 Proje haberleri",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Proje haberleri: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ İndirme #${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bu grup için bot ayarları\n\n" +
@@ -3572,7 +3605,7 @@ const fa: Messages = {
   sendingFile: "📤 در حال ارسال فایل...",
   sendingAlbum: (count) => `📤 این پست چند فایل دارد (${count}) — آن‌ها را به‌صورت آلبوم می‌فرستم...`,
   failedPrefix: "❌ ناموفق: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -3581,6 +3614,7 @@ const fa: Messages = {
         "رایگان دانلود شده با ‎@VideonerBot",
       `📣 اخبار پروژه: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 اشتراک‌گذاری: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `برای دانلود، لطفاً در کانال ما ${channel} عضو شوید — این تنها شرط است و سرویس رایگان می‌ماند.\n\n` +
@@ -3654,6 +3688,7 @@ const fa: Messages = {
   newsButton: "📣 اخبار پروژه",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 اخبار پروژه: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ دانلود شماره ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ تنظیمات ربات برای این گروه\n\n" +
@@ -3805,7 +3840,7 @@ const vi: Messages = {
   sendingFile: "📤 Đang gửi file...",
   sendingAlbum: (count) => `📤 Bài đăng này có nhiều file (${count}) — đang gửi dưới dạng album...`,
   failedPrefix: "❌ Không thành công: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -3814,6 +3849,7 @@ const vi: Messages = {
         "Tải miễn phí bằng @VideonerBot",
       `📣 Tin tức dự án: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Chia sẻ: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Để tải về, bạn hãy đăng ký kênh ${channel} của chúng mình — đó là điều kiện duy nhất, dịch vụ vẫn miễn phí.\n\n` +
@@ -3887,6 +3923,7 @@ const vi: Messages = {
   newsButton: "📣 Tin tức dự án",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Tin tức dự án: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Lượt tải #${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Cài đặt bot cho nhóm này\n\n" +
@@ -4039,7 +4076,7 @@ const bn: Messages = {
   sendingFile: "📤 ফাইল পাঠানো হচ্ছে...",
   sendingAlbum: (count) => `📤 এই পোস্টে কয়েকটি ফাইল আছে (${count}) — অ্যালবাম হিসেবে পাঠাচ্ছি...`,
   failedPrefix: "❌ ব্যর্থ: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -4048,6 +4085,7 @@ const bn: Messages = {
         "@VideonerBot দিয়ে বিনামূল্যে ডাউনলোড করা",
       `📣 প্রজেক্টের খবর: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 শেয়ার করুন: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `ডাউনলোড করতে আমাদের চ্যানেল ${channel} সাবস্ক্রাইব করুন — এটাই একমাত্র শর্ত, সার্ভিসটি ফ্রি-ই থাকবে।\n\n` +
@@ -4121,6 +4159,7 @@ const bn: Messages = {
   newsButton: "📣 প্রজেক্টের খবর",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 প্রজেক্টের খবর: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ ডাউনলোড নং ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ এই গ্রুপে বটের সেটিংস\n\n" +
@@ -4272,7 +4311,7 @@ const ur: Messages = {
   sendingFile: "📤 فائل بھیجی جا رہی ہے...",
   sendingAlbum: (count) => `📤 اس پوسٹ میں کئی فائلیں ہیں (${count}) — انہیں البم کی شکل میں بھیج رہا ہوں...`,
   failedPrefix: "❌ ناکام: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -4281,6 +4320,7 @@ const ur: Messages = {
         "مفت ڈاؤن لوڈ بذریعہ ‎@VideonerBot",
       `📣 پروجیکٹ کی خبریں: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 شیئر کریں: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `ڈاؤن لوڈ کرنے کے لیے براہ کرم ہمارا چینل ${channel} سبسکرائب کریں — بس یہی ایک شرط ہے، سروس مفت ہی رہے گی۔\n\n` +
@@ -4354,6 +4394,7 @@ const ur: Messages = {
   newsButton: "📣 پروجیکٹ کی خبریں",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 پروجیکٹ کی خبریں: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ ڈاؤن لوڈ نمبر ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ اس گروپ کے لیے بوٹ کی سیٹنگز\n\n" +
@@ -4505,7 +4546,7 @@ const pl: Messages = {
   sendingFile: "📤 Wysyłam plik...",
   sendingAlbum: (count) => `📤 Ten post ma kilka plików (${count}) — wysyłam je jako album...`,
   failedPrefix: "❌ Nie udało się: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -4514,6 +4555,7 @@ const pl: Messages = {
         "Pobrano za darmo przez @VideonerBot",
       `📣 Nowości projektu: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Udostępnij: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Aby pobierać, zasubskrybuj nasz kanał ${channel} — to jedyny warunek, usługa pozostaje darmowa.\n\n` +
@@ -4587,6 +4629,7 @@ const pl: Messages = {
   newsButton: "📣 Nowości projektu",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Nowości projektu: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Pobranie nr ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Ustawienia bota w tej grupie\n\n" +
@@ -4738,7 +4781,7 @@ const ja: Messages = {
   sendingFile: "📤 ファイルを送信しています...",
   sendingAlbum: (count) => `📤 この投稿には複数のファイル（${count} 件）があります。アルバムとして送信しています...`,
   failedPrefix: "❌ 失敗しました：",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -4747,6 +4790,7 @@ const ja: Messages = {
         "@VideonerBot で無料ダウンロード",
       `📣 プロジェクトのお知らせ：${NEWS_CHANNEL}`,
       shareUrl && `🔗 共有：${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `ダウンロードするには、チャンネル ${channel} を購読してください。条件はこれだけで、サービスは引き続き無料です。\n\n` +
@@ -4820,6 +4864,7 @@ const ja: Messages = {
   newsButton: "📣 プロジェクトのお知らせ",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 プロジェクトのお知らせ：${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ ダウンロード #${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ このグループでのボットの設定\n\n" +
@@ -4971,7 +5016,7 @@ const ko: Messages = {
   sendingFile: "📤 파일을 보내는 중이에요...",
   sendingAlbum: (count) => `📤 이 게시물에는 파일이 여러 개(${count}개) 있어요. 앨범으로 보내는 중이에요...`,
   failedPrefix: "❌ 실패: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -4980,6 +5025,7 @@ const ko: Messages = {
         "@VideonerBot으로 무료 다운로드",
       `📣 프로젝트 소식: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 공유: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `다운로드하려면 채널 ${channel}을(를) 구독해 주세요. 조건은 이것뿐이고, 서비스는 계속 무료예요.\n\n` +
@@ -5053,6 +5099,7 @@ const ko: Messages = {
   newsButton: "📣 프로젝트 소식",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 프로젝트 소식: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ ${n}번째 다운로드`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ 이 그룹의 봇 설정\n\n" +
@@ -5204,7 +5251,7 @@ const th: Messages = {
   sendingFile: "📤 กำลังส่งไฟล์...",
   sendingAlbum: (count) => `📤 โพสต์นี้มีหลายไฟล์ (${count}) กำลังส่งเป็นอัลบั้ม...`,
   failedPrefix: "❌ ไม่สำเร็จ: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -5213,6 +5260,7 @@ const th: Messages = {
         "ดาวน์โหลดฟรีด้วย @VideonerBot",
       `📣 ข่าวสารโปรเจกต์: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 แชร์: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `หากต้องการดาวน์โหลด กรุณาติดตามช่อง ${channel} ของเรา นี่เป็นเงื่อนไขเดียว และบริการยังคงฟรีเหมือนเดิม\n\n` +
@@ -5286,6 +5334,7 @@ const th: Messages = {
   newsButton: "📣 ข่าวสารโปรเจกต์",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 ข่าวสารโปรเจกต์: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ ดาวน์โหลดครั้งที่ ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ การตั้งค่าบอทสำหรับกลุ่มนี้\n\n" +
@@ -5437,7 +5486,7 @@ const am: Messages = {
   sendingFile: "📤 ፋይሉን በመላክ ላይ...",
   sendingAlbum: (count) => `📤 ይህ ልጥፍ በርካታ ፋይሎች (${count}) አሉት — እንደ አልበም በመላክ ላይ...`,
   failedPrefix: "❌ አልተሳካም፦ ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -5446,6 +5495,7 @@ const am: Messages = {
         "በ @VideonerBot በነፃ የወረደ",
       `📣 የፕሮጀክቱ ዜና፦ ${NEWS_CHANNEL}`,
       shareUrl && `🔗 ያጋሩ፦ ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `ለማውረድ እባክዎ ቻናላችንን ${channel} ይቀላቀሉ — ይህ ብቸኛው ቅድመ ሁኔታ ነው፤ አገልግሎቱ ነፃ ሆኖ ይቀጥላል።\n\n` +
@@ -5519,6 +5569,7 @@ const am: Messages = {
   newsButton: "📣 የፕሮጀክቱ ዜና",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 የፕሮጀክቱ ዜና፦ ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ ማውረድ ቁጥር ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ የዚህ ቡድን የቦት ቅንብሮች\n\n" +
@@ -5670,7 +5721,7 @@ const om: Messages = {
   sendingFile: "📤 Faayilii ergaa jira...",
   sendingAlbum: (count) => `📤 Maxxansi kun faayilota hedduu (${count}) qaba — akka albamiitti ergaa jira...`,
   failedPrefix: "❌ Hin milkoofne: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -5679,6 +5730,7 @@ const om: Messages = {
         "@VideonerBot fayyadamuun bilisaan buufatame",
       `📣 Oduu pirojektii: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Qoodaa: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Buufachuuf, chaanaalii keenya ${channel} hordofaa — haalli jiru kana qofa, tajaajilli bilisa ta'ee itti fufa.\n\n` +
@@ -5752,6 +5804,7 @@ const om: Messages = {
   newsButton: "📣 Oduu pirojektii",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Oduu pirojektii: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Buufata lakk. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Qindaa'ina bootii garee kanaa\n\n" +
@@ -5903,7 +5956,7 @@ const ha: Messages = {
   sendingFile: "📤 Ana aika fayil...",
   sendingAlbum: (count) => `📤 Wannan wallafa tana da fayiloli da yawa (${count}) — ana aika su a matsayin kundi...`,
   failedPrefix: "❌ An gaza: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -5912,6 +5965,7 @@ const ha: Messages = {
         "An sauke kyauta tare da @VideonerBot",
       `📣 Labaran aikin: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Raba: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Don saukewa, don Allah ku yi rajista a tasharmu ${channel} — wannan ne kawai sharaɗi, sabis ɗin zai ci gaba da zama kyauta.\n\n` +
@@ -5985,6 +6039,7 @@ const ha: Messages = {
   newsButton: "📣 Labaran aikin",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Labaran aikin: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Saukewa na ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Saitunan bot na wannan rukuni\n\n" +
@@ -6136,7 +6191,7 @@ const so: Messages = {
   sendingFile: "📤 Faylka ayaa la dirayaa...",
   sendingAlbum: (count) => `📤 Boostadan waxay leedahay faylal dhowr ah (${count}) — waxaan u dirayaa albam ahaan...`,
   failedPrefix: "❌ Way fashilantay: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -6145,6 +6200,7 @@ const so: Messages = {
         "Bilaash lagu soo dejiyay @VideonerBot",
       `📣 Wararka mashruuca: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 La wadaag: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Si aad wax u soo dejiso, fadlan ku biir kanaalkayaga ${channel} — taasi waa shuruudda keliya, adeeggu wuu sii ahaanayaa bilaash.\n\n` +
@@ -6218,6 +6274,7 @@ const so: Messages = {
   newsButton: "📣 Wararka mashruuca",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Wararka mashruuca: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Soo dejin lambar ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Dejinta bot-ka ee kooxdan\n\n" +
@@ -6369,7 +6426,7 @@ const az: Messages = {
   sendingFile: "📤 Fayl göndərilir...",
   sendingAlbum: (count) => `📤 Bu paylaşımda bir neçə fayl var (${count}) — onları albom kimi göndərirəm...`,
   failedPrefix: "❌ Alınmadı: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -6378,6 +6435,7 @@ const az: Messages = {
         "@VideonerBot ilə pulsuz yüklənib",
       `📣 Layihə xəbərləri: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Paylaşın: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Yükləmək üçün ${channel} kanalımıza abunə olun — bu, yeganə şərtdir, xidmət pulsuz qalır.\n\n` +
@@ -6451,6 +6509,7 @@ const az: Messages = {
   newsButton: "📣 Layihə xəbərləri",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Layihə xəbərləri: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Yükləmə №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bu qrupda botun parametrləri\n\n" +
@@ -6602,7 +6661,7 @@ const ky: Messages = {
   sendingFile: "📤 Файлды жөнөтүп жатам...",
   sendingAlbum: (count) => `📤 Бул постто бир нече файл бар (${count}) — альбом катары жөнөтүп жатам...`,
   failedPrefix: "❌ Ишке ашкан жок: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -6611,6 +6670,7 @@ const ky: Messages = {
         "@VideonerBot аркылуу акысыз жүктөлүп алынды",
       `📣 Долбоордун жаңылыктары: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Бөлүшүү: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Жүктөп алуу үчүн биздин ${channel} каналыбызга жазылыңыз — бул жалгыз шарт, кызмат акысыз бойдон калат.\n\n` +
@@ -6684,6 +6744,7 @@ const ky: Messages = {
   newsButton: "📣 Долбоордун жаңылыктары",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Долбоордун жаңылыктары: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Жүктөө №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Бул топтогу боттун жөндөөлөрү\n\n" +
@@ -6835,7 +6896,7 @@ const tg: Messages = {
   sendingFile: "📤 Файлро фиристода истодаам...",
   sendingAlbum: (count) => `📤 Дар ин пост якчанд файл ҳаст (${count}) — онҳоро ҳамчун албом мефиристам...`,
   failedPrefix: "❌ Нашуд: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -6844,6 +6905,7 @@ const tg: Messages = {
         "Бо ёрии @VideonerBot ройгон боргирӣ шуд",
       `📣 Хабарҳои лоиҳа: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Мубодила: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Барои боргирӣ, лутфан, ба канали мо ${channel} обуна шавед — ин ягона шарт аст, хизматрасонӣ ройгон мемонад.\n\n` +
@@ -6917,6 +6979,7 @@ const tg: Messages = {
   newsButton: "📣 Хабарҳои лоиҳа",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Хабарҳои лоиҳа: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Боргирии №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Танзимоти бот дар ин гурӯҳ\n\n" +
@@ -7068,7 +7131,7 @@ const ms: Messages = {
   sendingFile: "📤 Sedang menghantar fail...",
   sendingAlbum: (count) => `📤 Hantaran ini mempunyai beberapa fail (${count}) — sedang menghantarnya sebagai album...`,
   failedPrefix: "❌ Gagal: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -7077,6 +7140,7 @@ const ms: Messages = {
         "Dimuat turun secara percuma dengan @VideonerBot",
       `📣 Berita projek: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Kongsi: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Untuk memuat turun, sila langgan saluran kami ${channel} — itu sahaja syaratnya, perkhidmatan ini kekal percuma.\n\n` +
@@ -7150,6 +7214,7 @@ const ms: Messages = {
   newsButton: "📣 Berita projek",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Berita projek: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Muat turun #${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Tetapan bot untuk kumpulan ini\n\n" +
@@ -7301,7 +7366,7 @@ const nl: Messages = {
   sendingFile: "📤 Bestand versturen...",
   sendingAlbum: (count) => `📤 Deze post bevat meerdere bestanden (${count}) — ik stuur ze als album...`,
   failedPrefix: "❌ Mislukt: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -7310,6 +7375,7 @@ const nl: Messages = {
         "Gratis gedownload met @VideonerBot",
       `📣 Projectnieuws: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Delen: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Abonneer je op ons kanaal ${channel} om te downloaden — dat is de enige voorwaarde, de dienst blijft gratis.\n\n` +
@@ -7383,6 +7449,7 @@ const nl: Messages = {
   newsButton: "📣 Projectnieuws",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Projectnieuws: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Download nr. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Instellingen van de bot voor deze groep\n\n" +
@@ -7534,7 +7601,7 @@ const ro: Messages = {
   sendingFile: "📤 Trimit fișierul...",
   sendingAlbum: (count) => `📤 Această postare are mai multe fișiere (${count}) — le trimit ca album...`,
   failedPrefix: "❌ Eroare: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -7543,6 +7610,7 @@ const ro: Messages = {
         "Descărcat gratuit cu @VideonerBot",
       `📣 Noutățile proiectului: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Distribuie: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Ca să descarci, abonează-te la canalul nostru ${channel} — este singura condiție, serviciul rămâne gratuit.\n\n` +
@@ -7616,6 +7684,7 @@ const ro: Messages = {
   newsButton: "📣 Noutățile proiectului",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Noutățile proiectului: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Descărcarea nr. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Setările botului pentru acest grup\n\n" +
@@ -7767,7 +7836,7 @@ const ps: Messages = {
   sendingFile: "📤 فایل لېږل کېږي...",
   sendingAlbum: (count) => `📤 په دې پوسټ کې څو فایلونه (${count}) دي — د البوم په توګه یې لېږم...`,
   failedPrefix: "❌ ناکام: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -7776,6 +7845,7 @@ const ps: Messages = {
         "په ‎@VideonerBot وړیا ښکته شوې",
       `📣 د پروژې خبرونه: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 شریکول: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `د ښکته کولو لپاره، مهرباني وکړئ زموږ په چینل ${channel} کې ګډون وکړئ — دا یوازینی شرط دی، خدمت وړیا پاتې کېږي.\n\n` +
@@ -7849,6 +7919,7 @@ const ps: Messages = {
   newsButton: "📣 د پروژې خبرونه",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 د پروژې خبرونه: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ ډاونلوډ شمېره ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ د دې ګروپ لپاره د بوټ تنظیمات\n\n" +
@@ -8000,7 +8071,7 @@ const ckb: Messages = {
   sendingFile: "📤 فایلەکە دەنێردرێت...",
   sendingAlbum: (count) => `📤 ئەم پۆستە چەند فایلێکی تێدایە (${count}) — وەک ئەلبووم دەیاننێرم...`,
   failedPrefix: "❌ سەرکەوتوو نەبوو: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -8009,6 +8080,7 @@ const ckb: Messages = {
         "بە خۆڕایی بە ‎@VideonerBot داگیراوە",
       `📣 هەواڵەکانی پڕۆژە: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 هاوبەشکردن: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `بۆ داگرتن، تکایە بەشداری کەناڵەکەمان ${channel} بکە — ئەمە تاکە مەرجە، خزمەتگوزارییەکە بە خۆڕایی دەمێنێتەوە.\n\n` +
@@ -8082,6 +8154,7 @@ const ckb: Messages = {
   newsButton: "📣 هەواڵەکانی پڕۆژە",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 هەواڵەکانی پڕۆژە: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ داگرتنی ژمارە ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ ڕێکخستنەکانی بۆت بۆ ئەم گرووپە\n\n" +
@@ -8233,7 +8306,7 @@ const ku: Messages = {
   sendingFile: "📤 Pel tê şandin...",
   sendingAlbum: (count) => `📤 Di vê postê de çend pel hene (${count}) — wek albûm tên şandin...`,
   failedPrefix: "❌ Bi ser neket: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -8242,6 +8315,7 @@ const ku: Messages = {
         "Bi @VideonerBot belaş hate daxistin",
       `📣 Nûçeyên projeyê: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Parve bike: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Ji bo daxistinê, ji kerema xwe bibe aboneyê kanala me ${channel} — ev tenê şert e, xizmet belaş dimîne.\n\n` +
@@ -8315,6 +8389,7 @@ const ku: Messages = {
   newsButton: "📣 Nûçeyên projeyê",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Nûçeyên projeyê: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Daxistin #${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Mîhengên botê ji bo vê komê\n\n" +
@@ -8466,7 +8541,7 @@ const ug: Messages = {
   sendingFile: "📤 ھۆججەت يوللىنىۋاتىدۇ...",
   sendingAlbum: (count) => `📤 بۇ يوللانمىدا بىر قانچە ھۆججەت (${count}) بار — ئالبوم قىلىپ يوللاۋاتىمەن...`,
   failedPrefix: "❌ مەغلۇپ بولدى: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -8475,6 +8550,7 @@ const ug: Messages = {
         "‎@VideonerBot ئارقىلىق ھەقسىز چۈشۈرۈلدى",
       `📣 تۈر خەۋەرلىرى: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 ھەمبەھىرلەش: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `چۈشۈرۈش ئۈچۈن قانىلىمىزغا مۇشتەرى بولۇڭ: ${channel} — بۇ بىردىنبىر شەرت، مۇلازىمەت ھەقسىز بولۇپ قالىدۇ.\n\n` +
@@ -8548,6 +8624,7 @@ const ug: Messages = {
   newsButton: "📣 تۈر خەۋەرلىرى",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 تۈر خەۋەرلىرى: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ چۈشۈرۈش ${n}-نومۇر`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ بۇ گۇرۇپپىدىكى بوت تەڭشەكلىرى\n\n" +
@@ -8699,7 +8776,7 @@ const tk: Messages = {
   sendingFile: "📤 Faýl iberilýär...",
   sendingAlbum: (count) => `📤 Bu ýazgyda birnäçe faýl bar (${count}) — olary albom edip iberýärin...`,
   failedPrefix: "❌ Şowsuz: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -8708,6 +8785,7 @@ const tk: Messages = {
         "@VideonerBot arkaly mugt ýüklendi",
       `📣 Taslamanyň täzelikleri: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Paýlaşmak: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Ýüklemek üçin ${channel} kanalymyza agza boluň — bu ýeke-täk şert, hyzmat mugt bolmagynda galýar.\n\n` +
@@ -8781,6 +8859,7 @@ const tk: Messages = {
   newsButton: "📣 Taslamanyň täzelikleri",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Taslamanyň täzelikleri: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Ýükleme №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bu topardaky botuň sazlamalary\n\n" +
@@ -8932,7 +9011,7 @@ const tt: Messages = {
   sendingFile: "📤 Файлны җибәрәм...",
   sendingAlbum: (count) => `📤 Бу постта берничә файл (${count}) — альбом итеп җибәрәм...`,
   failedPrefix: "❌ Булмады: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -8941,6 +9020,7 @@ const tt: Messages = {
         "@VideonerBot аша бушлай йөкләп алынды",
       `📣 Проект яңалыклары: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Бүлешү: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Йөкләп алу өчен безнең каналга язылыгыз: ${channel} — бу бердәнбер шарт, сервис бушлай булып кала.\n\n` +
@@ -9014,6 +9094,7 @@ const tt: Messages = {
   newsButton: "📣 Проект яңалыклары",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проект яңалыклары: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Йөкләү №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Бу төркемдәге бот көйләүләре\n\n" +
@@ -9165,7 +9246,7 @@ const sq: Messages = {
   sendingFile: "📤 Po dërgoj skedarin...",
   sendingAlbum: (count) => `📤 Ky postim ka disa skedarë (${count}) — po i dërgoj si album...`,
   failedPrefix: "❌ Dështoi: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -9174,6 +9255,7 @@ const sq: Messages = {
         "Shkarkuar falas me @VideonerBot",
       `📣 Lajmet e projektit: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Ndajeni: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Për të shkarkuar, ju lutemi abonohuni në kanalin tonë ${channel} — ky është i vetmi kusht, shërbimi mbetet falas.\n\n` +
@@ -9247,6 +9329,7 @@ const sq: Messages = {
   newsButton: "📣 Lajmet e projektit",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Lajmet e projektit: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Shkarkimi nr. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Cilësimet e botit për këtë grup\n\n" +
@@ -9408,7 +9491,7 @@ const bs: Messages = {
   sendingFile: "📤 Šaljem fajl...",
   sendingAlbum: (count) => `📤 Ova objava ima nekoliko fajlova (${count}) — šaljem ih kao album...`,
   failedPrefix: "❌ Nije uspjelo: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -9417,6 +9500,7 @@ const bs: Messages = {
         "Besplatno preuzeto pomoću @VideonerBot",
       `📣 Novosti projekta: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Podijeli: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Da biste preuzimali, pretplatite se na naš kanal ${channel} — to je jedini uslov, servis ostaje besplatan.\n\n` +
@@ -9490,6 +9574,7 @@ const bs: Messages = {
   newsButton: "📣 Novosti projekta",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novosti projekta: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Preuzimanje br. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Postavke bota za ovu grupu\n\n" +
@@ -9641,7 +9726,7 @@ const ce: Messages = {
   sendingFile: "📤 Файл дохуьйту...",
   sendingAlbum: (count) => `📤 ХӀокху постехь масех файл ю (${count}) — уьш альбом санна дохуьйту...`,
   failedPrefix: "❌ Ца делира: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -9650,6 +9735,7 @@ const ce: Messages = {
         "Маьхза чуяьккхина: @VideonerBot",
       `📣 Проектан керла хаамаш: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 ДӀасадекъа: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Чуяккха лаахь, тхан канале подписка йелаш: ${channel} — иза бен биллам бац, сервис маьхза хир ю.\n\n` +
@@ -9723,6 +9809,7 @@ const ce: Messages = {
   newsButton: "📣 Проектан керла хаамаш",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проектан керла хаамаш: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Чуяккхар №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ ХӀокху тобанехь ботан нисдарш\n\n" +
@@ -9874,7 +9961,7 @@ const inh: Messages = {
   sendingFile: "📤 Файл дахийт...",
   sendingAlbum: (count) => `📤 Укх постаца масса файл я (${count}) — уж альбом мо дахийт...`,
   failedPrefix: "❌ Ца ялар: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -9883,6 +9970,7 @@ const inh: Messages = {
         "Мехаза чуяьккхай: @VideonerBot",
       `📣 Проекта керда хоамаш: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 ДӀакъовса: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Чуяккха, тха канала подписка ел: ${channel} — из мара бокъо яц, сервис мехаза хургья.\n\n` +
@@ -9956,6 +10044,7 @@ const inh: Messages = {
   newsButton: "📣 Проекта керда хоамаш",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проекта керда хоамаш: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Укх тоаба чу ботан настройкаш\n\n" +
@@ -10107,7 +10196,7 @@ const av: Messages = {
   sendingFile: "📤 Файл битӀулеб буго...",
   sendingAlbum: (count) => `📤 Гьаб посталда файлал цӀикӀкӀун руго (${count}) — гьел альбомалъун битӀулел руго...`,
   failedPrefix: "❌ КӀвечӀо: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -10116,6 +10205,7 @@ const av: Messages = {
         "МухьгьечӀого босана: @VideonerBot",
       `📣 Проекталъул хабарал: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Цогидазе битӀизе: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Босизе, нижер каналалде подписка гьабе: ${channel} — гьеб гурони шарт гьечӀо, сервис мухьгьечӀого хутӀила.\n\n` +
@@ -10189,6 +10279,7 @@ const av: Messages = {
   newsButton: "📣 Проекталъул хабарал",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проекталъул хабарал: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Гьаб къокъаялда боталъул настройкаби\n\n" +
@@ -10340,7 +10431,7 @@ const tl: Messages = {
   sendingFile: "📤 Ipinapadala ang file...",
   sendingAlbum: (count) => `📤 May ilang file ang post na ito (${count}) — ipinapadala bilang album...`,
   failedPrefix: "❌ Hindi nagtagumpay: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -10349,6 +10440,7 @@ const tl: Messages = {
         "Na-download nang libre gamit ang @VideonerBot",
       `📣 Balita ng proyekto: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 I-share: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Para makapag-download, mag-subscribe sa aming channel na ${channel} — iyan lang ang kondisyon, mananatiling libre ang serbisyo.\n\n` +
@@ -10422,6 +10514,7 @@ const tl: Messages = {
   newsButton: "📣 Balita ng proyekto",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Balita ng proyekto: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Download Blg. ${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Mga setting ng bot para sa group na ito\n\n" +
@@ -10573,7 +10666,7 @@ const uk: Messages = {
   sendingFile: "📤 Надсилаю файл...",
   sendingAlbum: (count) => `📤 У дописі кілька файлів (${count}) — надсилаю альбомом...`,
   failedPrefix: "❌ Не вдалося: ",
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -10582,6 +10675,7 @@ const uk: Messages = {
         "Завантажено безкоштовно через @VideonerBot",
       `📣 Новини проєкту: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Поділитися: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Щоб завантажувати, підпишіться на наш канал ${channel} — це єдина умова, сервіс лишається безкоштовним.\n\n` +
@@ -10655,6 +10749,7 @@ const uk: Messages = {
   newsButton: "📣 Новини проєкту",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Новини проєкту: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Завантаження №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Налаштування бота в цій групі\n\n" +
@@ -10812,7 +10907,7 @@ const kk: Messages = {
   // Telegram лимит 1024 символа, а название ролика бывает на пол-экрана.
   // shareUrl — ссылка-приглашение: кто её откроет, сразу получит этот же
   // ролик в боте (handlers/invite.ts).
-  fileCaption: (title, sourceUrl, shareUrl, description) =>
+  fileCaption: (title, sourceUrl, shareUrl, description, numberLine) =>
     composeCaption(
       title,
       description,
@@ -10821,6 +10916,7 @@ const kk: Messages = {
         "@VideonerBot арқылы тегін жүктеп алынды",
       `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`,
       shareUrl && `🔗 Бөлісу: ${shareUrl}`,
+      numberLine,
     ),
   subscribeRequired: (channel) =>
     `Жүктеп алу үшін біздің ${channel} арнамызға жазылыңыз — бұл жалғыз шарт, сервис тегін болып қала береді.\n\n` +
@@ -10894,6 +10990,7 @@ const kk: Messages = {
   newsButton: "📣 Жоба жаңалықтары",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`, undefined),
+  downloadNo: (n) => `⬇️ Жүктеу №${n}`,
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Осы топтағы бот баптаулары\n\n" +

@@ -13,6 +13,7 @@ import {
   failedDownloadText,
   friendlyError,
   downloadNumberLine,
+  numberLinkEntities,
 } from "../helpers.js";
 import { isChannelMember } from "./membership.js";
 import { shareLinkFor } from "../share-link.js";
@@ -167,11 +168,13 @@ export function registerInlineHandlers(bot: Bot) {
           );
         // Как в performDownload: запрашиваем заранее, к замене заглушки готово.
         const shareLink = shareLinkFor(url);
-        const replaceStub = async (fileId: string, number?: unknown) =>
-          bot.api.editMessageMediaInline(
+        const replaceStub = async (fileId: string, number?: unknown) => {
+          const caption = m.fileCaption(info.title ?? "", url, await shareLink, postDescription(url, info.description), downloadNumberLine(number, lang));
+          return bot.api.editMessageMediaInline(
             inlineMessageId,
             InputMediaBuilder.video(fileId, {
-              caption: m.fileCaption(info.title ?? "", url, await shareLink, postDescription(url, info.description), downloadNumberLine(number, lang)),
+              caption,
+              caption_entities: numberLinkEntities(caption),
             }),
             {
               reply_markup: new InlineKeyboard().url(
@@ -180,6 +183,7 @@ export function registerInlineHandlers(bot: Bot) {
               ),
             },
           );
+        };
 
         let started = await startDownload(true);
         // Ролик уже отправляли — заглушку заменяем по file_id из кеша, без

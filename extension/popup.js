@@ -424,8 +424,9 @@ function render(job) {
     case "saving":
       return showLoading(t.saving);
     case "done":
-      return showMessage(job.number ? `${t.done}\n⬇️ ${t.downloadNumber.replace("{n}", formatNumber(job.number))}` : t.done, {
+      return showMessage(t.done, {
         actions: [
+          numberLink(job.number),
           videoCard(),
           el("button", { class: "primary", onclick: resetJob }, t.again),
           el("button", { class: "link news-link", type: "button", onclick: () => openTab(NEWS_URL) }, t.news),
@@ -773,5 +774,16 @@ function promoLine(promo) {
       const href = part === "@videonerdownload" ? NEWS_URL : `https://${part}`;
       return el("a", { href, onclick: (e) => { e.preventDefault(); openTab(href); } }, part);
     })
+  );
+}
+
+// «⬇️ Скачивание №8 097» — ссылка на страницу «Videoner в цифрах».
+function numberLink(number) {
+  if (!number) return null;
+  const href = `${SITE}${sitePath("/stats")}`;
+  return el(
+    "p",
+    { class: "download-number" },
+    el("a", { href, onclick: (e) => { e.preventDefault(); openTab(href); } }, `⬇️ ${t.downloadNumber.replace("{n}", formatNumber(number))}`)
   );
 }

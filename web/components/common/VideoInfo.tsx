@@ -134,9 +134,13 @@ export const VideoInfoSection = ({
             <span>
               {t("toast.downloadCompleted")}{" "}
               {number && (
-                <span className="block text-sm font-medium">
+                <a
+                  href={localizedHref(language, "/stats")}
+                  target="_blank"
+                  className="block text-sm font-medium underline-offset-4 hover:underline"
+                >
                   ⬇️ {t("toast.downloadNumber", { n: formatDownloadNumber(number) })}
-                </span>
+                </a>
               )}
               <span className="block text-sm opacity-80">
                 {t("toast.newsChannel")}{" "}

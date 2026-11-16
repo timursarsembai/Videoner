@@ -406,3 +406,29 @@ export function downloadNumberLine(n: unknown, lang: Lang): string | undefined {
   if (typeof n !== "number" || !Number.isInteger(n) || n <= 0) return undefined;
   return messages[lang].downloadNo(String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " "));
 }
+
+// Строка «⬇️ Скачивание №8 097» в подписи — ссылка на страницу «Videoner в
+// цифрах» (videoner.download/<язык>/stats). Подпись — простой текст без
+// разметки (в ней чужие названия и описания), поэтому ссылку задаём
+// отдельной сущностью text_link: адреса в подписи не видно. Язык узнаём по
+// самой строке — отправителям файлов он не передаётся. Смещения Telegram
+// считает в UTF-16, как и строки JS.
+const NUMBER_LINE_PATTERNS: { lang: Lang; re: RegExp }[] = (Object.keys(messages) as Lang[]).map((lang) => {
+  const [before, after] = messages[lang].downloadNo("\u0000").split("\u0000");
+  const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return { lang, re: new RegExp(`(?:^|\\n)(${esc(before)}[\\d\\u00a0]+${esc(after)})(?=\\n|$)`, "g") };
+});
+
+export function numberLinkEntities(
+  caption: string,
+): { type: "text_link"; offset: number; length: number; url: string }[] | undefined {
+  for (const { lang, re } of NUMBER_LINE_PATTERNS) {
+    let last: RegExpExecArray | null = null;
+    for (const m of caption.matchAll(re)) last = m as RegExpExecArray;
+    if (!last) continue;
+    const line = last[1];
+    const offset = last.index! + last[0].length - line.length;
+    return [{ type: "text_link", offset, length: line.length, url: `https://videoner.download${sitePath(lang, "/stats")}` }];
+  }
+  return undefined;
+}

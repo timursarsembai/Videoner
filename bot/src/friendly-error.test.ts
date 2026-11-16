@@ -162,3 +162,20 @@ test("promo tips: every language has every bot tip, extension link is localized,
   assert.ok(promoText("extension", "ru").includes("videoner.download/ru/extension"));
   assert.ok(promoText("extension", "en").includes("videoner.download/extension"));
 });
+
+test("download number line becomes a hidden link to the stats page", async () => {
+  const { numberLinkEntities, downloadNumberLine } = await import("./helpers.js");
+  const { messages } = await import("./i18n.js");
+  const line = downloadNumberLine(8097, "ru")!;
+  const caption = messages.ru.fileCaption("🎬 ⬇️ Видео", "https://x.com/a/status/1", "https://t.me/x", undefined, line);
+  const [e] = numberLinkEntities(caption)!;
+  assert.equal(caption.slice(e.offset, e.offset + e.length), line);
+  assert.equal(e.url, "https://videoner.download/ru/stats");
+  const en = messages.en.fileCaption("Video", "https://x.com/a/status/1", undefined, undefined, downloadNumberLine(12, "en"));
+  assert.equal(numberLinkEntities(en)![0].url, "https://videoner.download/stats");
+  assert.equal(numberLinkEntities(messages.ru.fileCaption("Видео", "https://x.com/a/status/1")), undefined);
+  // UTF-16: эмодзи до строки сдвигают смещение на две единицы, как у Telegram.
+  const ar = messages.ar.fileCaption("😀😀", "https://x.com/a/status/1", undefined, undefined, downloadNumberLine(5, "ar"));
+  const [a] = numberLinkEntities(ar)!;
+  assert.equal(ar.slice(a.offset, a.offset + a.length), downloadNumberLine(5, "ar"));
+});

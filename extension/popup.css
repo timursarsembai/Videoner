@@ -438,3 +438,16 @@ a.history-title:hover {
   color: inherit;
   font-weight: 600;
 }
+
+/* Номер скачивания под «Готово» — ссылка на «Videoner в цифрах». */
+.download-number {
+  margin: -6px 0 12px;
+  font-size: 13px;
+}
+
+.download-number a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

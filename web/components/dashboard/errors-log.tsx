@@ -43,8 +43,8 @@ function sameDay(a: string, b: string): boolean {
 const selectClass =
   "h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring";
 
-export function ErrorsLog() {
-  const [platform, setPlatform] = useState("");
+export function ErrorsLog({ initialPlatform = "" }: { initialPlatform?: string } = {}) {
+  const [platform, setPlatform] = useState(initialPlatform);
   const [category, setCategory] = useState("");
   const [offset, setOffset] = useState(0);
   const q = usePeriodQuery<ErrorLogPage>("errors/log", {

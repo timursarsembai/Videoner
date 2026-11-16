@@ -2,6 +2,7 @@ import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Qu
 import { ApiTags } from '@nestjs/swagger';
 import { AnalyticsService } from './analytics.service';
 import { BotUserService } from './bot-user.service';
+import { RedditAnalyticsService } from './reddit-analytics.service';
 import { GrantUnlimitedDto } from './dto/grant-unlimited.dto';
 import { AdminOnly } from '../auth/admin.decorator';
 import { parseRange, type DateRange } from 'src/lib/analytics-range';
@@ -24,6 +25,7 @@ export class AnalyticsController {
   private readonly queries: Record<string, (q: QueryParams) => Promise<unknown>> = {
     since: () => this.analyticsService.since(),
     overview: (q) => this.analyticsService.overview(this.range(q)),
+    reddit: (q) => this.redditAnalytics.summary(this.range(q)),
     languages: (q) => this.analyticsService.languages(this.range(q)),
     countries: (q) => this.analyticsService.countries(this.range(q)),
     platforms: (q) => this.analyticsService.platforms(this.range(q)),
@@ -63,6 +65,7 @@ export class AnalyticsController {
   constructor(
     private readonly analyticsService: AnalyticsService,
     private readonly botUserService: BotUserService,
+    private readonly redditAnalytics: RedditAnalyticsService,
   ) {}
 
   private range(q: QueryParams, maxDays?: number): DateRange {
@@ -117,6 +120,11 @@ export class AnalyticsController {
   @Get('overview')
   overview(@Query() q: QueryParams) {
     return this.queries.overview(q);
+  }
+
+  @Get('reddit')
+  reddit(@Query() q: QueryParams) {
+    return this.queries.reddit(q);
   }
 
   // Пользователи бота и скачивания по языкам интерфейса (вкладка «Языки»).

@@ -9,6 +9,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { Observable, Subject } from 'rxjs';
 import { promisify } from 'util';
+import { isRedditCdnBlock } from '../../lib/reddit-cdn';
 import { parseDownloadOptions, stringToProgress } from '../../lib/helper';
 import { PROGRESS_STRING } from '../../lib/utils';
 import { getPlatform } from '../../validate/url';
@@ -347,6 +348,7 @@ export class YtdlpProcessService implements OnModuleInit {
   };
 
   private isBlockError(message: string, platform: string | null, withCookies: boolean): boolean {
+    if (platform === 'reddit') return isRedditCdnBlock(message);
     if (YtdlpProcessService.BLOCK_PATTERNS.some((re) => re.test(message))) return true;
     if (withCookies || !platform) return false;
     return (YtdlpProcessService.ANONYMOUS_BLOCK_PATTERNS[platform] ?? []).some((re) => re.test(message));
@@ -356,11 +358,21 @@ export class YtdlpProcessService implements OnModuleInit {
   // куки сервера) через прокси не пускаем: вход из чужой страны Instagram
   // видит как подозрительный и может заблокировать аккаунт. Такие запросы
   // идут с адреса сервера, как и раньше, — с куками он работает.
-  private proxyAllowed(platform: string | null, withCookies: boolean): boolean {
-    // Reddit page access belongs to its browser resolver. CDN downloads are
-    // direct and must never consume the YouTube/ISP proxy pool.
-    if (platform === 'reddit') return false;
+  private proxyAllowed(platform: string | null, withCookies: boolean, mediaDownload = false): boolean {
+    // Page extraction stays with the residential resolver. Only CDN media can
+    // fall back to the ISP pool, after the first direct request is refused.
+    if (platform === 'reddit') return mediaDownload;
     return !(withCookies && platform === 'instagram');
+  }
+
+  redditMediaProxies(): string[] {
+    const remaining = this.proxyPool.filter(proxy => !this.isProxyBlocked('reddit', proxy));
+    const ordered: string[] = [];
+    while (remaining.length) {
+      const proxy = pickRandom(remaining)!;
+      ordered.push(proxy); remaining.splice(remaining.indexOf(proxy), 1);
+    }
+    return ordered;
   }
 
   // Антибот-заглушки: площадка отдала не страницу видео, а проверку, и
@@ -1044,6 +1056,7 @@ export class YtdlpProcessService implements OnModuleInit {
 
     const processArgs = [
       ...parseOptions,
+      ...(platform === 'reddit' ? ['--continue'] : []),
       '--progress-template',
       PROGRESS_STRING,
     ];
@@ -1112,9 +1125,9 @@ export class YtdlpProcessService implements OnModuleInit {
       releaseGlobalSlot();
     };
 
-    // Повторяем ТОЛЬКО пока подписчику не ушло ни одного байта прогресса.
-    // После этого перезапуск означал бы, что счётчик у пользователя прыгнул
-    // назад, а трафик потрачен дважды.
+    // Обычно повторяем только до первого прогресса. Исключение — Reddit:
+    // при блокировке отдельной аудиодорожки продолжаем через ISP, сохраняя
+    // уже скачанное видео (--continue и прежний info JSON).
     let progressEmitted = false;
     let transientAttempt = 0;
     let proxySwitchTried = false;
@@ -1123,7 +1136,8 @@ export class YtdlpProcessService implements OnModuleInit {
     let proxyMarkedByUs = false;
     let useCookies = disposableCookies !== null;
     let cookiesDropped = false;
-    const proxyAllowed = this.proxyAllowed(platform, disposableCookies !== null);
+    let redditProxyNeeded = false;
+    const proxyAllowed = this.proxyAllowed(platform, disposableCookies !== null, true);
     // Прокси скачивания держим одним на все попытки, пока он не отказал (403):
     // повторы по другим причинам (протухшие ссылки, антибот) идут тем же
     // адресом. Отказавшие блокируем, только если следующий прошёл.
@@ -1133,7 +1147,7 @@ export class YtdlpProcessService implements OnModuleInit {
     const startAttempt = () => {
       // Решение о прокси перечитываем на каждой попытке: предыдущая могла
       // наткнуться на блокировку и пометить площадку.
-      const useProxyNow = proxyAllowed && this.needsProxy(platform);
+      const useProxyNow = proxyAllowed && (platform === 'reddit' ? redditProxyNeeded : this.needsProxy(platform));
       if (useProxyNow && !downloadProxy) downloadProxy = this.pickProxy(platform, parseUrl);
       const attemptArgs = [
         ...(useInfoFile ? ['--load-info-json', infoFile as string] : [parseUrl]),
@@ -1174,7 +1188,7 @@ export class YtdlpProcessService implements OnModuleInit {
           subject.error(new Error(errorMessage));
           return;
         }
-        if (dataStr.includes('has already been downloaded')) {
+        if (dataStr.includes('has already been downloaded') && !(platform === 'reddit' && redditProxyNeeded)) {
           hasError = true;
           errorMessage = 'File already exists.';
           subject.error(new Error(errorMessage));
@@ -1205,7 +1219,7 @@ export class YtdlpProcessService implements OnModuleInit {
           // в них могли протухнуть или не подойти. Повторяем обычным путём,
           // и уже там сработают все остальные повторы ниже: так сбой
           // экономии стоит одной лишней попытки, а не скачивания.
-          if (useInfoFile && !progressEmitted) {
+          if (useInfoFile && !progressEmitted && !(platform === 'reddit' && isRedditCdnBlock(errorMessage))) {
             pendingRetry = 'fresh';
             return;
           }
@@ -1219,7 +1233,7 @@ export class YtdlpProcessService implements OnModuleInit {
             !useProxyNow &&
             proxyAllowed &&
             !proxySwitchTried &&
-            !progressEmitted &&
+            (platform === 'reddit' || !progressEmitted) &&
             this.hasProxy &&
             blocked
           ) {
@@ -1233,7 +1247,7 @@ export class YtdlpProcessService implements OnModuleInit {
           if (
             useProxyNow &&
             downloadProxy &&
-            !progressEmitted &&
+            (platform === 'reddit' || !progressEmitted) &&
             this.refusedByPlatform(errorMessage, platform, useCookies && disposableCookies !== null)
           ) {
             if (this.spareProxies(platform, downloadProxy, refusedProxies).length) {
@@ -1315,8 +1329,8 @@ export class YtdlpProcessService implements OnModuleInit {
           if (pendingRetry === 'proxy') {
             // Пометка нужна прямо сейчас: следующая попытка читает решение
             // через needsProxy(). Если она провалится, отметку снимаем ниже.
-            this.rememberProxyNeeded(platform);
-            proxyMarkedByUs = true;
+            if (platform === 'reddit') redditProxyNeeded = true;
+            else { this.rememberProxyNeeded(platform); proxyMarkedByUs = true; }
             console.warn(
               `[proxy] ${platform}: блокировка на этапе загрузки, повторяю через прокси`,
             );
@@ -1333,7 +1347,7 @@ export class YtdlpProcessService implements OnModuleInit {
               downloadProxy = next;
               // Готовые метаданные получены через прежний прокси, и ссылки в
               // них привязаны к его адресу — с нового берём заново.
-              useInfoFile = false;
+              if (platform !== 'reddit') useInfoFile = false;
               startAttempt();
               return;
             }

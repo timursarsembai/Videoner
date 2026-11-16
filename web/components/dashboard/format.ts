@@ -7,6 +7,7 @@ export const PLATFORM_COLORS: Record<string, string> = {
   FACEBOOK: "#3b82f6",
   TWITTER: "#0ea5e9",
   THREADS: "#374151",
+  REDDIT: "#ff4500",
   VIMEO: "#14b8a6",
   VK: "#6366f1",
   RUTUBE: "#f97316",
@@ -38,6 +39,7 @@ export const ERROR_COLORS: Record<string, string> = {
   TIMEOUT: "#3b82f6",
   SERVER_BLOCKED: "#dc2626",
   ADULT_CONTENT: "#7c3aed",
+  NO_VIDEO_CONTENT: "#f59e0b",
   OTHER: "#9ca3af",
 };
 

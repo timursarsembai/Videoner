@@ -45,7 +45,11 @@ export class ApiKeyGuard implements CanActivate {
       // Доп. лимит по IP поверх общего per-key лимита: у web/bot один shared
       // ключ на всех посетителей, поэтому одного per-key лимита недостаточно —
       // требует `trust proxy` в main.ts, иначе req.ip всегда будет IP nginx.
-      const ipRateLimitResult = this.rateLimitService.checkIpRateLimit(
+      // Job polling is authenticated and keeps the per-key quota below. It is
+      // cheap, visitor-limited by the web proxy, and must not consume the one
+      // heavy-request IP bucket shared by every visitor behind that proxy.
+      const jobPoll = request.method === 'GET' && /^\/info\/jobs\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(request.path || '');
+      const ipRateLimitResult = jobPoll ? { isAllowed: true, limit: 0, remaining: 0, resetAt: new Date() } : this.rateLimitService.checkIpRateLimit(
         request.ip,
         Number(process.env.IP_RATE_LIMIT) || undefined,
       );

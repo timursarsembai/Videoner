@@ -90,6 +90,9 @@ fi
 echo "==> Передеплоиваю: $*"
 # Compose replaces only the requested services. Do not remove containers first
 # or recreate dependencies/volumes as a side effect of a feature release.
+# This is an existing production stack: postgres/botapi must already be running.
+# A stopped dependency must be investigated, not silently started by deployment.
+# Compose compares image IDs, so a rebuilt image under the same tag also recreates.
 $COMPOSE up -d --no-deps "$@"
 
 for service in "$@"; do

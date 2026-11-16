@@ -13,7 +13,8 @@ export class InfoJobsService implements OnModuleDestroy {
 
   start(owner: string, work: () => Promise<unknown>) {
     this.prune();
-    if (this.jobs.size >= 100 || [...this.jobs.values()].filter(j => j.owner === owner && j.state === 'pending').length >= 2) {
+    const pending = [...this.jobs.values()].filter(j => j.state === 'pending');
+    if (this.jobs.size >= 100 || pending.length >= 8 || pending.filter(j => j.owner === owner).length >= 2) {
       throw new ServiceUnavailableException(UNAVAILABLE);
     }
     const jobId = randomUUID();

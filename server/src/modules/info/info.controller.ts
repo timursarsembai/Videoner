@@ -4,6 +4,7 @@ import { YtdlpFormatService } from '../ytdlp/ytdlp-format.service';
 import { Request, Response } from 'express';
 import { isRedditUrl } from '../../validate/url';
 import { InfoJobsService } from './info-jobs.service';
+import { infoJobOwner } from './info-job-owner';
 import { DownloadSource } from '@prisma/client';
 import { isBotRequest } from 'src/lib/bot-auth';
 import {
@@ -70,7 +71,7 @@ export class InfoController {
     if (!dto.source) dto.source = isBotRequest(req) ? DownloadSource.BOT : DownloadSource.API;
     if (isRedditUrl(dto.url) && req.header('prefer') === 'respond-async') {
       res.status(HttpStatus.ACCEPTED);
-      return this.jobs.start((req as any).apiKey.id, () => this.infoService.getVideoInfo(dto));
+      return this.jobs.start(infoJobOwner(req), () => this.infoService.getVideoInfo(dto));
     }
     return this.infoService.getVideoInfo(dto);
   }

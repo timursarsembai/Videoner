@@ -3,7 +3,8 @@ type Job<T> = { state: 'pending' | 'completed' | 'failed'; result?: T; message?:
 export async function waitForRedditInfo<T>(poll: () => Promise<Job<T>>, {
   now = Date.now, wait = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms)),
 } = {}): Promise<T> {
-  const deadline = now() + 240000;
+  const started = now();
+  const deadline = started + 240000;
   let transientErrors = 0;
   while (now() < deadline) {
     let job: Job<T>;
@@ -20,7 +21,7 @@ export async function waitForRedditInfo<T>(poll: () => Promise<Job<T>>, {
     }
     if (job.state === 'completed' && job.result !== undefined) return job.result;
     if (job.state === 'failed') throw { message: job.message || 'Reddit server access unavailable', statusCode: job.statusCode || 400 };
-    await wait(3000);
+    await wait(now() - started < 30000 ? 3000 : 6000);
   }
   throw { message: 'Reddit server access unavailable', statusCode: 504 };
 }

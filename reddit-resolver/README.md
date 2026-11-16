@@ -101,6 +101,11 @@ timeout; extraction continues in the API process across polling requests.
 Creation keeps the existing Turnstile and URL checks. Jobs are API-key scoped,
 bounded, expire, and status replies use `Cache-Control: no-store`.
 The bot keeps its existing synchronous 240-second wait.
+The site sends an HMAC-derived visitor scope (no raw IP in that header): pending
+jobs are limited to two per visitor and eight overall. Polling has its own
+60/minute visitor bucket, preserves authentication and API-key rate limits, and
+does not consume the shared heavy-request IP bucket. After the first 30 seconds
+the client polls every six seconds instead of three.
 
 Model downloads use a persistent BuildKit cache mount, copied into the final
 image during build. Runtime stays offline; ordinary resolver edits no longer

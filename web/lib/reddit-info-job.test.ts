@@ -9,7 +9,7 @@ test('a slow metadata job completes through short polls without a long HTTP requ
     return elapsed < 183000 ? { state: 'pending' as const } : { state: 'completed' as const, result: { id: 'post' } };
   }, { now: () => elapsed, wait: async ms => { elapsed += ms; } });
   assert.deepEqual(result, { id: 'post' });
-  assert.ok(calls > 50 && calls < 70);
+  assert.ok(calls > 30 && calls < 40);
 });
 
 test('job failures preserve the adult-content message for existing translations', async () => {

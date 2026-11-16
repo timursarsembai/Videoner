@@ -38,4 +38,14 @@ describe('asynchronous Reddit metadata', () => {
     await jest.advanceTimersByTimeAsync(250000);
     expect(jobs.get('owner', job.jobId)).toMatchObject({ state: 'failed' });
   });
+
+  it('separates visitor quotas while keeping a global ceiling of eight pending jobs', () => {
+    const work = () => new Promise(() => {});
+    for (const visitor of ['a', 'b', 'c', 'd']) {
+      jobs.start(`shared-key:${visitor}`, work);
+      jobs.start(`shared-key:${visitor}`, work);
+      expect(() => jobs.start(`shared-key:${visitor}`, work)).toThrow();
+    }
+    expect(() => jobs.start('shared-key:e', work)).toThrow();
+  });
 });

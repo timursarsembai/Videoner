@@ -5,6 +5,7 @@ import {
   createVisitorRateLimiter,
   proxyApiRequest,
   type ProxyOptions,
+  isInfoJobStatusRequest,
 } from "@/lib/api-proxy";
 
 // Прокси сайта к NestJS API. Общая логика — в lib/api-proxy.ts (её же
@@ -12,10 +13,11 @@ import {
 // то, что относится только к сайту: проверка Origin, капча на /info, квота.
 const VISITOR_RATE_LIMIT = Number(process.env.VISITOR_RATE_LIMIT) || 30; // запросов/мин
 const allowVisitor = createVisitorRateLimiter(VISITOR_RATE_LIMIT);
+const allowJobPoll = createVisitorRateLimiter(60);
 
 const SITE_PROXY: ProxyOptions = {
   allowedPaths: [...DOWNLOAD_PROXY_PATHS, { method: "GET", path: "download/quota" }, { method: "GET", path: "info/jobs/:id" }],
-  allowVisitor: (ip) => allowVisitor(ip),
+  allowVisitor: (ip, request, path) => isInfoJobStatusRequest(request, path) ? allowJobPoll(ip) : allowVisitor(ip),
   requireCaptcha: true,
   source: "WEB",
 };

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { getSessionTelegramId } from "@/lib/auth/session";
 import { isRedditUrl } from "@/lib/validations/url";
+import { createHmac } from 'node:crypto';
 
 // Общая часть прокси к NestJS API для двух входов: сайта
 // (app/api/[...path]/route.ts) и браузерного расширения
@@ -34,12 +35,13 @@ export function getClientIp(request: NextRequest): string {
 export function createVisitorRateLimiter(limitPerMinute: number): (ip: string) => boolean {
   const visitorRequests = new Map<string, { count: number; resetAt: number }>();
 
-  setInterval(() => {
+  const cleanup = setInterval(() => {
     const now = Date.now();
     for (const [ip, entry] of visitorRequests.entries()) {
       if (entry.resetAt < now) visitorRequests.delete(ip);
     }
   }, 60_000);
+  cleanup.unref?.();
 
   return (ip: string) => {
     const now = Date.now();
@@ -83,6 +85,10 @@ export const DOWNLOAD_PROXY_PATHS: ProxyPath[] = [
 // UUID v4, как генерирует Prisma @default(uuid()) для Download.id.
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+export function isInfoJobStatusRequest(request: Pick<NextRequest, 'method'>, path: string[]): boolean {
+  return request.method === 'GET' && path.length === 3 && path[0] === 'info' && path[1] === 'jobs' && UUID_RE.test(path[2]);
+}
+
 function isAllowedPath(allowed: ProxyPath[], method: string, path: string[]): boolean {
   const joined = path.join("/");
   if (allowed.some((p) => p.method === method && p.path === joined)) {
@@ -90,8 +96,7 @@ function isAllowedPath(allowed: ProxyPath[], method: string, path: string[]): bo
   }
   // Dynamic IDs are accepted only for download status and explicitly enabled jobs.
   return (
-    (method === "GET" && allowed.some(p => p.method === "GET" && p.path === "info/jobs/:id") &&
-      path.length === 3 && path[0] === "info" && path[1] === "jobs" && UUID_RE.test(path[2])) ||
+    (allowed.some(p => p.method === "GET" && p.path === "info/jobs/:id") && isInfoJobStatusRequest({ method }, path)) ||
     method === "GET" &&
     path.length === 3 &&
     path[0] === "download" &&
@@ -261,6 +266,9 @@ export async function proxyApiRequest(
         "X-API-Key": API_KEY,
         host: new URL(API_URL).host,
         ...(asyncReddit ? { Prefer: "respond-async" } : {}),
+        // Overwrite any client-supplied value. The API never receives raw IPs
+        // here; shared site credentials retain a separate per-visitor quota.
+        ...(asyncReddit || pollingReddit ? { 'X-Info-Visitor': createHmac('sha256', API_KEY).update(getClientIp(request)).digest('hex') } : {}),
       },
       validateStatus: () => true,
     });

@@ -52,4 +52,17 @@ describe('Reddit metadata HTTP flow', () => {
       .send({ url: 'https://www.reddit.com/comments/6rrwyj/' }).expect(201);
     expect(result.body).toEqual({ title: 'Ready' });
   });
+
+  it('separates visitors using the same site API key for both creation and polling', async () => {
+    const start = (visitor: string) => request(app.getHttpServer()).post('/info')
+      .set('Prefer', 'respond-async').set('X-Info-Visitor', visitor)
+      .send({ url: 'https://www.reddit.com/comments/6rrwyj/' });
+    const a = 'a'.repeat(64), b = 'b'.repeat(64);
+    const created = await start(a).expect(202);
+    await start(a).expect(202);
+    await start(a).expect(503);
+    await start(b).expect(202);
+    await request(app.getHttpServer()).get(`/info/jobs/${created.body.jobId}`).set('X-Info-Visitor', b).expect(404);
+    await request(app.getHttpServer()).get(`/info/jobs/${created.body.jobId}`).set('X-Info-Visitor', a).expect(200);
+  });
 });

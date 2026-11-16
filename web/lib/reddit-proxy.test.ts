@@ -2,10 +2,12 @@ import { before, after, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { NextRequest } from 'next/server';
 import axios from 'axios';
+import { createHmac } from 'node:crypto';
 
 process.env.API_INTERNAL_URL = 'http://api.test';
 process.env.API_KEY = 'test-key';
 process.env.TURNSTILE_SECRET = 'test-secret';
+process.env.NEXT_PUBLIC_APP_URL = 'https://site.test';
 let proxyApiRequest: typeof import('./api-proxy').proxyApiRequest;
 const fetchOriginal = global.fetch;
 const adapterOriginal = axios.defaults.adapter;
@@ -20,17 +22,36 @@ test('site Reddit creation still requires Turnstile and requests async extractio
   axios.defaults.adapter = async config => {
     calls++;
     assert.equal(config.timeout, 20000); assert.equal(config.headers.get('Prefer'), 'respond-async');
+    assert.equal(config.headers.get('X-Info-Visitor'), createHmac('sha256', 'test-key').update('198.51.100.10').digest('hex'));
     const body = JSON.parse(config.data);
     assert.equal(body.source, 'WEB'); assert.equal(body.cookieScope, undefined); assert.equal(body.turnstileToken, undefined);
     return { data: { jobId: 'id' }, status: 202, statusText: 'Accepted', headers: {}, config };
   };
-  const response = await proxyApiRequest(new NextRequest('https://site.test/api/info', { method: 'POST',
+  const response = await proxyApiRequest(new NextRequest('https://site.test/api/info', { method: 'POST', headers: { 'x-forwarded-for': '198.51.100.10', 'x-info-visitor': 'spoofed' },
     body: JSON.stringify({ url: 'https://www.reddit.com/comments/6rrwyj/', turnstileToken: 'token', source: 'BOT', cookieScope: 'user:1' }) }), ['info'], options);
   assert.equal(response.status, 202); assert.equal(calls, 1); assert.equal(response.headers.get('cache-control'), 'no-store');
   global.fetch = async () => Response.json({ success: false });
   assert.equal((await proxyApiRequest(new NextRequest('https://site.test/api/info', { method: 'POST',
     body: JSON.stringify({ url: 'https://www.reddit.com/comments/6rrwyj/', turnstileToken: 'bad' }) }), ['info'], options)).status, 403);
   assert.equal(calls, 1);
+});
+
+test('job polls have a separate visitor quota and leave normal download requests available', async () => {
+  const route = await import('../app/api/[...path]/route');
+  global.fetch = async () => Response.json({ success: true });
+  axios.defaults.adapter = async config => ({ data: { state: 'pending' }, status: 200, statusText: 'OK', headers: {}, config });
+  const id = '12345678-1234-4123-8123-123456789abc';
+  const headers = { Origin: 'https://site.test', 'x-forwarded-for': '203.0.113.2' };
+  const poll = () => route.GET(new NextRequest(`https://site.test/api/info/jobs/${id}`, { headers }),
+    { params: Promise.resolve({ path: ['info', 'jobs', id] }) });
+  const submit = () => route.POST(new NextRequest('https://site.test/api/info', { method: 'POST', headers,
+    body: JSON.stringify({ url: 'https://www.reddit.com/comments/6rrwyj/', turnstileToken: 'token' }) }),
+    { params: Promise.resolve({ path: ['info'] }) });
+  for (let i = 0; i < 40; i++) assert.equal((await poll()).status, 200);
+  for (let i = 0; i < 30; i++) assert.equal((await submit()).status, 200);
+  assert.equal((await submit()).status, 429);
+  for (let i = 0; i < 20; i++) assert.equal((await poll()).status, 200);
+  assert.equal((await poll()).status, 429);
 });
 
 test('polling permits only the explicit UUID route and retains a short timeout', async () => {

@@ -6,15 +6,13 @@ import { access, mkdir, rename, unlink } from 'node:fs/promises';
 import { Readable, Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { join } from 'node:path';
-import { TOPICS } from './selection.mjs';
+import { TOPICS, CLASSIFIER_CLASSES as CLASSES } from './selection.mjs';
 
 const MODEL = {
   url: 'https://huggingface.co/VeyraAgent/cf-solver-models/resolve/0257291b5110eeab7d13cab98907ab1347559e22/solvers/recaptcha/models/recaptcha_cls_s.onnx',
   sha256: '164a4935030fe88cb6b7d56abe06b6572d1a85a7fcbecc4a7edeff4b166d987d',
   bytes: 20405782,
 };
-const CLASSES = ['bicycles', 'bridges', 'buses', 'cars', 'chimneys', 'crosswalks',
-  'fire hydrants', 'motorcycles', 'mountains', 'background', 'palms', 'stairs', 'tractors', 'traffic lights'];
 
 async function hashFile(path) {
   const hash = createHash('sha256');

@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { classifyTiles, detectObjects } from './vision.mjs';
 import { splitGrid } from './tile-model.mjs';
-import { challengeTarget, targetScore, tilesForDetections, DETECTOR_LABELS, safeRedditPostUrl } from './selection.mjs';
+import { challengeTarget, targetScore, tilesForDetections, supportsChallenge, safeRedditPostUrl } from './selection.mjs';
 import { tryAudioChallenge } from './audio.mjs';
 import { pageRefusal } from './post.mjs';
 
@@ -82,7 +82,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
       await tryAudioChallenge(page, frame, onEvent);
       continue;
     }
-    if (!target || (count === 16 && !DETECTOR_LABELS[target])) {
+    if (!supportsChallenge(target, count)) {
       if (++reloads > 2) throw new Error('REDDIT_UNSUPPORTED_CHALLENGE');
       onEvent({ stage: 'challenge-reload', target, count });
       await frame.locator('#recaptcha-reload-button').click({ timeout: 3000 });

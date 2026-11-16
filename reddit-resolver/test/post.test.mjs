@@ -9,7 +9,7 @@ function post(attributes = {}, players = []) {
 
 test('the explicit age gate wins over the generic community-not-found shell', () => {
   assert.equal(pageRefusal('Community not found\nMature Content\nThis page may contain sensitive or adult content that’s not for everyone. To view it, please log in to confirm your age.'), 'REDDIT_ADULT_CONTENT');
-  assert.equal(pageRefusal('Community not found'), 'REDDIT_UNAVAILABLE');
+  assert.equal(pageRefusal('Community not found'), 'REDDIT_POST_UNAVAILABLE');
   assert.equal(pageRefusal('Prove your humanity'), null);
 });
 

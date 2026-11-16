@@ -6,7 +6,7 @@ export function pageRefusal(text) {
   if (/This (?:page|post|community) (?:may contain|contains) (?:mature|adult|sensitive or adult)|This content is for adults|You must be 18|mature audiences|Mature Content[\s\S]{0,220}confirm your age|are you (?:over )?18|confirm (?:that )?you(?:'re| are) (?:over )?18/i.test(text)) return 'REDDIT_ADULT_CONTENT';
   if (/Too Many Requests/i.test(text)) return 'REDDIT_RATE_LIMITED';
   if (/blocked by network security|network policy/i.test(text)) return 'REDDIT_NETWORK_BLOCKED';
-  if (/This (?:post|community) (?:has been|was) (?:deleted|removed|banned)|This community is private|Community not found|Page not found/i.test(text)) return 'REDDIT_UNAVAILABLE';
+  if (/This (?:post|community) (?:has been|was) (?:deleted|removed|banned)|This community is private|Community not found|Page not found/i.test(text)) return 'REDDIT_POST_UNAVAILABLE';
   return null;
 }
 

@@ -28,6 +28,14 @@ export const TOPICS = {
 
 export const LABELS = Object.values(TOPICS).flat();
 
+export const CLASSIFIER_CLASSES = ['bicycles', 'bridges', 'buses', 'cars', 'chimneys', 'crosswalks',
+  'fire hydrants', 'motorcycles', 'mountains', 'background', 'palms', 'stairs', 'tractors', 'traffic lights'];
+
+export function supportsChallenge(target, count) {
+  return count === 9 ? target !== 'background' && CLASSIFIER_CLASSES.includes(target)
+    : count === 16 && Boolean(DETECTOR_LABELS[target]);
+}
+
 export function challengeTarget(description) {
   const normalized = description.toLowerCase().replace(/\s+/g, ' ');
   const aliases = {

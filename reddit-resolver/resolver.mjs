@@ -6,11 +6,17 @@ import { safeRedditPostUrl } from './selection.mjs';
 import { snapshotInPage, parsePost } from './post.mjs';
 import { mkdir, writeFile } from 'node:fs/promises';
 
+const POST_REFUSALS = new Set(['REDDIT_ADULT_CONTENT', 'REDDIT_NO_MEDIA',
+  'REDDIT_AGE_UNVERIFIED', 'REDDIT_POST_UNAVAILABLE', 'REDDIT_INVALID_CROSSPOST']);
+const RETRYABLE = new Set(['REDDIT_RATE_LIMITED', 'REDDIT_NETWORK_BLOCKED',
+  'REDDIT_CAPTCHA_NETWORK_BLOCKED', 'REDDIT_CHALLENGE_EXPIRED', 'REDDIT_IMAGES_TIMEOUT',
+  'REDDIT_CHALLENGE_REJECTED', 'REDDIT_UNSUPPORTED_CHALLENGE']);
+
 export class RedditResolver {
   constructor({ proxy = process.env.REDDIT_PROXY_URL, country = process.env.REDDIT_PROXY_COUNTRY || 'gb',
     display = process.env.DISPLAY || ':99', onEvent = () => {} } = {}) {
     this.proxy = proxy; this.country = country; this.display = display; this.onEvent = onEvent;
-    this.cache = new Map(); this.pending = new Map(); this.queue = Promise.resolve();
+    this.cache = new Map(); this.refusals = new Map(); this.pending = new Map(); this.queue = Promise.resolve();
     this.queued = 0; this.cooldownUntil = 0;
   }
 
@@ -38,6 +44,9 @@ export class RedditResolver {
     const parsed = safeRedditPostUrl(url);
     if (!parsed) throw new Error('REDDIT_INVALID_URL');
     const key = parsed.id || parsed.url;
+    const refusal = this.refusals.get(key);
+    if (refusal?.expires > Date.now()) throw new Error(refusal.code);
+    this.refusals.delete(key);
     const hit = this.cache.get(key);
     if (hit?.expires > Date.now()) return structuredClone(hit.value);
     if (this.pending.has(key)) return this.pending.get(key).then(structuredClone);
@@ -48,11 +57,13 @@ export class RedditResolver {
       return this.resolveWithRetry(parsed, Date.now() + 200000);
     });
     const pending = task.then(value => {
-      this.cache.set(key, { value, expires: Date.now() + 10 * 60000 });
-      while (this.cache.size > 100) this.cache.delete(this.cache.keys().next().value);
+      if (!(this.cache.get(key)?.expires > Date.now())) this.remember(key, value);
       return structuredClone(value);
     }).catch(async error => {
-      if (!['REDDIT_ADULT_CONTENT', 'REDDIT_NO_MEDIA', 'REDDIT_AGE_UNVERIFIED'].includes(error?.message)) {
+      if (POST_REFUSALS.has(error?.message)) {
+        this.refusals.set(key, { code: error.message, expires: Date.now() + 60000 });
+        while (this.refusals.size > 100) this.refusals.delete(this.refusals.keys().next().value);
+      } else {
         this.cooldownUntil = Date.now() + 30000;
         await this.close();
       }
@@ -63,12 +74,18 @@ export class RedditResolver {
     return pending;
   }
 
+  remember(key, value, expires = Date.now() + 10 * 60000) {
+    // Own the cached value; callers and crosspost wrappers cannot mutate it.
+    this.cache.delete(key);
+    this.cache.set(key, { value: structuredClone(value), expires });
+    while (this.cache.size > 100) this.cache.delete(this.cache.keys().next().value);
+  }
+
   async resolveWithRetry(parsed, deadline) {
     for (let attempt = 0; attempt < 2; attempt++) {
       try { return await this.resolvePost(parsed, new Set(), deadline); }
       catch (error) {
-        const temporary = ['REDDIT_RATE_LIMITED', 'REDDIT_NETWORK_BLOCKED',
-          'REDDIT_CAPTCHA_NETWORK_BLOCKED', 'REDDIT_CHALLENGE_EXPIRED'].includes(error?.message) ||
+        const temporary = RETRYABLE.has(error?.message) ||
           !String(error?.message || '').startsWith('REDDIT_');
         if (attempt || !temporary || deadline - Date.now() < 60000) throw error;
         await this.close();
@@ -84,6 +101,9 @@ export class RedditResolver {
     if (Date.now() >= deadline) throw new Error('REDDIT_CHALLENGE_TIMEOUT');
     if (visited.has(key) || visited.size >= 4) throw new Error('REDDIT_INVALID_CROSSPOST');
     visited.add(key);
+    const cached = this.cache.get(key);
+    if (cached?.expires > Date.now()) return structuredClone(cached.value);
+    this.cache.delete(key);
     const context = await this.session();
     if (this.idleTimer) clearTimeout(this.idleTimer);
     const page = await context.newPage();
@@ -107,9 +127,13 @@ export class RedditResolver {
         if (!source) throw new Error('REDDIT_AGE_UNVERIFIED');
         const media = await this.resolvePost(source, visited, deadline);
         if (media.over_18 !== false || media.age_verified !== true) throw new Error('REDDIT_AGE_UNVERIFIED');
-        return { ...media, id: actualId, title: data.title || media.title, webpage_url: data.webpage_url,
+        const result = { ...media, id: actualId, title: data.title || media.title, webpage_url: data.webpage_url,
           source_post_id: media.source_post_id || media.id };
+        // A crosspost must not extend the age of its source verification.
+        this.remember(key, result, this.cache.get(source.id || source.url)?.expires);
+        return result;
       }
+      this.remember(key, data);
       return data;
     } catch (error) {
       if (process.env.REDDIT_DEBUG_DIR) {

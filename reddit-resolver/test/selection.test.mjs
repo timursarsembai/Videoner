@@ -1,6 +1,16 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { challengeTarget, targetScore, safeRedditPostUrl, tilesForDetections } from '../selection.mjs';
+import { challengeTarget, targetScore, safeRedditPostUrl, tilesForDetections, supportsChallenge } from '../selection.mjs';
+
+test('recognized targets without a matching model are refreshed instead of answered empty', () => {
+  assert.equal(supportsChallenge(challengeTarget('Select all images with trucks'), 9), false);
+  assert.equal(supportsChallenge('trucks', 16), true);
+  assert.equal(supportsChallenge('crosswalks', 9), true);
+  assert.equal(supportsChallenge('crosswalks', 16), false);
+  assert.equal(supportsChallenge('trees', 9), false);
+  assert.equal(supportsChallenge(null, 9), false);
+  assert.equal(supportsChallenge('cars', 25), false);
+});
 
 test('only canonical Reddit post paths may reach the browser', () => {
   assert.deepEqual(safeRedditPostUrl('https://www.reddit.com/r/videos/comments/6rrwyj/title/?x=1'),

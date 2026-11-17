@@ -17,6 +17,7 @@ import {
 } from "../helpers.js";
 import { isChannelMember } from "./membership.js";
 import { shareLinkFor } from "../share-link.js";
+import { CARD_VIDEO_ID, SHARE_QUERY_RE, cardHtml, cardKeyboard, isRtl, platformName, type VideoCard } from "../rich-card.js";
 
 // Инлайн-режим: «@бот <ссылка>» в ЛЮБОМ чате, даже там, где бота нет. Человек
 // выбирает единственный результат, в чат уходит заглушка, а как только видео
@@ -53,11 +54,80 @@ function pickQuality(available: string[], sizes: Record<string, number> = {}): s
   return fits.find((q) => q === "720p") ?? fits[0];
 }
 
+// Результат кнопки «Поделиться» под карточкой видео (rich-card.ts): в
+// выбранный чат уходит та же карточка — видео по file_id, без скачивания.
+const SHARE_RESULT_ID = "card";
+
+type ShareCardData = {
+  url: string;
+  title: string;
+  size: number | null;
+  number: number;
+  fileId: string;
+  kind: string | null;
+  quality: string | null;
+  extension: string | null;
+  width: number | null;
+  height: number | null;
+  duration: number | null;
+};
+
+async function shareCardResult(downloadId: string, lang: Lang) {
+  const c = await api<ShareCardData>(`/download/${downloadId}/card`, undefined, { timeoutMs: 4_000 });
+  if (c.kind === "a") return null;
+  const card: VideoCard = {
+    title: c.title,
+    url: c.url,
+    number: c.number,
+    quality: c.quality ?? "",
+    extension: c.extension ?? "mp4",
+    size: c.size ?? undefined,
+    shareUrl: await shareLinkFor(c.url),
+    downloadId,
+  };
+  const html = cardHtml(card, lang);
+  if (!html) return null;
+  const dims = {
+    ...(c.width ? { width: c.width } : {}),
+    ...(c.height ? { height: c.height } : {}),
+    ...(c.duration ? { duration: c.duration } : {}),
+  };
+  return {
+    type: "article" as const,
+    id: SHARE_RESULT_ID,
+    title: c.title || messages[lang].inlineResultTitle,
+    description: [platformName(c.url), c.quality].filter(Boolean).join(" · "),
+    input_message_content: {
+      rich_message: {
+        html,
+        media: [{ id: CARD_VIDEO_ID, media: { type: "video" as const, media: c.fileId, supports_streaming: true, ...dims } }],
+        ...(isRtl(lang) ? { is_rtl: true } : {}),
+      },
+    },
+    reply_markup: cardKeyboard(card, lang),
+  };
+}
+
 export function registerInlineHandlers(bot: Bot) {
   bot.on("inline_query", async (ctx) => {
     const lang = await userLang(ctx.from);
     const m = messages[lang];
     const url = ctx.inlineQuery.query.trim();
+
+    // «Поделиться» под карточкой видео: «card <id скачивания>».
+    const share = SHARE_QUERY_RE.exec(url);
+    if (share) {
+      const result = await shareCardResult(share[1], lang).catch((e) => {
+        console.error("Карточка для «Поделиться» не собрана:", e?.message ?? e);
+        return null;
+      });
+      await ctx.answerInlineQuery(result ? [result] : [], {
+        cache_time: 0,
+        is_personal: true,
+        ...(result ? {} : { button: { text: m.inlineHintButton, start_parameter: "inline" } }),
+      });
+      return;
+    }
 
     // Пусто или не ссылка — показываем кнопку «отправьте ссылку боту» вместо
     // результата. Дёргать сервер здесь нельзя: Telegram ждёт ответа секунды.
@@ -96,6 +166,8 @@ export function registerInlineHandlers(bot: Bot) {
 
   bot.on("chosen_inline_result", async (ctx) => {
     const chosen = ctx.chosenInlineResult;
+    // Карточка «Поделиться» уже готова целиком — заменять и качать нечего.
+    if (chosen.result_id === SHARE_RESULT_ID) return;
     const inlineMessageId = chosen.inline_message_id;
     const url = chosen.query.trim();
     const lang = await userLang(ctx.from);

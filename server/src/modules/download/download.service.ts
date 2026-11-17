@@ -490,6 +490,53 @@ export class DownloadService {
   // Бот сообщает file_id, который Telegram вернул на отправку файла. Пишем
   // только в записи с ключом кеша: без него повторно найти этот file_id
   // всё равно нечем.
+  // Данные карточки видео для кнопки «Поделиться» в боте: человек выбирает
+  // чат, и бот отправляет туда ту же карточку по file_id (bot handlers/inline.ts).
+  // Id скачивания — UUID, угадать чужой нельзя. Нет file_id — делиться нечем.
+  async cardFor(downloadId: string) {
+    const d = await this.prisma.download.findUnique({
+      where: { id: downloadId },
+      select: {
+        originalUrl: true,
+        videoTitle: true,
+        fileSize: true,
+        downloadNumber: true,
+        telegramFileId: true,
+        cacheKey: true,
+        videoWidth: true,
+        videoHeight: true,
+        videoDuration: true,
+      },
+    });
+    if (!d || d.downloadNumber === null) throw new NotFoundException('Download not found');
+    // Выдача из кеша могла не записать file_id себе — берём у того же ролика.
+    let fileId = d.telegramFileId;
+    if (!fileId && d.cacheKey) {
+      const twin = await this.prisma.download.findFirst({
+        where: { cacheKey: d.cacheKey, telegramFileId: { not: null } },
+        orderBy: { createdAt: 'desc' },
+        select: { telegramFileId: true },
+      });
+      fileId = twin?.telegramFileId ?? null;
+    }
+    if (!fileId) throw new NotFoundException('Nothing to share');
+    // cacheKey: площадка:id:тип:качество:контейнер (id может содержать «:»).
+    const parts = d.cacheKey?.split(':') ?? [];
+    return {
+      url: d.originalUrl,
+      title: d.videoTitle ?? '',
+      size: d.fileSize === null ? null : Number(d.fileSize),
+      number: d.downloadNumber,
+      fileId,
+      kind: parts.at(-3) ?? null,
+      quality: parts.at(-2) ?? null,
+      extension: parts.at(-1) ?? null,
+      width: d.videoWidth,
+      height: d.videoHeight,
+      duration: d.videoDuration,
+    };
+  }
+
   async setTelegramFileId(downloadId: string, fileId: string) {
     if (!/^[A-Za-z0-9_-]{10,255}$/.test(fileId)) {
       throw new BadRequestException('Invalid file_id');

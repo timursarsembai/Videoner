@@ -264,6 +264,15 @@ export class DownloadController {
     );
   }
 
+  // Карточка видео для кнопки «Поделиться» в боте (DownloadService.cardFor).
+  // Только боту, как и telegram-file: сайту путь не открыт.
+  @ApiSecurity('X-API-Key')
+  @Get(':id/card')
+  @ApiOperation({ summary: 'Card data of a sent download (bot share button)' })
+  async getCard(@Param('id', ParseUUIDPipe) id: string) {
+    return this.downloadService.cardFor(id);
+  }
+
   // Бот сообщает file_id, под которым Telegram сохранил отправленный файл:
   // повтор того же ролика бот перешлёт по нему, без скачивания через прокси
   // (см. DownloadService.findCached). Сайту путь не открыт — его нет в списке

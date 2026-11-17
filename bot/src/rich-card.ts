@@ -20,6 +20,9 @@ export type VideoCard = {
   extension: string;
   size?: number;
   shareUrl?: string;
+  // Id скачивания на сервере: по нему кнопка «Поделиться» отправляет эту же
+  // карточку в выбранный чат (инлайн-режим, handlers/inline.ts).
+  downloadId?: string;
 };
 
 const RTL = new Set<Lang>(["ar", "fa", "ur", "ps", "ckb", "ug"]);
@@ -116,6 +119,14 @@ function qualityValue(card: VideoCard, lang: Lang): string {
 
 export const CARD_VIDEO_ID = "video";
 
+// Инлайн-запрос кнопки «Поделиться»: «card <id скачивания>».
+export const SHARE_QUERY_PREFIX = "card ";
+export const SHARE_QUERY_RE = /^card ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i;
+
+export function isRtl(lang: Lang): boolean {
+  return RTL.has(lang);
+}
+
 // Сервер Bot API не умеет карточки (sendRichMessage ответил 404) — до
 // перезапуска шлём видео по-старому, не тратя на каждое неудачную попытку.
 let cardsDisabled = false;
@@ -153,10 +164,20 @@ export function cardKeyboard(card: VideoCard, lang: Lang, extra?: InlineKeyboard
   const kb = new InlineKeyboard(extra?.inline_keyboard.length ? extra.inline_keyboard.map((row) => [...row]) : [[]]);
   if (extra?.inline_keyboard.length) kb.row();
   kb.url(parts.news, `https://t.me/${NEWS_CHANNEL.replace(/^@/, "")}`);
-  if (card.shareUrl) {
+  // «Поделиться» — сама карточка: Telegram даёт выбрать чат и подставляет
+  // «@бот card <id>», бот отвечает этой же карточкой (handlers/inline.ts).
+  // Без id — как раньше, ссылкой-приглашением в окне отправки.
+  if (card.downloadId) {
+    kb.switchInlineChosen(parts.share, {
+      query: `${SHARE_QUERY_PREFIX}${card.downloadId}`,
+      allow_user_chats: true,
+      allow_group_chats: true,
+      allow_channel_chats: true,
+    });
+  } else if (card.shareUrl) {
     kb.url(parts.share, `https://t.me/share/url?url=${encodeURIComponent(card.shareUrl)}`);
-    kb.row().copyText(messages[lang].copyLinkButton, card.shareUrl);
   }
+  if (card.shareUrl) kb.row().copyText(messages[lang].copyLinkButton, card.shareUrl);
   return kb;
 }
 

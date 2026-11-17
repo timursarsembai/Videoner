@@ -274,9 +274,9 @@ export async function performDownload(
     return withNumberLink(text, numberLine, lang);
   };
   // Видео: в личке — карточкой, в группе и со своей подписью — как раньше.
-  const sendVideo = async (file: () => InputFile | string, number: unknown, dims?: VideoDimensions, size?: number) => {
+  const sendVideo = async (file: () => InputFile | string, number: unknown, downloadId: string, dims?: VideoDimensions, size?: number) => {
     if (send.replyWithVideoCard && !send.formatCaption) {
-      const card: VideoCard = { title, url, description: send.description, number, quality, extension, size, shareUrl: await shareLink };
+      const card: VideoCard = { title, url, description: send.description, number, quality, extension, size, shareUrl: await shareLink, downloadId };
       return send.replyWithVideoCard(file, card, lang, await caption(number), dims);
     }
     return send.replyWithVideo(file(), await caption(number), dims);
@@ -319,7 +319,7 @@ export async function performDownload(
         await send.editMessageText(msg.message_id, m.sendingFile);
         if (kind === "v") {
           const fileId = started.telegramFileId;
-          await sendVideo(() => fileId, started.number);
+          await sendVideo(() => fileId, started.number, started.downloadId);
         } else {
           await send.replyWithAudio(started.telegramFileId, await caption(started.number));
         }
@@ -440,6 +440,7 @@ export async function performDownload(
       fileId = await sendVideo(
         () => new InputFile(new URL(fileUrl)),
         status.number,
+        started.downloadId,
         { width: meta.width, height: meta.height, duration: meta.duration },
         meta.size,
       );

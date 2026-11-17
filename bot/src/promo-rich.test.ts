@@ -39,3 +39,9 @@ test("подсказка-карточка: кнопки ведут куда ну
   assert.deepEqual(btn("inline").switch_inline_query_chosen_chat, { query: "", allow_user_chats: true, allow_group_chats: true });
   assert.deepEqual(btn("share").copy_text, { text: "https://t.me/VideonerBot" });
 });
+
+// Владелец: в подсказках не писать «музыка» и «песни» ни на каком языке.
+test("в подсказках нет слов про музыку", () => {
+  const banned = /музык|песн|песен|music|musique|música|musica|musik|muziek|muzyk|موسيقى|موسیقی|音乐|音楽|음악|संगीत|🎵/i;
+  for (const lang of LANGS) assert.doesNotMatch(JSON.stringify(PROMO_RICH_TEXTS[lang]), banned, lang);
+});

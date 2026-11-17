@@ -33,6 +33,13 @@ describe('BotUserService.nextPromo', () => {
     expect(prisma.$executeRaw).not.toHaveBeenCalled();
   });
 
+  it('shows the Reddit news first, from the first successful download', async () => {
+    expect(await service({ successful: 1, shows: [] }).svc.nextPromo(1, ['channel', 'reddit'], () => 0)).toBe('reddit');
+    expect(await service({ successful: 10, shows: [] }).svc.nextPromo(1, ['channel', 'reddit'], () => 0)).toBe('reddit');
+    expect(await service({ successful: 0, shows: [] }).svc.nextPromo(1, ['reddit'])).toBeNull();
+    expect(await service({ successful: 1, shows: [{ key: 'reddit', ago: 2 * DAY }] }).svc.nextPromo(1, ['channel', 'reddit'])).toBeNull();
+  });
+
   it('shows nothing to blocked users or within a day of the last tip', async () => {
     expect(await service({ blocked: true, successful: 10, shows: [] }).svc.nextPromo(1, ['channel'])).toBeNull();
     expect(

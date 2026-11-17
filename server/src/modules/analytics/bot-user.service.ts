@@ -5,6 +5,9 @@ import { DownloadStatus } from '@prisma/client';
 // Подсказки после скачивания: с какого удачного скачивания и как часто.
 export const PROMO_MIN_DOWNLOADS = 3;
 export const PROMO_INTERVAL_MS = 24 * 60 * 60 * 1000;
+// Важные новости: показываем первыми и уже с первого удачного скачивания
+// (решение владельца 17.11.2026 — про Reddit должны узнать все).
+export const PROMO_PRIORITY = ['reddit'];
 
 export interface UpsertBotUserInput {
   telegramId: number;
@@ -106,7 +109,8 @@ export class BotUserService {
     const found = await this.promoCandidates(telegramId, keys);
     if (!found) return null;
     const { botUserId, fresh, since } = found;
-    const key = fresh[Math.floor(rnd() * fresh.length)];
+    const priority = fresh.filter((k) => PROMO_PRIORITY.includes(k));
+    const key = priority.length ? priority[0] : fresh[Math.floor(rnd() * fresh.length)];
     // Проверка «не было за сутки» и запись — под блокировкой на человека:
     // два одновременных вызова (две ссылки подряд) иначе оба не увидели бы
     // чужую ещё не закоммиченную запись и выдали бы две разные подсказки.
@@ -143,7 +147,8 @@ export class BotUserService {
       }),
       this.prisma.promoShow.findMany({ where: { botUserId: botUser.id }, select: { key: true, shownAt: true } }),
     ]);
-    if (successful < PROMO_MIN_DOWNLOADS) return null;
+    if (successful < 1) return null;
+    if (successful < PROMO_MIN_DOWNLOADS) keys = keys.filter((k) => PROMO_PRIORITY.includes(k));
     if (shows.some((s) => s.shownAt > since)) return null;
     const seen = new Set(shows.map((s) => s.key));
     const fresh = keys.filter((k) => !seen.has(k));

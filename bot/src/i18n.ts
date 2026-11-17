@@ -64,6 +64,14 @@ interface Messages {
   fileCaption: (title: string, sourceUrl: string, shareUrl?: string, description?: string, numberLine?: string) => string;
   // Порядковый номер удачного скачивания среди всех (сервер, Download.downloadNumber).
   downloadNo: (n: string) => string;
+  // Карточка файла (rich-card.ts): подписи строк таблицы и кнопка «Скопировать
+  // ссылку». Остальное (источник, права, канал, «Поделиться») карточка берёт
+  // из fileCaption — тексты не дублируются.
+  cardNumber: string;
+  cardPlatform: string;
+  cardQuality: string;
+  cardSize: string;
+  copyLinkButton: string;
   // Инлайн-режим: «@бот <ссылка>» в любом чате (см. handlers/inline.ts).
   inlineHintButton: string;
   inlineResultTitle: string;
@@ -398,6 +406,11 @@ const ru: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Новости проекта: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Скачивание №${n}`,
+  cardNumber: "Скачивание",
+  cardPlatform: "Площадка",
+  cardQuality: "Качество",
+  cardSize: "Размер",
+  copyLinkButton: "📋 Скопировать ссылку",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Настройки бота в этой группе\n\n" +
@@ -634,6 +647,11 @@ const en: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Project news: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download #${n}`,
+  cardNumber: "Download",
+  cardPlatform: "Platform",
+  cardQuality: "Quality",
+  cardSize: "Size",
+  copyLinkButton: "📋 Copy link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bot settings for this group\n\n" +
@@ -869,6 +887,11 @@ const ar: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 أخبار المشروع: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ التنزيل رقم ${n}`,
+  cardNumber: "التنزيل",
+  cardPlatform: "المنصة",
+  cardQuality: "الجودة",
+  cardSize: "الحجم",
+  copyLinkButton: "📋 نسخ الرابط",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ إعدادات البوت لهذه المجموعة\n\n" +
@@ -1104,6 +1127,11 @@ const zh: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 项目动态：${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ 第${n}次下载`,
+  cardNumber: "下载",
+  cardPlatform: "平台",
+  cardQuality: "画质",
+  cardSize: "大小",
+  copyLinkButton: "📋 复制链接",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ 本群的机器人设置\n\n" +
@@ -1339,6 +1367,11 @@ const hi: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 प्रोजेक्ट की खबरें: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ डाउनलोड क्र. ${n}`,
+  cardNumber: "डाउनलोड",
+  cardPlatform: "प्लेटफ़ॉर्म",
+  cardQuality: "क्वालिटी",
+  cardSize: "साइज़",
+  copyLinkButton: "📋 लिंक कॉपी करें",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ इस ग्रुप के लिए बॉट की सेटिंग्स\n\n" +
@@ -1574,6 +1607,11 @@ const indonesian: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Berita proyek: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Unduhan #${n}`,
+  cardNumber: "Unduhan",
+  cardPlatform: "Platform",
+  cardQuality: "Kualitas",
+  cardSize: "Ukuran",
+  copyLinkButton: "📋 Salin tautan",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Pengaturan bot untuk grup ini\n\n" +
@@ -1809,6 +1847,11 @@ const sw: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Habari za mradi: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Upakuaji #${n}`,
+  cardNumber: "Upakuaji",
+  cardPlatform: "Jukwaa",
+  cardQuality: "Ubora",
+  cardSize: "Ukubwa",
+  copyLinkButton: "📋 Nakili kiungo",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Mipangilio ya bot kwa kikundi hiki\n\n" +
@@ -2044,6 +2087,11 @@ const de: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Projekt-News: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download Nr. ${n}`,
+  cardNumber: "Download",
+  cardPlatform: "Plattform",
+  cardQuality: "Qualität",
+  cardSize: "Größe",
+  copyLinkButton: "📋 Link kopieren",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bot-Einstellungen für diese Gruppe\n\n" +
@@ -2279,6 +2327,11 @@ const fr: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Actualités du projet : ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Téléchargement n° ${n}`,
+  cardNumber: "Téléchargement",
+  cardPlatform: "Plateforme",
+  cardQuality: "Qualité",
+  cardSize: "Taille",
+  copyLinkButton: "📋 Copier le lien",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Paramètres du bot pour ce groupe\n\n" +
@@ -2514,6 +2567,11 @@ const it: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novità del progetto: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download n. ${n}`,
+  cardNumber: "Download",
+  cardPlatform: "Piattaforma",
+  cardQuality: "Qualità",
+  cardSize: "Dimensione",
+  copyLinkButton: "📋 Copia link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Impostazioni del bot per questo gruppo\n\n" +
@@ -2749,6 +2807,11 @@ const pt: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novidades do projeto: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download n.º ${n}`,
+  cardNumber: "Download",
+  cardPlatform: "Plataforma",
+  cardQuality: "Qualidade",
+  cardSize: "Tamanho",
+  copyLinkButton: "📋 Copiar link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Configurações do bot neste grupo\n\n" +
@@ -2984,6 +3047,11 @@ const es: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novedades del proyecto: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Descarga n.º ${n}`,
+  cardNumber: "Descarga",
+  cardPlatform: "Plataforma",
+  cardQuality: "Calidad",
+  cardSize: "Tamaño",
+  copyLinkButton: "📋 Copiar enlace",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Configuración del bot en este grupo\n\n" +
@@ -3219,6 +3287,11 @@ const uz: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Loyiha yangiliklari: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Yuklab olish №${n}`,
+  cardNumber: "Yuklab olish",
+  cardPlatform: "Platforma",
+  cardQuality: "Sifat",
+  cardSize: "Hajmi",
+  copyLinkButton: "📋 Havolani nusxalash",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bu guruh uchun bot sozlamalari\n\n" +
@@ -3454,6 +3527,11 @@ const tr: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Proje haberleri: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ İndirme #${n}`,
+  cardNumber: "İndirme",
+  cardPlatform: "Platform",
+  cardQuality: "Kalite",
+  cardSize: "Boyut",
+  copyLinkButton: "📋 Bağlantıyı kopyala",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bu grup için bot ayarları\n\n" +
@@ -3689,6 +3767,11 @@ const fa: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 اخبار پروژه: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ دانلود شماره ${n}`,
+  cardNumber: "دانلود",
+  cardPlatform: "پلتفرم",
+  cardQuality: "کیفیت",
+  cardSize: "حجم",
+  copyLinkButton: "📋 کپی پیوند",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ تنظیمات ربات برای این گروه\n\n" +
@@ -3924,6 +4007,11 @@ const vi: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Tin tức dự án: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Lượt tải #${n}`,
+  cardNumber: "Lượt tải",
+  cardPlatform: "Nền tảng",
+  cardQuality: "Chất lượng",
+  cardSize: "Dung lượng",
+  copyLinkButton: "📋 Sao chép liên kết",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Cài đặt bot cho nhóm này\n\n" +
@@ -4160,6 +4248,11 @@ const bn: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 প্রজেক্টের খবর: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ডাউনলোড নং ${n}`,
+  cardNumber: "ডাউনলোড",
+  cardPlatform: "প্ল্যাটফর্ম",
+  cardQuality: "কোয়ালিটি",
+  cardSize: "সাইজ",
+  copyLinkButton: "📋 লিঙ্ক কপি করুন",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ এই গ্রুপে বটের সেটিংস\n\n" +
@@ -4395,6 +4488,11 @@ const ur: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 پروجیکٹ کی خبریں: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ڈاؤن لوڈ نمبر ${n}`,
+  cardNumber: "ڈاؤن لوڈ",
+  cardPlatform: "پلیٹ فارم",
+  cardQuality: "کوالٹی",
+  cardSize: "سائز",
+  copyLinkButton: "📋 لنک کاپی کریں",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ اس گروپ کے لیے بوٹ کی سیٹنگز\n\n" +
@@ -4630,6 +4728,11 @@ const pl: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Nowości projektu: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Pobranie nr ${n}`,
+  cardNumber: "Pobranie",
+  cardPlatform: "Platforma",
+  cardQuality: "Jakość",
+  cardSize: "Rozmiar",
+  copyLinkButton: "📋 Kopiuj link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Ustawienia bota w tej grupie\n\n" +
@@ -4865,6 +4968,11 @@ const ja: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 プロジェクトのお知らせ：${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ダウンロード #${n}`,
+  cardNumber: "ダウンロード",
+  cardPlatform: "プラットフォーム",
+  cardQuality: "画質",
+  cardSize: "サイズ",
+  copyLinkButton: "📋 リンクをコピー",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ このグループでのボットの設定\n\n" +
@@ -5100,6 +5208,11 @@ const ko: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 프로젝트 소식: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ${n}번째 다운로드`,
+  cardNumber: "다운로드",
+  cardPlatform: "플랫폼",
+  cardQuality: "화질",
+  cardSize: "크기",
+  copyLinkButton: "📋 링크 복사",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ 이 그룹의 봇 설정\n\n" +
@@ -5335,6 +5448,11 @@ const th: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 ข่าวสารโปรเจกต์: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ดาวน์โหลดครั้งที่ ${n}`,
+  cardNumber: "ดาวน์โหลด",
+  cardPlatform: "แพลตฟอร์ม",
+  cardQuality: "คุณภาพ",
+  cardSize: "ขนาด",
+  copyLinkButton: "📋 คัดลอกลิงก์",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ การตั้งค่าบอทสำหรับกลุ่มนี้\n\n" +
@@ -5570,6 +5688,11 @@ const am: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 የፕሮጀክቱ ዜና፦ ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ማውረድ ቁጥር ${n}`,
+  cardNumber: "ማውረድ",
+  cardPlatform: "መድረክ",
+  cardQuality: "ጥራት",
+  cardSize: "መጠን",
+  copyLinkButton: "📋 ሊንኩን ቅዳ",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ የዚህ ቡድን የቦት ቅንብሮች\n\n" +
@@ -5805,6 +5928,11 @@ const om: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Oduu pirojektii: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Buufata lakk. ${n}`,
+  cardNumber: "Buufachuu",
+  cardPlatform: "Waltajjii",
+  cardQuality: "Qulqullina",
+  cardSize: "Hamma",
+  copyLinkButton: "📋 Liinkii garagalchi",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Qindaa'ina bootii garee kanaa\n\n" +
@@ -6040,6 +6168,11 @@ const ha: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Labaran aikin: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Saukewa na ${n}`,
+  cardNumber: "Saukewa",
+  cardPlatform: "Dandali",
+  cardQuality: "Inganci",
+  cardSize: "Girma",
+  copyLinkButton: "📋 Kwafi hanyar haɗi",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Saitunan bot na wannan rukuni\n\n" +
@@ -6275,6 +6408,11 @@ const so: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Wararka mashruuca: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Soo dejin lambar ${n}`,
+  cardNumber: "Soo dejin",
+  cardPlatform: "Madal",
+  cardQuality: "Tayada",
+  cardSize: "Cabbirka",
+  copyLinkButton: "📋 Koobi xiriirka",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Dejinta bot-ka ee kooxdan\n\n" +
@@ -6510,6 +6648,11 @@ const az: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Layihə xəbərləri: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Yükləmə №${n}`,
+  cardNumber: "Yükləmə",
+  cardPlatform: "Platforma",
+  cardQuality: "Keyfiyyət",
+  cardSize: "Ölçü",
+  copyLinkButton: "📋 Linki kopyala",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bu qrupda botun parametrləri\n\n" +
@@ -6745,6 +6888,11 @@ const ky: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Долбоордун жаңылыктары: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Жүктөө №${n}`,
+  cardNumber: "Жүктөө",
+  cardPlatform: "Платформа",
+  cardQuality: "Сапат",
+  cardSize: "Көлөмү",
+  copyLinkButton: "📋 Шилтемени көчүрүү",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Бул топтогу боттун жөндөөлөрү\n\n" +
@@ -6980,6 +7128,11 @@ const tg: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Хабарҳои лоиҳа: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Боргирии №${n}`,
+  cardNumber: "Боргирӣ",
+  cardPlatform: "Платформа",
+  cardQuality: "Сифат",
+  cardSize: "Ҳаҷм",
+  copyLinkButton: "📋 Нусхабардории пайванд",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Танзимоти бот дар ин гурӯҳ\n\n" +
@@ -7215,6 +7368,11 @@ const ms: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Berita projek: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Muat turun #${n}`,
+  cardNumber: "Muat turun",
+  cardPlatform: "Platform",
+  cardQuality: "Kualiti",
+  cardSize: "Saiz",
+  copyLinkButton: "📋 Salin pautan",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Tetapan bot untuk kumpulan ini\n\n" +
@@ -7450,6 +7608,11 @@ const nl: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Projectnieuws: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download nr. ${n}`,
+  cardNumber: "Download",
+  cardPlatform: "Platform",
+  cardQuality: "Kwaliteit",
+  cardSize: "Grootte",
+  copyLinkButton: "📋 Link kopiëren",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Instellingen van de bot voor deze groep\n\n" +
@@ -7685,6 +7848,11 @@ const ro: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Noutățile proiectului: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Descărcarea nr. ${n}`,
+  cardNumber: "Descărcare",
+  cardPlatform: "Platformă",
+  cardQuality: "Calitate",
+  cardSize: "Dimensiune",
+  copyLinkButton: "📋 Copiază linkul",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Setările botului pentru acest grup\n\n" +
@@ -7920,6 +8088,11 @@ const ps: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 د پروژې خبرونه: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ډاونلوډ شمېره ${n}`,
+  cardNumber: "ډاونلوډ",
+  cardPlatform: "پلېټفارم",
+  cardQuality: "کیفیت",
+  cardSize: "اندازه",
+  copyLinkButton: "📋 لینک کاپي کړئ",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ د دې ګروپ لپاره د بوټ تنظیمات\n\n" +
@@ -8155,6 +8328,11 @@ const ckb: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 هەواڵەکانی پڕۆژە: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ داگرتنی ژمارە ${n}`,
+  cardNumber: "داگرتن",
+  cardPlatform: "پلاتفۆرم",
+  cardQuality: "کوالیتی",
+  cardSize: "قەبارە",
+  copyLinkButton: "📋 لینکەکە کۆپی بکە",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ ڕێکخستنەکانی بۆت بۆ ئەم گرووپە\n\n" +
@@ -8390,6 +8568,11 @@ const ku: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Nûçeyên projeyê: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Daxistin #${n}`,
+  cardNumber: "Daxistin",
+  cardPlatform: "Platform",
+  cardQuality: "Kalîte",
+  cardSize: "Mezinahî",
+  copyLinkButton: "📋 Girêdanê kopî bike",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Mîhengên botê ji bo vê komê\n\n" +
@@ -8625,6 +8808,11 @@ const ug: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 تۈر خەۋەرلىرى: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ چۈشۈرۈش ${n}-نومۇر`,
+  cardNumber: "چۈشۈرۈش",
+  cardPlatform: "سۇپا",
+  cardQuality: "سۈپەت",
+  cardSize: "چوڭلۇقى",
+  copyLinkButton: "📋 ئۇلىنىشنى كۆچۈرۈش",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ بۇ گۇرۇپپىدىكى بوت تەڭشەكلىرى\n\n" +
@@ -8860,6 +9048,11 @@ const tk: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Taslamanyň täzelikleri: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Ýükleme №${n}`,
+  cardNumber: "Ýükleme",
+  cardPlatform: "Platforma",
+  cardQuality: "Hil",
+  cardSize: "Göwrümi",
+  copyLinkButton: "📋 Salgyny göçür",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Bu topardaky botuň sazlamalary\n\n" +
@@ -9095,6 +9288,11 @@ const tt: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проект яңалыклары: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Йөкләү №${n}`,
+  cardNumber: "Йөкләү",
+  cardPlatform: "Платформа",
+  cardQuality: "Сыйфат",
+  cardSize: "Күләме",
+  copyLinkButton: "📋 Сылтаманы күчерү",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Бу төркемдәге бот көйләүләре\n\n" +
@@ -9330,6 +9528,11 @@ const sq: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Lajmet e projektit: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Shkarkimi nr. ${n}`,
+  cardNumber: "Shkarkimi",
+  cardPlatform: "Platforma",
+  cardQuality: "Cilësia",
+  cardSize: "Madhësia",
+  copyLinkButton: "📋 Kopjo lidhjen",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Cilësimet e botit për këtë grup\n\n" +
@@ -9575,6 +9778,11 @@ const bs: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novosti projekta: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Preuzimanje br. ${n}`,
+  cardNumber: "Preuzimanje",
+  cardPlatform: "Platforma",
+  cardQuality: "Kvalitet",
+  cardSize: "Veličina",
+  copyLinkButton: "📋 Kopiraj link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Postavke bota za ovu grupu\n\n" +
@@ -9810,6 +10018,11 @@ const ce: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проектан керла хаамаш: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Чуяккхар №${n}`,
+  cardNumber: "Чудаккхар",
+  cardPlatform: "Платформа",
+  cardQuality: "Дикалла",
+  cardSize: "Барам",
+  copyLinkButton: "📋 Хьажорг копи ян",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ ХӀокху тобанехь ботан нисдарш\n\n" +
@@ -10045,6 +10258,11 @@ const inh: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проекта керда хоамаш: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ №${n}`,
+  cardNumber: "Чуяккхар",
+  cardPlatform: "Платформа",
+  cardQuality: "Дикал",
+  cardSize: "Бокъал",
+  copyLinkButton: "📋 ТӀахьожаяр копи е",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Укх тоаба чу ботан настройкаш\n\n" +
@@ -10280,6 +10498,11 @@ const av: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проекталъул хабарал: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ №${n}`,
+  cardNumber: "Рещтӏезаби",
+  cardPlatform: "Платформа",
+  cardQuality: "Каконлъи",
+  cardSize: "Борхалъи",
+  copyLinkButton: "📋 Ссылка копия гьабе",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Гьаб къокъаялда боталъул настройкаби\n\n" +
@@ -10515,6 +10738,11 @@ const tl: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Balita ng proyekto: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download Blg. ${n}`,
+  cardNumber: "Download",
+  cardPlatform: "Platform",
+  cardQuality: "Kalidad",
+  cardSize: "Laki",
+  copyLinkButton: "📋 Kopyahin ang link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Mga setting ng bot para sa group na ito\n\n" +
@@ -10750,6 +10978,11 @@ const uk: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Новини проєкту: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Завантаження №${n}`,
+  cardNumber: "Завантаження",
+  cardPlatform: "Платформа",
+  cardQuality: "Якість",
+  cardSize: "Розмір",
+  copyLinkButton: "📋 Скопіювати посилання",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Налаштування бота в цій групі\n\n" +
@@ -10991,6 +11224,11 @@ const kk: Messages = {
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Жүктеу №${n}`,
+  cardNumber: "Жүктеу",
+  cardPlatform: "Платформа",
+  cardQuality: "Сапа",
+  cardSize: "Көлемі",
+  copyLinkButton: "📋 Сілтемені көшіру",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
     "⚙️ Осы топтағы бот баптаулары\n\n" +

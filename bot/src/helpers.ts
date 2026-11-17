@@ -353,7 +353,7 @@ export function friendlyError(raw: string, lang: Lang): string {
 }
 
 // Страница расширения для браузера на сайте (web/app/[locale]/extension).
-const EXTENSION_PAGE_BASE = (process.env.EXTENSION_PAGE_BASE ?? "https://videoner.download").replace(/\/+$/, "");
+export const EXTENSION_PAGE_BASE = (process.env.EXTENSION_PAGE_BASE ?? "https://videoner.download").replace(/\/+$/, "");
 
 // Площадки, которые расширение качает прямо в браузере, под входом человека
 // (extension/page-media.js). Остальные оно качает тем же сервером — там

@@ -23,13 +23,24 @@ export class ChannelMembershipService implements OnApplicationBootstrap {
 
   constructor(private prisma: PrismaService) {}
 
-  // После выкладки — не ждать ночи, если сутки не проверяли (в первый раз —
-  // сразу заполнить столбец).
+  // Включено только в docker-compose.prod.yml: у staging тот же BOT_TOKEN.
+  private enabled(): boolean {
+    return process.env.CHANNEL_CHECK_ENABLED === 'true' && !!process.env.BOT_TOKEN;
+  }
+
+  // После выкладки — не ждать ночи, если кого-то не проверяли больше суток
+  // (в первый раз — сразу заполнить столбец; прерванный обход — доделать).
   onApplicationBootstrap() {
+    if (!this.enabled()) return;
     setTimeout(() => {
       void this.prisma.botUser
-        .findFirst({ where: { inChannelCheckedAt: { gte: new Date(Date.now() - STALE_MS) } }, select: { id: true } })
-        .then((fresh) => (fresh ? undefined : this.checkAll()))
+        .findFirst({
+          where: {
+            OR: [{ inChannelCheckedAt: null }, { inChannelCheckedAt: { lt: new Date(Date.now() - STALE_MS) } }],
+          },
+          select: { id: true },
+        })
+        .then((stale) => (stale ? this.checkAll() : undefined))
         .catch((e) => this.logger.error(`Проверка подписок не запустилась: ${e?.message ?? e}`));
     }, 60_000).unref();
   }
@@ -38,23 +49,28 @@ export class ChannelMembershipService implements OnApplicationBootstrap {
   @Cron('30 22 * * *')
   async checkAll() {
     const token = process.env.BOT_TOKEN;
-    if (!token || this.running) return;
+    if (!token || !this.enabled() || this.running) return;
     this.running = true;
     try {
       const users = await this.prisma.botUser.findMany({ select: { id: true, telegramId: true } });
       let members = 0;
       let errors = 0;
       let errorsInRow = 0;
+      let checked = 0;
       for (const u of users) {
         const result = await this.isMember(token, u.telegramId);
-        if (result === null) {
+        if (typeof result === 'string') {
           errors++;
           if (++errorsInRow >= MAX_ERRORS_IN_ROW) {
-            this.logger.warn(`Проверка подписок прервана: ${errorsInRow} ошибок подряд`);
+            this.logger.warn(
+              `Проверка подписок прервана: ${errorsInRow} ошибок подряд (последняя: ${result}); ` +
+                `проверено ${checked} из ${users.length}, в канале ${members}`,
+            );
             return;
           }
         } else {
           errorsInRow = 0;
+          checked++;
           if (result) members++;
           await this.prisma.botUser.update({
             where: { id: u.id },
@@ -69,9 +85,11 @@ export class ChannelMembershipService implements OnApplicationBootstrap {
     }
   }
 
-  // true/false — ответ Telegram; null — проверить не удалось.
-  private async isMember(token: string, telegramId: bigint): Promise<boolean | null> {
+  // true/false — ответ Telegram; строка — проверить не удалось (причина для лога).
+  private async isMember(token: string, telegramId: bigint): Promise<boolean | string> {
+    let error = 'нет ответа';
     for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt > 0) await new Promise((r) => setTimeout(r, 2000));
       try {
         const res = await fetch(
           `https://api.telegram.org/bot${token}/getChatMember?chat_id=${encodeURIComponent(CHANNEL)}&user_id=${telegramId}`,
@@ -88,6 +106,7 @@ export class ChannelMembershipService implements OnApplicationBootstrap {
           const { status, is_member } = body.result;
           return MEMBER.has(status) || (status === 'restricted' && is_member === true);
         }
+        error = `${body.error_code ?? res.status} ${body.description ?? ''}`.trim();
         if (body.error_code === 429) {
           await new Promise((r) => setTimeout(r, ((body.parameters?.retry_after ?? 5) + 1) * 1000));
           continue;
@@ -96,11 +115,13 @@ export class ChannelMembershipService implements OnApplicationBootstrap {
         if (body.error_code === 400 && /user not found|PARTICIPANT_ID_INVALID/i.test(body.description ?? '')) {
           return false;
         }
-        return null;
-      } catch {
-        return null;
+        // Прочие ответы Telegram (нет прав в канале, неверный токен) повтор не исправит.
+        if (body.error_code !== undefined && body.error_code < 500) return error;
+      } catch (e) {
+        // Сеть, таймаут, HTML вместо JSON при 5xx — пробуем ещё раз.
+        error = e instanceof Error ? e.message : String(e);
       }
     }
-    return null;
+    return error;
   }
 }

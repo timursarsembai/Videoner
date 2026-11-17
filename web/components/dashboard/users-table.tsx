@@ -88,7 +88,7 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
     return all
       .filter((u) => !status || u.status === status)
       .filter((u) => !platform || u.platforms.some((p) => p.platform === platform.toLowerCase()))
-      .filter((u) => !channel || (channel === "yes" ? u.inChannel === true : u.inChannel !== true))
+      .filter((u) => !channel || (channel === "yes" ? u.inChannel === true : channel === "no" ? u.inChannel === false : u.inChannel === null))
       .filter(
         (u) =>
           !needle ||
@@ -104,7 +104,12 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
   const counts = useMemo(() => {
     const c = { active: 0, inactive: 0, blocked: 0 };
     for (const u of all) c[u.status]++;
-    return { ...c, inChannel: all.filter((u) => u.inChannel === true).length };
+    return {
+      ...c,
+      inChannel: all.filter((u) => u.inChannel === true).length,
+      notInChannel: all.filter((u) => u.inChannel === false).length,
+      channelUnknown: all.filter((u) => u.inChannel === null).length,
+    };
   }, [all]);
   // После обновления данных список мог стать короче текущей страницы.
   const start = offset < rows.length ? offset : Math.max(0, Math.floor((rows.length - 1) / PAGE_SIZE) * PAGE_SIZE);
@@ -144,7 +149,8 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
         <select value={channel} onChange={(e) => setChannel(e.target.value)} className={selectClass} aria-label="Канал">
           <option value="">Канал: все</option>
           <option value="yes">В канале · {counts.inChannel}</option>
-          <option value="no">Не в канале · {all.length - counts.inChannel}</option>
+          <option value="no">Не в канале · {counts.notInChannel}</option>
+          {counts.channelUnknown > 0 && <option value="unknown">Не проверяли · {counts.channelUnknown}</option>}
         </select>
         <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)} className={selectClass} aria-label="Сортировка">
           {SORTS.map((s) => (

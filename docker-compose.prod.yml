@@ -156,6 +156,10 @@ services:
       # у staging своя БД, но тот же BOT_TOKEN, и без этого флага он писал бы
       # тем же живым людям второй раз. В docker-compose.staging.yml не добавлять.
       NUDGE_ENABLED: "true"
+      # Ежесуточная проверка подписки пользователей бота на канал (столбец
+      # «В канале», server/src/modules/analytics/channel-membership.service.ts).
+      # Только здесь: staging с тем же BOT_TOKEN удвоил бы запросы к Telegram.
+      CHANNEL_CHECK_ENABLED: "true"
     volumes:
       - downloads:/app/dist/downloads
       # Куки для YouTube/Facebook/Vimeo и т.п. лежат в cookies/cookies.txt.

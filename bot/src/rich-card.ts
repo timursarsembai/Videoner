@@ -164,19 +164,11 @@ export function cardKeyboard(card: VideoCard, lang: Lang, extra?: InlineKeyboard
   const kb = new InlineKeyboard(extra?.inline_keyboard.length ? extra.inline_keyboard.map((row) => [...row]) : [[]]);
   if (extra?.inline_keyboard.length) kb.row();
   kb.url(parts.news, `https://t.me/${NEWS_CHANNEL.replace(/^@/, "")}`);
-  // «Поделиться» — сама карточка с видео (решение владельца 17.11.2026: не
-  // ссылка). Кнопка бота не умеет «Переслать», поэтому через инлайн-режим:
-  // Telegram даёт выбрать чат, над полем ввода — эта же карточка, нажатие на
-  // неё отправляет её в чат (handlers/inline.ts, «card <id скачивания>»).
-  if (card.downloadId) {
-    kb.switchInlineChosen(parts.share, {
-      query: `${SHARE_QUERY_PREFIX}${card.downloadId}`,
-      allow_user_chats: true,
-      allow_group_chats: true,
-      allow_channel_chats: true,
-    });
-  }
-  if (card.shareUrl) kb.row().copyText(messages[lang].copyLinkButton, card.shareUrl);
+  // Кнопки «Поделиться» нет (решение владельца 17.11.2026): кнопка бота не
+  // умеет пересылать сообщение, а ссылка и инлайн-режим владельцу не
+  // подходят. Делятся обычной пересылкой Telegram — она отправляет карточку
+  // целиком.
+  if (card.shareUrl) kb.copyText(messages[lang].copyLinkButton, card.shareUrl);
   return kb;
 }
 

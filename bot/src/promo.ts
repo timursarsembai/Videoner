@@ -2,6 +2,7 @@ import { GrammyError, type Api } from "grammy";
 import { api } from "./helpers.js";
 import { NEWS_CHANNEL, sitePath, type Lang } from "./i18n.js";
 import { PROMO_TEXTS, type PromoKey } from "./promo-texts.js";
+import { sendPromoRich } from "./promo-rich.js";
 
 // Подсказки о Videoner после удачного скачивания в личке: короткое отдельное
 // сообщение вслед за файлом. Что и когда показать, решает сервер
@@ -65,7 +66,9 @@ async function trySendPromo(tg: Api, chatId: number, telegramId: number, lang: L
       return;
     }
     try {
-      await tg.sendMessage(chatId, promoText(key as PromoKey, lang), { link_preview_options: { is_disabled: true } });
+      if (!(await sendPromoRich(tg, chatId, key as PromoKey, lang))) {
+        await tg.sendMessage(chatId, promoText(key as PromoKey, lang), { link_preview_options: { is_disabled: true } });
+      }
     } catch (e) {
       // Telegram отказал (лимит, бот заблокирован) — снимаем отметку о показе
       // (BotUserService.promoFailed). Сбой сети не снимаем: сообщение могло

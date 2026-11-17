@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import { InlineKeyboard } from "grammy";
 import assert from "node:assert/strict";
-import { cardHtml, cardKeyboard, captionParts, choiceHtml, platformName, richVideoFileId, SHARE_QUERY_RE } from "./rich-card.js";
+import { cardHtml, cardKeyboard, captionParts, choiceHtml, platformName, richVideoFileId } from "./rich-card.js";
 import { messages, type Lang } from "./i18n.js";
 
 const card = {
@@ -44,10 +44,9 @@ test("keyboard: news, share, copy; extra first", () => {
   assert.deepEqual(flat, ["📣 Новости проекта", "🔗 Поделиться", "📋 Скопировать ссылку"]);
   const noShare = cardKeyboard({ ...card, shareUrl: undefined }, "ru")!;
   assert.deepEqual(noShare.inline_keyboard.flat().map((b) => b.text), ["📣 Новости проекта"]);
-  const withId = cardKeyboard({ ...card, downloadId: "0b1c2d3e-0000-4000-8000-000000000001" }, "ru")!;
-  const shareBtn = withId.inline_keyboard[0][1] as { switch_inline_query_chosen_chat?: { query?: string } };
-  assert.equal(shareBtn.switch_inline_query_chosen_chat?.query, "card 0b1c2d3e-0000-4000-8000-000000000001");
-  assert.ok(SHARE_QUERY_RE.test(shareBtn.switch_inline_query_chosen_chat!.query!));
+  const shareBtn = kb.inline_keyboard[0][1] as { url?: string };
+  assert.ok(shareBtn.url?.startsWith("https://t.me/share/url?url=https%3A%2F%2Fvideoner.download%2Fb%2FKAzimHJK&text="));
+  assert.ok(decodeURIComponent(shareBtn.url!).includes("Скачано бесплатно через @VideonerBot"));
   const mp3 = new InlineKeyboard().text("🎵 MP3", "mp3|x");
   const withExtra = cardKeyboard(card, "ru", mp3)!;
   assert.deepEqual(withExtra.inline_keyboard.map((r) => r.map((b) => b.text)), [

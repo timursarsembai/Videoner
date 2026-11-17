@@ -164,18 +164,12 @@ export function cardKeyboard(card: VideoCard, lang: Lang, extra?: InlineKeyboard
   const kb = new InlineKeyboard(extra?.inline_keyboard.length ? extra.inline_keyboard.map((row) => [...row]) : [[]]);
   if (extra?.inline_keyboard.length) kb.row();
   kb.url(parts.news, `https://t.me/${NEWS_CHANNEL.replace(/^@/, "")}`);
-  // «Поделиться» — сама карточка: Telegram даёт выбрать чат и подставляет
-  // «@бот card <id>», бот отвечает этой же карточкой (handlers/inline.ts).
-  // Без id — как раньше, ссылкой-приглашением в окне отправки.
-  if (card.downloadId) {
-    kb.switchInlineChosen(parts.share, {
-      query: `${SHARE_QUERY_PREFIX}${card.downloadId}`,
-      allow_user_chats: true,
-      allow_group_chats: true,
-      allow_channel_chats: true,
-    });
-  } else if (card.shareUrl) {
-    kb.url(parts.share, `https://t.me/share/url?url=${encodeURIComponent(card.shareUrl)}`);
+  // «Поделиться» — обычное окно Telegram «Переслать»: человек выбирает чат,
+  // туда уходит сообщение со ссылкой, названием видео и «Скачано бесплатно
+  // через @VideonerBot» (решение владельца 17.11.2026: не инлайн-режимом).
+  if (card.shareUrl) {
+    const text = [clip(card.title, 200), parts.rights.split("\n").pop()].filter(Boolean).join("\n");
+    kb.url(parts.share, `https://t.me/share/url?url=${encodeURIComponent(card.shareUrl)}&text=${encodeURIComponent(text)}`);
   }
   if (card.shareUrl) kb.row().copyText(messages[lang].copyLinkButton, card.shareUrl);
   return kb;

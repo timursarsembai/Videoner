@@ -682,7 +682,7 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
   // Примерный вес на кнопке — чтобы человек сам выбрал качество полегче.
   const sized = (label: string, bytes: number | undefined) =>
     bytes ? `${label} · ~${fmtSize(bytes, lang)}` : label;
-  for (const [i, q] of (current.qualities?.video ?? []).slice(0, 6).entries()) {
+  for (const q of (current.qualities?.video ?? []).slice(0, 6)) {
     // Замок с HD-качеств снят вместе с платными функциями: все качества
     // доступны всем без исключения.
     // "original" сервер присылает для поста, где нет ни одного видео —
@@ -697,9 +697,12 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
           : q === "gallery"
             ? m.galleryButton
             : sized(`🎬 ${q}`, current.sizes?.video[q]);
-    // По две кнопки в ряд — короче список.
+    // Качества вида «720p» — по две в ряд, короче список. «Фото», «Слайдшоу»
+    // и прочие длинные надписи — по одной, иначе Telegram их обрежет.
+    const short = /^\d+p\d*$/.test(q);
+    if (!short && kb.inline_keyboard.at(-1)?.length) kb.row();
     kb.text(label, `v|${q}`);
-    if (i % 2 === 1) kb.row();
+    if (!short || kb.inline_keyboard.at(-1)!.length >= 2) kb.row();
   }
   if (kb.inline_keyboard.at(-1)?.length) kb.row();
   // У поста из одних фотографий звуковой дорожки обычно нет — тогда сервер
@@ -864,6 +867,7 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
     const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";
     const rest = state.pending.length ? m.queueRest(state.pending.length) : "";
     const sizeNote = current.sizeNote ?? "";
+    const tail = sizeNote + notice + rest;
     // В личке — карточкой (обложка, таблица); не приняли — текстом, как раньше.
     const asCard =
       state.chatId > 0 &&
@@ -871,12 +875,12 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
         tg,
         state.chatId,
         messageId,
-        { title: current.title, url: current.url, thumbnail: current.thumbnail, duration: dur, notes: sizeNote + notice + rest },
+        { title: current.title, url: current.url, thumbnail: current.thumbnail, duration: dur, notes: tail },
         lang,
         kb,
       ));
     if (!asCard) {
-      await tg.editMessageText(state.chatId, messageId, m.chooseQuality(current.title, dur) + sizeNote + notice + rest, {
+      await tg.editMessageText(state.chatId, messageId, m.chooseQuality(current.title, dur) + tail, {
         reply_markup: kb,
       });
     }

@@ -71,5 +71,8 @@ test("choice card: image, table, prompt, notes", () => {
   for (const lang of Object.keys(messages) as Lang[]) {
     const h = choiceHtml(c, lang)!;
     assert.ok(h && !h.includes("<p></p>"), lang);
+    // «Выбери качество» — отдельным абзацем, без кавычек названия и «⏱».
+    const prompt = messages[lang].chooseQuality("", "").split(/\n{2,}/).pop()!;
+    assert.ok(prompt.length > 3 && !/[«»「」"⏱]/.test(prompt), `${lang}: ${prompt}`);
   }
 });

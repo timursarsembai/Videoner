@@ -286,9 +286,14 @@ export async function editToChoiceCard(
       return true;
     } catch (e) {
       if (!(e instanceof GrammyError) || (e.error_code !== 400 && e.error_code !== 404)) throw e;
+      // Сообщения уже нет или его нельзя править — карточка тут ни при чём,
+      // текстом тоже не выйдет: отдаём ошибку как есть.
+      if (/not found|MESSAGE_ID_INVALID|can't be edited/i.test(e.description) && e.error_code === 400) throw e;
       if (e.error_code === 404 || /method not found/i.test(e.description)) cardsDisabled = true;
-      console.error(`Выбор качества карточкой не принят (${e.error_code} ${e.description})${withImage ? ", пробую без обложки" : ""}`);
-      if (cardsDisabled) return false;
+      // Без обложки пробуем, только если отказ похож на обложку.
+      const imageProblem = withImage && /IMAGE|PHOTO|MEDIA|URL|WEBPAGE|FILE/i.test(e.description);
+      console.error(`Выбор качества карточкой не принят (${e.error_code} ${e.description})${imageProblem ? ", пробую без обложки" : ""}`);
+      if (cardsDisabled || !imageProblem) return false;
     }
   }
   return false;

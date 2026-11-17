@@ -1,7 +1,6 @@
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
-import { classifyTiles, detectObjects } from './vision.mjs';
-import { splitGrid } from './tile-model.mjs';
+import { getInferenceClient } from './inference-client.mjs';
 import { challengeTarget, targetScore, tilesForDetections, supportsChallenge, safeRedditPostUrl } from './selection.mjs';
 import { tryAudioChallenge } from './audio.mjs';
 import { pageRefusal } from './post.mjs';
@@ -14,7 +13,7 @@ async function visibleChallenge(page) {
   return null;
 }
 
-export async function solveChallenge(page, { deadline, postId, onEvent = () => {}, audio = false, now = Date.now }) {
+export async function solveChallenge(page, { deadline, postId, onEvent = () => {}, audio = false, now = Date.now, inference = getInferenceClient() }) {
   const seen = new Map();
   let checkboxClicked = false;
   let audioAttempted = !audio;
@@ -86,7 +85,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
     const target = challengeTarget(description);
     if (!audioAttempted) {
       audioAttempted = true;
-      await tryAudioChallenge(page, frame, onEvent);
+      await tryAudioChallenge(page, frame, onEvent, inference, deadline);
       continue;
     }
     if (!supportsChallenge(target, count)) {
@@ -105,7 +104,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
     }
     if (count === 16) {
       const image = await frame.locator('.rc-imageselect-target').screenshot({ timeout: 5000 });
-      const detections = await detectObjects(image);
+      const detections = await inference.run('detect', { buffer: image }, { deadline });
       const selected = tilesForDetections(detections, target, 4);
       if (!selected) throw new Error('REDDIT_UNSUPPORTED_CHALLENGE');
       onEvent({ stage: 'localization', round, target, selected, detections });
@@ -127,11 +126,11 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
     // Screenshot once. Nine separate screenshots repeatedly scroll the iframe
     // and wait for animations; that can consume the challenge's entire TTL.
     const grid = await frame.locator('.rc-imageselect-target').screenshot({ timeout: 5000 });
-    const buffers = await splitGrid(grid, 3);
+    const buffers = await inference.run('split-grid', { buffer: grid, side: 3 }, { deadline });
     const hashes = buffers.map(b => createHash('sha256').update(b).digest('hex'));
     const missing = hashes.map((h, i) => seen.has(`${target}:${h}`) ? -1 : i).filter(i => i >= 0);
     if (missing.length) {
-      const results = await classifyTiles(missing.map(i => buffers[i]));
+      const results = await inference.run('classify', { buffers: missing.map(i => buffers[i]) }, { deadline });
       missing.forEach((i, j) => seen.set(`${target}:${hashes[i]}`, targetScore(results[j], target)));
     }
     const selected = hashes.map((h, i) => seen.get(`${target}:${h}`).selected ? i : -1).filter(i => i >= 0);

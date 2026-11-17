@@ -137,3 +137,46 @@ metadata failures, pending requests and adult-content refusals are separate.
 The displayed success percentage covers terminal file downloads only; it is
 not an end-to-end availability estimate. File volume includes cache deliveries
 and does not measure proxy consumption. The article remains a draft.
+
+Memory lifecycle (feature branch; requires a resolver release):
+
+- HTTP/browser modules do not import ONNX, Transformers.js or Sharp. These run
+  in one lazily started child process; its environment excludes proxy credentials.
+- Classification, grid splitting, detection and optional audio use bounded IPC.
+  A model operation shares the original post deadline. Crashes and timeouts
+  reject waiting operations; a subsequent request can start a fresh child.
+- The inference child stops after 120 seconds idle, only when no post or operation
+  is active. The browser retains its separate five-minute idle timeout, and
+  verified metadata keeps its original cache/age expiry. A cache hit starts no
+  inference. Shutdown terminates both browser and inference.
+- CPU memory arenas are disabled for direct ORT and Transformers sessions;
+  classification tensors are disposed after copying scores. Models still load
+  from the offline image cache. Resolution, model revisions and thresholds are
+  unchanged. A local inference failure does not rotate the residential session.
+- Runtime RAM/CPU/PID limits and swap settings are unchanged. The combined browser
+  and detector benchmark approaches 1900 MiB: disabling production swap needs
+  more peak measurements and is intentionally deferred.
+
+Reproduce tests and offline memory checks from the repository root, using a
+separate local test image (this does not deploy production):
+
+```sh
+docker buildx build --builder videoner-release-bounded --load \
+  -t videoner-reddit-resolver-memory-check:20261117 ./reddit-resolver
+docker run --rm --network none --memory=768m --memory-swap=768m --cpus=1 \
+  -v "$PWD/reddit-resolver/test:/app/test:ro" \
+  --entrypoint sh videoner-reddit-resolver-memory-check:20261117 \
+  -c 'node --test test/*.test.mjs'
+docker run --rm --network none --memory=1900m --memory-swap=1900m --cpus=1 \
+  -v "$PWD/reddit-resolver/bench:/app/bench:ro" \
+  --entrypoint node videoner-reddit-resolver-memory-check:20261117 \
+  /app/bench/worker-memory.mjs
+```
+
+`bench/model-memory.mjs` compares `BENCH_ARENA=1/0` and optionally
+`BENCH_PATTERN=0`, using `BENCH_STEPS` repetitions (default 20). Run these
+sequentially with the same 1900 MiB limits; the historical arena-enabled repeated
+case exited 137 at that limit. The worker benchmark uses a local synthetic page,
+real Chromium and model inference, with an accelerated test-only idle timeout;
+its default is 20 restart cycles. It does not contact Reddit or use any proxy.
+Set `BENCH_CYCLES=1 BENCH_SKIP_DETECT=1` for a short idle-memory-only check.

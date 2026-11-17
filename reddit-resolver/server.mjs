@@ -33,5 +33,5 @@ const server = http.createServer(async (req, res) => {
 server.requestTimeout = 240000;
 server.listen(Number(process.env.PORT || 4418), '0.0.0.0');
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => {
-  server.close(); await resolver.close(); xvfb.kill(); process.exit(0);
+  server.close(); await resolver.shutdown(); xvfb.kill(); process.exit(0);
 });

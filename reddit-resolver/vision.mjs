@@ -8,7 +8,7 @@ env.allowRemoteModels = process.env.MODEL_OFFLINE !== '1';
 
 let detector;
 let transcriber;
-const SESSION_OPTIONS = { intraOpNumThreads: 1, interOpNumThreads: 1 };
+const SESSION_OPTIONS = { intraOpNumThreads: 1, interOpNumThreads: 1, enableCpuMemArena: false };
 export async function getClassifier() {
   return getTileModel();
 }

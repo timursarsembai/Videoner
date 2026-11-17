@@ -105,3 +105,19 @@ test('a second unrelated URL cannot start another browser job in parallel', asyn
   await assert.rejects(resolver.resolve('https://www.reddit.com/comments/abc123/'), /BUSY/);
   release({ id: '6rrwyj' }); await running;
 });
+
+test('local inference failure does not discard browser or rotate the proxy session', async () => {
+  const resolver = new RedditResolver(); let closed = 0; let calls = 0;
+  resolver.close = async () => { closed++; };
+  resolver.resolvePost = async () => { calls++; throw new Error('REDDIT_INFERENCE_UNAVAILABLE'); };
+  await assert.rejects(resolver.resolve(url), /INFERENCE_UNAVAILABLE/);
+  assert.equal(calls, 1); assert.equal(closed, 0); assert.equal(resolver.cooldownUntil, 0);
+  assert.equal(resolver.inference.leases, 0); assert.equal(resolver.pending.size, 0);
+});
+
+test('a metadata cache hit does not acquire or launch inference', async () => {
+  const inference = { hold: () => { throw new Error('Cache must not touch inference'); } };
+  const resolver = new RedditResolver({ inference });
+  resolver.remember('6rrwyj', { id: '6rrwyj', over_18: false, age_verified: true });
+  assert.equal((await resolver.resolve(url)).id, '6rrwyj');
+});

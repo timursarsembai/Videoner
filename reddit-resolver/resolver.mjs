@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 import { randomBytes } from 'node:crypto';
-import { getClassifier } from './vision.mjs';
+import { InferenceClient } from './inference-client.mjs';
 import { solveChallenge } from './challenge.mjs';
 import { safeRedditPostUrl } from './selection.mjs';
 import { snapshotInPage, parsePost } from './post.mjs';
@@ -14,8 +14,8 @@ const RETRYABLE = new Set(['REDDIT_RATE_LIMITED', 'REDDIT_NETWORK_BLOCKED',
 
 export class RedditResolver {
   constructor({ proxy = process.env.REDDIT_PROXY_URL, country = process.env.REDDIT_PROXY_COUNTRY || 'gb',
-    display = process.env.DISPLAY || ':99', onEvent = () => {} } = {}) {
-    this.proxy = proxy; this.country = country; this.display = display; this.onEvent = onEvent;
+    display = process.env.DISPLAY || ':99', onEvent = () => {}, inference = new InferenceClient() } = {}) {
+    this.inference = inference; this.proxy = proxy; this.country = country; this.display = display; this.onEvent = onEvent;
     this.cache = new Map(); this.refusals = new Map(); this.pending = new Map(); this.queue = Promise.resolve();
     this.queued = 0; this.cooldownUntil = 0;
   }
@@ -31,7 +31,6 @@ export class RedditResolver {
       const password = `${base}_country-${this.country}_session-${randomBytes(6).toString('hex')}_lifetime-10m`;
       proxy = { server: `${u.protocol}//${u.hostname}:${u.port}`, username: decodeURIComponent(u.username), password };
     } catch { throw new Error('REDDIT_PROXY_CONFIG_INVALID'); }
-    await getClassifier();
     this.browser = await chromium.launch({ headless: false, channel: 'chromium',
       env: { ...process.env, DISPLAY: this.display }, ignoreDefaultArgs: ['--enable-automation'],
       args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-blink-features=AutomationControlled'], proxy });
@@ -52,6 +51,7 @@ export class RedditResolver {
     if (this.pending.has(key)) return this.pending.get(key).then(structuredClone);
     if (this.queued >= 1 || this.cooldownUntil > Date.now()) throw new Error('REDDIT_BUSY');
     this.queued++;
+    const releaseInference = this.inference.hold();
     const task = this.queue.then(() => {
       if (this.cooldownUntil > Date.now()) throw new Error('REDDIT_BUSY');
       return this.resolveWithRetry(parsed, Date.now() + 200000);
@@ -63,12 +63,12 @@ export class RedditResolver {
       if (POST_REFUSALS.has(error?.message)) {
         this.refusals.set(key, { code: error.message, expires: Date.now() + 60000 });
         while (this.refusals.size > 100) this.refusals.delete(this.refusals.keys().next().value);
-      } else {
+      } else if (!String(error?.message).startsWith('REDDIT_INFERENCE_')) {
         this.cooldownUntil = Date.now() + 30000;
         await this.close();
       }
       throw error;
-    }).finally(() => { this.pending.delete(key); this.queued--; });
+    }).finally(() => { this.pending.delete(key); this.queued--; releaseInference(); });
     this.queue = pending.catch(() => {});
     this.pending.set(key, pending);
     return pending;
@@ -120,7 +120,7 @@ export class RedditResolver {
       });
       await page.goto(parsed.url, { waitUntil: 'domcontentloaded', timeout: Math.max(1, Math.min(30000, deadline - Date.now())) });
       await page.waitForTimeout(1500);
-      const actualId = await solveChallenge(page, { deadline, postId: parsed.id, onEvent: this.onEvent });
+      const actualId = await solveChallenge(page, { deadline, postId: parsed.id, onEvent: this.onEvent, inference: this.inference });
       const data = parsePost(await page.evaluate(snapshotInPage, actualId), actualId);
       if (data.kind === 'crosspost') {
         const source = safeRedditPostUrl(data.source_url);
@@ -152,6 +152,10 @@ export class RedditResolver {
       this.idleTimer = setTimeout(() => this.close(), 5 * 60000);
       this.idleTimer.unref();
     }
+  }
+
+  async shutdown() {
+    await Promise.all([this.close(), this.inference.close()]);
   }
 
   async close() {

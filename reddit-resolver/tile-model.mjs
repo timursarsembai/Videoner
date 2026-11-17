@@ -71,7 +71,7 @@ export function rgbToPlanar(data, width, height, size = 224) {
 let session;
 export async function getTileModel() {
   session ??= modelPath().then(path => ort.InferenceSession.create(path, {
-    executionProviders: ['cpu'], intraOpNumThreads: 1, interOpNumThreads: 1,
+    executionProviders: ['cpu'], intraOpNumThreads: 1, interOpNumThreads: 1, enableCpuMemArena: false,
   })).catch(error => { session = undefined; throw error; });
   return session;
 }
@@ -84,10 +84,16 @@ export async function classifyTileImages(buffers) {
     const { data, info } = await sharp(buffer).removeAlpha().toColourspace('srgb').raw().toBuffer({ resolveWithObject: true });
     if (info.channels !== 3) throw new Error('REDDIT_INVALID_TILE');
     const tensor = new ort.Tensor('float32', rgbToPlanar(data, info.width, info.height), [1, 3, 224, 224]);
-    const output = await model.run({ [model.inputNames[0]]: tensor });
-    const scores = output[model.outputNames[0]].data;
-    if (scores.length !== CLASSES.length) throw new Error('REDDIT_MODEL_OUTPUT_MISMATCH');
-    results.push(CLASSES.map((topic, i) => ({ label: TOPICS[topic][0], score: Number(scores[i]) })));
+    let output;
+    try {
+      output = await model.run({ [model.inputNames[0]]: tensor });
+      const scores = output[model.outputNames[0]].data;
+      if (scores.length !== CLASSES.length) throw new Error('REDDIT_MODEL_OUTPUT_MISMATCH');
+      results.push(CLASSES.map((topic, i) => ({ label: TOPICS[topic][0], score: Number(scores[i]) })));
+    } finally {
+      tensor.dispose();
+      for (const value of Object.values(output || {})) value.dispose();
+    }
   }
   return results;
 }

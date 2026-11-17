@@ -3,7 +3,7 @@ import { spawn } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 import { randomBytes, createHash } from 'node:crypto';
 import { isIP } from 'node:net';
-import { getClassifier } from './vision.mjs';
+import { getInferenceClient } from './inference-client.mjs';
 import { solveChallenge } from './challenge.mjs';
 import { safeRedditPostUrl } from './selection.mjs';
 
@@ -39,7 +39,7 @@ async function exitHash() {
   } catch { return null; }
 }
 try {
-  await getClassifier(); event({ stage: 'model-ready' });
+  event({ stage: 'inference-lazy' });
   xvfb = spawn('Xvfb', [':99', '-screen', '0', '1280x900x24', '-nolisten', 'tcp'], { stdio: 'ignore' });
   await new Promise(resolve => setTimeout(resolve, 500));
   browser = await chromium.launch({
@@ -104,6 +104,7 @@ try {
       stickyConfirmed: initialExit && after ? initialExit === after : null });
   }
   if (browser) await browser.close().catch(() => {});
+  await getInferenceClient().close();
   xvfb?.kill();
   if (process.env.PROBE_REPORT) await writeFile(process.env.PROBE_REPORT, JSON.stringify(events, null, 2));
 }

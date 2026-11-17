@@ -150,8 +150,8 @@ export function registerInlineHandlers(bot: Bot) {
         return;
       }
       try {
-        await ctx.answerInlineQuery([result.rich, result.plain], opts);
-        console.log(`«Поделиться» ${share[1]}: отдал карточку и видео`);
+        await ctx.answerInlineQuery([result.rich], opts);
+        console.log(`«Поделиться» ${share[1]}: отдал карточку`);
       } catch (e: any) {
         console.error("Карточка в инлайн-ответе не принята, отдаю видео с подписью:", e?.message ?? e);
         await ctx.answerInlineQuery([result.plain], opts);

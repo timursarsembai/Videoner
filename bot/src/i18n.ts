@@ -71,6 +71,7 @@ interface Messages {
   cardPlatform: string;
   cardQuality: string;
   cardSize: string;
+  cardDuration: string;
   copyLinkButton: string;
   // Инлайн-режим: «@бот <ссылка>» в любом чате (см. handlers/inline.ts).
   inlineHintButton: string;
@@ -410,6 +411,7 @@ const ru: Messages = {
   cardPlatform: "Площадка",
   cardQuality: "Качество",
   cardSize: "Размер",
+  cardDuration: "Длительность",
   copyLinkButton: "📋 Скопировать ссылку",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -651,6 +653,7 @@ const en: Messages = {
   cardPlatform: "Platform",
   cardQuality: "Quality",
   cardSize: "Size",
+  cardDuration: "Duration",
   copyLinkButton: "📋 Copy link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -891,6 +894,7 @@ const ar: Messages = {
   cardPlatform: "المنصة",
   cardQuality: "الجودة",
   cardSize: "الحجم",
+  cardDuration: "المدة",
   copyLinkButton: "📋 نسخ الرابط",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -1131,6 +1135,7 @@ const zh: Messages = {
   cardPlatform: "平台",
   cardQuality: "画质",
   cardSize: "大小",
+  cardDuration: "时长",
   copyLinkButton: "📋 复制链接",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -1371,6 +1376,7 @@ const hi: Messages = {
   cardPlatform: "प्लेटफ़ॉर्म",
   cardQuality: "क्वालिटी",
   cardSize: "साइज़",
+  cardDuration: "अवधि",
   copyLinkButton: "📋 लिंक कॉपी करें",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -1611,6 +1617,7 @@ const indonesian: Messages = {
   cardPlatform: "Platform",
   cardQuality: "Kualitas",
   cardSize: "Ukuran",
+  cardDuration: "Durasi",
   copyLinkButton: "📋 Salin tautan",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -1851,6 +1858,7 @@ const sw: Messages = {
   cardPlatform: "Jukwaa",
   cardQuality: "Ubora",
   cardSize: "Ukubwa",
+  cardDuration: "Muda",
   copyLinkButton: "📋 Nakili kiungo",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -2091,6 +2099,7 @@ const de: Messages = {
   cardPlatform: "Plattform",
   cardQuality: "Qualität",
   cardSize: "Größe",
+  cardDuration: "Dauer",
   copyLinkButton: "📋 Link kopieren",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -2331,6 +2340,7 @@ const fr: Messages = {
   cardPlatform: "Plateforme",
   cardQuality: "Qualité",
   cardSize: "Taille",
+  cardDuration: "Durée",
   copyLinkButton: "📋 Copier le lien",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -2571,6 +2581,7 @@ const it: Messages = {
   cardPlatform: "Piattaforma",
   cardQuality: "Qualità",
   cardSize: "Dimensione",
+  cardDuration: "Durata",
   copyLinkButton: "📋 Copia link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -2811,6 +2822,7 @@ const pt: Messages = {
   cardPlatform: "Plataforma",
   cardQuality: "Qualidade",
   cardSize: "Tamanho",
+  cardDuration: "Duração",
   copyLinkButton: "📋 Copiar link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -3051,6 +3063,7 @@ const es: Messages = {
   cardPlatform: "Plataforma",
   cardQuality: "Calidad",
   cardSize: "Tamaño",
+  cardDuration: "Duración",
   copyLinkButton: "📋 Copiar enlace",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -3291,6 +3304,7 @@ const uz: Messages = {
   cardPlatform: "Platforma",
   cardQuality: "Sifat",
   cardSize: "Hajmi",
+  cardDuration: "Davomiyligi",
   copyLinkButton: "📋 Havolani nusxalash",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -3531,6 +3545,7 @@ const tr: Messages = {
   cardPlatform: "Platform",
   cardQuality: "Kalite",
   cardSize: "Boyut",
+  cardDuration: "Süre",
   copyLinkButton: "📋 Bağlantıyı kopyala",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -3771,6 +3786,7 @@ const fa: Messages = {
   cardPlatform: "پلتفرم",
   cardQuality: "کیفیت",
   cardSize: "حجم",
+  cardDuration: "مدت",
   copyLinkButton: "📋 کپی پیوند",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -4011,6 +4027,7 @@ const vi: Messages = {
   cardPlatform: "Nền tảng",
   cardQuality: "Chất lượng",
   cardSize: "Dung lượng",
+  cardDuration: "Thời lượng",
   copyLinkButton: "📋 Sao chép liên kết",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -4252,6 +4269,7 @@ const bn: Messages = {
   cardPlatform: "প্ল্যাটফর্ম",
   cardQuality: "কোয়ালিটি",
   cardSize: "সাইজ",
+  cardDuration: "দৈর্ঘ্য",
   copyLinkButton: "📋 লিঙ্ক কপি করুন",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -4492,6 +4510,7 @@ const ur: Messages = {
   cardPlatform: "پلیٹ فارم",
   cardQuality: "کوالٹی",
   cardSize: "سائز",
+  cardDuration: "دورانیہ",
   copyLinkButton: "📋 لنک کاپی کریں",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -4732,6 +4751,7 @@ const pl: Messages = {
   cardPlatform: "Platforma",
   cardQuality: "Jakość",
   cardSize: "Rozmiar",
+  cardDuration: "Długość",
   copyLinkButton: "📋 Kopiuj link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -4972,6 +4992,7 @@ const ja: Messages = {
   cardPlatform: "プラットフォーム",
   cardQuality: "画質",
   cardSize: "サイズ",
+  cardDuration: "長さ",
   copyLinkButton: "📋 リンクをコピー",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -5212,6 +5233,7 @@ const ko: Messages = {
   cardPlatform: "플랫폼",
   cardQuality: "화질",
   cardSize: "크기",
+  cardDuration: "길이",
   copyLinkButton: "📋 링크 복사",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -5452,6 +5474,7 @@ const th: Messages = {
   cardPlatform: "แพลตฟอร์ม",
   cardQuality: "คุณภาพ",
   cardSize: "ขนาด",
+  cardDuration: "ความยาว",
   copyLinkButton: "📋 คัดลอกลิงก์",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -5692,6 +5715,7 @@ const am: Messages = {
   cardPlatform: "መድረክ",
   cardQuality: "ጥራት",
   cardSize: "መጠን",
+  cardDuration: "ርዝመት",
   copyLinkButton: "📋 ሊንኩን ቅዳ",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -5932,6 +5956,7 @@ const om: Messages = {
   cardPlatform: "Waltajjii",
   cardQuality: "Qulqullina",
   cardSize: "Hamma",
+  cardDuration: "Dheerina",
   copyLinkButton: "📋 Liinkii garagalchi",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -6172,6 +6197,7 @@ const ha: Messages = {
   cardPlatform: "Dandali",
   cardQuality: "Inganci",
   cardSize: "Girma",
+  cardDuration: "Tsawo",
   copyLinkButton: "📋 Kwafi hanyar haɗi",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -6412,6 +6438,7 @@ const so: Messages = {
   cardPlatform: "Madal",
   cardQuality: "Tayada",
   cardSize: "Cabbirka",
+  cardDuration: "Muddada",
   copyLinkButton: "📋 Koobi xiriirka",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -6652,6 +6679,7 @@ const az: Messages = {
   cardPlatform: "Platforma",
   cardQuality: "Keyfiyyət",
   cardSize: "Ölçü",
+  cardDuration: "Müddət",
   copyLinkButton: "📋 Linki kopyala",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -6892,6 +6920,7 @@ const ky: Messages = {
   cardPlatform: "Платформа",
   cardQuality: "Сапат",
   cardSize: "Көлөмү",
+  cardDuration: "Узактыгы",
   copyLinkButton: "📋 Шилтемени көчүрүү",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -7132,6 +7161,7 @@ const tg: Messages = {
   cardPlatform: "Платформа",
   cardQuality: "Сифат",
   cardSize: "Ҳаҷм",
+  cardDuration: "Давомнокӣ",
   copyLinkButton: "📋 Нусхабардории пайванд",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -7372,6 +7402,7 @@ const ms: Messages = {
   cardPlatform: "Platform",
   cardQuality: "Kualiti",
   cardSize: "Saiz",
+  cardDuration: "Tempoh",
   copyLinkButton: "📋 Salin pautan",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -7612,6 +7643,7 @@ const nl: Messages = {
   cardPlatform: "Platform",
   cardQuality: "Kwaliteit",
   cardSize: "Grootte",
+  cardDuration: "Duur",
   copyLinkButton: "📋 Link kopiëren",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -7852,6 +7884,7 @@ const ro: Messages = {
   cardPlatform: "Platformă",
   cardQuality: "Calitate",
   cardSize: "Dimensiune",
+  cardDuration: "Durată",
   copyLinkButton: "📋 Copiază linkul",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -8092,6 +8125,7 @@ const ps: Messages = {
   cardPlatform: "پلېټفارم",
   cardQuality: "کیفیت",
   cardSize: "اندازه",
+  cardDuration: "موده",
   copyLinkButton: "📋 لینک کاپي کړئ",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -8332,6 +8366,7 @@ const ckb: Messages = {
   cardPlatform: "پلاتفۆرم",
   cardQuality: "کوالیتی",
   cardSize: "قەبارە",
+  cardDuration: "ماوە",
   copyLinkButton: "📋 لینکەکە کۆپی بکە",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -8572,6 +8607,7 @@ const ku: Messages = {
   cardPlatform: "Platform",
   cardQuality: "Kalîte",
   cardSize: "Mezinahî",
+  cardDuration: "Dirêjahî",
   copyLinkButton: "📋 Girêdanê kopî bike",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -8812,6 +8848,7 @@ const ug: Messages = {
   cardPlatform: "سۇپا",
   cardQuality: "سۈپەت",
   cardSize: "چوڭلۇقى",
+  cardDuration: "ۋاقىت ئۇزۇنلۇقى",
   copyLinkButton: "📋 ئۇلىنىشنى كۆچۈرۈش",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -9052,6 +9089,7 @@ const tk: Messages = {
   cardPlatform: "Platforma",
   cardQuality: "Hil",
   cardSize: "Göwrümi",
+  cardDuration: "Dowamlylygy",
   copyLinkButton: "📋 Salgyny göçür",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -9292,6 +9330,7 @@ const tt: Messages = {
   cardPlatform: "Платформа",
   cardQuality: "Сыйфат",
   cardSize: "Күләме",
+  cardDuration: "Озынлыгы",
   copyLinkButton: "📋 Сылтаманы күчерү",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -9532,6 +9571,7 @@ const sq: Messages = {
   cardPlatform: "Platforma",
   cardQuality: "Cilësia",
   cardSize: "Madhësia",
+  cardDuration: "Kohëzgjatja",
   copyLinkButton: "📋 Kopjo lidhjen",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -9782,6 +9822,7 @@ const bs: Messages = {
   cardPlatform: "Platforma",
   cardQuality: "Kvalitet",
   cardSize: "Veličina",
+  cardDuration: "Trajanje",
   copyLinkButton: "📋 Kopiraj link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -10022,6 +10063,7 @@ const ce: Messages = {
   cardPlatform: "Платформа",
   cardQuality: "Дикалла",
   cardSize: "Барам",
+  cardDuration: "Хан",
   copyLinkButton: "📋 Хьажорг копи ян",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -10262,6 +10304,7 @@ const inh: Messages = {
   cardPlatform: "Платформа",
   cardQuality: "Дикал",
   cardSize: "Бокъал",
+  cardDuration: "Хан",
   copyLinkButton: "📋 ТӀахьожаяр копи е",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -10502,6 +10545,7 @@ const av: Messages = {
   cardPlatform: "Платформа",
   cardQuality: "Каконлъи",
   cardSize: "Борхалъи",
+  cardDuration: "Заман",
   copyLinkButton: "📋 Ссылка копия гьабе",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -10742,6 +10786,7 @@ const tl: Messages = {
   cardPlatform: "Platform",
   cardQuality: "Kalidad",
   cardSize: "Laki",
+  cardDuration: "Haba",
   copyLinkButton: "📋 Kopyahin ang link",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -10982,6 +11027,7 @@ const uk: Messages = {
   cardPlatform: "Платформа",
   cardQuality: "Якість",
   cardSize: "Розмір",
+  cardDuration: "Тривалість",
   copyLinkButton: "📋 Скопіювати посилання",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>
@@ -11228,6 +11274,7 @@ const kk: Messages = {
   cardPlatform: "Платформа",
   cardQuality: "Сапа",
   cardSize: "Көлемі",
+  cardDuration: "Ұзақтығы",
   copyLinkButton: "📋 Сілтемені көшіру",
   sentBy: (name) => `👤 ${name}`,
   groupSettings: (s, canDelete) =>

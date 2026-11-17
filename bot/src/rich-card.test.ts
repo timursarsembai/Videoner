@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import { InlineKeyboard } from "grammy";
 import assert from "node:assert/strict";
-import { cardHtml, cardKeyboard, captionParts, platformName, richVideoFileId } from "./rich-card.js";
+import { cardHtml, cardKeyboard, captionParts, choiceHtml, platformName, richVideoFileId } from "./rich-card.js";
 import { messages, type Lang } from "./i18n.js";
 
 const card = {
@@ -58,4 +58,18 @@ test("platform names and file id", () => {
   assert.equal(platformName("https://youtu.be/x"), "YouTube");
   assert.equal(platformName("https://example.org/x"), "example.org");
   assert.equal(richVideoFileId({ blocks: [{ type: "paragraph" }, { type: "video", video: { file_id: "F" } }] }), "F");
+});
+
+test("choice card: image, table, prompt, notes", () => {
+  const c = { title: "Ролик", url: card.url, thumbnail: "https://i.ytimg.com/x.jpg", duration: "12:47", notes: "\n\n📋 В очереди ещё ссылок: 2." };
+  const html = choiceHtml(c, "ru")!;
+  assert.ok(html.startsWith('<img src="https://i.ytimg.com/x.jpg"/>'));
+  assert.ok(html.includes("<td>Длительность</td><td>12:47</td>"));
+  assert.ok(html.includes("<p>Выбери качество:</p>"));
+  assert.ok(html.includes("<p>📋 В очереди ещё ссылок: 2.</p>"));
+  assert.ok(!choiceHtml(c, "ru", false)!.includes("<img"));
+  for (const lang of Object.keys(messages) as Lang[]) {
+    const h = choiceHtml(c, lang)!;
+    assert.ok(h && !h.includes("<p></p>"), lang);
+  }
 });

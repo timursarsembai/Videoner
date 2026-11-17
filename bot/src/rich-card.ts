@@ -218,3 +218,78 @@ export async function sendVideoCard(
     throw e;
   }
 }
+
+// Экран выбора качества карточкой (только личка): обложка, название,
+// таблица (площадка, длительность, источник), «Выбери качество:» и пояснения
+// (большие качества скрыты, канал, очередь). Кнопки — прежняя клавиатура.
+export type ChoiceCard = {
+  title: string;
+  url: string;
+  thumbnail?: string;
+  duration?: string;
+  // Хвост сообщения: пояснения, как в текстовом варианте (начинаются с "\n\n").
+  notes: string;
+};
+
+function paragraphs(text: string): string {
+  return text
+    .split(/\n{2,}/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p>${p.split("\n").map(esc).join("<br/>")}</p>`)
+    .join("\n");
+}
+
+// Последний абзац chooseQuality — «Выбери качество:» на языке человека.
+function choosePrompt(lang: Lang): string {
+  const text = messages[lang].chooseQuality("", "");
+  return text.split(/\n{2,}/).pop()?.trim() ?? "";
+}
+
+export function choiceHtml(card: ChoiceCard, lang: Lang, withImage = true): string | null {
+  const m = messages[lang];
+  const parts = captionParts(lang);
+  if (!parts) return null;
+  const rows: [string, string][] = [];
+  const platform = platformName(card.url);
+  if (platform) rows.push([esc(m.cardPlatform), esc(platform)]);
+  if (card.duration) rows.push([esc(m.cardDuration), esc(card.duration)]);
+  rows.push([esc(parts.source), `<a href="${esc(card.url)}">${esc(shortUrl(card.url))}</a>`]);
+  const image = withImage && card.thumbnail && /^https:\/\//.test(card.thumbnail) ? `<img src="${esc(card.thumbnail)}"/>` : "";
+  return [
+    image,
+    card.title ? `<p><b>${esc(clip(card.title, 200))}</b></p>` : "",
+    `<table bordered striped compact>\n${rows.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("\n")}\n</table>`,
+    paragraphs(`${choosePrompt(lang)}${card.notes}`),
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+// Показать выбор карточкой вместо сообщения «Получаю информацию». false —
+// Telegram карточку не принял (например, не смог загрузить обложку и без неё
+// тоже) — вызывающий пишет выбор простым текстом, как раньше.
+export async function editToChoiceCard(
+  tg: Api,
+  chatId: number,
+  messageId: number,
+  card: ChoiceCard,
+  lang: Lang,
+  keyboard: InlineKeyboard,
+): Promise<boolean> {
+  if (cardsDisabled) return false;
+  for (const withImage of card.thumbnail ? [true, false] : [false]) {
+    const html = choiceHtml(card, lang, withImage);
+    if (!html) return false;
+    try {
+      await tg.editMessageText(chatId, messageId, { html, ...(RTL.has(lang) ? { is_rtl: true } : {}) }, { reply_markup: keyboard });
+      return true;
+    } catch (e) {
+      if (!(e instanceof GrammyError) || (e.error_code !== 400 && e.error_code !== 404)) throw e;
+      if (e.error_code === 404 || /method not found/i.test(e.description)) cardsDisabled = true;
+      console.error(`Выбор качества карточкой не принят (${e.error_code} ${e.description})${withImage ? ", пробую без обложки" : ""}`);
+      if (cardsDisabled) return false;
+    }
+  }
+  return false;
+}

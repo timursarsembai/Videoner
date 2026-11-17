@@ -33,7 +33,7 @@ import { LinkQueues, QUEUE_LIMIT, extractUrls, type Current, type OwnerState } f
 import { orderTracks, type SubtitleTrack } from "../subtitles.js";
 import { shareLinkFor } from "../share-link.js";
 import { instantVideo } from "../instant-video.js";
-import { sendVideoCard, type VideoCard } from "../rich-card.js";
+import { editToChoiceCard, sendVideoCard, type VideoCard } from "../rich-card.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -682,7 +682,7 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
   // Примерный вес на кнопке — чтобы человек сам выбрал качество полегче.
   const sized = (label: string, bytes: number | undefined) =>
     bytes ? `${label} · ~${fmtSize(bytes, lang)}` : label;
-  for (const q of (current.qualities?.video ?? []).slice(0, 6)) {
+  for (const [i, q] of (current.qualities?.video ?? []).slice(0, 6).entries()) {
     // Замок с HD-качеств снят вместе с платными функциями: все качества
     // доступны всем без исключения.
     // "original" сервер присылает для поста, где нет ни одного видео —
@@ -697,8 +697,11 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
           : q === "gallery"
             ? m.galleryButton
             : sized(`🎬 ${q}`, current.sizes?.video[q]);
-    kb.text(label, `v|${q}`).row();
+    // По две кнопки в ряд — короче список.
+    kb.text(label, `v|${q}`);
+    if (i % 2 === 1) kb.row();
   }
+  if (kb.inline_keyboard.at(-1)?.length) kb.row();
   // У поста из одних фотографий звуковой дорожки обычно нет — тогда сервер
   // не присылает аудио-качеств, и кнопку не рисуем: иначе она вела бы в
   // заведомую ошибку. Фото-пост TikTok со звуком присылает "128Kbps".
@@ -861,9 +864,22 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
     const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";
     const rest = state.pending.length ? m.queueRest(state.pending.length) : "";
     const sizeNote = current.sizeNote ?? "";
-    await tg.editMessageText(state.chatId, messageId, m.chooseQuality(current.title, dur) + sizeNote + notice + rest, {
-      reply_markup: kb,
-    });
+    // В личке — карточкой (обложка, таблица); не приняли — текстом, как раньше.
+    const asCard =
+      state.chatId > 0 &&
+      (await editToChoiceCard(
+        tg,
+        state.chatId,
+        messageId,
+        { title: current.title, url: current.url, thumbnail: current.thumbnail, duration: dur, notes: sizeNote + notice + rest },
+        lang,
+        kb,
+      ));
+    if (!asCard) {
+      await tg.editMessageText(state.chatId, messageId, m.chooseQuality(current.title, dur) + sizeNote + notice + rest, {
+        reply_markup: kb,
+      });
+    }
   } catch (e: any) {
     if (queues.get(key)?.current?.token !== current.token) {
       if (messageId) await tg.deleteMessage(state.chatId, messageId).catch(() => {});

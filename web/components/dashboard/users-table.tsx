@@ -78,6 +78,7 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [platform, setPlatform] = useState("");
+  const [channel, setChannel] = useState("");
   const [sort, setSort] = useState<SortKey>("lastSeenAt");
   const [offset, setOffset] = useState(0);
 
@@ -87,6 +88,7 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
     return all
       .filter((u) => !status || u.status === status)
       .filter((u) => !platform || u.platforms.some((p) => p.platform === platform.toLowerCase()))
+      .filter((u) => !channel || (channel === "yes" ? u.inChannel === true : u.inChannel !== true))
       .filter(
         (u) =>
           !needle ||
@@ -95,14 +97,14 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
           (u.firstName ?? "").toLowerCase().includes(needle),
       )
       .sort((a, b) => sortValue(b, sort) - sortValue(a, sort));
-  }, [all, search, status, platform, sort]);
+  }, [all, search, status, platform, channel, sort]);
   // Фильтр сменился — с первой страницы.
-  useEffect(() => setOffset(0), [search, status, platform, sort]);
+  useEffect(() => setOffset(0), [search, status, platform, channel, sort]);
 
   const counts = useMemo(() => {
     const c = { active: 0, inactive: 0, blocked: 0 };
     for (const u of all) c[u.status]++;
-    return c;
+    return { ...c, inChannel: all.filter((u) => u.inChannel === true).length };
   }, [all]);
   // После обновления данных список мог стать короче текущей страницы.
   const start = offset < rows.length ? offset : Math.max(0, Math.floor((rows.length - 1) / PAGE_SIZE) * PAGE_SIZE);
@@ -111,7 +113,7 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
   return (
     <ChartCard
       title={`Все пользователи бота · ${all.length}`}
-      hint="Активный — удачно скачивал за последние 30 дней (как на странице «Videoner в цифрах»), заблокировал — сейчас, неактивный — остальные. «Удачно / ошибок» и «Где» — за всё время, без API; отказы при разборе ссылки — с 12.11.2026. Время — по Алматы. Нажмите на строку — откроется журнал пользователя."
+      hint="Активный — удачно скачивал за последние 30 дней (как на странице «Videoner в цифрах»), заблокировал — сейчас, неактивный — остальные. «Удачно / ошибок» и «Где» — за всё время, без API; отказы при разборе ссылки — с 12.11.2026. «В канале» — подписка на @videonerdownload, проверяется раз в сутки. Время — по Алматы. Нажмите на строку — откроется журнал пользователя."
       loading={q.loading}
       error={q.error}
       wide
@@ -139,6 +141,11 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
             </option>
           ))}
         </select>
+        <select value={channel} onChange={(e) => setChannel(e.target.value)} className={selectClass} aria-label="Канал">
+          <option value="">Канал: все</option>
+          <option value="yes">В канале · {counts.inChannel}</option>
+          <option value="no">Не в канале · {all.length - counts.inChannel}</option>
+        </select>
         <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)} className={selectClass} aria-label="Сортировка">
           {SORTS.map((s) => (
             <option key={s.key} value={s.key}>
@@ -155,6 +162,9 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
               <th className="pb-2 font-medium">Пользователь</th>
               <th className="pb-2 font-medium">Статус</th>
               <th className="pb-2 font-medium">Язык</th>
+              <th className="pb-2 font-medium" title="Подписан на канал @videonerdownload — по проверке раз в сутки">
+                В канале
+              </th>
               <th className="pb-2 font-medium">Пришёл</th>
               <th className="pb-2 font-medium">Был</th>
               <th className="pb-2 text-right font-medium">Удачно / ошибок</th>
@@ -182,6 +192,15 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
                   </span>
                 </td>
                 <td className="py-2 text-foreground/60">{u.languageCode ?? "—"}</td>
+                <td className="py-2">
+                  {u.inChannel === true ? (
+                    <span className="text-emerald-600">да</span>
+                  ) : u.inChannel === false ? (
+                    <span className="text-foreground/40">нет</span>
+                  ) : (
+                    <span className="text-foreground/30" title="Ещё не проверяли">?</span>
+                  )}
+                </td>
                 <td className="py-2 tabular-nums text-foreground/60">{formatShortDate(u.firstSeenAt)}</td>
                 <td className="py-2 tabular-nums text-foreground/60">{formatShortDate(u.lastSeenAt)}</td>
                 <td className="whitespace-nowrap py-2 text-right tabular-nums">
@@ -203,7 +222,7 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
             ))}
             {!q.loading && page.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-6 text-center text-foreground/40">
+                <td colSpan={8} className="py-6 text-center text-foreground/40">
                   Никого не нашлось
                 </td>
               </tr>
@@ -312,6 +331,14 @@ export function UserJournalModal({ telegramId, onClose }: { telegramId: string; 
                 value={j.extensionLinkedAt ? `подключал аккаунт ${formatShortDate(j.extensionLinkedAt)}` : "—"}
               />
               <Item label="Сайт через Telegram" value={j.lastWebLoginAt ? formatShortDate(j.lastWebLoginAt) : "—"} />
+              <Item
+                label="Канал @videonerdownload"
+                value={
+                  j.inChannel === null
+                    ? "не проверяли"
+                    : `${j.inChannel ? "подписан" : "не подписан"}${j.inChannelCheckedAt ? ` (проверка ${formatShortDate(j.inChannelCheckedAt)})` : ""}`
+                }
+              />
               <Item label="«Сразу видео»" value={j.instantVideo ? "включён" : "выключен"} />
             </dl>
 

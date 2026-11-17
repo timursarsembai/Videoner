@@ -7,6 +7,7 @@ import { BotUserController } from './bot-user.controller';
 import { RedditAnalyticsService } from './reddit-analytics.service';
 import { PublicStatsController } from './public-stats.controller';
 import { PublicStatsService } from './public-stats.service';
+import { ChannelMembershipService } from './channel-membership.service';
 
 @Module({
   controllers: [AnalyticsController, BotUserController, PublicStatsController],
@@ -16,6 +17,7 @@ import { PublicStatsService } from './public-stats.service';
     AnalyticsService,
     RedditAnalyticsService,
     PublicStatsService,
+    ChannelMembershipService,
   ],
   exports: [BotUserService],
 })

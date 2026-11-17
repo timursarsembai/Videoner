@@ -246,6 +246,8 @@ export interface BotUserRow {
   blockedAt: string | null;
   extension: boolean;
   webLogin: boolean;
+  // Подписан на канал новостей — по проверке раз в сутки; null — не проверяли.
+  inChannel: boolean | null;
   status: "active" | "inactive" | "blocked";
   ok: number;
   failed: number;
@@ -264,6 +266,8 @@ export interface UserJournal {
   instantVideo: boolean;
   extensionLinkedAt: string | null;
   lastWebLoginAt: string | null;
+  inChannel: boolean | null;
+  inChannelCheckedAt: string | null;
   ok: number;
   failed: number;
   truncated: boolean;

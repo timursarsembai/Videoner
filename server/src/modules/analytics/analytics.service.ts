@@ -533,6 +533,7 @@ export class AnalyticsService {
           blockedAt: true,
           extensionLinkedAt: true,
           lastWebLoginAt: true,
+          inChannel: true,
         },
       }),
       this.userOutcomes(),
@@ -557,6 +558,7 @@ export class AnalyticsService {
         blockedAt: u.blockedAt,
         extension: u.extensionLinkedAt !== null,
         webLogin: u.lastWebLoginAt !== null,
+        inChannel: u.inChannel,
         status: u.blockedAt ? 'blocked' : last && last >= activeSince ? 'active' : 'inactive',
       };
     });
@@ -646,6 +648,8 @@ export class AnalyticsService {
       instantVideo: user.instantVideo,
       extensionLinkedAt: user.extensionLinkedAt,
       lastWebLoginAt: user.lastWebLoginAt,
+      inChannel: user.inChannel,
+      inChannelCheckedAt: user.inChannelCheckedAt,
       entries: entries.slice(0, USER_JOURNAL_MAX),
       blocks: blocks.map((b) => ({ blocked: b.blocked, source: b.source, at: b.at })),
       promos: promos.map((p) => ({ key: p.key, at: p.shownAt })),

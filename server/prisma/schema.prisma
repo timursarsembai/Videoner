@@ -171,6 +171,11 @@ model BotUser {
   // сбрасывается при отключении аккаунта. Подключённым файлом cookies.txt
   // не ставится — файл мог быть и не из нашего расширения.
   extensionLinkedAt DateTime?
+  // Подписан ли на канал новостей @videonerdownload — по последней проверке
+  // (ChannelMembershipService, раз в сутки; бот — админ канала). null — ещё
+  // не проверяли или проверка не удалась. Только для дашборда.
+  inChannel          Boolean?
+  inChannelCheckedAt DateTime?
   // Когда заблокировал бота (или удалил аккаунт); null — бот ему доступен.
   // История изменений — BotBlockEvent.
   blockedAt         DateTime?

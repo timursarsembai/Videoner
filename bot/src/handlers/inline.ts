@@ -73,8 +73,14 @@ type ShareCardData = {
 };
 
 async function shareCardResult(downloadId: string, lang: Lang) {
-  const c = await api<ShareCardData>(`/download/${downloadId}/card`, undefined, { timeoutMs: 4_000 });
+  const c = await api<ShareCardData>(`/download/${downloadId}/card`, undefined, { timeoutMs: 3_000 });
   if (c.kind === "a") return null;
+  // На инлайн-запрос Telegram ждёт считаные секунды: ссылку-приглашение
+  // ждём не дольше секунды (обычно она уже в кеше), нет — без «Скопировать».
+  const shareUrl = await Promise.race([
+    shareLinkFor(c.url),
+    new Promise<undefined>((r) => setTimeout(() => r(undefined), 1_000).unref()),
+  ]);
   const card: VideoCard = {
     title: c.title,
     url: c.url,
@@ -82,7 +88,7 @@ async function shareCardResult(downloadId: string, lang: Lang) {
     quality: c.quality ?? "",
     extension: c.extension ?? "mp4",
     size: c.size ?? undefined,
-    shareUrl: await shareLinkFor(c.url),
+    shareUrl,
     downloadId,
   };
   const html = cardHtml(card, lang);
@@ -92,7 +98,19 @@ async function shareCardResult(downloadId: string, lang: Lang) {
     ...(c.height ? { height: c.height } : {}),
     ...(c.duration ? { duration: c.duration } : {}),
   };
-  return {
+  // Запасной результат — то же видео с обычной подписью, если Telegram не
+  // примет карточку в инлайн-ответе.
+  const numberLine = downloadNumberLine(c.number, lang);
+  const caption = withNumberLink(messages[lang].fileCaption(c.title, c.url, shareUrl, undefined, numberLine), numberLine, lang);
+  const plain = {
+    type: "video" as const,
+    id: SHARE_RESULT_ID,
+    video_file_id: c.fileId,
+    title: c.title || messages[lang].inlineResultTitle,
+    caption: caption.text,
+    caption_entities: caption.entities,
+  };
+  const rich = {
     type: "article" as const,
     id: SHARE_RESULT_ID,
     title: c.title || messages[lang].inlineResultTitle,
@@ -106,6 +124,7 @@ async function shareCardResult(downloadId: string, lang: Lang) {
     },
     reply_markup: cardKeyboard(card, lang),
   };
+  return { rich, plain };
 }
 
 export function registerInlineHandlers(bot: Bot) {
@@ -121,11 +140,17 @@ export function registerInlineHandlers(bot: Bot) {
         console.error("Карточка для «Поделиться» не собрана:", e?.message ?? e);
         return null;
       });
-      await ctx.answerInlineQuery(result ? [result] : [], {
-        cache_time: 0,
-        is_personal: true,
-        ...(result ? {} : { button: { text: m.inlineHintButton, start_parameter: "inline" } }),
-      });
+      const opts = { cache_time: 0, is_personal: true };
+      if (!result) {
+        await ctx.answerInlineQuery([], { ...opts, button: { text: m.inlineHintButton, start_parameter: "inline" } });
+        return;
+      }
+      try {
+        await ctx.answerInlineQuery([result.rich], opts);
+      } catch (e: any) {
+        console.error("Карточка в инлайн-ответе не принята, отдаю видео с подписью:", e?.message ?? e);
+        await ctx.answerInlineQuery([result.plain], opts);
+      }
       return;
     }
 

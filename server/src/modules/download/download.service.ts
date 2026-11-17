@@ -487,9 +487,6 @@ export class DownloadService {
     };
   }
 
-  // Бот сообщает file_id, который Telegram вернул на отправку файла. Пишем
-  // только в записи с ключом кеша: без него повторно найти этот file_id
-  // всё равно нечем.
   // Данные карточки видео для кнопки «Поделиться» в боте: человек выбирает
   // чат, и бот отправляет туда ту же карточку по file_id (bot handlers/inline.ts).
   // Id скачивания — UUID, угадать чужой нельзя. Нет file_id — делиться нечем.
@@ -537,12 +534,16 @@ export class DownloadService {
     };
   }
 
+  // Бот сообщает file_id, который Telegram вернул на отправку файла. Пишем в
+  // любую запись: кеш повторов ищет только записи с ключом кеша (findCached),
+  // а без ключа file_id нужен кнопке «Поделиться» (cardFor) — делится им
+  // только тот, у кого карточка с этой кнопкой.
   async setTelegramFileId(downloadId: string, fileId: string) {
     if (!/^[A-Za-z0-9_-]{10,255}$/.test(fileId)) {
       throw new BadRequestException('Invalid file_id');
     }
     const { count } = await this.prisma.download.updateMany({
-      where: { id: downloadId, cacheKey: { not: null } },
+      where: { id: downloadId },
       data: { telegramFileId: fileId },
     });
     return { saved: count > 0 };

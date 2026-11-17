@@ -150,7 +150,7 @@ export function AllUsersTable({ onOpen }: { onOpen: (telegramId: string) => void
           <option value="">Канал: все</option>
           <option value="yes">В канале · {counts.inChannel}</option>
           <option value="no">Не в канале · {counts.notInChannel}</option>
-          {counts.channelUnknown > 0 && <option value="unknown">Не проверяли · {counts.channelUnknown}</option>}
+          <option value="unknown">Не проверяли · {counts.channelUnknown}</option>
         </select>
         <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)} className={selectClass} aria-label="Сортировка">
           {SORTS.map((s) => (

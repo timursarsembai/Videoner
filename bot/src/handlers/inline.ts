@@ -57,6 +57,9 @@ function pickQuality(available: string[], sizes: Record<string, number> = {}): s
 // Результат кнопки «Поделиться» под карточкой видео (rich-card.ts): в
 // выбранный чат уходит та же карточка — видео по file_id, без скачивания.
 const SHARE_RESULT_ID = "card";
+// Тот же ролик обычным видео с подписью — вторым пунктом: не все приложения
+// Telegram показывают карточку в списке инлайн-результатов.
+const SHARE_VIDEO_RESULT_ID = "card-video";
 
 type ShareCardData = {
   url: string;
@@ -104,7 +107,7 @@ async function shareCardResult(downloadId: string, lang: Lang) {
   const caption = withNumberLink(messages[lang].fileCaption(c.title, c.url, shareUrl, undefined, numberLine), numberLine, lang);
   const plain = {
     type: "video" as const,
-    id: SHARE_RESULT_ID,
+    id: SHARE_VIDEO_RESULT_ID,
     video_file_id: c.fileId,
     title: c.title || messages[lang].inlineResultTitle,
     caption: caption.text,
@@ -136,6 +139,7 @@ export function registerInlineHandlers(bot: Bot) {
     // «Поделиться» под карточкой видео: «card <id скачивания>».
     const share = SHARE_QUERY_RE.exec(url);
     if (share) {
+      console.log(`«Поделиться» ${share[1]}: запрос получен`);
       const result = await shareCardResult(share[1], lang).catch((e) => {
         console.error("Карточка для «Поделиться» не собрана:", e?.message ?? e);
         return null;
@@ -146,7 +150,8 @@ export function registerInlineHandlers(bot: Bot) {
         return;
       }
       try {
-        await ctx.answerInlineQuery([result.rich], opts);
+        await ctx.answerInlineQuery([result.rich, result.plain], opts);
+        console.log(`«Поделиться» ${share[1]}: отдал карточку и видео`);
       } catch (e: any) {
         console.error("Карточка в инлайн-ответе не принята, отдаю видео с подписью:", e?.message ?? e);
         await ctx.answerInlineQuery([result.plain], opts);
@@ -192,7 +197,10 @@ export function registerInlineHandlers(bot: Bot) {
   bot.on("chosen_inline_result", async (ctx) => {
     const chosen = ctx.chosenInlineResult;
     // Карточка «Поделиться» уже готова целиком — заменять и качать нечего.
-    if (chosen.result_id === SHARE_RESULT_ID) return;
+    if (chosen.result_id === SHARE_RESULT_ID || chosen.result_id === SHARE_VIDEO_RESULT_ID) {
+      console.log(`«Поделиться»: отправлено (${chosen.result_id})`);
+      return;
+    }
     const inlineMessageId = chosen.inline_message_id;
     const url = chosen.query.trim();
     const lang = await userLang(ctx.from);

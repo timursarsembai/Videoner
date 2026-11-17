@@ -108,10 +108,17 @@ function qualityValue(card: VideoCard, lang: Lang): string {
       : card.quality === "gallery"
         ? m.galleryButton.replace(/^\S+\s+/, "")
         : card.quality;
-  return `${q} · ${card.extension.toUpperCase()}`;
+  // «original» (флаг -hd, «сразу видео») — служебное слово, людям его не
+  // показываем: остаётся только формат.
+  const ext = card.extension.toUpperCase();
+  return q === "original" || !q ? ext : `${q} · ${ext}`;
 }
 
 export const CARD_VIDEO_ID = "video";
+
+// Сервер Bot API не умеет карточки (sendRichMessage ответил 404) — до
+// перезапуска шлём видео по-старому, не тратя на каждое неудачную попытку.
+let cardsDisabled = false;
 
 export function cardHtml(card: VideoCard, lang: Lang): string | null {
   const m = messages[lang];
@@ -184,7 +191,7 @@ export async function sendVideoCard(
   } = {},
 ): Promise<{ fileId?: string } | null> {
   const html = cardHtml(card, lang);
-  if (!html) return null;
+  if (!html || cardsDisabled) return null;
   try {
     const sent = await tg.sendRichMessage(
       chatId,
@@ -195,9 +202,16 @@ export async function sendVideoCard(
       },
       { ...other.reply, reply_markup: cardKeyboard(card, lang, other.extraMarkup) },
     );
-    return { fileId: richVideoFileId(sent.rich_message) };
+    const fileId = richVideoFileId(sent.rich_message);
+    if (!fileId) console.error("Карточка отправлена, но file_id видео в ответе не найден — повтор пойдёт без кеша");
+    return { fileId };
   } catch (e) {
-    if (e instanceof GrammyError) {
+    // Повторяем обычным видео только отказ именно карточки (400). Блокировка
+    // бота (403), лимит (429) и прочее обычное видео не исправит — файл
+    // заново не загружаем, ошибку отдаём как есть.
+    if (e instanceof GrammyError && (e.error_code === 400 || e.error_code === 404)) {
+      // 404 — сервер Bot API не знает sendRichMessage: дальше и не пробуем.
+      if (e.error_code === 404 || /method not found/i.test(e.description)) cardsDisabled = true;
       console.error(`Карточка видео не принята (${e.error_code} ${e.description}), шлю обычным видео`);
       return null;
     }

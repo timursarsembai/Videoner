@@ -34,6 +34,7 @@ test("card html escapes and links", () => {
   assert.ok(html.includes(">№8 216</a>"));
   assert.ok(html.includes("<td>YouTube</td>"));
   assert.ok(html.includes("720p · MP4"));
+  assert.ok(cardHtml({ ...card, quality: "original" }, "ru")!.includes("<td>MP4</td>"));
   assert.ok(html.includes("Права на видео принадлежат его автору.<br/>Скачано бесплатно через @VideonerBot"));
 });
 

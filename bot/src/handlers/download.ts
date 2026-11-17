@@ -585,16 +585,17 @@ export function sendersForApi(
   const asReply = replyTo
     ? { ...thread, reply_parameters: { message_id: replyTo, allow_sending_without_reply: true } }
     : thread;
+  // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
+  // ссылка на первоисточник и упоминание бота остаются с видео у любого,
+  // кому его переслали.
+  const replyWithVideo = async (file: InputFile | string, caption: FileCaption, dims?: VideoDimensions) =>
+    (await tg.sendVideo(chatId, file, { caption: caption.text, caption_entities: caption.entities, supports_streaming: true, ...dims, ...asReply, reply_markup: videoMarkup }))
+      .video?.file_id;
   return {
     reply: (text: string) => tg.sendMessage(chatId, text, asReply),
     editMessageText: (messageId: number, text: string, keyboard?: InlineKeyboard) =>
       tg.editMessageText(chatId, messageId, text, keyboard ? { reply_markup: keyboard } : undefined),
-    // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
-    // ссылка на первоисточник и упоминание бота остаются с видео у любого,
-    // кому его переслали.
-    replyWithVideo: async (file: InputFile | string, caption: FileCaption, dims?: VideoDimensions) =>
-      (await tg.sendVideo(chatId, file, { caption: caption.text, caption_entities: caption.entities, supports_streaming: true, ...dims, ...asReply, reply_markup: videoMarkup }))
-        .video?.file_id,
+    replyWithVideo,
     // Только личка (у групп chatId отрицательный): в группах карточку пока
     // не показываем — решение владельца от 17.11.2026.
     replyWithVideoCard:
@@ -602,16 +603,7 @@ export function sendersForApi(
         ? async (file: () => InputFile | string, card: VideoCard, lang: Lang, caption: FileCaption, dims?: VideoDimensions) => {
             const sent = await sendVideoCard(tg, chatId, file(), card, lang, { dims, extraMarkup: videoMarkup, reply: asReply });
             if (sent) return sent.fileId;
-            return (
-              await tg.sendVideo(chatId, file(), {
-                caption: caption.text,
-                caption_entities: caption.entities,
-                supports_streaming: true,
-                ...dims,
-                ...asReply,
-                reply_markup: videoMarkup,
-              })
-            ).video?.file_id;
+            return replyWithVideo(file(), caption, dims);
           }
         : undefined,
     replyWithAudio: async (file: InputFile | string, caption: FileCaption) =>

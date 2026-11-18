@@ -8,9 +8,11 @@ import { RedditAnalyticsService } from './reddit-analytics.service';
 import { PublicStatsController } from './public-stats.controller';
 import { PublicStatsService } from './public-stats.service';
 import { ChannelMembershipService } from './channel-membership.service';
+import { BotGroupService } from './bot-group.service';
+import { BotGroupController } from './bot-group.controller';
 
 @Module({
-  controllers: [AnalyticsController, BotUserController, PublicStatsController],
+  controllers: [AnalyticsController, BotUserController, PublicStatsController, BotGroupController],
   providers: [
     PrismaService,
     BotUserService,
@@ -18,6 +20,7 @@ import { ChannelMembershipService } from './channel-membership.service';
     RedditAnalyticsService,
     PublicStatsService,
     ChannelMembershipService,
+    BotGroupService,
   ],
   exports: [BotUserService],
 })

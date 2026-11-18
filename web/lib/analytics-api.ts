@@ -448,3 +448,27 @@ export async function fetchAttempts(
   if (source) params.set("source", source);
   return get<AttemptsPage>(`/attempts?${params.toString()}`);
 }
+
+// Раздел «Группы» (server: BotGroupService.list). Учёт — с 18.11.2026.
+export type BotGroupRow = {
+  chatId: string;
+  title: string | null;
+  username: string | null;
+  type: string | null;
+  addedById: string | null;
+  addedAt: string | null;
+  removedAt: string | null;
+  members: number | null;
+  downloads: number;
+  lastLinkAt: string | null;
+  lastDownloadAt: string | null;
+  firstSeenAt: string;
+};
+
+export type BotGroups = {
+  total: number;
+  present: number;
+  activeWeek: number;
+  downloads: number;
+  groups: BotGroupRow[];
+};

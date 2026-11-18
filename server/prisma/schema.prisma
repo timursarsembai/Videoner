@@ -308,6 +308,30 @@ model BotBlockEvent {
 // Настройки режима для групп (bot/src/handlers/group.ts), одна строка на чат.
 // Нет строки — у группы настройки по умолчанию. Меняют только админы группы
 // командой /settings; права проверяет бот, сервер доверяет ему по API-ключу.
+// Группы, куда добавлен бот (дашборд, раздел «Группы»). Списка своих чатов
+// Telegram боту не даёт, поэтому записываем сами: при добавлении/удалении
+// (my_chat_member) и при первой ссылке в группе — так попадают и группы,
+// куда бота добавили до 18.11.2026.
+model BotGroup {
+  chatId       BigInt    @id
+  title        String?
+  // Публичное имя (t.me/<username>); у закрытых групп нет.
+  username     String?
+  type         String?
+  // Кто добавил бота (Telegram ID) — только если добавление застали.
+  addedById    BigInt?
+  addedAt      DateTime?
+  // Бота удалили из группы; при повторном добавлении — снова null.
+  removedAt    DateTime?
+  members      Int?
+  membersAt    DateTime?
+  downloads    Int       @default(0)
+  lastLinkAt   DateTime?
+  lastDownloadAt DateTime?
+  firstSeenAt  DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
 model GroupSettings {
   // Идентификатор чата Telegram (у групп отрицательный).
   chatId      BigInt   @id

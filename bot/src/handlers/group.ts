@@ -6,6 +6,7 @@ import { postDescription } from "../caption.js";
 import { loadSettings, saveSettings } from "../settings-store.js";
 import { fetchInstantVideo, instantVideo, saveInstantVideo } from "../instant-video.js";
 import { applyChatCommands } from "../commands.js";
+import { trackGroupAdded, trackGroupDownload, trackGroupLink, trackGroupMigrated, trackGroupRemoved } from "../group-tracking.js";
 import {
   ADMIN_TELEGRAM_ID,
   BOT_FILE_LIMIT,
@@ -344,12 +345,14 @@ export function registerGroupHandlers(bot: Bot) {
     const isIn = ["member", "administrator"].includes(after.status);
     // Бота удалили из группы — подключённые к ней аккаунты больше не нужны.
     if (wasIn && !isIn) {
+      trackGroupRemoved(ctx.chat);
       await api("/user-cookies/scope-delete", { scope: `chat:${ctx.chat.id}` }).catch((e) =>
         console.error(`Группа ${ctx.chat.id}: подключения не удалены:`, e?.message ?? e),
       );
       return;
     }
     if (wasIn || !isIn) return;
+    trackGroupAdded(ctx.api, ctx.chat, ctx.myChatMember.from.id);
     await sendGroupWelcome(ctx);
   });
 
@@ -426,6 +429,8 @@ export function registerGroupHandlers(bot: Bot) {
       GROUP_LINKS_PER_MESSAGE,
     );
     if (!urls.length) return;
+    // Учёт групп: так в список попадают и группы, куда бота добавили раньше.
+    trackGroupLink(ctx.api, ctx.chat);
 
     if (from.id !== ADMIN_TELEGRAM_ID && !checkUserRateLimit(from.id)) return;
 
@@ -449,6 +454,7 @@ export function registerGroupHandlers(bot: Bot) {
           console.error(`Группа ${chatId}: скачивание ${url} упало:`, e?.message ?? e);
           return false;
         });
+        if (ok) trackGroupDownload(chatId);
         allDelivered &&= ok;
       }
       // Удаляем, только если пришло видео по каждой ссылке: иначе вместе с
@@ -467,6 +473,7 @@ export function registerGroupHandlers(bot: Bot) {
   // «удалять ссылки».
   groups.on("message:migrate_to_chat_id", async (ctx) => {
     const newChatId = ctx.message.migrate_to_chat_id;
+    trackGroupMigrated(ctx.chat.id, newChatId);
     try {
       const old = await api<GroupSettings>(`/group-settings/${ctx.chat.id}`);
       const { deleteLinks, caption, quality, longVideos, cookiesBy, language } = { ...DEFAULT_GROUP_SETTINGS, ...old };

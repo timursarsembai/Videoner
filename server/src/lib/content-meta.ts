@@ -18,9 +18,9 @@ export type ContentMeta = {
 };
 
 const MAX_HASHTAGS = 15;
-// «#» не после буквы, цифры, «/», «&», «=», «?», «.», «:» — так отсекаются
-// site.com/page#chapters и &#39;, а «текст 🔥#тег» и «#тег1 #тег2» проходят.
-const HASHTAG_RE = /(?<![\p{L}\p{N}_/&=?.:])#([\p{L}\p{M}\p{N}_]{2,50})/gu;
+// «#» не после буквы, цифры, «/» и «&» — так отсекаются site.com/page#chapters
+// и &#39;, а «текст 🔥#тег», «плов.#рецепт» и «#тег1 #тег2» проходят.
+const HASHTAG_RE = /(?<![\p{L}\p{N}_/&])#([\p{L}\p{M}\p{N}_]{2,50})/gu;
 
 const clean = (v: unknown, max = 200): string | null =>
   typeof v === 'string' && v.trim() ? v.trim().slice(0, max) : null;
@@ -94,10 +94,12 @@ export function contentMeta(info: Partial<YtdlpVideoInfo> & Record<string, unkno
       authorName = nick;
       authorUrl = `https://www.instagram.com/${nick}/`;
     }
-  } else if (platform !== 'youtube') {
-    authorName = clean(info.uploader) ?? authorName;
-    authorId = clean(info.uploader_id, 100) ?? authorId;
-    authorUrl = safeUrl(info.uploader_url) ?? authorUrl;
+  } else if (platform !== 'youtube' && clean(info.uploader)) {
+    // Имя, номер и ссылка — все от uploader: у Reddit channel_id — это
+    // сабреддит, смешивать нельзя (все авторы сабреддита слились бы в одного).
+    authorName = clean(info.uploader);
+    authorId = clean(info.uploader_id, 100);
+    authorUrl = safeUrl(info.uploader_url);
   }
 
   const category =

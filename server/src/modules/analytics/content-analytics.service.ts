@@ -18,6 +18,9 @@ export const NOISE_HASHTAGS = [
   'реки', 'хочуврек', 'врек', 'втоп', 'тренды', 'тренд', 'рекомендация',
 ];
 
+// Сколько последних скачиваний разбирать на темы за один запрос (память).
+const TOPICS_MAX_ROWS = 30_000;
+
 const OK = Prisma.sql`d.status IN ('COMPLETED','EXPIRED') AND d.source <> 'API'`;
 
 function platformFilter(platform?: Downloaders) {
@@ -103,7 +106,12 @@ export class ContentAnalyticsService {
       SELECT d."videoTitle" AS title, d.hashtags, d."authorName" AS author, coalesce(d."botUserId", d."clientIpHash") AS who
       FROM "Download" d
       WHERE ${OK} AND d."createdAt" >= ${range.from} AND d."createdAt" < ${range.to} ${platformFilter(platform)}
-      LIMIT 200000`;
+      ORDER BY d."createdAt" DESC
+      LIMIT ${TOPICS_MAX_ROWS + 1}`;
+    // Сейчас это ~3 тыс. скачиваний в месяц. Если станет больше предела —
+    // считаем по самым свежим и честно пишем об этом (truncated).
+    const truncated = rows.length > TOPICS_MAX_ROWS;
+    if (truncated) rows.length = TOPICS_MAX_ROWS;
     const acc = new Map<TopicId, { downloads: number; users: Set<string>; examples: Map<string, number> }>();
     for (const r of rows) {
       for (const id of topicsOf(r)) {
@@ -117,6 +125,7 @@ export class ContentAnalyticsService {
     }
     return {
       total: rows.length,
+      truncated,
       topics: (Object.keys(TOPIC_LABELS) as TopicId[]).map((id) => {
         const t = acc.get(id);
         return {

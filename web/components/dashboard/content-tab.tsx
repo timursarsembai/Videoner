@@ -222,7 +222,8 @@ function TopicsCard() {
           ))}
         </tbody>
       </table>
-      <p className="mt-2 text-xs text-foreground/40">Всего удачных скачиваний за период: {total}</p>
+      <p className="mt-2 text-xs text-foreground/40">        {q.data?.truncated ? `Скачиваний много — посчитано по последним ${total}` : `Всего удачных скачиваний за период: ${total}`}
+      </p>
     </ChartCard>
   );
 }

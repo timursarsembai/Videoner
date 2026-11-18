@@ -493,4 +493,4 @@ export type ContentTopic = {
   users: number;
   examples: { title: string; count: number }[];
 };
-export type ContentTopics = { total: number; topics: ContentTopic[] };
+export type ContentTopics = { total: number; truncated?: boolean; topics: ContentTopic[] };

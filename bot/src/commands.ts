@@ -1,3 +1,4 @@
+import { PROFILE_TEXTS } from "./bot-profile-texts.js";
 import type { Api } from "grammy";
 import type { Lang } from "./i18n.js";
 
@@ -423,6 +424,11 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
 
 // В группах — своё меню: там бот работает сам, а админам нужна /settings
 // (handlers/group.ts).
+// /contact — связь с автором (владелец 18.11.2026), подпись из bot-profile-texts.ts.
+for (const lang of Object.keys(COMMANDS) as Lang[]) {
+  COMMANDS[lang].push({ command: "contact", description: PROFILE_TEXTS[lang].cmd });
+}
+
 export const GROUP_COMMANDS: Record<Lang, { command: string; description: string }[]> = {
   ru: [
     { command: "settings", description: "Настройки бота в группе (для админов)" },

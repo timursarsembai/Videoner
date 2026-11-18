@@ -1,3 +1,4 @@
+import { FEEDBACK_USERNAME, contactMessage, registerBotProfile } from "./bot-profile.js";
 import "dotenv/config";
 import { Bot, GrammyError, InlineKeyboard } from "grammy";
 import { LANGS, NEWS_CHANNEL, messages, sitePath, type Lang } from "./i18n.js";
@@ -64,9 +65,6 @@ bot.use(async (ctx, next) => {
   await next();
 });
 
-// Контакт владельца для обратной связи (кнопка в /start).
-const FEEDBACK_USERNAME = "sarsembai_timur";
-
 bot.command("start", async (ctx) => {
   const lang = await langOf(ctx);
   // В группе — как бот работает там (handlers/group.ts), а не инструкция для лички.
@@ -96,6 +94,12 @@ bot.command("start", async (ctx) => {
       // Обратная связь — личка владельца (18.11.2026).
       .url(messages[lang].contactButton, `https://t.me/${FEEDBACK_USERNAME}`),
   });
+});
+
+// Связь с автором (меню, /contact).
+bot.command("contact", async (ctx) => {
+  const { text, keyboard } = contactMessage(await langOf(ctx));
+  await ctx.reply(text, { reply_markup: keyboard });
 });
 
 // Страница расширения для браузера на сайте.
@@ -186,7 +190,8 @@ async function registerCommandMenus() {
     );
   }
 }
-void registerCommandMenus();
+// Профиль (описание бота) — после меню, по очереди: так меньше упираемся в лимит.
+void registerCommandMenus().then(() => registerBotProfile(bot.api));
 
 // Статьи блога → канал новостей (blog-channel.ts).
 startBlogChannel(bot.api);

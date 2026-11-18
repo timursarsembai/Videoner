@@ -199,16 +199,16 @@ export function failedDownloadText(errorCategory: string | null | undefined, lan
   return errorCategory === "SERVER_BLOCKED" ? m.errorPlatformRefused : m.downloadFailed;
 }
 
-// Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
-// Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
-// только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.
-// Ссылка на запись Instagram из ошибки плагина Threads (см. выше). Только
+// Ссылка на запись Instagram из ошибки плагина Threads (server/ytdlp-plugins/threads). Только
 // вида instagram.com/p/<код>/ — в кнопку не попадёт ничего постороннего.
 export function instagramAttachmentUrl(raw: string): string | null {
   const m = /instagram attachment of this threads post is unavailable: (https:\/\/www\.instagram\.com\/p\/[A-Za-z0-9_-]+\/)/i.exec(raw || "");
   return m ? m[1] : null;
 }
 
+// Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
+// Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
+// только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.
 export function friendlyError(raw: string, lang: Lang): string {
   const msg = (raw || "").toLowerCase();
   const m = messages[lang];

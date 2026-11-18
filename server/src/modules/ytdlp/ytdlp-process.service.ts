@@ -345,10 +345,6 @@ export class YtdlpProcessService implements OnModuleInit {
       /rate-?limit reached or login required/i,
       /accessing posts anonymously/i,
     ],
-    // Пост Threads с прикреплённой записью Instagram: звуковую версию плагин
-    // берёт на instagram.com, а тот отвечает нашему адресу через раз
-    // (18.11.2026 — пять отказов подряд). С другого адреса обычно проходит.
-    threads: [/instagram attachment of this threads post is unavailable/i],
   };
 
   private isBlockError(message: string, platform: string | null, withCookies: boolean): boolean {

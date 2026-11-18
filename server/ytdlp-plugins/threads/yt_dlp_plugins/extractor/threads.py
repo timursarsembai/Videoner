@@ -35,6 +35,7 @@ text_post_app_info.linked_inline_media. Файл за него забираем 
 import base64
 import json
 import os
+import random
 import re
 import tempfile
 import time
@@ -239,6 +240,23 @@ class ThreadsIE(InfoExtractor):
         code = media.get('code')
         return code if isinstance(code, str) and code else None
 
+    def _instagram_proxies(self, target):
+        """Прокси сервера для запроса к Instagram, в случайном порядке.
+
+        Список тот же, что у сервера (YOUTUBE_PROXY_URLS через запятую, иначе
+        YOUTUBE_PROXY_URL), — yt-dlp запущен сервером и наследует окружение.
+        С куками Instagram прокси не берём: вход из чужой страны Instagram
+        видит как подозрительный и может заблокировать аккаунт (то же правило
+        у сервера, proxyAllowed).
+        """
+        if self._get_cookies(target):
+            return []
+        raw = os.environ.get('YOUTUBE_PROXY_URLS') or os.environ.get('YOUTUBE_PROXY_URL') or ''
+        proxies = [p.strip().strip('"\'') for p in raw.split(',')]
+        proxies = [p for p in proxies if p]
+        random.shuffle(proxies)
+        return proxies
+
     def _instagram_node(self, code):
         """Данные прикреплённой записи Instagram, взятые с instagram.com.
 
@@ -259,10 +277,10 @@ class ThreadsIE(InfoExtractor):
         столько же раз, сколько и основной путь.
         """
         target = f'https://www.instagram.com/p/{code}/'
+        headers = {'User-Agent': _CRAWLER_UA, 'Accept-Language': 'en-US,en;q=0.9'}
         for attempt in range(1, _ATTEMPTS + 1):
             webpage = self._download_webpage(
-                target, code, fatal=False,
-                headers={'User-Agent': _CRAWLER_UA, 'Accept-Language': 'en-US,en;q=0.9'},
+                target, code, fatal=False, headers=headers,
                 note=f'Запрашиваю вложение Instagram (попытка {attempt} из {_ATTEMPTS})',
                 errnote=False)
             node = self._post_node(webpage, code) if webpage else None
@@ -270,12 +288,22 @@ class ThreadsIE(InfoExtractor):
                 return node
             if attempt < _ATTEMPTS:
                 time.sleep(_RETRY_SLEEP)
+        # Адрес сервера Instagram не пустил — пробуем с адресов прокси, по
+        # одной попытке на каждый (18.11.2026: пять отказов подряд с сервера).
+        # Только этот запрос: прокси для всего Threads сервер включает сам и
+        # по своим правилам (ytdlp-process.service.ts), смешивать нельзя.
+        for proxy in self._instagram_proxies(target):
+            webpage = self._download_webpage(
+                target, code, fatal=False, headers={**headers, 'Ytdl-request-proxy': proxy},
+                note='Запрашиваю вложение Instagram через прокси', errnote=False)
+            node = self._post_node(webpage, code) if webpage else None
+            if node:
+                return node
         # Ошибка именно про вложение: сказать «в посте нет медиа» было бы
         # неправдой — медиа есть, не открылась его настоящая запись.
-        # Фраза английская и устойчивая, со ссылкой на саму запись: по фразе
-        # сервер повторяет запрос через прокси (ytdlp-process.service.ts,
-        # ANONYMOUS_BLOCK_PATTERNS), а бот, если не помогло и это, даёт
-        # человеку кнопку на запись Instagram (bot/src/helpers.ts).
+        # Фраза английская и устойчивая, со ссылкой на саму запись: по ней бот
+        # даёт человеку кнопку на запись Instagram (bot/src/helpers.ts,
+        # instagramAttachmentUrl).
         raise ExtractorError(
             f'Instagram attachment of this Threads post is unavailable: https://www.instagram.com/p/{code}/',
             expected=True)

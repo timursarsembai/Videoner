@@ -9,6 +9,7 @@ import { PublicStatsController } from './public-stats.controller';
 import { PublicStatsService } from './public-stats.service';
 import { ChannelMembershipService } from './channel-membership.service';
 import { BotGroupService } from './bot-group.service';
+import { ContentAnalyticsService } from './content-analytics.service';
 import { BotGroupController } from './bot-group.controller';
 
 @Module({
@@ -21,6 +22,7 @@ import { BotGroupController } from './bot-group.controller';
     PublicStatsService,
     ChannelMembershipService,
     BotGroupService,
+    ContentAnalyticsService,
   ],
   exports: [BotUserService],
 })

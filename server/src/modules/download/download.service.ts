@@ -75,6 +75,8 @@ import { parseUiLang } from 'src/lib/languages';
 import { parseCountry } from 'src/lib/countries';
 import { errorText } from 'src/lib/error-text';
 import { USER_AGENT as TIKTOK_USER_AGENT } from 'src/lib/tiktok-photo';
+import { contentMeta, type ContentMeta } from 'src/lib/content-meta';
+import type { YtdlpVideoInfo } from 'src/types/youtube';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -431,8 +433,9 @@ export class DownloadService {
     req: Request;
     meta: DownloadRequestMeta;
     title?: string;
+    content?: ContentMeta;
   }) {
-    const { cacheKey, url, req, meta, title } = params;
+    const { cacheKey, url, req, meta, title, content } = params;
     if (!cacheKey) return null;
     const hit = await this.findCached(cacheKey, !!meta.acceptTelegramFileId);
     if (!hit) return null;
@@ -452,6 +455,7 @@ export class DownloadService {
           botUserId,
           source: meta.source ?? DownloadSource.API,
           videoTitle: title,
+          ...content,
           videoDuration: hit.videoDuration,
           videoWidth: hit.videoWidth,
           videoHeight: hit.videoHeight,
@@ -701,6 +705,7 @@ export class DownloadService {
     source?: DownloadSource;
     videoTitle?: string;
     videoDuration?: number;
+    content?: ContentMeta;
     cacheKey?: string | null;
     clientIp?: string;
     clientCountry?: string;
@@ -716,6 +721,7 @@ export class DownloadService {
         botUserId: data.botUserId,
         source: data.source ?? DownloadSource.API,
         videoTitle: data.videoTitle,
+        ...data.content,
         videoDuration: data.videoDuration,
         cacheKey: data.cacheKey ?? null,
         clientIpHash: hashClientIp(data.clientIp),
@@ -783,6 +789,8 @@ export class DownloadService {
         downloader: this.resolveDownloader(platform),
         source: DownloadSource.EXTENSION,
         videoTitle: title,
+        // У расширения только название и ссылка — автор и хэштеги из них.
+        ...contentMeta({ title: title ?? undefined }, platform, url),
         fileSize,
         clientIpHash: hashClientIp(meta.clientIp),
         clientSide: true,
@@ -1479,12 +1487,14 @@ export class DownloadService {
         userCookies || multi || !hasVideo
           ? null
           : this.cacheKeyFor(platform, info, 'v', quality, extension || 'mp4');
+      const content = contentMeta(info as YtdlpVideoInfo & Record<string, unknown>, platform, url);
       const cached = await this.serveFromCache({
         cacheKey,
         url,
         req,
         meta,
         title: info.title,
+        content,
       });
       if (cached) return cached;
 
@@ -1538,6 +1548,7 @@ export class DownloadService {
           source: meta.source,
           videoTitle: info.title,
           videoDuration: info.duration,
+          content,
           cacheKey,
           clientIp: meta.clientIp,
           clientCountry: meta.clientCountry,
@@ -1741,12 +1752,14 @@ export class DownloadService {
       const cacheKey = userCookies || multi
         ? null
         : this.cacheKeyFor(platform, info, 'a', quality, audioExtension);
+      const content = contentMeta(info as YtdlpVideoInfo & Record<string, unknown>, platform, url);
       const cached = await this.serveFromCache({
         cacheKey,
         url,
         req,
         meta,
         title: info.title,
+        content,
       });
       if (cached) return cached;
 
@@ -1769,6 +1782,7 @@ export class DownloadService {
           source: meta.source,
           videoTitle: info.title,
           videoDuration: info.duration,
+          content,
           cacheKey,
           clientIp: meta.clientIp,
           clientCountry: meta.clientCountry,

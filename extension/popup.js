@@ -662,12 +662,28 @@ async function mountLanguagePicker() {
   });
 }
 
+// Контакт владельца для обратной связи (18.11.2026) — в каждом окошке.
+const FEEDBACK_USERNAME = "sarsembai_timur";
+function mountFeedback() {
+  const box = document.getElementById("feedback");
+  if (!box) return;
+  const link = document.createElement("a");
+  link.href = `https://t.me/${FEEDBACK_USERNAME}`;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = `@${FEEDBACK_USERNAME}`;
+  const name = document.createElement("bdi");
+  name.append(link);
+  box.replaceChildren(`${t.feedback}: `, name);
+}
+
 async function main() {
   await loadLang();
   document.documentElement.lang = lang;
   document.documentElement.dir = isRtl() ? "rtl" : "ltr";
   void mountLanguagePicker();
   mountHistory();
+  mountFeedback();
   // Ход скачивания пишет background.js — окошко просто перерисовывается.
   session.onChanged(async (changes) => {
     // null — связь с фоновой частью восстановлена (Firefox, см. shared.js):

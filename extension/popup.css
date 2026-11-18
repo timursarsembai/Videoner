@@ -451,3 +451,17 @@ a.history-title:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* «Обратная связь: @ник» — внизу окошка (владелец 18.11.2026). */
+.feedback {
+  margin: 0;
+  padding: 8px 16px 12px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.feedback a {
+  color: var(--accent);
+  text-decoration: none;
+}

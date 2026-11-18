@@ -146,6 +146,7 @@ interface Messages {
   addToGroupButton: string;
   // Кнопка под /start: канал новостей проекта.
   newsButton: string;
+  contactButton: string;
   // Настройки группы (/settings, handlers/group.ts).
   fileCaptionShort: (title: string, sourceUrl: string) => string;
   sentBy: (name: string) => string;
@@ -410,6 +411,7 @@ const ru: Messages = {
   extensionPageButton: "🧩 Установить расширение",
   addToGroupButton: "👥 Добавить в группу",
   newsButton: "📣 Новости проекта",
+  contactButton: "✉️ Написать автору",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Новости проекта: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Скачивание №${n}`,
@@ -655,6 +657,7 @@ const en: Messages = {
   extensionPageButton: "🧩 Install the extension",
   addToGroupButton: "👥 Add to a group",
   newsButton: "📣 Project news",
+  contactButton: "✉️ Message the author",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Project news: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download #${n}`,
@@ -899,6 +902,7 @@ const ar: Messages = {
   extensionPageButton: "🧩 تثبيت الإضافة",
   addToGroupButton: "👥 إضافة إلى مجموعة",
   newsButton: "📣 أخبار المشروع",
+  contactButton: "✉️ راسل المطوّر",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 أخبار المشروع: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ التنزيل رقم ${n}`,
@@ -1143,6 +1147,7 @@ const zh: Messages = {
   extensionPageButton: "🧩 安装扩展",
   addToGroupButton: "👥 添加到群组",
   newsButton: "📣 项目动态",
+  contactButton: "✉️ 联系作者",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 项目动态：${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ 第${n}次下载`,
@@ -1387,6 +1392,7 @@ const hi: Messages = {
   extensionPageButton: "🧩 एक्सटेंशन इंस्टॉल करें",
   addToGroupButton: "👥 ग्रुप में जोड़ें",
   newsButton: "📣 प्रोजेक्ट की खबरें",
+  contactButton: "✉️ लेखक को लिखें",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 प्रोजेक्ट की खबरें: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ डाउनलोड क्र. ${n}`,
@@ -1631,6 +1637,7 @@ const indonesian: Messages = {
   extensionPageButton: "🧩 Pasang ekstensi",
   addToGroupButton: "👥 Tambahkan ke grup",
   newsButton: "📣 Berita proyek",
+  contactButton: "✉️ Hubungi pembuat",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Berita proyek: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Unduhan #${n}`,
@@ -1875,6 +1882,7 @@ const sw: Messages = {
   extensionPageButton: "🧩 Sakinisha kiendelezi",
   addToGroupButton: "👥 Ongeza kwenye kikundi",
   newsButton: "📣 Habari za mradi",
+  contactButton: "✉️ Mwandikie mwandishi",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Habari za mradi: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Upakuaji #${n}`,
@@ -2119,6 +2127,7 @@ const de: Messages = {
   extensionPageButton: "🧩 Erweiterung installieren",
   addToGroupButton: "👥 Zu einer Gruppe hinzufügen",
   newsButton: "📣 Projekt-News",
+  contactButton: "✉️ Dem Autor schreiben",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Projekt-News: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download Nr. ${n}`,
@@ -2363,6 +2372,7 @@ const fr: Messages = {
   extensionPageButton: "🧩 Installer l'extension",
   addToGroupButton: "👥 Ajouter à un groupe",
   newsButton: "📣 Actualités du projet",
+  contactButton: "✉️ Écrire à l’auteur",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Actualités du projet : ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Téléchargement n° ${n}`,
@@ -2607,6 +2617,7 @@ const it: Messages = {
   extensionPageButton: "🧩 Installa l'estensione",
   addToGroupButton: "👥 Aggiungi a un gruppo",
   newsButton: "📣 Novità del progetto",
+  contactButton: "✉️ Scrivi all’autore",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novità del progetto: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download n. ${n}`,
@@ -2851,6 +2862,7 @@ const pt: Messages = {
   extensionPageButton: "🧩 Instalar a extensão",
   addToGroupButton: "👥 Adicionar a um grupo",
   newsButton: "📣 Novidades do projeto",
+  contactButton: "✉️ Escrever ao autor",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novidades do projeto: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download n.º ${n}`,
@@ -3095,6 +3107,7 @@ const es: Messages = {
   extensionPageButton: "🧩 Instalar la extensión",
   addToGroupButton: "👥 Agregar a un grupo",
   newsButton: "📣 Novedades del proyecto",
+  contactButton: "✉️ Escribir al autor",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novedades del proyecto: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Descarga n.º ${n}`,
@@ -3339,6 +3352,7 @@ const uz: Messages = {
   extensionPageButton: "🧩 Kengaytmani oʻrnatish",
   addToGroupButton: "👥 Guruhga qoʻshish",
   newsButton: "📣 Loyiha yangiliklari",
+  contactButton: "✉️ Muallifga yozish",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Loyiha yangiliklari: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Yuklab olish №${n}`,
@@ -3583,6 +3597,7 @@ const tr: Messages = {
   extensionPageButton: "🧩 Eklentiyi yükle",
   addToGroupButton: "👥 Gruba ekle",
   newsButton: "📣 Proje haberleri",
+  contactButton: "✉️ Geliştiriciye yaz",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Proje haberleri: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ İndirme #${n}`,
@@ -3827,6 +3842,7 @@ const fa: Messages = {
   extensionPageButton: "🧩 نصب افزونه",
   addToGroupButton: "👥 افزودن به گروه",
   newsButton: "📣 اخبار پروژه",
+  contactButton: "✉️ نوشتن به سازنده",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 اخبار پروژه: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ دانلود شماره ${n}`,
@@ -4071,6 +4087,7 @@ const vi: Messages = {
   extensionPageButton: "🧩 Cài tiện ích",
   addToGroupButton: "👥 Thêm vào nhóm",
   newsButton: "📣 Tin tức dự án",
+  contactButton: "✉️ Nhắn cho tác giả",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Tin tức dự án: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Lượt tải #${n}`,
@@ -4316,6 +4333,7 @@ const bn: Messages = {
   extensionPageButton: "🧩 এক্সটেনশন ইনস্টল করুন",
   addToGroupButton: "👥 গ্রুপে যোগ করুন",
   newsButton: "📣 প্রজেক্টের খবর",
+  contactButton: "✉️ লেখককে লিখুন",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 প্রজেক্টের খবর: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ডাউনলোড নং ${n}`,
@@ -4560,6 +4578,7 @@ const ur: Messages = {
   extensionPageButton: "🧩 ایکسٹینشن انسٹال کریں",
   addToGroupButton: "👥 گروپ میں شامل کریں",
   newsButton: "📣 پروجیکٹ کی خبریں",
+  contactButton: "✉️ مصنف کو لکھیں",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 پروجیکٹ کی خبریں: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ڈاؤن لوڈ نمبر ${n}`,
@@ -4804,6 +4823,7 @@ const pl: Messages = {
   extensionPageButton: "🧩 Zainstaluj rozszerzenie",
   addToGroupButton: "👥 Dodaj do grupy",
   newsButton: "📣 Nowości projektu",
+  contactButton: "✉️ Napisz do autora",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Nowości projektu: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Pobranie nr ${n}`,
@@ -5048,6 +5068,7 @@ const ja: Messages = {
   extensionPageButton: "🧩 拡張機能をインストール",
   addToGroupButton: "👥 グループに追加",
   newsButton: "📣 プロジェクトのお知らせ",
+  contactButton: "✉️ 作者に連絡",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 プロジェクトのお知らせ：${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ダウンロード #${n}`,
@@ -5292,6 +5313,7 @@ const ko: Messages = {
   extensionPageButton: "🧩 확장 프로그램 설치",
   addToGroupButton: "👥 그룹에 추가",
   newsButton: "📣 프로젝트 소식",
+  contactButton: "✉️ 개발자에게 문의",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 프로젝트 소식: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ${n}번째 다운로드`,
@@ -5536,6 +5558,7 @@ const th: Messages = {
   extensionPageButton: "🧩 ติดตั้งส่วนขยาย",
   addToGroupButton: "👥 เพิ่มเข้ากลุ่ม",
   newsButton: "📣 ข่าวสารโปรเจกต์",
+  contactButton: "✉️ ติดต่อผู้พัฒนา",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 ข่าวสารโปรเจกต์: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ดาวน์โหลดครั้งที่ ${n}`,
@@ -5780,6 +5803,7 @@ const am: Messages = {
   extensionPageButton: "🧩 ቅጥያውን ይጫኑ",
   addToGroupButton: "👥 ወደ ቡድን ያክሉ",
   newsButton: "📣 የፕሮጀክቱ ዜና",
+  contactButton: "✉️ ለገንቢው ይጻፉ",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 የፕሮጀክቱ ዜና፦ ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ማውረድ ቁጥር ${n}`,
@@ -6024,6 +6048,7 @@ const om: Messages = {
   extensionPageButton: "🧩 Dabalata fe'aa",
   addToGroupButton: "👥 Gareetti dabalaa",
   newsButton: "📣 Oduu pirojektii",
+  contactButton: "✉️ Barreessaaf barreessi",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Oduu pirojektii: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Buufata lakk. ${n}`,
@@ -6268,6 +6293,7 @@ const ha: Messages = {
   extensionPageButton: "🧩 Sanya ƙarin burauza",
   addToGroupButton: "👥 Ƙara a rukuni",
   newsButton: "📣 Labaran aikin",
+  contactButton: "✉️ Rubuta wa marubuci",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Labaran aikin: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Saukewa na ${n}`,
@@ -6512,6 +6538,7 @@ const so: Messages = {
   extensionPageButton: "🧩 Rakib kordhiyaha",
   addToGroupButton: "👥 Ku dar koox",
   newsButton: "📣 Wararka mashruuca",
+  contactButton: "✉️ U qor qoraaga",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Wararka mashruuca: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Soo dejin lambar ${n}`,
@@ -6756,6 +6783,7 @@ const az: Messages = {
   extensionPageButton: "🧩 Genişlənməni quraşdır",
   addToGroupButton: "👥 Qrupa əlavə et",
   newsButton: "📣 Layihə xəbərləri",
+  contactButton: "✉️ Müəllifə yaz",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Layihə xəbərləri: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Yükləmə №${n}`,
@@ -7000,6 +7028,7 @@ const ky: Messages = {
   extensionPageButton: "🧩 Кеңейтүүнү орнотуу",
   addToGroupButton: "👥 Топко кошуу",
   newsButton: "📣 Долбоордун жаңылыктары",
+  contactButton: "✉️ Авторго жазуу",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Долбоордун жаңылыктары: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Жүктөө №${n}`,
@@ -7244,6 +7273,7 @@ const tg: Messages = {
   extensionPageButton: "🧩 Насб кардани васеъкунанда",
   addToGroupButton: "👥 Илова кардан ба гурӯҳ",
   newsButton: "📣 Хабарҳои лоиҳа",
+  contactButton: "✉️ Ба муаллиф нависед",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Хабарҳои лоиҳа: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Боргирии №${n}`,
@@ -7488,6 +7518,7 @@ const ms: Messages = {
   extensionPageButton: "🧩 Pasang sambungan",
   addToGroupButton: "👥 Tambah ke kumpulan",
   newsButton: "📣 Berita projek",
+  contactButton: "✉️ Hubungi pembangun",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Berita projek: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Muat turun #${n}`,
@@ -7732,6 +7763,7 @@ const nl: Messages = {
   extensionPageButton: "🧩 Extensie installeren",
   addToGroupButton: "👥 Toevoegen aan een groep",
   newsButton: "📣 Projectnieuws",
+  contactButton: "✉️ Schrijf de maker",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Projectnieuws: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download nr. ${n}`,
@@ -7976,6 +8008,7 @@ const ro: Messages = {
   extensionPageButton: "🧩 Instalează extensia",
   addToGroupButton: "👥 Adaugă într-un grup",
   newsButton: "📣 Noutățile proiectului",
+  contactButton: "✉️ Scrie autorului",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Noutățile proiectului: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Descărcarea nr. ${n}`,
@@ -8220,6 +8253,7 @@ const ps: Messages = {
   extensionPageButton: "🧩 توسیع نصب کړئ",
   addToGroupButton: "👥 ګروپ ته اضافه کړئ",
   newsButton: "📣 د پروژې خبرونه",
+  contactButton: "✉️ لیکوال ته ولیکئ",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 د پروژې خبرونه: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ ډاونلوډ شمېره ${n}`,
@@ -8464,6 +8498,7 @@ const ckb: Messages = {
   extensionPageButton: "🧩 دامەزراندنی پێوەکراو",
   addToGroupButton: "👥 زیادکردن بۆ گرووپ",
   newsButton: "📣 هەواڵەکانی پڕۆژە",
+  contactButton: "✉️ نامە بۆ نووسەر",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 هەواڵەکانی پڕۆژە: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ داگرتنی ژمارە ${n}`,
@@ -8708,6 +8743,7 @@ const ku: Messages = {
   extensionPageButton: "🧩 Pêvekê saz bike",
   addToGroupButton: "👥 Li komekê zêde bike",
   newsButton: "📣 Nûçeyên projeyê",
+  contactButton: "✉️ Ji nivîskar re binivîse",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Nûçeyên projeyê: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Daxistin #${n}`,
@@ -8952,6 +8988,7 @@ const ug: Messages = {
   extensionPageButton: "🧩 قىستۇرمىنى ئورنىتىش",
   addToGroupButton: "👥 گۇرۇپپىغا قوشۇش",
   newsButton: "📣 تۈر خەۋەرلىرى",
+  contactButton: "✉️ ئاپتورغا يېزىش",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 تۈر خەۋەرلىرى: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ چۈشۈرۈش ${n}-نومۇر`,
@@ -9196,6 +9233,7 @@ const tk: Messages = {
   extensionPageButton: "🧩 Giňeltmäni gur",
   addToGroupButton: "👥 Topara goş",
   newsButton: "📣 Taslamanyň täzelikleri",
+  contactButton: "✉️ Awtora ýaz",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Taslamanyň täzelikleri: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Ýükleme №${n}`,
@@ -9440,6 +9478,7 @@ const tt: Messages = {
   extensionPageButton: "🧩 Киңәйтмәне урнаштыру",
   addToGroupButton: "👥 Төркемгә өстәү",
   newsButton: "📣 Проект яңалыклары",
+  contactButton: "✉️ Авторга язу",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проект яңалыклары: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Йөкләү №${n}`,
@@ -9684,6 +9723,7 @@ const sq: Messages = {
   extensionPageButton: "🧩 Instaloni shtesën",
   addToGroupButton: "👥 Shtoje në grup",
   newsButton: "📣 Lajmet e projektit",
+  contactButton: "✉️ Shkruaji autorit",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Lajmet e projektit: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Shkarkimi nr. ${n}`,
@@ -9938,6 +9978,7 @@ const bs: Messages = {
   extensionPageButton: "🧩 Instaliraj proširenje",
   addToGroupButton: "👥 Dodaj u grupu",
   newsButton: "📣 Novosti projekta",
+  contactButton: "✉️ Piši autoru",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Novosti projekta: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Preuzimanje br. ${n}`,
@@ -10182,6 +10223,7 @@ const ce: Messages = {
   extensionPageButton: "🧩 Расширени дӀахӀоттае",
   addToGroupButton: "👥 Тобане тӀетоха",
   newsButton: "📣 Проектан керла хаамаш",
+  contactButton: "✉️ Авторе язде",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проектан керла хаамаш: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Чуяккхар №${n}`,
@@ -10426,6 +10468,7 @@ const inh: Messages = {
   extensionPageButton: "🧩 Расширени оттаде",
   addToGroupButton: "👥 Тоабага тӀатоха",
   newsButton: "📣 Проекта керда хоамаш",
+  contactButton: "✉️ Автораи яздé",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проекта керда хоамаш: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ №${n}`,
@@ -10670,6 +10713,7 @@ const av: Messages = {
   extensionPageButton: "🧩 Расширение лъезе",
   addToGroupButton: "👥 Къокъаялде жубазе",
   newsButton: "📣 Проекталъул хабарал",
+  contactButton: "✉️ Авторасе хъвазе",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Проекталъул хабарал: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ №${n}`,
@@ -10914,6 +10958,7 @@ const tl: Messages = {
   extensionPageButton: "🧩 I-install ang extension",
   addToGroupButton: "👥 Idagdag sa group",
   newsButton: "📣 Balita ng proyekto",
+  contactButton: "✉️ Sumulat sa may-akda",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Balita ng proyekto: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Download Blg. ${n}`,
@@ -11158,6 +11203,7 @@ const uk: Messages = {
   extensionPageButton: "🧩 Встановити розширення",
   addToGroupButton: "👥 Додати в групу",
   newsButton: "📣 Новини проєкту",
+  contactButton: "✉️ Написати автору",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Новини проєкту: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Завантаження №${n}`,
@@ -11408,6 +11454,7 @@ const kk: Messages = {
   extensionPageButton: "🧩 Кеңейтімді орнату",
   addToGroupButton: "👥 Топқа қосу",
   newsButton: "📣 Жоба жаңалықтары",
+  contactButton: "✉️ Авторға жазу",
   fileCaptionShort: (title, sourceUrl) =>
     withOptionalLines((title ? `🎬 ${title.slice(0, 200)}\n\n` : "") + sourceUrl, `📣 Жоба жаңалықтары: ${NEWS_CHANNEL}`, undefined),
   downloadNo: (n) => `⬇️ Жүктеу №${n}`,

@@ -64,6 +64,9 @@ bot.use(async (ctx, next) => {
   await next();
 });
 
+// Контакт владельца для обратной связи (кнопка в /start).
+const FEEDBACK_USERNAME = "sarsembai_timur";
+
 bot.command("start", async (ctx) => {
   const lang = await langOf(ctx);
   // В группе — как бот работает там (handlers/group.ts), а не инструкция для лички.
@@ -88,7 +91,10 @@ bot.command("start", async (ctx) => {
     reply_markup: new InlineKeyboard()
       .url(messages[lang].addToGroupButton, `https://t.me/${ctx.me.username}?startgroup=true`)
       .row()
-      .url(messages[lang].newsButton, `https://t.me/${NEWS_CHANNEL.slice(1)}`),
+      .url(messages[lang].newsButton, `https://t.me/${NEWS_CHANNEL.slice(1)}`)
+      .row()
+      // Обратная связь — личка владельца (18.11.2026).
+      .url(messages[lang].contactButton, `https://t.me/${FEEDBACK_USERNAME}`),
   });
 });
 

@@ -191,7 +191,9 @@ async function registerCommandMenus() {
   }
 }
 // Профиль (описание бота) — после меню, по очереди: так меньше упираемся в лимит.
-void registerCommandMenus().then(() => registerBotProfile(bot.api));
+void registerCommandMenus()
+  .then(() => registerBotProfile(bot.api))
+  .catch((e) => console.error("Меню или профиль бота не выставлены:", e?.message ?? e));
 
 // Статьи блога → канал новостей (blog-channel.ts).
 startBlogChannel(bot.api);

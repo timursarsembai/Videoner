@@ -422,12 +422,13 @@ export const COMMANDS: Record<Lang, { command: string; description: string }[]> 
   ],
 };
 
-// В группах — своё меню: там бот работает сам, а админам нужна /settings
-// (handlers/group.ts).
 // /contact — связь с автором (владелец 18.11.2026), подпись из bot-profile-texts.ts.
 for (const lang of Object.keys(COMMANDS) as Lang[]) {
   COMMANDS[lang].push({ command: "contact", description: PROFILE_TEXTS[lang].cmd });
 }
+
+// В группах — своё меню: там бот работает сам, а админам нужна /settings
+// (handlers/group.ts).
 
 export const GROUP_COMMANDS: Record<Lang, { command: string; description: string }[]> = {
   ru: [

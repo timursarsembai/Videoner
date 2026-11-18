@@ -25,10 +25,12 @@ export const BLOCKED_CONTENT_ERROR = 'Blocked content: Videoner does not downloa
 const BLOCKED_AUTHORS = new Set(['olga_taro_guru']);
 
 const ESOTERIC_BLOCK = wordsPattern([
-  'таро=', 'таролог', 'расклад таро', 'гадани', 'гадалк', 'гадаю=', 'погадаю', 'приворот', 'отворот', 'порча=', 'порчу=',
-  'порчи=', 'порчей=', 'сглаз', 'натальн', 'астролог', 'нумеролог', 'матрица судьбы', 'матрицы судьбы',
+  'таро=', 'таролог', 'расклад таро', 'гадани', 'гадалк', 'гадаю=', 'погадаю', 'приворот', 'отворот', 'порча=', 'порчи=', 'порчей=',
+  // «порчу» само по себе — ещё и «я всё порчу», поэтому только в сочетаниях.
+  'снять порчу', 'снятие порчи', 'навести порчу', 'навели порчу', 'на порчу', 'сглаз', 'натальн', 'астролог', 'нумеролог', 'матрица судьбы', 'матрицы судьбы',
   'матрице судьбы', 'дизайн человека', 'экстрасенс', 'ясновид', 'ченнелинг', 'хиромант', 'бал ашу', 'балгер',
-  'tarot', 'taro=', 'astrolog', 'numerolog', 'natal chart', 'human design', 'psychic', 'palmistry', 'witchcraft',
+  // «taro» без «t» не берём: это и клубень таро, и японское имя Таро.
+  'tarot', 'astrolog', 'numerolog', 'natal chart', 'human design', 'psychic', 'palmistry', 'witchcraft',
 ]);
 
 export function isBlockedAuthor(...names: (string | null | undefined)[]): boolean {
@@ -50,12 +52,19 @@ export function wouldBlockReligion(item: TopicItem): boolean {
   return !topics.includes('islam') && topics.some((t) => t === 'christianity' || t === 'judaism' || t === 'eastern' || t === 'religion_other');
 }
 
+// Площадки, где описание — это подпись к посту (у Instagram название из
+// yt-dlp — «Video by <ник>», а сам текст лежит в описании). У YouTube
+// описание длинное и со ссылками на что угодно — его не смотрим.
+const CAPTION_PLATFORMS = new Set(['instagram', 'tiktok', 'threads', 'facebook', 'twitter', 'reddit', 'pinterest', 'vk']);
+
 // Ответ yt-dlp (одно видео или пост из нескольких) → запрещено ли.
 export function blockedInfo(info: unknown, platform: string | null, url: string): 'author' | 'esoteric' | null {
   if (!info || typeof info !== 'object') return null;
   const meta = contentMeta(info as Partial<YtdlpVideoInfo> & Record<string, unknown>, platform, url);
+  const str = (v: unknown) => (typeof v === 'string' ? v.slice(0, 3000) : '');
+  const { title, description } = info as { title?: unknown; description?: unknown };
   return blockedReason({
-    title: typeof (info as { title?: unknown }).title === 'string' ? (info as { title: string }).title : null,
+    title: [str(title), platform && CAPTION_PLATFORMS.has(platform) ? str(description) : ''].join('\n'),
     hashtags: meta.hashtags,
     author: meta.authorName,
     authorId: meta.authorId,

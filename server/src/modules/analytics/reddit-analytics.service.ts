@@ -32,10 +32,10 @@ export class RedditAnalyticsService {
       FROM (
         SELECT date_trunc('day', "createdAt") AS day, source::text AS source,
           COUNT(*) FILTER (WHERE status IN ('COMPLETED', 'EXPIRED')) AS completed,
-          COUNT(*) FILTER (WHERE status = 'FAILED' AND "errorCategory" IS DISTINCT FROM 'ADULT_CONTENT') AS failed,
+          COUNT(*) FILTER (WHERE status = 'FAILED' AND "errorCategory" IS DISTINCT FROM 'ADULT_CONTENT' AND "errorCategory" IS DISTINCT FROM 'BLOCKED_CONTENT') AS failed,
           COUNT(*) FILTER (WHERE status NOT IN ('COMPLETED', 'EXPIRED', 'FAILED')) AS pending,
           0 AS "linkFailures",
-          COUNT(*) FILTER (WHERE status = 'FAILED' AND "errorCategory" = 'ADULT_CONTENT') AS "policyRefusals",
+          COUNT(*) FILTER (WHERE status = 'FAILED' AND "errorCategory" IN ('ADULT_CONTENT', 'BLOCKED_CONTENT')) AS "policyRefusals",
           COUNT(*) FILTER (WHERE status IN ('COMPLETED', 'EXPIRED') AND "fromCache") AS cached,
           COALESCE(SUM("fileSize") FILTER (WHERE status IN ('COMPLETED', 'EXPIRED')), 0)::float8 AS bytes
         FROM "Download"
@@ -44,8 +44,8 @@ export class RedditAnalyticsService {
         GROUP BY 1, 2
         UNION ALL
         SELECT date_trunc('day', "createdAt"), source::text, 0, 0, 0,
-          COUNT(*) FILTER (WHERE "errorCategory" <> 'ADULT_CONTENT'),
-          COUNT(*) FILTER (WHERE "errorCategory" = 'ADULT_CONTENT'), 0, 0::float8
+          COUNT(*) FILTER (WHERE "errorCategory" NOT IN ('ADULT_CONTENT', 'BLOCKED_CONTENT')),
+          COUNT(*) FILTER (WHERE "errorCategory" IN ('ADULT_CONTENT', 'BLOCKED_CONTENT')), 0, 0::float8
         FROM "LinkFailure"
         WHERE platform = 'reddit' AND source IN ('BOT', 'WEB')
           AND "createdAt" >= ${from}::timestamp AND "createdAt" < ${to}::timestamp

@@ -217,6 +217,8 @@ function updateJob(url, mutate) {
 }
 
 const CHROME_DOWNLOAD_POLL_MS = 1_000;
+// Проверка темы перед скачиванием силами браузера: дольше не ждём.
+const CHECK_TIMEOUT_MS = 3_000;
 
 async function startDirect({ url, tabId, media }) {
   if (active.has(url)) return;
@@ -229,7 +231,10 @@ async function startDirect({ url, tabId, media }) {
     // браузер качает сам, мимо сервера, поэтому спрашиваем заранее. Сервер
     // не ответил — качаем: проверка не должна ломать скачивание.
     const author = typeof media.author === "string" ? media.author : "";
-    const check = await api("/download/check", { url, title, author }).catch(() => null);
+    const check = await Promise.race([
+      api("/download/check", { url, title, author }).catch(() => null),
+      new Promise((resolve) => setTimeout(() => resolve(null), CHECK_TIMEOUT_MS)),
+    ]);
     if (check?.blocked) {
       await updateJob(url, (job) => ({ ...job, state: "error", error: friendlyError({ message: "Blocked content: " }) }));
       return;

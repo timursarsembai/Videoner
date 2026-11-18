@@ -1,6 +1,5 @@
-import { blockedInfo, blockedReason, wouldBlockReligion } from './blocked-content';
+import { BLOCKED_CONTENT_ERROR, blockedInfo, blockedReason, wouldBlockReligion } from './blocked-content';
 import { categorizeError } from './error-category';
-import { BLOCKED_CONTENT_ERROR } from './blocked-content';
 
 describe('blockedReason — эзотерика', () => {
   it('запрещает по строгим словам', () => {
@@ -41,6 +40,9 @@ describe('blockedReason — эзотерика', () => {
       'Psycho Killer',
       'Испорченный телефон',
       'Сглаживание шрифтов',
+      'Я всё порчу — влог',
+      'Taro milk tea recipe',
+      'Taro Aso interview',
     ]) {
       expect(blockedReason({ title })).toBeNull();
     }
@@ -53,6 +55,12 @@ describe('blockedInfo — ответ yt-dlp', () => {
   });
   it('хэштеги из описания тоже учитываются', () => {
     expect(blockedInfo({ title: 'Неделя', description: '#таро #расклад' }, 'tiktok', 'https://www.tiktok.com/@a/video/1')).toBe('esoteric');
+  });
+  it('Instagram: подпись из описания', () => {
+    expect(blockedInfo({ title: 'Video by someone', description: 'Расклад таро на неделю' }, 'instagram', 'https://www.instagram.com/reel/X/')).toBe('esoteric');
+  });
+  it('YouTube: описание не смотрим', () => {
+    expect(blockedInfo({ title: 'Обзор фильма', description: 'астрология и всё такое' }, 'youtube', 'https://youtu.be/x')).toBeNull();
   });
   it('обычное видео проходит', () => {
     expect(blockedInfo({ title: 'Рецепт плова' }, 'youtube', 'https://youtu.be/x')).toBeNull();

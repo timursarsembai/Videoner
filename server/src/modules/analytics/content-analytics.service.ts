@@ -139,15 +139,12 @@ export class ContentAnalyticsService {
       }
       if (wouldBlockReligion(r)) add(wouldBlock, r);
     }
-    // Сколько раз уже отказали по теме (эзотерика): /info бота и сайта и
-    // проверка расширения — журнал LinkFailure; скачивание в обход /info — Download.
+    // Сколько раз уже отказали по теме (эзотерика): бот, сайт, расширение и
+    // прямые запросы — всё пишется в журнал LinkFailure (одна ссылка — раз в 10 минут).
     const [blocked] = await this.prisma.$queryRaw<{ n: bigint }[]>`
-      SELECT (SELECT count(*) FROM "LinkFailure" f
-               WHERE f."errorCategory" = 'BLOCKED_CONTENT' AND f."createdAt" >= ${range.from} AND f."createdAt" < ${range.to}
-                 ${platform ? Prisma.sql`AND upper(f.platform) = ${platform}` : Prisma.empty})
-           + (SELECT count(*) FROM "Download" d
-               WHERE d."errorCategory" = 'BLOCKED_CONTENT' AND d."createdAt" >= ${range.from} AND d."createdAt" < ${range.to}
-                 ${platformFilter(platform)}) AS n`;
+      SELECT count(*) AS n FROM "LinkFailure" f
+      WHERE f."errorCategory" = 'BLOCKED_CONTENT' AND f."createdAt" >= ${range.from} AND f."createdAt" < ${range.to}
+        ${platform ? Prisma.sql`AND upper(f.platform) = ${platform}` : Prisma.empty}`;
     return {
       total: rows.length,
       truncated,

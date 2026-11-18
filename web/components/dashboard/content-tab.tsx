@@ -229,7 +229,7 @@ function TopicsCard() {
       <div className="mt-4 space-y-2 border-t border-foreground/10 pt-3 text-sm">
         <p>
           <b>Запрет эзотерики:</b> отказано {q.data?.blocked ?? 0} раз
-          <span className="text-foreground/50"> (автор olga_taro_guru и строгий список слов; подробности — в журнале ошибок, «Запрещённая тема»)</span>
+          <span className="text-foreground/50"> (запрещённые авторы и строгий список слов — server/src/lib/blocked-content.ts; подробности — в журнале ошибок, «Запрещённая тема»)</span>
         </p>
         <p>
           <b>Религии, кроме ислама — тихий режим:</b> было бы запрещено {wb?.downloads ?? 0} скачиваний, {wb?.users ?? 0} людей

@@ -1,5 +1,5 @@
 import { ADULT_CONTENT_ERROR, isAdultContent } from 'src/lib/adult-content';
-import { BLOCKED_CONTENT_ERROR, blockedInfo } from 'src/lib/blocked-content';
+import { BLOCKED_CONTENT_ERROR, blockedInfo, blockedReason } from 'src/lib/blocked-content';
 import { fetchRedditPhoto } from 'src/lib/reddit-cdn';
 import {
   GALLERY,
@@ -232,6 +232,7 @@ export class DownloadService {
     // И темы, которые не скачиваем (lib/blocked-content.ts): запрос мог
     // прийти в обход /info, а повтор из кеша — от прошлого раза.
     if (blockedInfo(found.info, (req as any).platform, url)) {
+      this.logBlocked((req as any).platform, meta.source ?? DownloadSource.API, url, meta.clientCountry);
       throw new BadRequestException(BLOCKED_CONTENT_ERROR);
     }
     return found;
@@ -821,25 +822,36 @@ export class DownloadService {
   // сервера, — и перед этим спрашивает здесь, не запрещена ли тема
   // (lib/blocked-content.ts). Только название и ник со страницы: yt-dlp не
   // зовём, это дёшево. Отказ — в журнал ошибок, как у бота и сайта.
-  async checkClientContent(url: string, platform: string, meta: { title?: unknown; author?: unknown; clientCountry?: unknown }) {
+  checkClientContent(url: string, platform: string, meta: { title?: unknown; author?: unknown; clientCountry?: unknown }) {
     const title = typeof meta.title === 'string' ? meta.title.slice(0, 2000) : undefined;
     const author = typeof meta.author === 'string' ? meta.author.slice(0, 100) : undefined;
     const blocked = blockedInfo({ title, uploader: author, channel: author }, platform, url);
-    if (blocked) {
-      await this.prisma.linkFailure
-        .create({
-          data: {
-            platform,
-            source: DownloadSource.EXTENSION,
-            errorCategory: ErrorCategory.BLOCKED_CONTENT,
-            message: BLOCKED_CONTENT_ERROR,
-            url: url.slice(0, 2000),
-            country: parseCountry(meta.clientCountry),
-          },
-        })
-        .catch((e) => console.error('LinkFailure (extension block) not recorded:', e?.message ?? e));
-    }
+    if (blocked) this.logBlocked(platform, DownloadSource.EXTENSION, url, meta.clientCountry);
     return { blocked: !!blocked };
+  }
+
+  // Отказ по теме — в журнал ошибок (LinkFailure, «Запрещённая тема»). Одна
+  // ссылка — не чаще раза в 10 минут: повторы окошка расширения и прямые
+  // запросы не раздувают счётчик в дашборде.
+  private readonly blockedLogged = new Map<string, number>();
+  private logBlocked(platform: string, source: DownloadSource, url: string, country?: unknown) {
+    const now = Date.now();
+    if (now - (this.blockedLogged.get(url) ?? 0) < 10 * 60 * 1000) return;
+    this.blockedLogged.delete(url);
+    this.blockedLogged.set(url, now);
+    if (this.blockedLogged.size > 5000) this.blockedLogged.delete(this.blockedLogged.keys().next().value as string);
+    this.prisma.linkFailure
+      .create({
+        data: {
+          platform,
+          source,
+          errorCategory: ErrorCategory.BLOCKED_CONTENT,
+          message: BLOCKED_CONTENT_ERROR,
+          url: url.slice(0, 2000),
+          country: parseCountry(country),
+        },
+      })
+      .catch((e) => console.error('LinkFailure (blocked content) not recorded:', e?.message ?? e));
   }
 
   private resolveDownloader(platform: string): Downloaders {
@@ -1442,6 +1454,12 @@ export class DownloadService {
     // «all» проходит форму, но скачал бы все дорожки разом.
     if (!SUBTITLE_LANG_RE.test(lang) || lang.toLowerCase() === 'all') {
       throw new BadRequestException('Invalid subtitle language');
+    }
+    // Темы, которые не скачиваем (lib/blocked-content.ts): метаданных тут нет,
+    // проверяем по названию, которое прислали сайт и бот.
+    if (title && blockedReason({ title })) {
+      this.logBlocked('youtube', meta.source ?? DownloadSource.API, url, meta.clientCountry);
+      throw new BadRequestException(BLOCKED_CONTENT_ERROR);
     }
     const dir = this.ensureDownloadDirectory();
     // getFileName оставляет в названии только латиницу и цифры; у русского

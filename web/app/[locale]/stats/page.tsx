@@ -64,7 +64,7 @@ export default async function StatsPage({ params }: Props) {
   ];
 
   return (
-    <article className="container mx-auto max-w-3xl px-4 py-12">
+    <article className="container max-w-3xl pb-12 pt-24 sm:pb-16 sm:pt-28">
       <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{text.title}</h1>
       <p className="mt-3 leading-relaxed text-foreground/80">{text.summary}</p>
 

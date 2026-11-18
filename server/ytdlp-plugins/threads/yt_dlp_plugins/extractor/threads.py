@@ -272,8 +272,12 @@ class ThreadsIE(InfoExtractor):
                 time.sleep(_RETRY_SLEEP)
         # Ошибка именно про вложение: сказать «в посте нет медиа» было бы
         # неправдой — медиа есть, не открылась его настоящая запись.
+        # Фраза английская и устойчивая, со ссылкой на саму запись: по фразе
+        # сервер повторяет запрос через прокси (ytdlp-process.service.ts,
+        # ANONYMOUS_BLOCK_PATTERNS), а бот, если не помогло и это, даёт
+        # человеку кнопку на запись Instagram (bot/src/helpers.ts).
         raise ExtractorError(
-            'Не удалось получить вложение Instagram из этого поста Threads',
+            f'Instagram attachment of this Threads post is unavailable: https://www.instagram.com/p/{code}/',
             expected=True)
 
     @classmethod

@@ -29,7 +29,7 @@ WORKDIR /app
 # правкой совсем другого места. Обновлять осознанно:
 #   ./scripts/deploy.sh server  (после смены версии здесь)
 # Свежие теги: https://github.com/yt-dlp/yt-dlp-nightly-builds/releases
-ARG YTDLP_VERSION=2026.08.18.122307
+ARG YTDLP_VERSION=2026.11.14.232655
 RUN mkdir -p /app/bin \
   && curl -fsSL -o /app/bin/yt-dlp https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/download/${YTDLP_VERSION}/yt-dlp_linux \
   && chmod +x /app/bin/yt-dlp \

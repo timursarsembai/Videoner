@@ -116,6 +116,8 @@ interface Messages {
   // Плейлист остановлен из-за этого лимита; dropped — сколько видео не скачано.
   playlistStoppedByLimit: (dropped: number) => string;
   errorPlatformRefused: string;
+  errorThreadsInstagramAttachment: string;
+  copyInstagramLink: string;
   errorThreadsNoMedia: string;
   // Площадка не отдала ролик серверу, а расширение для браузера скачает его
   // под входом человека (см. extensionLinkFor в helpers.ts).
@@ -385,6 +387,8 @@ const ru: Messages = {
     "площадка не отдала это видео нашему серверу. Так бывает с закрытыми и " +
     "возрастными публикациями, а иногда площадка просто временно ограничивает " +
     "доступ. Попробуй ещё раз через несколько минут.",
+  errorThreadsInstagramAttachment: "видео в этом посте Threads прикреплено из Instagram, а Instagram сейчас его не отдал. Скопируйте ссылку на сам пост Instagram кнопкой ниже и пришлите её мне — скачаю по ней.",
+  copyInstagramLink: "📋 Скопировать ссылку Instagram",
   errorThreadsNoMedia:
     "в этом посте Threads не видно ни видео, ни фото. Либо это текстовый пост, либо " +
     "Threads показывает его медиа только тем, кто вошёл в аккаунт, — такие посты без входа скачать нельзя.",
@@ -627,6 +631,8 @@ const en: Messages = {
     "the platform didn't give this video to our server. This happens with private " +
     "or age-restricted posts, and sometimes the platform just limits access for a " +
     "while. Try again in a few minutes.",
+  errorThreadsInstagramAttachment: "the video in this Threads post is attached from Instagram, and Instagram didn't provide it right now. Copy the link to the Instagram post itself with the button below and send it to me — I'll download it from there.",
+  copyInstagramLink: "📋 Copy Instagram link",
   errorThreadsNoMedia:
     "no video or photo is visible in this Threads post. Either it is a text-only post, or " +
     "Threads shows its media only to signed-in users — such posts can't be downloaded without logging in.",
@@ -868,6 +874,8 @@ const ar: Messages = {
     "لم تعطِ المنصة هذا الفيديو لخادمنا. يحدث ذلك مع المنشورات الخاصة " +
     "أو المقيّدة بالعمر، وأحيانًا تقيّد المنصة الوصول ببساطة " +
     "لبعض الوقت. حاول مرة أخرى بعد بضع دقائق.",
+  errorThreadsInstagramAttachment: "الفيديو في منشور Threads هذا مرفق من Instagram، ولم يُرجعه Instagram الآن. انسخ رابط منشور Instagram نفسه بالزر أدناه وأرسله لي — وسأنزّله منه.",
+  copyInstagramLink: "📋 نسخ رابط Instagram",
   errorThreadsNoMedia:
     "لا يظهر فيديو أو صورة في منشور Threads هذا. إما أنه منشور نصي فقط، أو " +
     "أن Threads يعرض وسائطه فقط للمسجّلين — ولا يمكن تنزيل مثل هذه المنشورات دون تسجيل الدخول.",
@@ -1109,6 +1117,8 @@ const zh: Messages = {
     "平台没有把这个视频提供给我们的服务器。私密帖子或有年龄限制的帖子" +
     "会出现这种情况，有时平台也只是暂时限制访问。" +
     "请过几分钟再试。",
+  errorThreadsInstagramAttachment: "这条 Threads 帖子里的视频是从 Instagram 附加的，而 Instagram 目前没有提供它。请用下方按钮复制 Instagram 帖子本身的链接并发给我，我会通过它下载。",
+  copyInstagramLink: "📋 复制 Instagram 链接",
   errorThreadsNoMedia:
     "这条 Threads 帖子里看不到视频或图片。可能是纯文字帖子，" +
     "也可能 Threads 只向已登录用户显示其中的媒体——这类帖子不登录就无法下载。",
@@ -1350,6 +1360,8 @@ const hi: Messages = {
     "प्लेटफ़ॉर्म ने यह वीडियो हमारे सर्वर को नहीं दिया। ऐसा प्राइवेट " +
     "या उम्र-सीमा वाली पोस्ट के साथ होता है, और कभी-कभी प्लेटफ़ॉर्म कुछ समय के लिए " +
     "एक्सेस सीमित कर देता है। कुछ मिनट बाद फिर से कोशिश करें।",
+  errorThreadsInstagramAttachment: "इस Threads पोस्ट का वीडियो Instagram से जुड़ा हुआ है, और Instagram ने अभी उसे नहीं दिया। नीचे दिए बटन से Instagram पोस्ट का लिंक कॉपी करके मुझे भेजें — मैं उसी से डाउनलोड कर दूँगा।",
+  copyInstagramLink: "📋 Instagram लिंक कॉपी करें",
   errorThreadsNoMedia:
     "इस Threads पोस्ट में कोई वीडियो या फ़ोटो नहीं दिख रहा। या तो यह सिर्फ़ टेक्स्ट वाली पोस्ट है, या " +
     "Threads इसका मीडिया सिर्फ़ साइन-इन किए हुए यूज़र्स को दिखाता है — ऐसी पोस्ट लॉग-इन किए बिना डाउनलोड नहीं हो सकतीं।",
@@ -1591,6 +1603,8 @@ const indonesian: Messages = {
     "platform tidak memberikan video ini ke server kami. Ini terjadi pada postingan privat " +
     "atau dengan batasan usia, dan terkadang platform membatasi akses untuk " +
     "sementara. Coba lagi dalam beberapa menit.",
+  errorThreadsInstagramAttachment: "video di postingan Threads ini dilampirkan dari Instagram, dan Instagram sedang tidak memberikannya. Salin tautan postingan Instagram-nya dengan tombol di bawah lalu kirimkan ke saya — saya akan mengunduhnya dari sana.",
+  copyInstagramLink: "📋 Salin tautan Instagram",
   errorThreadsNoMedia:
     "tidak ada video atau foto yang terlihat di postingan Threads ini. Mungkin ini postingan teks saja, atau " +
     "Threads hanya menampilkan medianya kepada pengguna yang sudah masuk — postingan seperti itu tidak bisa diunduh tanpa login.",
@@ -1832,6 +1846,8 @@ const sw: Messages = {
     "jukwaa halikutoa video hii kwa seva yetu. Hili hutokea kwa machapisho ya faragha " +
     "au yenye kikomo cha umri, na wakati mwingine jukwaa huzuia ufikiaji kwa " +
     "muda tu. Jaribu tena baada ya dakika chache.",
+  errorThreadsInstagramAttachment: "video katika chapisho hili la Threads imeambatishwa kutoka Instagram, na Instagram haikuitoa kwa sasa. Nakili kiungo cha chapisho lenyewe la Instagram kwa kitufe kilicho hapa chini na unitumie — nitaipakua kupitia kiungo hicho.",
+  copyInstagramLink: "📋 Nakili kiungo cha Instagram",
   errorThreadsNoMedia:
     "hakuna video wala picha inayoonekana kwenye chapisho hili la Threads. Huenda ni chapisho la maandishi pekee, au " +
     "Threads huonyesha maudhui yake kwa watumiaji walioingia tu — machapisho kama hayo hayawezi kupakuliwa bila kuingia.",
@@ -2073,6 +2089,8 @@ const de: Messages = {
     "die Plattform hat dieses Video unserem Server nicht herausgegeben. Das passiert bei privaten " +
     "Beiträgen oder Inhalten mit Altersbeschränkung, und manchmal schränkt die Plattform den Zugriff einfach " +
     "vorübergehend ein. Versuch es in ein paar Minuten noch einmal.",
+  errorThreadsInstagramAttachment: "das Video in diesem Threads-Beitrag ist von Instagram angehängt, und Instagram hat es gerade nicht herausgegeben. Kopieren Sie mit der Schaltfläche unten den Link zum Instagram-Beitrag selbst und senden Sie ihn mir — ich lade das Video darüber herunter.",
+  copyInstagramLink: "📋 Instagram-Link kopieren",
   errorThreadsNoMedia:
     "in diesem Threads-Beitrag ist kein Video und kein Foto zu sehen. Entweder ist es ein reiner Textbeitrag, oder " +
     "Threads zeigt die Medien nur angemeldeten Nutzern — solche Beiträge lassen sich ohne Anmeldung nicht herunterladen.",
@@ -2314,6 +2332,8 @@ const fr: Messages = {
     "la plateforme n'a pas fourni cette vidéo à notre serveur. Cela arrive avec les publications " +
     "privées ou soumises à une limite d'âge, et parfois la plateforme limite simplement l'accès " +
     "pendant un moment. Réessayez dans quelques minutes.",
+  errorThreadsInstagramAttachment: "la vidéo de cette publication Threads est jointe depuis Instagram, et Instagram ne l'a pas fournie pour le moment. Copiez le lien de la publication Instagram elle-même avec le bouton ci-dessous et envoyez-le-moi — je la téléchargerai à partir de là.",
+  copyInstagramLink: "📋 Copier le lien Instagram",
   errorThreadsNoMedia:
     "aucune vidéo ni photo n'est visible dans cette publication Threads. Soit c'est une publication uniquement textuelle, soit " +
     "Threads n'affiche ses médias qu'aux utilisateurs connectés — ce type de publication ne peut pas être téléchargé sans connexion.",
@@ -2555,6 +2575,8 @@ const it: Messages = {
     "la piattaforma non ha fornito questo video al nostro server. Succede con i post privati " +
     "o con limiti di età, e a volte la piattaforma limita semplicemente l'accesso per un " +
     "po'. Riprova tra qualche minuto.",
+  errorThreadsInstagramAttachment: "il video di questo post di Threads è allegato da Instagram, e Instagram al momento non l'ha restituito. Copia con il pulsante qui sotto il link del post di Instagram stesso e mandamelo — lo scaricherò da lì.",
+  copyInstagramLink: "📋 Copia il link di Instagram",
   errorThreadsNoMedia:
     "in questo post di Threads non si vedono né video né foto. O è un post di solo testo, oppure " +
     "Threads mostra i suoi contenuti multimediali solo a chi ha effettuato l'accesso — questi post non si possono scaricare senza accesso.",
@@ -2796,6 +2818,8 @@ const pt: Messages = {
     "a plataforma não entregou este vídeo ao nosso servidor. Isso acontece com posts privados " +
     "ou com restrição de idade, e às vezes a plataforma simplesmente limita o acesso por um " +
     "tempo. Tente de novo daqui a alguns minutos.",
+  errorThreadsInstagramAttachment: "o vídeo deste post do Threads está anexado do Instagram, e o Instagram não o entregou agora. Copie o link do próprio post do Instagram com o botão abaixo e envie para mim — vou baixar por ele.",
+  copyInstagramLink: "📋 Copiar link do Instagram",
   errorThreadsNoMedia:
     "não há vídeo nem foto visível neste post do Threads. Ou é um post só de texto, ou " +
     "o Threads mostra a mídia dele apenas para usuários logados — esses posts não podem ser baixados sem login.",
@@ -3037,6 +3061,8 @@ const es: Messages = {
     "la plataforma no le entregó este video a nuestro servidor. Pasa con publicaciones " +
     "privadas o con restricción de edad, y a veces la plataforma simplemente limita el acceso " +
     "por un tiempo. Inténtalo de nuevo en unos minutos.",
+  errorThreadsInstagramAttachment: "el video de esta publicación de Threads está adjunto desde Instagram, y Instagram no lo entregó en este momento. Copia con el botón de abajo el enlace de la publicación de Instagram y envíamelo — lo descargaré desde ahí.",
+  copyInstagramLink: "📋 Copiar enlace de Instagram",
   errorThreadsNoMedia:
     "en esta publicación de Threads no se ve ningún video ni foto. O es una publicación solo de texto, o " +
     "Threads muestra sus archivos solo a usuarios con sesión iniciada — esas publicaciones no se pueden descargar sin iniciar sesión.",
@@ -3278,6 +3304,8 @@ const uz: Messages = {
     "platforma bu videoni serverimizga bermadi. Bu yopiq " +
     "yoki yosh cheklovi bor postlarda boʻladi, baʼzan esa platforma kirishni shunchaki vaqtincha " +
     "cheklaydi. Bir necha daqiqadan soʻng qayta urinib koʻring.",
+  errorThreadsInstagramAttachment: "bu Threads postidagi video Instagramdan biriktirilgan, Instagram esa hozir uni bermadi. Quyidagi tugma bilan Instagram postining oʻzidagi havolani nusxalab, menga yuboring — shu havola orqali yuklab beraman.",
+  copyInstagramLink: "📋 Instagram havolasini nusxalash",
   errorThreadsNoMedia:
     "bu Threads postida video ham, rasm ham koʻrinmayapti. Yo bu faqat matnli post, yoki " +
     "Threads uning mediasini faqat tizimga kirgan foydalanuvchilarga koʻrsatadi — bunday postlarni akkauntga kirmasdan yuklab boʻlmaydi.",
@@ -3519,6 +3547,8 @@ const tr: Messages = {
     "platform bu videoyu sunucumuza vermedi. Bu, gizli " +
     "veya yaş sınırlı gönderilerde olur, bazen de platform erişimi bir süreliğine " +
     "kısıtlar. Birkaç dakika sonra tekrar deneyin.",
+  errorThreadsInstagramAttachment: "bu Threads gönderisindeki video Instagram'dan eklenmiş ve Instagram şu anda onu vermedi. Aşağıdaki düğmeyle Instagram gönderisinin kendi bağlantısını kopyalayıp bana gönderin — oradan indireyim.",
+  copyInstagramLink: "📋 Instagram bağlantısını kopyala",
   errorThreadsNoMedia:
     "bu Threads gönderisinde video veya fotoğraf görünmüyor. Ya yalnızca metin içeren bir gönderi, ya da " +
     "Threads medyasını yalnızca oturum açmış kullanıcılara gösteriyor — bu tür gönderiler giriş yapmadan indirilemez.",
@@ -3760,6 +3790,8 @@ const fa: Messages = {
     "پلتفرم این ویدیو را به سرور ما نداد. این اتفاق برای پست‌های خصوصی " +
     "یا دارای محدودیت سنی می‌افتد، و گاهی هم پلتفرم دسترسی را " +
     "موقتاً محدود می‌کند. چند دقیقهٔ دیگر دوباره امتحان کنید.",
+  errorThreadsInstagramAttachment: "ویدیوی این پست Threads از Instagram پیوست شده و Instagram الان آن را نداد. با دکمهٔ زیر لینک خود پست Instagram را کپی کنید و برای من بفرستید — از روی آن دانلود می‌کنم.",
+  copyInstagramLink: "📋 کپی لینک Instagram",
   errorThreadsNoMedia:
     "در این پست Threads هیچ ویدیو یا عکسی دیده نمی‌شود. یا پست فقط متنی است، یا " +
     "Threads رسانه‌هایش را فقط به کاربرانی که وارد شده‌اند نشان می‌دهد — چنین پست‌هایی بدون ورود به حساب دانلود نمی‌شوند.",
@@ -4001,6 +4033,8 @@ const vi: Messages = {
     "nền tảng không cung cấp video này cho máy chủ của chúng mình. Điều này xảy ra với bài đăng riêng tư " +
     "hoặc giới hạn độ tuổi, và đôi khi nền tảng chỉ tạm thời hạn chế truy cập " +
     "một lúc. Hãy thử lại sau vài phút.",
+  errorThreadsInstagramAttachment: "video trong bài đăng Threads này được đính kèm từ Instagram, và Instagram hiện chưa cung cấp nó. Hãy sao chép liên kết của chính bài đăng Instagram bằng nút bên dưới rồi gửi cho mình — mình sẽ tải từ đó.",
+  copyInstagramLink: "📋 Sao chép liên kết Instagram",
   errorThreadsNoMedia:
     "bài đăng Threads này không có video hay ảnh nào hiển thị. Có thể đó là bài chỉ có chữ, hoặc " +
     "Threads chỉ hiển thị nội dung cho người đã đăng nhập — những bài như vậy không thể tải nếu không đăng nhập.",
@@ -4243,6 +4277,8 @@ const bn: Messages = {
     "প্ল্যাটফর্মটি এই ভিডিওটি আমাদের সার্ভারকে দেয়নি। প্রাইভেট " +
     "বা বয়স-সীমিত পোস্টে এমন হয়, আর কখনো কখনো প্ল্যাটফর্ম কিছু সময়ের জন্য " +
     "অ্যাক্সেস সীমিত করে দেয়। কয়েক মিনিট পরে আবার চেষ্টা করুন।",
+  errorThreadsInstagramAttachment: "এই Threads পোস্টের ভিডিওটি Instagram থেকে সংযুক্ত, আর Instagram এখন সেটি দেয়নি। নিচের বোতাম দিয়ে Instagram পোস্টটির নিজের লিঙ্ক কপি করে আমাকে পাঠান — সেটি থেকে ডাউনলোড করে দেব।",
+  copyInstagramLink: "📋 Instagram লিঙ্ক কপি করুন",
   errorThreadsNoMedia:
     "এই Threads পোস্টে কোনো ভিডিও বা ছবি দেখা যাচ্ছে না। হয় এটি শুধু লেখার পোস্ট, অথবা " +
     "Threads এর মিডিয়া শুধু সাইন ইন করা ব্যবহারকারীদের দেখায় — এমন পোস্ট লগ ইন ছাড়া ডাউনলোড করা যায় না।",
@@ -4484,6 +4520,8 @@ const ur: Messages = {
     "پلیٹ فارم نے یہ ویڈیو ہمارے سرور کو نہیں دی۔ ایسا پرائیویٹ " +
     "یا عمر کی پابندی والی پوسٹس کے ساتھ ہوتا ہے، اور کبھی کبھی پلیٹ فارم کچھ دیر کے لیے " +
     "رسائی محدود کر دیتا ہے۔ چند منٹ بعد دوبارہ کوشش کریں۔",
+  errorThreadsInstagramAttachment: "اس Threads پوسٹ کی ویڈیو Instagram سے منسلک ہے، اور Instagram نے اس وقت اسے نہیں دیا۔ نیچے والے بٹن سے خود Instagram پوسٹ کا لنک کاپی کر کے مجھے بھیجیں — میں اسی سے ڈاؤن لوڈ کر دوں گا۔",
+  copyInstagramLink: "📋 Instagram لنک کاپی کریں",
   errorThreadsNoMedia:
     "اس Threads پوسٹ میں کوئی ویڈیو یا تصویر نظر نہیں آ رہی۔ یا تو یہ صرف ٹیکسٹ والی پوسٹ ہے، یا " +
     "Threads اپنا میڈیا صرف سائن ان صارفین کو دکھاتا ہے — ایسی پوسٹس لاگ ان کیے بغیر ڈاؤن لوڈ نہیں ہو سکتیں۔",
@@ -4725,6 +4763,8 @@ const pl: Messages = {
     "platforma nie udostępniła tego filmu naszemu serwerowi. Tak bywa z prywatnymi " +
     "postami lub treściami z ograniczeniem wiekowym, a czasem platforma po prostu ogranicza dostęp " +
     "na jakiś czas. Spróbuj ponownie za kilka minut.",
+  errorThreadsInstagramAttachment: "film w tym poście na Threads jest dołączony z Instagrama, a Instagram w tej chwili go nie udostępnił. Skopiuj przyciskiem poniżej link do samego posta na Instagramie i wyślij mi go — pobiorę film z niego.",
+  copyInstagramLink: "📋 Skopiuj link do Instagrama",
   errorThreadsNoMedia:
     "w tym poście na Threads nie widać filmu ani zdjęcia. Albo to post tylko z tekstem, albo " +
     "Threads pokazuje jego multimedia tylko zalogowanym — takich postów nie da się pobrać bez logowania.",
@@ -4966,6 +5006,8 @@ const ja: Messages = {
     "プラットフォームがこの動画を当サーバーに提供してくれませんでした。非公開の投稿や" +
     "年齢制限のある投稿で起こるほか、プラットフォームが一時的にアクセスを" +
     "制限していることもあります。数分後にもう一度お試しください。",
+  errorThreadsInstagramAttachment: "この Threads の投稿の動画は Instagram から添付されたもので、いま Instagram から取得できませんでした。下のボタンで Instagram の投稿そのもののリンクをコピーして送ってください。そのリンクからダウンロードします。",
+  copyInstagramLink: "📋 Instagram のリンクをコピー",
   errorThreadsNoMedia:
     "この Threads の投稿には動画も写真も見当たりません。テキストのみの投稿か、" +
     "Threads がログイン済みのユーザーにしかメディアを表示しない投稿です。後者はログインしないとダウンロードできません。",
@@ -5207,6 +5249,8 @@ const ko: Messages = {
     "플랫폼이 이 동영상을 저희 서버에 제공하지 않았어요. 비공개 게시물이나 " +
     "연령 제한 게시물에서 이런 일이 생기고, 가끔은 플랫폼이 잠시 접근을 " +
     "제한하기도 해요. 몇 분 뒤에 다시 시도해 보세요.",
+  errorThreadsInstagramAttachment: "이 Threads 게시물의 동영상은 Instagram에서 첨부된 것인데, 지금은 Instagram이 제공하지 않았어요. 아래 버튼으로 Instagram 게시물 자체의 링크를 복사해서 보내 주세요. 그 링크로 다운로드해 드릴게요.",
+  copyInstagramLink: "📋 Instagram 링크 복사",
   errorThreadsNoMedia:
     "이 Threads 게시물에는 동영상이나 사진이 보이지 않아요. 텍스트만 있는 게시물이거나, " +
     "Threads가 로그인한 사용자에게만 미디어를 보여 주는 게시물이에요. 이런 게시물은 로그인하지 않으면 다운로드할 수 없어요.",
@@ -5448,6 +5492,8 @@ const th: Messages = {
     "แพลตฟอร์มไม่ส่งวิดีโอนี้ให้เซิร์ฟเวอร์ของเรา ซึ่งเกิดขึ้นกับโพสต์ส่วนตัว " +
     "หรือโพสต์ที่จำกัดอายุ และบางครั้งแพลตฟอร์มก็จำกัดการเข้าถึง " +
     "ชั่วคราว ลองใหม่อีกครั้งในอีกไม่กี่นาที",
+  errorThreadsInstagramAttachment: "วิดีโอในโพสต์ Threads นี้แนบมาจาก Instagram และตอนนี้ Instagram ไม่ส่งวิดีโอให้ กดปุ่มด้านล่างเพื่อคัดลอกลิงก์ของโพสต์ Instagram โดยตรงแล้วส่งมาให้ฉัน เดี๋ยวจะดาวน์โหลดจากลิงก์นั้น",
+  copyInstagramLink: "📋 คัดลอกลิงก์ Instagram",
   errorThreadsNoMedia:
     "ไม่พบวิดีโอหรือรูปภาพในโพสต์ Threads นี้ อาจเป็นโพสต์ข้อความล้วน หรือ " +
     "Threads แสดงสื่อให้เฉพาะผู้ใช้ที่ล็อกอินอยู่ โพสต์แบบนี้ดาวน์โหลดไม่ได้หากไม่ล็อกอิน",
@@ -5689,6 +5735,8 @@ const am: Messages = {
     "መድረኩ ይህን ቪዲዮ ለአገልጋያችን አልሰጠም። ይህ የሚሆነው በግል " +
     "ወይም የዕድሜ ገደብ ባለባቸው ልጥፎች ላይ ነው፤ አንዳንድ ጊዜ ደግሞ መድረኩ ለተወሰነ ጊዜ " +
     "መዳረሻን ይገድባል። ከጥቂት ደቂቃዎች በኋላ እንደገና ይሞክሩ።",
+  errorThreadsInstagramAttachment: "በዚህ የThreads ልጥፍ ውስጥ ያለው ቪዲዮ ከInstagram የተያያዘ ነው፣ Instagram ደግሞ አሁን አልሰጠውም። ከታች ባለው አዝራር የInstagram ልጥፉን ራሱ ሊንክ ቅዱና ላኩልኝ — በእሱ አወርደዋለሁ።",
+  copyInstagramLink: "📋 የInstagram ሊንክ ቅዳ",
   errorThreadsNoMedia:
     "በዚህ የThreads ልጥፍ ውስጥ ምንም ቪዲዮ ወይም ፎቶ አይታይም። ወይ ጽሑፍ ብቻ ያለው ልጥፍ ነው፣ ወይም " +
     "Threads ሚዲያውን የሚያሳየው ለገቡ ተጠቃሚዎች ብቻ ነው — እንደዚህ ያሉ ልጥፎች ሳይገቡ ሊወርዱ አይችሉም።",
@@ -5930,6 +5978,8 @@ const om: Messages = {
     "waltajjichi viidiyoo kana sarvara keenyaaf hin kennine. Kun maxxansoota dhuunfaa " +
     "ykn daangaa umurii qaban irratti ta'a, yeroo tokko tokko immoo waltajjichi yeroodhaaf " +
     "seensa daangeessa. Daqiiqaa muraasa booda irra deebi'aa yaalaa.",
+  errorThreadsInstagramAttachment: "viidiyoon maxxansa Threads kana keessa jiru Instagram irraa kan hidhame yoo ta'u, Instagram amma hin kennine. Qabduu armaan gadii fayyadamuudhaan liinkii maxxansa Instagram mataa isaa kopii godhaatii natti ergaa — liinkii sanaan buufadha.",
+  copyInstagramLink: "📋 Liinkii Instagram kopii godhi",
   errorThreadsNoMedia:
     "maxxansa Threads kana keessatti viidiyoon ykn suuraan hin mul'atu. Yookaan maxxansa barreeffama qofaati, yookaan " +
     "Threads miidiyaa isaa namoota seenaniif qofa agarsiisa — maxxansoonni akkasii osoo hin seenin buufatamuu hin danda'an.",
@@ -6171,6 +6221,8 @@ const ha: Messages = {
     "dandalin bai ba sabarmu wannan bidiyo ba. Hakan na faruwa da wallafe-wallafe na sirri " +
     "ko masu iyakar shekaru, kuma wani lokaci dandalin kawai yana taƙaita samun dama na " +
     "ɗan lokaci. Ku sake gwadawa bayan mintuna kaɗan.",
+  errorThreadsInstagramAttachment: "bidiyon da ke cikin wannan wallafar Threads an haɗa shi daga Instagram, kuma Instagram bai bayar da shi a yanzu ba. Ka kwafi hanyar haɗin wallafar Instagram ɗin kanta ta amfani da maɓallin da ke ƙasa ka aiko mini — zan sauke ta ciki.",
+  copyInstagramLink: "📋 Kwafi hanyar haɗin Instagram",
   errorThreadsNoMedia:
     "babu bidiyo ko hoto da ake gani a wannan wallafar Threads. Ko dai wallafa ce ta rubutu kawai, ko kuma " +
     "Threads yana nuna hotuna da bidiyonta ne kawai ga waɗanda suka shiga asusu — irin waɗannan wallafe-wallafe ba za a iya sauke su ba sai an shiga.",
@@ -6412,6 +6464,8 @@ const so: Messages = {
     "madashu ma siin muuqaalkan server-kayaga. Tani waxay dhacdaa boostooyinka gaarka ah " +
     "ama kuwa da'da lagu xaddiday, mararka qaarkoodna madashu waxay xaddiddaa gelitaanka " +
     "muddo. Isku day mar kale dhowr daqiiqo kadib.",
+  errorThreadsInstagramAttachment: "fiidiyowga ku jira boostadan Threads waa kan laga lifaaqay Instagram, Instagram-kuna hadda ma bixin. Isticmaal badhanka hoose oo koobiyee linkiga boostada Instagram laftiisa, kuna soo dir — waan ka soo dejin doonaa.",
+  copyInstagramLink: "📋 Koobiyee linkiga Instagram",
   errorThreadsNoMedia:
     "boostadan Threads kuma muuqdo muuqaal ama sawir. Ama waa boost qoraal oo keliya ah, ama " +
     "Threads waxay warbaahinteeda tustaa oo keliya dadka akoonkooda galay — boostooyinkaas lama soo dejin karo adigoon akoon gelin.",
@@ -6653,6 +6707,8 @@ const az: Messages = {
     "platforma bu videonu serverimizə vermədi. Bu, qapalı " +
     "və ya yaş məhdudiyyətli paylaşımlarda olur, bəzən isə platforma girişi sadəcə " +
     "müvəqqəti məhdudlaşdırır. Bir neçə dəqiqədən sonra yenidən cəhd edin.",
+  errorThreadsInstagramAttachment: "bu Threads paylaşımındakı video Instagram-dan əlavə olunub, Instagram isə onu hazırda vermədi. Aşağıdakı düymə ilə Instagram paylaşımının öz linkini kopyalayıb mənə göndərin — oradan yükləyərəm.",
+  copyInstagramLink: "📋 Instagram linkini kopyala",
   errorThreadsNoMedia:
     "bu Threads paylaşımında video və ya foto görünmür. Ya bu, yalnız mətndən ibarət paylaşımdır, ya da " +
     "Threads onun mediasını yalnız hesaba daxil olmuş istifadəçilərə göstərir — belə paylaşımları hesaba daxil olmadan yükləmək mümkün deyil.",
@@ -6894,6 +6950,8 @@ const ky: Messages = {
     "платформа бул видеону биздин серверге берген жок. Бул жабык же жаш курагы " +
     "боюнча чектелген посттордо болот, кээде платформа жөн гана убактылуу " +
     "жетүүнү чектейт. Бир нече мүнөттөн кийин кайра аракет кылыңыз.",
+  errorThreadsInstagramAttachment: "бул Threads постундагы видео Instagram'дан тиркелген, ал эми Instagram аны азыр бербеди. Төмөнкү баскыч менен Instagram постунун өзүнүн шилтемесин көчүрүп, мага жөнөтүңүз — ошол шилтеме боюнча жүктөп алам.",
+  copyInstagramLink: "📋 Instagram шилтемесин көчүрүү",
   errorThreadsNoMedia:
     "бул Threads постунда видео да, сүрөт да көрүнбөйт. Же бул текст гана камтылган пост, же " +
     "Threads анын медиасын аккаунтка киргендерге гана көрсөтөт — мындай постторду аккаунтка кирбей жүктөп алуу мүмкүн эмес.",
@@ -7135,6 +7193,8 @@ const tg: Messages = {
     "платформа ин видеоро ба сервери мо надод. Ин бо постҳои пӯшида ё дорои " +
     "маҳдудияти синну сол рух медиҳад, баъзан платформа дастрасиро муваққатан " +
     "маҳдуд мекунад. Баъд аз якчанд дақиқа боз кӯшиш кунед.",
+  errorThreadsInstagramAttachment: "видеои ин пости Threads аз Instagram замима шудааст ва Instagram ҳоло онро надод. Бо тугмаи поён истиноди худи пости Instagram-ро нусха кунед ва ба ман фиристед — аз рӯи он боргирӣ мекунам.",
+  copyInstagramLink: "📋 Нусха кардани истиноди Instagram",
   errorThreadsNoMedia:
     "дар ин пости Threads на видео намоён аст, на акс. Ё ин пости фақат матнӣ аст, ё " +
     "Threads медиаи онро танҳо ба корбарони воридшуда нишон медиҳад — чунин постҳоро бе ворид шудан ба аккаунт боргирӣ кардан мумкин нест.",
@@ -7376,6 +7436,8 @@ const ms: Messages = {
     "platform tidak memberikan video ini kepada pelayan kami. Ini berlaku pada hantaran peribadi " +
     "atau hantaran dengan had umur, dan kadangkala platform hanya mengehadkan akses untuk " +
     "seketika. Cuba lagi dalam beberapa minit.",
+  errorThreadsInstagramAttachment: "video dalam hantaran Threads ini dilampirkan daripada Instagram, dan Instagram tidak memberikannya buat masa ini. Salin pautan hantaran Instagram itu sendiri dengan butang di bawah dan hantarkan kepada saya — saya akan memuat turun daripadanya.",
+  copyInstagramLink: "📋 Salin pautan Instagram",
   errorThreadsNoMedia:
     "tiada video atau foto kelihatan dalam hantaran Threads ini. Sama ada ia hantaran teks sahaja, atau " +
     "Threads hanya memaparkan medianya kepada pengguna yang telah log masuk — hantaran sebegini tidak boleh dimuat turun tanpa log masuk.",
@@ -7617,6 +7679,8 @@ const nl: Messages = {
     "het platform heeft deze video niet aan onze server gegeven. Dat gebeurt bij privéposts " +
     "of posts met een leeftijdsgrens, en soms beperkt het platform de toegang gewoon " +
     "tijdelijk. Probeer het over een paar minuten opnieuw.",
+  errorThreadsInstagramAttachment: "de video in deze Threads-post is bijgevoegd vanuit Instagram, en Instagram gaf hem nu niet vrij. Kopieer met de knop hieronder de link naar de Instagram-post zelf en stuur die naar mij — ik download hem daarvandaan.",
+  copyInstagramLink: "📋 Instagram-link kopiëren",
   errorThreadsNoMedia:
     "in deze Threads-post is geen video of foto te zien. Het is een post met alleen tekst, of " +
     "Threads toont de media alleen aan ingelogde gebruikers — zulke posts kunnen niet worden gedownload zonder in te loggen.",
@@ -7858,6 +7922,8 @@ const ro: Messages = {
     "platforma nu a oferit acest videoclip serverului nostru. Asta se întâmplă cu postările private " +
     "sau cu restricție de vârstă, iar uneori platforma pur și simplu limitează accesul pentru " +
     "o vreme. Încearcă din nou peste câteva minute.",
+  errorThreadsInstagramAttachment: "videoclipul din această postare Threads este atașat din Instagram, iar Instagram nu l-a oferit acum. Copiați cu butonul de mai jos linkul postării Instagram propriu-zise și trimiteți-l mie — îl descarc de acolo.",
+  copyInstagramLink: "📋 Copiază linkul Instagram",
   errorThreadsNoMedia:
     "în această postare Threads nu se vede niciun videoclip sau fotografie. Fie este o postare doar cu text, fie " +
     "Threads își arată conținutul media doar utilizatorilor conectați — astfel de postări nu pot fi descărcate fără autentificare.",
@@ -8099,6 +8165,8 @@ const ps: Messages = {
     "پلاټفارم دا ویډیو زموږ سرور ته ورنه کړه. دا د شخصي " +
     "یا د عمر محدودیت لرونکو پوسټونو سره پېښېږي، او کله ناکله پلاټفارم یوازې " +
     "لاسرسی د یو څه وخت لپاره محدودوي. څو دقیقې وروسته بیا هڅه وکړئ.",
+  errorThreadsInstagramAttachment: "د Threads د دې پوسټ ویډیو له Instagram سره ګډ شوې ده، او Instagram اوس هغه نه ورکړه. د لاندې تڼۍ په مرسته د Instagram د پوسټ پخپله لینک کاپي کړئ او ما ته یې راولېږئ — له هغه ځایه به یې ښکته کړم.",
+  copyInstagramLink: "📋 د Instagram لینک کاپي کړئ",
   errorThreadsNoMedia:
     "د Threads په دې پوسټ کې هېڅ ویډیو یا انځور نه ښکاري. یا دا یوازې متني پوسټ دی، یا " +
     "Threads خپل میډیا یوازې ننوتو کاروونکو ته ښیي — داسې پوسټونه له ننوتلو پرته نه شي ښکته کېدای.",
@@ -8340,6 +8408,8 @@ const ckb: Messages = {
     "پلاتفۆرمەکە ئەم ڤیدیۆیەی نەدایە سێرڤەرەکەمان. ئەمە بۆ پۆستە تایبەتەکان " +
     "یان سنووردار بە تەمەن ڕوودەدات، و هەندێک جار پلاتفۆرمەکە تەنها " +
     "بۆ ماوەیەک دەستگەیشتن سنووردار دەکات. دوای چەند خولەکێک دووبارە هەوڵ بدەرەوە.",
+  errorThreadsInstagramAttachment: "ڤیدیۆکەی ئەم پۆستەی Threads لە Instagram ـەوە لکێندراوە، و Instagram ئێستا نەیدا. بە دوگمەی خوارەوە لینکی خودی پۆستەکەی Instagram کۆپی بکە و بۆمی بنێرە — لەو لینکەوە دایدەگرم.",
+  copyInstagramLink: "📋 کۆپیکردنی لینکی Instagram",
   errorThreadsNoMedia:
     "هیچ ڤیدیۆ یان وێنەیەک لەم پۆستەی Threads دا دیار نییە. یان پۆستێکی تەنها دەقە، یان " +
     "Threads میدیاکەی تەنها بۆ ئەو بەکارهێنەرانە پیشان دەدات کە چوونەتە ژوورەوە — ئەم جۆرە پۆستانە بەبێ چوونەژوورەوە داناگیرێن.",
@@ -8581,6 +8651,8 @@ const ku: Messages = {
     "platformê ev vîdyo neda servera me. Ev bi postên taybet " +
     "an bi sînorê temen diqewime, û carinan platform tenê ji bo demekê " +
     "gihîştinê sînordar dike. Piştî çend deqeyan dîsa biceribîne.",
+  errorThreadsInstagramAttachment: "vîdyoya vê posta Threads ji Instagram hatiye girêdan, û Instagram niha ew neda. Bi bişkoja li jêr lînka postên Instagram bi xwe kopî bikin û ji min re bişînin — ez ji wir dadixim.",
+  copyInstagramLink: "📋 Lînka Instagram kopî bike",
   errorThreadsNoMedia:
     "di vê posta Threads de ti vîdyo an wêne xuya nabe. An ew postek tenê nivîs e, an jî " +
     "Threads medyaya wê tenê nîşanî bikarhênerên têketî dide — postên wiha bêyî têketinê nayên daxistin.",
@@ -8822,6 +8894,8 @@ const ug: Messages = {
     "سۇپا بۇ ۋىدىيونى مۇلازىمېتىرىمىزغا بەرمىدى. بۇ ئەھۋال شەخسىي " +
     "ياكى يېشى چەكلەنگەن يوللانمىلاردا يۈز بېرىدۇ، بەزىدە سۇپا " +
     "زىيارەتنى ۋاقىتلىق چەكلەيدۇ. بىر قانچە مىنۇتتىن كېيىن قايتا سىناڭ.",
+  errorThreadsInstagramAttachment: "بۇ Threads يوللانمىسىدىكى ۋىدىيو Instagram دىن قوشۇلغان، Instagram بولسا ھازىر ئۇنى بەرمىدى. تۆۋەندىكى كۇنۇپكا ئارقىلىق Instagram يوللانمىسىنىڭ ئۆزىنىڭ ئۇلانمىسىنى كۆچۈرۈپ ماڭا ئەۋەتىڭ — شۇ ئۇلانما بويىچە چۈشۈرىمەن.",
+  copyInstagramLink: "📋 Instagram ئۇلانمىسىنى كۆچۈرۈش",
   errorThreadsNoMedia:
     "بۇ Threads يوللانمىسىدا ۋىدىيو ياكى رەسىم كۆرۈنمەيدۇ. ياكى بۇ پەقەت تېكىستلىك يوللانما، ياكى " +
     "Threads ئۇنىڭ مېدىياسىنى پەقەت ھېساباتىغا كىرگەن ئىشلەتكۈچىلەرگىلا كۆرسىتىدۇ — بۇنداق يوللانمىلارنى ھېساباتقا كىرمەي چۈشۈرگىلى بولمايدۇ.",
@@ -9063,6 +9137,8 @@ const tk: Messages = {
     "platforma bu wideony biziň serwerimize bermedi. Bu ýapyk " +
     "ýa-da ýaş çäklendirmeli ýazgylarda bolýar, käwagt bolsa platforma " +
     "elýeterliligi wagtlaýyn çäklendirýär. Birnäçe minutdan soň täzeden synanyşyň.",
+  errorThreadsInstagramAttachment: "bu Threads ýazgysyndaky wideo Instagram-dan goşulypdyr, Instagram bolsa ony häzir bermedi. Aşakdaky düwme bilen Instagram ýazgysynyň özüniň salgysyny göçürip, maňa iberiň — şol salgy boýunça ýükläp bererin.",
+  copyInstagramLink: "📋 Instagram salgysyny göçür",
   errorThreadsNoMedia:
     "bu Threads ýazgysynda ne wideo, ne-de surat görünýär. Ýa bu diňe tekstden ybarat ýazgy, ýa-da " +
     "Threads onuň mediasyny diňe hasabyna giren ulanyjylara görkezýär — beýle ýazgylary hasaba girmezden ýükläp bolmaýar.",
@@ -9304,6 +9380,8 @@ const tt: Messages = {
     "платформа бу видеоны безнең серверга бирмәде. Бу ябык яки яшь чикләүле " +
     "постлар белән була, ә кайвакыт платформа вакытлыча керү мөмкинлеген " +
     "чикли. Берничә минуттан соң яңадан карагыз.",
+  errorThreadsInstagramAttachment: "бу Threads постындагы видео Instagram'нан беркетелгән, ә Instagram аны хәзер бирмәде. Түбәндәге төймә белән Instagram постының үзенә сылтаманы күчереп, миңа җибәрегез — шул сылтама буенча йөкләп алырмын.",
+  copyInstagramLink: "📋 Instagram сылтамасын күчерү",
   errorThreadsNoMedia:
     "бу Threads постында видео да, фото да күренми. Йә бу текстлы пост, йә " +
     "Threads аның медиасын аккаунтка кергән кешеләргә генә күрсәтә — мондый постларны аккаунтка кермичә йөкләп алып булмый.",
@@ -9545,6 +9623,8 @@ const sq: Messages = {
     "platforma nuk ia dha këtë video serverit tonë. Kjo ndodh me postimet private " +
     "ose me kufizim moshe, dhe ndonjëherë platforma thjesht e kufizon qasjen për një " +
     "kohë. Provoni sërish pas disa minutash.",
+  errorThreadsInstagramAttachment: "videoja në këtë postim të Threads është bashkëngjitur nga Instagram, dhe Instagram nuk e dha tani. Kopjoni me butonin më poshtë lidhjen e vetë postimit në Instagram dhe ma dërgoni — do ta shkarkoj që andej.",
+  copyInstagramLink: "📋 Kopjo lidhjen e Instagram",
   errorThreadsNoMedia:
     "në këtë postim të Threads nuk duket asnjë video apo foto. Ose është postim vetëm me tekst, ose " +
     "Threads ua shfaq median vetëm përdoruesve të identifikuar — postime të tilla nuk mund të shkarkohen pa u identifikuar.",
@@ -9796,6 +9876,8 @@ const bs: Messages = {
     "platforma nije dala ovaj video našem serveru. To se dešava s privatnim " +
     "objavama ili sadržajem s dobnim ograničenjem, a ponekad platforma jednostavno ograniči pristup " +
     "na neko vrijeme. Pokušajte ponovo za nekoliko minuta.",
+  errorThreadsInstagramAttachment: "video u ovoj objavi na Threadsu je priložen s Instagrama, a Instagram ga trenutno nije predao. Kopirajte dugmetom ispod link na samu objavu na Instagramu i pošaljite mi ga — preuzet ću ga preko njega.",
+  copyInstagramLink: "📋 Kopiraj Instagram link",
   errorThreadsNoMedia:
     "u ovoj objavi na Threadsu ne vidi se ni video ni fotografija. Ili je to objava samo s tekstom, ili " +
     "Threads njen sadržaj prikazuje samo prijavljenim korisnicima — takve objave se ne mogu preuzeti bez prijave.",
@@ -10037,6 +10119,8 @@ const ce: Messages = {
     "платформо хӀара видео тхан сервере ца елла. Иштта хуьлу къайлачу я хенан " +
     "доза долчу посташца, ткъа цкъацкъа платформо цхьана ханна доступ дозанехь " +
     "йо. Масех минот яьлча юха хьажалаш.",
+  errorThreadsInstagramAttachment: "хӀокху Threads постехь долу видео Instagram-ера дӀаяьхна, Instagram-на цо хӀинца ца делира. Лахахь йолу тӀаьхьало Instagram-ан постан шен сурсат копи йе а, суна дӀаэт — цуьнан тӀегӀанца чуяха.",
+  copyInstagramLink: "📋 Instagram-ан хьажорг копи йан",
   errorThreadsNoMedia:
     "хӀокху Threads постехь видео а, фото а ца го. Я иза текст бен йоцу пост ю, я " +
     "Threads медиа аккаунт чохь хьоьжучарна бен ца гойту — иштта посташ аккаунт йоцуш чуяха йиш яц.",
@@ -10278,6 +10362,8 @@ const inh: Messages = {
     "платформа ер видео тха серверага ца елар. Иштта хул къайла е хана " +
     "доза дола постаца, цхьаболча хана платформа цхьа ханна доступ " +
     "дозаяь хул. Масса минот яьлча кхы а цкъа хьажал.",
+  errorThreadsInstagramAttachment: "укх Threads постехь волча видео Instagram-ера дӀаяьхьа я, Instagram-а из хӀанз ца дир. Лаьттах йола тӀаьхьало Instagram-а постага шийна ссылка копи йе а, соц дӀаяьхьа — цун гӀоьнца чуяккхар ва.",
+  copyInstagramLink: "📋 Instagram-а ссылка копи яр",
   errorThreadsNoMedia:
     "укх Threads постаца видео а сурт а гуш дац. Е из текст мара йоаца пост я, е " +
     "Threads медиа аккаунта чу бола наха мара хьахьокхац — иштта посташ аккаунт йоацаш чуяккха йиш яц.",
@@ -10519,6 +10605,8 @@ const av: Messages = {
     "платформаялъ гьаб видео нижер сервералде кьечӀо. Гьедин ккола къалъарал яги " +
     "гӀумруялъул лимит бугел постазда, цо-цо мехалъ платформаялъ доступ цо заманалъ " +
     "лимит гьабула. Цо-цо минуталдасан цӀидасан хӀалбихье.",
+  errorThreadsInstagramAttachment: "гьаб Threads посталда бугеб видео Instagram-алдасан рухӀараб буго, Instagram-ица гьеб гьанже кьуна гьечӀо. Гъоркь бугеб тугьанал Instagram-алъул постал бетӀерал ссылка копи гьабе ва дандчӀвай — гьелда рекъон чуяхъизе вуго.",
+  copyInstagramLink: "📋 Instagram-алъул ссылка копи гьабизе",
   errorThreadsNoMedia:
     "гьаб Threads посталда видеоги суратги бихьулеб гьечӀо. Яги гьеб текст гурони гьечӀеб пост буго, яги " +
     "Threads медиа аккаунталде жаниве лъугьарал гӀадамазе гурони бихьизабуларо — гьединал постал аккаунталде жаниве лъугьичӀого росизе кӀоларо.",
@@ -10760,6 +10848,8 @@ const tl: Messages = {
     "hindi ibinigay ng platform ang video na ito sa aming server. Nangyayari ito sa mga private " +
     "post o may age restriction, at kung minsan ay pansamantalang nililimitahan lang ng platform " +
     "ang access. Subukan ulit pagkalipas ng ilang minuto.",
+  errorThreadsInstagramAttachment: "ang video sa Threads post na ito ay naka-attach mula sa Instagram, at hindi ito ibinigay ng Instagram ngayon. Kopyahin ang link ng mismong Instagram post gamit ang button sa ibaba at ipadala ito sa akin — idadownload ko mula roon.",
+  copyInstagramLink: "📋 Kopyahin ang link ng Instagram",
   errorThreadsNoMedia:
     "walang nakikitang video o larawan sa Threads post na ito. Maaaring text lang ang post, o " +
     "ipinapakita lang ng Threads ang media nito sa mga naka-sign in — hindi mada-download ang ganitong mga post nang hindi naka-log in.",
@@ -11001,6 +11091,8 @@ const uk: Messages = {
     "платформа не віддала це відео нашому серверу. Так буває із закритими й " +
     "віковими публікаціями, а іноді платформа просто тимчасово обмежує " +
     "доступ. Спробуй ще раз за кілька хвилин.",
+  errorThreadsInstagramAttachment: "відео в цьому дописі Threads прикріплено з Instagram, а Instagram зараз його не віддав. Скопіюйте посилання на сам допис Instagram кнопкою нижче й надішліть його мені — завантажу за ним.",
+  copyInstagramLink: "📋 Скопіювати посилання Instagram",
   errorThreadsNoMedia:
     "у цьому дописі Threads не видно ні відео, ні фото. Або це текстовий допис, або " +
     "Threads показує його медіа лише тим, хто увійшов в акаунт, — такі дописи без входу завантажити не можна.",
@@ -11248,6 +11340,8 @@ const kk: Messages = {
     "платформа бұл видеоны біздің серверге бермеді. Бұл жабық және " +
     "жас шектеуі бар жарияланымдарда болады, ал кейде платформа жай ғана уақытша " +
     "қолжетімділікті шектейді. Бірнеше минуттан кейін қайта байқап көр.",
+  errorThreadsInstagramAttachment: "бұл Threads жазбасындағы видео Instagram-нан тіркелген, ал Instagram қазір оны бермеді. Төмендегі түймемен Instagram жазбасының өзіне сілтемені көшіріп, маған жіберіңіз — сол сілтеме бойынша жүктеп алам.",
+  copyInstagramLink: "📋 Instagram сілтемесін көшіру",
   errorThreadsNoMedia:
     "бұл Threads жазбасында видео да, фото да көрінбейді. Не бұл мәтіндік жазба, не " +
     "Threads оның медиасын тек аккаунтқа кіргендерге көрсетеді, — мұндай жазбаларды кірмей жүктеп алу мүмкін емес.",

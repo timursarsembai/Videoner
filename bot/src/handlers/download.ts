@@ -14,6 +14,7 @@ import {
   isYoutubeDailyLimitError,
   siteLinkFor,
   friendlyError,
+  instagramAttachmentUrl,
   failedDownloadText,
   checkUserRateLimit,
   API_URL,
@@ -499,6 +500,8 @@ async function failureMessage(
   const friendly = friendlyError(raw, lang);
   const text = `${m.failedPrefix}${friendly}`;
   if (friendly === m.errorFileTooLarge) return { text, keyboard: bigFileButtons(new InlineKeyboard(), m, url, lang) };
+  const igUrl = friendly === m.errorThreadsInstagramAttachment ? instagramAttachmentUrl(raw) : null;
+  if (igUrl) return { text, keyboard: new InlineKeyboard().copyText(m.copyInstagramLink, igUrl) };
   const link = extensionLinkFor(raw, url, lang);
 
   // Запись видна только вошедшим, а к площадке можно подключить свой аккаунт:

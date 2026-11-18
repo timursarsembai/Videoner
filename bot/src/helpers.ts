@@ -202,6 +202,13 @@ export function failedDownloadText(errorCategory: string | null | undefined, lan
 // Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
 // Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
 // только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.
+// Ссылка на запись Instagram из ошибки плагина Threads (см. выше). Только
+// вида instagram.com/p/<код>/ — в кнопку не попадёт ничего постороннего.
+export function instagramAttachmentUrl(raw: string): string | null {
+  const m = /instagram attachment of this threads post is unavailable: (https:\/\/www\.instagram\.com\/p\/[A-Za-z0-9_-]+\/)/i.exec(raw || "");
+  return m ? m[1] : null;
+}
+
 export function friendlyError(raw: string, lang: Lang): string {
   const msg = (raw || "").toLowerCase();
   const m = messages[lang];
@@ -242,6 +249,13 @@ export function friendlyError(raw: string, lang: Lang): string {
   // «signed-in», и его нельзя принять за обычную закрытую запись.
   if (msg.includes("no video or photo is visible in this threads post")) {
     return m.errorThreadsNoMedia;
+  }
+
+  // Пост Threads с прикреплённой записью Instagram, а instagram.com не отдал
+  // её даже через прокси (плагин server/ytdlp-plugins/threads). Кнопку со
+  // ссылкой на саму запись добавляет failureMessage (instagramAttachmentUrl).
+  if (msg.includes("instagram attachment of this threads post is unavailable")) {
+    return m.errorThreadsInstagramAttachment;
   }
 
   // Сторис Instagram без входа не отдаёт вовсе (yt-dlp: «[instagram:story] …

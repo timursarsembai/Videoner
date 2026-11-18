@@ -279,6 +279,25 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
         '--concurrent-fragments',
         '8',
       ];
+    } else if (height && platform === 'pinterest') {
+      // Pinterest отдаёт видео HLS-дорожками без звука (234x416, 360x640,
+      // 540x960, 720x1280) и звук отдельно. Подпись качества — по короткой
+      // стороне (234p), а общая цепочка ниже ищет [height<=234]: у вертикального
+      // ролика высота 416, подходящего не находилось, и «234p» падал с
+      // «Requested format is not available»; на «720p» приходило 360x640
+      // (поймано 18.11.2026 на pin.it/7Keeq5ocT). Поэтому как у YouTube: кап
+      // по обеим сторонам (16:9 от запрошенного), внутри — сортировка по
+      // короткой стороне (res), и видео со звуком склеиваем.
+      const long = Math.ceil((Number(height) * 16) / 9);
+      const cap = `[width<=?${long}][height<=?${long}]`;
+      formatArr = [
+        '-f',
+        `bv*${cap}+ba/b${cap}/bv*+ba/b`,
+        '-S',
+        `res:${height},vcodec:avc1,acodec:aac`,
+        '--merge-output-format',
+        'mp4',
+      ];
     } else if (height && platform === 'getcourse') {
       // Урок GetCourse — HLS, где видео и звук в одном потоке (H.264 + AAC),
       // кусочками по 3 секунды: у сорокаминутного урока их около 700. По

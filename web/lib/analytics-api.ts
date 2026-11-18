@@ -460,8 +460,7 @@ export type BotGroupRow = {
   removedAt: string | null;
   members: number | null;
   downloads: number;
-  lastLinkAt: string | null;
-  lastDownloadAt: string | null;
+  lastActivityAt: string | null;
   firstSeenAt: string;
 };
 

@@ -15,14 +15,18 @@ type GroupChat = Extract<Chat, { type: "group" | "supergroup" }>;
 const SEEN_INTERVAL_MS = 30 * 60 * 1000;
 // Число участников спрашиваем у Telegram не чаще раза в сутки на группу.
 const MEMBERS_INTERVAL_MS = 24 * 60 * 60 * 1000;
+const MEMBERS_RETRY_MS = 60 * 60 * 1000;
 const MAX_TRACKED = 50_000;
 
 const lastSeen = new Map<number, number>();
 const lastMembers = new Map<number, number>();
 
+// Переполнилось — выбрасываем самую давнюю запись, а не всё сразу: иначе
+// все группы разом пошли бы спрашивать Telegram и сервер.
 function remember(map: Map<number, number>, chatId: number, now: number) {
-  if (map.size > MAX_TRACKED) map.clear();
+  map.delete(chatId);
   map.set(chatId, now);
+  if (map.size > MAX_TRACKED) map.delete(map.keys().next().value as number);
 }
 
 function about(chat: GroupChat) {
@@ -38,7 +42,13 @@ async function membersOf(tg: Api, chatId: number, force = false): Promise<number
   const now = Date.now();
   if (!force && now - (lastMembers.get(chatId) ?? 0) < MEMBERS_INTERVAL_MS) return undefined;
   remember(lastMembers, chatId, now);
-  return tg.getChatMemberCount(chatId).catch(() => undefined);
+  try {
+    return await tg.getChatMemberCount(chatId);
+  } catch {
+    // Telegram не ответил — спросим снова через час, а не через сутки.
+    remember(lastMembers, chatId, now - MEMBERS_INTERVAL_MS + MEMBERS_RETRY_MS);
+    return undefined;
+  }
 }
 
 function send(body: Record<string, unknown>) {

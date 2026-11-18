@@ -17,7 +17,7 @@ describe('parseBotGroupEvent', () => {
 
 describe('BotGroupService.record', () => {
   const setup = () => {
-    const prisma = { botGroup: { upsert: jest.fn().mockResolvedValue({}) } } as any;
+    const prisma = { botGroup: { upsert: jest.fn().mockResolvedValue({}), findFirst: jest.fn().mockResolvedValue(null) } } as any;
     return { svc: new BotGroupService(prisma), upsert: prisma.botGroup.upsert };
   };
 
@@ -42,5 +42,14 @@ describe('BotGroupService.record', () => {
     const { svc, upsert } = setup();
     await svc.record({ chatId: -1, event: 'added', addedById: 7, members: 30 });
     expect(upsert.mock.calls[0][0].create).toMatchObject({ addedById: BigInt(7), members: 30, removedAt: null });
+  });
+});
+
+describe('BotGroupService: опоздавшее событие старой группы после переезда', () => {
+  it('is ignored', async () => {
+    const upsert = jest.fn();
+    const prisma = { botGroup: { upsert, findFirst: jest.fn().mockResolvedValue({ chatId: BigInt(-1) }) } } as any;
+    await new BotGroupService(prisma).record({ chatId: -1, event: 'removed' });
+    expect(upsert).not.toHaveBeenCalled();
   });
 });

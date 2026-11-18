@@ -1,6 +1,6 @@
 "use client";
 
-import type { BotGroups, BotGroupRow } from "@/lib/analytics-api";
+import type { BotGroups } from "@/lib/analytics-api";
 import { ChartCard, useAnalytics } from "./chart-card";
 import { formatShortDate, formatShortTime } from "./tables";
 
@@ -8,11 +8,6 @@ import { formatShortDate, formatShortTime } from "./tables";
 // боту не даёт — бот записывает их сам (bot/src/group-tracking.ts): при
 // добавлении и при первой ссылке в группе. Учёт с 18.11.2026, поэтому группы,
 // куда бота добавили раньше и где с тех пор не присылали ссылок, сюда не попали.
-
-function lastActivity(g: BotGroupRow): string | null {
-  const times = [g.lastLinkAt, g.lastDownloadAt, g.addedAt].filter(Boolean) as string[];
-  return times.length ? times.reduce((a, b) => (new Date(a) > new Date(b) ? a : b)) : null;
-}
 
 function Stat({ label, value, hint }: { label: string; value: number | string; hint?: string }) {
   return (
@@ -56,7 +51,7 @@ export function GroupsTab() {
               </thead>
               <tbody>
                 {(d?.groups ?? []).map((g) => {
-                  const last = lastActivity(g);
+                  const last = g.lastActivityAt;
                   return (
                     <tr key={g.chatId} className="border-t border-border/40">
                       <td className="py-2">

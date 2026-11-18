@@ -12,6 +12,7 @@ CREATE TABLE "BotGroup" (
     "downloads" INTEGER NOT NULL DEFAULT 0,
     "lastLinkAt" TIMESTAMP(3),
     "lastDownloadAt" TIMESTAMP(3),
+    "migratedTo" BIGINT,
     "firstSeenAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

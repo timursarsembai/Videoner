@@ -56,7 +56,12 @@ export class BotGroupService {
   async record(e: BotGroupEventInput): Promise<void> {
     const chatId = BigInt(e.chatId);
     const now = new Date();
-    if (e.event === 'migrated') return this.migrate(chatId, BigInt(e.toChatId!));
+    if (e.event === 'migrated') return this.migrate(chatId, BigInt(e.toChatId!), now);
+
+    // Опоздавшее событие старой группы, которая уже стала супергруппой, —
+    // не воскрешаем её отдельной строкой (её история уже у нового номера).
+    const moved = await this.prisma.botGroup.findFirst({ where: { chatId, migratedTo: { not: null } }, select: { chatId: true } });
+    if (moved) return;
 
     // Что известно о самой группе — обновляем при любом событии.
     const about = {
@@ -82,40 +87,70 @@ export class BotGroupService {
     });
   }
 
-  // Новый номер чата после перехода в супергруппу: переносим запись.
-  private async migrate(from: bigint, to: bigint): Promise<void> {
+  // Группа стала супергруппой: у чата новый номер. Старую строку не двигаем
+  // (смена ключа гонялась бы с событиями нового номера), а помечаем
+  // migratedTo и сливаем её историю в строку нового номера: счётчик видео
+  // складываем, даты берём самые ранние/поздние, недостающее — из старой.
+  private async migrate(from: bigint, to: bigint, now: Date): Promise<void> {
     await this.prisma.$transaction(async (tx) => {
       const old = await tx.botGroup.findUnique({ where: { chatId: from } });
-      if (!old) return;
-      const existing = await tx.botGroup.findUnique({ where: { chatId: to } });
-      if (!existing) {
-        await tx.botGroup.update({ where: { chatId: from }, data: { chatId: to, type: 'supergroup' } });
-        return;
-      }
-      await tx.botGroup.update({
+      if (!old || old.migratedTo !== null) return;
+      await tx.botGroup.update({ where: { chatId: from }, data: { migratedTo: to, removedAt: now } });
+      const cur = await tx.botGroup.findUnique({ where: { chatId: to } });
+      const earliest = (a: Date | null, b: Date | null) => (a && b ? (a < b ? a : b) : (a ?? b));
+      const latest = (a: Date | null, b: Date | null) => (a && b ? (a > b ? a : b) : (a ?? b));
+      const merged = {
+        title: cur?.title ?? old.title,
+        username: cur?.username ?? old.username,
+        type: 'supergroup',
+        addedById: cur?.addedById ?? old.addedById,
+        addedAt: earliest(cur?.addedAt ?? null, old.addedAt),
+        members: cur?.members ?? old.members,
+        membersAt: cur?.membersAt ?? old.membersAt,
+        lastLinkAt: latest(cur?.lastLinkAt ?? null, old.lastLinkAt),
+        lastDownloadAt: latest(cur?.lastDownloadAt ?? null, old.lastDownloadAt),
+        firstSeenAt: earliest(cur?.firstSeenAt ?? null, old.firstSeenAt)!,
+        // Бот в супергруппе — раз Telegram сообщил о переезде из неё же.
+        removedAt: cur?.removedAt ?? null,
+      };
+      await tx.botGroup.upsert({
         where: { chatId: to },
-        data: {
-          downloads: { increment: old.downloads },
-          addedAt: existing.addedAt ?? old.addedAt,
-          addedById: existing.addedById ?? old.addedById,
-        },
+        create: { chatId: to, ...merged, downloads: old.downloads },
+        update: { ...merged, downloads: { increment: old.downloads } },
       });
-      await tx.botGroup.delete({ where: { chatId: from } });
     });
   }
 
-  // Для дашборда: сводка и список, свежие сверху.
+  // Для дашборда: сводка по всем группам и список, свежие сверху.
+  // «Последняя активность» — здесь и только здесь (её же сортирует дашборд).
   async list() {
-    const rows = await this.prisma.botGroup.findMany({ take: 1000 });
-    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    const lastActivity = (r: (typeof rows)[number]) =>
-      Math.max(r.lastLinkAt?.getTime() ?? 0, r.lastDownloadAt?.getTime() ?? 0, r.addedAt?.getTime() ?? 0);
-    rows.sort((a, b) => lastActivity(b) - lastActivity(a));
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const [summary] = await this.prisma.$queryRaw<
+      { total: bigint; present: bigint; active_week: bigint; downloads: bigint | null }[]
+    >`
+      SELECT count(*) AS total,
+             count(*) FILTER (WHERE "removedAt" IS NULL) AS present,
+             count(*) FILTER (WHERE "removedAt" IS NULL
+               AND GREATEST("lastLinkAt", "lastDownloadAt", "addedAt") > ${weekAgo}) AS active_week,
+             sum("downloads") AS downloads
+      FROM "BotGroup" WHERE "migratedTo" IS NULL`;
+    const rows = await this.prisma.$queryRaw<
+      {
+        chatId: bigint; title: string | null; username: string | null; type: string | null;
+        addedById: bigint | null; addedAt: Date | null; removedAt: Date | null; members: number | null;
+        downloads: number; lastActivityAt: Date | null; firstSeenAt: Date;
+      }[]
+    >`
+      SELECT "chatId", "title", "username", "type", "addedById", "addedAt", "removedAt", "members",
+             "downloads", GREATEST("lastLinkAt", "lastDownloadAt", "addedAt") AS "lastActivityAt", "firstSeenAt"
+      FROM "BotGroup" WHERE "migratedTo" IS NULL
+      ORDER BY "lastActivityAt" DESC NULLS LAST, "firstSeenAt" DESC
+      LIMIT 2000`;
     return {
-      total: rows.length,
-      present: rows.filter((r) => !r.removedAt).length,
-      activeWeek: rows.filter((r) => !r.removedAt && lastActivity(r) > weekAgo).length,
-      downloads: rows.reduce((sum, r) => sum + r.downloads, 0),
+      total: Number(summary?.total ?? 0),
+      present: Number(summary?.present ?? 0),
+      activeWeek: Number(summary?.active_week ?? 0),
+      downloads: Number(summary?.downloads ?? 0),
       groups: rows.map((r) => ({
         chatId: r.chatId.toString(),
         title: r.title,
@@ -126,8 +161,7 @@ export class BotGroupService {
         removedAt: r.removedAt,
         members: r.members,
         downloads: r.downloads,
-        lastLinkAt: r.lastLinkAt,
-        lastDownloadAt: r.lastDownloadAt,
+        lastActivityAt: r.lastActivityAt,
         firstSeenAt: r.firstSeenAt,
       })),
     };

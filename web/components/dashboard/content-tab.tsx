@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import type { ContentAuthors, ContentCategory, ContentHashtag } from "@/lib/analytics-api";
+import { Fragment, useState } from "react";
+import type { ContentAuthors, ContentCategory, ContentHashtag, ContentTopics } from "@/lib/analytics-api";
 import { ChartCard, usePeriodQuery } from "./chart-card";
 import { formatShortDate } from "./tables";
 
@@ -10,11 +10,11 @@ import { formatShortDate } from "./tables";
 // за прошлое есть только восстановленное: авторы Instagram из названий,
 // ники TikTok из ссылок, сабреддиты и хэштеги из названий.
 
-const PLATFORMS = ["", "YOUTUBE", "INSTAGRAM", "TIKTOK", "THREADS", "FACEBOOK", "TWITTER", "REDDIT", "VK", "RUTUBE", "PINTEREST", "OKRU"];
 const PLATFORM_NAMES: Record<string, string> = {
   YOUTUBE: "YouTube", INSTAGRAM: "Instagram", TIKTOK: "TikTok", THREADS: "Threads", FACEBOOK: "Facebook",
   TWITTER: "X", REDDIT: "Reddit", VK: "VK", RUTUBE: "Rutube", PINTEREST: "Pinterest", OKRU: "OK", VIMEO: "Vimeo",
 };
+const PLATFORMS = ["", ...Object.keys(PLATFORM_NAMES)];
 const selectClass =
   "h-8 rounded-md border border-input bg-transparent px-2 text-xs outline-none focus-visible:ring-1 focus-visible:ring-ring";
 
@@ -33,9 +33,11 @@ function PlatformSelect({ value, onChange }: { value: string; onChange: (v: stri
 function AuthorsCard() {
   const [platform, setPlatform] = useState("");
   const [sort, setSort] = useState<"downloads" | "users">("users");
-  const q = usePeriodQuery<ContentAuthors>("content/authors", { ...(platform ? { platform } : {}), limit: 200 });
+  const q = usePeriodQuery<ContentAuthors>("content/authors", { ...(platform ? { platform } : {}), sort, limit: 200 });
   const d = q.data;
-  const rows = [...(d?.authors ?? [])].sort((a, b) => b[sort] - a[sort] || b.downloads - a.downloads);
+  // Сортирует сервер: иначе топ-200 по скачиваниям, пересортированный здесь
+  // по людям, терял бы авторов, которых качали многие, но понемногу.
+  const rows = d?.authors ?? [];
   const share = d && d.total ? Math.round((d.withAuthor / d.total) * 100) : null;
   return (
     <ChartCard
@@ -72,7 +74,7 @@ function AuthorsCard() {
           </thead>
           <tbody>
             {rows.map((a) => (
-              <tr key={`${a.platform}|${a.name}|${a.url}`} className="border-t border-border/40">
+              <tr key={a.key} className="border-t border-border/40">
                 <td className="py-2">
                   {a.url ? (
                     <a href={a.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -158,12 +160,80 @@ function HashtagsCard() {
   );
 }
 
+// Религия по конфессиям и эзотерика — только частота (владелец 18.11.2026:
+// пока ничего не блокируем). Определяется по словам в названии, хэштегах и
+// имени автора (server: lib/sensitive-topics.ts); примеры — чтобы видеть,
+// где список слов ошибается.
+function TopicsCard() {
+  const [platform, setPlatform] = useState("");
+  const [open, setOpen] = useState<string | null>(null);
+  const q = usePeriodQuery<ContentTopics>("content/topics", platform ? { platform } : {});
+  const total = q.data?.total ?? 0;
+  const pct = (n: number) => (total ? `${((n / total) * 100).toFixed(1)}%` : "—");
+  return (
+    <ChartCard
+      title={`Религия и эзотерика — ${q.label.toLowerCase()}`}
+      hint="Определяется по словам в названии, хэштегах и имени автора, поэтому примерно: видео без подписи сюда не попадут, а редкое слово может сработать не по теме. Нажмите на тему, чтобы увидеть примеры. Пока только подсчёт — ничего не блокируется."
+      period={q.period}
+      onPeriod={q.setPeriod}
+      controls={<PlatformSelect value={platform} onChange={setPlatform} />}
+      loading={q.loading}
+      error={q.error}
+    >
+      <table className="w-full text-sm">
+        <thead className="text-left text-xs text-foreground/50">
+          <tr>
+            <th className="py-1 font-normal">Тема</th>
+            <th className="py-1 text-right font-normal">Скачиваний</th>
+            <th className="py-1 text-right font-normal">Доля</th>
+            <th className="py-1 text-right font-normal">Людей</th>
+          </tr>
+        </thead>
+        <tbody>
+          {(q.data?.topics ?? []).map((t) => (
+            <Fragment key={t.id}>
+              <tr
+                className={t.examples.length ? "cursor-pointer hover:bg-foreground/5" : ""}
+                onClick={() => t.examples.length && setOpen(open === t.id ? null : t.id)}
+              >
+                <td className="py-1.5">
+                  {t.examples.length ? (open === t.id ? "▾ " : "▸ ") : ""}
+                  {t.label}
+                </td>
+                <td className="py-1.5 text-right tabular-nums">{t.downloads}</td>
+                <td className="py-1.5 text-right tabular-nums text-foreground/60">{pct(t.downloads)}</td>
+                <td className="py-1.5 text-right tabular-nums">{t.users}</td>
+              </tr>
+              {open === t.id && (
+                <tr>
+                  <td colSpan={4} className="pb-3 pl-4">
+                    <ul className="space-y-0.5 text-xs text-foreground/70">
+                      {t.examples.map((e) => (
+                        <li key={e.title} className="truncate" title={e.title}>
+                          {e.count > 1 && <span className="mr-1 tabular-nums text-foreground/40">×{e.count}</span>}
+                          {e.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              )}
+            </Fragment>
+          ))}
+        </tbody>
+      </table>
+      <p className="mt-2 text-xs text-foreground/40">Всего удачных скачиваний за период: {total}</p>
+    </ChartCard>
+  );
+}
+
 export function ContentTab() {
   return (
     <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <AuthorsCard />
       <CategoriesCard />
       <HashtagsCard />
+      <TopicsCard />
     </section>
   );
 }

@@ -76,6 +76,7 @@ import { parseCountry } from 'src/lib/countries';
 import { errorText } from 'src/lib/error-text';
 import { USER_AGENT as TIKTOK_USER_AGENT } from 'src/lib/tiktok-photo';
 import { contentMeta, type ContentMeta } from 'src/lib/content-meta';
+import type { YtdlpVideoInfo } from 'src/types/youtube';
 
 export interface DownloadRequestMeta {
   telegramId?: number;
@@ -788,6 +789,8 @@ export class DownloadService {
         downloader: this.resolveDownloader(platform),
         source: DownloadSource.EXTENSION,
         videoTitle: title,
+        // У расширения только название и ссылка — автор и хэштеги из них.
+        ...contentMeta({ title: title ?? undefined }, platform, url),
         fileSize,
         clientIpHash: hashClientIp(meta.clientIp),
         clientSide: true,
@@ -1484,13 +1487,14 @@ export class DownloadService {
         userCookies || multi || !hasVideo
           ? null
           : this.cacheKeyFor(platform, info, 'v', quality, extension || 'mp4');
+      const content = contentMeta(info as YtdlpVideoInfo & Record<string, unknown>, platform, url);
       const cached = await this.serveFromCache({
         cacheKey,
         url,
         req,
         meta,
         title: info.title,
-        content: contentMeta(info as any, platform, url),
+        content,
       });
       if (cached) return cached;
 
@@ -1544,7 +1548,7 @@ export class DownloadService {
           source: meta.source,
           videoTitle: info.title,
           videoDuration: info.duration,
-          content: contentMeta(info as any, platform, url),
+          content,
           cacheKey,
           clientIp: meta.clientIp,
           clientCountry: meta.clientCountry,
@@ -1748,13 +1752,14 @@ export class DownloadService {
       const cacheKey = userCookies || multi
         ? null
         : this.cacheKeyFor(platform, info, 'a', quality, audioExtension);
+      const content = contentMeta(info as YtdlpVideoInfo & Record<string, unknown>, platform, url);
       const cached = await this.serveFromCache({
         cacheKey,
         url,
         req,
         meta,
         title: info.title,
-        content: contentMeta(info as any, platform, url),
+        content,
       });
       if (cached) return cached;
 
@@ -1777,7 +1782,7 @@ export class DownloadService {
           source: meta.source,
           videoTitle: info.title,
           videoDuration: info.duration,
-          content: contentMeta(info as any, platform, url),
+          content,
           cacheKey,
           clientIp: meta.clientIp,
           clientCountry: meta.clientCountry,

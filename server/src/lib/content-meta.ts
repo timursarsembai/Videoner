@@ -18,7 +18,9 @@ export type ContentMeta = {
 };
 
 const MAX_HASHTAGS = 15;
-const HASHTAG_RE = /#([\p{L}\p{M}\p{N}_]{2,50})/gu;
+// «#» не после буквы, цифры, «/», «&», «=», «?», «.», «:» — так отсекаются
+// site.com/page#chapters и &#39;, а «текст 🔥#тег» и «#тег1 #тег2» проходят.
+const HASHTAG_RE = /(?<![\p{L}\p{N}_/&=?.:])#([\p{L}\p{M}\p{N}_]{2,50})/gu;
 
 const clean = (v: unknown, max = 200): string | null =>
   typeof v === 'string' && v.trim() ? v.trim().slice(0, max) : null;
@@ -39,47 +41,63 @@ export function tiktokHandleOf(url: string): string | null {
   return m ? m[1] : null;
 }
 
+// Ник — латиница, цифры, точка, подчёркивание.
+const handle = (v: unknown): string | null =>
+  typeof v === 'string' && /^[A-Za-z0-9_.]{2,40}$/.test(v.trim()) ? v.trim() : null;
+
 export function instagramTitleAuthor(title: string | undefined | null): string | null {
   const m = /^(?:video|photo|post|reel) by ([A-Za-z0-9_.]{1,40})$/i.exec((title ?? '').trim());
   return m ? m[1] : null;
 }
 
+// Сначала настоящие #хэштеги из названия и описания (только «#» в начале
+// слова — не кусок ссылки site.com/#chapters и не &#39;), потом теги
+// площадки, но только однословные: у YouTube теги — SEO-фразы с пробелами.
 export function hashtagsOf(info: Partial<YtdlpVideoInfo>): string[] {
   const out = new Set<string>();
-  for (const t of Array.isArray(info.tags) ? info.tags : []) {
-    if (typeof t !== 'string') continue;
-    const tag = t.trim().replace(/^#/, '').toLowerCase();
-    if (tag.length >= 2 && tag.length <= 50) out.add(tag);
-    if (out.size >= MAX_HASHTAGS) return [...out];
-  }
   const text = `${info.title ?? ''}\n${info.description ?? ''}`;
   for (const m of text.matchAll(HASHTAG_RE)) {
     out.add(m[1].toLowerCase());
+    if (out.size >= MAX_HASHTAGS) return [...out];
+  }
+  for (const t of Array.isArray(info.tags) ? info.tags : []) {
+    if (typeof t !== 'string') continue;
+    const tag = t.trim().replace(/^#/, '').toLowerCase();
+    if (/^[\p{L}\p{M}\p{N}_]{2,50}$/u.test(tag)) out.add(tag);
     if (out.size >= MAX_HASHTAGS) break;
   }
   return [...out];
 }
 
+// Ключ автора (authorId) должен совпадать у старых и новых записей, иначе
+// один автор в дашборде раздвоится: у TikTok и Instagram это ник (его же
+// миграция восстановила из ссылок и названий), у YouTube — номер канала
+// (UC…), он не меняется, в отличие от @handle.
 export function contentMeta(info: Partial<YtdlpVideoInfo> & Record<string, unknown>, platform: string | null, url: string): ContentMeta {
-  let authorName = clean(info.uploader) ?? clean(info.channel) ?? clean(info.creator);
-  let authorId = clean(info.uploader_id, 100) ?? clean(info.channel_id, 100);
-  let authorUrl = safeUrl(info.uploader_url) ?? safeUrl(info.channel_url);
+  let authorName = clean(info.channel) ?? clean(info.uploader) ?? clean(info.creator);
+  let authorId = clean(info.channel_id, 100) ?? clean(info.uploader_id, 100);
+  let authorUrl = safeUrl(info.channel_url) ?? safeUrl(info.uploader_url);
 
-  if (platform === 'instagram' && !authorName) {
-    const nick = instagramTitleAuthor(info.title);
-    if (nick) {
-      authorName = nick;
-      authorId ??= nick;
-      authorUrl ??= `https://www.instagram.com/${nick}/`;
-    }
-  }
   if (platform === 'tiktok') {
-    const nick = tiktokHandleOf(url);
+    // yt-dlp: uploader — ник (@…), uploader_id — числовой номер.
+    const nick = tiktokHandleOf(url) ?? handle(info.uploader);
     if (nick) {
-      authorId ??= nick;
-      authorName ??= nick;
-      authorUrl ??= `https://www.tiktok.com/@${nick}`;
+      authorId = nick;
+      authorName = nick;
+      authorUrl = `https://www.tiktok.com/@${nick}`;
     }
+  } else if (platform === 'instagram') {
+    // yt-dlp: channel — ник, uploader — полное имя, uploader_id — номер.
+    const nick = handle(info.channel) ?? instagramTitleAuthor(info.title) ?? handle(info.uploader);
+    if (nick) {
+      authorId = nick;
+      authorName = nick;
+      authorUrl = `https://www.instagram.com/${nick}/`;
+    }
+  } else if (platform !== 'youtube') {
+    authorName = clean(info.uploader) ?? authorName;
+    authorId = clean(info.uploader_id, 100) ?? authorId;
+    authorUrl = safeUrl(info.uploader_url) ?? authorUrl;
   }
 
   const category =

@@ -23,7 +23,7 @@ describe('contentMeta', () => {
   });
 
   it('хэштеги: теги площадки и #слова, без повторов, не больше 15', () => {
-    expect(hashtagsOf({ tags: ['#Food', 'food'], title: '#Рецепт и #food', description: '' } as any)).toEqual(['food', 'рецепт']);
+    expect(hashtagsOf({ tags: ['#Food', 'food'], title: '#Рецепт и #food', description: '' } as any)).toEqual(['рецепт', 'food']);
     const many = Array.from({ length: 30 }, (_, i) => `#tag${i}`).join(' ');
     expect(hashtagsOf({ title: many } as any)).toHaveLength(15);
   });

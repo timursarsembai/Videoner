@@ -57,7 +57,8 @@ export class AnalyticsController {
     'users/blocked/monthly': (q) => this.analyticsService.blockedPeriods('month', this.range(q)),
     groups: () => this.botGroups.list(),
     'content/authors': (q) =>
-      this.content.authors(this.range(q), parsePlatform(q.platform), this.limit(q.limit, 50, 200)),
+      this.content.authors(this.range(q), parsePlatform(q.platform), this.limit(q.limit, 50, 200), q.sort === 'downloads' ? 'downloads' : 'users'),
+    'content/topics': (q) => this.content.topics(this.range(q), parsePlatform(q.platform)),
     'content/categories': (q) => this.content.categories(this.range(q), this.limit(q.limit, 30, 100)),
     'content/hashtags': (q) =>
       this.content.hashtags(this.range(q), parsePlatform(q.platform), this.limit(q.limit, 40, 200)),

@@ -138,7 +138,7 @@ The displayed success percentage covers terminal file downloads only; it is
 not an end-to-end availability estimate. File volume includes cache deliveries
 and does not measure proxy consumption. The article remains a draft.
 
-Memory lifecycle (feature branch; requires a resolver release):
+Memory lifecycle (released 2026-11-17):
 
 - HTTP/browser modules do not import ONNX, Transformers.js or Sharp. These run
   in one lazily started child process; its environment excludes proxy credentials.

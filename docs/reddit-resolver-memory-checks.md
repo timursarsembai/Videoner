@@ -1,7 +1,8 @@
 **Reddit resolver: memory changes and pre-release checks, 17 November 2026**
 
 Branch `codex/reddit-memory`, based on main `37eeda2`. No production deployment
-or changes to compose limits, secrets, cookies, bot/server/web. The exported
+or changes to compose limits, secrets, cookies, bot/server/web during the
+pre-release checks. The exported
 `google-captcha-bypass` snapshot is not automatically updated.
 
 Implementation: one lazy inference child, separate from browser/HTTP/cache.
@@ -58,3 +59,49 @@ that image under its normal `node` user, including 13 new lifecycle/cache/error
 checks. An isolated 512 MiB/no-swap container returned health 200 and invalid URL
 400, then stopped on SIGTERM with exit 0 and OOMKilled=false. No live Reddit
 request or production deployment was performed in this task.
+
+
+**Production release and recovery verification, 17–18 November 2026**
+
+Owner separately authorized deployment. Commit `d36174e` was fast-forwarded into
+main and pushed. `./scripts/deploy.sh reddit-resolver` ran from the main checkout
+with builder `videoner-release-bounded`; minimum host MemAvailable was 4770 MiB.
+The old image and resolver-only rollback are saved at
+`/home/aksak/backups/videoner/reddit-memory-20261117T032206Z/`.
+Only the resolver was recreated by this deployment; the wrapper verified unchanged
+server/bot/web container IDs at that time and unchanged resolver RAM/swap limits.
+Subsequent parallel Claude changes and deployments were preserved.
+
+Production resolver image is
+`sha256:397080f781a07c3b36e6dba7aacafe4b28b45e8a28b66b283086cf52f6401710`,
+started 2026-11-17 03:25:39 UTC. Verification on 18 November found it healthy,
+restart count 0, OOMKilled=false, and cgroup OOM/max events zero. The inference
+worker and Chromium were absent in idle snapshots; Node and Xvfb remained.
+
+The diagnostic bot API request begun on 17 November completed the iPad post
+`1xxc74w`: DB record at 11:11:11 UTC, source BOT, not from cache, 35 seconds,
+854×480, 5 544 213 bytes. A later independent API download on 18 November
+04:28:39 UTC also succeeded (220p). Both records have since become EXPIRED
+through normal file retention. The daemon interrupted result collection, so
+recovery checked DB records instead of repeating the already successful request.
+No Telegram messages were sent by this operator check.
+
+At 18 November 09:44 UTC cgroup memory was 69.5 MiB RAM plus 88.1 MiB swap,
+with 16.0 MiB anon and 46.4 MiB file cache. Cumulative peaks since resolver start:
+956.9 MiB RAM and 100.4 MiB swap. These observations cover a small set of actual
+requests and do not supersede the larger synthetic browser/detector peak.
+The production settings remain 1900 MiB RAM and 1900 MiB additional allowed swap.
+
+The first monitoring launch was interrupted and did not run. Recovery started
+a bounded observer on 18 November 09:44 UTC, ending 19 November 09:44 UTC, with
+60-second resource samples and no Reddit/proxy requests. Script, PID, fixed
+expiry and `memory-24h.jsonl` are in the same private backup directory. Observer
+liveness and its first persisted sample were verified. It is a background
+process, not a reboot-persistent system service; if the host reboots, check its
+PID before resuming observation. It sends no external notifications.
+
+Next: review these resource samples alongside Download/LinkFailure counts, then
+work on peak memory with representative inputs. Production swap remains enabled
+until the agreed safety margin is demonstrated. General CAPTCHA reliability is
+still not established by this small sample. No further deploy was performed
+during daemon recovery.

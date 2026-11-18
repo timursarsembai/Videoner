@@ -216,7 +216,7 @@ export async function performDownload(
     // Только личка: файл (видео, фото, альбом) уходит без подписи, а следом —
     // карточка (rich-card.ts sendCardAfterMedia) с названием, таблицей и
     // кнопками. Нет — подпись под самим файлом, как раньше (группы).
-    sendCard?: (card: VideoCard, lang: Lang, caption: FileCaption) => Promise<void>;
+    sendCard?: (card: VideoCard, lang: Lang, fallback: () => Promise<FileCaption>, video: boolean) => Promise<void>;
     // Снимок отдаём именно фотографией: пост может состоять из одного фото, и
     // отправлять его видео нельзя — Telegram получил бы jpeg под видом ролика.
     replyWithPhoto: (file: InputFile, caption: FileCaption) => Promise<string | undefined>;
@@ -272,19 +272,24 @@ export async function performDownload(
   // Личка: файл без подписи, следом карточка (владелец 18.11.2026 — у видео
   // внутри карточки нет кнопок «Переслать» и «Сохранить»). Группа и своя
   // подпись группы — подпись под файлом, как раньше.
+  // Сознательно: пересланное видео идёт без подписи — так решил владелец.
   const cardMode = !!send.sendCard && !send.formatCaption;
-  const NO_CAPTION: FileCaption = { text: "", entities: [] };
-  const fileCaption = async (number: unknown) => (cardMode ? NO_CAPTION : caption(number));
-  const afterFile = async (number: unknown, downloadId: string, extra: Partial<VideoCard> = {}) => {
+  const fileCaption = (number: unknown) => (cardMode ? Promise.resolve(NO_CAPTION) : caption(number));
+  // Карточка — после того, как файл засчитан доставленным (delivered): её
+  // сбой не должен ни задерживать кеш file_id, ни повторять отправку файла.
+  // video — кнопки режима «сразу видео» (MP3) только у видео, не у фото.
+  const afterFile = async (number: unknown, downloadId: string, extra: Partial<VideoCard> & { video?: boolean } = {}) => {
     if (!cardMode) return;
-    const card: VideoCard = { title, url, description: send.description, number, quality, extension, shareUrl: await shareLink, downloadId, ...extra };
-    await send.sendCard!(card, lang, await caption(number));
+    const { video = false, ...cardExtra } = extra;
+    try {
+      const card: VideoCard = { title, url, description: send.description, number, quality, extension, shareUrl: await shareLink, downloadId, ...cardExtra };
+      await send.sendCard!(card, lang, () => caption(number), video);
+    } catch (e: any) {
+      console.error("Карточка после файла не отправлена:", e?.message ?? e);
+    }
   };
-  const sendVideo = async (file: () => InputFile | string, number: unknown, downloadId: string, dims?: VideoDimensions, size?: number) => {
-    const fileId = await send.replyWithVideo(file(), await fileCaption(number), dims);
-    await afterFile(number, downloadId, { size });
-    return fileId;
-  };
+  const sendVideo = async (file: () => InputFile | string, number: unknown, dims?: VideoDimensions) =>
+    send.replyWithVideo(file(), await fileCaption(number), dims);
   const msg = await send.reply(m.downloading);
   // Файл уже в чате. Сбой после этого (убрать «Скачиваю», опубликовать в
   // канал) — не повод писать человеку «не получилось» поверх его видео.
@@ -323,12 +328,13 @@ export async function performDownload(
         await send.editMessageText(msg.message_id, m.sendingFile);
         if (kind === "v") {
           const fileId = started.telegramFileId;
-          await sendVideo(() => fileId, started.number, started.downloadId);
+          await sendVideo(() => fileId, started.number);
         } else {
           await send.replyWithAudio(started.telegramFileId, await caption(started.number));
         }
         sentFromCache = true;
         delivered = true;
+        if (kind === "v") await afterFile(started.number, started.downloadId, { video: true });
       } catch (e: any) {
         console.error(`file_id из кеша для ${url} не сработал, качаю заново:`, e?.message ?? e);
         started = await startDownload(false);
@@ -450,14 +456,13 @@ export async function performDownload(
       fileId = await sendVideo(
         () => new InputFile(new URL(fileUrl)),
         status.number,
-        started.downloadId,
         { width: meta.width, height: meta.height, duration: meta.duration },
-        meta.size,
       );
     } else {
       fileId = await send.replyWithAudio(file, await caption(status.number));
     }
     delivered = true;
+    if (kind === "v") await afterFile(status.number, started.downloadId, { video: true, size: meta.size });
     if (fileId) {
       // Не ждём: файл человеку уже отправлен, а сбой записи кеша — не его забота.
       api(`/download/${started.downloadId}/telegram-file`, { fileId }).catch((e) =>
@@ -624,8 +629,8 @@ export function sendersForApi(
     // Только личка (у групп chatId отрицательный): в группах карточку пока
     // не показываем — решение владельца от 17.11.2026.
     sendCard: cards
-      ? (card: VideoCard, lang: Lang, caption: FileCaption) =>
-          sendCardAfterMedia(tg, chatId, card, lang, caption, { extraMarkup: videoMarkup, thread })
+      ? (card: VideoCard, lang: Lang, fallback: () => Promise<FileCaption>, video: boolean) =>
+          sendCardAfterMedia(tg, chatId, card, lang, fallback, { extraMarkup: video ? videoMarkup : undefined, thread })
       : undefined,
     replyWithAudio: async (file: InputFile | string, caption: FileCaption) =>
       (await tg.sendAudio(chatId, file, { caption: caption.text, caption_entities: caption.entities, ...asReply })).audio?.file_id,
@@ -682,6 +687,9 @@ export function sendersForApi(
     },
   };
 }
+
+// Файл без подписи (личка: всё — в карточке после него).
+const NO_CAPTION: FileCaption = { text: "", entities: [] };
 
 // Анализирует текущую ссылку и показывает выбор качества. Не разобралась —
 // пишет ошибку и берёт следующую, пока очередь не кончится или одна из ссылок

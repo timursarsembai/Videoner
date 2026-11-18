@@ -1,4 +1,4 @@
-import { GrammyError, InlineKeyboard, type Api, type InputFile } from "grammy";
+import { GrammyError, InlineKeyboard, type Api } from "grammy";
 import { clip, splitTitle } from "./caption.js";
 import { EXTENSION_PAGE_BASE, fmtSize } from "./helpers.js";
 import { NEWS_CHANNEL, messages, sitePath, type Lang } from "./i18n.js";
@@ -128,7 +128,7 @@ export function isRtl(lang: Lang): boolean {
 }
 
 // Сервер Bot API не умеет карточки (sendRichMessage ответил 404) — до
-// перезапуска шлём видео по-старому, не тратя на каждое неудачную попытку.
+// перезапуска вместо карточки шлём подпись текстом, не тратя попытку на каждую.
 let cardsDisabled = false;
 
 // withVideo: false — карточка без видео внутри: в личке само видео (или фото,
@@ -169,8 +169,8 @@ export function cardKeyboard(card: VideoCard, lang: Lang, extra?: InlineKeyboard
   kb.url(parts.news, `https://t.me/${NEWS_CHANNEL.replace(/^@/, "")}`);
   // Кнопки «Поделиться» нет (решение владельца 17.11.2026): кнопка бота не
   // умеет пересылать сообщение, а ссылка и инлайн-режим владельцу не
-  // подходят. Делятся обычной пересылкой Telegram — она отправляет карточку
-  // целиком.
+  // подходят. Делятся обычной пересылкой Telegram (видео идёт отдельным
+  // сообщением перед карточкой, его пересылают само по себе).
   if (card.shareUrl) kb.copyText(messages[lang].copyLinkButton, card.shareUrl);
   return kb;
 }
@@ -184,25 +184,40 @@ export async function sendCardAfterMedia(
   chatId: number,
   card: VideoCard,
   lang: Lang,
-  fallback: { text: string; entities?: unknown[] },
+  fallback: () => Promise<{ text: string; entities?: unknown[] }>,
   other: { extraMarkup?: InlineKeyboard; thread?: { message_thread_id?: number } } = {},
 ): Promise<void> {
   const html = cardHtml(card, lang, { withVideo: false });
   const reply_markup = cardKeyboard(card, lang, other.extraMarkup);
+  const sendRich = () =>
+    tg.sendRichMessage(chatId, { html: html!, ...(RTL.has(lang) ? { is_rtl: true } : {}) }, { ...other.thread, reply_markup });
   try {
     if (html && !cardsDisabled) {
       try {
-        await tg.sendRichMessage(chatId, { html, ...(RTL.has(lang) ? { is_rtl: true } : {}) }, { ...other.thread, reply_markup });
+        await sendRich();
         return;
       } catch (e) {
-        if (!(e instanceof GrammyError && (e.error_code === 400 || e.error_code === 404))) throw e;
-        if (e.error_code === 404 || /method not found/i.test(e.description)) cardsDisabled = true;
-        console.error(`Карточка не принята (${e.error_code} ${e.description}), шлю подпись текстом`);
+        // Лимит Telegram — подождать, сколько он просит (не дольше 10 с), и
+        // повторить один раз. Остальное — сразу подпись текстом: без неё у
+        // человека осталось бы видео без названия и источника.
+        const wait = e instanceof GrammyError && e.error_code === 429 ? (e.parameters?.retry_after ?? 1) : 0;
+        if (wait > 0 && wait <= 10) {
+          await new Promise((r) => setTimeout(r, wait * 1000));
+          try {
+            await sendRich();
+            return;
+          } catch (again) {
+            e = again;
+          }
+        }
+        if (e instanceof GrammyError && (e.error_code === 404 || /method not found/i.test(e.description))) cardsDisabled = true;
+        console.error(`Карточка не отправлена (${(e as Error)?.message ?? e}), шлю подпись текстом`);
       }
     }
-    await tg.sendMessage(chatId, fallback.text, {
+    const caption = await fallback();
+    await tg.sendMessage(chatId, caption.text, {
       ...other.thread,
-      entities: fallback.entities as never,
+      entities: caption.entities as never,
       link_preview_options: { is_disabled: true },
       reply_markup,
     });

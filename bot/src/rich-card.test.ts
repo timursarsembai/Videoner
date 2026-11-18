@@ -1,7 +1,8 @@
 import { test } from "node:test";
 import { InlineKeyboard } from "grammy";
 import assert from "node:assert/strict";
-import { cardHtml, cardKeyboard, captionParts, choiceHtml, platformName } from "./rich-card.js";
+import { cardHtml, cardKeyboard, captionParts, choiceHtml, platformName, sendCardAfterMedia } from "./rich-card.js";
+import { GrammyError, type Api } from "grammy";
 import { messages, type Lang } from "./i18n.js";
 
 const card = {
@@ -82,4 +83,38 @@ test("card after media: no video inside, everything else stays", () => {
   assert.ok(!html.includes("<video"));
   assert.ok(html.includes("<table"));
   assert.ok(cardHtml(card, "ru")!.includes("<video"));
+});
+
+function fakeTg(richError?: unknown) {
+  const calls: string[] = [];
+  const tg = {
+    sendRichMessage: async () => {
+      calls.push("rich");
+      if (richError) throw richError;
+      return {};
+    },
+    sendMessage: async (_chat: number, text: string) => {
+      calls.push(`text:${text}`);
+      return {};
+    },
+  };
+  return { tg: tg as unknown as Api, calls };
+}
+const fallback = async () => ({ text: "подпись", entities: [] });
+
+test("card after media: sent as a card when Telegram accepts it", async () => {
+  const { tg, calls } = fakeTg();
+  await sendCardAfterMedia(tg, 1, card, "ru", fallback);
+  assert.deepEqual(calls, ["rich"]);
+});
+
+test("card after media: any refusal falls back to the caption text", async () => {
+  for (const err of [
+    new GrammyError("bad", { ok: false, error_code: 400, description: "Bad Request" }, "sendRichMessage", {}),
+    new Error("network"),
+  ]) {
+    const { tg, calls } = fakeTg(err);
+    await sendCardAfterMedia(tg, 1, card, "ru", fallback);
+    assert.deepEqual(calls, ["rich", "text:подпись"]);
+  }
 });

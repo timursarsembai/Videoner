@@ -35,7 +35,7 @@ import { LinkQueues, QUEUE_LIMIT, extractUrls, type Current, type OwnerState } f
 import { orderTracks, type SubtitleTrack } from "../subtitles.js";
 import { shareLinkFor } from "../share-link.js";
 import { instantVideo } from "../instant-video.js";
-import { editToChoiceCard, sendVideoCard, type VideoCard } from "../rich-card.js";
+import { editToChoiceCard, sendCardAfterMedia, type VideoCard } from "../rich-card.js";
 
 // Приходят из /download/:filename/metadata (ffprobe на стороне сервера).
 // Поля необязательные: если ffprobe не смог разобрать файл, видео уйдёт без
@@ -213,16 +213,10 @@ export async function performDownload(
     // запоминает сервер, чтобы повтор того же ролика переслать без скачивания.
     replyWithVideo: (file: InputFile | string, caption: FileCaption, dims?: VideoDimensions) => Promise<string | undefined>;
     replyWithAudio: (file: InputFile | string, caption: FileCaption) => Promise<string | undefined>;
-    // Видео карточкой (rich-card.ts) — только в личке. Не приняли карточку —
-    // то же видео с обычной подписью. file — фабрика: загрузку по адресу
-    // нельзя отправить второй раз тем же объектом.
-    replyWithVideoCard?: (
-      file: () => InputFile | string,
-      card: VideoCard,
-      lang: Lang,
-      caption: FileCaption,
-      dims?: VideoDimensions,
-    ) => Promise<string | undefined>;
+    // Только личка: файл (видео, фото, альбом) уходит без подписи, а следом —
+    // карточка (rich-card.ts sendCardAfterMedia) с названием, таблицей и
+    // кнопками. Нет — подпись под самим файлом, как раньше (группы).
+    sendCard?: (card: VideoCard, lang: Lang, caption: FileCaption) => Promise<void>;
     // Снимок отдаём именно фотографией: пост может состоять из одного фото, и
     // отправлять его видео нельзя — Telegram получил бы jpeg под видом ролика.
     replyWithPhoto: (file: InputFile, caption: FileCaption) => Promise<string | undefined>;
@@ -275,13 +269,21 @@ export async function performDownload(
     const text = (send.formatCaption ?? m.fileCaption)(title, url, await shareLink, send.description, numberLine);
     return withNumberLink(text, numberLine, lang);
   };
-  // Видео: в личке — карточкой, в группе и со своей подписью — как раньше.
+  // Личка: файл без подписи, следом карточка (владелец 18.11.2026 — у видео
+  // внутри карточки нет кнопок «Переслать» и «Сохранить»). Группа и своя
+  // подпись группы — подпись под файлом, как раньше.
+  const cardMode = !!send.sendCard && !send.formatCaption;
+  const NO_CAPTION: FileCaption = { text: "", entities: [] };
+  const fileCaption = async (number: unknown) => (cardMode ? NO_CAPTION : caption(number));
+  const afterFile = async (number: unknown, downloadId: string, extra: Partial<VideoCard> = {}) => {
+    if (!cardMode) return;
+    const card: VideoCard = { title, url, description: send.description, number, quality, extension, shareUrl: await shareLink, downloadId, ...extra };
+    await send.sendCard!(card, lang, await caption(number));
+  };
   const sendVideo = async (file: () => InputFile | string, number: unknown, downloadId: string, dims?: VideoDimensions, size?: number) => {
-    if (send.replyWithVideoCard && !send.formatCaption) {
-      const card: VideoCard = { title, url, description: send.description, number, quality, extension, size, shareUrl: await shareLink, downloadId };
-      return send.replyWithVideoCard(file, card, lang, await caption(number), dims);
-    }
-    return send.replyWithVideo(file(), await caption(number), dims);
+    const fileId = await send.replyWithVideo(file(), await fileCaption(number), dims);
+    await afterFile(number, downloadId, { size });
+    return fileId;
   };
   const msg = await send.reply(m.downloading);
   // Файл уже в чате. Сбой после этого (убрать «Скачиваю», опубликовать в
@@ -395,8 +397,13 @@ export async function performDownload(
     const items = status.items ?? [];
     if (items.length > 1) {
       await send.editMessageText(msg.message_id, m.sendingAlbum(items.length));
-      const cover = await send.replyWithAlbum(items, await caption(status.number));
+      const cover = await send.replyWithAlbum(items, await fileCaption(status.number));
       delivered = true;
+      const albumSize = items.reduce((sum, item) => sum + (item.fileSize ?? 0), 0);
+      await afterFile(status.number, started.downloadId, {
+        extension: items.every((item) => item.kind === "PHOTO") ? "jpg" : extension,
+        size: albumSize || undefined,
+      });
       await clearServiceMessages();
       await publish(url, title, thumbnail, lang, cover);
       return true;
@@ -429,8 +436,9 @@ export async function performDownload(
     // такого поста нет), поэтому решает вид файла, а не kind: иначе jpeg уходил
     // бы в sendVideo.
     if (items[0]?.kind === "PHOTO") {
-      const cover = await send.replyWithPhoto(file, await caption(status.number));
+      const cover = await send.replyWithPhoto(file, await fileCaption(status.number));
       delivered = true;
+      await afterFile(status.number, started.downloadId, { extension: "jpg", size: meta.size });
       await clearServiceMessages();
       await publish(url, title, thumbnail, lang, cover);
       return true;
@@ -593,9 +601,21 @@ export function sendersForApi(
   // Подпись едет вместе с файлом при пересылке — в этом весь смысл:
   // ссылка на первоисточник и упоминание бота остаются с видео у любого,
   // кому его переслали.
+  // Пустая подпись — файл без подписи (личка: всё в карточке после него).
+  const withCaption = (caption: FileCaption) =>
+    caption.text ? { caption: caption.text, caption_entities: caption.entities } : {};
+  // Личка: кнопки (MP3) — под карточкой, а не под видео (см. sendCard).
+  const cards = chatId > 0;
   const replyWithVideo = async (file: InputFile | string, caption: FileCaption, dims?: VideoDimensions) =>
-    (await tg.sendVideo(chatId, file, { caption: caption.text, caption_entities: caption.entities, supports_streaming: true, ...dims, ...asReply, reply_markup: videoMarkup }))
-      .video?.file_id;
+    (
+      await tg.sendVideo(chatId, file, {
+        ...withCaption(caption),
+        supports_streaming: true,
+        ...dims,
+        ...asReply,
+        ...(cards ? {} : { reply_markup: videoMarkup }),
+      })
+    ).video?.file_id;
   return {
     reply: (text: string) => tg.sendMessage(chatId, text, asReply),
     editMessageText: (messageId: number, text: string, keyboard?: InlineKeyboard) =>
@@ -603,18 +623,14 @@ export function sendersForApi(
     replyWithVideo,
     // Только личка (у групп chatId отрицательный): в группах карточку пока
     // не показываем — решение владельца от 17.11.2026.
-    replyWithVideoCard:
-      chatId > 0
-        ? async (file: () => InputFile | string, card: VideoCard, lang: Lang, caption: FileCaption, dims?: VideoDimensions) => {
-            const sent = await sendVideoCard(tg, chatId, file(), card, lang, { dims, extraMarkup: videoMarkup, reply: asReply });
-            if (sent) return sent.fileId;
-            return replyWithVideo(file(), caption, dims);
-          }
-        : undefined,
+    sendCard: cards
+      ? (card: VideoCard, lang: Lang, caption: FileCaption) =>
+          sendCardAfterMedia(tg, chatId, card, lang, caption, { extraMarkup: videoMarkup, thread })
+      : undefined,
     replyWithAudio: async (file: InputFile | string, caption: FileCaption) =>
       (await tg.sendAudio(chatId, file, { caption: caption.text, caption_entities: caption.entities, ...asReply })).audio?.file_id,
     replyWithPhoto: async (file: InputFile, caption: FileCaption) => {
-      const sent = await tg.sendPhoto(chatId, file, { caption: caption.text, caption_entities: caption.entities, ...asReply });
+      const sent = await tg.sendPhoto(chatId, file, { ...withCaption(caption), ...asReply });
       return previewFileId(sent.photo);
     },
     deleteMessage: (messageId: number) => tg.deleteMessage(chatId, messageId),
@@ -640,11 +656,11 @@ export function sendersForApi(
           const file = new InputFile(
             new URL(`${API_URL}/download/${encodeURIComponent(item.filename)}`),
           );
-          const withCaption = start === 0 && index === 0 ? { caption: caption.text, caption_entities: caption.entities } : {};
+          const firstCaption = start === 0 && index === 0 ? withCaption(caption) : {};
           return item.kind === "PHOTO"
-            ? InputMediaBuilder.photo(file, withCaption)
+            ? InputMediaBuilder.photo(file, firstCaption)
             : InputMediaBuilder.video(file, {
-                ...withCaption,
+                ...firstCaption,
                 // Без размеров Telegram на iOS сплющивает вертикальное видео.
                 width: item.width,
                 height: item.height,

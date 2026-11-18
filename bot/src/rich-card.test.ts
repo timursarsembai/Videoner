@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import { InlineKeyboard } from "grammy";
 import assert from "node:assert/strict";
-import { cardHtml, cardKeyboard, captionParts, choiceHtml, platformName, richVideoFileId } from "./rich-card.js";
+import { cardHtml, cardKeyboard, captionParts, choiceHtml, platformName } from "./rich-card.js";
 import { messages, type Lang } from "./i18n.js";
 
 const card = {
@@ -58,7 +58,6 @@ test("platform names and file id", () => {
   assert.equal(platformName("https://vt.tiktok.com/x"), "TikTok");
   assert.equal(platformName("https://youtu.be/x"), "YouTube");
   assert.equal(platformName("https://example.org/x"), "example.org");
-  assert.equal(richVideoFileId({ blocks: [{ type: "paragraph" }, { type: "video", video: { file_id: "F" } }] }), "F");
 });
 
 test("choice card: image, table, prompt, notes", () => {
@@ -76,4 +75,11 @@ test("choice card: image, table, prompt, notes", () => {
     const prompt = messages[lang].chooseQuality("", "").split(/\n{2,}/).pop()!;
     assert.ok(prompt.length > 3 && !/[«»「」"⏱]/.test(prompt), `${lang}: ${prompt}`);
   }
+});
+
+test("card after media: no video inside, everything else stays", () => {
+  const html = cardHtml(card, "ru", { withVideo: false })!;
+  assert.ok(!html.includes("<video"));
+  assert.ok(html.includes("<table"));
+  assert.ok(cardHtml(card, "ru")!.includes("<video"));
 });

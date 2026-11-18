@@ -3,13 +3,13 @@ import { clip, splitTitle } from "./caption.js";
 import { EXTENSION_PAGE_BASE, fmtSize } from "./helpers.js";
 import { NEWS_CHANNEL, messages, sitePath, type Lang } from "./i18n.js";
 
-// Карточка видео в личке (Bot API «rich messages», sendRichMessage): видео
-// прямо в сообщении, под ним название, таблица (номер скачивания, площадка,
+// Карточка видео в личке (Bot API «rich messages», sendRichMessage): само
+// видео (фото, альбом) — сообщением перед ней, в карточке название, таблица
 // качество, размер, источник), строка о правах и кнопки «Новости проекта»,
 // «Поделиться», «Скопировать ссылку». Всё, что было в подписи fileCaption,
 // здесь тоже есть: тексты источника, прав, канала и «Поделиться» берём из неё
-// же, а не переводим заново. Не принял Telegram карточку — вызывающий
-// отправляет видео по-старому (sendVideoCard).
+// же, а не переводим заново. В личке видео идёт отдельным сообщением перед
+// карточкой (sendCardAfterMedia); видео внутри карточки — только у инлайн-режима.
 
 export type VideoCard = {
   title: string;
@@ -131,7 +131,10 @@ export function isRtl(lang: Lang): boolean {
 // перезапуска шлём видео по-старому, не тратя на каждое неудачную попытку.
 let cardsDisabled = false;
 
-export function cardHtml(card: VideoCard, lang: Lang): string | null {
+// withVideo: false — карточка без видео внутри: в личке само видео (или фото,
+// альбом) уходит перед ней отдельным сообщением — у видео внутри карточки
+// Telegram не показывает кнопок «Переслать» и «Сохранить» (владелец 18.11.2026).
+export function cardHtml(card: VideoCard, lang: Lang, { withVideo = true }: { withVideo?: boolean } = {}): string | null {
   const m = messages[lang];
   const parts = captionParts(lang);
   if (!parts) return null;
@@ -145,7 +148,7 @@ export function cardHtml(card: VideoCard, lang: Lang): string | null {
   if (card.size) rows.push([esc(m.cardSize), esc(fmtSize(card.size, lang))]);
   rows.push([esc(parts.source), `<a href="${esc(card.url)}">${esc(shortUrl(card.url))}</a>`]);
   return [
-    `<video src="tg://video?id=${CARD_VIDEO_ID}"></video>`,
+    withVideo ? `<video src="tg://video?id=${CARD_VIDEO_ID}"></video>` : "",
     head ? `<p><b>${esc(clip(head, 200))}</b></p>` : "",
     extra ? `<p>${esc(clip(extra, 600))}</p>` : "",
     `<table bordered striped compact>\n${rows.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("\n")}\n</table>`,
@@ -172,62 +175,39 @@ export function cardKeyboard(card: VideoCard, lang: Lang, extra?: InlineKeyboard
   return kb;
 }
 
-// file_id видео из ответа Telegram — для кеша повторов (как у sendVideo).
-export function richVideoFileId(o: unknown): string | undefined {
-  if (!o || typeof o !== "object") return undefined;
-  const rec = o as Record<string, unknown>;
-  if (rec.type === "video" && rec.video && typeof (rec.video as { file_id?: unknown }).file_id === "string") {
-    return (rec.video as { file_id: string }).file_id;
-  }
-  for (const v of Object.values(rec)) {
-    const found = richVideoFileId(v);
-    if (found) return found;
-  }
-  return undefined;
-}
-
-// Отправить карточку. null — Telegram её не принял (старый формат, слишком
-// большой файл для карточки, нет прав): вызывающий шлёт видео по-старому.
-// Сетевые и прочие сбои пробрасываем как есть — повторная отправка могла бы
-// прислать человеку видео дважды.
-export async function sendVideoCard(
+// Карточка после самого файла (личка): видео, фото или альбом уже в чате
+// отдельным сообщением без подписи, следом — карточка с названием, таблицей и
+// кнопками. Не приняли карточку — та же подпись, что была под файлом, обычным
+// сообщением. Никогда не бросает: файл человеку уже доставлен.
+export async function sendCardAfterMedia(
   tg: Api,
   chatId: number,
-  file: InputFile | string,
   card: VideoCard,
   lang: Lang,
-  other: {
-    dims?: { width?: number; height?: number; duration?: number };
-    extraMarkup?: InlineKeyboard;
-    reply?: object;
-  } = {},
-): Promise<{ fileId?: string } | null> {
-  const html = cardHtml(card, lang);
-  if (!html || cardsDisabled) return null;
+  fallback: { text: string; entities?: unknown[] },
+  other: { extraMarkup?: InlineKeyboard; thread?: { message_thread_id?: number } } = {},
+): Promise<void> {
+  const html = cardHtml(card, lang, { withVideo: false });
+  const reply_markup = cardKeyboard(card, lang, other.extraMarkup);
   try {
-    const sent = await tg.sendRichMessage(
-      chatId,
-      {
-        html,
-        media: [{ id: CARD_VIDEO_ID, media: { type: "video", media: file, supports_streaming: true, ...other.dims } }],
-        ...(RTL.has(lang) ? { is_rtl: true } : {}),
-      },
-      { ...other.reply, reply_markup: cardKeyboard(card, lang, other.extraMarkup) },
-    );
-    const fileId = richVideoFileId(sent.rich_message);
-    if (!fileId) console.error("Карточка отправлена, но file_id видео в ответе не найден — повтор пойдёт без кеша");
-    return { fileId };
-  } catch (e) {
-    // Повторяем обычным видео только отказ именно карточки (400). Блокировка
-    // бота (403), лимит (429) и прочее обычное видео не исправит — файл
-    // заново не загружаем, ошибку отдаём как есть.
-    if (e instanceof GrammyError && (e.error_code === 400 || e.error_code === 404)) {
-      // 404 — сервер Bot API не знает sendRichMessage: дальше и не пробуем.
-      if (e.error_code === 404 || /method not found/i.test(e.description)) cardsDisabled = true;
-      console.error(`Карточка видео не принята (${e.error_code} ${e.description}), шлю обычным видео`);
-      return null;
+    if (html && !cardsDisabled) {
+      try {
+        await tg.sendRichMessage(chatId, { html, ...(RTL.has(lang) ? { is_rtl: true } : {}) }, { ...other.thread, reply_markup });
+        return;
+      } catch (e) {
+        if (!(e instanceof GrammyError && (e.error_code === 400 || e.error_code === 404))) throw e;
+        if (e.error_code === 404 || /method not found/i.test(e.description)) cardsDisabled = true;
+        console.error(`Карточка не принята (${e.error_code} ${e.description}), шлю подпись текстом`);
+      }
     }
-    throw e;
+    await tg.sendMessage(chatId, fallback.text, {
+      ...other.thread,
+      entities: fallback.entities as never,
+      link_preview_options: { is_disabled: true },
+      reply_markup,
+    });
+  } catch (e) {
+    console.error("Карточка после файла не отправлена:", (e as Error)?.message ?? e);
   }
 }
 

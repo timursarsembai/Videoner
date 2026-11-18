@@ -274,6 +274,11 @@ export class ReportClientDownloadDto extends RequestMetaDto {
   @IsString()
   title?: string;
 
+  @ApiProperty({ description: 'Author nickname from the page', required: false })
+  @IsOptional()
+  @IsString()
+  author?: string;
+
   // Язык интерфейса сайта или расширения — только для статистики по языкам
   // на дашборде. Не в RequestMetaDto: у субтитров поле lang уже занято кодом
   // дорожки. Настоящая проверка — parseUiLang (src/lib/languages.ts).
@@ -281,4 +286,21 @@ export class ReportClientDownloadDto extends RequestMetaDto {
   @IsOptional()
   @Matches(/^[a-z]{2,3}$/)
   lang?: string;
+}
+
+// Расширение перед тем, как качать само: не запрещена ли тема (lib/blocked-content.ts).
+export class CheckClientContentDto extends RequestMetaDto {
+  @ApiProperty({ description: 'Page URL of the video' })
+  @IsString()
+  url: string;
+
+  @ApiProperty({ description: 'Video title from the page', required: false })
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @ApiProperty({ description: 'Author nickname from the page', required: false })
+  @IsOptional()
+  @IsString()
+  author?: string;
 }

@@ -3,6 +3,7 @@ import { Downloaders, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import type { DateRange } from 'src/lib/analytics-range';
 import { TOPIC_LABELS, topicsOf, type TopicId } from 'src/lib/sensitive-topics';
+import { wouldBlockReligion } from 'src/lib/blocked-content';
 
 // «Что качают» (дашборд, вкладка «Контент»): популярные авторы, категории
 // и хэштеги удачных скачиваний за период. Данные — lib/content-meta.ts, с
@@ -112,30 +113,51 @@ export class ContentAnalyticsService {
     // считаем по самым свежим и честно пишем об этом (truncated).
     const truncated = rows.length > TOPICS_MAX_ROWS;
     if (truncated) rows.length = TOPICS_MAX_ROWS;
-    const acc = new Map<TopicId, { downloads: number; users: Set<string>; examples: Map<string, number> }>();
+    type Acc = { downloads: number; users: Set<string>; examples: Map<string, number> };
+    const empty = (): Acc => ({ downloads: 0, users: new Set(), examples: new Map() });
+    const add = (t: Acc, r: (typeof rows)[number]) => {
+      t.downloads++;
+      if (r.who) t.users.add(r.who);
+      const title = (r.title ?? '').slice(0, 120) || '(без названия)';
+      t.examples.set(title, (t.examples.get(title) ?? 0) + 1);
+    };
+    const view = (t: Acc | undefined) => ({
+      downloads: t?.downloads ?? 0,
+      users: t?.users.size ?? 0,
+      examples: t
+        ? [...t.examples.entries()].sort((a, b) => b[1] - a[1]).slice(0, 15).map(([title, count]) => ({ title, count }))
+        : [],
+    });
+    const acc = new Map<TopicId, Acc>();
+    // Тихий режим запрета религий (lib/blocked-content.ts): что было бы запрещено.
+    const wouldBlock = empty();
     for (const r of rows) {
       for (const id of topicsOf(r)) {
         let t = acc.get(id);
-        if (!t) acc.set(id, (t = { downloads: 0, users: new Set(), examples: new Map() }));
-        t.downloads++;
-        if (r.who) t.users.add(r.who);
-        const title = (r.title ?? '').slice(0, 120) || '(без названия)';
-        t.examples.set(title, (t.examples.get(title) ?? 0) + 1);
+        if (!t) acc.set(id, (t = empty()));
+        add(t, r);
       }
+      if (wouldBlockReligion(r)) add(wouldBlock, r);
     }
+    // Сколько раз уже отказали по теме (эзотерика): /info бота и сайта и
+    // проверка расширения — журнал LinkFailure; скачивание в обход /info — Download.
+    const [blocked] = await this.prisma.$queryRaw<{ n: bigint }[]>`
+      SELECT (SELECT count(*) FROM "LinkFailure" f
+               WHERE f."errorCategory" = 'BLOCKED_CONTENT' AND f."createdAt" >= ${range.from} AND f."createdAt" < ${range.to}
+                 ${platform ? Prisma.sql`AND upper(f.platform) = ${platform}` : Prisma.empty})
+           + (SELECT count(*) FROM "Download" d
+               WHERE d."errorCategory" = 'BLOCKED_CONTENT' AND d."createdAt" >= ${range.from} AND d."createdAt" < ${range.to}
+                 ${platformFilter(platform)}) AS n`;
     return {
       total: rows.length,
       truncated,
+      blocked: Number(blocked?.n ?? 0),
+      wouldBlockReligion: view(wouldBlock),
       topics: (Object.keys(TOPIC_LABELS) as TopicId[]).map((id) => {
-        const t = acc.get(id);
         return {
           id,
           label: TOPIC_LABELS[id],
-          downloads: t?.downloads ?? 0,
-          users: t?.users.size ?? 0,
-          examples: t
-            ? [...t.examples.entries()].sort((a, b) => b[1] - a[1]).slice(0, 15).map(([title, count]) => ({ title, count }))
-            : [],
+          ...view(acc.get(id)),
         };
       }),
     };

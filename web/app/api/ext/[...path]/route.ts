@@ -30,6 +30,8 @@ const EXTENSION_PROXY: ProxyOptions = {
   allowedPaths: [
     ...DOWNLOAD_PROXY_PATHS,
     { method: "POST", path: "download/report" },
+    // Перед скачиванием силами браузера — не запрещена ли тема (эзотерика).
+    { method: "POST", path: "download/check" },
     // Кнопка «Подключить аккаунт к боту» (extension/account-connect.js): куки
     // площадки → одноразовый код. Остальные пути /user-cookies (список,
     // удаление, подключение по коду) — только для бота, сюда не открыты.

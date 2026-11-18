@@ -73,6 +73,7 @@ function tiktokMedia() {
     url: item.video.playAddr,
     method: "page-fetch",
     title: item.desc || item.author?.nickname || "",
+    author: item.author?.uniqueId || "",
     thumbnail: item.video.cover || item.video.originCover || "",
     duration: item.video.duration || null,
   };
@@ -99,6 +100,7 @@ async function instagramMedia() {
 function storyMedia(item) {
   if (!item) return null;
   const title = item.user?.username ? `${item.user.username} story` : "Instagram story";
+  const author = item.user?.username || "";
   const thumbnail = item.image_versions2?.candidates?.[0]?.url || "";
   if (item.video_versions?.[0]?.url) {
     return {
@@ -106,12 +108,13 @@ function storyMedia(item) {
       url: item.video_versions[0].url,
       method: "download",
       title,
+      author,
       thumbnail,
       duration: item.video_duration || null,
     };
   }
   if (!thumbnail) return null;
-  return { pageUrl: location.href, url: thumbnail, method: "download", ext: "jpg", title, thumbnail, duration: null };
+  return { pageUrl: location.href, url: thumbnail, method: "download", ext: "jpg", title, author, thumbnail, duration: null };
 }
 
 async function instagramApi(path) {
@@ -165,6 +168,7 @@ function metaPostMedia(post) {
     url: post.video_versions[0].url,
     method: "download",
     title: post.caption?.text || post.user?.username || "",
+    author: post.user?.username || "",
     thumbnail: post.image_versions2?.candidates?.[0]?.url || "",
     duration: post.video_duration || null,
   };
@@ -295,6 +299,7 @@ async function redditMedia() {
     pageUrl: location.href,
     method: "reddit",
     title: post.title || "",
+    author: post.author || "",
     thumbnail: preview || (/^https:/.test(source.thumbnail) ? source.thumbnail : ""),
   };
   // 18+ не отдаём, даже если человек видит пост под своим входом.

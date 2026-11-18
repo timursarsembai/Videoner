@@ -23,6 +23,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
   SERVER_BLOCKED: "Площадка не пустила сервер",
   REGION_BLOCKED: "Региональный запрет",
   ADULT_CONTENT: "Контент 18+ (не качаем)",
+  BLOCKED_CONTENT: "Запрещённая тема (не качаем)",
   FORMAT_UNAVAILABLE: "Нет такого качества",
   NO_VIDEO_CONTENT: "Нет видео",
   UNSUPPORTED_PLATFORM: "Не поддерживается",

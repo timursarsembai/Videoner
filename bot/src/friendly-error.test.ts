@@ -180,3 +180,9 @@ test("download number line becomes a hidden link to the stats page", async () =>
   assert.equal(withNumberLink(text, undefined, "ru").entities, undefined);
   assert.equal(withNumberLink(`a\u0007${text}`, line, "ru").entities, undefined);
 });
+
+test("запрещённая тема — нейтральный текст на языке человека", () => {
+  const raw = "Blocked content: Videoner does not download this video.";
+  assert.equal(friendlyError(raw, "ru"), messages.ru.errorBlockedContent);
+  assert.equal(friendlyError(raw, "kk"), messages.kk.errorBlockedContent);
+});

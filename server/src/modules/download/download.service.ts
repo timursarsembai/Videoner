@@ -1,4 +1,5 @@
 import { ADULT_CONTENT_ERROR, isAdultContent } from 'src/lib/adult-content';
+import { BLOCKED_CONTENT_ERROR, blockedInfo } from 'src/lib/blocked-content';
 import { fetchRedditPhoto } from 'src/lib/reddit-cdn';
 import {
   GALLERY,
@@ -227,6 +228,11 @@ export class DownloadService {
     // Контент для взрослых не скачиваем ни от какого аккаунта (lib/adult-content.ts).
     if (isAdultContent((req as any).platform, found.info)) {
       throw new BadRequestException(ADULT_CONTENT_ERROR);
+    }
+    // И темы, которые не скачиваем (lib/blocked-content.ts): запрос мог
+    // прийти в обход /info, а повтор из кеша — от прошлого раза.
+    if (blockedInfo(found.info, (req as any).platform, url)) {
+      throw new BadRequestException(BLOCKED_CONTENT_ERROR);
     }
     return found;
   }
@@ -767,7 +773,11 @@ export class DownloadService {
   // для статистики. Принимаем лишь от входа расширения — он сам ставит
   // source = EXTENSION (web/lib/api-proxy.ts). Проверки здесь, а не в DTO:
   // DTO валидируются только в режиме наблюдения.
-  async reportClientDownload(url: string, platform: string, meta: DownloadRequestMeta & { fileSize?: unknown; title?: unknown }) {
+  async reportClientDownload(
+    url: string,
+    platform: string,
+    meta: DownloadRequestMeta & { fileSize?: unknown; title?: unknown; author?: unknown },
+  ) {
     if (meta.source !== DownloadSource.EXTENSION) {
       throw new BadRequestException('Reports are accepted from the browser extension only');
     }
@@ -790,7 +800,11 @@ export class DownloadService {
         source: DownloadSource.EXTENSION,
         videoTitle: title,
         // У расширения только название и ссылка — автор и хэштеги из них.
-        ...contentMeta({ title: title ?? undefined }, platform, url),
+        ...contentMeta(
+          { title: title ?? undefined, ...(typeof meta.author === 'string' ? { uploader: meta.author.slice(0, 100), channel: meta.author.slice(0, 100) } : {}) },
+          platform,
+          url,
+        ),
         fileSize,
         clientIpHash: hashClientIp(meta.clientIp),
         clientSide: true,
@@ -801,6 +815,31 @@ export class DownloadService {
     });
     // Номер — для «Скачивание №…» в окошке расширения.
     return { ok: true, number: created.downloadNumber };
+  }
+
+  // Расширение качает TikTok, Instagram, Threads, Facebook и Reddit само, мимо
+  // сервера, — и перед этим спрашивает здесь, не запрещена ли тема
+  // (lib/blocked-content.ts). Только название и ник со страницы: yt-dlp не
+  // зовём, это дёшево. Отказ — в журнал ошибок, как у бота и сайта.
+  async checkClientContent(url: string, platform: string, meta: { title?: unknown; author?: unknown; clientCountry?: unknown }) {
+    const title = typeof meta.title === 'string' ? meta.title.slice(0, 2000) : undefined;
+    const author = typeof meta.author === 'string' ? meta.author.slice(0, 100) : undefined;
+    const blocked = blockedInfo({ title, uploader: author, channel: author }, platform, url);
+    if (blocked) {
+      await this.prisma.linkFailure
+        .create({
+          data: {
+            platform,
+            source: DownloadSource.EXTENSION,
+            errorCategory: ErrorCategory.BLOCKED_CONTENT,
+            message: BLOCKED_CONTENT_ERROR,
+            url: url.slice(0, 2000),
+            country: parseCountry(meta.clientCountry),
+          },
+        })
+        .catch((e) => console.error('LinkFailure (extension block) not recorded:', e?.message ?? e));
+    }
+    return { blocked: !!blocked };
   }
 
   private resolveDownloader(platform: string): Downloaders {

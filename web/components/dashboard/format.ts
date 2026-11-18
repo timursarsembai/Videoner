@@ -38,6 +38,7 @@ export const ERROR_COLORS: Record<string, string> = {
   TIMEOUT: "#3b82f6",
   SERVER_BLOCKED: "#dc2626",
   ADULT_CONTENT: "#7c3aed",
+  BLOCKED_CONTENT: "#a16207",
   NO_VIDEO_CONTENT: "#f59e0b",
   OTHER: "#9ca3af",
 };

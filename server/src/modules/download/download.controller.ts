@@ -33,6 +33,7 @@ import {
   DownloadResponseDto,
   DownloadSubtitlesDto,
   ReportClientDownloadDto,
+  CheckClientContentDto,
   DownloadVideoDto,
   TelegramFileDto,
 } from './dto/download.dto';
@@ -310,5 +311,17 @@ export class DownloadController {
   @UseGuards(ValidUrlGuard)
   async reportClientDownload(@Body() dto: ReportClientDownloadDto, @Req() req: Request) {
     return this.downloadService.reportClientDownload(dto.url, (req as any).platform, dto);
+  }
+
+  // Расширение спрашивает перед тем, как качать само (TikTok, Instagram…):
+  // не запрещена ли тема. Открыт только входу расширения (web/app/api/ext).
+  @ApiSecurity('X-API-Key')
+  @Post('check')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Check whether Videoner downloads this video (browser extension)' })
+  @ApiBody({ type: CheckClientContentDto })
+  @UseGuards(ValidUrlGuard)
+  async checkClientContent(@Body() dto: CheckClientContentDto, @Req() req: Request) {
+    return this.downloadService.checkClientContent(dto.url, (req as any).platform, dto);
   }
 }

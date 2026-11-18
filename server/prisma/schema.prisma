@@ -244,6 +244,9 @@ enum ErrorCategory {
   // Контент для взрослых: Videoner его не скачивает (15.11.2026,
   // lib/adult-content.ts).
   ADULT_CONTENT
+  // Тема, которую Videoner не скачивает: эзотерика (18.11.2026,
+  // lib/blocked-content.ts).
+  BLOCKED_CONTENT
   OTHER
 }
 

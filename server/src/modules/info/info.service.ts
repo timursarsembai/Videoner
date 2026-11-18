@@ -1,3 +1,4 @@
+import { BLOCKED_CONTENT_ERROR, blockedInfo } from 'src/lib/blocked-content';
 import { photoQualities, postAudio } from 'src/lib/slideshow';
 import { DownloadSource } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -115,6 +116,13 @@ export class InfoService {
       const adult = new Error(ADULT_CONTENT_ERROR);
       this.recordFailure(platform, dto, adult);
       throw new BadRequestException(adult.message);
+    }
+
+    // Темы, которые Videoner не скачивает (эзотерика) — lib/blocked-content.ts.
+    if (blockedInfo(info, platform, url)) {
+      const blocked = new Error(BLOCKED_CONTENT_ERROR);
+      this.recordFailure(platform, dto, blocked);
+      throw new BadRequestException(blocked.message);
     }
 
     try {

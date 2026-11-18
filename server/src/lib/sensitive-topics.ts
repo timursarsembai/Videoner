@@ -79,24 +79,39 @@ const ORDER: TopicId[] = ['islam', 'christianity', 'judaism', 'eastern', 'esoter
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const PATTERNS: Record<TopicId, RegExp> = Object.fromEntries(
-  (Object.keys(WORDS) as TopicId[]).map((id) => {
-    const parts = WORDS[id].map((w) => {
-      const whole = w.endsWith('=');
-      const word = escape((whole ? w.slice(0, -1) : w).toLowerCase());
-      // Граница — не буква и не цифра (\b в JS не понимает кириллицу).
-      return `(?<![\\p{L}\\p{N}])${word}${whole ? '(?![\\p{L}\\p{N}])' : ''}`;
-    });
-    return [id, new RegExp([...new Set(parts)].join('|'), 'u')];
-  }),
+  (Object.keys(WORDS) as TopicId[]).map((id) => [id, wordsPattern(WORDS[id])]),
 ) as Record<TopicId, RegExp>;
 
-export function topicsOf(item: { title?: string | null; hashtags?: string[] | null; author?: string | null }): TopicId[] {
-  const text = [item.title ?? '', ...(item.hashtags ?? []).map((t) => `#${t}`), item.author ?? '']
+export type TopicItem = { title?: string | null; hashtags?: string[] | null; author?: string | null };
+
+// Название, хэштеги и автор одной строкой, в нижнем регистре. Хэштеги пишут
+// слитно (#таролог, #quranrecitation) — «#» убираем, чтобы он не мешал
+// границе слова, а слитное окончание основе не мешает.
+export function topicText(item: TopicItem): string {
+  return [item.title ?? '', ...(item.hashtags ?? []).map((t) => `#${t}`), item.author ?? '']
     .join('\n')
     .toLowerCase()
-    // Хэштеги пишут слитно (#таролог, #quranrecitation) — «#» не мешает
-    // границе слова, а слитное окончание основе не мешает.
     .replace(/#/g, ' ');
+}
+
+// Слова строятся в одно выражение: начало слова, а со «=» на конце — слово целиком.
+export function wordsPattern(words: string[]): RegExp {
+  const parts = words.map((w) => {
+    const whole = w.endsWith('=');
+    const word = escape((whole ? w.slice(0, -1) : w).toLowerCase());
+    // Граница — не буква и не цифра (\b в JS не понимает кириллицу).
+    return `(?<![\\p{L}\\p{N}])${word}${whole ? '(?![\\p{L}\\p{N}])' : ''}`;
+  });
+  return new RegExp([...new Set(parts)].join('|'), 'u');
+}
+
+// Есть ли в тексте (topicText) хоть одно слово про ислам.
+export function mentionsIslam(text: string): boolean {
+  return PATTERNS.islam.test(text);
+}
+
+export function topicsOf(item: TopicItem): TopicId[] {
+  const text = topicText(item);
   const found = ORDER.filter((id) => PATTERNS[id].test(text));
   // Конкретная конфессия есть — «религия вообще» лишняя.
   const specific = found.some((id) => id !== 'religion_other' && id !== 'esoteric');

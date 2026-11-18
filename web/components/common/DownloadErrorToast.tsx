@@ -27,6 +27,11 @@ export function showDownloadError(
     toast.error(t("toast.tweetAdultHidden"));
     return;
   }
+  // Тема, которую Videoner не скачивает (server/src/lib/blocked-content.ts).
+  if (message.includes("Blocked content:")) {
+    toast.error(t("toast.blockedContent"));
+    return;
+  }
   if (message.startsWith("Adult content") || message.includes("Adult content:")) {
     toast.error(t("toast.adultContent"));
     return;

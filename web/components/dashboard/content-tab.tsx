@@ -169,6 +169,7 @@ function TopicsCard() {
   const [open, setOpen] = useState<string | null>(null);
   const q = usePeriodQuery<ContentTopics>("content/topics", platform ? { platform } : {});
   const total = q.data?.total ?? 0;
+  const wb = q.data?.wouldBlockReligion;
   const pct = (n: number) => (total ? `${((n / total) * 100).toFixed(1)}%` : "—");
   return (
     <ChartCard
@@ -222,8 +223,32 @@ function TopicsCard() {
           ))}
         </tbody>
       </table>
-      <p className="mt-2 text-xs text-foreground/40">        {q.data?.truncated ? `Скачиваний много — посчитано по последним ${total}` : `Всего удачных скачиваний за период: ${total}`}
+      <p className="mt-2 text-xs text-foreground/40">
+        {q.data?.truncated ? `Скачиваний много — посчитано по последним ${total}` : `Всего удачных скачиваний за период: ${total}`}
       </p>
+      <div className="mt-4 space-y-2 border-t border-foreground/10 pt-3 text-sm">
+        <p>
+          <b>Запрет эзотерики:</b> отказано {q.data?.blocked ?? 0} раз
+          <span className="text-foreground/50"> (автор olga_taro_guru и строгий список слов; подробности — в журнале ошибок, «Запрещённая тема»)</span>
+        </p>
+        <p>
+          <b>Религии, кроме ислама — тихий режим:</b> было бы запрещено {wb?.downloads ?? 0} скачиваний, {wb?.users ?? 0} людей
+          <span className="text-foreground/50"> (пока ничего не запрещается; видео со словами про ислам — разрешены)</span>
+        </p>
+        {!!wb?.examples.length && (
+          <details>
+            <summary className="cursor-pointer text-xs text-foreground/60">Что было бы запрещено — проверьте, нет ли ошибок</summary>
+            <ul className="mt-1 space-y-0.5 pl-4 text-xs text-foreground/70">
+              {wb.examples.map((e) => (
+                <li key={e.title} className="truncate" title={e.title}>
+                  {e.count > 1 && <span className="mr-1 tabular-nums text-foreground/40">×{e.count}</span>}
+                  {e.title}
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+      </div>
     </ChartCard>
   );
 }

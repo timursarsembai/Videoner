@@ -243,6 +243,8 @@ export function friendlyError(raw: string, lang: Lang): string {
   // подключить аккаунт тут предлагать нельзя.
   if (msg.includes("adult content (x age-restricted tweet)")) return m.errorTweetAdultHidden;
   if (msg.includes("adult content")) return m.errorAdultContent;
+  // Тема, которую Videoner не скачивает (server/src/lib/blocked-content.ts).
+  if (msg.includes("blocked content:")) return m.errorBlockedContent;
   if (msg.includes("tweet without video")) return m.errorTweetNoVideo;
   if (msg.includes("reddit no media")) return m.errorNoVideoContent;
 

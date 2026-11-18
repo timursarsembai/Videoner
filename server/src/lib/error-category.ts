@@ -8,6 +8,8 @@ export function categorizeError(raw: string): ErrorCategory {
 
   // Отказ по нашему правилу «не скачиваем 18+» (lib/adult-content.ts) — первым:
   // в тексте про скрытый твит есть слова, похожие на признаки «нужен вход».
+  // Отказ по теме (lib/blocked-content.ts) — тоже наше правило, не поломка.
+  if (msg.includes('blocked content:')) return ErrorCategory.BLOCKED_CONTENT;
   if (msg.startsWith('adult content') || msg.includes('adult content:') || msg.includes('error: adult content')) {
     return ErrorCategory.ADULT_CONTENT;
   }

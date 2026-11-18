@@ -225,6 +225,16 @@ async function startDirect({ url, tabId, media }) {
     const title = media.title;
     await updateJob(url, () => ({ url, title, kind: "video", direct: true, state: "downloading", progress: null, startedAt: Date.now() }));
 
+    // Темы, которые Videoner не скачивает (эзотерика, server/src/lib/blocked-content.ts):
+    // браузер качает сам, мимо сервера, поэтому спрашиваем заранее. Сервер
+    // не ответил — качаем: проверка не должна ломать скачивание.
+    const author = typeof media.author === "string" ? media.author : "";
+    const check = await api("/download/check", { url, title, author }).catch(() => null);
+    if (check?.blocked) {
+      await updateJob(url, (job) => ({ ...job, state: "error", error: friendlyError({ message: "Blocked content: " }) }));
+      return;
+    }
+
     // ext — фото (сторис Instagram, картинка Reddit), иначе mp4.
     const filename = `${safeFileName(title)}.${media.ext || "mp4"}`;
     let size;
@@ -251,7 +261,7 @@ async function startDirect({ url, tabId, media }) {
     void addToHistory({ url, title, kind: media.ext ? "photo" : "video" });
     await updateJob(url, (job) => ({ ...job, state: "done", progress: null }));
     void attachPromo(url);
-    void reportDownload(url, { url, fileSize: size, title, lang: uiLang });
+    void reportDownload(url, { url, fileSize: size, title, author, lang: uiLang });
   } finally {
     active.delete(url);
   }

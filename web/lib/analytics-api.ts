@@ -493,4 +493,12 @@ export type ContentTopic = {
   users: number;
   examples: { title: string; count: number }[];
 };
-export type ContentTopics = { total: number; truncated?: boolean; topics: ContentTopic[] };
+export type ContentTopics = {
+  total: number;
+  truncated?: boolean;
+  // Сколько раз отказали по теме (эзотерика) и что было бы запрещено из
+  // религий, если включить запрет (тихий режим, server lib/blocked-content.ts).
+  blocked?: number;
+  wouldBlockReligion?: Omit<ContentTopic, "id" | "label">;
+  topics: ContentTopic[];
+};

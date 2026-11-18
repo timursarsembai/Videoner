@@ -2,6 +2,7 @@ import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Qu
 import { ApiTags } from '@nestjs/swagger';
 import { AnalyticsService } from './analytics.service';
 import { BotGroupService } from './bot-group.service';
+import { ContentAnalyticsService, parsePlatform } from './content-analytics.service';
 import { BotUserService } from './bot-user.service';
 import { RedditAnalyticsService } from './reddit-analytics.service';
 import { GrantUnlimitedDto } from './dto/grant-unlimited.dto';
@@ -55,6 +56,11 @@ export class AnalyticsController {
     'users/blocked/weekly': (q) => this.analyticsService.blockedPeriods('week', this.range(q)),
     'users/blocked/monthly': (q) => this.analyticsService.blockedPeriods('month', this.range(q)),
     groups: () => this.botGroups.list(),
+    'content/authors': (q) =>
+      this.content.authors(this.range(q), parsePlatform(q.platform), this.limit(q.limit, 50, 200)),
+    'content/categories': (q) => this.content.categories(this.range(q), this.limit(q.limit, 30, 100)),
+    'content/hashtags': (q) =>
+      this.content.hashtags(this.range(q), parsePlatform(q.platform), this.limit(q.limit, 40, 200)),
     'users/top': (q) => this.analyticsService.topUsers(this.limit(q.limit, 20, 100)),
     errors: (q) => this.analyticsService.errors(this.range(q)),
     'errors/timeseries': (q) => this.analyticsService.errorsTimeseries(this.range(q)),
@@ -78,6 +84,7 @@ export class AnalyticsController {
     private readonly botUserService: BotUserService,
     private readonly redditAnalytics: RedditAnalyticsService,
     private readonly botGroups: BotGroupService,
+    private readonly content: ContentAnalyticsService,
   ) {}
 
   private range(q: QueryParams, maxDays?: number): DateRange {

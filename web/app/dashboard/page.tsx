@@ -38,6 +38,7 @@ import { LanguagesTab } from "@/components/dashboard/languages";
 import { AttemptsLog, BlockedUsersTable, TopUsersTable } from "@/components/dashboard/tables";
 import { AllUsersTable, UserJournalModal } from "@/components/dashboard/users-table";
 import { GroupsTab } from "@/components/dashboard/groups-table";
+import { ContentTab } from "@/components/dashboard/content-tab";
 import { BlockedOutcomesChart, BlockedPlatformsChart, PromoBlocksCard } from "@/components/dashboard/block-outcomes";
 
 // Дашборд. У каждого графика свой выбор периода (по умолчанию последние 30
@@ -50,6 +51,7 @@ const DASHBOARD_TABS = [
   { id: "overview", label: "Обзор" },
   { id: "users", label: "Пользователи" },
   { id: "groups", label: "Группы" },
+  { id: "content", label: "Контент" },
   { id: "downloads", label: "Скачивания" },
   { id: "errors", label: "Ошибки" },
   { id: "reddit", label: "Reddit" },
@@ -218,6 +220,7 @@ const TAB_CONTENT: Record<DashboardTab, ComponentType> = {
   overview: OverviewTab,
   users: UsersTab,
   groups: GroupsTab,
+  content: ContentTab,
   downloads: DownloadsTab,
   errors: ErrorsTab,
   reddit: RedditTab,

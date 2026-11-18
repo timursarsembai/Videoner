@@ -471,3 +471,17 @@ export type BotGroups = {
   downloads: number;
   groups: BotGroupRow[];
 };
+
+// Вкладка «Контент» (server: ContentAnalyticsService). Учёт с 18.11.2026;
+// раньше — только восстановленное из названий и ссылок.
+export type ContentAuthor = {
+  platform: string;
+  name: string;
+  url: string | null;
+  downloads: number;
+  users: number;
+  lastAt: string;
+};
+export type ContentAuthors = { total: number; withAuthor: number; authors: ContentAuthor[] };
+export type ContentCategory = { platform: string; category: string; downloads: number };
+export type ContentHashtag = { tag: string; downloads: number };

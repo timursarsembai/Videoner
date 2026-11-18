@@ -80,6 +80,13 @@ model Download {
   // расширения), а неудачные номер не тратят. Прежним удачным номера выданы
   // по дате при миграции 20261116100000_download_number.
   downloadNumber Int?           @unique
+  // Автор и тема видео (lib/content-meta.ts, с 18.11.2026): кто снял, его
+  // профиль, категория (YouTube — своя, Reddit — сабреддит) и хэштеги.
+  authorName     String?
+  authorId       String?
+  authorUrl      String?
+  category       String?
+  hashtags       String[]       @default([])
   // Файл скачал сам браузер (расширение, extension/), а сервер получил только
   // отчёт: POST /download/report. Файла на сервере нет, трафик сервера не
   // тратился — такие записи не входят ни в лимит YouTube, ни в объём на

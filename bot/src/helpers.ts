@@ -206,6 +206,25 @@ export function instagramAttachmentUrl(raw: string): string | null {
   return m ? m[1] : null;
 }
 
+// Запрос /info с подстраховкой для поста Threads с записью Instagram: если
+// плагин Threads её не получил (ходит в Instagram без входа), сразу берём
+// саму запись Instagram — обычный путь Instagram скачивает её с входом
+// сервера (18.11.2026 владелец: «зачем просить ссылку, если она у нас есть»).
+// Возвращает и ссылку, по которой в итоге получилось: дальше скачиваем по ней.
+export async function infoWithInstagramFallback<T>(
+  url: string,
+  fetchInfo: (url: string) => Promise<T>,
+): Promise<{ info: T; url: string }> {
+  try {
+    return { info: await fetchInfo(url), url };
+  } catch (e: any) {
+    const igUrl = instagramAttachmentUrl(e?.message ?? String(e));
+    if (!igUrl || igUrl === url) throw e;
+    console.log(`Пост Threads ${url}: вложение Instagram не отдалось, беру саму запись ${igUrl}`);
+    return { info: await fetchInfo(igUrl), url: igUrl };
+  }
+}
+
 // Переводит сырые ошибки yt-dlp в понятные пользователю объяснения.
 // Instagram/Facebook отдают приватные, возрастные и "чувствительные" ролики
 // только залогиненным сессиям — без cookies.txt на сервере такие ссылки не скачать.

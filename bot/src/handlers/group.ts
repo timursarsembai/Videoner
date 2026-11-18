@@ -13,6 +13,7 @@ import {
   checkUserRateLimit,
   extensionLinkFor,
   friendlyError,
+  infoWithInstagramFallback,
 } from "../helpers.js";
 import { extractUrls } from "../queue.js";
 import {
@@ -206,7 +207,8 @@ async function downloadInGroup(
     sizes?: { video: Record<string, number> };
   };
   try {
-    info = await api("/info", { url, ...meta });
+    // Пост Threads с записью Instagram — при отказе берём саму запись.
+    ({ info, url } = await infoWithInstagramFallback(url, (u) => api<typeof info>("/info", { url: u, ...meta })));
   } catch (e: any) {
     const raw = e?.message ?? String(e);
     // Сторис Instagram — исключение из молчания: человек явно хотел её

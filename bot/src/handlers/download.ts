@@ -15,6 +15,7 @@ import {
   siteLinkFor,
   friendlyError,
   instagramAttachmentUrl,
+  infoWithInstagramFallback,
   failedDownloadText,
   checkUserRateLimit,
   API_URL,
@@ -787,21 +788,24 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
     // Режим «сразу видео» — параллельно с анализом ссылки; instantVideo не бросает.
     const instant = state.chatId > 0 ? instantVideo(state.userId) : Promise.resolve(false);
 
-    const info = await api<{
-      title: string;
-      duration?: number;
-      thumbnail?: string;
-      description?: string;
-      qualities: { video: string[]; audio: string[] };
-      sizes?: { video: Record<string, number>; audio: Record<string, number> };
-      subtitles?: SubtitleTrack[];
-    }>("/info", {
-      url: current.url,
-      telegramId: state.userId,
-      telegramUsername: state.username,
-      telegramLanguageCode: state.languageCode,
-      cookieScope: state.chatId > 0 ? `user:${state.userId}` : `chat:${state.chatId}`,
-    });
+    const fetched = await infoWithInstagramFallback(current.url, (url) =>
+      api<{
+        title: string;
+        duration?: number;
+        thumbnail?: string;
+        description?: string;
+        qualities: { video: string[]; audio: string[] };
+        sizes?: { video: Record<string, number>; audio: Record<string, number> };
+        subtitles?: SubtitleTrack[];
+      }>("/info", {
+        url,
+        telegramId: state.userId,
+        telegramUsername: state.username,
+        telegramLanguageCode: state.languageCode,
+        cookieScope: state.chatId > 0 ? `user:${state.userId}` : `chat:${state.chatId}`,
+      }),
+    );
+    const info = fetched.info;
     const instantOn = await instant;
     // Пока шёл анализ, человек всё остановил (/stop): ссылки больше нет —
     // убираем «Получаю информацию» и ничего не рисуем.
@@ -809,6 +813,8 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       await tg.deleteMessage(state.chatId, messageId).catch(() => {});
       return true;
     }
+    // Пост Threads заменили его записью Instagram — дальше всё по ней.
+    current.url = fetched.url;
     current.title = info.title ?? "";
     current.description = postDescription(current.url, info.description);
     current.thumbnail = info.thumbnail;

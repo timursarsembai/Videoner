@@ -2,6 +2,8 @@ import { BLOCKED_CONTENT_ERROR, blockedInfo } from 'src/lib/blocked-content';
 import { photoQualities, postAudio } from 'src/lib/slideshow';
 import { DownloadSource } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { AdultAuthorsService } from '../adult-authors/adult-authors.service';
+import { ADULT_AUTHOR_ERROR } from 'src/lib/adult-authors';
 import { PrismaService } from '../prisma/prisma.service';
 import { categorizeError } from 'src/lib/error-category';
 import { errorText } from 'src/lib/error-text';
@@ -69,6 +71,7 @@ export class InfoService {
     private botUser: BotUserService,
     private userCookies: UserCookiesService,
     private prisma: PrismaService,
+    private adultAuthors: AdultAuthorsService,
   ) {}
 
   async getVideoInfo(dto: GetVideoInfoDto): Promise<VideoInfoResponse> {
@@ -106,6 +109,8 @@ export class InfoService {
       // наши ошибки в обработке ответа ниже. Категория — по исходному тексту
       // yt-dlp: handleError его переписывает для людей.
       const refined = await this.refineTweetError(url, platform, error);
+      // X скрыл твит как 18+ — запоминаем аккаунт (lib/adult-authors.ts).
+      if (refined instanceof Error && refined.message === ADULT_TWEET_ERROR) this.adultAuthors.remember(platform, null, url);
       this.recordFailure(platform, dto, refined);
       throw new BadRequestException(this.handleError(refined, platform, alerts));
     }
@@ -113,7 +118,15 @@ export class InfoService {
     // Контент для взрослых не отдаём, даже если он открылся (например, от
     // подключённого аккаунта человека) — см. lib/adult-content.ts.
     if (isAdultContent(platform, info)) {
+      this.adultAuthors.remember(platform, info, url);
       const adult = new Error(ADULT_CONTENT_ERROR);
+      this.recordFailure(platform, dto, adult);
+      throw new BadRequestException(adult.message);
+    }
+
+    // Пост без пометки, но от аккаунта, который X уже помечал 18+.
+    if (this.adultAuthors.isBlocked(platform, info, url)) {
+      const adult = new Error(ADULT_AUTHOR_ERROR);
       this.recordFailure(platform, dto, adult);
       throw new BadRequestException(adult.message);
     }

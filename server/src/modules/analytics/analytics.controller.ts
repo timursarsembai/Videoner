@@ -59,6 +59,7 @@ export class AnalyticsController {
     'content/authors': (q) =>
       this.content.authors(this.range(q), parsePlatform(q.platform), this.limit(q.limit, 50, 200), q.sort === 'downloads' ? 'downloads' : 'users'),
     'content/topics': (q) => this.content.topics(this.range(q), parsePlatform(q.platform)),
+    'content/adult': (q) => this.content.adult(this.range(q), parsePlatform(q.platform)),
     'content/categories': (q) => this.content.categories(this.range(q), this.limit(q.limit, 30, 100)),
     'content/hashtags': (q) =>
       this.content.hashtags(this.range(q), parsePlatform(q.platform), this.limit(q.limit, 40, 200)),

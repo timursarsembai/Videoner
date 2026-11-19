@@ -4,6 +4,7 @@ import { DownloadService } from './download.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { YtdlpModule } from '../ytdlp/ytdlp.module';
 import { UserCookiesModule } from '../user-cookies/user-cookies.module';
+import { AdultAuthorsModule } from '../adult-authors/adult-authors.module';
 import { AnalyticsModule } from '../analytics/analytics.module';
 
 @Module({
@@ -11,7 +12,7 @@ import { AnalyticsModule } from '../analytics/analytics.module';
   // напрямую в providers) — иначе получим отдельный, не связанный с
   // остальным приложением инстанс, и семафоры в нём перестанут быть
   // глобальными (см. подробности в ytdlp-process.service.ts).
-  imports: [AnalyticsModule, YtdlpModule, UserCookiesModule],
+  imports: [AnalyticsModule, YtdlpModule, UserCookiesModule, AdultAuthorsModule],
   controllers: [DownloadController],
   providers: [DownloadService, PrismaService],
   exports: [DownloadService],

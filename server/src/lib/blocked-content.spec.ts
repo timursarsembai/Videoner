@@ -1,4 +1,4 @@
-import { BLOCKED_CONTENT_ERROR, blockedInfo, blockedReason, wouldBlockReligion } from './blocked-content';
+import { BLOCKED_CONTENT_ERROR, blockedInfo, blockedReason, wouldBlockAdult, wouldBlockReligion } from './blocked-content';
 import { categorizeError } from './error-category';
 
 describe('blockedReason — эзотерика', () => {
@@ -82,4 +82,24 @@ describe('wouldBlockReligion — тихий режим', () => {
 
 it('журнал ошибок узнаёт отказ по теме', () => {
   expect(categorizeError(BLOCKED_CONTENT_ERROR)).toBe('BLOCKED_CONTENT');
+});
+
+describe('wouldBlockAdult', () => {
+  it('ловит слова и значки из подписей откровенных роликов', () => {
+    expect(wouldBlockAdult({ title: 'Kiara McKnight - link, get náughty, and make a video worth replaying 😈🎥' })).toBe(true);
+    expect(wouldBlockAdult({ title: 'Mia brookes - Damn im so thickkk' })).toBe(true);
+    expect(wouldBlockAdult({ title: 'Rate me 1-10' })).toBe(true);
+    expect(wouldBlockAdult({ title: 'hey @grok rate the pjs 1-10' })).toBe(true);
+    expect(wouldBlockAdult({ title: 'hi', author: 'Sisi💕 (FREE 0F)' })).toBe(true);
+    expect(wouldBlockAdult({ title: 'девушка в нижнем белье' })).toBe(true);
+    expect(wouldBlockAdult({ title: 'нашли её голой' })).toBe(true);
+  });
+
+  it('не трогает обычные ролики', () => {
+    expect(wouldBlockAdult({ title: 'EuroFoot - Edwin van der Sar pulling off these great saves at the age of 56!' })).toBe(false);
+    expect(wouldBlockAdult({ title: 'Free of charge: how to rate my code' })).toBe(false);
+    expect(wouldBlockAdult({ title: 'Top 10 goals of 2026' })).toBe(false);
+    expect(wouldBlockAdult({ title: 'Голосование за лучший гол недели' })).toBe(false);
+    expect(wouldBlockAdult({ title: 'The thickness of the ice' })).toBe(false);
+  });
 });

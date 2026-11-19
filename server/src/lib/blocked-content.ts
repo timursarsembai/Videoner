@@ -70,3 +70,24 @@ export function blockedInfo(info: unknown, platform: string | null, url: string)
     authorId: meta.authorId,
   });
 }
+
+// Тихий режим для откровенного контента без пометки 18+ (владелец
+// 19.11.2026): ничего не запрещаем, в дашборде видно, что было бы запрещено.
+// Слова — из подписей таких роликов на X; надстрочные знаки снимаем, чтобы
+// «náughty» читалось как «naughty». Значки — отдельно: перед ними часто стоит
+// буква без пробела («hi😈»), а граница слова в wordsPattern это не пропустит.
+const ADULT_HINT_WORDS = wordsPattern([
+  'onlyfans', 'only fans', '0nlyfans', 'onlyfan=', 'fansly', 'free 0f', 'nsfw', '18+', 'twerk', 'thick=', 'thickk', 'boob', 'tits=',
+  'titties', 'rackattack', 'naughty', 'horny', 'sexy', 'nude=', 'nudes', 'lingerie', 'rate me=', 'goth mommy',
+  'эротик', 'сексуальн', 'онлифанс', 'голая', 'голой=', 'без белья', 'нижнем белье', 'нижнее белье',
+]);
+const ADULT_HINT_EMOJI = /😈|💦|🍑|🍆|🥵|👅|💋|🍒/u;
+// «Rate my outfit 1-10», «rate the pjs 1-10» — просьба оценить себя.
+const ADULT_HINT_RATE = /(?<![\p{L}\p{N}])rate(?![\p{L}\p{N}]).{0,40}(?<![\p{N}])1\s*[-–/]\s*10(?![\p{N}])/u;
+
+export function wouldBlockAdult(item: TopicItem): boolean {
+  const text = topicText(item);
+  if (ADULT_HINT_EMOJI.test(text) || ADULT_HINT_RATE.test(text)) return true;
+  // Знаки снимаем только с латиницы: у кириллицы «й» распалось бы в «и».
+  return ADULT_HINT_WORDS.test(text.normalize('NFD').replace(/([a-z])\p{M}+/gu, '$1').normalize('NFC'));
+}

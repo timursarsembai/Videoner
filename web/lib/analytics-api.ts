@@ -502,3 +502,15 @@ export type ContentTopics = {
   wouldBlockReligion?: Omit<ContentTopic, "id" | "label">;
   topics: ContentTopic[];
 };
+
+// Взрослое (18+): отказы, аккаунты 18+ и тихий режим слов (server
+// content-analytics.service.ts adult()).
+export type ContentAdult = {
+  total: number;
+  truncated?: boolean;
+  refusedFlagged: number;
+  refusedByAuthor: number;
+  authorsTotal: number;
+  authors: { platform: string; nick: string; hits: number; firstAt: string; lastAt: string }[];
+  wouldBlock: Omit<ContentTopic, "id" | "label">;
+};

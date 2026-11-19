@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import type { ContentAuthors, ContentCategory, ContentHashtag, ContentTopics } from "@/lib/analytics-api";
+import type { ContentAdult, ContentAuthors, ContentCategory, ContentHashtag, ContentTopics } from "@/lib/analytics-api";
 import { ChartCard, usePeriodQuery } from "./chart-card";
 import { formatShortDate } from "./tables";
 
@@ -253,6 +253,69 @@ function TopicsCard() {
   );
 }
 
+// Взрослое (18+): аккаунты X, которые X хоть раз помечал 18+, — их посты не
+// качаем все (server lib/adult-authors.ts); слова и значки — пока тихий режим.
+function AdultCard() {
+  const [platform, setPlatform] = useState("");
+  const q = usePeriodQuery<ContentAdult>("content/adult", platform ? { platform } : {});
+  const d = q.data;
+  return (
+    <ChartCard
+      title={`Взрослое (18+) — ${q.label.toLowerCase()}`}
+      hint="Если X хоть раз пометил пост аккаунта как 18+, все посты этого аккаунта больше не скачиваем. Слова и значки в подписях (😈, 💦, onlyfans, «rate me 1-10» и подобные) — пока тихий режим: ничего не запрещается, только видно, что было бы запрещено. YouTube в тихом режиме не считаем: там такие значки ставят на мультфильмы и машины."
+      period={q.period}
+      onPeriod={q.setPeriod}
+      controls={<PlatformSelect value={platform} onChange={setPlatform} />}
+      loading={q.loading}
+      error={q.error}
+    >
+      <div className="space-y-2 text-sm">
+        <p>
+          <b>Отказано:</b> по пометке площадки — {d?.refusedFlagged ?? 0}, по аккаунту 18+ — {d?.refusedByAuthor ?? 0}
+        </p>
+        <details>
+          <summary className="cursor-pointer">
+            <b>Аккаунты 18+ на X:</b> {d?.authorsTotal ?? 0}
+            <span className="text-foreground/50"> (за всё время; нажмите, чтобы увидеть последние)</span>
+          </summary>
+          <ul className="mt-1 space-y-0.5 pl-4 text-xs text-foreground/70">
+            {(d?.authors ?? []).map((a) => (
+              <li key={`${a.platform}|${a.nick}`}>
+                <a href={`https://x.com/${a.nick}`} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  @{a.nick}
+                </a>
+                <span className="ml-1 text-foreground/40">
+                  ×{a.hits}, последний раз {formatShortDate(a.lastAt)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
+        <p className="border-t border-foreground/10 pt-2">
+          <b>Слова и значки — тихий режим:</b> было бы запрещено {d?.wouldBlock.downloads ?? 0} скачиваний, {d?.wouldBlock.users ?? 0} людей
+          <span className="text-foreground/50">
+            {" "}
+            ({d?.truncated ? `по последним ${d.total} скачиваниям` : `из ${d?.total ?? 0} удачных скачиваний, кроме YouTube`})
+          </span>
+        </p>
+        {!!d?.wouldBlock.examples.length && (
+          <details>
+            <summary className="cursor-pointer text-xs text-foreground/60">Что было бы запрещено — проверьте, нет ли ошибок</summary>
+            <ul className="mt-1 space-y-0.5 pl-4 text-xs text-foreground/70">
+              {d.wouldBlock.examples.map((e) => (
+                <li key={e.title} className="truncate" title={e.title}>
+                  {e.count > 1 && <span className="mr-1 tabular-nums text-foreground/40">×{e.count}</span>}
+                  {e.title}
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+      </div>
+    </ChartCard>
+  );
+}
+
 export function ContentTab() {
   return (
     <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -260,6 +323,7 @@ export function ContentTab() {
       <CategoriesCard />
       <HashtagsCard />
       <TopicsCard />
+      <AdultCard />
     </section>
   );
 }

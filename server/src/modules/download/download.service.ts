@@ -74,6 +74,8 @@ import {
 } from 'src/lib/playlist';
 import { parseUiLang } from 'src/lib/languages';
 import { parseCountry } from 'src/lib/countries';
+import { ADULT_AUTHOR_ERROR } from 'src/lib/adult-authors';
+import { AdultAuthorsService } from '../adult-authors/adult-authors.service';
 import { errorText } from 'src/lib/error-text';
 import { USER_AGENT as TIKTOK_USER_AGENT } from 'src/lib/tiktok-photo';
 import { contentMeta, type ContentMeta } from 'src/lib/content-meta';
@@ -187,6 +189,7 @@ export class DownloadService {
     private ytdlpFormat: YtdlpFormatService,
     private botUser: BotUserService,
     private userCookies: UserCookiesService,
+    private adultAuthors: AdultAuthorsService,
   ) {
     this.downloadPath = join(__dirname, '..', '..', '..', 'downloads');
     // Ensure downloads directory exists
@@ -227,7 +230,12 @@ export class DownloadService {
     const found = await this.infoForDownloadAnyAccount(url, req, meta);
     // Контент для взрослых не скачиваем ни от какого аккаунта (lib/adult-content.ts).
     if (isAdultContent((req as any).platform, found.info)) {
+      this.adultAuthors.remember((req as any).platform, found.info, url);
       throw new BadRequestException(ADULT_CONTENT_ERROR);
+    }
+    // Аккаунт, который площадка уже помечала 18+ (lib/adult-authors.ts).
+    if (this.adultAuthors.isBlocked((req as any).platform, found.info, url)) {
+      throw new BadRequestException(ADULT_AUTHOR_ERROR);
     }
     // И темы, которые не скачиваем (lib/blocked-content.ts): запрос мог
     // прийти в обход /info, а повтор из кеша — от прошлого раза.

@@ -3,7 +3,8 @@ import { Downloaders, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import type { DateRange } from 'src/lib/analytics-range';
 import { TOPIC_LABELS, topicsOf, type TopicId } from 'src/lib/sensitive-topics';
-import { wouldBlockReligion } from 'src/lib/blocked-content';
+import { wouldBlockAdult, wouldBlockReligion } from 'src/lib/blocked-content';
+import { ADULT_AUTHOR_ERROR } from 'src/lib/adult-authors';
 
 // «Что качают» (дашборд, вкладка «Контент»): популярные авторы, категории
 // и хэштеги удачных скачиваний за период. Данные — lib/content-meta.ts, с
@@ -157,6 +158,58 @@ export class ContentAnalyticsService {
           ...view(acc.get(id)),
         };
       }),
+    };
+  }
+
+  // Взрослое (18+): отказы по пометке площадки и по аккаунтам 18+
+  // (lib/adult-authors.ts), список таких аккаунтов и тихий режим слов и
+  // значков (wouldBlockAdult) — что было бы запрещено среди удачных скачиваний.
+  // YouTube не смотрим: порно там запрещено правилами, а 😈, 🥵 и «thick» в
+  // подписях — мультфильмы, машины и спортзал (проверено 19.11.2026).
+  async adult(range: DateRange, platform: Downloaders | undefined) {
+    const rows = await this.prisma.$queryRaw<
+      { title: string | null; hashtags: string[]; author: string | null; who: string | null }[]
+    >`
+      SELECT d."videoTitle" AS title, d.hashtags, d."authorName" AS author, coalesce(d."botUserId", d."clientIpHash") AS who
+      FROM "Download" d
+      WHERE ${OK} AND d."createdAt" >= ${range.from} AND d."createdAt" < ${range.to} ${platformFilter(platform)}
+        AND d.downloader <> 'YOUTUBE'
+      ORDER BY d."createdAt" DESC
+      LIMIT ${TOPICS_MAX_ROWS + 1}`;
+    const truncated = rows.length > TOPICS_MAX_ROWS;
+    if (truncated) rows.length = TOPICS_MAX_ROWS;
+    const users = new Set<string>();
+    const examples = new Map<string, number>();
+    let downloads = 0;
+    for (const r of rows) {
+      if (!wouldBlockAdult(r)) continue;
+      downloads++;
+      if (r.who) users.add(r.who);
+      const title = (r.title ?? '').slice(0, 120) || '(без названия)';
+      examples.set(title, (examples.get(title) ?? 0) + 1);
+    }
+    const [refused] = await this.prisma.$queryRaw<{ flagged: bigint; by_author: bigint }[]>`
+      SELECT count(*) FILTER (WHERE f.message <> ${ADULT_AUTHOR_ERROR}) AS flagged,
+             count(*) FILTER (WHERE f.message = ${ADULT_AUTHOR_ERROR}) AS by_author
+      FROM "LinkFailure" f
+      WHERE f."errorCategory" = 'ADULT_CONTENT' AND f."createdAt" >= ${range.from} AND f."createdAt" < ${range.to}
+        ${platform ? Prisma.sql`AND upper(f.platform) = ${platform}` : Prisma.empty}`;
+    const [authorsTotal, authors] = await Promise.all([
+      this.prisma.adultAuthor.count(),
+      this.prisma.adultAuthor.findMany({ orderBy: { lastAt: 'desc' }, take: 50 }),
+    ]);
+    return {
+      total: rows.length,
+      truncated,
+      refusedFlagged: Number(refused?.flagged ?? 0),
+      refusedByAuthor: Number(refused?.by_author ?? 0),
+      authorsTotal,
+      authors: authors.map((a) => ({ platform: a.platform, nick: a.nick, hits: a.hits, firstAt: a.firstAt, lastAt: a.lastAt })),
+      wouldBlock: {
+        downloads,
+        users: users.size,
+        examples: [...examples.entries()].sort((a, b) => b[1] - a[1]).slice(0, 30).map(([title, count]) => ({ title, count })),
+      },
     };
   }
 }

@@ -437,3 +437,18 @@ model PromoShow {
   @@unique([botUserId, key])
   @@index([shownAt])
 }
+
+// Аккаунты, у которых площадка хоть раз пометила пост как 18+ (решение
+// владельца 19.11.2026): дальше не качаем ни один их пост — X помечает не всё,
+// и непомеченные посты тех же авторов того же характера. Ник — в нижнем
+// регистре. Пока только X (lib/adult-authors.ts).
+model AdultAuthor {
+  platform  String
+  nick      String
+  // Сколько раз ловили пометку 18+ (повторы одной ссылки тоже считаются).
+  hits      Int      @default(1)
+  firstAt   DateTime @default(now())
+  lastAt    DateTime @default(now())
+
+  @@id([platform, nick])
+}

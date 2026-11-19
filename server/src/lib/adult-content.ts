@@ -1,4 +1,5 @@
 import { playlistEntries } from './playlist';
+import { wouldBlockAdult } from './blocked-content';
 
 // Контент для взрослых Videoner не скачивает (решение владельца 15.11.2026):
 // ни на одной площадке, в том числе от подключённого аккаунта человека.
@@ -27,8 +28,24 @@ const ADULT_FLAG_PLATFORMS = new Set(['twitter', 'reddit']);
 
 export function isAdultContent(platform: string, info: any): boolean {
   if (!info || !ADULT_FLAG_PLATFORMS.has(platform)) return false;
-  const flagged = (item: any) => Boolean(item) && ((item.age_limit ?? 0) >= 18 || item.over_18 === true);
+  const flagged = (item: any) =>
+    Boolean(item) && ((item.age_limit ?? 0) >= 18 || item.over_18 === true) && !(platform === 'reddit' && violentNotSexual(item));
   return flagged(info) || playlistEntries(info).some(flagged);
+}
+
+// Reddit ставит 18+ и на жестокое — травмы, драки, кровь: в обычных
+// сабреддитах (r/soccer и подобных) откровенное запрещено их же правилами, и
+// 18+ там почти всегда про насилие. Такое пропускаем (решение владельца
+// 19.11.2026), если сам сабреддит не для взрослых, а в подписи нет признаков
+// откровенного (тихий список wouldBlockAdult). subreddit_over18 присылает
+// Reddit-модуль (reddit-resolver → плагин yt-dlp); нет поля — не пропускаем.
+function violentNotSexual(item: any): boolean {
+  if (item.subreddit_over18 !== false) return false;
+  const title = typeof item.title === 'string' ? item.title : '';
+  const description = typeof item.description === 'string' ? item.description : '';
+  // «[NSFW]», «NSFL», «18+» в заголовке — здесь просто предупреждение о жестоком.
+  const text = `${title}\n${description}`.slice(0, 3000).replace(/(?<![\p{L}\p{N}])(?:nsfw|nsfl|18\+)/giu, ' ');
+  return !wouldBlockAdult({ title: text });
 }
 
 // Номер твита из ссылки x.com/<ник>/status/<id>.

@@ -14,6 +14,17 @@ describe('adult-content', () => {
     expect(isAdultContent('youtube', { age_limit: 18 })).toBe(false);
   });
 
+  it('Reddit: 18+ в обычном сабреддите без признаков откровенного — пропускаем', () => {
+    const rock = { over_18: true, subreddit_over18: false, title: 'Jhon Perlaza threw a rock at the referee' };
+    expect(isAdultContent('reddit', rock)).toBe(false);
+    expect(isAdultContent('reddit', { ...rock, subreddit_over18: true })).toBe(true);
+    expect(isAdultContent('reddit', { over_18: true, title: rock.title })).toBe(true);
+    expect(isAdultContent('reddit', { ...rock, title: 'onlyfans leak 🍑' })).toBe(true);
+    expect(isAdultContent('reddit', { ...rock, description: 'nsfw nudes' })).toBe(true);
+    expect(isAdultContent('reddit', { ...rock, title: '[NSFW] Horrible leg break, 18+' })).toBe(false);
+    expect(isAdultContent('twitter', { age_limit: 18, subreddit_over18: false, title: 'goal' })).toBe(true);
+  });
+
   it('номер твита из ссылки', () => {
     expect(tweetId('https://x.com/a/status/2121375429936156786?s=46')).toBe('2121375429936156786');
     expect(tweetId('https://x.com/a/status/2119800847857291362/video/1')).toBe('2119800847857291362');

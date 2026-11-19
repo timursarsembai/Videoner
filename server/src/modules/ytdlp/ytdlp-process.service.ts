@@ -180,6 +180,27 @@ export class YtdlpProcessService implements OnModuleInit {
     return this.blockedUntil(platform, proxy) > Date.now();
   }
 
+  // Прокси, которые не отвечают вовсе (проверка ProxyHealthService): сбой
+  // связи yt-dlp считает разовым и повторяет тем же прокси, поэтому без этого
+  // списка каждый запрос, которому выпал мёртвый прокси, висел минутами
+  // (19.11.2026: подсеть IPRoyal легла, YouTube зависал у каждого третьего).
+  // Пока прокси в списке, его не берём, если есть хоть один другой.
+  private readonly downProxies = new Set<string>();
+
+  setProxyDown(proxy: string, down: boolean): void {
+    if (!this.proxyPool.includes(proxy) || this.downProxies.has(proxy) === down) return;
+    if (down) this.downProxies.add(proxy);
+    else this.downProxies.delete(proxy);
+    console.warn(`[proxy] ${proxyHost(proxy)}: ${down ? 'не отвечает — не берём' : 'снова отвечает — берём'}`);
+  }
+
+  // Прокси, через которые сейчас есть смысл ходить: живые, а если не
+  // отвечает ни один — все (вдруг проверка ошиблась, без прокси YouTube не работает).
+  private aliveProxies(): string[] {
+    const alive = this.proxyPool.filter((p) => !this.downProxies.has(p));
+    return alive.length ? alive : this.proxyPool;
+  }
+
   // Прокси для запроса: тот, через который этот ролик уже шёл (если его с
   // тех пор не заблокировали), иначе случайный незаблокированный для этой
   // площадки. Заблокированы все — тот, чья блокировка кончится раньше: без
@@ -187,12 +208,13 @@ export class YtdlpProcessService implements OnModuleInit {
   private pickProxy(platform: string | null, url?: string): string | undefined {
     const key = url ? proxyAffinityKey(url) : null;
     const held = key ? this.proxyForVideo.get(key) : undefined;
-    if (held && held.until > Date.now() && this.proxyPool.includes(held.proxy) && !this.isProxyBlocked(platform, held.proxy)) {
+    const alive = this.aliveProxies();
+    if (held && held.until > Date.now() && alive.includes(held.proxy) && !this.isProxyBlocked(platform, held.proxy)) {
       return held.proxy;
     }
     const proxy =
-      pickRandom(this.proxyPool.filter((p) => !this.isProxyBlocked(platform, p))) ??
-      this.proxyPool
+      pickRandom(alive.filter((p) => !this.isProxyBlocked(platform, p))) ??
+      alive
         .slice()
         .sort((a, b) => this.blockedUntil(platform, a) - this.blockedUntil(platform, b))[0];
     if (proxy) this.holdProxy(url, proxy);
@@ -217,7 +239,7 @@ export class YtdlpProcessService implements OnModuleInit {
   // испробованные в этом запросе. Заведомо заблокированные не перебираем —
   // если 403 про само видео, а не про адрес, это лишние прогоны через прокси.
   private spareProxies(platform: string | null, current: string, refused: readonly string[]): string[] {
-    return this.proxyPool.filter(
+    return this.aliveProxies().filter(
       (p) => p !== current && !refused.includes(p) && !this.isProxyBlocked(platform, p),
     );
   }

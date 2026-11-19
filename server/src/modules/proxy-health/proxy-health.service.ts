@@ -71,6 +71,23 @@ export class ProxyHealthService {
     await this.checkBlockedPlatforms();
   }
 
+  // Пока какой-то прокси мёртв — проверяем его раз в 5 минут, чтобы вернуть
+  // в строй сразу, как оживёт (тревога о нём уже ушла, повторять её здесь
+  // незачем — только «снова работает»). Сразу после запуска сервера состояние
+  // пустое: проверяем все, чтобы мёртвый не ждал часовой проверки.
+  private started = false;
+
+  @Cron(CronExpression.EVERY_5_MINUTES)
+  async recheckFailing() {
+    if (process.env.PROXY_HEALTH_ENABLED !== 'true') return;
+    if (!this.started) {
+      this.started = true;
+      await Promise.all(this.ytdlp.proxies.map((proxyUrl) => this.checkOne(proxyUrl)));
+      return;
+    }
+    await Promise.all([...this.failing].map((proxyUrl) => this.checkOne(proxyUrl, { quiet: true })));
+  }
+
   // Площадка отказывала на всех прокси (403 и на последнем доступном,
   // ytdlp-process.service.ts): сами прокси живы, но пользователи этой площадки
   // получают ошибку.
@@ -84,7 +101,7 @@ export class ProxyHealthService {
     this.allBlockedReported = blocked;
   }
 
-  private async checkOne(proxyUrl: string) {
+  private async checkOne(proxyUrl: string, { quiet = false }: { quiet?: boolean } = {}) {
     let verdict = await this.probe(proxyUrl, this.PROBE_URLS[0]);
 
     // Ответ, по которому нельзя судить о прокси (не 200 и не 407) — идём на
@@ -119,9 +136,13 @@ export class ProxyHealthService {
     const reason = verdict?.reason ?? null;
     const masked = this.maskCredentials(proxyUrl);
 
+    // Выбор прокси для yt-dlp обходит мёртвый, пока он не оживёт.
+    this.ytdlp.setProxyDown(proxyUrl, !!reason);
+
     if (reason) {
       this.failing.add(proxyUrl);
       this.logger.error(`Прокси ${masked} не отвечает: ${reason}`);
+      if (quiet) return;
       await this.alert.notifyProxyDown(
         masked,
         this.PROBE_URLS.join(' и '),

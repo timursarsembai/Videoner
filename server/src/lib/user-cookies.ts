@@ -197,6 +197,11 @@ export function userCookiesMayHelp(message: string): boolean {
     // «redirected to the login page … rate-limit for accessing posts
     // anonymously». С входом человека запись открывается.
     /accessing posts anonymously/i,
+    // Instagram закрыл запись по возрасту или стране: «This content isn't
+    // available to everyone: It can't be seen by certain audiences» (20.11.2026).
+    // Вошедшему взрослому из подходящей страны он её показывает.
+    /certain audiences/i,
+    /isn.?t available to everyone/i,
     /sign in/i,
     /log in/i,
     THREADS_NO_MEDIA,

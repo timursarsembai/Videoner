@@ -67,6 +67,11 @@ _NO_MEDIA_MESSAGE = (
 _ATTEMPTS = 5
 _RETRY_SLEEP = 1.5
 
+# Вложение Instagram с адреса сервера: Instagram его почти всегда не пускает
+# (18.11.2026: пять отказов подряд), а каждая попытка с паузой — пара секунд
+# ожидания человека. Две — и сразу к прокси (21.11.2026).
+_IG_SERVER_ATTEMPTS = 2
+
 # Если основной путь провалился целиком столько раз подряд за _DEGRADED_WINDOW,
 # считаем его закрытым и делаем всего одну попытку — проверка при каждом
 # скачивании сохраняется, но мы не жжём по пять запросов и ~10 секунд на каждом.
@@ -278,15 +283,15 @@ class ThreadsIE(InfoExtractor):
         """
         target = f'https://www.instagram.com/p/{code}/'
         headers = {'User-Agent': _CRAWLER_UA, 'Accept-Language': 'en-US,en;q=0.9'}
-        for attempt in range(1, _ATTEMPTS + 1):
+        for attempt in range(1, _IG_SERVER_ATTEMPTS + 1):
             webpage = self._download_webpage(
                 target, code, fatal=False, headers=headers,
-                note=f'Запрашиваю вложение Instagram (попытка {attempt} из {_ATTEMPTS})',
+                note=f'Запрашиваю вложение Instagram (попытка {attempt} из {_IG_SERVER_ATTEMPTS})',
                 errnote=False)
             node = self._post_node(webpage, code) if webpage else None
             if node:
                 return node
-            if attempt < _ATTEMPTS:
+            if attempt < _IG_SERVER_ATTEMPTS:
                 time.sleep(_RETRY_SLEEP)
         # Адрес сервера Instagram не пустил — пробуем с адресов прокси, по
         # одной попытке на каждый (18.11.2026: пять отказов подряд с сервера).

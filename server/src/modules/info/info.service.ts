@@ -3,6 +3,17 @@ import { photoQualities, postAudio } from 'src/lib/slideshow';
 import { DownloadSource } from '@prisma/client';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AdultAuthorsService } from '../adult-authors/adult-authors.service';
+import {
+  FACEBOOK_LOGIN_ERROR,
+  REGION_BLOCKED_ERROR,
+  isFacebookLoginRedirect,
+  rutubeRegionBlocked,
+} from 'src/lib/refine-errors';
+
+const THREADS_IG_ATTACHMENT = /instagram attachment of this threads post is unavailable/i;
+// Ответы Threads, после которых повтор ничего не меняет.
+const THREADS_FINAL_ERRORS =
+  /instagram attachment of this threads post is unavailable|certain audiences|no video or photo is visible in this threads post|нет ни видео, ни фотографий/i;
 import { ADULT_AUTHOR_ERROR } from 'src/lib/adult-authors';
 import { PrismaService } from '../prisma/prisma.service';
 import { categorizeError } from 'src/lib/error-category';
@@ -108,7 +119,7 @@ export class InfoService {
       // В статистику — только отказ площадки (сам запрос за данными), а не
       // наши ошибки в обработке ответа ниже. Категория — по исходному тексту
       // yt-dlp: handleError его переписывает для людей.
-      const refined = await this.refineTweetError(url, platform, error);
+      const refined = await this.refineRutubeError(url, platform, await this.refineTweetError(url, platform, error));
       // X скрыл твит как 18+ — запоминаем аккаунт (lib/adult-authors.ts).
       if (refined instanceof Error && refined.message === ADULT_TWEET_ERROR) this.adultAuthors.remember(platform, null, url);
       this.recordFailure(platform, dto, refined);
@@ -207,6 +218,14 @@ export class InfoService {
   // be found». За этим стоит либо твит без видео, либо твит, который X прячет
   // от тех, кто не вошёл (обычно 18+). Различаем отдельным запросом к X; не
   // вышло — ошибка остаётся как была.
+  // Rutube: 404 на «options JSON» — обычно видео открыто только для
+  // некоторых стран (lib/refine-errors.ts). Говорим об этом прямо.
+  private async refineRutubeError(url: string, platform: string, error: unknown): Promise<unknown> {
+    const message = error instanceof Error ? error.message : String(error);
+    if (platform !== 'rutube' || !/options json: http error 404/i.test(message)) return error;
+    return (await rutubeRegionBlocked(url)) ? new Error(REGION_BLOCKED_ERROR) : error;
+  }
+
   private async refineTweetError(url: string, platform: string, error: unknown): Promise<unknown> {
     const message = error instanceof Error ? error.message : String(error);
     if (platform !== 'twitter' || !/no video could be found/i.test(message)) return error;
@@ -219,6 +238,11 @@ export class InfoService {
     const source = dto.source ?? DownloadSource.API;
     if (source === DownloadSource.EXTENSION) return;
     const message = error instanceof Error ? error.message : String(error);
+    // Вложение Instagram в посте Threads не отдалось — бот сразу скачивает саму
+    // запись Instagram (bot/src/handlers/download.ts), и если не выйдет и
+    // там, в журнал попадёт уже её отказ. Иначе удачное скачивание числилось
+    // бы ошибкой (журнал 21.11.2026).
+    if (source === DownloadSource.BOT && THREADS_IG_ATTACHMENT.test(message)) return;
     void (async () => {
       // telegramId верим только от бота: сайт и расширение могут прислать
       // любой, и чужие ошибки легли бы в журнал на настоящего человека.
@@ -290,6 +314,10 @@ export class InfoService {
       // уведомить админа), если нет — показываем исходную ошибку, она
       // информативнее, чем ошибка повторной попытки.
       const message = error instanceof Error ? error.message : String(error);
+      // Threads: куки ему не нужны, и на этих ответах повтор — тот же круг
+      // через Chromium и Instagram ещё на 20–30 секунд с тем же итогом
+      // (21.11.2026). Вложение Instagram бот потом берёт сам, по ссылке на запись.
+      if (platform === 'threads' && THREADS_FINAL_ERRORS.test(message)) throw error;
       // Своих кук Instagram у сервера нет (общий аккаунт отклонён): первая
       // попытка и так была без кук, повтор «без кук» — тот же запрос, а с
       // ноября и тот же круг через прокси. Не гоняем его дважды.
@@ -431,6 +459,9 @@ export class InfoService {
       errorMessage =
         "This link doesn't contain a downloadable video — the post appears to be photo-only content.";
     }
+
+    // Ссылка «Поделиться» Facebook увела на страницу входа (lib/refine-errors.ts).
+    if (platform === 'facebook' && isFacebookLoginRedirect(errorMessage)) return FACEBOOK_LOGIN_ERROR;
 
     if (platform === 'reddit') {
       if (errorMessage.includes('Adult content:')) return ADULT_CONTENT_ERROR;

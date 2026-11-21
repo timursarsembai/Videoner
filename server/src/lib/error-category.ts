@@ -50,6 +50,8 @@ export function categorizeError(raw: string): ErrorCategory {
     // Instagram не пускает наш адрес без входа (05.11.2026): «redirected to
     // the login page … rate-limit for accessing posts anonymously».
     msg.includes('accessing posts anonymously') ||
+    // Facebook увёл на страницу входа (lib/refine-errors.ts).
+    /facebook\.com\/login/.test(msg) ||
     msg.includes('private') ||
     // Экстракторы Meta (Facebook, Instagram) на закрытой записи не сообщают
     // «нужен вход», а падают на разборе страницы: вместо поста им приходит

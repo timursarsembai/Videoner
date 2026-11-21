@@ -201,6 +201,8 @@ export function userCookiesMayHelp(message: string): boolean {
     // available to everyone: It can't be seen by certain audiences» (20.11.2026).
     // Вошедшему взрослому из подходящей страны он её показывает.
     /certain audiences/i,
+    // Facebook увёл на страницу входа (ссылки «Поделиться», 21.11.2026).
+    /facebook\.com\/login/i,
     /isn.?t available to everyone/i,
     /sign in/i,
     /log in/i,

@@ -54,6 +54,8 @@ const en = {
     developedBy: "Developed by",
     feedback: "Feedback",
     support: "Support the project",
+    supportText: "Videoner is free and has no ads. If it helped you, please support the project ❤️",
+    supportButton: "Support",
     rights: "All rights reserved.",
   },
   content: {
@@ -428,6 +430,8 @@ const es: BaseTranslations = {
     developedBy: "Desarrollado por",
     feedback: "Contacto",
     support: "Apoya el proyecto",
+    supportText: "Videoner es gratis y sin anuncios. Si te ha sido útil, apoya el proyecto ❤️",
+    supportButton: "Apoyar",
     rights: "Todos los derechos reservados.",
   },
   content: {
@@ -799,6 +803,8 @@ const ru: BaseTranslations = {
     developedBy: "Разработано",
     feedback: "Обратная связь",
     support: "Поддержать проект",
+    supportText: "Videoner бесплатный и без рекламы. Если он вам помог — поддержите проект ❤️",
+    supportButton: "Поддержать",
     rights: "Все права защищены.",
   },
   content: {
@@ -1170,6 +1176,8 @@ const uk: BaseTranslations = {
     developedBy: "Розроблено",
     feedback: "Зворотний зв’язок",
     support: "Підтримати проєкт",
+    supportText: "Videoner безкоштовний і без реклами. Якщо він вам допоміг — підтримайте проєкт ❤️",
+    supportButton: "Підтримати",
     rights: "Усі права захищено.",
   },
   content: {
@@ -1541,6 +1549,8 @@ const kk: BaseTranslations = {
     developedBy: "Әзірлеген",
     feedback: "Кері байланыс",
     support: "Жобаны қолдау",
+    supportText: "Videoner тегін және жарнамасыз. Егер ол сізге көмектессе — жобаны қолдаңыз ❤️",
+    supportButton: "Қолдау",
     rights: "Барлық құқықтар қорғалған.",
   },
   content: {
@@ -1912,6 +1922,8 @@ const ar: BaseTranslations = {
     developedBy: "تطوير",
     feedback: "التواصل",
     support: "ادعم المشروع",
+    supportText: "Videoner مجاني وبدون إعلانات. إذا كان مفيدًا لك، فادعم المشروع ❤️",
+    supportButton: "ادعم",
     rights: "جميع الحقوق محفوظة.",
   },
   content: {
@@ -2283,6 +2295,8 @@ const zh: BaseTranslations = {
     developedBy: "开发者",
     feedback: "反馈",
     support: "支持本项目",
+    supportText: "Videoner 免费且无广告。 如果它帮到了你，请支持这个项目 ❤️",
+    supportButton: "支持",
     rights: "保留所有权利。",
   },
   content: {
@@ -2654,6 +2668,8 @@ const hi: BaseTranslations = {
     developedBy: "डेवलपर:",
     feedback: "प्रतिक्रिया",
     support: "प्रोजेक्ट का समर्थन करें",
+    supportText: "Videoner मुफ़्त है और इसमें कोई विज्ञापन नहीं है। अगर इससे आपको मदद मिली, तो प्रोजेक्ट का समर्थन करें ❤️",
+    supportButton: "समर्थन करें",
     rights: "सर्वाधिकार सुरक्षित।",
   },
   content: {
@@ -3025,6 +3041,8 @@ const indonesian: BaseTranslations = {
     developedBy: "Dikembangkan oleh",
     feedback: "Masukan",
     support: "Dukung proyek ini",
+    supportText: "Videoner gratis dan tanpa iklan. Jika bermanfaat bagi Anda, dukung proyek ini ❤️",
+    supportButton: "Dukung",
     rights: "Hak cipta dilindungi undang-undang.",
   },
   content: {
@@ -3396,6 +3414,8 @@ const sw: BaseTranslations = {
     developedBy: "Imetengenezwa na",
     feedback: "Maoni",
     support: "Saidia mradi",
+    supportText: "Videoner ni bure na haina matangazo. Ikiwa imekusaidia, saidia mradi ❤️",
+    supportButton: "Saidia",
     rights: "Haki zote zimehifadhiwa.",
   },
   content: {
@@ -3767,6 +3787,8 @@ const de: BaseTranslations = {
     developedBy: "Entwickelt von",
     feedback: "Feedback",
     support: "Projekt unterstützen",
+    supportText: "Videoner ist kostenlos und werbefrei. Wenn es dir geholfen hat, unterstütze das Projekt ❤️",
+    supportButton: "Unterstützen",
     rights: "Alle Rechte vorbehalten.",
   },
   content: {
@@ -4138,6 +4160,8 @@ const fr: BaseTranslations = {
     developedBy: "Développé par",
     feedback: "Contact",
     support: "Soutenir le projet",
+    supportText: "Videoner est gratuit et sans publicité. S’il vous a été utile, soutenez le projet ❤️",
+    supportButton: "Soutenir",
     rights: "Tous droits réservés.",
   },
   content: {
@@ -4509,6 +4533,8 @@ const it: BaseTranslations = {
     developedBy: "Sviluppato da",
     feedback: "Feedback",
     support: "Sostieni il progetto",
+    supportText: "Videoner è gratuito e senza pubblicità. Se ti è stato utile, sostieni il progetto ❤️",
+    supportButton: "Sostieni",
     rights: "Tutti i diritti riservati.",
   },
   content: {
@@ -4880,6 +4906,8 @@ const pt: BaseTranslations = {
     developedBy: "Desenvolvido por",
     feedback: "Contato",
     support: "Apoie o projeto",
+    supportText: "O Videoner é gratuito e sem anúncios. Se ele ajudou você, apoie o projeto ❤️",
+    supportButton: "Apoiar",
     rights: "Todos os direitos reservados.",
   },
   content: {
@@ -5251,6 +5279,8 @@ const uz: BaseTranslations = {
     developedBy: "Ishlab chiquvchi",
     feedback: "Fikr-mulohaza",
     support: "Loyihani qo‘llab-quvvatlash",
+    supportText: "Videoner bepul va reklamasiz. Agar u sizga yordam bergan bo‘lsa, loyihani qo‘llab-quvvatlang ❤️",
+    supportButton: "Qo‘llab-quvvatlash",
     rights: "Barcha huquqlar himoyalangan.",
   },
   content: {
@@ -5622,6 +5652,8 @@ const tr: BaseTranslations = {
     developedBy: "Geliştiren",
     feedback: "Geri bildirim",
     support: "Projeye destek ol",
+    supportText: "Videoner ücretsiz ve reklamsız. İşinize yaradıysa projeye destek olun ❤️",
+    supportButton: "Destek ol",
     rights: "Tüm hakları saklıdır.",
   },
   content: {
@@ -5993,6 +6025,8 @@ const fa: BaseTranslations = {
     developedBy: "توسعه توسط",
     feedback: "بازخورد",
     support: "حمایت از پروژه",
+    supportText: "Videoner رایگان و بدون تبلیغات است. اگر به شما کمک کرد، از پروژه حمایت کنید ❤️",
+    supportButton: "حمایت",
     rights: "تمامی حقوق محفوظ است.",
   },
   content: {
@@ -6364,6 +6398,8 @@ const vi: BaseTranslations = {
     developedBy: "Phát triển bởi",
     feedback: "Góp ý",
     support: "Ủng hộ dự án",
+    supportText: "Videoner miễn phí và không có quảng cáo. Nếu nó hữu ích với bạn, hãy ủng hộ dự án ❤️",
+    supportButton: "Ủng hộ",
     rights: "Bảo lưu mọi quyền.",
   },
   content: {
@@ -6735,6 +6771,8 @@ const bn: BaseTranslations = {
     developedBy: "ডেভেলপ করেছেন",
     feedback: "মতামত",
     support: "প্রকল্পকে সমর্থন করুন",
+    supportText: "Videoner বিনামূল্যে এবং বিজ্ঞাপনমুক্ত। যদি এটি আপনার কাজে লেগে থাকে, প্রকল্পটিকে সমর্থন করুন ❤️",
+    supportButton: "সমর্থন করুন",
     rights: "সর্বস্বত্ব সংরক্ষিত।",
   },
   content: {
@@ -7106,6 +7144,8 @@ const ur: BaseTranslations = {
     developedBy: "تیار کردہ:",
     feedback: "رابطہ",
     support: "منصوبے کی مدد کریں",
+    supportText: "Videoner مفت ہے اور اس میں کوئی اشتہار نہیں۔ اگر اس سے آپ کو مدد ملی تو منصوبے کی مدد کریں ❤️",
+    supportButton: "مدد کریں",
     rights: "جملہ حقوق محفوظ ہیں۔",
   },
   content: {
@@ -7477,6 +7517,8 @@ const pl: BaseTranslations = {
     developedBy: "Twórca:",
     feedback: "Kontakt",
     support: "Wesprzyj projekt",
+    supportText: "Videoner jest darmowy i bez reklam. Jeśli ci pomógł, wesprzyj projekt ❤️",
+    supportButton: "Wesprzyj",
     rights: "Wszelkie prawa zastrzeżone.",
   },
   content: {
@@ -7848,6 +7890,8 @@ const ja: BaseTranslations = {
     developedBy: "開発：",
     feedback: "フィードバック",
     support: "プロジェクトを支援する",
+    supportText: "Videoner は無料で、広告もありません。 お役に立てたなら、プロジェクトを支援してください ❤️",
+    supportButton: "支援する",
     rights: "All rights reserved.",
   },
   content: {
@@ -8219,6 +8263,8 @@ const ko: BaseTranslations = {
     developedBy: "개발:",
     feedback: "피드백",
     support: "프로젝트 후원하기",
+    supportText: "Videoner는 무료이며 광고가 없습니다. 도움이 되셨다면 프로젝트를 후원해 주세요 ❤️",
+    supportButton: "후원하기",
     rights: "All rights reserved.",
   },
   content: {
@@ -8590,6 +8636,8 @@ const th: BaseTranslations = {
     developedBy: "พัฒนาโดย",
     feedback: "ติดต่อเรา",
     support: "สนับสนุนโปรเจกต์",
+    supportText: "Videoner ใช้งานฟรีและไม่มีโฆษณา หากช่วยคุณได้ โปรดสนับสนุนโปรเจกต์ ❤️",
+    supportButton: "สนับสนุน",
     rights: "สงวนลิขสิทธิ์",
   },
   content: {
@@ -8961,6 +9009,8 @@ const am: BaseTranslations = {
     developedBy: "ያዘጋጀው፦",
     feedback: "አስተያየት",
     support: "ፕሮጀክቱን ይደግፉ",
+    supportText: "Videoner ነፃ ነው፤ ማስታወቂያም የለውም። ከረዳዎት ፕሮጀክቱን ይደግፉ ❤️",
+    supportButton: "ይደግፉ",
     rights: "መብቱ በሕግ የተጠበቀ ነው።",
   },
   content: {
@@ -9332,6 +9382,8 @@ const om: BaseTranslations = {
     developedBy: "Kan qopheesse",
     feedback: "Yaada",
     support: "Pirojektii deeggari",
+    supportText: "Videoner bilisaa fi beeksisa malee dha. Yoo isin gargaare, pirojektii deeggaraa ❤️",
+    supportButton: "Deeggari",
     rights: "Mirgi hundi eegamaadha.",
   },
   content: {
@@ -9703,6 +9755,8 @@ const ha: BaseTranslations = {
     developedBy: "An haɓaka ta",
     feedback: "Ra’ayi",
     support: "Tallafa wa aikin",
+    supportText: "Videoner kyauta ne kuma babu talla. Idan ya taimaka muku, ku tallafa wa aikin ❤️",
+    supportButton: "Tallafa",
     rights: "Duk haƙƙoƙi a kiyaye suke.",
   },
   content: {
@@ -10074,6 +10128,8 @@ const so: BaseTranslations = {
     developedBy: "Waxaa sameeyey",
     feedback: "Faallo",
     support: "Taageer mashruuca",
+    supportText: "Videoner waa bilaash, xayeysiisna ma leh. Haddii uu ku caawiyay, taageer mashruuca ❤️",
+    supportButton: "Taageer",
     rights: "Xuquuqda oo dhan way dhowran tahay.",
   },
   content: {
@@ -10445,6 +10501,8 @@ const az: BaseTranslations = {
     developedBy: "Hazırlayan",
     feedback: "Əlaqə",
     support: "Layihəni dəstəklə",
+    supportText: "Videoner pulsuzdur və reklamsızdır. Əgər sizə kömək etdisə, layihəni dəstəkləyin ❤️",
+    supportButton: "Dəstəklə",
     rights: "Bütün hüquqlar qorunur.",
   },
   content: {
@@ -10816,6 +10874,8 @@ const ky: BaseTranslations = {
     developedBy: "Иштеп чыккан",
     feedback: "Кайтарым байланыш",
     support: "Долбоорду колдоо",
+    supportText: "Videoner акысыз жана жарнамасыз. Эгер ал сизге жардам берсе — долбоорду колдоңуз ❤️",
+    supportButton: "Колдоо",
     rights: "Бардык укуктар корголгон.",
   },
   content: {
@@ -11187,6 +11247,8 @@ const tg: BaseTranslations = {
     developedBy: "Таҳиягар:",
     feedback: "Тамос",
     support: "Дастгирии лоиҳа",
+    supportText: "Videoner ройгон ва бе реклама аст. Агар ба шумо кӯмак карда бошад, лоиҳаро дастгирӣ кунед ❤️",
+    supportButton: "Дастгирӣ",
     rights: "Ҳамаи ҳуқуқҳо ҳифз шудаанд.",
   },
   content: {
@@ -11558,6 +11620,8 @@ const ms: BaseTranslations = {
     developedBy: "Dibangunkan oleh",
     feedback: "Maklum balas",
     support: "Sokong projek ini",
+    supportText: "Videoner percuma dan tanpa iklan. Jika ia membantu anda, sokonglah projek ini ❤️",
+    supportButton: "Sokong",
     rights: "Hak cipta terpelihara.",
   },
   content: {
@@ -11929,6 +11993,8 @@ const nl: BaseTranslations = {
     developedBy: "Ontwikkeld door",
     feedback: "Contact",
     support: "Steun het project",
+    supportText: "Videoner is gratis en zonder advertenties. Heeft het je geholpen? Steun dan het project ❤️",
+    supportButton: "Steunen",
     rights: "Alle rechten voorbehouden.",
   },
   content: {
@@ -12300,6 +12366,8 @@ const ro: BaseTranslations = {
     developedBy: "Dezvoltat de",
     feedback: "Contact",
     support: "Susține proiectul",
+    supportText: "Videoner este gratuit și fără reclame. Dacă v-a fost de folos, susțineți proiectul ❤️",
+    supportButton: "Susține",
     rights: "Toate drepturile rezervate.",
   },
   content: {
@@ -12671,6 +12739,8 @@ const ps: BaseTranslations = {
     developedBy: "جوړونکی:",
     feedback: "نظر",
     support: "له پروژې ملاتړ وکړئ",
+    supportText: "Videoner وړیا دی او اعلانونه نه لري. که یې ستاسو مرسته کړې وي، د پروژې ملاتړ وکړئ ❤️",
+    supportButton: "ملاتړ",
     rights: "ټول حقونه خوندي دي.",
   },
   content: {
@@ -13042,6 +13112,8 @@ const ckb: BaseTranslations = {
     developedBy: "گەشەپێدەر:",
     feedback: "پەیوەندی",
     support: "پشتگیری لە پرۆژەکە بکە",
+    supportText: "Videoner بەخۆڕاییە و ڕیکلامی تێدا نییە. ئەگەر یارمەتیی دایت، پشتگیریی پرۆژەکە بکە ❤️",
+    supportButton: "پشتگیری",
     rights: "هەموو مافەکان پارێزراون.",
   },
   content: {
@@ -13413,6 +13485,8 @@ const ku: BaseTranslations = {
     developedBy: "Pêşxistin ji aliyê",
     feedback: "Têkilî",
     support: "Piştgiriya projeyê bike",
+    supportText: "Videoner belaş e û bê reklam e. Heke alîkariya te kir, piştgiriya projeyê bike ❤️",
+    supportButton: "Piştgirî bike",
     rights: "Hemû maf parastî ne.",
   },
   content: {
@@ -13784,6 +13858,8 @@ const ug: BaseTranslations = {
     developedBy: "ياسىغۇچى:",
     feedback: "پىكىر",
     support: "تۈرنى قوللاڭ",
+    supportText: "Videoner ھەقسىز ۋە ئېلانسىز. ئەگەر ياردىمى تەگكەن بولسا، تۈرنى قوللاڭ ❤️",
+    supportButton: "قوللاش",
     rights: "بارلىق ھوقۇقى قوغدىلىدۇ.",
   },
   content: {
@@ -14155,6 +14231,8 @@ const tk: BaseTranslations = {
     developedBy: "Işläp düzen",
     feedback: "Habarlaşmak",
     support: "Taslama goldaw beriň",
+    supportText: "Videoner mugt we mahabatsyz. Eger size kömek eden bolsa, taslamany goldaň ❤️",
+    supportButton: "Goldaw ber",
     rights: "Ähli hukuklar goralan.",
   },
   content: {
@@ -14526,6 +14604,8 @@ const tt: BaseTranslations = {
     developedBy: "Эшләүче",
     feedback: "Кайтарма элемтә",
     support: "Проектка ярдәм итү",
+    supportText: "Videoner бушлай һәм рекламасыз. Әгәр ул сезгә ярдәм иткән булса — проектка ярдәм итегез ❤️",
+    supportButton: "Ярдәм итү",
     rights: "Барлык хокуклар сакланган.",
   },
   content: {
@@ -14897,6 +14977,8 @@ const sq: BaseTranslations = {
     developedBy: "Zhvilluar nga",
     feedback: "Kontakt",
     support: "Mbështet projektin",
+    supportText: "Videoner është falas dhe pa reklama. Nëse ju ndihmoi, mbështetni projektin ❤️",
+    supportButton: "Mbështet",
     rights: "Të gjitha të drejtat të rezervuara.",
   },
   content: {
@@ -15268,6 +15350,8 @@ const bs: BaseTranslations = {
     developedBy: "Razvio",
     feedback: "Kontakt",
     support: "Podrži projekat",
+    supportText: "Videoner je besplatan i bez reklama. Ako vam je pomogao, podržite projekat ❤️",
+    supportButton: "Podrži",
     rights: "Sva prava zadržana.",
   },
   content: {
@@ -15639,6 +15723,8 @@ const ce: BaseTranslations = {
     developedBy: "Кхоьллина",
     feedback: "ЮхаметтӀа зӀе",
     support: "Проектана гӀо дар",
+    supportText: "Videoner мах доцуш а, рекламаш йоцуш а ю. Шуна гӀо хилла хилахь — проектана гӀо де ❤️",
+    supportButton: "ГӀо дан",
     rights: "Ерриге бакъонаш ларйина.",
   },
   content: {
@@ -16010,6 +16096,8 @@ const inh: BaseTranslations = {
     developedBy: "Автор:",
     feedback: "Духьаьла зIе",
     support: "Проектага гӀо де",
+    supportText: "Videoner мах доаца я, реклама йоаца я. Шунна новкъостал хьаделча — проектага гӀо де ❤️",
+    supportButton: "ГӀо де",
     rights: "Деррига бокъонаш лорадаь да.",
   },
   content: {
@@ -16381,6 +16469,8 @@ const av: BaseTranslations = {
     developedBy: "Автор:",
     feedback: "Нахъасан бухьен",
     support: "Проекталъе кумек гьабизе",
+    supportText: "Videoner мухьгьечӀеб буго, рекламаги гьечӀеб. Нужее кумек гьабуни — проекталъе кумек гьабе ❤️",
+    supportButton: "Кумек гьабизе",
     rights: "ТӀолго ихтиярал цӀунун руго.",
   },
   content: {
@@ -16752,6 +16842,8 @@ const tl: BaseTranslations = {
     developedBy: "Ginawa ni",
     feedback: "Feedback",
     support: "Suportahan ang proyekto",
+    supportText: "Libre at walang ads ang Videoner. Kung nakatulong ito sa iyo, suportahan ang proyekto ❤️",
+    supportButton: "Suportahan",
     rights: "Nakalaan ang lahat ng karapatan.",
   },
   content: {

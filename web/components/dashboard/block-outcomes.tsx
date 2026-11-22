@@ -105,6 +105,7 @@ export const PROMO_LABELS: Record<string, string> = {
   audio: "-audio → mp3",
   inline: "Видео в любой чат",
   share: "Расскажите друзьям",
+  donate: "Поддержать проект",
 };
 
 export function PromoBlocksCard() {

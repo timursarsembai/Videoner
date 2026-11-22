@@ -20,6 +20,7 @@ import {
   Clock,
   Download,
   FileVideo,
+  Heart,
   Info,
   Loader2,
   Music,
@@ -33,6 +34,7 @@ import { nextSitePromo } from "@/lib/promo";
 import { showPromoToast } from "./PromoToast";
 import { NEWS_CHANNEL_URL } from "@/lib/blog/ui";
 import { SubtitlesPanel } from "./SubtitlesPanel";
+import { SUPPORT_URL } from "@/components/layout/footer";
 import { showDownloadError } from "./DownloadErrorToast";
 
 
@@ -645,6 +647,24 @@ export const VideoInfoSection = ({
                     </Button>
                   )}
                 </div>
+
+                {/* Просьба о поддержке — после каждого удачного скачивания,
+                    тихой строкой, без всплывающих окон (решение владельца
+                    22.11.2026). */}
+                {downloadState.status === "complete" && (
+                  <div className="flex flex-col items-center gap-2 rounded-lg border border-border/40 bg-secondary/30 px-4 py-3 text-center text-sm text-foreground/70 sm:flex-row sm:justify-between sm:text-start">
+                    <span>{t("footer.supportText")}</span>
+                    <a
+                      href={SUPPORT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-primary/40 px-3 py-1.5 font-medium text-primary transition-colors hover:bg-primary/10"
+                    >
+                      <Heart className="h-4 w-4" />
+                      {t("footer.supportButton")}
+                    </a>
+                  </div>
+                )}
               </div>
               </>
               )}

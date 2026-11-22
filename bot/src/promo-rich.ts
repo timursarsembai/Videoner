@@ -20,6 +20,8 @@ export type PromoRichText = {
 };
 
 const BOT_USERNAME = "VideonerBot";
+// Донаты через Boosty (22.11.2026, решение владельца).
+const DONATE_URL = "https://boosty.to/timursarsembai/donate";
 
 function esc(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -60,6 +62,8 @@ export function promoKeyboard(key: PromoKey, lang: Lang): InlineKeyboard | undef
       return new InlineKeyboard().switchInlineChosen(label, { query: "", allow_user_chats: true, allow_group_chats: true });
     case "share":
       return new InlineKeyboard().copyText(label, `https://t.me/${BOT_USERNAME}`);
+    case "donate":
+      return new InlineKeyboard().url(label, DONATE_URL);
     default:
       return undefined;
   }

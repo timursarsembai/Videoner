@@ -17,7 +17,7 @@ const DEVELOPER = "sarsembai.dev";
 // Контакт владельца для обратной связи (18.11.2026).
 const FEEDBACK_USERNAME = "sarsembai_timur";
 // Донаты через Boosty (22.11.2026, решение владельца).
-const SUPPORT_URL = "https://boosty.to/timursarsembai";
+export const SUPPORT_URL = "https://boosty.to/timursarsembai/donate";
 
 export function Footer() {
   const { t, language } = useLanguage();

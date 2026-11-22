@@ -13,6 +13,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Только звук", "before": "Нужен только звук, без видео? Допишите после ссылки:", "example": "https://youtu.be/… -audio", "after": "— и придёт mp3."},
     reddit: {"title": "🆕 Теперь и Reddit", "body": "Пришлите ссылку на пост Reddit — видео придёт со звуком, одним файлом."},
     share: {"title": "❤️ Нравится Videoner?", "body": "Расскажите друзьям — бот бесплатный.", "button": "📋 Скопировать ссылку на бота"},
+    donate: {"title": "❤️ Videoner бесплатный и без рекламы", "body": "Если он вам помог — поддержите проект ❤️", "button": "❤️ Поддержать"},
   },
   en: {
     channel: {"title": "📣 Videoner news", "body": "Be the first to hear about new platforms and features in our channel.", "button": "📣 Subscribe to the channel"},
@@ -22,6 +23,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Audio only", "before": "Need just the sound, without the video? Add this after the link:", "example": "https://youtu.be/… -audio", "after": "and you'll get an mp3."},
     reddit: {"title": "🆕 Reddit is here too", "body": "Send a link to a Reddit post and the video will arrive with sound, in a single file."},
     share: {"title": "❤️ Like Videoner?", "body": "Tell your friends, the bot is free.", "button": "📋 Copy the bot link"},
+    donate: {"title": "❤️ Videoner is free and has no ads", "body": "If it helped you, please support the project ❤️", "button": "❤️ Support"},
   },
   uk: {
     channel: {"title": "📣 Новини Videoner", "body": "Нові платформи та функції — першими в нашому каналі.", "button": "📣 Підписатися на канал"},
@@ -31,6 +33,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Лише звук", "before": "Потрібен лише звук, без відео? Допишіть після посилання:", "example": "https://youtu.be/… -audio", "after": "— і прийде mp3."},
     reddit: {"title": "🆕 Тепер і Reddit", "body": "Надішліть посилання на пост Reddit — відео прийде зі звуком, одним файлом."},
     share: {"title": "❤️ Подобається Videoner?", "body": "Розкажіть друзям — бот безкоштовний.", "button": "📋 Скопіювати посилання на бота"},
+    donate: {"title": "❤️ Videoner безкоштовний і без реклами", "body": "Якщо він вам допоміг — підтримайте проєкт ❤️", "button": "❤️ Підтримати"},
   },
   kk: {
     channel: {"title": "📣 Videoner жаңалықтары", "body": "Жаңа платформалар мен функциялар — алдымен біздің арнада.", "button": "📣 Арнаға жазылу"},
@@ -40,6 +43,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Тек дыбыс", "before": "Тек дыбыс керек пе, видеосыз? Сілтемеден кейін мынаны жазыңыз:", "example": "https://youtu.be/… -audio", "after": "— сонда mp3 келеді."},
     reddit: {"title": "🆕 Енді Reddit те бар", "body": "Reddit постының сілтемесін жіберіңіз — видео дыбыспен, бір файлмен келеді."},
     share: {"title": "❤️ Videoner ұнай ма?", "body": "Достарыңызға айтыңыз — бот тегін.", "button": "📋 Боттың сілтемесін көшіру"},
+    donate: {"title": "❤️ Videoner тегін және жарнамасыз", "body": "Егер ол сізге көмектессе — жобаны қолдаңыз ❤️", "button": "❤️ Қолдау"},
   },
   ar: {
     channel: {"title": "📣 أخبار Videoner", "body": "المنصات والميزات الجديدة تصلك أولًا في قناتنا.", "button": "📣 اشترك في القناة"},
@@ -49,6 +53,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 الصوت فقط", "before": "تحتاج الصوت فقط، بدون الفيديو؟ أضف بعد الرابط:", "example": "https://youtu.be/… -audio", "after": "— وسيصلك ملف mp3."},
     reddit: {"title": "🆕 أصبح Reddit مدعومًا أيضًا", "body": "أرسل رابط منشور على Reddit — وسيصلك الفيديو مع الصوت في ملف واحد."},
     share: {"title": "❤️ أعجبك Videoner؟", "body": "أخبر أصدقاءك، البوت مجاني.", "button": "📋 انسخ رابط البوت"},
+    donate: {"title": "❤️ Videoner مجاني وبدون إعلانات", "body": "إذا كان مفيدًا لك، فادعم المشروع ❤️", "button": "❤️ ادعم"},
   },
   zh: {
     channel: {"title": "📣 Videoner 动态", "body": "新平台和新功能，第一时间发布在我们的频道。", "button": "📣 订阅频道"},
@@ -58,6 +63,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 只要声音", "before": "只需要声音，不要视频？在链接后加上：", "example": "https://youtu.be/… -audio", "after": "——就会收到 mp3。"},
     reddit: {"title": "🆕 现在支持 Reddit 了", "body": "发来 Reddit 帖子的链接——视频会带着声音，作为一个文件送达。"},
     share: {"title": "❤️ 喜欢 Videoner 吗？", "body": "告诉你的朋友吧，机器人是免费的。", "button": "📋 复制机器人链接"},
+    donate: {"title": "❤️ Videoner 免费且无广告", "body": "如果它帮到了你，请支持这个项目 ❤️", "button": "❤️ 支持"},
   },
   hi: {
     channel: {"title": "📣 Videoner की ख़बरें", "body": "नए प्लेटफ़ॉर्म और फ़ीचर सबसे पहले हमारे चैनल में।", "button": "📣 चैनल से जुड़िए"},
@@ -67,6 +73,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 सिर्फ़ आवाज़", "before": "सिर्फ़ आवाज़ चाहिए, वीडियो के बिना? लिंक के बाद लिख दीजिए:", "example": "https://youtu.be/… -audio", "after": "— और mp3 आ जाएगा।"},
     reddit: {"title": "🆕 अब Reddit भी", "body": "Reddit पोस्ट का लिंक भेजिए — वीडियो आवाज़ के साथ, एक ही फ़ाइल में आएगा।"},
     share: {"title": "❤️ Videoner पसंद आया?", "body": "दोस्तों को बताइए — बॉट मुफ़्त है।", "button": "📋 बॉट का लिंक कॉपी करें"},
+    donate: {"title": "❤️ Videoner मुफ़्त है और इसमें कोई विज्ञापन नहीं है", "body": "अगर इससे आपको मदद मिली, तो प्रोजेक्ट का समर्थन करें ❤️", "button": "❤️ समर्थन करें"},
   },
   id: {
     channel: {"title": "📣 Kabar Videoner", "body": "Platform dan fitur baru — pertama kali di kanal kami.", "button": "📣 Berlangganan kanal"},
@@ -76,6 +83,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Hanya suara", "before": "Butuh suaranya saja, tanpa video? Tambahkan setelah tautan:", "example": "https://youtu.be/… -audio", "after": "— dan mp3 akan dikirim."},
     reddit: {"title": "🆕 Kini ada Reddit juga", "body": "Kirim tautan postingan Reddit — video datang lengkap dengan suara, dalam satu file."},
     share: {"title": "❤️ Suka Videoner?", "body": "Ceritakan ke teman — botnya gratis.", "button": "📋 Salin tautan bot"},
+    donate: {"title": "❤️ Videoner gratis dan tanpa iklan", "body": "Jika bermanfaat bagi Anda, dukung proyek ini ❤️", "button": "❤️ Dukung"},
   },
   sw: {
     channel: {"title": "📣 Habari za Videoner", "body": "Majukwaa na vipengele vipya — kwanza kwenye kituo chetu.", "button": "📣 Jiunge na kituo"},
@@ -85,6 +93,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Sauti tu", "before": "Unahitaji sauti tu, bila video? Andika baada ya kiungo:", "example": "https://youtu.be/… -audio", "after": "— na mp3 itakuja."},
     reddit: {"title": "🆕 Sasa na Reddit pia", "body": "Tuma kiungo cha chapisho la Reddit — video itakuja na sauti, katika faili moja."},
     share: {"title": "❤️ Unapenda Videoner?", "body": "Waambie marafiki — bot ni bure.", "button": "📋 Nakili kiungo cha bot"},
+    donate: {"title": "❤️ Videoner ni bure na haina matangazo", "body": "Ikiwa imekusaidia, saidia mradi ❤️", "button": "❤️ Saidia"},
   },
   de: {
     channel: {"title": "📣 Videoner-Neuigkeiten", "body": "Neue Plattformen und Funktionen – zuerst in unserem Kanal.", "button": "📣 Kanal abonnieren"},
@@ -94,6 +103,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Nur Ton", "before": "Du brauchst nur den Ton, ohne Video? Hänge nach dem Link an:", "example": "https://youtu.be/… -audio", "after": "– und du bekommst eine mp3."},
     reddit: {"title": "🆕 Jetzt auch Reddit", "body": "Schick den Link zu einem Reddit-Beitrag – das Video kommt mit Ton, in einer Datei."},
     share: {"title": "❤️ Gefällt dir Videoner?", "body": "Erzähl es Freunden – der Bot ist kostenlos.", "button": "📋 Link zum Bot kopieren"},
+    donate: {"title": "❤️ Videoner ist kostenlos und werbefrei", "body": "Wenn es dir geholfen hat, unterstütze das Projekt ❤️", "button": "❤️ Unterstützen"},
   },
   fr: {
     channel: {"title": "📣 Actualités Videoner", "body": "Nouvelles plateformes et fonctionnalités : d’abord sur notre canal.", "button": "📣 S’abonner au canal"},
@@ -103,6 +113,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Le son uniquement", "before": "Besoin uniquement du son, sans la vidéo ? Ajoutez après le lien :", "example": "https://youtu.be/… -audio", "after": "et vous recevrez un mp3."},
     reddit: {"title": "🆕 Désormais aussi Reddit", "body": "Envoyez le lien d’un post Reddit : la vidéo arrive avec le son, en un seul fichier."},
     share: {"title": "❤️ Vous aimez Videoner ?", "body": "Parlez-en à vos amis, le bot est gratuit.", "button": "📋 Copier le lien du bot"},
+    donate: {"title": "❤️ Videoner est gratuit et sans publicité", "body": "S’il vous a été utile, soutenez le projet ❤️", "button": "❤️ Soutenir"},
   },
   it: {
     channel: {"title": "📣 Novità di Videoner", "body": "Nuove piattaforme e funzioni: prima di tutto nel nostro canale.", "button": "📣 Iscriviti al canale"},
@@ -112,6 +123,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Solo audio", "before": "Ti serve solo l’audio, senza il video? Aggiungi dopo il link:", "example": "https://youtu.be/… -audio", "after": "e ti arriva un mp3."},
     reddit: {"title": "🆕 Ora anche Reddit", "body": "Mandami il link di un post di Reddit: il video arriva con l’audio, in un unico file."},
     share: {"title": "❤️ Ti piace Videoner?", "body": "Dillo ai tuoi amici: il bot è gratuito.", "button": "📋 Copia il link del bot"},
+    donate: {"title": "❤️ Videoner è gratuito e senza pubblicità", "body": "Se ti è stato utile, sostieni il progetto ❤️", "button": "❤️ Sostieni"},
   },
   pt: {
     channel: {"title": "📣 Novidades do Videoner", "body": "Novas plataformas e funções primeiro no nosso canal.", "button": "📣 Seguir o canal"},
@@ -121,6 +133,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Só o áudio", "before": "Precisa só do som, sem o vídeo? Escreva depois do link:", "example": "https://youtu.be/… -audio", "after": "e envio um mp3."},
     reddit: {"title": "🆕 Agora também Reddit", "body": "Envie o link de um post do Reddit e o vídeo chega com som, em um único arquivo."},
     share: {"title": "❤️ Gostou do Videoner?", "body": "Conte aos amigos, o bot é grátis.", "button": "📋 Copiar o link do bot"},
+    donate: {"title": "❤️ O Videoner é gratuito e sem anúncios", "body": "Se ele ajudou você, apoie o projeto ❤️", "button": "❤️ Apoiar"},
   },
   es: {
     channel: {"title": "📣 Novedades de Videoner", "body": "Nuevas plataformas y funciones, primero en nuestro canal.", "button": "📣 Suscribirse al canal"},
@@ -130,6 +143,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Solo audio", "before": "¿Necesitas solo el sonido, sin el vídeo? Escribe después del enlace:", "example": "https://youtu.be/… -audio", "after": "y te llegará un mp3."},
     reddit: {"title": "🆕 Ahora también Reddit", "body": "Envía el enlace de una publicación de Reddit y el vídeo llegará con sonido, en un solo archivo."},
     share: {"title": "❤️ ¿Te gusta Videoner?", "body": "Cuéntaselo a tus amigos, el bot es gratis.", "button": "📋 Copiar el enlace del bot"},
+    donate: {"title": "❤️ Videoner es gratis y sin anuncios", "body": "Si te ha sido útil, apoya el proyecto ❤️", "button": "❤️ Apoyar"},
   },
   uz: {
     channel: {"title": "📣 Videoner yangiliklari", "body": "Yangi platformalar va funksiyalar — birinchi bo‘lib bizning kanalda.", "button": "📣 Kanalga obuna bo‘lish"},
@@ -139,6 +153,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Faqat ovoz", "before": "Faqat ovoz kerakmi, videosiz? Havoladan keyin yozing:", "example": "https://youtu.be/… -audio", "after": "— va mp3 keladi."},
     reddit: {"title": "🆕 Endi Reddit ham", "body": "Reddit postining havolasini yuboring — video ovoz bilan, bitta fayl bo‘lib keladi."},
     share: {"title": "❤️ Videoner yoqdimi?", "body": "Do‘stlaringizga ayting — bot bepul.", "button": "📋 Bot havolasini nusxalash"},
+    donate: {"title": "❤️ Videoner bepul va reklamasiz", "body": "Agar u sizga yordam bergan bo‘lsa, loyihani qo‘llab-quvvatlang ❤️", "button": "❤️ Qo‘llab-quvvatlash"},
   },
   tr: {
     channel: {"title": "📣 Videoner haberleri", "body": "Yeni platformlar ve özellikler önce kanalımızda.", "button": "📣 Kanala abone ol"},
@@ -148,6 +163,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Sadece ses", "before": "Sadece ses mi lazım, videosuz? Bağlantıdan sonra şunu yazın:", "example": "https://youtu.be/… -audio", "after": "— mp3 göndereyim."},
     reddit: {"title": "🆕 Artık Reddit de var", "body": "Bir Reddit gönderisinin bağlantısını yollayın — video sesiyle birlikte, tek dosya olarak gelir."},
     share: {"title": "❤️ Videoner’ı beğendiniz mi?", "body": "Arkadaşlarınıza anlatın — bot ücretsiz.", "button": "📋 Bot bağlantısını kopyala"},
+    donate: {"title": "❤️ Videoner ücretsiz ve reklamsız", "body": "İşinize yaradıysa projeye destek olun ❤️", "button": "❤️ Destek ol"},
   },
   fa: {
     channel: {"title": "📣 اخبار Videoner", "body": "پلتفرم‌ها و قابلیت‌های جدید را اول در کانال ما ببینید.", "button": "📣 عضویت در کانال"},
@@ -157,6 +173,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 فقط صدا", "before": "فقط صدا می‌خواهید، بدون ویدیو؟ بعد از لینک بنویسید:", "example": "https://youtu.be/… -audio", "after": "— تا mp3 برسد."},
     reddit: {"title": "🆕 حالا Reddit هم هست", "body": "لینک یک پست Reddit را بفرستید — ویدیو با صدا و در یک فایل می‌رسد."},
     share: {"title": "❤️ Videoner را دوست دارید؟", "body": "به دوستانتان بگویید، ربات رایگان است.", "button": "📋 کپی لینک ربات"},
+    donate: {"title": "❤️ Videoner رایگان و بدون تبلیغات است", "body": "اگر به شما کمک کرد، از پروژه حمایت کنید ❤️", "button": "❤️ حمایت"},
   },
   vi: {
     channel: {"title": "📣 Tin tức Videoner", "body": "Nền tảng và tính năng mới — có đầu tiên tại kênh của chúng mình.", "button": "📣 Đăng ký kênh"},
@@ -166,6 +183,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Chỉ âm thanh", "before": "Chỉ cần âm thanh, không cần video? Thêm sau liên kết:", "example": "https://youtu.be/… -audio", "after": "— và mình sẽ gửi mp3."},
     reddit: {"title": "🆕 Giờ đã có cả Reddit", "body": "Gửi liên kết bài đăng Reddit — video sẽ đến kèm âm thanh, trong một tệp."},
     share: {"title": "❤️ Thích Videoner?", "body": "Hãy kể với bạn bè — bot miễn phí.", "button": "📋 Sao chép liên kết bot"},
+    donate: {"title": "❤️ Videoner miễn phí và không có quảng cáo", "body": "Nếu nó hữu ích với bạn, hãy ủng hộ dự án ❤️", "button": "❤️ Ủng hộ"},
   },
   bn: {
     channel: {"title": "📣 Videoner-এর খবর", "body": "নতুন প্ল্যাটফর্ম ও ফিচার — সবার আগে আমাদের চ্যানেলে।", "button": "📣 চ্যানেলে সাবস্ক্রাইব করুন"},
@@ -175,6 +193,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 শুধু শব্দ", "before": "শুধু শব্দ দরকার, ভিডিও ছাড়া? লিংকের পরে লিখুন:", "example": "https://youtu.be/… -audio", "after": "— আমি mp3 পাঠিয়ে দেব।"},
     reddit: {"title": "🆕 এখন Reddit-ও", "body": "Reddit পোস্টের লিংক পাঠান — ভিডিও শব্দসহ একটি ফাইলে চলে আসবে।"},
     share: {"title": "❤️ Videoner ভালো লাগছে?", "body": "বন্ধুদের জানান — বটটি বিনামূল্যে।", "button": "📋 বটের লিংক কপি করুন"},
+    donate: {"title": "❤️ Videoner বিনামূল্যে এবং বিজ্ঞাপনমুক্ত", "body": "যদি এটি আপনার কাজে লেগে থাকে, প্রকল্পটিকে সমর্থন করুন ❤️", "button": "❤️ সমর্থন করুন"},
   },
   ur: {
     channel: {"title": "📣 Videoner کی خبریں", "body": "نئے پلیٹ فارمز اور فیچرز — سب سے پہلے ہمارے چینل پر۔", "button": "📣 چینل سبسکرائب کریں"},
@@ -184,6 +203,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 صرف آواز", "before": "صرف آواز چاہیے، ویڈیو کے بغیر؟ لنک کے بعد لکھیں:", "example": "https://youtu.be/… -audio", "after": "— اور mp3 آ جائے گا۔"},
     reddit: {"title": "🆕 اب Reddit بھی", "body": "Reddit پوسٹ کا لنک بھیجیں — ویڈیو آواز کے ساتھ، ایک ہی فائل میں آئے گی۔"},
     share: {"title": "❤️ Videoner پسند آیا؟", "body": "دوستوں کو بتائیں — بوٹ مفت ہے۔", "button": "📋 بوٹ کا لنک کاپی کریں"},
+    donate: {"title": "❤️ Videoner مفت ہے اور اس میں کوئی اشتہار نہیں", "body": "اگر اس سے آپ کو مدد ملی تو منصوبے کی مدد کریں ❤️", "button": "❤️ مدد کریں"},
   },
   pl: {
     channel: {"title": "📣 Nowości Videoner", "body": "Nowe platformy i funkcje – najpierw na naszym kanale.", "button": "📣 Subskrybuj kanał"},
@@ -193,6 +213,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Tylko dźwięk", "before": "Potrzebujesz samego dźwięku, bez obrazu? Dopisz po linku:", "example": "https://youtu.be/… -audio", "after": "– a dostaniesz mp3."},
     reddit: {"title": "🆕 Teraz także Reddit", "body": "Wyślij link do posta na Reddicie – wideo przyjdzie z dźwiękiem, w jednym pliku."},
     share: {"title": "❤️ Podoba ci się Videoner?", "body": "Powiedz znajomym – bot jest darmowy.", "button": "📋 Skopiuj link do bota"},
+    donate: {"title": "❤️ Videoner jest darmowy i bez reklam", "body": "Jeśli ci pomógł, wesprzyj projekt ❤️", "button": "❤️ Wesprzyj"},
   },
   ja: {
     channel: {"title": "📣 Videoner ニュース", "body": "新しい対応サイトや機能は、まず私たちのチャンネルで。", "button": "📣 チャンネルに登録"},
@@ -202,6 +223,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 音声だけ", "before": "動画なしで音声だけが欲しい？リンクの後ろに次を付けてください：", "example": "https://youtu.be/… -audio", "after": "すると mp3 が届きます。"},
     reddit: {"title": "🆕 Reddit にも対応しました", "body": "Reddit の投稿リンクを送ってください。音声付きの動画が、1 つのファイルで届きます。"},
     share: {"title": "❤️ Videoner は気に入りましたか？", "body": "友だちにも教えてください。ボットは無料です。", "button": "📋 ボットのリンクをコピー"},
+    donate: {"title": "❤️ Videoner は無料で、広告もありません", "body": "お役に立てたなら、プロジェクトを支援してください ❤️", "button": "❤️ 支援する"},
   },
   ko: {
     channel: {"title": "📣 Videoner 소식", "body": "새로운 플랫폼과 기능은 저희 채널에서 가장 먼저 만나보세요.", "button": "📣 채널 구독하기"},
@@ -211,6 +233,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 소리만", "before": "영상 없이 소리만 필요하세요? 링크 뒤에 이렇게 붙이세요:", "example": "https://youtu.be/… -audio", "after": "그러면 mp3가 도착합니다."},
     reddit: {"title": "🆕 이제 Reddit도 지원해요", "body": "Reddit 게시물 링크를 보내 주세요. 소리가 포함된 영상이 파일 하나로 도착합니다."},
     share: {"title": "❤️ Videoner가 마음에 드시나요?", "body": "친구들에게 알려 주세요. 봇은 무료입니다.", "button": "📋 봇 링크 복사"},
+    donate: {"title": "❤️ Videoner는 무료이며 광고가 없습니다", "body": "도움이 되셨다면 프로젝트를 후원해 주세요 ❤️", "button": "❤️ 후원하기"},
   },
   th: {
     channel: {"title": "📣 ข่าว Videoner", "body": "แพลตฟอร์มและฟีเจอร์ใหม่ ติดตามก่อนใครที่ช่องของเรา", "button": "📣 ติดตามช่อง"},
@@ -220,6 +243,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 เฉพาะเสียง", "before": "ต้องการแค่เสียง ไม่เอาวิดีโอ? พิมพ์ต่อท้ายลิงก์:", "example": "https://youtu.be/… -audio", "after": "แล้วจะส่ง mp3 ให้"},
     reddit: {"title": "🆕 ตอนนี้รองรับ Reddit แล้ว", "body": "ส่งลิงก์โพสต์ Reddit มา วิดีโอจะมาพร้อมเสียงในไฟล์เดียว"},
     share: {"title": "❤️ ชอบ Videoner ไหม?", "body": "บอกเพื่อน ๆ ได้เลย บอทใช้ฟรี", "button": "📋 คัดลอกลิงก์บอท"},
+    donate: {"title": "❤️ Videoner ใช้งานฟรีและไม่มีโฆษณา", "body": "หากช่วยคุณได้ โปรดสนับสนุนโปรเจกต์ ❤️", "button": "❤️ สนับสนุน"},
   },
   tl: {
     channel: {"title": "📣 Balita ng Videoner", "body": "Mga bagong platform at feature — una sa aming channel.", "button": "📣 Mag-subscribe sa channel"},
@@ -229,6 +253,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Tunog lang", "before": "Tunog lang ang kailangan, walang video? Isulat pagkatapos ng link:", "example": "https://youtu.be/… -audio", "after": "— at darating ang mp3."},
     reddit: {"title": "🆕 May Reddit na rin", "body": "Magpadala ng link ng post sa Reddit — darating ang video na may tunog, sa isang file."},
     share: {"title": "❤️ Gusto mo ang Videoner?", "body": "Sabihin sa mga kaibigan — libre ang bot.", "button": "📋 Kopyahin ang link ng bot"},
+    donate: {"title": "❤️ Libre at walang ads ang Videoner", "body": "Kung nakatulong ito sa iyo, suportahan ang proyekto ❤️", "button": "❤️ Suportahan"},
   },
   am: {
     channel: {"title": "📣 የVideoner ዜና", "body": "አዳዲስ መድረኮችና ባህሪያት — መጀመሪያ በቻናላችን።", "button": "📣 ቻናሉን ይቀላቀሉ"},
@@ -238,6 +263,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 ድምፅ ብቻ", "before": "ድምፅ ብቻ ይፈልጋሉ፣ ያለ ቪዲዮ? ከአገናኙ በኋላ ይጻፉ፡", "example": "https://youtu.be/… -audio", "after": "— mp3 ይመጣል።"},
     reddit: {"title": "🆕 አሁን Reddit ም አለ", "body": "የReddit ልጥፍ አገናኝ ይላኩ — ቪዲዮው ከድምፅ ጋር በአንድ ፋይል ይመጣል።"},
     share: {"title": "❤️ Videoner ወደዱት?", "body": "ለጓደኞችዎ ይንገሩ — ቦቱ ነፃ ነው።", "button": "📋 የቦቱን አገናኝ ቅዳ"},
+    donate: {"title": "❤️ Videoner ነፃ ነው፤ ማስታወቂያም የለውም።", "body": "ከረዳዎት ፕሮጀክቱን ይደግፉ ❤️", "button": "❤️ ይደግፉ"},
   },
   om: {
     channel: {"title": "📣 Oduu Videoner", "body": "Waltajjii fi amaloota haaraa — duraan chaanaalii keenya irratti.", "button": "📣 Chaanaalii hordofi"},
@@ -247,6 +273,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Sagalee qofa", "before": "Sagalee qofa barbaaddaa, viidiyoo malee? Hidhaa booda barreessi:", "example": "https://youtu.be/… -audio", "after": "— mp3 ni dhufa."},
     reddit: {"title": "🆕 Amma Reddit illee ni jira", "body": "Hidhaa postii Reddit ergi — viidiyoon sagalee wajjin faayila tokkoon ni dhufa."},
     share: {"title": "❤️ Videoner ni jaallattaa?", "body": "Michuuwwan keetti himi — boonni bilisaa dha.", "button": "📋 Hidhaa boodhii waraabi"},
+    donate: {"title": "❤️ Videoner bilisaa fi beeksisa malee dha", "body": "Yoo isin gargaare, pirojektii deeggaraa ❤️", "button": "❤️ Deeggari"},
   },
   ha: {
     channel: {"title": "📣 Labaran Videoner", "body": "Sabbin dandamali da fasaloli — da farko a tasharmu.", "button": "📣 Biyo tashar"},
@@ -256,6 +283,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Sauti kawai", "before": "Kuna buƙatar sauti kawai, ba tare da bidiyo ba? Rubuta bayan hanyar haɗin:", "example": "https://youtu.be/… -audio", "after": "— kuma mp3 zai zo."},
     reddit: {"title": "🆕 Yanzu har da Reddit", "body": "Aika hanyar haɗin post ɗin Reddit — bidiyo zai zo da sauti, a fayil guda."},
     share: {"title": "❤️ Kuna son Videoner?", "body": "Ku gaya wa abokai — bot ɗin kyauta ne.", "button": "📋 Kwafi hanyar haɗin bot"},
+    donate: {"title": "❤️ Videoner kyauta ne kuma babu talla", "body": "Idan ya taimaka muku, ku tallafa wa aikin ❤️", "button": "❤️ Tallafa"},
   },
   so: {
     channel: {"title": "📣 Wararka Videoner", "body": "Goobo iyo features cusub — marka hore kanaalkayaga.", "button": "📣 Ku biir kanaalka"},
@@ -265,6 +293,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Cod oo keliya", "before": "Ma u baahan tahay cod keliya, fiidiyoow la'aan? Linkiga ka dib ku qor:", "example": "https://youtu.be/… -audio", "after": "— mp3 ayaa imanaya."},
     reddit: {"title": "🆕 Hadda Reddit sidoo kale", "body": "Soo dir linkiga boostada Reddit — fiidiyoowga codkiisa ayuu la imaanayaa, fayl keliya."},
     share: {"title": "❤️ Ma jeceshahay Videoner?", "body": "U sheeg asxaabtaada — botku waa bilaash.", "button": "📋 Koobiyeey linkiga botka"},
+    donate: {"title": "❤️ Videoner waa bilaash, xayeysiisna ma leh", "body": "Haddii uu ku caawiyay, taageer mashruuca ❤️", "button": "❤️ Taageer"},
   },
   az: {
     channel: {"title": "📣 Videoner xəbərləri", "body": "Yeni platformalar və funksiyalar — ilk olaraq kanalımızda.", "button": "📣 Kanala abunə ol"},
@@ -274,6 +303,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Yalnız səs", "before": "Yalnız səs lazımdır, videosuz? Linkdən sonra yazın:", "example": "https://youtu.be/… -audio", "after": "— mp3 göndərərəm."},
     reddit: {"title": "🆕 İndi Reddit də var", "body": "Reddit postunun linkini göndərin — video səslə birlikdə, tək fayl olaraq gələcək."},
     share: {"title": "❤️ Videoner xoşunuza gəlir?", "body": "Dostlarınıza danışın — bot pulsuzdur.", "button": "📋 Botun linkini kopyala"},
+    donate: {"title": "❤️ Videoner pulsuzdur və reklamsızdır", "body": "Əgər sizə kömək etdisə, layihəni dəstəkləyin ❤️", "button": "❤️ Dəstəklə"},
   },
   ky: {
     channel: {"title": "📣 Videoner жаңылыктары", "body": "Жаңы платформалар жана функциялар — биринчи биздин каналда.", "button": "📣 Каналга жазылуу"},
@@ -283,6 +313,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Үн гана", "before": "Үнү гана керекпи, видеосуз? Шилтемеден кийин жазыңыз:", "example": "https://youtu.be/… -audio", "after": "— mp3 келет."},
     reddit: {"title": "🆕 Эми Reddit да бар", "body": "Reddit постунун шилтемесин жөнөтүңүз — видео үнү менен, бир файл болуп келет."},
     share: {"title": "❤️ Videoner жактыбы?", "body": "Досторуңузга айтыңыз — бот акысыз.", "button": "📋 Боттун шилтемесин көчүрүү"},
+    donate: {"title": "❤️ Videoner акысыз жана жарнамасыз", "body": "Эгер ал сизге жардам берсе — долбоорду колдоңуз ❤️", "button": "❤️ Колдоо"},
   },
   tg: {
     channel: {"title": "📣 Хабарҳои Videoner", "body": "Платформаҳо ва имкониятҳои нав — аввал дар канали мо.", "button": "📣 Обуна шудан ба канал"},
@@ -292,6 +323,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Танҳо садо", "before": "Танҳо садо лозим аст, бе видео? Баъд аз пайванд нависед:", "example": "https://youtu.be/… -audio", "after": "— mp3 меояд."},
     reddit: {"title": "🆕 Акнун Reddit ҳам ҳаст", "body": "Пайванди пости Reddit-ро фиристед — видео бо садо, дар як файл меояд."},
     share: {"title": "❤️ Videoner маъқул шуд?", "body": "Ба дӯстон бигӯед — бот ройгон аст.", "button": "📋 Нусхабардории пайванди бот"},
+    donate: {"title": "❤️ Videoner ройгон ва бе реклама аст", "body": "Агар ба шумо кӯмак карда бошад, лоиҳаро дастгирӣ кунед ❤️", "button": "❤️ Дастгирӣ"},
   },
   ms: {
     channel: {"title": "📣 Berita Videoner", "body": "Platform dan ciri baharu — terlebih dahulu di saluran kami.", "button": "📣 Langgan saluran"},
@@ -301,6 +333,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Bunyi sahaja", "before": "Perlukan bunyi sahaja, tanpa video? Tambah selepas pautan:", "example": "https://youtu.be/… -audio", "after": "— dan mp3 akan dihantar."},
     reddit: {"title": "🆕 Kini ada Reddit juga", "body": "Hantar pautan siaran Reddit — video akan sampai bersama bunyi, dalam satu fail."},
     share: {"title": "❤️ Suka Videoner?", "body": "Ceritakan kepada rakan — bot ini percuma.", "button": "📋 Salin pautan bot"},
+    donate: {"title": "❤️ Videoner percuma dan tanpa iklan", "body": "Jika ia membantu anda, sokonglah projek ini ❤️", "button": "❤️ Sokong"},
   },
   nl: {
     channel: {"title": "📣 Videoner-nieuws", "body": "Nieuwe platforms en functies — eerst in ons kanaal.", "button": "📣 Abonneer op het kanaal"},
@@ -310,6 +343,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Alleen geluid", "before": "Alleen het geluid nodig, zonder video? Zet achter de link:", "example": "https://youtu.be/… -audio", "after": "— en je krijgt een mp3."},
     reddit: {"title": "🆕 Nu ook Reddit", "body": "Stuur de link naar een Reddit-post — de video komt met geluid, in één bestand."},
     share: {"title": "❤️ Vind je Videoner leuk?", "body": "Vertel het je vrienden — de bot is gratis.", "button": "📋 Botlink kopiëren"},
+    donate: {"title": "❤️ Videoner is gratis en zonder advertenties", "body": "Heeft het je geholpen? Steun dan het project ❤️", "button": "❤️ Steunen"},
   },
   ro: {
     channel: {"title": "📣 Noutăți Videoner", "body": "Platforme și funcții noi — mai întâi pe canalul nostru.", "button": "📣 Abonează-te la canal"},
@@ -319,6 +353,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Doar sunet", "before": "Ai nevoie doar de sunet, fără video? Adaugă după link:", "example": "https://youtu.be/… -audio", "after": "— și primești un mp3."},
     reddit: {"title": "🆕 Acum și Reddit", "body": "Trimite linkul unei postări Reddit — videoclipul vine cu sunet, într-un singur fișier."},
     share: {"title": "❤️ Îți place Videoner?", "body": "Spune-le prietenilor — botul este gratuit.", "button": "📋 Copiază linkul botului"},
+    donate: {"title": "❤️ Videoner este gratuit și fără reclame", "body": "Dacă v-a fost de folos, susțineți proiectul ❤️", "button": "❤️ Susține"},
   },
   ps: {
     channel: {"title": "📣 د Videoner خبرونه", "body": "نوې پلاټفورمونه او ځانګړتیاوې — لومړی زموږ په چینل کې.", "button": "📣 چینل ته ګډون وکړئ"},
@@ -328,6 +363,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 یوازې غږ", "before": "یوازې غږ مو په کار دی، پرته له ویډیو؟ د لینک وروسته ولیکئ:", "example": "https://youtu.be/… -audio", "after": "— او mp3 به راشي."},
     reddit: {"title": "🆕 اوس Reddit هم", "body": "د Reddit د پوسټ لینک ولیږئ — ویډیو به د غږ سره په یوه فایل کې راشي."},
     share: {"title": "❤️ Videoner مو خوښ شو؟", "body": "ملګرو ته یې ووایاست — بوټ وړیا دی.", "button": "📋 د بوټ لینک کاپي کړئ"},
+    donate: {"title": "❤️ Videoner وړیا دی او اعلانونه نه لري", "body": "که یې ستاسو مرسته کړې وي، د پروژې ملاتړ وکړئ ❤️", "button": "❤️ ملاتړ"},
   },
   ckb: {
     channel: {"title": "📣 هەواڵی Videoner", "body": "پلاتفۆرم و تایبەتمەندیی نوێ — یەکەم جار لە کەناڵەکەمان.", "button": "📣 بەشداربوون لە کەناڵ"},
@@ -337,6 +373,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 تەنها دەنگ", "before": "تەنها دەنگت دەوێت، بێ ڤیدیۆ؟ دوای لینکەکە بنووسە:", "example": "https://youtu.be/… -audio", "after": "— mp3 دێت."},
     reddit: {"title": "🆕 ئێستا Reddit یش هەیە", "body": "لینکی پۆستێکی Reddit بنێرە — ڤیدیۆکە لەگەڵ دەنگ، لە یەک فایلدا دێت."},
     share: {"title": "❤️ Videoner ت بەدڵە؟", "body": "بە هاوڕێکانت بڵێ — بۆتەکە بێبەرامبەرە.", "button": "📋 کۆپیکردنی لینکی بۆت"},
+    donate: {"title": "❤️ Videoner بەخۆڕاییە و ڕیکلامی تێدا نییە", "body": "ئەگەر یارمەتیی دایت، پشتگیریی پرۆژەکە بکە ❤️", "button": "❤️ پشتگیری"},
   },
   ku: {
     channel: {"title": "📣 Nûçeyên Videoner", "body": "Platform û taybetmendiyên nû — pêşî di kanala me de.", "button": "📣 Bibe endamê kanalê"},
@@ -346,6 +383,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Tenê deng", "before": "Tenê deng lazim e, bê vîdyo? Piştî lînkê binivîsin:", "example": "https://youtu.be/… -audio", "after": "— mp3 tê."},
     reddit: {"title": "🆕 Niha Reddit jî heye", "body": "Lînka postek Reddit bişînin — vîdyo bi deng, di yek pelê de tê."},
     share: {"title": "❤️ Videoner bi dilê we ye?", "body": "Ji hevalan re bibêjin — bot belaş e.", "button": "📋 Lînka botê kopî bike"},
+    donate: {"title": "❤️ Videoner belaş e û bê reklam e", "body": "Heke alîkariya te kir, piştgiriya projeyê bike ❤️", "button": "❤️ Piştgirî bike"},
   },
   ug: {
     channel: {"title": "📣 Videoner خەۋەرلىرى", "body": "يېڭى سۇپا ۋە ئىقتىدارلار — ئالدى بىلەن قانىلىمىزدا.", "button": "📣 قانالغا مۇشتەرى بولۇش"},
@@ -355,6 +393,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 پەقەت ئاۋاز", "before": "پەقەت ئاۋاز كېرەكمۇ، سىنسىز؟ ئۇلانمىدىن كېيىن مۇنداق يېزىڭ:", "example": "https://youtu.be/… -audio", "after": "— mp3 كېلىدۇ."},
     reddit: {"title": "🆕 Reddit مۇ بار", "body": "Reddit يازمىسىنىڭ ئۇلانمىسىنى ئەۋەتىڭ — سىن ئاۋاز بىلەن، بىر ھۆججەت بولۇپ كېلىدۇ."},
     share: {"title": "❤️ Videoner ياقتىمۇ؟", "body": "دوستلىرىڭىزغا ئېيتىڭ — بوت ھەقسىز.", "button": "📋 بوت ئۇلانمىسىنى كۆچۈرۈش"},
+    donate: {"title": "❤️ Videoner ھەقسىز ۋە ئېلانسىز", "body": "ئەگەر ياردىمى تەگكەن بولسا، تۈرنى قوللاڭ ❤️", "button": "❤️ قوللاش"},
   },
   tk: {
     channel: {"title": "📣 Videoner täzelikleri", "body": "Täze platformalar we funksiýalar — ilki bilen biziň kanalymyzda.", "button": "📣 Kanala ýazylmak"},
@@ -364,6 +403,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Diňe ses", "before": "Diňe ses gerekmi, wideosyz? Salgydan soň ýazyň:", "example": "https://youtu.be/… -audio", "after": "— mp3 iberýärin."},
     reddit: {"title": "🆕 Indi Reddit hem bar", "body": "Reddit postunyň salgysyny iberiň — wideo sesi bilen, bir faýl bolup gelýär."},
     share: {"title": "❤️ Videoner ýaradýarmy?", "body": "Dostlaryňyza aýdyň — bot mugt.", "button": "📋 Botuň salgysyny göçürmek"},
+    donate: {"title": "❤️ Videoner mugt we mahabatsyz", "body": "Eger size kömek eden bolsa, taslamany goldaň ❤️", "button": "❤️ Goldaw ber"},
   },
   tt: {
     channel: {"title": "📣 Videoner яңалыклары", "body": "Яңа платформалар һәм функцияләр — беренче булып безнең каналда.", "button": "📣 Каналга язылу"},
@@ -373,6 +413,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Тавыш кына", "before": "Тавыш кына кирәкме, видеосыз? Сылтамадан соң языгыз:", "example": "https://youtu.be/… -audio", "after": "— mp3 җибәрәм."},
     reddit: {"title": "🆕 Хәзер Reddit та бар", "body": "Reddit постына сылтаманы җибәрегез — видео тавыш белән, бер файл булып килә."},
     share: {"title": "❤️ Videoner ошыймы?", "body": "Дусларыгызга сөйләгез — бот бушлай.", "button": "📋 Бот сылтамасын күчерү"},
+    donate: {"title": "❤️ Videoner бушлай һәм рекламасыз", "body": "Әгәр ул сезгә ярдәм иткән булса — проектка ярдәм итегез ❤️", "button": "❤️ Ярдәм итү"},
   },
   sq: {
     channel: {"title": "📣 Lajme nga Videoner", "body": "Platforma dhe funksione të reja — fillimisht në kanalin tonë.", "button": "📣 Abonohu në kanal"},
@@ -382,6 +423,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Vetëm zëri", "before": "Të duhet vetëm zëri, pa video? Shto pas lidhjes:", "example": "https://youtu.be/… -audio", "after": "dhe të vjen një mp3."},
     reddit: {"title": "🆕 Tani edhe Reddit", "body": "Dërgo lidhjen e një postimi në Reddit dhe videoja vjen me zë, në një skedar të vetëm."},
     share: {"title": "❤️ Të pëlqen Videoner?", "body": "Tregoju shokëve — boti është falas.", "button": "📋 Kopjo lidhjen e botit"},
+    donate: {"title": "❤️ Videoner është falas dhe pa reklama", "body": "Nëse ju ndihmoi, mbështetni projektin ❤️", "button": "❤️ Mbështet"},
   },
   bs: {
     channel: {"title": "📣 Videoner novosti", "body": "Nove platforme i funkcije — prvo u našem kanalu.", "button": "📣 Pretplati se na kanal"},
@@ -391,6 +433,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Samo zvuk", "before": "Treba ti samo zvuk, bez videa? Dopiši nakon linka:", "example": "https://youtu.be/… -audio", "after": "— i stiže mp3."},
     reddit: {"title": "🆕 Sada i Reddit", "body": "Pošalji link Reddit objave — video stiže sa zvukom, u jednom fajlu."},
     share: {"title": "❤️ Sviđa ti se Videoner?", "body": "Reci prijateljima — bot je besplatan.", "button": "📋 Kopiraj link bota"},
+    donate: {"title": "❤️ Videoner je besplatan i bez reklama", "body": "Ako vam je pomogao, podržite projekat ❤️", "button": "❤️ Podrži"},
   },
   ce: {
     channel: {"title": "📣 Videoner керлачу хаамаш", "body": "Керла платформаш а, функцеш а — коьртехь тхан каналехь.", "button": "📣 Каналана тӀера язъе"},
@@ -400,6 +443,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Аз бен", "before": "Аз бен оьшу, видео доцуш? Ссылкин тӀаьхьа язде:", "example": "https://youtu.be/… -audio", "after": "— mp3 схьакхочур ду."},
     reddit: {"title": "🆕 ХӀинца Reddit а ду", "body": "Reddit-ан постан ссылка дахьийша — видео аз цхьаьна, цхьана файлехь схьакхочур ду."},
     share: {"title": "❤️ Videoner хазахета?", "body": "Накъосташка ала — бот мах боцуш бу.", "button": "📋 Ботан ссылка копи яр"},
+    donate: {"title": "❤️ Videoner мах доцуш а, рекламаш йоцуш а ю", "body": "Шуна гӀо хилла хилахь — проектана гӀо де ❤️", "button": "❤️ ГӀо дан"},
   },
   inh: {
     channel: {"title": "📣 Videoner ц1ера хаамаш", "body": "Ц1ера платформаш а, функцеш а — хьалхарча тхоъа канал тӀа.", "button": "📣 Каналах язъе"},
@@ -409,6 +453,7 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Аз бен", "before": "Аз бен оттаеш, видео доацаш? Ссылкин тӀехьа язде:", "example": "https://youtu.be/… -audio", "after": "— mp3 дӀаберза."},
     reddit: {"title": "🆕 ХӀинца Reddit а я", "body": "Reddit-а постан ссылка дӀаэй — видео аз цхьаьна, цхьана файле доаккхар да."},
     share: {"title": "❤️ Videoner хаза хета?", "body": "Накъосташка ала — бот маьхза я.", "button": "📋 Ботан ссылка копи яр"},
+    donate: {"title": "❤️ Videoner мах доаца я, реклама йоаца я", "body": "Шунна новкъостал хьаделча — проектага гӀо де ❤️", "button": "❤️ ГӀо де"},
   },
   av: {
     channel: {"title": "📣 Videoner хабарал", "body": "ЦӀияб платформаби ва функциял — цох-цох нилъер каналалда.", "button": "📣 Каналалде хъвай"},
@@ -418,5 +463,6 @@ export const PROMO_RICH_TEXTS: Record<Lang, Record<PromoKey, PromoRichText>> = {
     audio: {"title": "🔊 Гьаракь гуреб", "before": "Гьаракь бокьулищ, видеоги гьечӀого? Ссылкаялдасан хъвай:", "example": "https://youtu.be/… -audio", "after": "— mp3 ритӏила."},
     reddit: {"title": "🆕 Гьанже Reddit-ги бугеб", "body": "Reddit-алъул посталъул ссылка ритӏе — видео гьаракьалда цадахъ, цо файлалда рачӏина."},
     share: {"title": "❤️ Videoner рохьдолищ?", "body": "Рахъабазда абе — бот гьабизе гьечӏо.", "button": "📋 Боталъул ссылка копия гьабизе"},
+    donate: {"title": "❤️ Videoner мухьгьечӀеб буго, рекламаги гьечӀеб", "body": "Нужее кумек гьабуни — проекталъе кумек гьабе ❤️", "button": "❤️ Кумек гьабизе"},
   },
 };

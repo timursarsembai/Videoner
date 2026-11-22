@@ -5,7 +5,7 @@ import { BOT_PROMOS } from "./promo.js";
 import { promoHtml, promoKeyboard, promoRichMessage } from "./promo-rich.js";
 import { PROMO_RICH_TEXTS } from "./promo-rich-texts.js";
 
-const WITH_BUTTON = new Set(["channel", "extension", "group", "inline", "share"]);
+const WITH_BUTTON = new Set(["channel", "extension", "group", "inline", "share", "donate"]);
 
 test("подсказки-карточки есть на всех языках и для всех подсказок", () => {
   for (const lang of LANGS) {
@@ -16,7 +16,10 @@ test("подсказки-карточки есть на всех языках и
       assert.equal(Boolean(t.button?.trim()), WITH_BUTTON.has(key), `${lang}/${key}: кнопка`);
       const html = promoHtml(key, lang)!;
       assert.match(html, /^<h3>/);
-      assert.doesNotMatch(html, /\{url\}|без рекламы/i);
+      assert.doesNotMatch(html, /\{url\}/);
+      // «Без рекламы» — только в просьбе о поддержке: этот текст владелец
+      // выбрал сам 22.11.2026.
+      if (key !== "donate") assert.doesNotMatch(html, /без рекламы/i);
       const kb = promoKeyboard(key, lang);
       assert.equal(Boolean(kb), WITH_BUTTON.has(key), `${lang}/${key}: клавиатура`);
     }

@@ -10,7 +10,7 @@ import { sendPromoRich } from "./promo-rich.js";
 // чаще одной в сутки и начиная с 3-го удачного скачивания. Дашборд следит,
 // не стали ли из-за них чаще блокировать бота. В группах и встроенном режиме
 // не показываем — там это увидят посторонние.
-export const BOT_PROMOS: PromoKey[] = ["reddit", "extension", "channel", "group", "audio", "inline", "share"];
+export const BOT_PROMOS: PromoKey[] = ["reddit", "extension", "channel", "group", "audio", "inline", "share", "donate"];
 
 export function promoText(key: PromoKey, lang: Lang): string {
   return PROMO_TEXTS[lang][key].replace("{url}", `videoner.download${sitePath(lang, "/extension")}`);

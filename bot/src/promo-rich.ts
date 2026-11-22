@@ -20,8 +20,11 @@ export type PromoRichText = {
 };
 
 const BOT_USERNAME = "VideonerBot";
-// Донаты через Boosty (22.11.2026, решение владельца).
-const DONATE_URL = "https://boosty.to/timursarsembai/donate";
+// Донаты — два способа на выбор (22.11.2026, решение владельца).
+export const DONATE_LINKS = [
+  { label: "Boosty", url: "https://boosty.to/timursarsembai/donate" },
+  { label: "DonationAlerts", url: "https://www.donationalerts.com/r/timursarsembayev" },
+];
 
 function esc(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -47,8 +50,14 @@ export function promoRichMessage(key: PromoKey, lang: Lang) {
   return html ? { html, ...(isRtl(lang) ? { is_rtl: true } : {}) } : null;
 }
 
-// Кнопка действия под подсказкой; у «только звук» и Reddit её нет.
+// Кнопка действия под подсказкой; у «только звук» и Reddit её нет. У
+// просьбы о поддержке — две кнопки, по названиям площадок для донатов.
 export function promoKeyboard(key: PromoKey, lang: Lang): InlineKeyboard | undefined {
+  if (key === "donate") {
+    const kb = new InlineKeyboard();
+    for (const d of DONATE_LINKS) kb.url(`❤️ ${d.label}`, d.url);
+    return kb;
+  }
   const label = PROMO_RICH_TEXTS[lang]?.[key]?.button;
   if (!label) return undefined;
   switch (key) {
@@ -62,8 +71,6 @@ export function promoKeyboard(key: PromoKey, lang: Lang): InlineKeyboard | undef
       return new InlineKeyboard().switchInlineChosen(label, { query: "", allow_user_chats: true, allow_group_chats: true });
     case "share":
       return new InlineKeyboard().copyText(label, `https://t.me/${BOT_USERNAME}`);
-    case "donate":
-      return new InlineKeyboard().url(label, DONATE_URL);
     default:
       return undefined;
   }

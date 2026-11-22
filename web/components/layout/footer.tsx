@@ -16,8 +16,11 @@ const TELEGRAM_BOT = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "VideonerB
 const DEVELOPER = "sarsembai.dev";
 // Контакт владельца для обратной связи (18.11.2026).
 const FEEDBACK_USERNAME = "sarsembai_timur";
-// Донаты через Boosty (22.11.2026, решение владельца).
-export const SUPPORT_URL = "https://boosty.to/timursarsembai/donate";
+// Донаты — два способа на выбор (22.11.2026, решение владельца).
+export const DONATE_LINKS = [
+  { label: "Boosty", url: "https://boosty.to/timursarsembai/donate" },
+  { label: "DonationAlerts", url: "https://www.donationalerts.com/r/timursarsembayev" },
+];
 
 export function Footer() {
   const { t, language } = useLanguage();
@@ -96,15 +99,23 @@ export function Footer() {
             <MessageCircle className="h-4 w-4" />
             {t("footer.feedback")}: <bdi>@{FEEDBACK_USERNAME}</bdi>
           </a>
-          <a
-            href={SUPPORT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
-          >
+          <span className="inline-flex flex-wrap items-center justify-center gap-1.5 text-sm font-medium text-primary sm:justify-end">
             <Heart className="h-4 w-4" />
-            {t("footer.support")}
-          </a>
+            {t("footer.support")}:
+            {DONATE_LINKS.map((d, i) => (
+              <span key={d.url}>
+                {i > 0 && <span className="text-foreground/40">· </span>}
+                <a
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline-offset-4 transition-colors hover:text-primary/80 hover:underline"
+                >
+                  {d.label}
+                </a>
+              </span>
+            ))}
+          </span>
           <span className="text-sm text-foreground/60">
             {t("footer.developedBy")}{" "}
             <a

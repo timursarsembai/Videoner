@@ -53,6 +53,7 @@ const en = {
     stats: "Videoner in numbers",
     developedBy: "Developed by",
     feedback: "Feedback",
+    support: "Support the project",
     rights: "All rights reserved.",
   },
   content: {
@@ -426,6 +427,7 @@ const es: BaseTranslations = {
     stats: "Videoner en cifras",
     developedBy: "Desarrollado por",
     feedback: "Contacto",
+    support: "Apoya el proyecto",
     rights: "Todos los derechos reservados.",
   },
   content: {
@@ -796,6 +798,7 @@ const ru: BaseTranslations = {
     stats: "Videoner в цифрах",
     developedBy: "Разработано",
     feedback: "Обратная связь",
+    support: "Поддержать проект",
     rights: "Все права защищены.",
   },
   content: {
@@ -1166,6 +1169,7 @@ const uk: BaseTranslations = {
     stats: "Videoner у цифрах",
     developedBy: "Розроблено",
     feedback: "Зворотний зв’язок",
+    support: "Підтримати проєкт",
     rights: "Усі права захищено.",
   },
   content: {
@@ -1536,6 +1540,7 @@ const kk: BaseTranslations = {
     stats: "Videoner сандармен",
     developedBy: "Әзірлеген",
     feedback: "Кері байланыс",
+    support: "Жобаны қолдау",
     rights: "Барлық құқықтар қорғалған.",
   },
   content: {
@@ -1906,6 +1911,7 @@ const ar: BaseTranslations = {
     stats: "Videoner بالأرقام",
     developedBy: "تطوير",
     feedback: "التواصل",
+    support: "ادعم المشروع",
     rights: "جميع الحقوق محفوظة.",
   },
   content: {
@@ -2276,6 +2282,7 @@ const zh: BaseTranslations = {
     stats: "Videoner 数据一览",
     developedBy: "开发者",
     feedback: "反馈",
+    support: "支持本项目",
     rights: "保留所有权利。",
   },
   content: {
@@ -2646,6 +2653,7 @@ const hi: BaseTranslations = {
     stats: "आंकड़ों में Videoner",
     developedBy: "डेवलपर:",
     feedback: "प्रतिक्रिया",
+    support: "प्रोजेक्ट का समर्थन करें",
     rights: "सर्वाधिकार सुरक्षित।",
   },
   content: {
@@ -3016,6 +3024,7 @@ const indonesian: BaseTranslations = {
     stats: "Videoner dalam angka",
     developedBy: "Dikembangkan oleh",
     feedback: "Masukan",
+    support: "Dukung proyek ini",
     rights: "Hak cipta dilindungi undang-undang.",
   },
   content: {
@@ -3386,6 +3395,7 @@ const sw: BaseTranslations = {
     stats: "Videoner kwa namba",
     developedBy: "Imetengenezwa na",
     feedback: "Maoni",
+    support: "Saidia mradi",
     rights: "Haki zote zimehifadhiwa.",
   },
   content: {
@@ -3756,6 +3766,7 @@ const de: BaseTranslations = {
     stats: "Videoner in Zahlen",
     developedBy: "Entwickelt von",
     feedback: "Feedback",
+    support: "Projekt unterstützen",
     rights: "Alle Rechte vorbehalten.",
   },
   content: {
@@ -4126,6 +4137,7 @@ const fr: BaseTranslations = {
     stats: "Videoner en chiffres",
     developedBy: "Développé par",
     feedback: "Contact",
+    support: "Soutenir le projet",
     rights: "Tous droits réservés.",
   },
   content: {
@@ -4496,6 +4508,7 @@ const it: BaseTranslations = {
     stats: "Videoner in numeri",
     developedBy: "Sviluppato da",
     feedback: "Feedback",
+    support: "Sostieni il progetto",
     rights: "Tutti i diritti riservati.",
   },
   content: {
@@ -4866,6 +4879,7 @@ const pt: BaseTranslations = {
     stats: "Videoner em números",
     developedBy: "Desenvolvido por",
     feedback: "Contato",
+    support: "Apoie o projeto",
     rights: "Todos os direitos reservados.",
   },
   content: {
@@ -5236,6 +5250,7 @@ const uz: BaseTranslations = {
     stats: "Videoner raqamlarda",
     developedBy: "Ishlab chiquvchi",
     feedback: "Fikr-mulohaza",
+    support: "Loyihani qo‘llab-quvvatlash",
     rights: "Barcha huquqlar himoyalangan.",
   },
   content: {
@@ -5606,6 +5621,7 @@ const tr: BaseTranslations = {
     stats: "Rakamlarla Videoner",
     developedBy: "Geliştiren",
     feedback: "Geri bildirim",
+    support: "Projeye destek ol",
     rights: "Tüm hakları saklıdır.",
   },
   content: {
@@ -5976,6 +5992,7 @@ const fa: BaseTranslations = {
     stats: "Videoner در اعداد",
     developedBy: "توسعه توسط",
     feedback: "بازخورد",
+    support: "حمایت از پروژه",
     rights: "تمامی حقوق محفوظ است.",
   },
   content: {
@@ -6346,6 +6363,7 @@ const vi: BaseTranslations = {
     stats: "Videoner qua các con số",
     developedBy: "Phát triển bởi",
     feedback: "Góp ý",
+    support: "Ủng hộ dự án",
     rights: "Bảo lưu mọi quyền.",
   },
   content: {
@@ -6716,6 +6734,7 @@ const bn: BaseTranslations = {
     stats: "সংখ্যায় Videoner",
     developedBy: "ডেভেলপ করেছেন",
     feedback: "মতামত",
+    support: "প্রকল্পকে সমর্থন করুন",
     rights: "সর্বস্বত্ব সংরক্ষিত।",
   },
   content: {
@@ -7086,6 +7105,7 @@ const ur: BaseTranslations = {
     stats: "اعداد میں Videoner",
     developedBy: "تیار کردہ:",
     feedback: "رابطہ",
+    support: "منصوبے کی مدد کریں",
     rights: "جملہ حقوق محفوظ ہیں۔",
   },
   content: {
@@ -7456,6 +7476,7 @@ const pl: BaseTranslations = {
     stats: "Videoner w liczbach",
     developedBy: "Twórca:",
     feedback: "Kontakt",
+    support: "Wesprzyj projekt",
     rights: "Wszelkie prawa zastrzeżone.",
   },
   content: {
@@ -7826,6 +7847,7 @@ const ja: BaseTranslations = {
     stats: "数字で見る Videoner",
     developedBy: "開発：",
     feedback: "フィードバック",
+    support: "プロジェクトを支援する",
     rights: "All rights reserved.",
   },
   content: {
@@ -8196,6 +8218,7 @@ const ko: BaseTranslations = {
     stats: "숫자로 보는 Videoner",
     developedBy: "개발:",
     feedback: "피드백",
+    support: "프로젝트 후원하기",
     rights: "All rights reserved.",
   },
   content: {
@@ -8566,6 +8589,7 @@ const th: BaseTranslations = {
     stats: "Videoner ในตัวเลข",
     developedBy: "พัฒนาโดย",
     feedback: "ติดต่อเรา",
+    support: "สนับสนุนโปรเจกต์",
     rights: "สงวนลิขสิทธิ์",
   },
   content: {
@@ -8936,6 +8960,7 @@ const am: BaseTranslations = {
     stats: "Videoner በቁጥሮች",
     developedBy: "ያዘጋጀው፦",
     feedback: "አስተያየት",
+    support: "ፕሮጀክቱን ይደግፉ",
     rights: "መብቱ በሕግ የተጠበቀ ነው።",
   },
   content: {
@@ -9306,6 +9331,7 @@ const om: BaseTranslations = {
     stats: "Videoner lakkoofsaan",
     developedBy: "Kan qopheesse",
     feedback: "Yaada",
+    support: "Pirojektii deeggari",
     rights: "Mirgi hundi eegamaadha.",
   },
   content: {
@@ -9676,6 +9702,7 @@ const ha: BaseTranslations = {
     stats: "Videoner a lambobi",
     developedBy: "An haɓaka ta",
     feedback: "Ra’ayi",
+    support: "Tallafa wa aikin",
     rights: "Duk haƙƙoƙi a kiyaye suke.",
   },
   content: {
@@ -10046,6 +10073,7 @@ const so: BaseTranslations = {
     stats: "Videoner tiro ahaan",
     developedBy: "Waxaa sameeyey",
     feedback: "Faallo",
+    support: "Taageer mashruuca",
     rights: "Xuquuqda oo dhan way dhowran tahay.",
   },
   content: {
@@ -10416,6 +10444,7 @@ const az: BaseTranslations = {
     stats: "Rəqəmlərlə Videoner",
     developedBy: "Hazırlayan",
     feedback: "Əlaqə",
+    support: "Layihəni dəstəklə",
     rights: "Bütün hüquqlar qorunur.",
   },
   content: {
@@ -10786,6 +10815,7 @@ const ky: BaseTranslations = {
     stats: "Videoner сандарда",
     developedBy: "Иштеп чыккан",
     feedback: "Кайтарым байланыш",
+    support: "Долбоорду колдоо",
     rights: "Бардык укуктар корголгон.",
   },
   content: {
@@ -11156,6 +11186,7 @@ const tg: BaseTranslations = {
     stats: "Videoner дар рақамҳо",
     developedBy: "Таҳиягар:",
     feedback: "Тамос",
+    support: "Дастгирии лоиҳа",
     rights: "Ҳамаи ҳуқуқҳо ҳифз шудаанд.",
   },
   content: {
@@ -11526,6 +11557,7 @@ const ms: BaseTranslations = {
     stats: "Videoner dalam angka",
     developedBy: "Dibangunkan oleh",
     feedback: "Maklum balas",
+    support: "Sokong projek ini",
     rights: "Hak cipta terpelihara.",
   },
   content: {
@@ -11896,6 +11928,7 @@ const nl: BaseTranslations = {
     stats: "Videoner in cijfers",
     developedBy: "Ontwikkeld door",
     feedback: "Contact",
+    support: "Steun het project",
     rights: "Alle rechten voorbehouden.",
   },
   content: {
@@ -12266,6 +12299,7 @@ const ro: BaseTranslations = {
     stats: "Videoner în cifre",
     developedBy: "Dezvoltat de",
     feedback: "Contact",
+    support: "Susține proiectul",
     rights: "Toate drepturile rezervate.",
   },
   content: {
@@ -12636,6 +12670,7 @@ const ps: BaseTranslations = {
     stats: "Videoner په شمېرو کې",
     developedBy: "جوړونکی:",
     feedback: "نظر",
+    support: "له پروژې ملاتړ وکړئ",
     rights: "ټول حقونه خوندي دي.",
   },
   content: {
@@ -13006,6 +13041,7 @@ const ckb: BaseTranslations = {
     stats: "Videoner بە ژمارە",
     developedBy: "گەشەپێدەر:",
     feedback: "پەیوەندی",
+    support: "پشتگیری لە پرۆژەکە بکە",
     rights: "هەموو مافەکان پارێزراون.",
   },
   content: {
@@ -13376,6 +13412,7 @@ const ku: BaseTranslations = {
     stats: "Videoner bi hejmaran",
     developedBy: "Pêşxistin ji aliyê",
     feedback: "Têkilî",
+    support: "Piştgiriya projeyê bike",
     rights: "Hemû maf parastî ne.",
   },
   content: {
@@ -13746,6 +13783,7 @@ const ug: BaseTranslations = {
     stats: "Videoner سانلىق مەلۇماتتا",
     developedBy: "ياسىغۇچى:",
     feedback: "پىكىر",
+    support: "تۈرنى قوللاڭ",
     rights: "بارلىق ھوقۇقى قوغدىلىدۇ.",
   },
   content: {
@@ -14116,6 +14154,7 @@ const tk: BaseTranslations = {
     stats: "Videoner sanlarda",
     developedBy: "Işläp düzen",
     feedback: "Habarlaşmak",
+    support: "Taslama goldaw beriň",
     rights: "Ähli hukuklar goralan.",
   },
   content: {
@@ -14486,6 +14525,7 @@ const tt: BaseTranslations = {
     stats: "Videoner саннарда",
     developedBy: "Эшләүче",
     feedback: "Кайтарма элемтә",
+    support: "Проектка ярдәм итү",
     rights: "Барлык хокуклар сакланган.",
   },
   content: {
@@ -14856,6 +14896,7 @@ const sq: BaseTranslations = {
     stats: "Videoner në numra",
     developedBy: "Zhvilluar nga",
     feedback: "Kontakt",
+    support: "Mbështet projektin",
     rights: "Të gjitha të drejtat të rezervuara.",
   },
   content: {
@@ -15226,6 +15267,7 @@ const bs: BaseTranslations = {
     stats: "Videoner u brojkama",
     developedBy: "Razvio",
     feedback: "Kontakt",
+    support: "Podrži projekat",
     rights: "Sva prava zadržana.",
   },
   content: {
@@ -15596,6 +15638,7 @@ const ce: BaseTranslations = {
     stats: "Videoner терахьашкахь",
     developedBy: "Кхоьллина",
     feedback: "ЮхаметтӀа зӀе",
+    support: "Проектана гӀо дар",
     rights: "Ерриге бакъонаш ларйина.",
   },
   content: {
@@ -15966,6 +16009,7 @@ const inh: BaseTranslations = {
     stats: "Videoner терахьашкахь",
     developedBy: "Автор:",
     feedback: "Духьаьла зIе",
+    support: "Проектага гӀо де",
     rights: "Деррига бокъонаш лорадаь да.",
   },
   content: {
@@ -16336,6 +16380,7 @@ const av: BaseTranslations = {
     stats: "Videoner рекъелъул",
     developedBy: "Автор:",
     feedback: "Нахъасан бухьен",
+    support: "Проекталъе кумек гьабизе",
     rights: "ТӀолго ихтиярал цӀунун руго.",
   },
   content: {
@@ -16706,6 +16751,7 @@ const tl: BaseTranslations = {
     stats: "Videoner sa numero",
     developedBy: "Ginawa ni",
     feedback: "Feedback",
+    support: "Suportahan ang proyekto",
     rights: "Nakalaan ang lahat ng karapatan.",
   },
   content: {

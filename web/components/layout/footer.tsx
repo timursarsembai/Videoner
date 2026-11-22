@@ -3,7 +3,7 @@
 import { useLanguage } from "@/lib/i18n/context";
 import Image from "next/image";
 import Link from "next/link";
-import { BarChart3, MessageCircle, Newspaper, Puzzle, Send } from "lucide-react";
+import { BarChart3, Heart, MessageCircle, Newspaper, Puzzle, Send } from "lucide-react";
 import { NEWS_CHANNEL_URL } from "@/lib/blog/ui";
 import { localizedHref } from "@/lib/i18n/routing";
 import { legal } from "@/lib/legal/documents";
@@ -16,6 +16,8 @@ const TELEGRAM_BOT = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? "VideonerB
 const DEVELOPER = "sarsembai.dev";
 // Контакт владельца для обратной связи (18.11.2026).
 const FEEDBACK_USERNAME = "sarsembai_timur";
+// Донаты через Boosty (22.11.2026, решение владельца).
+const SUPPORT_URL = "https://boosty.to/timursarsembai";
 
 export function Footer() {
   const { t, language } = useLanguage();
@@ -93,6 +95,15 @@ export function Footer() {
           >
             <MessageCircle className="h-4 w-4" />
             {t("footer.feedback")}: <bdi>@{FEEDBACK_USERNAME}</bdi>
+          </a>
+          <a
+            href={SUPPORT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          >
+            <Heart className="h-4 w-4" />
+            {t("footer.support")}
           </a>
           <span className="text-sm text-foreground/60">
             {t("footer.developedBy")}{" "}

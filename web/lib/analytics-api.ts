@@ -510,6 +510,14 @@ export type ContentAdult = {
   truncated?: boolean;
   refusedFlagged: number;
   refusedByAuthor: number;
+  refusedByWatch?: number;
+  watched?: {
+    who: string;
+    blockedBot: boolean;
+    refusals: number;
+    lastRefusal: string;
+    downloads: { title: string; url: string; at: string }[];
+  }[];
   authorsTotal: number;
   authors: { platform: string; nick: string; hits: number; firstAt: string; lastAt: string }[];
   wouldBlock: Omit<ContentTopic, "id" | "label">;

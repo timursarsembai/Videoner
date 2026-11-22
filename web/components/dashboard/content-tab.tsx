@@ -271,8 +271,35 @@ function AdultCard() {
     >
       <div className="space-y-2 text-sm">
         <p>
-          <b>Отказано:</b> по пометке площадки — {d?.refusedFlagged ?? 0}, по аккаунту 18+ — {d?.refusedByAuthor ?? 0}
+          <b>Отказано:</b> по пометке площадки — {d?.refusedFlagged ?? 0}, по аккаунту 18+ — {d?.refusedByAuthor ?? 0}, строгим фильтром — {d?.refusedByWatch ?? 0}
         </p>
+        <details>
+          <summary className="cursor-pointer">
+            <b>Под наблюдением:</b> {d?.watched?.length ?? 0}
+            <span className="text-foreground/50"> (3+ отказа 18+ за неделю; для них посты X со словами и значками тихого режима запрещены; снимается через 30 дней без отказов)</span>
+          </summary>
+          <ul className="mt-1 space-y-2 pl-4 text-xs text-foreground/70">
+            {(d?.watched ?? []).map((w) => (
+              <li key={w.who}>
+                <b>{w.who}</b>
+                <span className="ml-1 text-foreground/40">
+                  отказов {w.refusals}, последний {formatShortDate(w.lastRefusal)}
+                  {w.blockedBot && ", заблокировал бота"}
+                </span>
+                <ul className="mt-0.5 space-y-0.5 pl-3">
+                  {w.downloads.map((x, i) => (
+                    <li key={i} className="truncate" title={x.title}>
+                      <span className="mr-1 text-foreground/40">{formatShortDate(x.at)}</span>
+                      <a href={x.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                        {x.title || x.url}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </details>
         <details>
           <summary className="cursor-pointer">
             <b>Аккаунты 18+ на X:</b> {d?.authorsTotal ?? 0}

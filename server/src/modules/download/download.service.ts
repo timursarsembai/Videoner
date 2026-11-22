@@ -75,6 +75,7 @@ import {
 import { parseUiLang } from 'src/lib/languages';
 import { parseCountry } from 'src/lib/countries';
 import { ADULT_AUTHOR_ERROR } from 'src/lib/adult-authors';
+import { ADULT_WATCH_ERROR } from 'src/lib/adult-watch';
 import { AdultAuthorsService } from '../adult-authors/adult-authors.service';
 import { errorText } from 'src/lib/error-text';
 import { USER_AGENT as TIKTOK_USER_AGENT } from 'src/lib/tiktok-photo';
@@ -236,6 +237,11 @@ export class DownloadService {
     // Аккаунт, который площадка уже помечала 18+ (lib/adult-authors.ts).
     if (this.adultAuthors.isBlocked((req as any).platform, found.info, url)) {
       throw new BadRequestException(ADULT_AUTHOR_ERROR);
+    }
+    // Строже — для человека под наблюдением за поиск 18+ (lib/adult-watch.ts).
+    const watchId = meta.source === DownloadSource.BOT && Number.isSafeInteger(meta.telegramId) ? meta.telegramId : undefined;
+    if (await this.adultAuthors.isStrictBlocked((req as any).platform, found.info, url, watchId)) {
+      throw new BadRequestException(ADULT_WATCH_ERROR);
     }
     // И темы, которые не скачиваем (lib/blocked-content.ts): запрос мог
     // прийти в обход /info, а повтор из кеша — от прошлого раза.

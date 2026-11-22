@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Downloaders, Prisma } from '@prisma/client';
+import { DownloadStatus, Downloaders, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import type { DateRange } from 'src/lib/analytics-range';
 import { TOPIC_LABELS, topicsOf, type TopicId } from 'src/lib/sensitive-topics';
 import { wouldBlockAdult, wouldBlockReligion } from 'src/lib/blocked-content';
 import { ADULT_AUTHOR_ERROR } from 'src/lib/adult-authors';
+import { ADULT_WATCH_ERROR, WATCH_LOOKBACK_MS, isWatched } from 'src/lib/adult-watch';
 
 // «Что качают» (дашборд, вкладка «Контент»): популярные авторы, категории
 // и хэштеги удачных скачиваний за период. Данные — lib/content-meta.ts, с
@@ -188,21 +189,25 @@ export class ContentAnalyticsService {
       const title = (r.title ?? '').slice(0, 120) || '(без названия)';
       examples.set(title, (examples.get(title) ?? 0) + 1);
     }
-    const [refused] = await this.prisma.$queryRaw<{ flagged: bigint; by_author: bigint }[]>`
-      SELECT count(*) FILTER (WHERE f.message <> ${ADULT_AUTHOR_ERROR}) AS flagged,
-             count(*) FILTER (WHERE f.message = ${ADULT_AUTHOR_ERROR}) AS by_author
+    const [refused] = await this.prisma.$queryRaw<{ flagged: bigint; by_author: bigint; by_watch: bigint }[]>`
+      SELECT count(*) FILTER (WHERE f.message NOT IN (${ADULT_AUTHOR_ERROR}, ${ADULT_WATCH_ERROR})) AS flagged,
+             count(*) FILTER (WHERE f.message = ${ADULT_AUTHOR_ERROR}) AS by_author,
+             count(*) FILTER (WHERE f.message = ${ADULT_WATCH_ERROR}) AS by_watch
       FROM "LinkFailure" f
       WHERE f."errorCategory" = 'ADULT_CONTENT' AND f."createdAt" >= ${range.from} AND f."createdAt" < ${range.to}
         ${platform ? Prisma.sql`AND upper(f.platform) = ${platform}` : Prisma.empty}`;
-    const [authorsTotal, authors] = await Promise.all([
+    const [authorsTotal, authors, watched] = await Promise.all([
       this.prisma.adultAuthor.count(),
       this.prisma.adultAuthor.findMany({ orderBy: { lastAt: 'desc' }, take: 50 }),
+      this.watchedUsers(),
     ]);
     return {
       total: rows.length,
       truncated,
       refusedFlagged: Number(refused?.flagged ?? 0),
       refusedByAuthor: Number(refused?.by_author ?? 0),
+      refusedByWatch: Number(refused?.by_watch ?? 0),
+      watched,
       authorsTotal,
       authors: authors.map((a) => ({ platform: a.platform, nick: a.nick, hits: a.hits, firstAt: a.firstAt, lastAt: a.lastAt })),
       wouldBlock: {
@@ -211,5 +216,47 @@ export class ContentAnalyticsService {
         examples: [...examples.entries()].sort((a, b) => b[1] - a[1]).slice(0, 30).map(([title, count]) => ({ title, count })),
       },
     };
+  }
+
+  // Люди под наблюдением за поиск 18+ (lib/adult-watch.ts) — сейчас, без
+  // привязки к периоду: кто они, сколько отказов и что скачали последним.
+  private async watchedUsers() {
+    const rows = await this.prisma.linkFailure.findMany({
+      where: { errorCategory: 'ADULT_CONTENT', botUserId: { not: null }, createdAt: { gt: new Date(Date.now() - WATCH_LOOKBACK_MS) } },
+      select: { botUserId: true, createdAt: true },
+      take: 20000,
+    });
+    const byUser = new Map<string, Date[]>();
+    for (const r of rows) byUser.set(r.botUserId!, [...(byUser.get(r.botUserId!) ?? []), r.createdAt]);
+    const ids = [...byUser.entries()]
+      .filter(([, times]) => isWatched(times))
+      .sort((a, b) => b[1].length - a[1].length)
+      .slice(0, 20)
+      .map(([id]) => id);
+    if (!ids.length) return [];
+    const [users, downloads] = await Promise.all([
+      this.prisma.botUser.findMany({ where: { id: { in: ids } }, select: { id: true, username: true, telegramId: true, blockedAt: true } }),
+      Promise.all(
+        ids.map((id) =>
+          this.prisma.download.findMany({
+            where: { botUserId: id, status: { in: [DownloadStatus.COMPLETED, DownloadStatus.EXPIRED] } },
+            orderBy: { createdAt: 'desc' },
+            take: 15,
+            select: { videoTitle: true, originalUrl: true, createdAt: true },
+          }),
+        ),
+      ),
+    ]);
+    return ids.map((id, i) => {
+      const u = users.find((x) => x.id === id);
+      const times = byUser.get(id)!;
+      return {
+        who: u?.username ? `@${u.username}` : String(u?.telegramId ?? id),
+        blockedBot: !!u?.blockedAt,
+        refusals: times.length,
+        lastRefusal: new Date(Math.max(...times.map((t) => t.getTime()))),
+        downloads: downloads[i].map((d) => ({ title: (d.videoTitle ?? '').slice(0, 120), url: d.originalUrl, at: d.createdAt })),
+      };
+    });
   }
 }

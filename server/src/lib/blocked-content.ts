@@ -78,7 +78,7 @@ export function blockedInfo(info: unknown, platform: string | null, url: string)
 // буква без пробела («hi😈»), а граница слова в wordsPattern это не пропустит.
 const ADULT_HINT_WORDS = wordsPattern([
   'onlyfans', 'only fans', '0nlyfans', 'onlyfan=', 'fansly', 'free 0f', 'nsfw', '18+', 'twerk', 'thick=', 'thickk', 'boob', 'tits=',
-  'titties', 'rackattack', 'naughty', 'horny', 'sexy', 'nude=', 'nudes', 'lingerie', 'rate me=', 'goth mommy',
+  'titties', 'rackattack', 'naughty', 'horny', 'sexy', 'nude=', 'nudes', 'lingerie', 'rate me=', 'goth mommy', 'wataa',
   'эротик', 'сексуальн', 'онлифанс', 'голая', 'голой=', 'без белья', 'нижнем белье', 'нижнее белье',
 ]);
 const ADULT_HINT_EMOJI = /😈|💦|🍑|🍆|🥵|👅|💋|🍒/u;

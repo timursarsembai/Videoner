@@ -15,6 +15,7 @@ const THREADS_IG_ATTACHMENT = /instagram attachment of this threads post is unav
 const THREADS_FINAL_ERRORS =
   /instagram attachment of this threads post is unavailable|certain audiences|no video or photo is visible in this threads post|нет ни видео, ни фотографий/i;
 import { ADULT_AUTHOR_ERROR } from 'src/lib/adult-authors';
+import { ADULT_WATCH_ERROR } from 'src/lib/adult-watch';
 import { PrismaService } from '../prisma/prisma.service';
 import { categorizeError } from 'src/lib/error-category';
 import { errorText } from 'src/lib/error-text';
@@ -138,6 +139,15 @@ export class InfoService {
     // Пост без пометки, но от аккаунта, который X уже помечал 18+.
     if (this.adultAuthors.isBlocked(platform, info, url)) {
       const adult = new Error(ADULT_AUTHOR_ERROR);
+      this.recordFailure(platform, dto, adult);
+      throw new BadRequestException(adult.message);
+    }
+
+    // Человек под наблюдением за поиск 18+ — для него посты X строже
+    // (lib/adult-watch.ts). telegramId верим только от бота.
+    const watchId = dto.source === DownloadSource.BOT && Number.isSafeInteger(dto.telegramId) ? dto.telegramId : undefined;
+    if (await this.adultAuthors.isStrictBlocked(platform, info, url, watchId)) {
+      const adult = new Error(ADULT_WATCH_ERROR);
       this.recordFailure(platform, dto, adult);
       throw new BadRequestException(adult.message);
     }

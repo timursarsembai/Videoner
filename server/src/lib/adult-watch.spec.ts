@@ -29,6 +29,8 @@ describe('adultHintInInfo', () => {
     expect(adultHintInInfo({ title: 'x - hi', description: 'hi', uploader: 'Melissa Starova 🍒' })).toBe(true);
     expect(adultHintInInfo({ title: 'Savy Delaney - wataa', uploader: 'Savy Delaney' })).toBe(true);
     expect(adultHintInInfo({ entries: [{ title: 'Sisi (FREE 0F) - hey', uploader: 'Sisi' }] })).toBe(true);
+    expect(adultHintInInfo({ title: 'Ava Scott - rate my outfit', uploader: 'Ava Scott' })).toBe(true);
+    expect(adultHintInInfo({ title: 'Ava Scott - extremely tight fit', uploader: 'Ava Scott' })).toBe(true);
   });
   it('обычный пост — нет', () => {
     expect(adultHintInInfo({ title: 'NASA - Launch day!', description: 'Launch day!', uploader: 'NASA' })).toBe(false);

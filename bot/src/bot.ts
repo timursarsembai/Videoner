@@ -14,6 +14,7 @@ import { registerBlockedHandlers } from "./handlers/blocked.js";
 import { registerGroupHandlers, sendGroupWelcome } from "./handlers/group.js";
 import { registerAccountHandlers, showAccounts } from "./handlers/accounts.js";
 import { registerLanguageHandlers } from "./handlers/language.js";
+import { registerSurveyHandlers } from "./survey.js";
 import { startBlogChannel } from "./blog-channel.js";
 
 // bot.ts — только создание бота, /start и подключение хендлеров из
@@ -119,6 +120,8 @@ registerAccountHandlers(bot);
 // /language и кнопки выбора языка — по той же причине до групп; кнопка
 // «Язык» из /settings (gs|lang) — раньше остальных кнопок настроек.
 registerLanguageHandlers(bot);
+// Опрос (survey.ts) — до общего обработчика кнопок в registerDownloadHandlers.
+registerSurveyHandlers(bot);
 // Группы — ДО обработчика блокировок и обработчика лички: оба слушают те же
 // типы обновлений (my_chat_member, message:text), а grammY останавливается на
 // первом совпадении. Групповой ловит только сообщения групп и дальше их не

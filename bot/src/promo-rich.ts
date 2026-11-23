@@ -3,6 +3,7 @@ import { NEWS_CHANNEL, sitePath, type Lang } from "./i18n.js";
 import type { PromoKey } from "./promo-texts.js";
 import { PROMO_RICH_TEXTS } from "./promo-rich-texts.js";
 import { isRtl } from "./rich-card.js";
+import { surveyKeyboard } from "./survey.js";
 
 // Подсказка после скачивания в виде карточки (rich message): заголовок,
 // текст, где нужно — список или пример в рамке, и кнопка действия. Образцы
@@ -53,6 +54,7 @@ export function promoRichMessage(key: PromoKey, lang: Lang) {
 // Кнопка действия под подсказкой; у «только звук» и Reddit её нет. У
 // просьбы о поддержке — две кнопки, по названиям площадок для донатов.
 export function promoKeyboard(key: PromoKey, lang: Lang): InlineKeyboard | undefined {
+  if (key === "survey") return surveyKeyboard(lang);
   if (key === "donate") {
     const kb = new InlineKeyboard();
     for (const d of DONATE_LINKS) kb.url(`❤️ ${d.label}`, d.url);

@@ -40,6 +40,7 @@ import { AllUsersTable, UserJournalModal } from "@/components/dashboard/users-ta
 import { GroupsTab } from "@/components/dashboard/groups-table";
 import { ContentTab } from "@/components/dashboard/content-tab";
 import { BlockedOutcomesChart, BlockedPlatformsChart, PromoBlocksCard } from "@/components/dashboard/block-outcomes";
+import { SurveyCard } from "@/components/dashboard/survey-card";
 
 // Дашборд. У каждого графика свой выбор периода (по умолчанию последние 30
 // дней) — общего переключателя в шапке нет. Графики вкладки грузятся одним
@@ -162,6 +163,7 @@ function UsersTab() {
         <BlockedOutcomesChart />
         <BlockedPlatformsChart />
         <PromoBlocksCard />
+        <SurveyCard />
         <BlockedUsersSection onOpen={setJournalFor} />
       </section>
       <h2 className="text-base font-semibold">Все пользователи</h2>

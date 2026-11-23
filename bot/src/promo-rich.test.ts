@@ -7,7 +7,7 @@ import { PROMO_RICH_TEXTS } from "./promo-rich-texts.js";
 
 const WITH_BUTTON = new Set(["channel", "extension", "group", "inline", "share"]);
 // Кнопки с названиями площадок, без текста в переводах.
-const WITH_KEYBOARD = new Set([...WITH_BUTTON, "donate"]);
+const WITH_KEYBOARD = new Set([...WITH_BUTTON, "donate", "survey"]);
 
 test("подсказки-карточки есть на всех языках и для всех подсказок", () => {
   for (const lang of LANGS) {

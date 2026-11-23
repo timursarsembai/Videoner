@@ -227,6 +227,17 @@ export interface BlockedOutcomes {
 
 // Подсказки после скачивания в боте и блокировки в 48 часов после них
 // (server analytics.service promo).
+// Итоги опроса в боте (server bot-user.service surveyStats).
+export interface SurveyStats {
+  survey: string;
+  options: string[];
+  shown: number;
+  answered: number;
+  done: number;
+  totals: Record<string, number>;
+  byLang: { lang: string; answered: number; totals: Record<string, number> }[];
+}
+
 export interface PromoStats {
   since: string | null;
   keys: { key: string; shown: number; blocked: number; last: string }[];

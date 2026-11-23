@@ -44,6 +44,7 @@ export class AnalyticsController {
     'users/blocked': () => this.analyticsService.blockedSummary(),
     'users/blocked/outcomes': () => this.analyticsService.blockedOutcomes(),
     'users/promo': () => this.analyticsService.promo(),
+    'users/survey': (q) => this.botUserService.surveyStats(typeof q.survey === 'string' ? q.survey : 'transcribe'),
     'users/all': () => this.analyticsService.allUsers(),
     'users/journal': async (q) => {
       const id = typeof q.telegramId === 'string' && /^\d{1,16}$/.test(q.telegramId) ? BigInt(q.telegramId) : null;

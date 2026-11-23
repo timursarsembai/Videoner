@@ -106,6 +106,7 @@ export const PROMO_LABELS: Record<string, string> = {
   inline: "Видео в любой чат",
   share: "Расскажите друзьям",
   donate: "Поддержать проект",
+  survey: "Опрос: расшифровка видео",
 };
 
 export function PromoBlocksCard() {

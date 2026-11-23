@@ -191,6 +191,7 @@ model BotUser {
   linkFailures      LinkFailure[]
   blockEvents       BotBlockEvent[]
   promoShows        PromoShow[]
+  surveyAnswers     SurveyAnswer[]
   firstSeenAt       DateTime          @default(now())
   lastSeenAt        DateTime          @default(now())
 
@@ -451,4 +452,19 @@ model AdultAuthor {
   lastAt    DateTime @default(now())
 
   @@id([platform, nick])
+}
+
+// Ответы на опросы в боте (bot/src/survey.ts): что человек отметил. Опрос
+// приходит как подсказка после скачивания (PromoShow с тем же ключом) или
+// разовой рассылкой. Отметки пишутся сразу при нажатии, done — нажал «Готово».
+model SurveyAnswer {
+  botUser   BotUser  @relation(fields: [botUserId], references: [id], onDelete: Cascade)
+  botUserId String
+  survey    String
+  choices   String[] @default([])
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([botUserId, survey])
 }

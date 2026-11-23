@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { DownloadStatus } from '@prisma/client';
+import { SURVEYS, toggleChoice } from 'src/lib/surveys';
 
 // Подсказки после скачивания: с какого удачного скачивания и как часто.
 export const PROMO_MIN_DOWNLOADS = 3;
 export const PROMO_INTERVAL_MS = 24 * 60 * 60 * 1000;
 // Важные новости: показываем первыми и уже с первого удачного скачивания
 // (решение владельца 17.11.2026 — про Reddit должны узнать все).
-export const PROMO_PRIORITY = ['reddit'];
+// Опрос о расшифровке видео (23.11.2026) — впереди всех: важен каждый ответ
+// активного человека, а сам опрос — одно нажатие.
+export const PROMO_PRIORITY = ['survey', 'reddit'];
 
 export interface UpsertBotUserInput {
   telegramId: number;
@@ -154,6 +157,71 @@ export class BotUserService {
     const fresh = keys.filter((k) => !seen.has(k));
     if (!fresh.length) return null;
     return { botUserId: botUser.id, fresh, since };
+  }
+
+  // Опрос в боте (lib/surveys.ts): нажатие на вариант. Под блокировкой на
+  // человека — два быстрых нажатия иначе затёрли бы друг друга. null —
+  // человек боту незнаком.
+  async surveyToggle(telegramId: number, survey: string, option: string): Promise<string[] | null> {
+    return this.surveyUpdate(telegramId, survey, (choices) => ({ choices: toggleChoice(survey, choices, option) }));
+  }
+
+  // «Готово»: отмечаем, что человек закончил. Без отметок не закрываем.
+  async surveyDone(telegramId: number, survey: string): Promise<string[] | null> {
+    return this.surveyUpdate(telegramId, survey, (choices) => (choices.length ? { choices, done: true } : { choices }));
+  }
+
+  private async surveyUpdate(
+    telegramId: number,
+    survey: string,
+    change: (choices: string[]) => { choices: string[]; done?: boolean },
+  ): Promise<string[] | null> {
+    if (!SURVEYS[survey]) return null;
+    const botUser = await this.prisma.botUser.findUnique({ where: { telegramId: BigInt(telegramId) }, select: { id: true } });
+    if (!botUser) return null;
+    return this.prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${'survey:' + botUser.id}))`;
+      const prev = await tx.surveyAnswer.findUnique({ where: { botUserId_survey: { botUserId: botUser.id, survey } } });
+      const next = change(prev?.choices ?? []);
+      await tx.surveyAnswer.upsert({
+        where: { botUserId_survey: { botUserId: botUser.id, survey } },
+        create: { botUserId: botUser.id, survey, choices: next.choices, done: !!next.done },
+        update: { choices: next.choices, ...(next.done ? { done: true } : {}) },
+      });
+      return next.choices;
+    });
+  }
+
+  // Итоги опроса для дашборда: скольким показан, сколько ответили и что
+  // выбрали — всего и по языкам.
+  async surveyStats(survey: string) {
+    const def = SURVEYS[survey];
+    if (!def) return null;
+    const [shown, rows] = await Promise.all([
+      this.prisma.promoShow.count({ where: { key: 'survey' } }),
+      this.prisma.surveyAnswer.findMany({
+        where: { survey },
+        select: { choices: true, done: true, botUser: { select: { language: true, languageCode: true } } },
+      }),
+    ]);
+    const answered = rows.filter((r) => r.choices.length);
+    const count = (list: typeof answered) => Object.fromEntries(def.options.map((o) => [o, list.filter((r) => r.choices.includes(o)).length]));
+    const langOf = (r: (typeof rows)[number]) => r.botUser.language ?? r.botUser.languageCode?.slice(0, 2) ?? '?';
+    const langs = [...new Set(answered.map(langOf))];
+    return {
+      survey,
+      options: def.options,
+      shown,
+      answered: answered.length,
+      done: rows.filter((r) => r.done).length,
+      totals: count(answered),
+      byLang: langs
+        .map((lang) => {
+          const list = answered.filter((r) => langOf(r) === lang);
+          return { lang, answered: list.length, totals: count(list) };
+        })
+        .sort((a, b) => b.answered - a.answered),
+    };
   }
 
   // Бот не смог отправить выданную подсказку (лимит Telegram, сеть) —

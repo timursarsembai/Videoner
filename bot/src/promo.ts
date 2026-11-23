@@ -2,7 +2,7 @@ import { GrammyError, type Api } from "grammy";
 import { api } from "./helpers.js";
 import { NEWS_CHANNEL, sitePath, type Lang } from "./i18n.js";
 import { PROMO_TEXTS, type PromoKey } from "./promo-texts.js";
-import { sendPromoRich } from "./promo-rich.js";
+import { promoKeyboard, sendPromoRich } from "./promo-rich.js";
 
 // Подсказки о Videoner после удачного скачивания в личке: короткое отдельное
 // сообщение вслед за файлом. Что и когда показать, решает сервер
@@ -10,7 +10,7 @@ import { sendPromoRich } from "./promo-rich.js";
 // чаще одной в сутки и начиная с 3-го удачного скачивания. Дашборд следит,
 // не стали ли из-за них чаще блокировать бота. В группах и встроенном режиме
 // не показываем — там это увидят посторонние.
-export const BOT_PROMOS: PromoKey[] = ["reddit", "extension", "channel", "group", "audio", "inline", "share", "donate"];
+export const BOT_PROMOS: PromoKey[] = ["reddit", "extension", "channel", "group", "audio", "inline", "share", "donate", "survey"];
 
 export function promoText(key: PromoKey, lang: Lang): string {
   return PROMO_TEXTS[lang][key].replace("{url}", `videoner.download${sitePath(lang, "/extension")}`);
@@ -67,7 +67,12 @@ async function trySendPromo(tg: Api, chatId: number, telegramId: number, lang: L
     }
     try {
       if (!(await sendPromoRich(tg, chatId, key as PromoKey, lang))) {
-        await tg.sendMessage(chatId, promoText(key as PromoKey, lang), { link_preview_options: { is_disabled: true } });
+        // Без кнопок простой текст опроса бесполезен — им кнопки нужны и тут.
+        const markup = key === "survey" ? promoKeyboard("survey", lang) : undefined;
+        await tg.sendMessage(chatId, promoText(key as PromoKey, lang), {
+          link_preview_options: { is_disabled: true },
+          ...(markup ? { reply_markup: markup } : {}),
+        });
       }
     } catch (e) {
       // Telegram отказал (лимит, бот заблокирован) — снимаем отметку о показе

@@ -2,7 +2,7 @@
 // расширения на языке человека.
 import type { Lang } from "./i18n.js";
 
-export type PromoKey = "reddit" | "extension" | "channel" | "group" | "audio" | "inline" | "share" | "donate";
+export type PromoKey = "reddit" | "extension" | "channel" | "group" | "audio" | "inline" | "share" | "donate" | "survey";
 
 export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
   ru: {
@@ -14,6 +14,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Отправьте видео прямо в любой чат: наберите @VideonerBot, пробел и ссылку.",
     share: "Нравится Videoner? Расскажите друзьям — бот бесплатный: t.me/VideonerBot",
     donate: "Videoner бесплатный и без рекламы. Если он вам помог — поддержите проект ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Небольшой вопрос\n\nДумаем над новой функцией. Что из этого вам было бы полезно? Можно выбрать несколько.",
   },
   en: {
     reddit: "Reddit is here too! Send me a link to a post and the video will arrive with sound.",
@@ -24,6 +25,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Send a video to any chat: type @VideonerBot, a space and a link.",
     share: "Like Videoner? Tell your friends, the bot is free: t.me/VideonerBot",
     donate: "Videoner is free and has no ads. If it helped you, please support the project ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 A quick question\n\nWe're thinking about a new feature. Which of these would be useful to you? You can pick several.",
   },
   uk: {
     reddit: "Тепер і Reddit! Надішліть посилання на пост — відео прийде зі звуком.",
@@ -34,6 +36,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Надішліть відео прямо в будь-який чат: наберіть @VideonerBot, пробіл і посилання.",
     share: "Подобається Videoner? Розкажіть друзям — бот безкоштовний: t.me/VideonerBot",
     donate: "Videoner безкоштовний і без реклами. Якщо він вам допоміг — підтримайте проєкт ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Невелике питання\n\nДумаємо над новою функцією. Що з цього було б вам корисно? Можна обрати кілька.",
   },
   kk: {
     reddit: "Енді Reddit-те бар! Посттың сілтемесін жіберіңіз — видео дыбыспен келеді.",
@@ -44,6 +47,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Видеоны кез келген чатқа тікелей жіберіңіз: @VideonerBot деп теріп, бос орын мен сілтемені жазыңыз.",
     share: "Videoner ұнай ма? Достарыңызға айтыңыз — бот тегін: t.me/VideonerBot",
     donate: "Videoner тегін және жарнамасыз. Егер ол сізге көмектессе — жобаны қолдаңыз ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Шағын сұрақ\n\nЖаңа функция туралы ойланып жүрміз. Мұның қайсысы сізге пайдалы болар еді? Бірнешеуін таңдауға болады.",
   },
   ar: {
     reddit: "أصبح Reddit مدعومًا الآن! أرسل رابط المنشور ليصلك الفيديو مع الصوت.",
@@ -54,6 +58,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "أرسل الفيديو إلى أي محادثة مباشرةً: اكتب ⁦@VideonerBot⁩ ثم مسافة ثم الرابط.",
     share: "أعجبك Videoner؟ أخبر أصدقاءك، البوت مجاني: ⁦t.me/VideonerBot⁩",
     donate: "Videoner مجاني وبدون إعلانات. إذا كان مفيدًا لك، فادعم المشروع ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 سؤال صغير\n\nنفكّر في ميزة جديدة. أيٌّ من هذه سيكون مفيدًا لك؟ يمكنك اختيار أكثر من خيار.",
   },
   zh: {
     reddit: "现在支持 Reddit 了！把帖子链接发给我，视频会带着声音送达。",
@@ -64,6 +69,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "直接把视频发到任意聊天：输入 @VideonerBot，加一个空格和链接。",
     share: "喜欢 Videoner 吗？告诉你的朋友吧，机器人是免费的：t.me/VideonerBot",
     donate: "Videoner 免费且无广告。 如果它帮到了你，请支持这个项目 ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 一个小问题\n\n我们正在考虑一个新功能。以下哪些对你有用？可以多选。",
   },
   hi: {
     reddit: "अब Reddit भी! पोस्ट का लिंक भेजिए — वीडियो आवाज़ के साथ आ जाएगा।",
@@ -74,6 +80,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "वीडियो सीधे किसी भी चैट में भेजिए: @VideonerBot लिखें, फिर स्पेस और लिंक।",
     share: "Videoner पसंद आया? दोस्तों को बताइए — बॉट मुफ़्त है: t.me/VideonerBot",
     donate: "Videoner मुफ़्त है और इसमें कोई विज्ञापन नहीं है। अगर इससे आपको मदद मिली, तो प्रोजेक्ट का समर्थन करें ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 एक छोटा सा सवाल\n\nहम एक नई सुविधा के बारे में सोच रहे हैं। इनमें से आपके लिए क्या उपयोगी होगा? आप कई चुन सकते हैं।",
   },
   id: {
     reddit: "Kini Reddit juga! Kirim tautan postingan, video datang lengkap dengan suara.",
@@ -84,6 +91,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Kirim video langsung ke obrolan mana pun: ketik @VideonerBot, spasi, lalu tautan.",
     share: "Suka Videoner? Ceritakan ke teman — botnya gratis: t.me/VideonerBot",
     donate: "Videoner gratis dan tanpa iklan. Jika bermanfaat bagi Anda, dukung proyek ini ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Pertanyaan singkat\n\nKami sedang memikirkan fitur baru. Mana yang berguna bagi Anda? Anda bisa memilih beberapa.",
   },
   sw: {
     reddit: "Sasa na Reddit pia! Tuma kiungo cha chapisho — video itakuja na sauti.",
@@ -94,6 +102,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Tuma video moja kwa moja kwenye gumzo lolote: andika @VideonerBot, nafasi na kiungo.",
     share: "Unapenda Videoner? Waambie marafiki — bot ni bure: t.me/VideonerBot",
     donate: "Videoner ni bure na haina matangazo. Ikiwa imekusaidia, saidia mradi ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Swali dogo\n\nTunafikiria kipengele kipya. Kipi kati ya hivi kingekufaa? Unaweza kuchagua zaidi ya kimoja.",
   },
   de: {
     reddit: "Jetzt auch Reddit! Schick mir den Link zum Beitrag – das Video kommt mit Ton.",
@@ -104,6 +113,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Schick ein Video direkt in jeden Chat: tippe @VideonerBot, ein Leerzeichen und den Link.",
     share: "Gefällt dir Videoner? Erzähl es Freunden – der Bot ist kostenlos: t.me/VideonerBot",
     donate: "Videoner ist kostenlos und werbefrei. Wenn es dir geholfen hat, unterstütze das Projekt ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Eine kurze Frage\n\nWir denken über eine neue Funktion nach. Was davon wäre für dich nützlich? Du kannst mehreres auswählen.",
   },
   fr: {
     reddit: "Reddit est désormais pris en charge ! Envoyez le lien du post, la vidéo arrive avec le son.",
@@ -114,6 +124,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Envoyez une vidéo dans n’importe quel chat : tapez @VideonerBot, un espace et le lien.",
     share: "Vous aimez Videoner ? Parlez-en à vos amis, le bot est gratuit : t.me/VideonerBot",
     donate: "Videoner est gratuit et sans publicité. S’il vous a été utile, soutenez le projet ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Une petite question\n\nNous réfléchissons à une nouvelle fonction. Qu’est-ce qui vous serait utile ? Vous pouvez en choisir plusieurs.",
   },
   it: {
     reddit: "Ora anche Reddit! Mandami il link del post: il video arriva con l’audio.",
@@ -124,6 +135,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Invia un video in qualsiasi chat: scrivi @VideonerBot, uno spazio e il link.",
     share: "Ti piace Videoner? Dillo ai tuoi amici: il bot è gratuito: t.me/VideonerBot",
     donate: "Videoner è gratuito e senza pubblicità. Se ti è stato utile, sostieni il progetto ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Una piccola domanda\n\nStiamo pensando a una nuova funzione. Cosa ti sarebbe utile? Puoi sceglierne più di una.",
   },
   pt: {
     reddit: "Agora também Reddit! Envie o link do post e o vídeo chega com som.",
@@ -134,6 +146,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Envie o vídeo direto em qualquer chat: digite @VideonerBot, um espaço e o link.",
     share: "Gostou do Videoner? Conte aos amigos, o bot é grátis: t.me/VideonerBot",
     donate: "O Videoner é gratuito e sem anúncios. Se ele ajudou você, apoie o projeto ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Uma pergunta rápida\n\nEstamos pensando em um novo recurso. O que seria útil para você? Você pode escolher mais de uma opção.",
   },
   es: {
     reddit: "¡Ahora también Reddit! Envía el enlace de la publicación y el vídeo llegará con sonido.",
@@ -144,6 +157,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Envía un vídeo directamente a cualquier chat: escribe @VideonerBot, un espacio y el enlace.",
     share: "¿Te gusta Videoner? Cuéntaselo a tus amigos, el bot es gratis: t.me/VideonerBot",
     donate: "Videoner es gratis y sin anuncios. Si te ha sido útil, apoya el proyecto ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Una pregunta rápida\n\nEstamos pensando en una nueva función. ¿Qué te sería útil? Puedes elegir varias opciones.",
   },
   uz: {
     reddit: "Endi Reddit ham! Post havolasini yuboring — video ovoz bilan keladi.",
@@ -154,6 +168,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Videoni istalgan chatga to‘g‘ridan-to‘g‘ri yuboring: @VideonerBot, probel va havolani yozing.",
     share: "Videoner yoqdimi? Do‘stlaringizga ayting — bot bepul: t.me/VideonerBot",
     donate: "Videoner bepul va reklamasiz. Agar u sizga yordam bergan bo‘lsa, loyihani qo‘llab-quvvatlang ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Kichik savol\n\nYangi funksiya ustida o‘ylayapmiz. Bulardan qaysi biri sizga foydali bo‘lardi? Bir nechtasini tanlash mumkin.",
   },
   tr: {
     reddit: "Artık Reddit de var! Gönderinin bağlantısını yollayın, video sesiyle birlikte gelsin.",
@@ -164,6 +179,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Videoyu doğrudan istediğiniz sohbete gönderin: @VideonerBot yazın, bir boşluk bırakıp bağlantıyı ekleyin.",
     share: "Videoner’ı beğendiniz mi? Arkadaşlarınıza anlatın — bot ücretsiz: t.me/VideonerBot",
     donate: "Videoner ücretsiz ve reklamsız. İşinize yaradıysa projeye destek olun ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Kısa bir soru\n\nYeni bir özellik üzerinde düşünüyoruz. Bunlardan hangisi işinize yarar? Birden fazla seçebilirsiniz.",
   },
   fa: {
     reddit: "حالا Reddit هم هست! لینک پست را بفرستید تا ویدیو با صدا برسد.",
@@ -174,6 +190,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "ویدیو را مستقیم در هر چتی بفرستید: ⁦@VideonerBot⁩ را تایپ کنید، یک فاصله بگذارید و لینک را بنویسید.",
     share: "Videoner را دوست دارید؟ به دوستانتان بگویید، ربات رایگان است: ⁦t.me/VideonerBot⁩",
     donate: "Videoner رایگان و بدون تبلیغات است. اگر به شما کمک کرد، از پروژه حمایت کنید ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 یک سؤال کوتاه\n\nبه یک قابلیت جدید فکر می‌کنیم. کدام‌یک از این‌ها برایتان مفید است؟ می‌توانید چند مورد را انتخاب کنید.",
   },
   vi: {
     reddit: "Giờ đã có cả Reddit! Gửi liên kết bài đăng, video sẽ đến kèm âm thanh.",
@@ -184,6 +201,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Gửi video thẳng vào bất kỳ cuộc trò chuyện nào: gõ @VideonerBot, dấu cách rồi dán liên kết.",
     share: "Thích Videoner? Hãy kể với bạn bè — bot miễn phí: t.me/VideonerBot",
     donate: "Videoner miễn phí và không có quảng cáo. Nếu nó hữu ích với bạn, hãy ủng hộ dự án ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Một câu hỏi nhỏ\n\nChúng tôi đang nghĩ về một tính năng mới. Điều nào sẽ hữu ích với bạn? Bạn có thể chọn nhiều mục.",
   },
   bn: {
     reddit: "এখন Reddit-ও! পোস্টের লিংক পাঠান — ভিডিও শব্দসহ চলে আসবে।",
@@ -194,6 +212,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "ভিডিও সরাসরি যেকোনো চ্যাটে পাঠান: @VideonerBot লিখুন, তারপর স্পেস দিয়ে লিংক দিন।",
     share: "Videoner ভালো লাগছে? বন্ধুদের জানান — বটটি বিনামূল্যে: t.me/VideonerBot",
     donate: "Videoner বিনামূল্যে এবং বিজ্ঞাপনমুক্ত। যদি এটি আপনার কাজে লেগে থাকে, প্রকল্পটিকে সমর্থন করুন ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 একটি ছোট প্রশ্ন\n\nআমরা একটি নতুন ফিচার নিয়ে ভাবছি। এর মধ্যে কোনটি আপনার কাজে লাগবে? একাধিক বেছে নিতে পারেন।",
   },
   ur: {
     reddit: "اب Reddit بھی! پوسٹ کا لنک بھیجیں — ویڈیو آواز کے ساتھ آ جائے گی۔",
@@ -204,6 +223,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "ویڈیو سیدھا کسی بھی چیٹ میں بھیجیں: ⁦@VideonerBot⁩ لکھیں، پھر اسپیس اور لنک۔",
     share: "Videoner پسند آیا؟ دوستوں کو بتائیں — بوٹ مفت ہے: ⁦t.me/VideonerBot⁩",
     donate: "Videoner مفت ہے اور اس میں کوئی اشتہار نہیں۔ اگر اس سے آپ کو مدد ملی تو منصوبے کی مدد کریں ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 ایک چھوٹا سا سوال\n\nہم ایک نئی سہولت پر غور کر رہے ہیں۔ ان میں سے آپ کے لیے کیا مفید ہوگا؟ آپ کئی منتخب کر سکتے ہیں۔",
   },
   pl: {
     reddit: "Teraz także Reddit! Wyślij link do posta, a wideo przyjdzie z dźwiękiem.",
@@ -214,6 +234,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Wyślij wideo prosto do dowolnego czatu: wpisz @VideonerBot, spację i link.",
     share: "Podoba ci się Videoner? Powiedz znajomym – bot jest darmowy: t.me/VideonerBot",
     donate: "Videoner jest darmowy i bez reklam. Jeśli ci pomógł, wesprzyj projekt ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Krótkie pytanie\n\nMyślimy nad nową funkcją. Co z tego byłoby dla ciebie przydatne? Możesz wybrać kilka.",
   },
   ja: {
     reddit: "Reddit にも対応しました！投稿のリンクを送ってください。音声付きで動画が届きます。",
@@ -224,6 +245,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "どのチャットにも動画を直接送れます。@VideonerBot、スペース、リンクの順に入力してください。",
     share: "Videoner は気に入りましたか？友だちにも教えてください。ボットは無料です：t.me/VideonerBot",
     donate: "Videoner は無料で、広告もありません。 お役に立てたなら、プロジェクトを支援してください ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 ちょっとした質問\n\n新しい機能を検討しています。次のうち、役に立ちそうなものはどれですか？複数選べます。",
   },
   ko: {
     reddit: "이제 Reddit도 지원해요! 게시물 링크를 보내 주세요. 소리가 포함된 영상이 도착합니다.",
@@ -234,6 +256,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "어떤 채팅에든 영상을 바로 보내세요. @VideonerBot, 띄어쓰기, 링크 순서로 입력하면 됩니다.",
     share: "Videoner가 마음에 드시나요? 친구들에게 알려 주세요. 봇은 무료입니다: t.me/VideonerBot",
     donate: "Videoner는 무료이며 광고가 없습니다. 도움이 되셨다면 프로젝트를 후원해 주세요 ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 간단한 질문\n\n새로운 기능을 고민하고 있어요. 다음 중 어떤 것이 유용할까요? 여러 개 선택할 수 있어요.",
   },
   th: {
     reddit: "ตอนนี้รองรับ Reddit แล้ว! ส่งลิงก์โพสต์มา วิดีโอจะมาพร้อมเสียง",
@@ -244,6 +267,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "ส่งวิดีโอเข้าแชตไหนก็ได้โดยตรง: พิมพ์ @VideonerBot เว้นวรรค แล้วใส่ลิงก์",
     share: "ชอบ Videoner ไหม? บอกเพื่อน ๆ ได้เลย บอทใช้ฟรี: t.me/VideonerBot",
     donate: "Videoner ใช้งานฟรีและไม่มีโฆษณา หากช่วยคุณได้ โปรดสนับสนุนโปรเจกต์ ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 คำถามสั้น ๆ\n\nเรากำลังคิดฟีเจอร์ใหม่ ข้อใดต่อไปนี้มีประโยชน์กับคุณ? เลือกได้หลายข้อ",
   },
   tl: {
     reddit: "Ngayon, may Reddit na rin! Ipadala ang link ng post — darating ang video na may tunog.",
@@ -254,6 +278,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Magpadala ng video direkta sa kahit anong chat: i-type ang @VideonerBot, espasyo, at ang link.",
     share: "Gusto mo ang Videoner? Sabihin sa mga kaibigan — libre ang bot: t.me/VideonerBot",
     donate: "Libre at walang ads ang Videoner. Kung nakatulong ito sa iyo, suportahan ang proyekto ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Isang maikling tanong\n\nPinag-iisipan namin ang isang bagong feature. Alin dito ang makakatulong sa iyo? Puwedeng pumili ng ilan.",
   },
   am: {
     reddit: "አሁን Reddit ንም ይደግፋል! የልጥፉን አገናኝ ይላኩ — ቪዲዮው ከድምፅ ጋር ይመጣል።",
@@ -264,6 +289,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "ቪዲዮን በቀጥታ ወደ ማንኛውም ውይይት ይላኩ፡ @VideonerBot ብለው ይጻፉ፣ ባዶ ቦታ ትተው አገናኙን ያስገቡ።",
     share: "Videoner ወደዱት? ለጓደኞችዎ ይንገሩ — ቦቱ ነፃ ነው፡ t.me/VideonerBot",
     donate: "Videoner ነፃ ነው፤ ማስታወቂያም የለውም። ከረዳዎት ፕሮጀክቱን ይደግፉ ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 አጭር ጥያቄ\n\nስለ አዲስ ባህሪ እያሰብን ነው። ከእነዚህ ውስጥ የትኛው ይጠቅማችኋል? ብዙ መምረጥ ይቻላል።",
   },
   om: {
     reddit: "Amma Reddit illee ni jira! Hidhaa postii ergi — viidiyoon sagalee wajjin ni dhufa.",
@@ -274,6 +300,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Viidiyoo kallattiin chaatii kamittuu ergi: @VideonerBot barreessi, iddoo duwwaa fi hidhaa itti dabali.",
     share: "Videoner ni jaallattaa? Michuuwwan keetti himi — boonni bilisaa dha: t.me/VideonerBot",
     donate: "Videoner bilisaa fi beeksisa malee dha. Yoo isin gargaare, pirojektii deeggaraa ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Gaaffii xiqqoo\n\nWaa'ee amala haaraa yaadaa jirra. Kana keessaa kamtu isiniif gargaara? Hedduu filachuu dandeessu.",
   },
   ha: {
     reddit: "Yanzu har da Reddit! Aika hanyar haɗin post ɗin — bidiyo zai zo da sauti.",
@@ -284,6 +311,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Aika bidiyo kai tsaye zuwa kowace hira: rubuta @VideonerBot, sarari, sannan hanyar haɗin.",
     share: "Kuna son Videoner? Ku gaya wa abokai — bot ɗin kyauta ne: t.me/VideonerBot",
     donate: "Videoner kyauta ne kuma babu talla. Idan ya taimaka muku, ku tallafa wa aikin ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Ƙaramar tambaya\n\nMuna tunanin sabon fasali. Wanne daga cikin waɗannan zai amfane ku? Kuna iya zaɓar da yawa.",
   },
   so: {
     reddit: "Hadda Reddit sidoo kale! Soo dir linkiga boostada — fiidiyoowga codkiisa ayuu la imaanayaa.",
@@ -294,6 +322,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "U dir fiidiyoow si toos ah chat kasta: qor @VideonerBot, meel bannaan iyo linkiga.",
     share: "Ma jeceshahay Videoner? U sheeg asxaabtaada — botku waa bilaash: t.me/VideonerBot",
     donate: "Videoner waa bilaash, xayeysiisna ma leh. Haddii uu ku caawiyay, taageer mashruuca ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Su'aal yar\n\nWaxaan ka fikiraynaa adeeg cusub. Kuwan midkee ayaa kuu faa'iido leh? Dhowr ayaad dooran kartaa.",
   },
   az: {
     reddit: "İndi Reddit də var! Postun linkini göndərin — video səslə birlikdə gələcək.",
@@ -304,6 +333,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Videonu istənilən çata birbaşa göndərin: @VideonerBot yazın, boşluq qoyun və linki əlavə edin.",
     share: "Videoner xoşunuza gəlir? Dostlarınıza danışın — bot pulsuzdur: t.me/VideonerBot",
     donate: "Videoner pulsuzdur və reklamsızdır. Əgər sizə kömək etdisə, layihəni dəstəkləyin ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Kiçik bir sual\n\nYeni bir funksiya üzərində düşünürük. Bunlardan hansı sizə faydalı olardı? Bir neçəsini seçə bilərsiniz.",
   },
   ky: {
     reddit: "Эми Reddit да бар! Посттун шилтемесин жөнөтүңүз — видео үнү менен келет.",
@@ -314,6 +344,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Видеону каалаган чатка түз жөнөтүңүз: @VideonerBot деп жазып, боштук калтырып, шилтемени кошуңуз.",
     share: "Videoner жактыбы? Досторуңузга айтыңыз — бот акысыз: t.me/VideonerBot",
     donate: "Videoner акысыз жана жарнамасыз. Эгер ал сизге жардам берсе — долбоорду колдоңуз ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Кичинекей суроо\n\nЖаңы функция жөнүндө ойлонуп жатабыз. Мунун кайсынысы сизге пайдалуу болмок? Бир нечесин тандасаңыз болот.",
   },
   tg: {
     reddit: "Акнун Reddit ҳам! Пайванди постро фиристед — видео бо садо меояд.",
@@ -324,6 +355,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Видеоро мустақиман ба ҳар чат фиристед: @VideonerBot нависед, фосила монед ва пайвандро илова кунед.",
     share: "Videoner маъқул шуд? Ба дӯстон бигӯед — бот ройгон аст: t.me/VideonerBot",
     donate: "Videoner ройгон ва бе реклама аст. Агар ба шумо кӯмак карда бошад, лоиҳаро дастгирӣ кунед ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Саволи хурд\n\nДар бораи функсияи нав фикр мекунем. Кадоме аз инҳо барои шумо муфид мебуд? Метавонед якчандтоашро интихоб кунед.",
   },
   ms: {
     reddit: "Kini ada Reddit juga! Hantar pautan siaran — video akan sampai bersama bunyi.",
@@ -334,6 +366,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Hantar video terus ke mana-mana sembang: taip @VideonerBot, ruang kosong dan pautan.",
     share: "Suka Videoner? Ceritakan kepada rakan — bot ini percuma: t.me/VideonerBot",
     donate: "Videoner percuma dan tanpa iklan. Jika ia membantu anda, sokonglah projek ini ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Satu soalan ringkas\n\nKami sedang memikirkan ciri baharu. Yang mana satu berguna kepada anda? Anda boleh pilih lebih daripada satu.",
   },
   nl: {
     reddit: "Nu ook Reddit! Stuur de link naar een post en de video komt met geluid.",
@@ -344,6 +377,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Stuur een video direct naar elke chat: typ @VideonerBot, een spatie en de link.",
     share: "Vind je Videoner leuk? Vertel het je vrienden — de bot is gratis: t.me/VideonerBot",
     donate: "Videoner is gratis en zonder advertenties. Heeft het je geholpen? Steun dan het project ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Een korte vraag\n\nWe denken na over een nieuwe functie. Wat hiervan zou je handig vinden? Je kunt er meerdere kiezen.",
   },
   ro: {
     reddit: "Acum și Reddit! Trimite linkul postării și videoclipul vine cu sunet.",
@@ -354,6 +388,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Trimite un videoclip direct în orice chat: scrie @VideonerBot, un spațiu și linkul.",
     share: "Îți place Videoner? Spune-le prietenilor — botul este gratuit: t.me/VideonerBot",
     donate: "Videoner este gratuit și fără reclame. Dacă v-a fost de folos, susțineți proiectul ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 O întrebare scurtă\n\nNe gândim la o funcție nouă. Ce v-ar fi util dintre acestea? Puteți alege mai multe.",
   },
   ps: {
     reddit: "اوس Reddit هم! د پوسټ لینک ولیږئ — ویډیو به د غږ سره راشي.",
@@ -364,6 +399,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "ویډیو مستقیم هر چیټ ته ولیږئ: ⁦@VideonerBot⁩ ولیکئ، یو واټن پریږدئ او لینک ورزیات کړئ.",
     share: "Videoner مو خوښ شو؟ ملګرو ته یې ووایاست — بوټ وړیا دی: ⁦t.me/VideonerBot⁩",
     donate: "Videoner وړیا دی او اعلانونه نه لري. که یې ستاسو مرسته کړې وي، د پروژې ملاتړ وکړئ ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 یوه لنډه پوښتنه\n\nد یوې نوې ځانګړتیا په اړه فکر کوو. له دې څخه کوم یو به ستاسو لپاره ګټور وي؟ څو یې ټاکلی شئ.",
   },
   ckb: {
     reddit: "ئێستا Reddit یش هەیە! لینکی پۆستەکە بنێرە — ڤیدیۆکە لەگەڵ دەنگ دێت.",
@@ -374,6 +410,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "ڤیدیۆ ڕاستەوخۆ بنێرە بۆ هەر چاتێک: ⁦@VideonerBot⁩ بنووسە، بۆشایی بدە و لینکەکە دابنێ.",
     share: "Videoner ت بەدڵە؟ بە هاوڕێکانت بڵێ — بۆتەکە بێبەرامبەرە: ⁦t.me/VideonerBot⁩",
     donate: "Videoner بەخۆڕاییە و ڕیکلامی تێدا نییە. ئەگەر یارمەتیی دایت، پشتگیریی پرۆژەکە بکە ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 پرسیارێکی بچووک\n\nبیر لە تایبەتمەندییەکی نوێ دەکەینەوە. کامیان بۆ تۆ بەسوود دەبێت؟ دەتوانیت چەند دانەیەک هەڵبژێریت.",
   },
   ku: {
     reddit: "Niha Reddit jî heye! Lînka postê bişînin — vîdyo bi deng tê.",
@@ -384,6 +421,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Vîdyoyê rasterast bişînin her sohbetê: @VideonerBot binivîsin, valahiyek bihêlin û lînkê lê zêde bikin.",
     share: "Videoner bi dilê we ye? Ji hevalan re bibêjin — bot belaş e: t.me/VideonerBot",
     donate: "Videoner belaş e û bê reklam e. Heke alîkariya te kir, piştgiriya projeyê bike ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Pirsek biçûk\n\nEm li ser taybetmendiyeke nû difikirin. Kîjan ji van dê ji te re bikêr be? Tu dikarî çend hilbijêrî.",
   },
   ug: {
     reddit: "ھازىر Reddit مۇ بار! يازما ئۇلانمىسىنى ئەۋەتىڭ — سىن ئاۋاز بىلەن كېلىدۇ.",
@@ -394,6 +432,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "سىننى خالىغان پاراڭغا بىۋاسىتە ئەۋەتىڭ: ⁦@VideonerBot⁩ نى يېزىپ، بوشلۇق قويۇپ ئۇلانمىنى قوشۇڭ.",
     share: "Videoner ياقتىمۇ؟ دوستلىرىڭىزغا ئېيتىڭ — بوت ھەقسىز: ⁦t.me/VideonerBot⁩",
     donate: "Videoner ھەقسىز ۋە ئېلانسىز. ئەگەر ياردىمى تەگكەن بولسا، تۈرنى قوللاڭ ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 كىچىك سوئال\n\nيېڭى ئىقتىدار ئۈستىدە ئويلىنىۋاتىمىز. بۇلارنىڭ قايسىسى سىزگە پايدىلىق؟ بىر قانچىنى تاللىسىڭىز بولىدۇ.",
   },
   tk: {
     reddit: "Indi Reddit hem bar! Postuň salgysyny iberiň — wideo sesi bilen gelýär.",
@@ -404,6 +443,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Wideony islendik çata gönüden-göni iberiň: @VideonerBot ýazyp, boşluk goýup salgyny goşuň.",
     share: "Videoner ýaradýarmy? Dostlaryňyza aýdyň — bot mugt: t.me/VideonerBot",
     donate: "Videoner mugt we mahabatsyz. Eger size kömek eden bolsa, taslamany goldaň ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Kiçijik sorag\n\nTäze funksiýa barada pikirlenýäris. Bulardan haýsysy size peýdaly bolardy? Birnäçesini saýlap bilersiňiz.",
   },
   tt: {
     reddit: "Хәзер Reddit та бар! Постка сылтаманы җибәрегез — видео тавыш белән килер.",
@@ -414,6 +454,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Видеоны теләсә кайсы чатка турыдан-туры җибәрегез: @VideonerBot языгыз, буш ара калдырып сылтаманы өстәгез.",
     share: "Videoner ошыймы? Дусларыгызга сөйләгез — бот бушлай: t.me/VideonerBot",
     donate: "Videoner бушлай һәм рекламасыз. Әгәр ул сезгә ярдәм иткән булса — проектка ярдәм итегез ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Кечкенә сорау\n\nЯңа функция турында уйлыйбыз. Боларның кайсысы сезгә файдалы булыр иде? Берничәсен сайларга мөмкин.",
   },
   sq: {
     reddit: "Tani edhe Reddit! Dërgo lidhjen e postimit dhe videoja vjen me zë.",
@@ -424,6 +465,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Dërgo një video drejtpërdrejt në çdo bisedë: shkruaj @VideonerBot, një hapësirë dhe lidhjen.",
     share: "Të pëlqen Videoner? Tregoju shokëve — boti është falas: t.me/VideonerBot",
     donate: "Videoner është falas dhe pa reklama. Nëse ju ndihmoi, mbështetni projektin ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Një pyetje e shkurtër\n\nPo mendojmë për një veçori të re. Cila prej tyre do t’ju ishte e dobishme? Mund të zgjidhni disa.",
   },
   bs: {
     reddit: "Sada i Reddit! Pošalji link objave i video stiže sa zvukom.",
@@ -434,6 +476,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Pošalji video direktno u bilo koji chat: upiši @VideonerBot, razmak i link.",
     share: "Sviđa ti se Videoner? Reci prijateljima — bot je besplatan: t.me/VideonerBot",
     donate: "Videoner je besplatan i bez reklama. Ako vam je pomogao, podržite projekat ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Kratko pitanje\n\nRazmišljamo o novoj funkciji. Šta od ovoga bi vam bilo korisno? Možete odabrati više opcija.",
   },
   ce: {
     reddit: "Хӏинца Reddit а ду! Постан ссылка дахьийша — видео аз цхьаьна дӏакхочур ду.",
@@ -444,6 +487,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Видео дӏадахьийша дукха чат чу: @VideonerBot язде, юкъ а дита, ссылка а тоха.",
     share: "Videoner дукха хазахета? Накъосташка ала — бот мах боцуш бу: t.me/VideonerBot",
     donate: "Videoner мах доцуш а, рекламаш йоцуш а ю. Шуна гӀо хилла хилахь — проектана гӀо де ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Жимма хаттар\n\nКерлачу функцех лаьцна ойла йо оха. Цу юкъара хІун пайдехь хир дара шуна? Масех харжа мегар ду.",
   },
   inh: {
     reddit: "ХӀинца Reddit а я! Постан ссылка дӀаэй — видео аз цхьаьна доаккхар да.",
@@ -454,6 +498,7 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Видео дӀаберза чат чу: @VideonerBot язде, юкъ дита, ссылка тоха.",
     share: "Videoner хаза хета? Накъосташка ала — бот маьхза я: t.me/VideonerBot",
     donate: "Videoner мах доаца я, реклама йоаца я. Шунна новкъостал хьаделча — проектага гӀо де ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Зӏамига хаттар\n\nКерда функцех лаьца ойла ю тхона. Укх юкъера фу пайда болаш хургдар шунна? Цхьаннал дукхагӀа харжа мегаш да.",
   },
   av: {
     reddit: "Гьанже Reddit-ги бугеб! Посталъул ссылка ритӀе — видео гьаракьалда цадахъ рачӀина.",
@@ -464,5 +509,6 @@ export const PROMO_TEXTS: Record<Lang, Record<PromoKey, string>> = {
     inline: "Видео ритӀе кинабго чаталде: @VideonerBot хъвай, ккола ссылка.",
     share: "Videoner рохьдолищ? Рахъабазда абе — бот гьабизе гьечӀо: t.me/VideonerBot",
     donate: "Videoner мухьгьечӀеб буго, рекламаги гьечӀеб. Нужее кумек гьабуни — проекталъе кумек гьабе ❤️ boosty.to/timursarsembai/donate · donationalerts.com/r/timursarsembayev",
+    survey: "📝 Гьитӏинаб суал\n\nЦӀияб функциялъул хӀакъалъулъ пикру гьабулеб буго. Гьаздасан щиб нужее пайдаяб букӀинаришв? ЦӀакъаб тӀасабищизе бегьула.",
   },
 };

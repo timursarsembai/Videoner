@@ -137,6 +137,22 @@ export class BotUserController {
     return { key: await this.botUserService.nextPromo(parseTelegramId(telegramId), keys as string[]) };
   }
 
+  // Опрос в боте (lib/surveys.ts): нажатие на вариант или «Готово».
+  @Post(':telegramId/survey/:survey')
+  @UseGuards(BotOnlyGuard)
+  async survey(
+    @Param('telegramId') telegramId: string,
+    @Param('survey') survey: string,
+    @Body() body: { option?: unknown; done?: unknown },
+  ) {
+    const id = parseTelegramId(telegramId);
+    if (body?.done === true) return { choices: await this.botUserService.surveyDone(id, survey) };
+    if (typeof body?.option !== 'string' || !/^[a-z0-9-]{1,40}$/.test(body.option)) {
+      throw new BadRequestException('option is required');
+    }
+    return { choices: await this.botUserService.surveyToggle(id, survey, body.option) };
+  }
+
   @Post(':telegramId/promo/failed')
   @UseGuards(BotOnlyGuard)
   async promoFailed(@Param('telegramId') telegramId: string, @Body() body: { key?: unknown }) {

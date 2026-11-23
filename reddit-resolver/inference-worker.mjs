@@ -7,8 +7,6 @@ process.on('message', async message => {
   if (busy || !Number.isSafeInteger(id) || !validInferenceInput(op, payload)) { process.exit(1); return; }
   busy = true;
   try {
-    const vision = await import('./vision.mjs');
-    const tiles = await import('./tile-model.mjs');
     if (op !== 'transcribe') {
       const sharp = (await import('sharp')).default;
       for (const buffer of op === 'classify' ? payload.buffers : [payload.buffer]) {
@@ -17,10 +15,16 @@ process.on('message', async message => {
       }
     }
     let result;
-    if (op === 'classify') result = await vision.classifyTiles(payload.buffers.map(b => Buffer.from(b)));
-    if (op === 'detect') result = await vision.detectObjects(Buffer.from(payload.buffer));
-    if (op === 'split-grid') result = await tiles.splitGrid(Buffer.from(payload.buffer), payload.side);
-    if (op === 'transcribe') result = await vision.transcribe(payload.samples);
+    if (op === 'classify' || op === 'split-grid') {
+      // These operations need only the tile model/Sharp, not Transformers.js.
+      const tiles = await import('./tile-model.mjs');
+      result = op === 'classify' ? await tiles.classifyTileImages(payload.buffers.map(b => Buffer.from(b)))
+        : await tiles.splitGrid(Buffer.from(payload.buffer), payload.side);
+    } else {
+      const vision = await import('./vision.mjs');
+      result = op === 'detect' ? await vision.detectObjects(Buffer.from(payload.buffer))
+        : await vision.transcribe(payload.samples);
+    }
     if (!validInferenceResult(op, result, payload)) throw new Error();
     process.send?.({ id, ok: true, result });
   } catch {

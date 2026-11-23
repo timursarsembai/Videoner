@@ -197,3 +197,12 @@ models, retry policy, age checks or configured deadlines. The 200-second budget
 is checked between asynchronous operations; it is not currently a hard wall
 around every browser wait. A timeout summary alone is not evidence of a bad
 proxy or of a change to Google's challenge format.
+
+Tile-worker startup: split-grid/classification use tile-model directly; detection
+and optional transcription load Transformers.js only when requested. A synthetic
+regression helper is `bench/tile-worker.mjs <png-path>`. In an offline disposable
+image, `--without-transformers` additionally checks that detection still requires
+its vision dependency while tile inference works without it. It expects that
+Transformers has been moved out of that disposable container's node_modules;
+never move dependencies in a production container. Results and CPU experiments
+are documented in `docs/reddit-resolver-startup-checks.md` at repository root.

@@ -181,7 +181,7 @@ real Chromium and model inference, with an accelerated test-only idle timeout;
 its default is 20 restart cycles. It does not contact Reddit or use any proxy.
 Set `BENCH_CYCLES=1 BENCH_SKIP_DETECT=1` for a short idle-memory-only check.
 
-Diagnostic trace (requires a resolver release): each POST /resolve emits one
+Diagnostic trace (released 2026-11-23): each POST /resolve emits one
 bounded `reddit-resolve` JSON summary with a random request ID, elapsed time,
 last stage, stage counters and the most recent 32 transitions. Stages distinguish
 widget waiting, checked checkbox, inference, verification and post readiness;

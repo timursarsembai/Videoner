@@ -180,3 +180,20 @@ case exited 137 at that limit. The worker benchmark uses a local synthetic page,
 real Chromium and model inference, with an accelerated test-only idle timeout;
 its default is 20 restart cycles. It does not contact Reddit or use any proxy.
 Set `BENCH_CYCLES=1 BENCH_SKIP_DETECT=1` for a short idle-memory-only check.
+
+Diagnostic trace (requires a resolver release): each POST /resolve emits one
+bounded `reddit-resolve` JSON summary with a random request ID, elapsed time,
+last stage, stage counters and the most recent 32 transitions. Stages distinguish
+widget waiting, checked checkbox, inference, verification and post readiness;
+cache hits and coalesced requests remain separate. Resource counters include
+cgroup RAM/swap and CPU/throttling deltas, not a per-request memory peak.
+
+The trace uses an explicit field/code allowlist. It does not record post URLs,
+HTML/body text, titles, proxy credentials, cookies, model scores or screenshots.
+`POST_MISMATCH` includes only boolean readiness flags; a checked Google anchor
+without a post can be distinguished from a still-unsolved checkbox. Existing
+`resolve-failed` lines remain available. This instrumentation does not change
+models, retry policy, age checks or configured deadlines. The 200-second budget
+is checked between asynchronous operations; it is not currently a hard wall
+around every browser wait. A timeout summary alone is not evidence of a bad
+proxy or of a change to Google's challenge format.

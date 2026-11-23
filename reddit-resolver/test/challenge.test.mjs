@@ -40,3 +40,16 @@ test('the early missing-widget error applies only to the known challenge page', 
     postId: '6rrwyj', deadline: 30000, now: fixture.now,
   }), /CHALLENGE_TIMEOUT/);
 });
+
+test('diagnostics distinguish a checked Google checkbox from the absent Reddit post', async () => {
+  let elapsed = 0; const events = [];
+  const anchor = { url: () => 'https://www.google.com/recaptcha/api2/anchor',
+    locator: () => ({ innerText: async () => '', getAttribute: async () => 'true' }) };
+  const page = { frames: () => [anchor],
+    locator: selector => selector === 'body' ? { innerText: async () => 'Prove your humanity' } : { count: async () => 0 },
+    frameLocator: () => ({ locator: () => ({ count: async () => 1, click: async () => {} }) }),
+    waitForTimeout: async ms => { elapsed += ms; } };
+  await assert.rejects(solveChallenge(page, { postId: '6rrwyj', deadline: 10000, now: () => elapsed,
+    onEvent: event => events.push(event) }), /CHALLENGE_TIMEOUT/);
+  assert.ok(events.some(e => e.stage === 'waiting-challenge' && e.anchorChecked === true));
+});

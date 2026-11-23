@@ -47,10 +47,11 @@ export class RedditResolver {
     if (refusal?.expires > Date.now()) throw new Error(refusal.code);
     this.refusals.delete(key);
     const hit = this.cache.get(key);
-    if (hit?.expires > Date.now()) return structuredClone(hit.value);
-    if (this.pending.has(key)) return this.pending.get(key).then(structuredClone);
-    if (this.queued >= 1 || this.cooldownUntil > Date.now()) throw new Error('REDDIT_BUSY');
+    if (hit?.expires > Date.now()) { this.onEvent({ stage: 'cache-hit' }); return structuredClone(hit.value); }
+    if (this.pending.has(key)) { this.onEvent({ stage: 'coalesced' }); return this.pending.get(key).then(structuredClone); }
+    if (this.queued >= 1 || this.cooldownUntil > Date.now()) { this.onEvent({ stage: 'busy' }); throw new Error('REDDIT_BUSY'); }
     this.queued++;
+    this.onEvent({ stage: 'resolve-start', country: this.country });
     const releaseInference = this.inference.hold();
     const task = this.queue.then(() => {
       if (this.cooldownUntil > Date.now()) throw new Error('REDDIT_BUSY');
@@ -91,7 +92,7 @@ export class RedditResolver {
         await this.close();
         const countries = ['gb', 'us', 'de'];
         this.country = countries[(countries.indexOf(this.country) + 1) % countries.length];
-        this.onEvent({ stage: 'proxy-session-retry' });
+        this.onEvent({ stage: 'proxy-session-retry', country: this.country });
       }
     }
   }
@@ -102,9 +103,11 @@ export class RedditResolver {
     if (visited.has(key) || visited.size >= 4) throw new Error('REDDIT_INVALID_CROSSPOST');
     visited.add(key);
     const cached = this.cache.get(key);
-    if (cached?.expires > Date.now()) return structuredClone(cached.value);
+    if (cached?.expires > Date.now()) { this.onEvent({ stage: 'source-cache-hit' }); return structuredClone(cached.value); }
     this.cache.delete(key);
+    this.onEvent({ stage: 'browser-start' });
     const context = await this.session();
+    this.onEvent({ stage: 'browser-ready' });
     if (this.idleTimer) clearTimeout(this.idleTimer);
     const page = await context.newPage();
     let requests = 0;
@@ -118,10 +121,14 @@ export class RedditResolver {
           host === 'v.redd.it' || (type === 'image' && !challengeImage)) return route.abort();
         return route.continue();
       });
-      await page.goto(parsed.url, { waitUntil: 'domcontentloaded', timeout: Math.max(1, Math.min(30000, deadline - Date.now())) });
+      const navigation = await page.goto(parsed.url, { waitUntil: 'domcontentloaded', timeout: Math.max(1, Math.min(30000, deadline - Date.now())) });
+      this.onEvent({ stage: 'navigation', status: navigation?.status?.() });
       await page.waitForTimeout(1500);
       const actualId = await solveChallenge(page, { deadline, postId: parsed.id, onEvent: this.onEvent, inference: this.inference });
-      const data = parsePost(await page.evaluate(snapshotInPage, actualId), actualId);
+      const snapshot = await page.evaluate(snapshotInPage, actualId);
+      this.onEvent({ stage: 'post-snapshot', matchedPost: snapshot?.matchedPost === true,
+        correctId: snapshot?.attributes?.id === `t3_${actualId}`, hasPostType: typeof snapshot?.attributes?.['post-type'] === 'string' });
+      const data = parsePost(snapshot, actualId);
       if (data.kind === 'crosspost') {
         const source = safeRedditPostUrl(data.source_url);
         if (!source) throw new Error('REDDIT_AGE_UNVERIFIED');

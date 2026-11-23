@@ -1,10 +1,11 @@
 import http from 'node:http';
 import { spawn } from 'node:child_process';
 import { RedditResolver } from './resolver.mjs';
+import { resolverEvent, traceResolution } from './diagnostics.mjs';
 
 const display = process.env.DISPLAY || ':99';
 const xvfb = spawn('Xvfb', [display, '-screen', '0', '1280x900x24', '-nolisten', 'tcp'], { stdio: 'ignore' });
-const resolver = new RedditResolver({ display });
+const resolver = new RedditResolver({ display, onEvent: resolverEvent });
 const reply = (res, status, data) => {
   if (res.destroyed || res.writableEnded) return;
   res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
@@ -21,7 +22,7 @@ const server = http.createServer(async (req, res) => {
     }
     const input = JSON.parse(body);
     if (typeof input.url !== 'string' || input.url.length > 2048) throw new Error('REDDIT_INVALID_URL');
-    const media = await resolver.resolve(input.url);
+    const media = await traceResolution(() => resolver.resolve(input.url));
     reply(res, 200, { ok: true, media });
   } catch (error) {
     // Never log raw browser errors: authenticated proxy URLs may occur there.

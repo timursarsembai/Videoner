@@ -28,7 +28,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
       const canonical = await page.locator('link[rel="canonical"]').getAttribute('href').catch(() => null);
       currentId = safeRedditPostUrl(canonical)?.id;
     }
-    if (currentId && await page.locator(`shreddit-post[id="t3_${currentId}"]`).count()) return currentId;
+    if (currentId && await page.locator(`shreddit-post[id="t3_${currentId}"]`).count()) { onEvent({ stage: 'post-found' }); return currentId; }
     const text = await page.locator('body').innerText({ timeout: 3000 }).catch(() => '');
     const refusal = pageRefusal(text);
     if (refusal) throw new Error(refusal);
@@ -42,9 +42,14 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
     const tiles = frame?.locator('.rc-imageselect-tile');
     const count = tiles ? await tiles.count().catch(() => 0) : 0;
     if (!count) {
+      if (!checkboxClicked) onEvent({ stage: 'waiting-widget' });
       if (checkboxClicked) {
         const anchorFrame = page.frames().find(f => /\/recaptcha\/(?:api2|enterprise)\/anchor/.test(f.url()));
         const message = await anchorFrame?.locator('body').innerText({ timeout: 2000 }).catch(() => '');
+        const checked = await anchorFrame?.locator('#recaptcha-anchor').getAttribute('aria-checked',
+          { timeout: Math.max(1, Math.min(500, deadline - now())) }).catch(() => null);
+        const anchorChecked = checked === 'true' ? true : checked === 'false' ? false : undefined;
+        onEvent({ stage: 'waiting-challenge', anchorChecked });
         if (/challenge expired|check the checkbox again/i.test(message || '')) {
           if (++expiredRestarts > 1) throw new Error('REDDIT_CHALLENGE_EXPIRED');
           checkboxClicked = false; lastVerified = ''; repeatedVerification = 0;
@@ -56,6 +61,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
         if (await anchor.count().catch(() => 0)) {
           widgetMissingSince = null;
           await anchor.click({ timeout: 5000 }); checkboxClicked = true;
+          onEvent({ stage: 'checkbox-clicked' });
         } else if (/Prove your humanity/i.test(text)) {
           widgetMissingSince ??= now();
           if (now() - widgetMissingSince >= 20000) throw new Error('REDDIT_CHALLENGE_NOT_LOADED');
@@ -80,6 +86,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
         throw error;
       }
     };
+    onEvent({ stage: 'challenge-visible', count });
     const description = await frame.locator('.rc-imageselect-desc-wrapper').innerText({ timeout: 3000 });
     round++;
     const target = challengeTarget(description);
@@ -104,7 +111,9 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
     }
     if (count === 16) {
       const image = await frame.locator('.rc-imageselect-target').screenshot({ timeout: 5000 });
+      const started = now(); onEvent({ stage: 'detect-start', round, target, count });
       const detections = await inference.run('detect', { buffer: image }, { deadline });
+      onEvent({ stage: 'detect-done', round, target, count, durationMs: Math.max(0, now() - started) });
       const selected = tilesForDetections(detections, target, 4);
       if (!selected) throw new Error('REDDIT_UNSUPPORTED_CHALLENGE');
       onEvent({ stage: 'localization', round, target, selected, detections });
@@ -112,6 +121,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
       // Ignore that temporary overlay while clicking the original cell.
       if (!await clickTiles(selected)) continue;
       await frame.locator('#recaptcha-verify-button').click({ timeout: 3000 });
+      onEvent({ stage: 'verification-submitted', round, target, count });
       await page.waitForTimeout(7000);
       continue;
     }
@@ -126,11 +136,15 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
     // Screenshot once. Nine separate screenshots repeatedly scroll the iframe
     // and wait for animations; that can consume the challenge's entire TTL.
     const grid = await frame.locator('.rc-imageselect-target').screenshot({ timeout: 5000 });
+    const splitStarted = now(); onEvent({ stage: 'grid-split-start', round, target, count });
     const buffers = await inference.run('split-grid', { buffer: grid, side: 3 }, { deadline });
+    onEvent({ stage: 'grid-split-done', round, target, count, durationMs: Math.max(0, now() - splitStarted) });
     const hashes = buffers.map(b => createHash('sha256').update(b).digest('hex'));
     const missing = hashes.map((h, i) => seen.has(`${target}:${h}`) ? -1 : i).filter(i => i >= 0);
     if (missing.length) {
+      const started = now(); onEvent({ stage: 'classify-start', round, target, count });
       const results = await inference.run('classify', { buffers: missing.map(i => buffers[i]) }, { deadline });
+      onEvent({ stage: 'classify-done', round, target, count, durationMs: Math.max(0, now() - started) });
       missing.forEach((i, j) => seen.set(`${target}:${hashes[i]}`, targetScore(results[j], target)));
     }
     const selected = hashes.map((h, i) => seen.get(`${target}:${h}`).selected ? i : -1).filter(i => i >= 0);
@@ -151,6 +165,7 @@ export async function solveChallenge(page, { deadline, postId, onEvent = () => {
         continue;
       }
       await frame.locator('#recaptcha-verify-button').click({ timeout: 3000 });
+      onEvent({ stage: 'verification-submitted', round, target, count });
       seen.clear();
     }
     await page.waitForTimeout(dynamic && selected.length ? 4500 : 9000);

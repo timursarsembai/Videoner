@@ -87,6 +87,23 @@ services:
     pids_limit: 200
     networks: [internal]
 
+  # SOCKS-туннель в Казахстан для роликов TikTok, закрытых для страны нашего
+  # сервера (server/src/lib/region-proxy.ts, kz-tunnel/Dockerfile). Своя сеть:
+  # туннель видит только server. Упал — server работает как раньше, такие
+  # ролики просто не откроются.
+  kz-tunnel:
+    build: ./kz-tunnel
+    container_name: videoner-kz-tunnel
+    restart: unless-stopped
+    init: true
+    mem_limit: 64m
+    volumes:
+      - ${HOME}/.ssh/id_ed25519_zakup_skk:/run/kz/key:ro
+      - ${HOME}/.ssh/known_hosts:/run/kz/known_hosts:ro
+      # Адрес и учётка сервера в Казахстане — только на хосте, не в git.
+      - ${HOME}/.config/videoner-kz/ssh_config:/run/kz/config:ro
+    networks: [kznet]
+
   server:
     build: ./server
     container_name: videoner-server
@@ -151,6 +168,9 @@ services:
       # Переменная доезжает до yt-dlp сама — spawn наследует окружение.
       THREADS_RESOLVER_URL: http://threads-resolver:4417
       REDDIT_RESOLVER_URL: http://reddit-resolver:4418
+      # Казахстанский адрес (сервис kz-tunnel): повтор для роликов TikTok,
+      # закрытых для страны сервера. socks5h — имена разрешает сам туннель.
+      REGION_PROXY_URL: socks5h://kz-tunnel:1080
       # Одна подсказка человеку, который запустил бота и за 48 часов не прислал
       # ни одной ссылки (см. server/src/modules/nudge). Включено ТОЛЬКО здесь:
       # у staging своя БД, но тот же BOT_TOKEN, и без этого флага он писал бы
@@ -184,7 +204,7 @@ services:
         condition: service_started
       threads-resolver:
         condition: service_started
-    networks: [internal, proxy]
+    networks: [internal, proxy, kznet]
 
   bot:
     build: ./bot
@@ -260,6 +280,7 @@ services:
 
 networks:
   internal:
+  kznet:
   proxy:
     external: true
     name: ${NPM_NETWORK:-proxy-network}

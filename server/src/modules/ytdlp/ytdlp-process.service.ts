@@ -14,6 +14,7 @@ import { parseDownloadOptions, stringToProgress } from '../../lib/helper';
 import { PROGRESS_STRING } from '../../lib/utils';
 import { getPlatform } from '../../validate/url';
 import { parseProxyPool, pickRandom, proxyAffinityKey, proxyHost } from '../../lib/proxy-pool';
+import { isRegionBlock, RegionMemory } from '../../lib/region-proxy';
 import {
   BinPathType,
   DownloadKeyWord,
@@ -125,6 +126,10 @@ export class YtdlpProcessService implements OnModuleInit {
   // 10.11.2026 YouTube заблокировал единственный прокси (403 на каждом
   // скачивании), и YouTube у бота не работал весь день.
   private readonly proxyPool: string[];
+  // Казахстанский адрес для роликов, закрытых для страны сервера
+  // (lib/region-proxy.ts). Отдельно от пула: не блокируется, не перебирается.
+  private readonly regionProxy: string | undefined;
+  private readonly regionVideos = new RegionMemory();
   // «площадка|прокси» -> до какого момента его не берём: на нём площадка
   // ответила 403, а следующий по списку прошёл (blockProxies). Отдельно по
   // площадкам: YouTube 10.11.2026 заблокировал прокси, а Instagram и Threads
@@ -162,6 +167,7 @@ export class YtdlpProcessService implements OnModuleInit {
     this.cookiesDir = path.resolve(process.cwd(), 'cookies');
     this.cookiesFilePath = path.join(this.cookiesDir, 'cookies.txt');
     this.proxyPool = parseProxyPool(process.env.YOUTUBE_PROXY_URLS, process.env.YOUTUBE_PROXY_URL);
+    this.regionProxy = parseProxyPool(undefined, process.env.REGION_PROXY_URL)[0];
   }
 
   private get hasProxy(): boolean {
@@ -447,6 +453,12 @@ export class YtdlpProcessService implements OnModuleInit {
 
   private isEarlyNetworkError(message: string): boolean {
     return YtdlpProcessService.EARLY_NETWORK_PATTERNS.some((re) => re.test(message));
+  }
+
+  // Сбой самого туннеля в Казахстан (24.11.2026 разово: «SocksHTTPSConnection…»):
+  // повтор через секунду проходит.
+  private isRegionNetworkError(message: string): boolean {
+    return /socks|unable to connect to proxy|connection refused/i.test(message) || this.isEarlyNetworkError(message);
   }
 
   // Протухшая сессия в cookies/<платформа>.txt. Площадка отвечает отказом
@@ -798,6 +810,14 @@ export class YtdlpProcessService implements OnModuleInit {
       // только если следующий прокси пройдёт.
       let proxy = useProxy ? this.pickProxy(platform, urlArg) : undefined;
       const refusedProxies: string[] = [];
+      // Ролик уже открывался через Казахстан — сразу туда.
+      let regionTried = false;
+      if (this.regionProxy && this.regionVideos.has(urlArg)) {
+        useProxy = true;
+        proxy = this.regionProxy;
+        regionTried = true;
+      }
+      let regionNetworkRetried = false;
 
       for (;;) {
         const attemptArgs = [...finalArgs];
@@ -818,7 +838,9 @@ export class YtdlpProcessService implements OnModuleInit {
           // Запоминаем только после УСПЕШНОГО повтора через прокси: если и
           // через него не вышло, дело не в адресе, и гонять туда следующие
           // запросы незачем.
-          if (switchedToProxy) {
+          if (proxy && proxy === this.regionProxy) {
+            this.regionVideos.remember(urlArg);
+          } else if (switchedToProxy) {
             this.rememberProxyNeeded(platform);
           }
           this.blockProxies(platform, refusedProxies);
@@ -826,6 +848,21 @@ export class YtdlpProcessService implements OnModuleInit {
         } catch (attemptError: any) {
           const message = attemptError?.message ?? '';
           const blocked = this.isBlockError(message, platform, useCookies && disposableCookies !== null);
+
+          // Закрыто для страны сервера — один повтор через Казахстан.
+          if (this.regionProxy && !regionTried && isRegionBlock(message, platform)) {
+            console.warn(`[region] ${platform}: ролик закрыт для страны сервера, повторяю через Казахстан`);
+            useProxy = true;
+            proxy = this.regionProxy;
+            regionTried = true;
+            continue;
+          }
+          // Туннель в Казахстан разово не ответил — ещё одна попытка.
+          if (proxy && proxy === this.regionProxy && !regionNetworkRetried && this.isRegionNetworkError(message)) {
+            regionNetworkRetried = true;
+            await this.delay(1500);
+            continue;
+          }
 
           // Блокировка по адресу — уходим на прокси, если ещё не там.
           if (!useProxy && proxyAllowed && this.hasProxy && blocked) {
@@ -838,10 +875,12 @@ export class YtdlpProcessService implements OnModuleInit {
             continue;
           }
 
-          // Блокировка уже на прокси — пробуем следующий из списка.
+          // Блокировка уже на прокси — пробуем следующий из списка (кроме
+          // Казахстана: он вне пула, и платные прокси за него не перебираем).
           if (
             useProxy &&
             proxy &&
+            proxy !== this.regionProxy &&
             this.refusedByPlatform(message, platform, useCookies && disposableCookies !== null)
           ) {
             const next = this.nextProxy(platform, proxy, refusedProxies, urlArg);
@@ -1165,12 +1204,19 @@ export class YtdlpProcessService implements OnModuleInit {
     // адресом. Отказавшие блокируем, только если следующий прошёл.
     let downloadProxy: string | undefined;
     const refusedProxies: string[] = [];
+    // Казахстан (lib/region-proxy.ts): сразу, если сведения о ролике пришли
+    // оттуда, или после отказа «закрыто для страны» на этой загрузке.
+    let useRegion = !!this.regionProxy && this.regionVideos.has(parseUrl);
+    let regionTried = useRegion;
+    let regionNetworkRetried = false;
 
     const startAttempt = () => {
       // Решение о прокси перечитываем на каждой попытке: предыдущая могла
       // наткнуться на блокировку и пометить площадку.
-      const useProxyNow = proxyAllowed && (platform === 'reddit' ? redditProxyNeeded : this.needsProxy(platform));
-      if (useProxyNow && !downloadProxy) downloadProxy = this.pickProxy(platform, parseUrl);
+      const useProxyNow =
+        useRegion || (proxyAllowed && (platform === 'reddit' ? redditProxyNeeded : this.needsProxy(platform)));
+      if (useRegion) downloadProxy = this.regionProxy;
+      else if (useProxyNow && !downloadProxy) downloadProxy = this.pickProxy(platform, parseUrl);
       const attemptArgs = [
         ...(useInfoFile ? ['--load-info-json', infoFile as string] : [parseUrl]),
         ...processArgs,
@@ -1191,7 +1237,7 @@ export class YtdlpProcessService implements OnModuleInit {
       let hasError = false;
       let errorMessage = '';
       // null — повторов не будет, ошибка окончательная.
-      let pendingRetry: 'transient' | 'proxy' | 'nextproxy' | 'nocookies' | 'fresh' | null =
+      let pendingRetry: 'transient' | 'proxy' | 'nextproxy' | 'nocookies' | 'fresh' | 'region' | 'regionnet' | null =
         null;
 
       childProcess.stdout.on('data', (data) => {
@@ -1246,6 +1292,16 @@ export class YtdlpProcessService implements OnModuleInit {
             return;
           }
 
+          // Закрыто для страны сервера — повтор через Казахстан.
+          if (this.regionProxy && !regionTried && !progressEmitted && isRegionBlock(errorMessage, platform)) {
+            pendingRetry = 'region';
+            return;
+          }
+          if (useRegion && !regionNetworkRetried && !progressEmitted && this.isRegionNetworkError(errorMessage)) {
+            pendingRetry = 'regionnet';
+            return;
+          }
+
           // Блокировка по адресу вскрылась уже на загрузке (страница открылась,
           // а CDN отдал 403): уходим на прокси и пробуем ещё раз. Площадку
           // пометим только если через прокси действительно получилось — иначе
@@ -1253,6 +1309,7 @@ export class YtdlpProcessService implements OnModuleInit {
           const blocked = this.isBlockError(errorMessage, platform, useCookies && disposableCookies !== null);
           if (
             !useProxyNow &&
+            !useRegion &&
             proxyAllowed &&
             !proxySwitchTried &&
             (platform === 'reddit' || !progressEmitted) &&
@@ -1268,6 +1325,7 @@ export class YtdlpProcessService implements OnModuleInit {
           // скачивание через заблокированный прокси) — следующий из списка.
           if (
             useProxyNow &&
+            !useRegion &&
             downloadProxy &&
             (platform === 'reddit' || !progressEmitted) &&
             this.refusedByPlatform(errorMessage, platform, useCookies && disposableCookies !== null)
@@ -1340,6 +1398,19 @@ export class YtdlpProcessService implements OnModuleInit {
 
       childProcess.on('exit', (code) => {
         if (code !== 0 && pendingRetry) {
+          if (pendingRetry === 'region') {
+            useRegion = true;
+            regionTried = true;
+            useInfoFile = false;
+            console.warn(`[region] ${platform}: ролик закрыт для страны сервера, качаю через Казахстан`);
+            startAttempt();
+            return;
+          }
+          if (pendingRetry === 'regionnet') {
+            regionNetworkRetried = true;
+            setTimeout(startAttempt, 1500);
+            return;
+          }
           if (pendingRetry === 'fresh') {
             useInfoFile = false;
             console.warn(
@@ -1397,6 +1468,7 @@ export class YtdlpProcessService implements OnModuleInit {
 
         // Скачалось через запасной прокси — прежние и правда не пускают.
         if (code === 0) this.blockProxies(platform, refusedProxies);
+        if (code === 0 && useRegion) this.regionVideos.remember(parseUrl);
 
         // Через прокси тоже не вышло — значит адрес был ни при чём, снимаем
         // отметку, чтобы следующие запросы снова шли коротким путём.

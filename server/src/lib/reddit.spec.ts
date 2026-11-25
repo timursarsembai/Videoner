@@ -1,5 +1,6 @@
 import { isRedditUrl, getPlatform } from '../validate/url';
 import { parseDownloadOptions } from './helper';
+import { estimateVideoSize } from './file-size';
 import { YtdlpProcessService } from '../modules/ytdlp/ytdlp-process.service';
 import { InfoService } from '../modules/info/info.service';
 import { ADULT_CONTENT_ERROR } from './adult-content';
@@ -21,7 +22,16 @@ describe('Reddit entry points', () => {
   it('keeps a video-only fallback after trying to include audio', () => {
     const args = parseDownloadOptions({ filter: 'mergevideo', quality: VideoQuality['720p'], format: VideoFormat.mp4 }, 'reddit');
     const selector = args[args.indexOf('-f') + 1];
-    expect(selector).toContain('+ba/'); expect(selector.split('/').at(-1)).toMatch(/^bv\[/);
+    expect(selector).toContain('+ba/'); expect(selector.split('/').at(-1)).toBe('bv');
+  });
+  it('picks quality by the short side: wide videos keep the chosen quality', () => {
+    const args = parseDownloadOptions({ filter: 'mergevideo', quality: '394p' as never, format: VideoFormat.mp4 }, 'reddit');
+    expect(args[args.indexOf('-f') + 1]).not.toContain('width');
+    expect(args[args.indexOf('-S') + 1]).toMatch(/^res:394,/);
+    const formats = [[390, 180], [852, 394]].map(([width, height]) => ({
+      format_id: `${height}`, width, height, ext: 'mp4', vcodec: 'avc1', acodec: 'none', filesize: width * 1000,
+    }));
+    expect(estimateVideoSize({ formats, duration: 9 } as never, '394p', 'reddit')).toBe(852000);
   });
   it('metadata extraction never opens account cookies or adds an ISP proxy', async () => {
     const process = Object.create(YtdlpProcessService.prototype) as YtdlpProcessService;

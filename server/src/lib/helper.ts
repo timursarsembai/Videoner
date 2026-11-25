@@ -114,9 +114,11 @@ export function parseDownloadOptions<T extends DownloadKeyWord>(
         : null;
 
     if (platform === 'reddit') {
-      const long = height ? Math.ceil((Number(height) * 16) / 9) : null;
-      const cap = long ? `[width<=${long}][height<=${long}]` : '';
-      formatArr = ['-f', `bv${cap}+ba/b${cap}/bv${cap}`, '-S',
+      // Качество — по короткой стороне, как и названо в списке (res у yt-dlp —
+      // она же): лучшее не выше выбранного. Прежний потолок длинной стороны
+      // под 16:9 отсекал широкие ролики: 640x296 вместо 394p, а на самом
+      // низком — «Requested format is not available» (24.11.2026).
+      formatArr = ['-f', 'bv+ba/b/bv', '-S',
         `res:${height || 2160},vcodec:avc1,acodec:aac`, '--merge-output-format', 'mp4'];
     } else if (facebookProgressive) {
       // Отдаём ровно тот формат, который выбрал пользователь: `hd`/`sd` у

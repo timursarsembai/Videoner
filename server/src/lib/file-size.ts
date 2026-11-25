@@ -70,7 +70,8 @@ export function estimateVideoSize(
   // Тот же кап, что и в селекторе формата: короткая сторона не выше
   // выбранного качества, длинная — не больше 16:9 от него. «720p» — это и
   // 1280x720, и вертикальный 720x1280. Вверх: у 480p длинная сторона 854.
-  const long = Math.ceil((height * 16) / 9);
+  // У Reddit потолка длинной стороны нет (parseDownloadOptions).
+  const long = platform === 'reddit' ? Infinity : Math.ceil((height * 16) / 9);
   const isYoutube = platform === 'youtube';
   let fitting = formats.filter(
     (f) => hasVideo(f) && shortSide(f) <= height && longSide(f) <= long,

@@ -2,7 +2,7 @@ import { BotUserService, PROMO_MIN_DOWNLOADS } from './bot-user.service';
 
 // Подсказки после скачивания: правила выбора (сама запись — условный INSERT,
 // он проверен на копии базы при разработке).
-function service(opts: { blocked?: boolean; extension?: boolean; successful: number; shows: { key: string; ago: number }[]; inserted?: number }) {
+function service(opts: { blocked?: boolean; extension?: boolean; successful: number; shows: { key: string; ago: number }[]; inserted?: number; answer?: string[] }) {
   const prisma = {
     botUser: {
       findUnique: jest.fn().mockResolvedValue({
@@ -16,6 +16,9 @@ function service(opts: { blocked?: boolean; extension?: boolean; successful: num
       findMany: jest
         .fn()
         .mockResolvedValue(opts.shows.map((s) => ({ key: s.key, shownAt: new Date(Date.now() - s.ago) }))),
+    },
+    surveyAnswer: {
+      findMany: jest.fn().mockResolvedValue(opts.answer ? [{ survey: 'transcribe', choices: opts.answer }] : []),
     },
     $executeRaw: jest.fn().mockResolvedValue(opts.inserted ?? 1),
     $transaction: jest.fn(),
@@ -64,6 +67,26 @@ describe('BotUserService.nextPromo', () => {
     const { svc } = service({ extension: true, successful: 10, shows: [] });
     expect(await svc.nextPromo(1, ['extension'])).toBeNull();
     expect(await svc.nextPromo(1, ['extension', 'audio'], () => 0)).toBe('audio');
+  });
+});
+
+describe('BotUserService.nextPromo: survey', () => {
+  const run = (shows: { key: string; ago: number }[], answer?: string[]) => service({ successful: 10, shows, answer });
+
+  it('never comes to people who voted, even without a recorded show', async () => {
+    expect(await run([], ['text']).svc.nextPromo(1, ['survey'])).toBeNull();
+    expect(await run([{ key: 'survey', ago: 8 * DAY }], ['none']).svc.nextPromo(1, ['survey'])).toBeNull();
+    expect(await run([], ['text']).svc.nextPromo(1, ['survey', 'channel'])).toBe('channel');
+  });
+
+  it('comes once more after a week without a vote, then never', async () => {
+    expect(await run([{ key: 'survey', ago: 6 * DAY }]).svc.nextPromo(1, ['survey'])).toBeNull();
+    const { svc, prisma } = run([{ key: 'survey', ago: 8 * DAY }], []);
+    expect(await svc.nextPromo(1, ['survey'])).toBe('survey');
+    expect(prisma.$executeRaw.mock.calls.flat()).toContain('survey-again');
+    expect(
+      await run([{ key: 'survey', ago: 30 * DAY }, { key: 'survey-again', ago: 20 * DAY }]).svc.nextPromo(1, ['survey']),
+    ).toBeNull();
   });
 });
 

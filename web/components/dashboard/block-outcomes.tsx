@@ -107,6 +107,7 @@ export const PROMO_LABELS: Record<string, string> = {
   share: "Расскажите друзьям",
   donate: "Поддержать проект",
   survey: "Опрос: расшифровка видео",
+  "survey-again": "Опрос: повтор через неделю",
 };
 
 export function PromoBlocksCard() {

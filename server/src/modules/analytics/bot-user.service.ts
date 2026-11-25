@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { DownloadStatus } from '@prisma/client';
-import { SURVEYS, toggleChoice } from 'src/lib/surveys';
+import { SURVEY_PROMOS, SURVEYS, surveyRepeatKey, surveyShowKey, toggleChoice } from 'src/lib/surveys';
 
 // Подсказки после скачивания: с какого удачного скачивания и как часто.
 export const PROMO_MIN_DOWNLOADS = 3;
@@ -111,9 +111,10 @@ export class BotUserService {
   async nextPromo(telegramId: number, keys: string[], rnd: () => number = Math.random): Promise<string | null> {
     const found = await this.promoCandidates(telegramId, keys);
     if (!found) return null;
-    const { botUserId, fresh, since } = found;
+    const { botUserId, fresh, since, showKeys } = found;
     const priority = fresh.filter((k) => PROMO_PRIORITY.includes(k));
     const key = priority.length ? priority[0] : fresh[Math.floor(rnd() * fresh.length)];
+    const showKey = showKeys[key] ?? key;
     // Проверка «не было за сутки» и запись — под блокировкой на человека:
     // два одновременных вызова (две ссылки подряд) иначе оба не увидели бы
     // чужую ещё не закоммиченную запись и выдали бы две разные подсказки.
@@ -121,9 +122,9 @@ export class BotUserService {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${'promo:' + botUserId}))`;
       return tx.$executeRaw`
         INSERT INTO "PromoShow" ("id", "botUserId", "key", "shownAt")
-        SELECT gen_random_uuid()::text, ${botUserId}, ${key}, now()
+        SELECT gen_random_uuid()::text, ${botUserId}, ${showKey}, now()
         WHERE NOT EXISTS (
-          SELECT 1 FROM "PromoShow" WHERE "botUserId" = ${botUserId} AND ("shownAt" > ${since} OR "key" = ${key})
+          SELECT 1 FROM "PromoShow" WHERE "botUserId" = ${botUserId} AND ("shownAt" > ${since} OR "key" = ${showKey})
         )
         ON CONFLICT DO NOTHING`;
     });
@@ -136,7 +137,7 @@ export class BotUserService {
   async promoCandidates(
     telegramId: number,
     keys: string[],
-  ): Promise<{ botUserId: string; fresh: string[]; since: Date } | null> {
+  ): Promise<{ botUserId: string; fresh: string[]; since: Date; showKeys: Record<string, string> } | null> {
     const botUser = await this.prisma.botUser.findUnique({
       where: { telegramId: BigInt(telegramId) },
       select: { id: true, blockedAt: true, extensionLinkedAt: true },
@@ -154,9 +155,24 @@ export class BotUserService {
     if (successful < PROMO_MIN_DOWNLOADS) keys = keys.filter((k) => PROMO_PRIORITY.includes(k));
     if (shows.some((s) => s.shownAt > since)) return null;
     const seen = new Set(shows.map((s) => s.key));
-    const fresh = keys.filter((k) => !seen.has(k));
+    // Опросы — по своим правилам (surveyShowKey); под каким ключом записать
+    // показ — в showKeys.
+    const showKeys: Record<string, string> = {};
+    const surveyKeys = keys.filter((k) => SURVEY_PROMOS[k]);
+    if (surveyKeys.length) {
+      const answers = await this.prisma.surveyAnswer.findMany({
+        where: { botUserId: botUser.id },
+        select: { survey: true, choices: true },
+      });
+      const answered = new Set(answers.filter((a) => a.choices.length).map((a) => a.survey));
+      for (const k of surveyKeys) {
+        const showKey = surveyShowKey(k, shows, answered.has(SURVEY_PROMOS[k]));
+        if (showKey) showKeys[k] = showKey;
+      }
+    }
+    const fresh = keys.filter((k) => (SURVEY_PROMOS[k] ? !!showKeys[k] : !seen.has(k)));
     if (!fresh.length) return null;
-    return { botUserId: botUser.id, fresh, since };
+    return { botUserId: botUser.id, fresh, since, showKeys };
   }
 
   // Опрос в боте (lib/surveys.ts): нажатие на вариант. Под блокировкой на
@@ -229,7 +245,7 @@ export class BotUserService {
   // попала бы в статистику дашборда как показанная.
   async promoFailed(telegramId: number, key: string) {
     await this.prisma.promoShow.deleteMany({
-      where: { key, botUser: { telegramId: BigInt(telegramId) }, shownAt: { gt: new Date(Date.now() - 10 * 60 * 1000) } },
+      where: { key: { in: [key, surveyRepeatKey(key)] }, botUser: { telegramId: BigInt(telegramId) }, shownAt: { gt: new Date(Date.now() - 10 * 60 * 1000) } },
     });
   }
 

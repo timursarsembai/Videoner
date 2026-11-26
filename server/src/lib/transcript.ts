@@ -30,7 +30,11 @@ export function transcriptText(segments: WhisperSegment[]): string {
     const norm = text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
     repeats = norm && norm === previous ? repeats + 1 : 0;
     previous = norm;
-    if (repeats >= 2) continue;
+    if (repeats >= 2) {
+      // Время идёт и на пропущенных повторах — иначе после них лишний абзац.
+      if (typeof segment.end === 'number') lastEnd = segment.end;
+      continue;
+    }
     // whisper.cpp режет и посреди слова («и аг» + «ента»): у продолжения
     // слова нет пробела в начале — его приклеиваем без пробела и абзац тут
     // не начинаем.

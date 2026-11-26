@@ -150,9 +150,9 @@ const AUDIO_CODECS: Record<string, string[]> = {
   flac: ['-c:a', 'flac', '-f', 'flac'],
 };
 
-// Расширение файла для формата звука. yt-dlp пишет AAC в .m4a, а Vorbis — в
-// .ogg; имя с .aac/.vorbis не находилось после скачивания (ENOENT), и эти
-// форматы на сайте не работали вовсе (найдено 26.11.2026).
+// Расширение файла на диске для формата звука. yt-dlp пишет AAC в .m4a, а
+// Vorbis — в .ogg; сервер искал .aac/.vorbis (ENOENT), и эти форматы на сайте
+// не работали вовсе (найдено 26.11.2026).
 export const AUDIO_FILE_EXT: Record<string, string> = { aac: 'm4a', vorbis: 'ogg' };
 
 function convertAudioArgs(input: string, extension: string, output: string): string[] {
@@ -1841,10 +1841,15 @@ export class DownloadService {
       if (cached) return cached;
 
       // Случайное имя — как в downloadVideo.
-      const baseFileName = getFileName(userCookies ? randomUUID() : info.title, quality, AUDIO_FILE_EXT[audioExtension] ?? audioExtension);
+      // yt-dlp получает имя с запрошенным форматом (.aac, .vorbis) и сам
+      // меняет его на настоящее (.m4a, .ogg); с настоящим он дописал бы
+      // расширение второй раз («.m4a.m4a»). baseFileName — файл на диске.
+      const ytdlpFileName = getFileName(userCookies ? randomUUID() : info.title, quality, audioExtension);
+      const realExt = AUDIO_FILE_EXT[audioExtension];
+      const baseFileName = realExt ? ytdlpFileName.replace(/\.[^.]+$/, `.${realExt}`) : ytdlpFileName;
       const fileName = multi
-        ? this.playlistTemplate(baseFileName)
-        : baseFileName;
+        ? this.playlistTemplate(ytdlpFileName)
+        : ytdlpFileName;
 
       // См. downloadVideo() — та же TOCTOU-защита дневного лимита.
       const createDownloadRecord = async () => {

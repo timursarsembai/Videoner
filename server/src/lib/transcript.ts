@@ -19,10 +19,18 @@ export function transcriptText(segments: WhisperSegment[]): string {
   const paragraphs: string[] = [];
   let current = '';
   let lastEnd: number | null = null;
+  // Whisper на шуме и крике зацикливается и повторяет одну фразу десятки раз
+  // (26.11.2026, ролик со стрима): одинаковые подряд — не больше двух.
+  let previous = '';
+  let repeats = 0;
   for (const segment of segments) {
     const raw = (segment.text ?? '').replace(/\s+/g, ' ');
     const text = raw.trim();
     if (!text || NOISE.test(text)) continue;
+    const norm = text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '');
+    repeats = norm && norm === previous ? repeats + 1 : 0;
+    previous = norm;
+    if (repeats >= 2) continue;
     // whisper.cpp режет и посреди слова («и аг» + «ента»): у продолжения
     // слова нет пробела в начале — его приклеиваем без пробела и абзац тут
     // не начинаем.

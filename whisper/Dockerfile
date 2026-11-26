@@ -24,4 +24,6 @@ COPY --from=build /model.bin /models/model.bin
 USER whisper
 EXPOSE 8178
 # 4 потока: на 8 было не быстрее — ядра делятся с остальными сервисами.
-ENTRYPOINT ["whisper-server", "--host", "0.0.0.0", "--port", "8178", "-m", "/models/model.bin", "-l", "auto", "-t", "4"]
+# -mc 0 — не опираться на уже распознанный текст, -sns — не писать «звуки»:
+# без них на шуме и крике Whisper повторял одну фразу десятки раз (26.11.2026).
+ENTRYPOINT ["whisper-server", "--host", "0.0.0.0", "--port", "8178", "-m", "/models/model.bin", "-l", "auto", "-t", "4", "-mc", "0", "-sns"]

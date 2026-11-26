@@ -17,6 +17,11 @@ describe('transcriptText', () => {
     );
   });
 
+  it('не повторяет одну фразу больше двух раз подряд', () => {
+    const loop = Array.from({ length: 30 }, (_, i) => ({ start: i, end: i + 0.5, text: ' Не дай мне!' }));
+    expect(transcriptText([...loop, { start: 31, end: 32, text: ' Конец.' }])).toBe('Не дай мне! Не дай мне! Конец.');
+  });
+
   it('убирает служебные пометки и пустые отрезки', () => {
     expect(transcriptText([{ text: ' [Музыка]' }, { text: '' }, { text: '(аплодисменты)' }, { text: ' Текст' }])).toBe('Текст');
     expect(transcriptText([])).toBe('');

@@ -121,7 +121,9 @@ export const isInstagramUrl = (url: string) => {
     }
 
     // Handle different URL patterns
-    const validPaths = ["/p/", "/reel/", "/reels/", "/tv/", "/stories/"];
+    // /share/<код> — ссылки «Поделиться» Android-приложения; сервер раскрывает
+    // их в ссылку на пост (server/src/lib/instagram-share.ts).
+    const validPaths = ["/p/", "/reel/", "/reels/", "/tv/", "/stories/", "/share/"];
     const path = urlObj.pathname.toLowerCase();
 
     // Must have content after valid paths

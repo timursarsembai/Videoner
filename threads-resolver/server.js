@@ -348,6 +348,66 @@ async function attemptResolve(parsed, code) {
   return { ok: true, node };
 }
 
+// Ссылки «Поделиться» Instagram /share/<код> (Android-приложение с ноября
+// 2026 даёт только такие). Код свой, с кодом поста не совпадает, а простой
+// запрос сервера получает страницу ошибки даже со входом. Обычный переход
+// браузера — даже без входа — Instagram сразу переадресует на /reel/<код>/
+// (проверено 27.11.2026). Берём адрес переадресации и дальше не грузим:
+// ни страница, ни картинки не нужны, трафик прокси — копейки.
+const IG_HOST_RE = /^(?:www\.|m\.)?instagram\.com$/;
+const IG_SHARE_RE = /^\/share\/(?:(?:reel|p)\/)?[A-Za-z0-9_-]+\/?$/;
+const IG_POST_RE = /^\/(reel|reels|p|tv)\/([A-Za-z0-9_-]+)/;
+
+function instagramPostUrl(raw) {
+  try {
+    const u = new URL(raw);
+    if (!IG_HOST_RE.test(u.hostname)) return null;
+    const m = IG_POST_RE.exec(u.pathname);
+    if (!m) return null;
+    const kind = m[1] === 'reels' ? 'reel' : m[1];
+    return `https://www.instagram.com/${kind}/${m[2]}/`;
+  } catch {
+    return null;
+  }
+}
+
+async function resolveInstagramShare(rawUrl) {
+  let parsed;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    return { ok: false, error: 'Некорректная ссылка' };
+  }
+  if (!IG_HOST_RE.test(parsed.hostname) || !IG_SHARE_RE.test(parsed.pathname)) {
+    return { ok: false, error: 'Это не ссылка «Поделиться» Instagram' };
+  }
+  const b = await getBrowser();
+  const context = await b.newContext({ userAgent: UA, locale: 'en-US' });
+  let target = null;
+  await context.route('**/*', (route) => {
+    const request = route.request();
+    if (request.resourceType() !== 'document') return route.abort();
+    const post = instagramPostUrl(request.url());
+    if (post) {
+      target = post;
+      return route.abort();
+    }
+    return route.continue();
+  });
+  const page = await context.newPage();
+  page.on('response', (response) => {
+    const location = response.headers().location;
+    if (!target && location) target = instagramPostUrl(new URL(location, response.url()).toString());
+  });
+  try {
+    // Переход оборвётся на нашем abort — это ожидаемо.
+    await page.goto(parsed.toString(), { waitUntil: 'commit', timeout: 20000 }).catch(() => {});
+  } finally {
+    await context.close().catch(() => {});
+  }
+  return target ? { ok: true, url: target } : { ok: false, error: 'Instagram не отдал ссылку на пост' };
+}
+
 // Chromium прожорлив, а это резерв — обрабатываем по одному запросу за раз,
 // чтобы всплеск обращений не съел память сервера.
 let queue = Promise.resolve();
@@ -367,6 +427,23 @@ const server = http.createServer((req, res) => {
       browser: Boolean(browser && browser.isConnected()),
       proxy: Boolean(PROXY_URL),
     }));
+    return;
+  }
+
+  if (url.pathname === '/instagram-share') {
+    const target = url.searchParams.get('url') || '';
+    touchIdle();
+    enqueue(() => resolveInstagramShare(target))
+      .then((result) => {
+        console.log(`${result.ok ? 'ok  ' : 'fail'} instagram ${target}${result.ok ? ' → ' + result.url : ' — ' + result.error}`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result));
+      })
+      .catch((e) => {
+        console.error(`ошибка instagram ${target}: ${e.message}`);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: `Резолвер упал: ${e.message}` }));
+      });
     return;
   }
 

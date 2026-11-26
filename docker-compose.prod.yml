@@ -104,6 +104,17 @@ services:
       - ${HOME}/.config/videoner-kz/ssh_config:/run/kz/config:ro
     networks: [kznet]
 
+  # Распознавание речи для «Текст из видео» (whisper/Dockerfile,
+  # server/src/modules/transcribe). Пока только для владельца. Свои пределы:
+  # распознавание не должно отнимать память и ядра у скачиваний.
+  whisper:
+    build: ./whisper
+    container_name: videoner-whisper
+    restart: unless-stopped
+    mem_limit: 2g
+    cpus: 4
+    networks: [internal]
+
   server:
     build: ./server
     container_name: videoner-server
@@ -171,6 +182,8 @@ services:
       # Казахстанский адрес (сервис kz-tunnel): повтор для роликов TikTok,
       # закрытых для страны сервера. socks5h — имена разрешает сам туннель.
       REGION_PROXY_URL: socks5h://kz-tunnel:1080
+      # «Текст из видео» (сервис whisper). Не задан — функция выключена.
+      WHISPER_URL: http://whisper:8178
       # Одна подсказка человеку, который запустил бота и за 48 часов не прислал
       # ни одной ссылки (см. server/src/modules/nudge). Включено ТОЛЬКО здесь:
       # у staging своя БД, но тот же BOT_TOKEN, и без этого флага он писал бы

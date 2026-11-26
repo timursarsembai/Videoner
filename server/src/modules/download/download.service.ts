@@ -142,12 +142,18 @@ const execFileAsync = promisify(execFile);
 // расширению ffmpeg «vorbis» не узнает.
 const AUDIO_CODECS: Record<string, string[]> = {
   wav: ['-c:a', 'pcm_s16le', '-f', 'wav'],
-  aac: ['-c:a', 'aac', '-b:a', '128k', '-f', 'adts'],
+  // Файл .m4a, как у yt-dlp (AUDIO_FILE_EXT): в нём тот же AAC.
+  aac: ['-c:a', 'aac', '-b:a', '128k', '-f', 'ipod'],
   m4a: ['-c:a', 'aac', '-b:a', '128k', '-f', 'ipod'],
   opus: ['-c:a', 'libopus', '-b:a', '128k', '-f', 'ogg'],
   vorbis: ['-c:a', 'libvorbis', '-q:a', '5', '-f', 'ogg'],
   flac: ['-c:a', 'flac', '-f', 'flac'],
 };
+
+// Расширение файла для формата звука. yt-dlp пишет AAC в .m4a, а Vorbis — в
+// .ogg; имя с .aac/.vorbis не находилось после скачивания (ENOENT), и эти
+// форматы на сайте не работали вовсе (найдено 26.11.2026).
+export const AUDIO_FILE_EXT: Record<string, string> = { aac: 'm4a', vorbis: 'ogg' };
 
 function convertAudioArgs(input: string, extension: string, output: string): string[] {
   const codec = AUDIO_CODECS[extension];
@@ -1835,7 +1841,7 @@ export class DownloadService {
       if (cached) return cached;
 
       // Случайное имя — как в downloadVideo.
-      const baseFileName = getFileName(userCookies ? randomUUID() : info.title, quality, audioExtension);
+      const baseFileName = getFileName(userCookies ? randomUUID() : info.title, quality, AUDIO_FILE_EXT[audioExtension] ?? audioExtension);
       const fileName = multi
         ? this.playlistTemplate(baseFileName)
         : baseFileName;

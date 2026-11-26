@@ -6,6 +6,7 @@ import { parseFlag, type LinkFlag } from "../flags.js";
 import { pickGroupQuality } from "../group.js";
 import { connectablePlatform, connectLabel } from "../accounts.js";
 import { postDescription } from "../caption.js";
+import { canTranscribe, sendTranscript, TRANSCRIBE_BUTTON } from "../transcribe.js";
 import {
   api,
   fmtDuration,
@@ -212,7 +213,7 @@ export async function performDownload(
     // Файл или file_id из кеша. Возвращают file_id отправленного — его
     // запоминает сервер, чтобы повтор того же ролика переслать без скачивания.
     replyWithVideo: (file: InputFile | string, caption: FileCaption, dims?: VideoDimensions) => Promise<string | undefined>;
-    replyWithAudio: (file: InputFile | string, caption: FileCaption) => Promise<string | undefined>;
+    replyWithAudio: (file: InputFile | string, caption: FileCaption, extension?: string) => Promise<string | undefined>;
     // Только личка: файл (видео, фото, альбом) уходит без подписи, а следом —
     // карточка (rich-card.ts sendCardAfterMedia) с названием, таблицей и
     // кнопками. Нет — подпись под самим файлом, как раньше (группы).
@@ -330,7 +331,7 @@ export async function performDownload(
           const fileId = started.telegramFileId;
           await sendVideo(() => fileId, started.number);
         } else {
-          await send.replyWithAudio(started.telegramFileId, await caption(started.number));
+          await send.replyWithAudio(started.telegramFileId, await caption(started.number), extension);
         }
         sentFromCache = true;
         delivered = true;
@@ -459,7 +460,7 @@ export async function performDownload(
         { width: meta.width, height: meta.height, duration: meta.duration },
       );
     } else {
-      fileId = await send.replyWithAudio(file, await caption(status.number));
+      fileId = await send.replyWithAudio(file, await caption(status.number), extension);
     }
     delivered = true;
     if (kind === "v") await afterFile(status.number, started.downloadId, { video: true, size: meta.size });
@@ -632,8 +633,12 @@ export function sendersForApi(
       ? (card: VideoCard, lang: Lang, fallback: () => Promise<FileCaption>, video: boolean) =>
           sendCardAfterMedia(tg, chatId, card, lang, fallback, { extraMarkup: video ? videoMarkup : undefined, thread })
       : undefined,
-    replyWithAudio: async (file: InputFile | string, caption: FileCaption) =>
-      (await tg.sendAudio(chatId, file, { caption: caption.text, caption_entities: caption.entities, ...asReply })).audio?.file_id,
+    replyWithAudio: async (file: InputFile | string, caption: FileCaption, extension = "mp3") => {
+      const opts = { caption: caption.text, caption_entities: caption.entities, ...asReply };
+      return AUDIO_PLAYER_EXTENSIONS.has(extension)
+        ? (await tg.sendAudio(chatId, file, opts)).audio?.file_id
+        : (await tg.sendDocument(chatId, file, opts)).document?.file_id;
+    },
     replyWithPhoto: async (file: InputFile, caption: FileCaption) => {
       const sent = await tg.sendPhoto(chatId, file, { ...withCaption(caption), ...asReply });
       return previewFileId(sent.photo);
@@ -704,9 +709,22 @@ async function showNextChoice(tg: Api, key: string) {
   }
 }
 
+// Форматы звука кроме mp3: расширение для сервера и надпись. AAC не отдельно:
+// yt-dlp кладёт его в тот же .m4a, вышли бы две одинаковые кнопки.
+export const EXTRA_AUDIO_FORMATS: [string, string][] = [
+  ["m4a", "M4A"],
+  ["opus", "OPUS"],
+  ["vorbis", "OGG"],
+  ["wav", "WAV"],
+  ["flac", "FLAC"],
+];
+const AUDIO_EXTENSIONS = new Set(["mp3", ...EXTRA_AUDIO_FORMATS.map(([ext]) => ext)]);
+// Telegram показывает плеером только mp3 и m4a — остальное уходит файлом.
+const AUDIO_PLAYER_EXTENSIONS = new Set(["mp3", "m4a"]);
+
 // Клавиатура выбора текущей ссылки. Собирается из запомненного в очереди, а не
 // из ответа сервера: после экрана языков субтитров её надо вернуть как была.
-function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang): InlineKeyboard {
+function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang, transcribe = false): InlineKeyboard {
   const kb = new InlineKeyboard();
   // Примерный вес на кнопке — чтобы человек сам выбрал качество полегче.
   const sized = (label: string, bytes: number | undefined) =>
@@ -739,10 +757,19 @@ function choiceKeyboard(m: (typeof messages)[Lang], current: Current, lang: Lang
   // заведомую ошибку. Фото-пост TikTok со звуком присылает "128Kbps".
   if (current.qualities?.audio.length) {
     kb.text(sized(m.audioOnlyButton, current.sizes?.audio["128Kbps"]), "a|128Kbps").row();
+    // Остальные форматы звука (владелец 26.11.2026) — по три в ряд. Первая
+    // кнопка, mp3, осталась прежней: на её текст ссылаются подсказки.
+    EXTRA_AUDIO_FORMATS.forEach(([ext, label], i) => {
+      kb.text(`🎵 ${label}`, `a|128Kbps|${ext}`);
+      if (i % 3 === 2) kb.row();
+    });
+    if (kb.inline_keyboard.at(-1)?.length) kb.row();
   }
   if (current.subtitles?.length) {
     kb.text(m.subtitlesButton, "s|list").row();
   }
+  // «Текст из видео» — пока только владельцу (transcribe.ts).
+  if (transcribe && current.qualities?.audio.length) kb.text(TRANSCRIBE_BUTTON, "t|text").row();
   // Часть качеств (или все) тяжелее 2 ГБ — их можно взять на сайте или
   // расширением.
   if (current.sizeNote) bigFileButtons(kb, m, current.url, lang);
@@ -895,7 +922,7 @@ async function showChoice(tg: Api, key: string, state: OwnerState, current: Curr
       }
     }
 
-    const kb = choiceKeyboard(m, current, lang);
+    const kb = choiceKeyboard(m, current, lang, canTranscribe(state.userId, state.chatId));
 
     const dur = fmtDuration(info.duration);
     const notice = SHARE_CHANNEL ? m.channelNotice(SHARE_CHANNEL) : "";
@@ -1161,7 +1188,7 @@ export function registerDownloadHandlers(bot: Bot) {
     // остались inline-кнопки от предыдущей версии бота с другим форматом
     // callback_data (переживший живую сессию редеплой), всё, что не "v",
     // молча трактовалось бы как "a" (аудио) с бессмысленным quality.
-    const [kind, quality] = ctx.callbackQuery.data.split("|");
+    const [kind, quality, audioExt = "mp3"] = ctx.callbackQuery.data.split("|");
     const token = current.token;
 
     if (kind === "x") {
@@ -1179,7 +1206,7 @@ export function registerDownloadHandlers(bot: Bot) {
       const tracks = current.subtitles ?? [];
       if (quality === "list" || quality === "back") {
         await ctx.answerCallbackQuery();
-        const kb = quality === "list" ? subtitlesKeyboard(m, tracks) : choiceKeyboard(m, current, lang);
+        const kb = quality === "list" ? subtitlesKeyboard(m, tracks) : choiceKeyboard(m, current, lang, canTranscribe(ctx.from.id, chatId));
         await ctx.editMessageReplyMarkup({ reply_markup: kb }).catch((e) => console.error("Не удалось сменить клавиатуру:", e?.message ?? e));
         return;
       }
@@ -1196,11 +1223,19 @@ export function registerDownloadHandlers(bot: Bot) {
       await ctx.answerCallbackQuery();
       // Возвращаем выбор качества сразу: субтитры готовятся в фоне, а видео
       // можно выбрать, не дожидаясь их.
-      await ctx.editMessageReplyMarkup({ reply_markup: choiceKeyboard(m, current, lang) }).catch((e) => console.error("Не удалось вернуть клавиатуру:", e?.message ?? e));
+      await ctx.editMessageReplyMarkup({ reply_markup: choiceKeyboard(m, current, lang, canTranscribe(ctx.from.id, chatId)) }).catch((e) => console.error("Не удалось вернуть клавиатуру:", e?.message ?? e));
       inBackground("Субтитры", sendSubtitles(ctx, key, current, track, lang));
       return;
     }
-    if ((kind !== "v" && kind !== "a") || !quality) {
+    if (kind === "t") {
+      // Клавиатура остаётся: пока готовится текст, можно скачать и видео.
+      await ctx.answerCallbackQuery();
+      if (!canTranscribe(ctx.from.id, chatId)) return;
+      armSkipTimer(ctx.api, key, token);
+      inBackground("Текст из видео", sendTranscript(ctx, current.url, current.title));
+      return;
+    }
+    if ((kind !== "v" && kind !== "a") || !quality || (kind === "a" && !AUDIO_EXTENSIONS.has(audioExt))) {
       await ctx.answerCallbackQuery({ text: m.sessionExpired });
       return;
     }
@@ -1227,7 +1262,7 @@ export function registerDownloadHandlers(bot: Bot) {
     // второй раз.
     await ctx.editMessageReplyMarkup().catch((e) => console.error("Не удалось убрать клавиатуру:", e?.message ?? e));
 
-    await startDownload(ctx.api, key, state, current, kind, quality, sendersFor(ctx, chatId));
+    await startDownload(ctx.api, key, state, current, kind, quality, sendersFor(ctx, chatId), kind === "a" ? audioExt : "mp4");
   });
 }
 
@@ -1240,6 +1275,7 @@ async function startDownload(
   kind: "v" | "a",
   quality: string,
   senders: ReturnType<typeof sendersForApi>,
+  extension: string = kind === "v" ? "mp4" : "mp3",
 ) {
   const token = current.token;
   // Пока шёл анализ, человек мог всё остановить (/stop).
@@ -1248,7 +1284,7 @@ async function startDownload(
   clearChooseTimer(key);
 
   const download = performDownload(
-    state.chatId, kind, quality, kind === "v" ? "mp4" : "mp3", current.url, state.lang,
+    state.chatId, kind, quality, extension, current.url, state.lang,
     {
       ...senders,
       description: current.description,

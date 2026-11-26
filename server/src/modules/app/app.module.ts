@@ -17,6 +17,7 @@ import { ShareLinkModule } from '../share-link/share-link.module';
 import { ChannelPostsModule } from '../channel-posts/channel-posts.module';
 import { GroupSettingsModule } from '../group-settings/group-settings.module';
 import { UserCookiesModule } from '../user-cookies/user-cookies.module';
+import { TranscribeModule } from '../transcribe/transcribe.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UserCookiesModule } from '../user-cookies/user-cookies.module';
     GroupSettingsModule,
     ChannelPostsModule,
     UserCookiesModule,
+    TranscribeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
